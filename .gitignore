@@ -1,0 +1,15 @@
+
+
+# User files
+*.suo
+*.user
+*.sln.docstates
+
+# Build folders
+
+x64/
+Win32/
+
+# Visual Studio Intermediate files
+*.opendb
+*.db

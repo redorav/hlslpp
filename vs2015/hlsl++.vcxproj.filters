@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\swizzle">
+      <UniqueIdentifier>{740e3dcd-aa17-427c-a411-6e7a64f49540}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\hlsl++.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hlsl++_unit_tests.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row3_4.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row0_1.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row0_2.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row0_3.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row0_4.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row1_1.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row1_2.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row1_3.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row1_4.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row2_1.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row2_2.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row2_3.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row2_4.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row3_1.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row3_2.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_matrix_row3_3.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_vector_w.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_vector_x.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_vector_y.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\swizzle\hlsl++_vector_z.h">
+      <Filter>Source Files\swizzle</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\src\hlsl++.natvis">
+      <Filter>Source Files</Filter>
+    </Natvis>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
