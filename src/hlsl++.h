@@ -752,6 +752,35 @@ __m128 _mm_all_ps(__m128 x)
 	return result;
 }
 
+// Note that these matrix-vector multiplication functions assume the matrix data is laid out as row major.
+// If they were column major it's enough to swap the functions, which is what the macro HLSLPP_ROW_MAJOR does.
+
+// Column-major (vector is a column) matrix-vector multiplication
+__m128 _mm_mul_mat4vec4_ps(const __m128* mr0, const __m128* mr1, const __m128* mr2, const __m128* mr3, __m128 v)
+{
+	__m128 dpx = _mm_dot4_ps(*mr0, v);
+	__m128 dpy = _mm_dot4_ps(*mr1, v);
+	__m128 dpz = _mm_dot4_ps(*mr2, v);
+	__m128 dpw = _mm_dot4_ps(*mr3, v);
+
+	__m128 resultxz = _mm_shuffle_ps(dpx, dpz, _MM_SHUFFLE(0, _MM_X, 0, _MM_X));
+	__m128 resultyw = _mm_shuffle_ps(dpy, dpw, _MM_SHUFFLE(_MM_X, 0, _MM_X, 0));
+
+	__m128 result = _mm_blend_ps(resultxz, resultyw, 0xA); // 1010b
+
+	return result;
+}
+
+// Row-major (vector is a row) vector-matrix multiplication
+__m128 _mm_mul_vec4mat4_ps(__m128 v, const __m128* mr0, const __m128* mr1, const __m128* mr2, const __m128* mr3)
+{
+	__m128 mul0 = _mm_mul_ps(*mr0, v);
+	__m128 mul1 = _mm_madd_ps(*mr1, v, mul0);
+	__m128 mul2 = _mm_madd_ps(*mr1, v, mul1);
+	__m128 result = _mm_madd_ps(*mr1, v, mul2);
+	return result;
+}
+
 // Returns true if x is nan
 __m128 _mm_isnan_ps(__m128 x)
 {
@@ -822,7 +851,7 @@ public:
 	component1<A>& operator = (const float1& v);
 	component1<A>& operator = (const float1x1& m);
 
-	explicit operator float() 
+	explicit operator float()
 	{
 #if defined(__clang__) || defined(__GNUG__) // Either clang++ or g++
 		return _vec[A];
@@ -2037,17 +2066,12 @@ inline float4 normalize_fast(const float4& v)
 
 inline float4 mul(const float4x4& m, const float4& v)
 {
-	__m128 dpx = _mm_dot4_ps(m._vec0, v._vec);
-	__m128 dpy = _mm_dot4_ps(m._vec1, v._vec);
-	__m128 dpz = _mm_dot4_ps(m._vec2, v._vec);
-	__m128 dpw = _mm_dot4_ps(m._vec3, v._vec);
+	return float4(_mm_mul_mat4vec4_ps(&m._vec0, &m._vec1, &m._vec2, &m._vec3, v._vec));
+}
 
-	__m128 resultxz = _mm_shuffle_ps(dpx, dpz, _MM_SHUFFLE(0, _MM_X, 0, _MM_X));
-	__m128 resultyw = _mm_shuffle_ps(dpy, dpw, _MM_SHUFFLE(_MM_X, 0, _MM_X, 0));
-	
-	__m128 result = _mm_blend_ps(resultxz, resultyw, 0xA); // 1010b
-
-	return float4(result);
+inline float4 mul(const float4& v, const float4x4& m)
+{
+	return float4(_mm_mul_vec4mat4_ps(v._vec, &m._vec0, &m._vec1, &m._vec2, &m._vec3));
 }
 
 // Matrix - Matrix multiplication

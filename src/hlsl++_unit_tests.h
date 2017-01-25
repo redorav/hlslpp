@@ -1,6 +1,8 @@
 #include "hlsl++.h"
 #include <cassert>
 
+//#include "DirectXMath.h"
+
 // Copied from https://randomascii.wordpress.com/2014/01/27/theres-only-four-billion-floatsso-test-them-all/
 union Float_t
 {
@@ -334,6 +336,17 @@ void RunUnitTests()
 	float2 vmax_swiz_2 = max(vfoo2.rg, vbar2.yx);
 	float3 vmax_swiz_3 = max(vfoo3.gbr, vbar3.xyy);
 	float4 vmax_swiz_4 = max(vfoo4.brga, vbar4.yxzw);
+
+	// Infinities and NaNs
+
+	float4 inf = -float4::one() / float4::zero(); //assert(all(inf != inf).x != 0.0f);
+	float4 nan = sqrt(-float4::one());
+
+	//*********
+	// Matrices
+	//*********
+
+
 }
 
 void RunExperiments()
@@ -405,4 +418,148 @@ void RunExperiments()
 
 	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _mm_exp_ps, std::exp2, "exp2");
 	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _mm_exp2_ps, std::exp2, "exp2");
+}
+
+class Timer
+{
+private:
+	LARGE_INTEGER m_startTime, m_endTime, m_elapsedMicroseconds;
+	LARGE_INTEGER m_frequency;
+
+public:
+	void Start()
+	{
+		QueryPerformanceFrequency(&m_frequency);
+		QueryPerformanceCounter(&m_startTime);
+	}
+
+	double Get()
+	{
+		QueryPerformanceCounter(&m_endTime);
+		m_elapsedMicroseconds.QuadPart = m_endTime.QuadPart - m_startTime.QuadPart;
+		m_elapsedMicroseconds.QuadPart *= 1000000;
+		m_elapsedMicroseconds.QuadPart /= m_frequency.QuadPart;
+
+		return double(m_elapsedMicroseconds.QuadPart) / 1.0e6;
+	}
+};
+
+
+struct Vector4
+{
+	float x, y, z, w;
+
+	Vector4(float f) : x(f), y(f), z(f), w(f) {}
+	Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+
+	inline Vector4 operator + (const Vector4& v) { return Vector4(x + v.x, y + v.y, z + v.z, w + v.w); }
+	inline Vector4& operator += (const Vector4& v)
+	{
+		x += v.x; y += v.y; z += v.z; w += v.w;
+		return *this;
+	}
+
+	inline Vector4 operator * (const Vector4& v) { return Vector4(x * v.x, y * v.y, z * v.z, w * v.w); }
+	inline Vector4& operator = (const Vector4& v) { x = v.x; y = v.y; z = v.z; w = v.w; return *this; }
+};
+
+inline Vector4 operator / (const Vector4& v1, const Vector4& v2)
+{
+	return Vector4(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z, v1.w / v2.w);
+}
+
+inline float dot(const Vector4& v1, const Vector4& v2)
+{
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
+}
+
+inline Vector4 exp2(const Vector4& v)
+{
+	return Vector4(std::exp2(v.x), std::exp2(v.y), std::exp2(v.z), std::exp2(v.w));
+}
+
+inline Vector4 exp(const Vector4& v)
+{
+	return Vector4(std::exp(v.x), std::exp(v.y), std::exp(v.z), std::exp(v.w));
+}
+
+inline Vector4 length(const Vector4& v)
+{
+	return Vector4(sqrt(dot(v, v)));
+}
+
+inline Vector4 sqrt(const Vector4& v)
+{
+	float sqrtX = sqrtf(v.x);
+	float sqrtY = sqrtf(v.y);
+	float sqrtZ = sqrtf(v.z);
+	float sqrtW = sqrtf(v.w);
+	return Vector4(sqrtX, sqrtY, sqrtZ, sqrtW);
+}
+
+inline Vector4 normalize(const Vector4& v)
+{
+	return v / length(v);
+}
+
+void RunSpeedTests()
+{
+	float f1 = (rand() % 1000) / 100.0f;
+	float f2 = (rand() % 1000) / 100.0f;
+	float f3 = (rand() % 1000) / 100.0f;
+	float f4 = (rand() % 1000) / 100.0f;
+
+	const int iter = 100000000000000;
+	Timer timer;
+
+	//// DirectX XMVECTOR
+	//{
+	//	using namespace DirectX;
+//
+	//	XMVECTOR v1 = XMVectorSet(f1, f1, f1, f1);
+	//	XMVECTOR v2 = XMVectorSet(f2, f2, f2, f2);
+	//	XMVECTOR v3 = XMVectorSet(f3, f3, f3, f3);
+	//	XMVECTOR v4 = XMVectorSet(f4, f4, f4, f4);
+//
+	//	timer.Start();
+	//	for (int i = 0; i < iter; ++i)
+	//	{
+	//		//v2 = XMVectorSqrt((v1 * v2 + v2 * v3));
+	//		//v2 = XMVector4NormalizeEst(v2);
+	//	}
+	//	float time = timer.Get();
+	//	float result[4];
+	//	_mm_storeu_ps(result, v2);
+	//	printf("DirectX XMVECTOR: %f, %f, %f, %f = %f\n", result[0], result[1], result[2], result[3], time);
+	//}
+
+	// Plain old struct vector
+	{
+		Vector4 v1(f1);
+		Vector4 v2(f2);
+		Vector4 v3(f3);
+		Vector4 v4(f4);
+
+		timer.Start();
+		for (int i = 0; i < iter; ++i)
+		{
+			//v2 = sqrt((v1 * v2 + v2 * v3));
+			//v2 = normalize(v2);
+		}
+		float time = timer.Get();
+		printf("STRUCT: %f, %f, %f, %f = %f\n", v2.x, v2.y, v2.z, v2.w, time);
+	}
+
+	float4 v1(f1);
+	float4 v2(2.1f);
+	float4 v3(f3);
+	float4 v4(f4);
+
+	timer.Start();
+	for (int i = 0; i < iter; ++i)
+	{
+		v2 = lerp(v1, v2, v2);
+	}
+	float time = timer.Get();
+	printf("float4: %f, %f, %f, %f = %f\n", (float)v2.x, (float)v2.y, (float)v2.z, (float)v2.w, time);
 }
