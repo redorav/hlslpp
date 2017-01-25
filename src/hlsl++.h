@@ -2,8 +2,6 @@
 
 // This library assumes SSE4.1 support
 
-#define HLSLPP_MATRIX_PACK HLSLPP_ROW_MAJOR
-
 #if defined(_MSC_VER)
 #include <intrin.h>
 #else
@@ -705,7 +703,7 @@ __m128 _mm_dot4_ps(__m128 x, __m128 y)
 
 	// SSE2
 	__m128 multi	= _mm_mul_ps(x, y);				// Multiply components together
-	__m128 shuf1	= _mm_shuf_xwxy_ps(multi);		// Move y into x, and w into z (ignore the rest)
+	__m128 shuf1	= _mm_shuf_yxwx_ps(multi);		// Move y into x, and w into z (ignore the rest)
 	__m128 add1		= _mm_add_ps(shuf1, multi);		// Contains x+y, _, z+w, _
 	__m128 shuf2	= _mm_shuf_zzzz_ps(add1);		// Move (z + w) into x
 	__m128 result	= _mm_add_ps(add1, shuf2);		// Contains x+y+z+w, _, _, _
@@ -753,20 +751,20 @@ __m128 _mm_all_ps(__m128 x)
 }
 
 // Note that these matrix-vector multiplication functions assume the matrix data is laid out as row major.
-// If they were column major it's enough to swap the functions, which is what the macro HLSLPP_ROW_MAJOR does.
+// If they were column major it's enough to swap the functions.
 
 // Column-major (vector is a column) matrix-vector multiplication
 __m128 _mm_mul_mat4vec4_ps(const __m128* mr0, const __m128* mr1, const __m128* mr2, const __m128* mr3, __m128 v)
 {
-	__m128 dpx = _mm_dot4_ps(*mr0, v);
-	__m128 dpy = _mm_dot4_ps(*mr1, v);
-	__m128 dpz = _mm_dot4_ps(*mr2, v);
-	__m128 dpw = _mm_dot4_ps(*mr3, v);
+	__m128 dpx		= _mm_dot4_ps(*mr0, v);
+	__m128 dpy		= _mm_dot4_ps(*mr1, v);
+	__m128 dpz		= _mm_dot4_ps(*mr2, v);
+	__m128 dpw		= _mm_dot4_ps(*mr3, v);
 
 	__m128 resultxz = _mm_shuffle_ps(dpx, dpz, _MM_SHUFFLE(0, _MM_X, 0, _MM_X));
 	__m128 resultyw = _mm_shuffle_ps(dpy, dpw, _MM_SHUFFLE(_MM_X, 0, _MM_X, 0));
 
-	__m128 result = _mm_blend_ps(resultxz, resultyw, 0xA); // 1010b
+	__m128 result	= _mm_blend_ps(resultxz, resultyw, 0xA); // 1010b
 
 	return result;
 }
@@ -774,10 +772,10 @@ __m128 _mm_mul_mat4vec4_ps(const __m128* mr0, const __m128* mr1, const __m128* m
 // Row-major (vector is a row) vector-matrix multiplication
 __m128 _mm_mul_vec4mat4_ps(__m128 v, const __m128* mr0, const __m128* mr1, const __m128* mr2, const __m128* mr3)
 {
-	__m128 mul0 = _mm_mul_ps(*mr0, v);
-	__m128 mul1 = _mm_madd_ps(*mr1, v, mul0);
-	__m128 mul2 = _mm_madd_ps(*mr1, v, mul1);
-	__m128 result = _mm_madd_ps(*mr1, v, mul2);
+	__m128 mul0		= _mm_mul_ps(*mr0,	_mm_shuf_xxxx_ps(v));
+	__m128 mul1		= _mm_madd_ps(*mr1, _mm_shuf_yyyy_ps(v), mul0);
+	__m128 mul2		= _mm_madd_ps(*mr2, _mm_shuf_zzzz_ps(v), mul1);
+	__m128 result	= _mm_madd_ps(*mr3, _mm_shuf_wwww_ps(v), mul2);
 	return result;
 }
 
@@ -1286,11 +1284,7 @@ public:
 			 float f10, float f11, float f12, float f13,
 			 float f20, float f21, float f22, float f23,
 			 float f30, float f31, float f32, float f33)
-#if (HLSLPP_MATRIX_PACK == HLSLPP_ROW_MAJOR)
 		: _vec0(_mm_set_ps(f03, f02, f01, f00)), _vec1(_mm_set_ps(f13, f12, f11, f10)), _vec2(_mm_set_ps(f23, f22, f21, f20)), _vec3(_mm_set_ps(f33, f32, f31, f30)) {}
-#else
-		: _vec0(_mm_set_ps(f30, f20, f10, f00)), _vec1(_mm_set_ps(f31, f21, f11, f01)), _vec2(_mm_set_ps(f32, f22, f12, f02)), _vec3(_mm_set_ps(f33, f23, f13, f03)) {}
-#endif
 
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2), _vec3(m._vec3) {}
 };
