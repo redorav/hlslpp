@@ -726,6 +726,15 @@ __m128 _mm_dot3_ps(__m128 x, __m128 y)
 	return result;
 }
 
+__m128 _mm_dot2_ps(__m128 x, __m128 y)
+{
+	__m128 multi = _mm_mul_ps(x, y);			// Multiply components together
+	__m128 shuf1 = _mm_shuf_yyyy_ps(multi);		// Move y into x
+	__m128 result = _mm_add_ps(shuf1, multi);	// Contains x+y, _, _, _
+
+	return result;
+}
+
 __m128 _mm_any_ps(__m128 x)
 {
 	__m128 shuf1	= _mm_shuffle_ps(x, x, _MM_SHUFFLE(0, _MM_W, 0, _MM_Y));					// Move y into x, and w into z (ignore the rest)
@@ -1028,8 +1037,8 @@ public:
 	template<int A, int B, int C>
 	floatN& operator = (const component3<A, B, C>& c);
 
-	inline static float3 one() { static const float3 o = float3(1.0f); return o; }
-	inline static float3 zero() { static const float3 z = float3(0.0f); return z; }
+	inline static floatN<3> one() { static const floatN<3> o = floatN<3>(1.0f); return o; }
+	inline static floatN<3> zero() { static const floatN<3> z = floatN<3>(0.0f); return z; }
 };
 
 template<>
@@ -1807,6 +1816,11 @@ inline float1 dot(const float3& v1, const float3& v2)
 	return float1(_mm_dot3_ps(v1._vec, v2._vec));
 }
 
+inline float1 dot(const float2& v1, const float2& v2)
+{
+	return float1(_mm_dot2_ps(v1._vec, v2._vec));
+}
+
 template<typename floatN>
 inline floatN floor(const floatN& v)
 {
@@ -1852,15 +1866,19 @@ inline floatN<N> isnan(const floatN<N>& v)
 	return floatN<N>(_mm_and_ps(_mm_isnan_ps(v._vec), f4one));
 }
 
+inline float1 length(const float2& v)
+{
+	return float1(_mm_sqrt_ps(_mm_dot2_ps(v._vec, v._vec)));
+}
+
+inline float1 length(const float3& v)
+{
+	return float1(_mm_sqrt_ps(_mm_dot3_ps(v._vec, v._vec)));
+}
+
 inline float1 length(const float4& v)
 {
 	return float1(_mm_sqrt_ps(_mm_dot4_ps(v._vec, v._vec)));
-}
-
-template<int N>
-inline floatN<N> lerp(const floatN<N>& v1, const floatN<N>& v2, const floatN<N>& a)
-{
-	return floatN<N>(_mm_lrp_ps(v1._vec, v2._vec, a._vec));
 }
 
 template<int N, template<int...Dim> class components, int...Dim>
@@ -1869,13 +1887,17 @@ inline floatN<N> lerp(const floatN<N>& v1, const floatN<N>& v2, const components
 template<int N, template<int...Dim> class components, int...Dim>
 inline floatN<N> lerp(const floatN<N>& v1, const components<Dim...>& v2, const components<Dim...>& a) { return lerp(v1, floatN<N>(v2), floatN<N>(a)); }
 
-template<int N, template<int...Dim> class components, int...Dim>
-inline floatN<N> lerp(const components<Dim...>& v1, const components<Dim...>& v2, const components<Dim...>& a) { return lerp(floatN<N>(v1), floatN<N>(v2), floatN<N>(a)); }
+template<template<int...Dim> class components, int...Dim1, int...Dim2, int...Dim3>
+inline floatN<sizeof...(Dim1)> lerp(const components<Dim1...>& v1, const components<Dim2...>& v2, const components<Dim3...>& a) 
+{ 
+	static_assert(sizeof...(Dim1) == sizeof...(Dim2), "Vectors must be the same dimension!");
+	return lerp(floatN<sizeof...(Dim1)>(v1), floatN<sizeof...(Dim1)>(v2), floatN<sizeof...(Dim1)>(a)); 
+}
 
-template<typename floatN>
-inline floatN lerp(const floatN& v1, const floatN& v2, float a)
+template<int N>
+inline floatN<N> lerp(const floatN<N>& v1, const floatN<N>& v2, float a)
 {
-	return lerp(v1, v2, floatN(a));
+	return lerp(v1, v2, floatN<N>(a));
 }
 
 template<typename floatN>
