@@ -1881,6 +1881,9 @@ inline float1 length(const float4& v)
 	return float1(_mm_sqrt_ps(_mm_dot4_ps(v._vec, v._vec)));
 }
 
+template<int N>
+inline floatN<N> lerp(const floatN<N>& v1, const floatN<N>& v2, const floatN<N>& a) { return floatN<N>(_mm_lrp_ps(v1._vec, v2._vec, a._vec)); }
+
 template<int N, template<int...Dim> class components, int...Dim>
 inline floatN<N> lerp(const floatN<N>& v1, const floatN<N>& v2, const components<Dim...>& a) { return lerp(v1, v2, floatN<N>(a)); }
 
