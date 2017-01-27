@@ -330,21 +330,42 @@ void RunUnitTests()
 	float3 vmin_swiz_3 = min(vfoo3.ggb, vbar3.bgr);
 	float4 vmin_swiz_4 = min(vfoo4.gggg, vbar4.brgr);
 
-	vfoo4 = float4(10, 2, 30, 4);
-	vbar4 = float4(9, 5, 6, 7);
-
 	float2 vmax_swiz_2 = max(vfoo2.rg, vbar2.yx);
 	float3 vmax_swiz_3 = max(vfoo3.gbr, vbar3.xyy);
 	float4 vmax_swiz_4 = max(vfoo4.brga, vbar4.yxzw);
 
 	// Infinities and NaNs
 
-	float4 inf = -float4::one() / float4::zero(); //assert(all(inf != inf).x != 0.0f);
-	float4 nan = sqrt(-float4::one());
+	//float4 inf = -float4::one() / float4::zero(); //assert(all(inf != inf).x != 0.0f);
+	//float4 nan = sqrt(-float4::one());
 
 	//*********
 	// Matrices
 	//*********
+
+	float1x1 mat1x1 = float1x1(1);
+	float1x2 mat1x2 = float1x2(1, 2);
+	float1x3 mat1x3 = float1x3(1, 2, 3);
+	float1x4 mat1x4 = float1x4(1, 2, 3, 4);
+
+	float2x1 mat2x1 = float2x1(1, 2);
+	float3x1 mat3x1 = float3x1(1, 2, 3);
+	float4x1 mat4x1 = float4x1(1, 2, 3, 4);
+
+	float2x2 mat2x2 = float2x2(1, 2, 3, 4);
+
+	float2x3 mat2x3 = float2x3(1, 2, 3, 4, 5, 6);
+	float2x4 mat2x4 = float2x4(1, 2, 3, 4, 5, 6, 7, 8);
+
+	float3x2 mat3x2 = float3x2(1, 2, 3, 4, 5, 6);
+	float4x2 mat4x2 = float4x2(1, 2, 3, 4, 5, 6, 7, 8);
+
+	float3x3 mat3x3 = float3x3(1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+	float3x4 mat3x4 = float3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+	float4x3 mat4x3 = float4x3(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+
+	float4x4 mat4x4 = float4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 
 
 }
@@ -509,7 +530,7 @@ void RunSpeedTests()
 	float f3 = (rand() % 1000) / 100.0f;
 	float f4 = (rand() % 1000) / 100.0f;
 
-	const int iter = 100000000000000;
+	const int iter = 1000000;
 	Timer timer;
 
 	//// DirectX XMVECTOR

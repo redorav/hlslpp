@@ -981,9 +981,6 @@ public:
 	template<int A>
 	floatN& operator = (const component1<A>& c);
 	floatN& operator = (const float1x1& m);
-
-	inline static float1 one() { static const float1 o = float1(1.0f); return o; }
-	inline static float1 zero() { static const float1 z = float1(0.0f); return z; }
 };
 
 template<>
@@ -1008,9 +1005,6 @@ public:
 	floatN& operator = (const floatN& c);
 	template<int A, int B>
 	floatN& operator = (const component2<A, B>& c);
-
-	inline static float2 one() { static const float2 o = float2(1.0f); return o; }
-	inline static float2 zero() { static const float2 z = float2(0.0f); return z; }
 };
 
 template<>
@@ -1036,9 +1030,6 @@ public:
 	floatN& operator = (const floatN& c);
 	template<int A, int B, int C>
 	floatN& operator = (const component3<A, B, C>& c);
-
-	inline static floatN<3> one() { static const floatN<3> o = floatN<3>(1.0f); return o; }
-	inline static floatN<3> zero() { static const floatN<3> z = floatN<3>(0.0f); return z; }
 };
 
 template<>
@@ -1065,9 +1056,6 @@ public:
 	floatN& operator = (const float4& c);
 	template<int A, int B, int C, int D>
 	floatN& operator = (const component4<A, B, C, D>& c);
-
-	inline static float4 one() { static const float4 o = float4(1.0f); return o; }
-	inline static float4 zero() { static const float4 z = float4(0.0f); return z; }
 };
 
 //*******************
@@ -1193,7 +1181,7 @@ class floatNxM<2, 2>
 public:	
 	union
 	{
-		__m128 _vec; // We can store it in a single vector to save memory.
+		__m128 _vec; // We can store it in a single vector to save memory
 	};
 
 	floatNxM() {}
@@ -1231,6 +1219,81 @@ public:
 };
 
 template<>
+class floatNxM<3, 2>
+{
+public:
+	union
+	{
+		__m128 _vec0;
+	};
+
+	union
+	{
+		__m128 _vec1;
+	};
+
+	floatNxM() {}
+	explicit floatNxM(__m128 vec0, __m128 vec1) : _vec0(vec0), _vec1(vec1) {}
+
+	floatNxM(float f00, float f01, 
+			 float f10, float f11,
+			 float f20, float f21) : _vec0(_mm_set_ps(0.0f, f20, f10, f00)), _vec1(_mm_set_ps(0.0f, f21, f11, f01)) {}
+
+	floatNxM(float f) : floatNxM(f, f, f, f, f, f) {}
+	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1) {}
+};
+
+template<>
+class floatNxM<2, 4>
+{
+public:
+	union
+	{
+		__m128 _vec0;
+	};
+
+	union
+	{
+		__m128 _vec1;
+	};
+
+	floatNxM() {}
+	explicit floatNxM(__m128 vec0, __m128 vec1) : _vec0(vec0), _vec1(vec1) {}
+
+	floatNxM(float f00, float f01, float f02, float f03,
+			 float f10, float f11, float f12, float f13) : _vec0(_mm_set_ps(f03, f02, f01, f00)), _vec1(_mm_set_ps(f13, f12, f11, f10)) {}
+
+	floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f) {}
+	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1) {}
+};
+
+template<>
+class floatNxM<4, 2>
+{
+public:
+	union
+	{
+		__m128 _vec0;
+	};
+
+	union
+	{
+		__m128 _vec1;
+	};
+
+	floatNxM() {}
+	explicit floatNxM(__m128 vec0, __m128 vec1) : _vec0(vec0), _vec1(vec1) {}
+
+	floatNxM(float f00, float f01,
+			 float f10, float f11,
+			 float f20, float f21, 
+			 float f30, float f31) : _vec0(_mm_set_ps(f30, f20, f10, f00)), _vec1(_mm_set_ps(f31, f21, f11, f01)) {}
+
+	floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f) {}
+	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1) {}
+};
+
+template<>
 class floatNxM<3, 3>
 {
 public:
@@ -1257,6 +1320,67 @@ public:
 			 float f10, float f11, float f12,
 			 float f20, float f21, float f22) : _vec0(_mm_set_ps(0.0f, f02, f01, f00)), _vec1(_mm_set_ps(0.0f, f12, f11, f10)), _vec2(_mm_set_ps(0.0f, f22, f21, f20)) {}
 
+	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
+};
+
+template<>
+class floatNxM<3, 4>
+{
+public:
+	union
+	{
+		__m128 _vec0;
+	};
+
+	union
+	{
+		__m128 _vec1;
+	};
+
+	union
+	{
+		__m128 _vec2;
+	};
+
+	floatNxM() {}
+	explicit floatNxM(__m128 vec0, __m128 vec1, __m128 vec2) : _vec0(vec0), _vec1(vec1), _vec2(vec2) {}
+
+	floatNxM(float f00, float f01, float f02, float f03,
+			 float f10, float f11, float f12, float f13,
+			 float f20, float f21, float f22, float f23) : _vec0(_mm_set_ps(f03, f02, f01, f00)), _vec1(_mm_set_ps(f13, f12, f11, f10)), _vec2(_mm_set_ps(f23, f22, f21, f20)) {}
+
+	floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f, f, f, f, f) {}
+	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
+};
+
+template<>
+class floatNxM<4, 3>
+{
+public:
+	union
+	{
+		__m128 _vec0;
+	};
+
+	union
+	{
+		__m128 _vec1;
+	};
+
+	union
+	{
+		__m128 _vec2;
+	};
+
+	floatNxM() {}
+	explicit floatNxM(__m128 vec0, __m128 vec1, __m128 vec2) : _vec0(vec0), _vec1(vec1), _vec2(vec2) {}
+
+	floatNxM(float f00, float f01, float f02,
+			 float f10, float f11, float f12,
+			 float f20, float f21, float f22,
+			 float f30, float f31, float f32): _vec0(_mm_set_ps(f30, f20, f10, f00)), _vec1(_mm_set_ps(f31, f21, f11, f01)), _vec2(_mm_set_ps(f32, f22, f12, f02)) {}
+
+	floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f, f, f, f, f) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
 };
 
@@ -1314,7 +1438,7 @@ inline component1<A>& component1<A>::operator = (const component1<E>& p)
 template<int A>
 inline component1<A>& component1<A>::operator = (float f)
 {
-	__m128 s = _mm_set_ps1(f);
+	const __m128 s = _mm_set_ps1(f);
 	_vec = _mm_blend_ps(_vec, s, (1 << A));
 	return *this;
 }
@@ -2239,6 +2363,32 @@ inline floatNxM<N, M>& operator *= (floatNxM<N, M>& m1, const floatNxM<N, M>& m2
 }
 
 // Division
+
+inline floatNxM<2, 2> operator / (const floatNxM<2, 2>& m1, const floatNxM<2, 2>& m2)
+{
+	__m128 vec0 = _mm_div_ps(m1._vec, m2._vec);
+	return floatNxM<2, 2>(vec0);
+}
+
+template<int M>
+inline floatNxM<3, M> operator / (const floatNxM<3, M>& m1, const floatNxM<3, M>& m2)
+{
+	__m128 vec0 = _mm_div_ps(m1._vec0, m2._vec0);
+	__m128 vec1 = _mm_div_ps(m1._vec1, m2._vec1);
+	__m128 vec2 = _mm_div_ps(m1._vec2, m2._vec2);
+
+	return floatNxM<3, M>(vec0, vec1, vec2);
+}
+
+template<int N>
+inline floatNxM<N, 3> operator / (const floatNxM<N, 3>& m1, const floatNxM<N, 3>& m2)
+{
+	__m128 vec0 = _mm_div_ps(m1._vec0, m2._vec0);
+	__m128 vec1 = _mm_div_ps(m1._vec1, m2._vec1);
+	__m128 vec2 = _mm_div_ps(m1._vec2, m2._vec2);
+
+	return floatNxM<N, 3>(vec0, vec1, vec2);
+}
 
 inline floatNxM<4, 4> operator / (const floatNxM<4, 4>& m1, const floatNxM<4, 4>& m2)
 {
