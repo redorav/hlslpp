@@ -1,6 +1,9 @@
+
+#if defined(_WIN32)
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
+#endif
 
 #include <cstdio>
 #include <iostream>
@@ -56,9 +59,9 @@ int main()
 
 	float1 dot2_0 = dot(vec20.yx, vec21);
 
+	RunSpeedTests();
 	RunUnitTests();
 	RunExperiments();
-	RunSpeedTests();
 
 	getchar();
 }

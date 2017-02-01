@@ -1,5 +1,7 @@
 #include "hlsl++.h"
 #include <cassert>
+#include <cmath>
+#include <chrono>
 
 //#include "DirectXMath.h"
 
@@ -530,24 +532,32 @@ void RunExperiments()
 class Timer
 {
 private:
-	LARGE_INTEGER m_startTime, m_endTime, m_elapsedMicroseconds;
-	LARGE_INTEGER m_frequency;
+	//LARGE_INTEGER m_startTime, m_endTime, m_elapsedMicroseconds;
+	//LARGE_INTEGER m_frequency;
+	std::chrono::high_resolution_clock::time_point m_startTime;
+	std::chrono::high_resolution_clock::time_point m_endTime;
 
 public:
 	void Start()
 	{
-		QueryPerformanceFrequency(&m_frequency);
-		QueryPerformanceCounter(&m_startTime);
+		//QueryPerformanceFrequency(&m_frequency);
+		//QueryPerformanceCounter(&m_startTime);
+
+		m_startTime = std::chrono::high_resolution_clock::now();
 	}
 
 	double Get()
 	{
-		QueryPerformanceCounter(&m_endTime);
-		m_elapsedMicroseconds.QuadPart = m_endTime.QuadPart - m_startTime.QuadPart;
-		m_elapsedMicroseconds.QuadPart *= 1000000;
-		m_elapsedMicroseconds.QuadPart /= m_frequency.QuadPart;
+		//QueryPerformanceCounter(&m_endTime);
+		//m_elapsedMicroseconds.QuadPart = m_endTime.QuadPart - m_startTime.QuadPart;
+		//m_elapsedMicroseconds.QuadPart *= 1000000;
+		//m_elapsedMicroseconds.QuadPart /= m_frequency.QuadPart;
+		//
+		//return double(m_elapsedMicroseconds.QuadPart) / 1.0e6;
 
-		return double(m_elapsedMicroseconds.QuadPart) / 1.0e6;
+		m_endTime = std::chrono::high_resolution_clock::now();
+
+		return std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count() / 1e9f;
 	}
 };
 
@@ -650,7 +660,7 @@ void RunSpeedTests()
 		timer.Start();
 		for (int i = 0; i < iter; ++i)
 		{
-			//v2 = sqrt((v1 * v2 + v2 * v3));
+			v2 = sqrt((v1 * v2 + v2 * v3));
 			//v2 = normalize(v2);
 		}
 		float time = timer.Get();

@@ -1,7 +1,5 @@
 #pragma once
 
-// This library assumes SSE4.1 support
-
 #if defined(_MSC_VER)
 #include <intrin.h>
 #else
@@ -868,7 +866,7 @@ public:
 	}*/
 };
 
-template<int A, int B>
+template<int X, int Y>
 class component2
 {
 public:
@@ -877,34 +875,34 @@ public:
 	void StaticAsserts()
 	{
 		// Assert that no component is equal to each other for assignment
-		static_assert(A != B, "\"l-value specifies const object\" No component can be equal for assignment.");
+		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
 	}
 
 	static __m128 blend(__m128 x, __m128 y)
 	{
-		return _mm_blend_ps(x, y, (1 << A) | (1 << B));									// Select based on property mask
+		return _mm_blend_ps(x, y, (1 << X) | (1 << Y));									// Select based on property mask
 	}
 
-	template<int E, int F, int X, int Y>
+	template<int E, int F, int A, int B>
 	static __m128 swizzle(__m128 x)
 	{
 		static const int neutralMask = _MM_SHUFFLE(_MM_W, _MM_Z, _MM_Y, _MM_X);
 #define _C2_SHUFFLE(bitmask, X1, Y1, X2, Y2) (((bitmask >> (2 * X1)) & 0x3) << (2 * X2)) | (((bitmask >> (2 * Y1)) & 0x3) << (2 * Y2))
-		const __m128 inputShuffle = _mm_shuffle_ps(x, x, _C2_SHUFFLE(neutralMask, E, F, X, Y));	// Swizzle input mask with property mask
+		const __m128 inputShuffle = _mm_shuffle_ps(x, x, _C2_SHUFFLE(neutralMask, E, F, A, B));	// Swizzle input mask with property mask
 #undef _C2_SHUFFLE
 		return inputShuffle;
 	}
 	
-	component2<A, B>() {}
-	explicit component2<A, B>(__m128 vec) : _vec(vec) {}
+	component2<X, Y>() {}
+	explicit component2<X, Y>(__m128 vec) : _vec(vec) {}
 
 	template<int E, int F>
-	component2<A, B>& operator = (const component2<E, F>& c);
+	component2<X, Y>& operator = (const component2<E, F>& c);
 
-	component2<A, B>& operator = (const float2& v);
+	component2<X, Y>& operator = (const float2& v);
 };
 
-template<int A, int B, int C>
+template<int X, int Y, int Z>
 class component3
 {
 public:
@@ -913,12 +911,12 @@ public:
 	void StaticAsserts()
 	{
 		// Assert that no component is equal to each other for assignment
-		static_assert(A != B && A != C && B != C, "\"l-value specifies const object\" No component can be equal for assignment.");
+		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
 	}
 
 	static __m128 blend(__m128 x, __m128 y)
 	{
-		return _mm_blend_ps(x, y, (1 << A) | (1 << B) | (1 << C));							// Select based on property mask
+		return _mm_blend_ps(x, y, (1 << X) | (1 << Y) | (1 << Z));							// Select based on property mask
 	}
 
 	template<int E, int F, int G, int A, int B, int C>
@@ -931,15 +929,15 @@ public:
 		return inputShuffle;
 	}
 
-	component3<A, B, C>() {}
-	explicit component3<A, B, C>(__m128 vec) : _vec(vec) {}
+	component3<X, Y, Z>() {}
+	explicit component3<X, Y, Z>(__m128 vec) : _vec(vec) {}
 
 	template<int E, int F, int G>
-	component3<A, B, C>& operator = (const component3<E, F, G>& c);
-	component3<A, B, C>& operator = (const float3& v);
+	component3<X, Y, Z>& operator = (const component3<E, F, G>& c);
+	component3<X, Y, Z>& operator = (const float3& v);
 };
 
-template<int A, int B, int C, int D>
+template<int X, int Y, int Z, int W>
 class component4
 {
 public:
@@ -948,15 +946,15 @@ public:
 	void staticAsserts()
 	{
 		// Assert that no component is equal to each other for assignment
-		static_assert(A != B && A != C && A != D && B != C && B != D && C != D, "\"l-value specifies const object\" No component can be equal for assignment.");
+		static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
 	}
 
-	component4<A, B, C, D>() {}
-	explicit component4<A, B, C, D>(__m128 vec) : _vec(vec) {}
+	component4<X, Y, Z, W>() {}
+	explicit component4<X, Y, Z, W>(__m128 vec) : _vec(vec) {}
 
 	template<int E, int F, int G, int H>
-	inline component4<A, B, C, D>& operator = (const component4<E, F, G, H>& c);
-	inline component4<A, B, C, D>& operator = (const float4& v);
+	inline component4<X, Y, Z, W>& operator = (const component4<E, F, G, H>& c);
+	inline component4<X, Y, Z, W>& operator = (const float4& v);
 };
 
 template<>
@@ -2132,10 +2130,10 @@ inline floatN tan(const floatN& v)
 	return floatN(_mm_tan_ps(v._vec));
 }
 
-template<typename floatN>
-inline floatN sqrt(const floatN& v)
+template<int N>
+inline floatN<N> sqrt(const floatN<N>& v)
 {
-	return floatN(_mm_sqrt_ps(v._vec));
+	return floatN<N>(_mm_sqrt_ps(v._vec));
 }
 
 // Step
