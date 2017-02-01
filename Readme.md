@@ -6,11 +6,13 @@ HLSL++ is a small math library with the same syntax and specific features as hls
 
 hlsl++ should allow you to be as expressive with the math as you typically are when programming in a shader language. Constructs such as the following are possible.
 
-float4 foo = float2(1, 2, 3, 4);
+float4 foo = float4(1, 2, 3, 4);
 
 float2 bar = foo.xz;
 
 float2 logFoo = log(bar.xy);
+
+foo.wx = logFoo.yx;
 
 # Requirements
 
