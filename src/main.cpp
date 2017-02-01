@@ -56,8 +56,8 @@ int main()
 
 	float1 dot2_0 = dot(vec20.yx, vec21);
 
-	RunExperiments();
 	RunUnitTests();
+	RunExperiments();
 	RunSpeedTests();
 
 	getchar();

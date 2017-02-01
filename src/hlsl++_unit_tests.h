@@ -84,7 +84,7 @@ void RunUnitTests()
 
 	// Initialization
 
-	float1 vfoo1 = float1(f1); assert((float)vfoo1.x == f1);
+	float1 vfoo1 = float1(f1); //assert((float)vfoo1.x == f1);
 	float2 vfoo2 = float2(1, 2);
 	float3 vfoo3 = float3(1, 2, 3);
 	float4 vfoo4 = float4(1, 2, 3, 4);
@@ -142,114 +142,180 @@ void RunUnitTests()
 	float3 vlt3 = vfoo3 < vbar3;
 	float4 vlt4 = vfoo4 < vbar4;
 
+	float1 vge1 = vfoo1 >= vbar1;
 	float2 vge2 = vfoo2 >= vbar2;
 	float3 vge3 = vfoo3 >= vbar3;
 	float4 vge4 = vfoo4 >= vbar4;
 
+	float1 vle1 = vfoo1 <= vbar1;
 	float2 vle2 = vfoo2 <= vbar2;
 	float3 vle3 = vfoo3 <= vbar3;
 	float4 vle4 = vfoo4 <= vbar4;
 
+	float1 veq1 = vfoo1 == vbar1;
 	float2 veq2 = vfoo2 == vbar2;
 	float3 veq3 = vfoo3 == vbar3;
 	float4 veq4 = vfoo4 == vbar4;
 
+	vfoo1 = -vbar1.r;
 	vfoo2 = -vbar2.gr;
 	vfoo3 = -vbar3.bgg;
 	vfoo4 = -vbar4.rrrr;
 
+	float1 vabs1 = abs(vfoo1);
 	float2 vabs2 = abs(vfoo2);
 	float3 vabs3 = abs(vfoo3);
 	float4 vabs4 = abs(vfoo4);
 
+	float1 vabs_swiz_1 = abs(vfoo1.r);
+	float2 vabs_swiz_2 = abs(vfoo2.yx);
+	float3 vabs_swiz_3 = abs(vfoo3.bgr);
+	float4 vabs_swiz_4 = abs(vfoo4.wwww);
+
+	float1 vceil1 = ceil(vfoo1);
 	float2 vceil2 = ceil(vfoo2);
 	float3 vceil3 = ceil(vfoo3);
 	float4 vceil4 = ceil(vfoo4);
 
-	float3 vcross3 = cross(vfoo3, vbar3);
-	float3 vcross_swiz3 = cross(vfoo3.yzx, vbar3.yyx);
+	float1 vceil_swiz_1 = ceil(vfoo1.r);
+	float2 vceil_swiz_2 = ceil(vfoo2.xx);
+	float3 vceil_swiz_3 = ceil(vfoo3.rrg);
+	float4 vceil_swiz_4 = ceil(vfoo4.yzwx);
 
+	float3 vcross3 = cross(vfoo3, vbar3);
+	float3 vcross_swiz_3 = cross(vfoo3.yzx, vbar3.yyx);
+
+	float1 vfloor1 = floor(vfoo1);
 	float2 vfloor2 = floor(vfoo2);
 	float3 vfloor3 = floor(vfoo3);
 	float4 vfloor4 = floor(vfoo4);
 
+	float1 vfloor_swiz_1 = floor(vfoo1.r);
+	float2 vfloor_swiz_2 = floor(vfoo2.yx);
+	float3 vfloor_swiz_3 = floor(vfoo3.xxy);
+	float4 vfloor_swiz_4 = floor(vfoo4.wwxy);
+
+	float1 vfrac1 = frac(vfoo1);
 	float2 vfrac2 = frac(vfoo2);
 	float3 vfrac3 = frac(vfoo3);
 	float4 vfrac4 = frac(vfoo4);
 
+	float1 vfrac_swiz_1 = frac(vfoo1.r);
+	float2 vfrac_swiz_2 = frac(vfoo2.xy);
+	float3 vfrac_swiz_3 = frac(vfoo3.bgr);
+	float4 vfrac_swiz_4 = frac(vfoo4.wzzy);
+
+	float1 vexp1 = exp(vfoo1);
 	float2 vexp2 = exp(vfoo2);
 	float3 vexp3 = exp(vfoo3);
 	float4 vexp4 = exp(vfoo4);
 
+	float1 vexp_swiz_1 = exp(vfoo1.r);
+	float2 vexp_swiz_2 = exp(vfoo2.yx);
+	float3 vexp_swiz_3 = exp(vfoo3.brr);
+	float4 vexp_swiz_4 = exp(vfoo4.wxzy);
+
+	float1 vexp2_1 = exp2(vfoo1);
 	float2 vexp2_2 = exp2(vfoo2);
 	float3 vexp2_3 = exp2(vfoo3);
 	float4 vexp2_4 = exp2(vfoo4);
 
+	float1 vexp2_swiz_1 = exp2(vfoo1.r);
+	float2 vexp2_swiz_2 = exp2(vfoo2.xy);
+	float3 vexp2_swiz_3 = exp2(vfoo3.bgr);
+	float4 vexp2_swiz_4 = exp2(vfoo4.wxxy);
+
 	// Linear Interpolation
 
+	float1 vlerp1 = lerp(vfoo1, vbar1, vbaz1);
 	float2 vlerp2 = lerp(vfoo2, vbar2, vbaz2);
 	float3 vlerp3 = lerp(vfoo3, vbar3, vbaz3);
 	float4 vlerp4 = lerp(vfoo4, vbar4, vbaz4);
 
+	float1 vlerpf_1 = lerp(vfoo1, vbar1, 0.3f);
 	float2 vlerpf_2 = lerp(vfoo2, vbar2, 0.3f);
 	float3 vlerpf_3 = lerp(vfoo3, vbar3, 0.5f);
 	float4 vlerpf_4 = lerp(vfoo4, vbar4, 0.7f);
 
-	float2 vlerp_swiz2 = lerp(vfoo2, vbar2, vbaz2.rg);
-	float3 vlerp_swiz3 = lerp(vfoo3, vbar3, vbaz3.bgr);
-	float4 vlerp_swiz4 = lerp(vfoo4, vbar4, vbaz4.rgba);
+	float1 vlerp_swiz_1 = lerp(vfoo1, vbar1, vbaz1.r);
+	float2 vlerp_swiz_2 = lerp(vfoo2, vbar2, vbaz2.rg);
+	float3 vlerp_swiz_3 = lerp(vfoo3, vbar3, vbaz3.bgr);
+	float4 vlerp_swiz_4 = lerp(vfoo4, vbar4, vbaz4.rgba);
 
+	float1 vlog1 = log(vfoo1);
 	float2 vlog2 = log(vfoo2);
 	float3 vlog3 = log(vfoo3);
 	float4 vlog4 = log(vfoo4);
 
+	float1 vlog_swiz_1 = log(vfoo1.r);
+	float2 vlog_swiz_2 = log(vfoo2.yx);
+	float3 vlog_swiz_3 = log(vfoo3.rrg);
+	float4 vlog_swiz_4 = log(vfoo4.wwxy);
+
+	float1 vlog2_1 = log2(vfoo1);
 	float2 vlog2_2 = log2(vfoo2);
 	float3 vlog2_3 = log2(vfoo3);
 	float4 vlog2_4 = log2(vfoo4);
 
+	float1 vlog10_1 = log10(vfoo1);
 	float2 vlog10_2 = log10(vfoo2);
 	float3 vlog10_3 = log10(vfoo3);
 	float4 vlog10_4 = log10(vfoo4);
 
+	float1 vmin1 = min(vfoo1, vbar1);
 	float2 vmin2 = min(vfoo2, vbar2);
 	float3 vmin3 = min(vfoo3, vbar3);
 	float4 vmin4 = min(vfoo4, vbar4);
 
+	float1 vmax1 = max(vfoo1, vbar1);
 	float2 vmax2 = max(vfoo2, vbar2);
 	float3 vmax3 = max(vfoo3, vbar3);
 	float4 vmax4 = max(vfoo4, vbar4);
 
+	float1 vrsqrt1 = rsqrt(vfoo1);
 	float2 vrsqrt2 = rsqrt(vfoo2);
 	float3 vrsqrt3 = rsqrt(vfoo3);
 	float4 vrsqrt4 = rsqrt(vfoo4);
 
+	float1 vround1 = round(vfoo1);
 	float2 vround2 = round(vfoo2);
 	float3 vround3 = round(vfoo3);
 	float4 vround4 = round(vfoo4);
 
+	float1 vsaturate1 = saturate(vfoo1);
 	float2 vsaturate2 = saturate(vfoo2);
 	float3 vsaturate3 = saturate(vfoo3);
 	float4 vsaturate4 = saturate(vfoo4);
 
+	float1 vsign1 = sign(vfoo1);
 	float2 vsign2 = sign(vfoo2);
 	float3 vsign3 = sign(vfoo3);
 	float4 vsign4 = sign(vfoo4);
 
+	float1 vsin1 = sin(vfoo1);
 	float2 vsin2 = sin(vfoo2);
 	float3 vsin3 = sin(vfoo3);
 	float4 vsin4 = sin(vfoo4);
 
+	float1 vsqrt1 = sqrt(vfoo1);
 	float2 vsqrt2 = sqrt(vfoo2);
 	float3 vsqrt3 = sqrt(vfoo3);
 	float4 vsqrt4 = sqrt(vfoo4);
 
+	float1 vstep1 = step(vfoo1, vbar1);
 	float2 vstep2 = step(vfoo2, vbar2);
 	float3 vstep3 = step(vfoo3, vbar3);
 	float4 vstep4 = step(vfoo4, vbar4);
 
+	float1 vtrunc1 = trunc(vfoo1);
 	float2 vtrunc2 = trunc(vfoo2);
 	float3 vtrunc3 = trunc(vfoo3);
 	float4 vtrunc4 = trunc(vfoo4);
+
+	float1 vassign1 = vfoo1.x;
+	vassign1 = vfoo1.r;
+	vassign1.r = vfoo1;
+	vassign1.r = vfoo1.r;
 
 	float2 vassign2 = vfoo2.yx;
 	vassign2 = vfoo2.yy;
@@ -267,20 +333,29 @@ void RunUnitTests()
 	vassign4.rgba = vfoo4.grba;
 
 	float2 vneg_swiz_2 = -vfoo2.yx;
-	float3 vexp_swiz_3 = exp(vfoo4.bgr);
 
 	// Addition
-	float4 vadd_swiz_a_4 = vfoo4 + vbar4.yxzw;
-	float4 vadd_swiz_b_4 = vfoo4.bgra + vbar4.yxzw;
-	float4 vadd_swiz_c_4 = vfoo4.bgra + vbar4;
 
-	float3 vadd_swiz_a_3 = vfoo3 + vbar3.yxz;
-	float3 vadd_swiz_b_3 = vfoo3.bgr + vbar3.xyz;
-	float3 vadd_swiz_c_3 = vfoo3.bgr + vbar3;
+	float1 vadd_swiz_a_1 = vfoo1 + vbar1.x;
+	float1 vadd_swiz_b_1 = vfoo1.r + vbar1.x;
+	float1 vadd_swiz_c_1 = vfoo1.r + vbar1;
 
 	float2 vadd_swiz_a_2 = vfoo2 + vbar2.yx;
 	float2 vadd_swiz_b_2 = vfoo2.gr + vbar2.yx;
 	float2 vadd_swiz_c_2 = vfoo2.rg + vbar2;
+
+	float3 vadd_swiz_a_3 = vfoo3 + vbar3.yxz;
+	float3 vadd_swiz_b_3 = vfoo3.bgr + vbar3.xyz;
+	float3 vadd_swiz_c_3 = vfoo3.bgr + vbar3;
+	
+	float4 vadd_swiz_a_4 = vfoo4 + vbar4.yxzw;
+	float4 vadd_swiz_b_4 = vfoo4.bgra + vbar4.yxzw;
+	float4 vadd_swiz_c_4 = vfoo4.bgra + vbar4;	
+
+	vadd_swiz_a_1 += vfoo1;
+	vadd_swiz_b_1 += vfoo1.x;
+	vadd_swiz_c_1.x += vfoo1;
+	vadd_swiz_c_1.r += vfoo1.r;
 
 	vadd_swiz_a_2 += vfoo2;
 	vadd_swiz_b_2 += vfoo2.xy;
@@ -288,20 +363,26 @@ void RunUnitTests()
 	vadd_swiz_c_2.gr += vfoo2.rg;
 
 	// Subtraction
-	float4 vsub_swiz_a_4 = vfoo4 - vbar4.yxzw;
-	float4 vsub_swiz_b_4 = vfoo4.bgra - vbar4.yxzw;
-	float4 vsub_swiz_c_4 = vfoo4.bgra - vbar4;
-	vsub_swiz_c_4.bgra = vfoo4.argb - vbar4.ggbr;
+
+	float1 vsub_swiz_a_1 = vfoo1 - vbar1.x;
+	float1 vsub_swiz_b_1 = vfoo1.r - vbar1.x;
+	float1 vsub_swiz_c_1 = vfoo1.r - vbar1;
+	vsub_swiz_c_1.r = vfoo4.r - vbar4.r;
+
+	float2 vsub_swiz_a_2 = vfoo2 - vbar2.yx;
+	float2 vsub_swiz_b_2 = vfoo2.gr - vbar2.yx;
+	float2 vsub_swiz_c_2 = vfoo2.rg - vbar2;
+	vsub_swiz_c_2.gr = vfoo4.rg - vbar4.gr;
 
 	float3 vsub_swiz_a_3 = vfoo3 - vbar3.yxz;
 	float3 vsub_swiz_b_3 = vfoo3.bgr - vbar3.xyz;
 	float3 vsub_swiz_c_3 = vfoo3.bgr - vbar3;
 	vsub_swiz_c_3.bgr = vfoo4.grb - vbar4.gbr;
 
-	float2 vsub_swiz_a_2 = vfoo2 - vbar2.yx;
-	float2 vsub_swiz_b_2 = vfoo2.gr - vbar2.yx;
-	float2 vsub_swiz_c_2 = vfoo2.rg - vbar2;
-	vsub_swiz_c_2.gr = vfoo4.rg - vbar4.gr;
+	float4 vsub_swiz_a_4 = vfoo4 - vbar4.yxzw;
+	float4 vsub_swiz_b_4 = vfoo4.bgra - vbar4.yxzw;
+	float4 vsub_swiz_c_4 = vfoo4.bgra - vbar4;
+	vsub_swiz_c_4.bgra = vfoo4.argb - vbar4.ggbr;
 
 	vsub_swiz_a_2 -= vfoo2;
 	vsub_swiz_b_2 -= vfoo2.xy;
@@ -309,18 +390,23 @@ void RunUnitTests()
 	vsub_swiz_c_2.gr -= vfoo2.rg;
 
 	// Multiplication
-	float4 vmul_swiz_a_4 = vfoo4 * vbar4.yxzw;
-	float4 vmul_swiz_b_4 = vfoo4.bgra * vbar4.yxzw;
-	float4 vmul_swiz_c_4 = vfoo4.bgra * vbar4;
 
-	float3 vmul_swiz_a_3 = vfoo3 * vbar3.yxz;
-	float3 vmul_swiz_b_3 = vfoo3.rgb * vbar3.xyz;
-	float3 vmul_swiz_c_3 = vfoo3.bgr * vbar3;
+	float1 vmul_swiz_a_1 = vfoo1 * vbar1.x;
+	float1 vmul_swiz_b_1 = vfoo1.r * vbar1.x;
+	float1 vmul_swiz_c_1 = vfoo1.r * vbar1;
 
 	float2 vmul_swiz_a_2 = vfoo2 * vbar2.yx;
 	float2 vmul_swiz_b_2 = vfoo2.gr * vbar2.yx;
 	float2 vmul_swiz_c_2 = vfoo2.rg * vbar2;
 
+	float3 vmul_swiz_a_3 = vfoo3 * vbar3.yxz;
+	float3 vmul_swiz_b_3 = vfoo3.rgb * vbar3.xyz;
+	float3 vmul_swiz_c_3 = vfoo3.bgr * vbar3;
+	
+	float4 vmul_swiz_a_4 = vfoo4 * vbar4.yxzw;
+	float4 vmul_swiz_b_4 = vfoo4.bgra * vbar4.yxzw;
+	float4 vmul_swiz_c_4 = vfoo4.bgra * vbar4;
+	
 	vadd_swiz_a_2 *= vfoo2;
 	vadd_swiz_b_2 *= vfoo2.xy;
 	vadd_swiz_c_2.xy *= vfoo2;
@@ -582,5 +668,5 @@ void RunSpeedTests()
 		v2 = lerp(v1, v2, v2);
 	}
 	float time = timer.Get();
-	printf("float4: %f, %f, %f, %f = %f\n", (float)v2.x, (float)v2.y, (float)v2.z, (float)v2.w, time);
+	//printf("float4: %f, %f, %f, %f = %f\n", (float)v2.x, (float)v2.y, (float)v2.z, (float)v2.w, time);
 }

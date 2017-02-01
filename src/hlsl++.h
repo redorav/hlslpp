@@ -858,14 +858,14 @@ public:
 	component1<A>& operator = (const float1& v);
 	component1<A>& operator = (const float1x1& m);
 
-	explicit operator float()
+	/*explicit operator float()
 	{
 #if defined(__clang__) || defined(__GNUG__) // Either clang++ or g++
 		return _vec[A];
 #else
 		return _vec.m128_f32[A];
 #endif
-	}
+	}*/
 };
 
 template<int A, int B>
@@ -1769,11 +1769,11 @@ inline components<Dim1...>& operator /= (components<Dim1...>& v1, const componen
 	v1 = floatN<sizeof...(Dim1)>(v1) / floatN<sizeof...(Dim1)>(v2); return v1;
 }
 
-template<typename floatN>
-inline floatN operator - (floatN& v)
-{
-	return floatN(_mm_neg_ps(v._vec));
-}
+template<int N>
+inline floatN<N> operator - (const floatN<N>& v) { return floatN<N>(_mm_neg_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim1>
+inline floatN<sizeof...(Dim1)> operator - (const components<Dim1...>& v) { return -floatN<sizeof...(Dim1)>(v._vec); }
 
 // Equals
 template<int N>
@@ -1877,106 +1877,91 @@ inline floatN<sizeof...(Dim1)> operator <= (const components<Dim1...>& v1, const
 	return floatN<sizeof...(Dim1)>(v1) <= floatN<sizeof...(Dim1)>(v2);
 }
 
-template<typename floatN>
-inline floatN abs(const floatN& v)
-{
-	return floatN(_mm_abs_ps(v._vec));
-}
+template<int N>
+inline floatN<N> abs(const floatN<N>& v) { return floatN<N>(_mm_abs_ps(v._vec)); }
 
-template<typename floatN>
-inline floatN acos(const floatN& v)
-{
-	return floatN(_mm_acos_ps(v._vec));
-}
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> abs(const components<Dim...>& v) { return abs(floatN<sizeof...(Dim)>(v)); }
 
-template<typename floatN>
-inline floatN all(const floatN& v)
-{
-	return floatN(_mm_all1_ps(v._vec));
-}
+template<int N>
+inline floatN<N> acos(const floatN<N>& v) { return floatN<N>(_mm_acos_ps(v._vec)); }
 
-template<typename floatN>
-inline floatN any(const floatN& v)
-{
-	return floatN(_mm_any1_ps(v._vec));
-}
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> acos(const components<Dim...>& v) { return acos(floatN<sizeof...(Dim)>(v)); }
 
-template<typename floatN>
-inline floatN asin(const floatN& v)
-{
-	return floatN(_mm_asin_ps(v._vec));
-}
+template<int N>
+inline floatN<N> all(const floatN<N>& v) { return floatN<N>(_mm_all1_ps(v._vec)); }
 
-template<typename floatN>
-inline floatN atan(const floatN& v)
-{
-	return floatN(_mm_atan_ps(v._vec));
-}
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> all(const components<Dim...>& v) { return all(floatN<sizeof...(Dim)>(v)); }
 
-template<typename floatN>
-inline floatN ceil(const floatN& v)
-{
-	return floatN(_mm_ceil_ps(v._vec));
-}
+template<int N>
+inline floatN<N> any(const floatN<N>& v) { return floatN<N>(_mm_any1_ps(v._vec)); }
 
-template<typename floatN>
-inline floatN clamp(const floatN& v, const floatN& minv, const floatN& maxv)
-{
-	return floatN(_mm_clamp_ps(v._vec, minv._vec, maxv._vec));
-}
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> any(const components<Dim...>& v) { return any(floatN<sizeof...(Dim)>(v)); }
 
-inline float3 cross(const float3& v1, const float3& v2)
-{
-	return float3(_mm_cross_ps(v1._vec, v2._vec));
-}
+template<int N>
+inline floatN<N> asin(const floatN<N>& v) { return floatN<N>(_mm_asin_ps(v._vec)); }
 
-inline float1 dot(const float4& v1, const float4& v2)
-{
-	return float1(_mm_dot4_ps(v1._vec, v2._vec));
-}
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> asin(const components<Dim...>& v) { return asin(floatN<sizeof...(Dim)>(v)); }
 
-inline float1 dot(const float3& v1, const float3& v2)
-{
-	return float1(_mm_dot3_ps(v1._vec, v2._vec));
-}
+template<int N>
+inline floatN<N> atan(const floatN<N>& v) { return floatN<N>(_mm_atan_ps(v._vec)); }
 
-inline float1 dot(const float2& v1, const float2& v2)
-{
-	return float1(_mm_dot2_ps(v1._vec, v2._vec));
-}
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> atan(const components<Dim...>& v) { return atan(floatN<sizeof...(Dim)>(v)); }
 
-template<typename floatN>
-inline floatN floor(const floatN& v)
-{
-	return floatN(_mm_floor_ps(v._vec));
-}
+template<int N>
+inline floatN<N> ceil(const floatN<N>& v) { return floatN<N>(_mm_ceil_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> ceil(const components<Dim...>& v) { return ceil(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> clamp(const floatN<N>& v, const floatN<N>& minv, const floatN<N>& maxv) { return floatN<N>(_mm_clamp_ps(v._vec, minv._vec, maxv._vec)); }
+
+inline float3 cross(const float3& v1, const float3& v2) { return float3(_mm_cross_ps(v1._vec, v2._vec)); }
+
+inline float1 dot(const float4& v1, const float4& v2) { return float1(_mm_dot4_ps(v1._vec, v2._vec)); }
+
+inline float1 dot(const float3& v1, const float3& v2) { return float1(_mm_dot3_ps(v1._vec, v2._vec)); }
+
+inline float1 dot(const float2& v1, const float2& v2) { return float1(_mm_dot2_ps(v1._vec, v2._vec)); }
+
+template<int N>
+inline floatN<N> floor(const floatN<N>& v) { return floatN<N>(_mm_floor_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> floor(const components<Dim...>& v) { return floor(floatN<sizeof...(Dim)>(v)); }
 
 // A note on negative numbers. Contrary to intuition, frac(-0.75) != 0.75,
 // but is actually frac(-0.75) == 0.25 This is because hlsl defines frac
 // as frac(x) = x - floor(x)
-template<typename floatN>
-inline floatN frac(const floatN& v)
-{
-	return floatN(_mm_frac_ps(v._vec));
-}
+template<int N>
+inline floatN<N> frac(const floatN<N>& v) { return floatN<N>(_mm_frac_ps(v._vec)); }
 
-template<typename floatN>
-inline floatN exp(const floatN& v)
-{
-	return floatN(_mm_exp_ps(v._vec));
-}
-
-template<typename floatN>
-inline floatN exp2(const floatN& v)
-{
-	return floatN(_mm_exp2_ps(v._vec));
-}
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> frac(const components<Dim...>& v) { return frac(floatN<sizeof...(Dim)>(v)); }
 
 template<int N>
-inline floatN<N> isfinite(const floatN<N>& v)
-{
-	return floatN<N>(_mm_andnot_ps(_mm_or_ps(_mm_isinf_ps(v._vec), _mm_isnan_ps(v._vec)), f4one));
-}
+inline floatN<N> exp(const floatN<N>& v) { return floatN<N>(_mm_exp_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> exp(const components<Dim...>& v) { return exp(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> exp2(const floatN<N>& v) { return floatN<N>(_mm_exp2_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> exp2(const components<Dim...>& v) { return exp2(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> isfinite(const floatN<N>& v) { return floatN<N>(_mm_andnot_ps(_mm_or_ps(_mm_isinf_ps(v._vec), _mm_isnan_ps(v._vec)), f4one)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> isfinite(const components<Dim...>& v) { return isfinite(floatN<sizeof...(Dim)>(v)); }
 
 template<int N>
 inline floatN<N> isinf(const floatN<N>& v)
@@ -2022,28 +2007,25 @@ inline floatN<sizeof...(Dim1)> lerp(const components<Dim1...>& v1, const compone
 }
 
 template<int N>
-inline floatN<N> lerp(const floatN<N>& v1, const floatN<N>& v2, float a)
-{
-	return lerp(v1, v2, floatN<N>(a));
-}
+inline floatN<N> lerp(const floatN<N>& v1, const floatN<N>& v2, float a) { return lerp(v1, v2, floatN<N>(a)); }
 
-template<typename floatN>
-inline floatN log(const floatN& v)
-{
-	return floatN(_mm_log_ps(v._vec));
-}
+template<int N>
+inline floatN<N> log(const floatN<N>& v) { return floatN<N>(_mm_log_ps(v._vec)); }
 
-template<typename floatN>
-inline floatN log2(const floatN& v)
-{
-	return floatN(_mm_log2_ps(v._vec));
-}
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> log(const components<Dim...>& v) { return log(floatN<sizeof...(Dim)>(v)); }
 
-template<typename floatN>
-inline floatN log10(const floatN& v)
-{
-	return floatN(_mm_log10_ps(v._vec));
-}
+template<int N>
+inline floatN<N> log2(const floatN<N>& v) { return floatN<N>(_mm_log2_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> log2(const components<Dim...>& v) { return log2(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> log10(const floatN<N>& v) { return floatN<N>(_mm_log10_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> log10(const components<Dim...>& v) { return log10(floatN<sizeof...(Dim)>(v)); }
 
 // Minimum
 template<int N>
@@ -2117,7 +2099,7 @@ inline floatN rsqrt(const floatN& v)
 template<typename floatN>
 inline floatN round(const floatN& v)
 {
-	return floatN(_mm_round_ps(v._vec, _MM_FROUND_TO_NEAREST_INT));
+	return floatN(_mm_round_ps(v._vec, _MM_FROUND_TO_POS_INF)); // _MM_FROUND_TO_POS_INF to match fxc behavior
 }
 
 template<typename floatN>
