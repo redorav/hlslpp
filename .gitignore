@@ -7,8 +7,7 @@
 
 # Build folders
 
-x64/
-Win32/
+workspace/
 
 # Visual Studio Intermediate files
 *.opendb
