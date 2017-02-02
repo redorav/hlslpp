@@ -24,11 +24,12 @@ const BitMask negMask		(0x80000000u);
 // Constants
 static const __m128 f4zero			= _mm_set_ps1( 0.0f);
 static const __m128 f4minusZero		= _mm_set_ps1(-0.0f);
-static const __m128 f4oneHalf		= _mm_set_ps1( 0.5f);
 static const __m128 f4one			= _mm_set_ps1( 1.0f);
 static const __m128 f4minusOne		= _mm_set_ps1(-1.0f);
 static const __m128 f4_05			= _mm_set_ps1( 0.5f);
 static const __m128 f4_minus05		= _mm_set_ps1(-0.5f);
+static const __m128 f4_2			= _mm_set_ps1( 2.0f);
+static const __m128 f4_minus2		= _mm_set_ps1(-2.0f);
 static const __m128 f4ten			= _mm_set_ps1(10.0f);
 static const __m128 f4e				= _mm_set_ps1(2.718281828f);
 
@@ -467,7 +468,7 @@ __m128 _mm_exp2_ps(__m128 x)
 	x = _mm_max_ps(x, exp2_m127);
 
 	// ipart = int(x - 0.5)
-	ipart = _mm_cvtps_epi32(_mm_sub_ps(x, f4oneHalf));
+	ipart = _mm_cvtps_epi32(_mm_sub_ps(x, f4_05));
 
 	// fpart = x - ipart
 	fpart = _mm_sub_ps(x, _mm_cvtepi32_ps(ipart));
@@ -1945,6 +1946,12 @@ inline floatN<sizeof...(Dim1)> clamp(const components<Dim1...>& v1, const compon
 	return clamp(floatN<sizeof...(Dim1)>(v1), floatN<sizeof...(Dim1)>(v2), floatN<sizeof...(Dim1)>(a));
 }
 
+template<int N>
+inline floatN<N> cos(const floatN<N>& v) { return floatN<N>(_mm_cos_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> cos(const components<Dim...>& v) { return cos(floatN<sizeof...(Dim)>(v)); }
+
 inline float3 cross(const float3& v1, const float3& v2) { return float3(_mm_cross_ps(v1._vec, v2._vec)); }
 
 template<int N>
@@ -2106,6 +2113,16 @@ inline floatN<sizeof...(Dim1)> max(const components<Dim1...>& v1, const componen
 	return max(floatN<sizeof...(Dim1)>(v1), floatN<sizeof...(Dim1)>(v2));
 }
 
+// Normalize
+
+inline float4 normalize(const float4& v) { return float4(_mm_div_ps(v._vec, _mm_shuf_xxxx_ps(_mm_sqrt_ps(_mm_dot4_ps(v._vec, v._vec))))); }
+
+inline float3 normalize(const float3& v) { return float3(_mm_div_ps(v._vec, _mm_shuf_xxxx_ps(_mm_sqrt_ps(_mm_dot3_ps(v._vec, v._vec))))); }
+
+inline float2 normalize(const float2& v) { return float2(_mm_div_ps(v._vec, _mm_shuf_xxxx_ps(_mm_sqrt_ps(_mm_dot2_ps(v._vec, v._vec))))); }
+
+inline float1 normalize(const float1& v) { return float1(1.0f); }
+
 // Pow
 template<int N>
 inline floatN<N> pow(const floatN<N>& v1, const floatN<N>& v2) { return floatN<N>(_mm_exp2_ps(_mm_mul_ps(v1._vec, _mm_log2_ps(v2._vec)))); }
@@ -2128,6 +2145,12 @@ inline floatN<N> radians(const floatN<N>& v) { return floatN<N>(_mm_mul_ps(v._ve
 
 template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> radians(const components<Dim...>& v) { return radians(floatN<sizeof...(Dim)>(v)); }
+
+
+inline float1 reflect(const float1& i, const float1& n) { return float1(_mm_sub_ps(i._vec, _mm_mul_ps(f4_2, _mm_mul_ps(n._vec, _mm_shuf_xxxx_ps(_mm_mul_ps(i._vec, n._vec)))))); }
+inline float2 reflect(const float2& i, const float2& n) { return float2(_mm_sub_ps(i._vec, _mm_mul_ps(f4_2, _mm_mul_ps(n._vec, _mm_shuf_xxxx_ps(_mm_dot2_ps(i._vec, n._vec)))))); }
+inline float3 reflect(const float3& i, const float3& n) { return float3(_mm_sub_ps(i._vec, _mm_mul_ps(f4_2, _mm_mul_ps(n._vec, _mm_shuf_xxxx_ps(_mm_dot3_ps(i._vec, n._vec)))))); }
+inline float4 reflect(const float4& i, const float4& n) { return float4(_mm_sub_ps(i._vec, _mm_mul_ps(f4_2, _mm_mul_ps(n._vec, _mm_shuf_xxxx_ps(_mm_dot4_ps(i._vec, n._vec)))))); }
 
 template<int N>
 inline floatN<N> rsqrt(const floatN<N>& v) { return floatN<N>(_mm_rsqrt_ps(v._vec)); }
@@ -2160,18 +2183,6 @@ template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> sin(const components<Dim...>& v) { return sin(floatN<sizeof...(Dim)>(v)); }
 
 template<int N>
-inline floatN<N> cos(const floatN<N>& v) { return floatN<N>(_mm_cos_ps(v._vec)); }
-
-template<template<int...Dim> class components, int...Dim>
-inline floatN<sizeof...(Dim)> cos(const components<Dim...>& v) { return cos(floatN<sizeof...(Dim)>(v)); }
-
-template<int N>
-inline floatN<N> tan(const floatN<N>& v) { return floatN<N>(_mm_tan_ps(v._vec)); }
-
-template<template<int...Dim> class components, int...Dim>
-inline floatN<sizeof...(Dim)> tan(const components<Dim...>& v) { return tan(floatN<sizeof...(Dim)>(v)); }
-
-template<int N>
 inline floatN<N> sqrt(const floatN<N>& v) { return floatN<N>(_mm_sqrt_ps(v._vec)); }
 
 template<template<int...Dim> class components, int...Dim>
@@ -2198,23 +2209,22 @@ inline floatN<sizeof...(Dim1)> step(const components<Dim1...>& v1, const compone
 }
 
 template<int N>
+inline floatN<N> tan(const floatN<N>& v) { return floatN<N>(_mm_tan_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> tan(const components<Dim...>& v) { return tan(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
 inline floatN<N> trunc(const floatN<N>& v) { return floatN<N>(_mm_trunc_ps(v._vec)); }
 
 template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> trunc(const components<Dim...>& v) { return trunc(floatN<sizeof...(Dim)>(v)); }
-
-inline float4 normalize(const float4& v) { return float4(_mm_div_ps(v._vec, _mm_shuf_xxxx_ps(_mm_sqrt_ps(_mm_dot4_ps(v._vec, v._vec))))); }
-
-inline float3 normalize(const float3& v) { return float3(_mm_div_ps(v._vec, _mm_shuf_xxxx_ps(_mm_sqrt_ps(_mm_dot3_ps(v._vec, v._vec))))); }
-
-inline float2 normalize(const float2& v) { return float2(_mm_div_ps(v._vec, _mm_shuf_xxxx_ps(_mm_sqrt_ps(_mm_dot2_ps(v._vec, v._vec))))); }
 
 // inline float4 normalize_fast(const float4& v)
 // {
 // 	return float4(_mm_mul_ps(v._vec, _mm_shuf_xxxx_ps(_mm_rsqrt_ps(_mm_dot4_ps(v._vec, v._vec)))));
 // }
 
-// inline float4 reflect
 // inline float4 smoothstep
 
 // https://books.google.co.uk/books?id=yphBBAAAQBAJ&pg=PA99&lpg=PA99&dq=_mm_cmpnltps&source=bl&ots=zLVjV__tgU&sig=8uNKfkS_-hIbiLRSFODgG5EWMzw&hl=en&sa=X&ved=0ahUKEwjlkY3126nRAhUHI8AKHSqUCJ4Q6AEIGjAA#v=onepage&q&f=false

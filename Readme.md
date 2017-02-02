@@ -30,16 +30,16 @@ Implemented:
 * Efficient swizzling for all the floatN types
 * Basic operators +, *, -, / and variants
 * Per-component boolean operators
-* Hlsl functions: abs, acos, all, any, asin, atan, ceil, clamp, cross, dot, floor, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, min, max, pow, radians, degrees, rsqrt, round, saturate, sign, sin, cos, tan, sqrt, step, trunc, normalize
+* hlsl functions: abs, acos, all, any, asin, atan, ceil, clamp, cos, cross, degrees, dot, floor, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, max, min, normalize, pow, radians, reflect, round, rsqrt, saturate, sign, sin, sqrt, step, trunc, tan,
 * floatNxM types
 
 Missing:
 
-* Hlsl functions: reflect, smoothstep, atan2, cosh, sinh, tanh
+* hlsl functions: smoothstep, atan2, cosh, sinh, tanh
 * floatNxM operations.
 * floatNxM _m00_m01 style swizzling (rows implemented but missing columns)
 * float1xM implicit conversions with floatM
 * floatM to float1 implicit conversions
 * Mixed constructors (e.g. float4(float2, float2))
 * floatM o float1 operations
-* Integer types
+* Integer types int1, int2, int3, int4

@@ -244,6 +244,16 @@ void RunUnitTests()
 	float3 vclamp_swiz_3 = clamp(vfoo3.xxy, vbar3, vbaz3);
 	float4 vclamp_swiz_4 = clamp(vfoo4.wwxy, vbar4, vbaz4);
 
+	float1 vcos1 = cos(vfoo1);
+	float2 vcos2 = cos(vfoo2);
+	float3 vcos3 = cos(vfoo3);
+	float4 vcos4 = cos(vfoo4);
+
+	float1 vcos_swiz_1 = cos(vfoo1.x);
+	float2 vcos_swiz_2 = cos(vfoo2.yy);
+	float3 vcos_swiz_3 = cos(vfoo3.rrg);
+	float4 vcos_swiz_4 = cos(vfoo4.rrbg);
+
 	float3 vcross3			= cross(vfoo3, vbar3);
 	float3 vcross_swiz_3_a	= cross(vfoo3, vbar3.yyx);
 	float3 vcross_swiz_3_b	= cross(vfoo3.xyz, vbar3);
@@ -411,6 +421,16 @@ void RunUnitTests()
 	float3 vmax_swiz_3 = max(vfoo3.gbr, vbar3.xyy);
 	float4 vmax_swiz_4 = max(vfoo4.brga, vbar4.yxzw);
 
+	float1 vnormalize_1 = normalize(vfoo1);
+	float2 vnormalize_2 = normalize(vfoo2);
+	float3 vnormalize_3 = normalize(vfoo3);
+	float4 vnormalize_4 = normalize(vfoo4);
+
+	float1 vnormalize_swiz_1 = normalize(vfoo1.r);
+	float2 vnormalize_swiz_2 = normalize(vfoo2.rg);
+	float3 vnormalize_swiz_3 = normalize(vfoo3.gbr);
+	float4 vnormalize_swiz_4 = normalize(vfoo4.brga);
+
 	float1 vpow_1 = pow(vfoo1, vbar1);
 	float2 vpow_2 = pow(vfoo2, vbar2);
 	float3 vpow_3 = pow(vfoo3, vbar3);
@@ -421,6 +441,46 @@ void RunUnitTests()
 	float3 vpow_swiz_3 = pow(vfoo3.bgr, vbar3.yyx);
 	float4 vpow_swiz_4 = pow(vfoo4.yyxw, vbar4.xxyw);
 
+	float1 vpow_swiz_1_a = pow(vfoo1, vbar1.r);
+	float2 vpow_swiz_2_a = pow(vfoo2, vbar2.xy);
+	float3 vpow_swiz_3_a = pow(vfoo3, vbar3.yyx);
+	float4 vpow_swiz_4_a = pow(vfoo4, vbar4.xxyw);
+
+	float1 vpow_swiz_1_b = pow(vfoo1.r, vbar1);
+	float2 vpow_swiz_2_b = pow(vfoo2.rg, vbar2);
+	float3 vpow_swiz_3_b = pow(vfoo3.bgr, vbar3);
+	float4 vpow_swiz_4_b = pow(vfoo4.yyxw, vbar4);
+
+	float1 vradians1 = radians(vfoo1);
+	float2 vradians2 = radians(vfoo2);
+	float3 vradians3 = radians(vfoo3);
+	float4 vradians4 = radians(vfoo4);
+
+	float1 vradians_swiz_1 = radians(vfoo1.r);
+	float2 vradians_swiz_2 = radians(vfoo2.rg);
+	float3 vradians_swiz_3 = radians(vfoo3.bgr);
+	float4 vradians_swiz_4 = radians(vfoo4.yyxw);
+
+	float1 vreflect1 = reflect(vfoo1, vbar1);
+	float2 vreflect2 = reflect(vfoo2, vbar2);
+	float3 vreflect3 = reflect(vfoo3, vbar3);
+	float4 vreflect4 = reflect(vfoo4, vbar4);
+
+	float1 vreflect_swiz_1 = reflect(vfoo1.r, vbar1);
+	float2 vreflect_swiz_2 = reflect(vfoo2.xy, vbar2);
+	float3 vreflect_swiz_3 = reflect(vfoo3.bgr, vbar3);
+	float4 vreflect_swiz_4 = reflect(vfoo4.xxzy, vbar4);
+
+	float1 vreflect_swiz_1_a = reflect(vfoo1, vbar1.r);
+	float2 vreflect_swiz_2_a = reflect(vfoo2, vbar2.yx);
+	float3 vreflect_swiz_3_a = reflect(vfoo3, vbar3.ggr);
+	float4 vreflect_swiz_4_a = reflect(vfoo4, vbar4.wxyy);
+
+	float1 vreflect_swiz_1_b = reflect(vfoo1.r, vbar1.r);
+	float2 vreflect_swiz_2_b = reflect(vfoo2.xy, vbar2.yx);
+	float3 vreflect_swiz_3_b = reflect(vfoo3.bgr, vbar3.ggr);
+	float4 vreflect_swiz_4_b = reflect(vfoo4.xxzy, vbar4.wxyy);
+
 	float1 vrsqrt1 = rsqrt(vfoo1);
 	float2 vrsqrt2 = rsqrt(vfoo2);
 	float3 vrsqrt3 = rsqrt(vfoo3);
@@ -429,7 +489,7 @@ void RunUnitTests()
 	float1 vrsqrt_swiz_1 = rsqrt(vfoo1.r);
 	float2 vrsqrt_swiz_2 = rsqrt(vfoo2.rg);
 	float3 vrsqrt_swiz_3 = rsqrt(vfoo3.bgr);
-	float4 vrsqrt_swiz_4 = rsqrt(vfoo4.yyxw);
+	float4 vrsqrt_swiz_4 = rsqrt(vfoo4.yyxw);	
 
 	float1 vround1 = round(vfoo1);
 	float2 vround2 = round(vfoo2);
@@ -490,6 +550,26 @@ void RunUnitTests()
 	float2 vstep_swiz_2 = step(vfoo2, vbar2.yx);
 	float3 vstep_swiz_3 = step(vfoo3, vbar3.xxy);
 	float4 vstep_swiz_4 = step(vfoo4, vbar4.zzzw);
+
+	float1 vstep_swiz_1_a = step(vfoo1.x, vbar1);
+	float2 vstep_swiz_2_a = step(vfoo2.yx, vbar2);
+	float3 vstep_swiz_3_a = step(vfoo3.xxy, vbar3);
+	float4 vstep_swiz_4_a = step(vfoo4.zzwx, vbar4);
+
+	float1 vstep_swiz_1_b = step(vfoo1.x, vbar1.x);
+	float2 vstep_swiz_2_b = step(vfoo2.yx, vbar2.yx);
+	float3 vstep_swiz_3_b = step(vfoo3.xxz, vbar3.xxy);
+	float4 vstep_swiz_4_b = step(vfoo4.zwyx, vbar4.zzzw);
+
+	float1 vtan1 = tan(vfoo1);
+	float2 vtan2 = tan(vfoo2);
+	float3 vtan3 = tan(vfoo3);
+	float4 vtan4 = tan(vfoo4);
+
+	float1 vtan_swiz_1 = tan(vfoo1.r);
+	float2 vtan_swiz_2 = tan(vfoo2.yy);
+	float3 vtan_swiz_3 = tan(vfoo3.zzz);
+	float4 vtan_swiz_4 = tan(vfoo4.wwzw);
 
 	float1 vtrunc1 = trunc(vfoo1);
 	float2 vtrunc2 = trunc(vfoo2);

@@ -12,3 +12,6 @@ workspace/
 # Visual Studio Intermediate files
 *.opendb
 *.db
+
+# Temporary
+*.tmp
