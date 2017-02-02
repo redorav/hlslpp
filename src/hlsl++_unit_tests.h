@@ -174,6 +174,56 @@ void RunUnitTests()
 	float3 vabs_swiz_3 = abs(vfoo3.bgr);
 	float4 vabs_swiz_4 = abs(vfoo4.wwww);
 
+	float1 vacos1 = acos(vfoo1);
+	float2 vacos2 = acos(vfoo2);
+	float3 vacos3 = acos(vfoo3);
+	float4 vacos4 = acos(vfoo4);
+
+	float1 vacos_swiz_1 = acos(vfoo1.r);
+	float2 vacos_swiz_2 = acos(vfoo2.yx);
+	float3 vacos_swiz_3 = acos(vfoo3.bgr);
+	float4 vacos_swiz_4 = acos(vfoo4.wwww);
+
+	float1 vall1 = all(vfoo1);
+	float2 vall2 = all(vfoo2);
+	float3 vall3 = all(vfoo3);
+	float4 vall4 = all(vfoo4);
+
+	float1 vall_swiz_1 = all(vfoo1.r);
+	float2 vall_swiz_2 = all(vfoo2.yx);
+	float3 vall_swiz_3 = all(vfoo3.bgr);
+	float4 vall_swiz_4 = all(vfoo4.wwww);
+
+	float1 vany1 = any(vfoo1);
+	float2 vany2 = any(vfoo2);
+	float3 vany3 = any(vfoo3);
+	float4 vany4 = any(vfoo4);
+
+	float1 vany_swiz_1 = any(vfoo1.r);
+	float2 vany_swiz_2 = any(vfoo2.yx);
+	float3 vany_swiz_3 = any(vfoo3.bgr);
+	float4 vany_swiz_4 = any(vfoo4.wwww);
+
+	float1 vasin1 = asin(vfoo1);
+	float2 vasin2 = asin(vfoo2);
+	float3 vasin3 = asin(vfoo3);
+	float4 vasin4 = asin(vfoo4);
+
+	float1 vasin_swiz_1 = asin(vfoo1.r);
+	float2 vasin_swiz_2 = asin(vfoo2.yx);
+	float3 vasin_swiz_3 = asin(vfoo3.bgr);
+	float4 vasin_swiz_4 = asin(vfoo4.wwww);
+
+	float1 vatan1 = atan(vfoo1);
+	float2 vatan2 = atan(vfoo2);
+	float3 vatan3 = atan(vfoo3);
+	float4 vatan4 = atan(vfoo4);
+
+	float1 vatan_swiz_1 = atan(vfoo1.r);
+	float2 vatan_swiz_2 = atan(vfoo2.yx);
+	float3 vatan_swiz_3 = atan(vfoo3.bgr);
+	float4 vatan_swiz_4 = atan(vfoo4.wwww);
+
 	float1 vceil1 = ceil(vfoo1);
 	float2 vceil2 = ceil(vfoo2);
 	float3 vceil3 = ceil(vfoo3);
@@ -184,8 +234,35 @@ void RunUnitTests()
 	float3 vceil_swiz_3 = ceil(vfoo3.rrg);
 	float4 vceil_swiz_4 = ceil(vfoo4.yzwx);
 
-	float3 vcross3 = cross(vfoo3, vbar3);
-	float3 vcross_swiz_3 = cross(vfoo3.yzx, vbar3.yyx);
+	float1 vclamp1 = clamp(vfoo1, vbar1, vbaz1);
+	float2 vclamp2 = clamp(vfoo2, vbar2, vbaz2);
+	float3 vclamp3 = clamp(vfoo3, vbar3, vbaz3);
+	float4 vclamp4 = clamp(vfoo4, vbar4, vbaz4);
+
+	float1 vclamp_swiz_1 = clamp(vfoo1.r, vbar1, vbaz1);
+	float2 vclamp_swiz_2 = clamp(vfoo2.yx, vbar2, vbaz2);
+	float3 vclamp_swiz_3 = clamp(vfoo3.xxy, vbar3, vbaz3);
+	float4 vclamp_swiz_4 = clamp(vfoo4.wwxy, vbar4, vbaz4);
+
+	float3 vcross3			= cross(vfoo3, vbar3);
+	float3 vcross_swiz_3_a	= cross(vfoo3, vbar3.yyx);
+	float3 vcross_swiz_3_b	= cross(vfoo3.xyz, vbar3);
+	float3 vcross_swiz_3_c	= cross(vfoo3.yzx, vbar3.yyx);
+
+	float1 vdot2	= dot(vfoo2, vbar2);
+	float1 vdot2_a	= dot(vfoo2, vbar2.yx);
+	float1 vdot2_b	= dot(vfoo2.rg, vbar2);
+	float1 vdot2_c	= dot(vfoo2.gr, vbar2.yx);
+
+	float1 vdot3	= dot(vfoo3, vbar3);
+	float1 vdot3_a	= dot(vfoo3, vbar3.bgr);
+	float1 vdot3_b	= dot(vfoo3.rrg, vbar3);
+	float1 vdot3_c	= dot(vfoo3.rrg, vbar3);
+
+	float1 vdot4	= dot(vfoo4, vbar4);
+	float1 vdot4_a	= dot(vfoo4, vbar4.bgra);
+	float1 vdot4_b	= dot(vfoo4.rrgb, vbar4);
+	float1 vdot4_c	= dot(vfoo4.rrgg, vbar4);
 
 	float1 vfloor1 = floor(vfoo1);
 	float2 vfloor2 = floor(vfoo2);
@@ -227,6 +304,46 @@ void RunUnitTests()
 	float3 vexp2_swiz_3 = exp2(vfoo3.bgr);
 	float4 vexp2_swiz_4 = exp2(vfoo4.wxxy);
 
+	float1 visfinite_1 = isfinite(vfoo1);
+	float2 visfinite_2 = isfinite(vfoo2);
+	float3 visfinite_3 = isfinite(vfoo3);
+	float4 visfinite_4 = isfinite(vfoo4);
+
+	float1 visfinite_swiz_1 = isfinite(vfoo1.r);
+	float2 visfinite_swiz_2 = isfinite(vfoo2.xy);
+	float3 visfinite_swiz_3 = isfinite(vfoo3.bgr);
+	float4 visfinite_swiz_4 = isfinite(vfoo4.wxxy);
+
+	float1 visinf_1 = isinf(vfoo1);
+	float2 visinf_2 = isinf(vfoo2);
+	float3 visinf_3 = isinf(vfoo3);
+	float4 visinf_4 = isinf(vfoo4);
+
+	float1 visinf_swiz_1 = isinf(vfoo1.r);
+	float2 visinf_swiz_2 = isinf(vfoo2.xy);
+	float3 visinf_swiz_3 = isinf(vfoo3.bgr);
+	float4 visinf_swiz_4 = isinf(vfoo4.wxxy);
+
+	float1 visnan_1 = isnan(vfoo1);
+	float2 visnan_2 = isnan(vfoo2);
+	float3 visnan_3 = isnan(vfoo3);
+	float4 visnan_4 = isnan(vfoo4);
+
+	float1 visnan_swiz_1 = isnan(vfoo1.r);
+	float2 visnan_swiz_2 = isnan(vfoo2.xy);
+	float3 visnan_swiz_3 = isnan(vfoo3.bgr);
+	float4 visnan_swiz_4 = isnan(vfoo4.wxxy);
+
+	float1 vlength_1 = length(vfoo1);
+	float1 vlength_2 = length(vfoo2);
+	float1 vlength_3 = length(vfoo3);
+	float1 vlength_4 = length(vfoo4);
+
+	float1 vlength_swiz_1 = length(vfoo1.r);
+	float1 vlength_swiz_2 = length(vfoo2.xy);
+	float1 vlength_swiz_3 = length(vfoo3.rgb);
+	float1 vlength_swiz_4 = length(vfoo4.wwxy);
+
 	// Linear Interpolation
 
 	float1 vlerp1 = lerp(vfoo1, vbar1, vbaz1);
@@ -259,60 +376,130 @@ void RunUnitTests()
 	float3 vlog2_3 = log2(vfoo3);
 	float4 vlog2_4 = log2(vfoo4);
 
+	float1 vlog2_swiz_1 = log2(vfoo1.r);
+	float2 vlog2_swiz_2 = log2(vfoo2.yx);
+	float3 vlog2_swiz_3 = log2(vfoo3.gbr);
+	float4 vlog2_swiz_4 = log2(vfoo4.yyxw);
+
 	float1 vlog10_1 = log10(vfoo1);
 	float2 vlog10_2 = log10(vfoo2);
 	float3 vlog10_3 = log10(vfoo3);
 	float4 vlog10_4 = log10(vfoo4);
 
-	float1 vmin1 = min(vfoo1, vbar1);
-	float2 vmin2 = min(vfoo2, vbar2);
-	float3 vmin3 = min(vfoo3, vbar3);
-	float4 vmin4 = min(vfoo4, vbar4);
+	float1 vlog10_swiz_1 = log10(vfoo1.r);
+	float2 vlog10_swiz_2 = log10(vfoo2.rg);
+	float3 vlog10_swiz_3 = log10(vfoo3.yxy);
+	float4 vlog10_swiz_4 = log10(vfoo4.yyzw);
 
-	float1 vmax1 = max(vfoo1, vbar1);
-	float2 vmax2 = max(vfoo2, vbar2);
-	float3 vmax3 = max(vfoo3, vbar3);
-	float4 vmax4 = max(vfoo4, vbar4);
+	float1 vmin_1 = min(vfoo1, vbar1);
+	float2 vmin_2 = min(vfoo2, vbar2);
+	float3 vmin_3 = min(vfoo3, vbar3);
+	float4 vmin_4 = min(vfoo4, vbar4);
+
+	float1 vmin_swiz_1 = min(vfoo1.r, vbar1.r);
+	float2 vmin_swiz_2 = min(vfoo2.gr, vbar2.rg);
+	float3 vmin_swiz_3 = min(vfoo3.ggb, vbar3.bgr);
+	float4 vmin_swiz_4 = min(vfoo4.gggg, vbar4.brgr);
+
+	float1 vmax_1 = max(vfoo1, vbar1);
+	float2 vmax_2 = max(vfoo2, vbar2);
+	float3 vmax_3 = max(vfoo3, vbar3);
+	float4 vmax_4 = max(vfoo4, vbar4);
+
+	float1 vmax_swiz_1 = max(vfoo1.r, vbar1.x);
+	float2 vmax_swiz_2 = max(vfoo2.rg, vbar2.yx);
+	float3 vmax_swiz_3 = max(vfoo3.gbr, vbar3.xyy);
+	float4 vmax_swiz_4 = max(vfoo4.brga, vbar4.yxzw);
+
+	float1 vpow_1 = pow(vfoo1, vbar1);
+	float2 vpow_2 = pow(vfoo2, vbar2);
+	float3 vpow_3 = pow(vfoo3, vbar3);
+	float4 vpow_4 = pow(vfoo4, vbar4);
+
+	float1 vpow_swiz_1 = pow(vfoo1.r, vbar1.r);
+	float2 vpow_swiz_2 = pow(vfoo2.rg, vbar2.xy);
+	float3 vpow_swiz_3 = pow(vfoo3.bgr, vbar3.yyx);
+	float4 vpow_swiz_4 = pow(vfoo4.yyxw, vbar4.xxyw);
 
 	float1 vrsqrt1 = rsqrt(vfoo1);
 	float2 vrsqrt2 = rsqrt(vfoo2);
 	float3 vrsqrt3 = rsqrt(vfoo3);
 	float4 vrsqrt4 = rsqrt(vfoo4);
 
+	float1 vrsqrt_swiz_1 = rsqrt(vfoo1.r);
+	float2 vrsqrt_swiz_2 = rsqrt(vfoo2.rg);
+	float3 vrsqrt_swiz_3 = rsqrt(vfoo3.bgr);
+	float4 vrsqrt_swiz_4 = rsqrt(vfoo4.yyxw);
+
 	float1 vround1 = round(vfoo1);
 	float2 vround2 = round(vfoo2);
 	float3 vround3 = round(vfoo3);
 	float4 vround4 = round(vfoo4);
+
+	float1 vround_swiz_1 = round(vfoo1.r);
+	float2 vround_swiz_2 = round(vfoo2.gr);
+	float3 vround_swiz_3 = round(vfoo3.yyx);
+	float4 vround_swiz_4 = round(vfoo4.wwyx);
 
 	float1 vsaturate1 = saturate(vfoo1);
 	float2 vsaturate2 = saturate(vfoo2);
 	float3 vsaturate3 = saturate(vfoo3);
 	float4 vsaturate4 = saturate(vfoo4);
 
+	float1 vsaturate_swiz_1 = saturate(vfoo1.r);
+	float2 vsaturate_swiz_2 = saturate(vfoo2.xy);
+	float3 vsaturate_swiz_3 = saturate(vfoo3.ggr);
+	float4 vsaturate_swiz_4 = saturate(vfoo4.wyyx);
+
 	float1 vsign1 = sign(vfoo1);
 	float2 vsign2 = sign(vfoo2);
 	float3 vsign3 = sign(vfoo3);
 	float4 vsign4 = sign(vfoo4);
+
+	float1 vsign_swiz_1 = sign(vfoo1.x);
+	float2 vsign_swiz_2 = sign(vfoo2.gg);
+	float3 vsign_swiz_3 = sign(vfoo3.bbb);
+	float4 vsign_swiz_4 = sign(vfoo4.xxyz);
 
 	float1 vsin1 = sin(vfoo1);
 	float2 vsin2 = sin(vfoo2);
 	float3 vsin3 = sin(vfoo3);
 	float4 vsin4 = sin(vfoo4);
 
+	float1 vsin_swiz_1 = sin(vfoo1.x);
+	float2 vsin_swiz_2 = sin(vfoo2.yy);
+	float3 vsin_swiz_3 = sin(vfoo3.rrg);
+	float4 vsin_swiz_4 = sin(vfoo4.rrbg);
+
 	float1 vsqrt1 = sqrt(vfoo1);
 	float2 vsqrt2 = sqrt(vfoo2);
 	float3 vsqrt3 = sqrt(vfoo3);
 	float4 vsqrt4 = sqrt(vfoo4);
+
+	float1 vsqrt_swiz_1 = sqrt(vfoo1.r);
+	float2 vsqrt_swiz_2 = sqrt(vfoo2.rr);
+	float3 vsqrt_swiz_3 = sqrt(vfoo3.yyy);
+	float4 vsqrt_swiz_4 = sqrt(vfoo4.wwwx);
 
 	float1 vstep1 = step(vfoo1, vbar1);
 	float2 vstep2 = step(vfoo2, vbar2);
 	float3 vstep3 = step(vfoo3, vbar3);
 	float4 vstep4 = step(vfoo4, vbar4);
 
+	float1 vstep_swiz_1 = step(vfoo1, vbar1.x);
+	float2 vstep_swiz_2 = step(vfoo2, vbar2.yx);
+	float3 vstep_swiz_3 = step(vfoo3, vbar3.xxy);
+	float4 vstep_swiz_4 = step(vfoo4, vbar4.zzzw);
+
 	float1 vtrunc1 = trunc(vfoo1);
 	float2 vtrunc2 = trunc(vfoo2);
 	float3 vtrunc3 = trunc(vfoo3);
 	float4 vtrunc4 = trunc(vfoo4);
+
+	float1 vtrunc_swiz_1 = trunc(vfoo1.r);
+	float2 vtrunc_swiz_2 = trunc(vfoo2.yy);
+	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);
+	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);
 
 	float1 vassign1 = vfoo1.x;
 	vassign1 = vfoo1.r;
@@ -413,14 +600,6 @@ void RunUnitTests()
 	vadd_swiz_b_2 *= vfoo2.xy;
 	vadd_swiz_c_2.xy *= vfoo2;
 	vadd_swiz_c_2.gr *= vfoo2.rg;
-
-	float2 vmin_swiz_2 = min(vfoo2.gr, vbar2.rg);
-	float3 vmin_swiz_3 = min(vfoo3.ggb, vbar3.bgr);
-	float4 vmin_swiz_4 = min(vfoo4.gggg, vbar4.brgr);
-
-	float2 vmax_swiz_2 = max(vfoo2.rg, vbar2.yx);
-	float3 vmax_swiz_3 = max(vfoo3.gbr, vbar3.xyy);
-	float4 vmax_swiz_4 = max(vfoo4.brga, vbar4.yxzw);
 
 	// Infinities and NaNs
 

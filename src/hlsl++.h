@@ -1920,13 +1920,56 @@ inline floatN<sizeof...(Dim)> ceil(const components<Dim...>& v) { return ceil(fl
 template<int N>
 inline floatN<N> clamp(const floatN<N>& v, const floatN<N>& minv, const floatN<N>& maxv) { return floatN<N>(_mm_clamp_ps(v._vec, minv._vec, maxv._vec)); }
 
+template<int N, template<int...Dim> class components, int...Dim>
+inline floatN<N> clamp(const floatN<N>& v1, const floatN<N>& v2, const components<Dim...>& a) { return clamp(v1, v2, floatN<N>(a)); }
+
+template<int N, template<int...Dim> class components, int...Dim>
+inline floatN<N> clamp(const floatN<N>& v1, const components<Dim...>& v2, const floatN<N>& a) { return clamp(v1, floatN<N>(v2), a); }
+
+template<int N, template<int...Dim> class components, int...Dim>
+inline floatN<N> clamp(const components<Dim...>& v1, const floatN<N>& v2, const floatN<N>& a) { return clamp(floatN<N>(v1), v2, a); }
+
+template<int N, template<int...Dim> class components, int...Dim>
+inline floatN<N> clamp(const floatN<N>& v1, const components<Dim...>& v2, const components<Dim...>& a) { return clamp(v1, floatN<N>(v2), floatN<N>(a)); }
+
+template<int N, template<int...Dim> class components, int...Dim>
+inline floatN<N> clamp(const components<Dim...>& v1, const floatN<N>& v2, const components<Dim...>& a) { return clamp(floatN<N>(v1), v2, floatN<N>(a)); }
+
+template<int N, template<int...Dim> class components, int...Dim>
+inline floatN<N> clamp(const components<Dim...>& v1, const components<Dim...>& v2, const floatN<N>& a) { return clamp(floatN<N>(v1), floatN<N>(v2), a); }
+
+template<template<int...Dim> class components, int...Dim1, int...Dim2, int...Dim3>
+inline floatN<sizeof...(Dim1)> clamp(const components<Dim1...>& v1, const components<Dim2...>& v2, const components<Dim3...>& a)
+{
+	static_assert(sizeof...(Dim1) == sizeof...(Dim2), "Vectors must be the same dimension!");
+	return clamp(floatN<sizeof...(Dim1)>(v1), floatN<sizeof...(Dim1)>(v2), floatN<sizeof...(Dim1)>(a));
+}
+
 inline float3 cross(const float3& v1, const float3& v2) { return float3(_mm_cross_ps(v1._vec, v2._vec)); }
+
+template<int N>
+inline floatN<N> degrees(const floatN<N>& v) { return floatN<N>(_mm_mul_ps(v._vec, f4_rad2deg)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> degrees(const components<Dim...>& v) { return degrees(floatN<sizeof...(Dim)>(v)); }
 
 inline float1 dot(const float4& v1, const float4& v2) { return float1(_mm_dot4_ps(v1._vec, v2._vec)); }
 
 inline float1 dot(const float3& v1, const float3& v2) { return float1(_mm_dot3_ps(v1._vec, v2._vec)); }
 
 inline float1 dot(const float2& v1, const float2& v2) { return float1(_mm_dot2_ps(v1._vec, v2._vec)); }
+
+template<int N>
+inline floatN<N> exp(const floatN<N>& v) { return floatN<N>(_mm_exp_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> exp(const components<Dim...>& v) { return exp(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> exp2(const floatN<N>& v) { return floatN<N>(_mm_exp2_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> exp2(const components<Dim...>& v) { return exp2(floatN<sizeof...(Dim)>(v)); }
 
 template<int N>
 inline floatN<N> floor(const floatN<N>& v) { return floatN<N>(_mm_floor_ps(v._vec)); }
@@ -1944,33 +1987,25 @@ template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> frac(const components<Dim...>& v) { return frac(floatN<sizeof...(Dim)>(v)); }
 
 template<int N>
-inline floatN<N> exp(const floatN<N>& v) { return floatN<N>(_mm_exp_ps(v._vec)); }
-
-template<template<int...Dim> class components, int...Dim>
-inline floatN<sizeof...(Dim)> exp(const components<Dim...>& v) { return exp(floatN<sizeof...(Dim)>(v)); }
-
-template<int N>
-inline floatN<N> exp2(const floatN<N>& v) { return floatN<N>(_mm_exp2_ps(v._vec)); }
-
-template<template<int...Dim> class components, int...Dim>
-inline floatN<sizeof...(Dim)> exp2(const components<Dim...>& v) { return exp2(floatN<sizeof...(Dim)>(v)); }
-
-template<int N>
 inline floatN<N> isfinite(const floatN<N>& v) { return floatN<N>(_mm_andnot_ps(_mm_or_ps(_mm_isinf_ps(v._vec), _mm_isnan_ps(v._vec)), f4one)); }
 
 template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> isfinite(const components<Dim...>& v) { return isfinite(floatN<sizeof...(Dim)>(v)); }
 
-template<int N>
-inline floatN<N> isinf(const floatN<N>& v)
-{
-	return floatN<N>(_mm_and_ps(_mm_isinf_ps(v._vec), f4one));
-}
+template<int N> inline floatN<N> isinf(const floatN<N>& v) { return floatN<N>(_mm_and_ps(_mm_isinf_ps(v._vec), f4one)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> isinf(const components<Dim...>& v) { return isinf(floatN<sizeof...(Dim)>(v)); }
 
 template<int N>
-inline floatN<N> isnan(const floatN<N>& v)
+inline floatN<N> isnan(const floatN<N>& v) { return floatN<N>(_mm_and_ps(_mm_isnan_ps(v._vec), f4one)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> isnan(const components<Dim...>& v) { return isnan(floatN<sizeof...(Dim)>(v)); }
+
+inline float1 length(const float1& v)
 {
-	return floatN<N>(_mm_and_ps(_mm_isnan_ps(v._vec), f4one));
+	return v;
 }
 
 inline float1 length(const float2& v)
@@ -1995,7 +2030,19 @@ template<int N, template<int...Dim> class components, int...Dim>
 inline floatN<N> lerp(const floatN<N>& v1, const floatN<N>& v2, const components<Dim...>& a) { return lerp(v1, v2, floatN<N>(a)); }
 
 template<int N, template<int...Dim> class components, int...Dim>
+inline floatN<N> lerp(const floatN<N>& v1, const components<Dim...>& v2, const floatN<N>& a) { return lerp(v1, floatN<N>(v2), a); }
+
+template<int N, template<int...Dim> class components, int...Dim>
+inline floatN<N> lerp(const components<Dim...>& v1, const floatN<N>& v2, const floatN<N>& a) { return lerp(floatN<N>(v1), v2, a); }
+
+template<int N, template<int...Dim> class components, int...Dim>
 inline floatN<N> lerp(const floatN<N>& v1, const components<Dim...>& v2, const components<Dim...>& a) { return lerp(v1, floatN<N>(v2), floatN<N>(a)); }
+
+template<int N, template<int...Dim> class components, int...Dim>
+inline floatN<N> lerp(const components<Dim...>& v1, const floatN<N>& v2, const components<Dim...>& a) { return lerp(floatN<N>(v1), v2, floatN<N>(a)); }
+
+template<int N, template<int...Dim> class components, int...Dim>
+inline floatN<N> lerp(const components<Dim...>& v1, const components<Dim...>& v2, const floatN<N>& a) { return lerp(floatN<N>(v1), floatN<N>(v2), a); }
 
 template<template<int...Dim> class components, int...Dim1, int...Dim2, int...Dim3>
 inline floatN<sizeof...(Dim1)> lerp(const components<Dim1...>& v1, const components<Dim2...>& v2, const components<Dim3...>& a) 
@@ -2076,65 +2123,59 @@ inline floatN<sizeof...(Dim1)> pow(const components<Dim1...>& v1, const componen
 	return pow(floatN<sizeof...(Dim1)>(v1), floatN<sizeof...(Dim1)>(v2));
 }
 
-template<typename floatN>
-inline floatN radians(const floatN& v)
-{
-	return floatN(_mm_mul_ps(v._vec, f4_deg2rad));
-}
+template<int N>
+inline floatN<N> radians(const floatN<N>& v) { return floatN<N>(_mm_mul_ps(v._vec, f4_deg2rad)); }
 
-template<typename floatN>
-inline floatN degrees(const floatN& v)
-{
-	return floatN(_mm_mul_ps(v._vec, f4_rad2deg));
-}
-
-template<typename floatN>
-inline floatN rsqrt(const floatN& v)
-{
-	return floatN(_mm_rsqrt_ps(v._vec));
-}
-
-template<typename floatN>
-inline floatN round(const floatN& v)
-{
-	return floatN(_mm_round_ps(v._vec, _MM_FROUND_TO_POS_INF)); // _MM_FROUND_TO_POS_INF to match fxc behavior
-}
-
-template<typename floatN>
-inline floatN saturate(const floatN& v)
-{
-	return floatN(_mm_sat_ps(v._vec));
-}
-
-template<typename floatN>
-inline floatN sign(const floatN& v)
-{
-	return floatN(_mm_sign_ps(v._vec));
-}
-
-template<typename floatN>
-inline floatN sin(const floatN& v)
-{
-	return floatN(_mm_sin_ps(v._vec));
-}
-
-template<typename floatN>
-inline floatN cos(const floatN& v)
-{
-	return floatN(_mm_cos_ps(v._vec));
-}
-
-template<typename floatN>
-inline floatN tan(const floatN& v)
-{
-	return floatN(_mm_tan_ps(v._vec));
-}
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> radians(const components<Dim...>& v) { return radians(floatN<sizeof...(Dim)>(v)); }
 
 template<int N>
-inline floatN<N> sqrt(const floatN<N>& v)
-{
-	return floatN<N>(_mm_sqrt_ps(v._vec));
-}
+inline floatN<N> rsqrt(const floatN<N>& v) { return floatN<N>(_mm_rsqrt_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> rsqrt(const components<Dim...>& v) { return rsqrt(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> round(const floatN<N>& v) { return floatN<N>(_mm_round_ps(v._vec, _MM_FROUND_TO_POS_INF)); } // _MM_FROUND_TO_POS_INF to match fxc behavior
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> round(const components<Dim...>& v) { return round(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> saturate(const floatN<N>& v) { return floatN<N>(_mm_sat_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> saturate(const components<Dim...>& v) { return saturate(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> sign(const floatN<N>& v) {	return floatN<N>(_mm_sign_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> sign(const components<Dim...>& v) { return sign(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> sin(const floatN<N>& v) { return floatN<N>(_mm_sin_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> sin(const components<Dim...>& v) { return sin(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> cos(const floatN<N>& v) { return floatN<N>(_mm_cos_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> cos(const components<Dim...>& v) { return cos(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> tan(const floatN<N>& v) { return floatN<N>(_mm_tan_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> tan(const components<Dim...>& v) { return tan(floatN<sizeof...(Dim)>(v)); }
+
+template<int N>
+inline floatN<N> sqrt(const floatN<N>& v) { return floatN<N>(_mm_sqrt_ps(v._vec)); }
+
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> sqrt(const components<Dim...>& v) { return sqrt(floatN<sizeof...(Dim)>(v)); }
 
 // Step
 // Hlsl, glsl and Cg behavior is to swap the operands.
@@ -2156,21 +2197,22 @@ inline floatN<sizeof...(Dim1)> step(const components<Dim1...>& v1, const compone
 	return floatN<sizeof...(Dim1)>(v1) >= floatN<sizeof...(Dim1)>(v2);
 }
 
-template<typename floatN>
-inline floatN trunc(const floatN& v)
-{
-	return floatN(_mm_trunc_ps(v._vec));
-}
+template<int N>
+inline floatN<N> trunc(const floatN<N>& v) { return floatN<N>(_mm_trunc_ps(v._vec)); }
 
-inline float4 normalize(const float4& v)
-{
-	return float4(_mm_div_ps(v._vec, _mm_shuf_xxxx_ps(_mm_sqrt_ps(_mm_dot4_ps(v._vec, v._vec)))));
-}
+template<template<int...Dim> class components, int...Dim>
+inline floatN<sizeof...(Dim)> trunc(const components<Dim...>& v) { return trunc(floatN<sizeof...(Dim)>(v)); }
 
-inline float4 normalize_fast(const float4& v)
-{
-	return float4(_mm_mul_ps(v._vec, _mm_shuf_xxxx_ps(_mm_rsqrt_ps(_mm_dot4_ps(v._vec, v._vec)))));
-}
+inline float4 normalize(const float4& v) { return float4(_mm_div_ps(v._vec, _mm_shuf_xxxx_ps(_mm_sqrt_ps(_mm_dot4_ps(v._vec, v._vec))))); }
+
+inline float3 normalize(const float3& v) { return float3(_mm_div_ps(v._vec, _mm_shuf_xxxx_ps(_mm_sqrt_ps(_mm_dot3_ps(v._vec, v._vec))))); }
+
+inline float2 normalize(const float2& v) { return float2(_mm_div_ps(v._vec, _mm_shuf_xxxx_ps(_mm_sqrt_ps(_mm_dot2_ps(v._vec, v._vec))))); }
+
+// inline float4 normalize_fast(const float4& v)
+// {
+// 	return float4(_mm_mul_ps(v._vec, _mm_shuf_xxxx_ps(_mm_rsqrt_ps(_mm_dot4_ps(v._vec, v._vec)))));
+// }
 
 // inline float4 reflect
 // inline float4 smoothstep
