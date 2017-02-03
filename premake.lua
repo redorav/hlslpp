@@ -24,13 +24,16 @@ workspace "hlsl++"
 		srcDir,
 	}	
 		
+	print (_ACTION)
+	print "lalalalalal"
+		
 	if(_ACTION == "xcode4") then
 		platforms { PlatformOSX64 }
 		toolset("clang")
 		architecture("x64")
 		buildoptions { "-Wno-unused-variable -msse4.1 -std=c++11" }
 		linkoptions { "-stdlib=libc++" }
-	else if(_ACTION == "gmake") then
+	elseif(_ACTION == "gmake") then
 		platforms { PlatformLinux64 }
 		toolset("gcc")
 		architecture("x64")
