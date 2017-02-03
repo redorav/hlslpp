@@ -34,6 +34,7 @@ workspace "hlsl++"
 		platforms { PlatformLinux64 }
 		toolset("gcc")
 		architecture("x64")
+		buildoptions { "-std=c++11" }
 	else
 	
 		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32 }
