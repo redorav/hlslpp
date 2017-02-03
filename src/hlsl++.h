@@ -2344,9 +2344,7 @@ inline floatNxM<3, M> operator + (const floatNxM<3, M>& m1, const floatNxM<3, M>
 
 inline floatNxM<2, 2> operator + (const floatNxM<2, 2>& m1, const floatNxM<2, 2>& m2)
 {
-	__m128 vec = _mm_add_ps(m1._vec, m2._vec);
-
-	return floatNxM<2, 2>(vec);
+	return floatNxM<2, 2>(_mm_add_ps(m1._vec, m2._vec));
 }
 
 template<int N, int M>

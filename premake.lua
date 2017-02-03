@@ -10,6 +10,8 @@ PlatformLLVM32	= "LLVM 32"
 
 PlatformOSX64	= "OSX 64"
 
+PlatformLinux64	= "Linux 64"
+
 -- Directories
 srcDir = "src"
 
@@ -25,9 +27,13 @@ workspace "hlsl++"
 	if(_ACTION == "xcode4") then
 		platforms { PlatformOSX64 }
 		toolset("clang")
-		architecture("x64")		
+		architecture("x64")
 		buildoptions { "-Wno-unused-variable -msse4.1 -std=c++11" }
 		linkoptions { "-stdlib=libc++" }
+	else if(_ACTION == "gmake") then
+		platforms { PlatformLinux64 }
+		toolset("gcc")
+		architecture("x64")
 	else
 	
 		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32 }

@@ -1,1 +1,1 @@
-./premake/premake5 --file=premake.lua xcode4
+./premake/osx/premake5 --file=premake.lua xcode4
