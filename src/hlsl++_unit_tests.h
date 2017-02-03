@@ -45,7 +45,7 @@ void ExhaustiveTest(uint32_t start, uint32_t stop, Transform4 TestFunc, Transfor
 	{
 		Float_t input;
 		input.i = (int32_t)i;
-#if defined(__clang__) || defined(defined(__GNUG__)
+#if defined(__clang__) || defined(__GNUG__)
 		Float_t testValue = TestFunc(_mm_set_ps1(input.f))[0];
 #else
 		Float_t testValue = TestFunc(_mm_set_ps1(input.f)).m128_f32[0];
