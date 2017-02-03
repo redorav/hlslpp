@@ -22,10 +22,7 @@ workspace "hlsl++"
 	includedirs
 	{
 		srcDir,
-	}	
-		
-	print (_ACTION)
-	print "lalalalalal"
+	}
 		
 	if(_ACTION == "xcode4") then
 		platforms { PlatformOSX64 }
