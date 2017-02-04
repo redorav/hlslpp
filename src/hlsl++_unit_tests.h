@@ -101,10 +101,26 @@ void RunUnitTests()
 	float3 vbar3 = vfoo3.zyx;
 	float4 vbar4 = vfoo4.bgra;
 
+	vbar1 = 0.1f;
+
 	float1 vbaz1 = float1(0.2f);
 	float2 vbaz2 = float2(0.3f, 0.7f);
 	float3 vbaz3 = float3(0.1f, 0.4f, 0.8f);
 	float4 vbaz4 = float4(0.0f, 0.2f, 0.6f, 1.0f);
+
+	float2 vfoo_mix_2 = float2(vfoo1, vbar1);
+
+	float3 vfoo_mix_3_a = float3(vfoo1, vbar1, vbaz1);
+	float3 vfoo_mix_3_b = float3(vfoo2, vbar1);
+	float3 vfoo_mix_3_c = float3(vbar1, vbar2);
+
+	float4 vfoo_mix_4_a = float4(vbaz1, vbaz2.x, vbaz3.y, 0.5f);
+	float4 vfoo_mix_4_b = float4(vbaz1, vbaz3);
+	float4 vfoo_mix_4_c = float4(vbaz3, vbaz1);
+	float4 vfoo_mix_4_d = float4(vbaz2, vbar2);
+	float4 vfoo_mix_4_e = float4(vbaz2, vbar1, vbaz1);
+	float4 vfoo_mix_4_f = float4(vbar1, vbaz2, vbaz1);
+	float4 vfoo_mix_4_g = float4(vbar1, vbaz1, vbaz2);
 
 	// Addition
 
