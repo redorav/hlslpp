@@ -37,19 +37,20 @@ Implemented:
 * float1, float2, float3, float4 types
 * Mixed constructors, e.g. float4(float2, float2)
 * Efficient swizzling for all the floatN types
-* Basic operators +, *, -, / and variants
+* floatN basic operators +, *, -, / and variants
 * Per-component comparison operators ==, !=, >, <, >=, <= (no ternary operator as overloading is disallowed in C++)
-* hlsl functions: abs, acos, all, any, asin, atan, ceil, clamp, cos, cross, degrees, dot, floor, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, max, min, normalize, pow, radians, reflect, round, rsqrt, saturate, sign, sin, sqrt, step, trunc, tan,
-* floatNxM types
+* hlsl vector functions: abs, acos, all, any, asin, atan, ceil, clamp, cos, cross, degrees, dot, floor, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, max, min, normalize, pow, radians, reflect, round, rsqrt, saturate, sign, sin, sqrt, step, trunc, tan,
 * Native visualizers for Visual Studio which correctly parse with both MSVC and Clang
 
+* floatNxM types
+* floatNxM basic operators +, *, -, / and variants
 
 Missing:
 
+* hlsl matrix functions: determinant, transpose, matrix multiplication
 * hlsl functions: smoothstep, atan2, cosh, sinh, tanh
-* floatNxM basic operations
 * floatNxM _m00_m01 style swizzling (rows implemented but missing columns)
 * float1xM implicit conversions with floatM
 * floatM to float1 implicit conversions
-* floatM o float1 operations
 * Integer types int1, int2, int3, int4
+* Non-hlsl functions: invert
