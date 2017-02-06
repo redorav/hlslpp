@@ -706,31 +706,129 @@ void RunUnitTests()
 	// Matrices
 	//*********
 
-	float1x1 mat1x1 = float1x1(1);
-	float1x2 mat1x2 = float1x2(1, 2);
-	float1x3 mat1x3 = float1x3(1, 2, 3);
-	float1x4 mat1x4 = float1x4(1, 2, 3, 4);
+	float1x1 mat_foo_1x1 = float1x1(1);
+	float1x2 mat_foo_1x2 = float1x2(1, 2);
+	float1x3 mat_foo_1x3 = float1x3(1, 2, 3);
+	float1x4 mat_foo_1x4 = float1x4(1, 2, 3, 4);
 
-	float2x1 mat2x1 = float2x1(1, 2);
-	float3x1 mat3x1 = float3x1(1, 2, 3);
-	float4x1 mat4x1 = float4x1(1, 2, 3, 4);
+	float2x1 mat_foo_2x1 = float2x1(1, 2);
+	float3x1 mat_foo_3x1 = float3x1(1, 2, 3);
+	float4x1 mat_foo_4x1 = float4x1(1, 2, 3, 4);
 
-	float2x2 mat2x2 = float2x2(1, 2, 3, 4);
+	float2x2 mat_foo_2x2 = float2x2(1, 2, 3, 4);
 
-	float2x3 mat2x3 = float2x3(1, 2, 3, 4, 5, 6);
-	float2x4 mat2x4 = float2x4(1, 2, 3, 4, 5, 6, 7, 8);
+	float2x3 mat_foo_2x3 = float2x3(1, 2, 3, 4, 5, 6);
+	float2x4 mat_foo_2x4 = float2x4(1, 2, 3, 4, 5, 6, 7, 8);
 
-	float3x2 mat3x2 = float3x2(1, 2, 3, 4, 5, 6);
-	float4x2 mat4x2 = float4x2(1, 2, 3, 4, 5, 6, 7, 8);
+	float3x2 mat_foo_3x2 = float3x2(1, 2, 3, 4, 5, 6);
+	float4x2 mat_foo_4x2 = float4x2(1, 2, 3, 4, 5, 6, 7, 8);
 
-	float3x3 mat3x3 = float3x3(1, 2, 3, 4, 5, 6, 7, 8, 9);
+	float3x3 mat_foo_3x3 = float3x3(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-	float3x4 mat3x4 = float3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-	float4x3 mat4x3 = float4x3(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+	float3x4 mat_foo_3x4 = float3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+	float4x3 mat_foo_4x3 = float4x3(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 
-	float4x4 mat4x4 = float4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+	float4x4 mat_foo_4x4 = float4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 
+	float1x1 mat_bar_1x1 = float1x1(1);
+	float1x2 mat_bar_1x2 = float1x2(1, 2);
+	float1x3 mat_bar_1x3 = float1x3(1, 2, 3);
+	float1x4 mat_bar_1x4 = float1x4(1, 2, 3, 4);
+	
+	float2x1 mat_bar_2x1 = float2x1(1, 2);
+	float3x1 mat_bar_3x1 = float3x1(1, 2, 3);
+	float4x1 mat_bar_4x1 = float4x1(1, 2, 3, 4);
+	
+	float2x2 mat_bar_2x2 = float2x2(1, 2, 3, 4);
+	
+	float2x3 mat_bar_2x3 = float2x3(1, 2, 3, 4, 5, 6);
+	float2x4 mat_bar_2x4 = float2x4(1, 2, 3, 4, 5, 6, 7, 8);
+	
+	float3x2 mat_bar_3x2 = float3x2(1, 2, 3, 4, 5, 6);
+	float4x2 mat_bar_4x2 = float4x2(1, 2, 3, 4, 5, 6, 7, 8);
+	
+	float3x3 mat_bar_3x3 = float3x3(1, 2, 3, 4, 5, 6, 7, 8, 9);
+	
+	float3x4 mat_bar_3x4 = float3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+	float4x3 mat_bar_4x3 = float4x3(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+	
+	float4x4 mat_bar_4x4 = float4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+	
+	// Addition
 
+	float1x1 mat_add_1x1 = mat_foo_1x1 + mat_bar_1x1;
+	float1x2 mat_add_1x2 = mat_foo_1x2 + mat_bar_1x2;
+	float1x3 mat_add_1x3 = mat_foo_1x3 + mat_bar_1x3;
+	float1x4 mat_add_1x4 = mat_foo_1x4 + mat_bar_1x4;
+	float2x1 mat_add_2x1 = mat_foo_2x1 + mat_bar_2x1;
+	float3x1 mat_add_3x1 = mat_foo_3x1 + mat_bar_3x1;
+	float4x1 mat_add_4x1 = mat_foo_4x1 + mat_bar_4x1;
+	float2x2 mat_add_2x2 = mat_foo_2x2 + mat_bar_2x2;
+	float2x3 mat_add_2x3 = mat_foo_2x3 + mat_bar_2x3;
+	float2x4 mat_add_2x4 = mat_foo_2x4 + mat_bar_2x4;
+	float3x2 mat_add_3x2 = mat_foo_3x2 + mat_bar_3x2;
+	float4x2 mat_add_4x2 = mat_foo_4x2 + mat_bar_4x2;
+	float3x3 mat_add_3x3 = mat_foo_3x3 + mat_bar_3x3;
+	float3x4 mat_add_3x4 = mat_foo_3x4 + mat_bar_3x4;
+	float4x3 mat_add_4x3 = mat_foo_4x3 + mat_bar_4x3;
+	float4x4 mat_add_4x4 = mat_foo_4x4 + mat_bar_4x4;
+
+	// Subtraction
+
+	float1x1 mat_sub_1x1 = mat_foo_1x1 - mat_bar_1x1;
+	float1x2 mat_sub_1x2 = mat_foo_1x2 - mat_bar_1x2;
+	float1x3 mat_sub_1x3 = mat_foo_1x3 - mat_bar_1x3;
+	float1x4 mat_sub_1x4 = mat_foo_1x4 - mat_bar_1x4;
+	float2x1 mat_sub_2x1 = mat_foo_2x1 - mat_bar_2x1;
+	float3x1 mat_sub_3x1 = mat_foo_3x1 - mat_bar_3x1;
+	float4x1 mat_sub_4x1 = mat_foo_4x1 - mat_bar_4x1;
+	float2x2 mat_sub_2x2 = mat_foo_2x2 - mat_bar_2x2;
+	float2x3 mat_sub_2x3 = mat_foo_2x3 - mat_bar_2x3;
+	float2x4 mat_sub_2x4 = mat_foo_2x4 - mat_bar_2x4;
+	float3x2 mat_sub_3x2 = mat_foo_3x2 - mat_bar_3x2;
+	float4x2 mat_sub_4x2 = mat_foo_4x2 - mat_bar_4x2;
+	float3x3 mat_sub_3x3 = mat_foo_3x3 - mat_bar_3x3;
+	float3x4 mat_sub_3x4 = mat_foo_3x4 - mat_bar_3x4;
+	float4x3 mat_sub_4x3 = mat_foo_4x3 - mat_bar_4x3;
+	float4x4 mat_sub_4x4 = mat_foo_4x4 - mat_bar_4x4;
+
+	// Multiplication
+
+	float1x1 mat_mul_1x1 = mat_foo_1x1 * mat_bar_1x1;
+	float1x2 mat_mul_1x2 = mat_foo_1x2 * mat_bar_1x2;
+	float1x3 mat_mul_1x3 = mat_foo_1x3 * mat_bar_1x3;
+	float1x4 mat_mul_1x4 = mat_foo_1x4 * mat_bar_1x4;
+	float2x1 mat_mul_2x1 = mat_foo_2x1 * mat_bar_2x1;
+	float3x1 mat_mul_3x1 = mat_foo_3x1 * mat_bar_3x1;
+	float4x1 mat_mul_4x1 = mat_foo_4x1 * mat_bar_4x1;
+	float2x2 mat_mul_2x2 = mat_foo_2x2 * mat_bar_2x2;
+	float2x3 mat_mul_2x3 = mat_foo_2x3 * mat_bar_2x3;
+	float2x4 mat_mul_2x4 = mat_foo_2x4 * mat_bar_2x4;
+	float3x2 mat_mul_3x2 = mat_foo_3x2 * mat_bar_3x2;
+	float4x2 mat_mul_4x2 = mat_foo_4x2 * mat_bar_4x2;
+	float3x3 mat_mul_3x3 = mat_foo_3x3 * mat_bar_3x3;
+	float3x4 mat_mul_3x4 = mat_foo_3x4 * mat_bar_3x4;
+	float4x3 mat_mul_4x3 = mat_foo_4x3 * mat_bar_4x3;
+	float4x4 mat_mul_4x4 = mat_foo_4x4 * mat_bar_4x4;
+
+	// Division
+
+	float1x1 mat_div_1x1 = mat_foo_1x1 / mat_bar_1x1;
+	float1x2 mat_div_1x2 = mat_foo_1x2 / mat_bar_1x2;
+	float1x3 mat_div_1x3 = mat_foo_1x3 / mat_bar_1x3;
+	float1x4 mat_div_1x4 = mat_foo_1x4 / mat_bar_1x4;
+	float2x1 mat_div_2x1 = mat_foo_2x1 / mat_bar_2x1;
+	float3x1 mat_div_3x1 = mat_foo_3x1 / mat_bar_3x1;
+	float4x1 mat_div_4x1 = mat_foo_4x1 / mat_bar_4x1;
+	float2x2 mat_div_2x2 = mat_foo_2x2 / mat_bar_2x2;
+	float2x3 mat_div_2x3 = mat_foo_2x3 / mat_bar_2x3;
+	float2x4 mat_div_2x4 = mat_foo_2x4 / mat_bar_2x4;
+	float3x2 mat_div_3x2 = mat_foo_3x2 / mat_bar_3x2;
+	float4x2 mat_div_4x2 = mat_foo_4x2 / mat_bar_4x2;
+	float3x3 mat_div_3x3 = mat_foo_3x3 / mat_bar_3x3;
+	float3x4 mat_div_3x4 = mat_foo_3x4 / mat_bar_3x4;
+	float4x3 mat_div_4x3 = mat_foo_4x3 / mat_bar_4x3;
+	float4x4 mat_div_4x4 = mat_foo_4x4 / mat_bar_4x4;
 }
 
 void RunExperiments()

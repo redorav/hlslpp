@@ -6,6 +6,8 @@
 #include <x86intrin.h>
 #endif
 
+#include <type_traits>
+
 // Helper constants
 
 union BitMask
@@ -2655,31 +2657,31 @@ inline floatNxM<2, 2> mul(const floatNxM<2, 2>& m1, const floatNxM<2, 2>& m2)
 	return floatNxM<2, 2>(result);
 }
 
+// Use SFINAE with dummy template parameters to reduce code repetition and enforce conditions to make sure templates don't get confused (e.g. a template for <1, N> and a template for <M, 2>)
+
 // Addition
+
+template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+inline floatNxM<N, M> operator + (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
+{
+	return floatNxM<N, M>(_mm_add_ps(m1._vec, m2._vec));
+}
+
+template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+inline floatNxM<N, M> operator + (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
+{
+	return floatNxM<N, M>(_mm_add_ps(m1._vec0, m2._vec0), _mm_add_ps(m1._vec1, m2._vec1));
+}
+
+template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+inline floatNxM<N, M> operator + (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
+{
+	return floatNxM<N, M>(_mm_add_ps(m1._vec0, m2._vec0), _mm_add_ps(m1._vec1, m2._vec1), _mm_add_ps(m1._vec2, m2._vec2));
+}
 
 inline floatNxM<4, 4> operator + (const floatNxM<4, 4>& m1, const floatNxM<4, 4>& m2)
 {
-	__m128 vec0 = _mm_add_ps(m1._vec0, m2._vec0);
-	__m128 vec1 = _mm_add_ps(m1._vec1, m2._vec1);
-	__m128 vec2 = _mm_add_ps(m1._vec2, m2._vec2);
-	__m128 vec3 = _mm_add_ps(m1._vec3, m2._vec3);
-
-	return floatNxM<4, 4>(vec0, vec1, vec2, vec3);
-}
-
-template<int M>
-inline floatNxM<3, M> operator + (const floatNxM<3, M>& m1, const floatNxM<3, M>& m2)
-{
-	__m128 vec0 = _mm_add_ps(m1._vec0, m2._vec0);
-	__m128 vec1 = _mm_add_ps(m1._vec1, m2._vec1);
-	__m128 vec2 = _mm_add_ps(m1._vec2, m2._vec2);
-
-	return floatNxM<3, M>(vec0, vec1, vec2);
-}
-
-inline floatNxM<2, 2> operator + (const floatNxM<2, 2>& m1, const floatNxM<2, 2>& m2)
-{
-	return floatNxM<2, 2>(_mm_add_ps(m1._vec, m2._vec));
+	return floatNxM<4, 4>(_mm_add_ps(m1._vec0, m2._vec0), _mm_add_ps(m1._vec1, m2._vec1), _mm_add_ps(m1._vec2, m2._vec2), _mm_add_ps(m1._vec3, m2._vec3));
 }
 
 template<int N, int M>
@@ -2691,14 +2693,27 @@ inline floatNxM<N, M>& operator += (floatNxM<N, M>& m1, const floatNxM<N, M>& m2
 
 // Subtraction
 
+template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+inline floatNxM<N, M> operator - (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
+{
+	return floatNxM<N, M>(_mm_sub_ps(m1._vec, m2._vec));
+}
+
+template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+inline floatNxM<N, M> operator - (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
+{
+	return floatNxM<N, M>(_mm_sub_ps(m1._vec0, m2._vec0), _mm_sub_ps(m1._vec1, m2._vec1));
+}
+
+template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+inline floatNxM<N, M> operator - (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
+{
+	return floatNxM<N, M>(_mm_sub_ps(m1._vec0, m2._vec0), _mm_sub_ps(m1._vec1, m2._vec1), _mm_sub_ps(m1._vec2, m2._vec2));
+}
+
 inline floatNxM<4, 4> operator - (const floatNxM<4, 4>& m1, const floatNxM<4, 4>& m2)
 {
-	__m128 vec0 = _mm_sub_ps(m1._vec0, m2._vec0);
-	__m128 vec1 = _mm_sub_ps(m1._vec1, m2._vec1);
-	__m128 vec2 = _mm_sub_ps(m1._vec2, m2._vec2);
-	__m128 vec3 = _mm_sub_ps(m1._vec3, m2._vec3);
-
-	return floatNxM<4, 4>(vec0, vec1, vec2, vec3);
+	return floatNxM<4, 4>(_mm_sub_ps(m1._vec0, m2._vec0), _mm_sub_ps(m1._vec1, m2._vec1), _mm_sub_ps(m1._vec2, m2._vec2), _mm_sub_ps(m1._vec3, m2._vec3));
 }
 
 template<int N, int M>
@@ -2710,14 +2725,27 @@ inline floatNxM<N, M>& operator -= (floatNxM<N, M>& m1, const floatNxM<N, M>& m2
 
 // Multiplication
 
+template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+inline floatNxM<N, M> operator * (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
+{
+	return floatNxM<N, M>(_mm_mul_ps(m1._vec, m2._vec));
+}
+
+template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+inline floatNxM<N, M> operator * (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
+{
+	return floatNxM<N, M>(_mm_mul_ps(m1._vec0, m2._vec0), _mm_mul_ps(m1._vec1, m2._vec1));
+}
+
+template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+inline floatNxM<N, M> operator * (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
+{
+	return floatNxM<N, M>(_mm_mul_ps(m1._vec0, m2._vec0), _mm_mul_ps(m1._vec1, m2._vec1), _mm_mul_ps(m1._vec2, m2._vec2));
+}
+
 inline floatNxM<4, 4> operator * (const floatNxM<4, 4>& m1, const floatNxM<4, 4>& m2)
 {
-	__m128 vec0 = _mm_mul_ps(m1._vec0, m2._vec0);
-	__m128 vec1 = _mm_mul_ps(m1._vec1, m2._vec1);
-	__m128 vec2 = _mm_mul_ps(m1._vec2, m2._vec2);
-	__m128 vec3 = _mm_mul_ps(m1._vec3, m2._vec3);
-
-	return floatNxM<4, 4>(vec0, vec1, vec2, vec3);
+	return floatNxM<4, 4>(_mm_mul_ps(m1._vec0, m2._vec0), _mm_mul_ps(m1._vec1, m2._vec1), _mm_mul_ps(m1._vec2, m2._vec2), _mm_mul_ps(m1._vec3, m2._vec3));
 }
 
 template<int N, int M>
@@ -2729,40 +2757,27 @@ inline floatNxM<N, M>& operator *= (floatNxM<N, M>& m1, const floatNxM<N, M>& m2
 
 // Division
 
-inline floatNxM<2, 2> operator / (const floatNxM<2, 2>& m1, const floatNxM<2, 2>& m2)
+template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+inline floatNxM<N, M> operator / (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
-	__m128 vec0 = _mm_div_ps(m1._vec, m2._vec);
-	return floatNxM<2, 2>(vec0);
+	return floatNxM<N, M>(_mm_div_ps(m1._vec, m2._vec));
 }
 
-template<int M>
-inline floatNxM<3, M> operator / (const floatNxM<3, M>& m1, const floatNxM<3, M>& m2)
+template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+inline floatNxM<N, M> operator / (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
-	__m128 vec0 = _mm_div_ps(m1._vec0, m2._vec0);
-	__m128 vec1 = _mm_div_ps(m1._vec1, m2._vec1);
-	__m128 vec2 = _mm_div_ps(m1._vec2, m2._vec2);
-
-	return floatNxM<3, M>(vec0, vec1, vec2);
+	return floatNxM<N, M>(_mm_div_ps(m1._vec0, m2._vec0), _mm_div_ps(m1._vec1, m2._vec1));
 }
 
-template<int N>
-inline floatNxM<N, 3> operator / (const floatNxM<N, 3>& m1, const floatNxM<N, 3>& m2)
+template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+inline floatNxM<N, M> operator / (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
-	__m128 vec0 = _mm_div_ps(m1._vec0, m2._vec0);
-	__m128 vec1 = _mm_div_ps(m1._vec1, m2._vec1);
-	__m128 vec2 = _mm_div_ps(m1._vec2, m2._vec2);
-
-	return floatNxM<N, 3>(vec0, vec1, vec2);
+	return floatNxM<N, M>(_mm_div_ps(m1._vec0, m2._vec0), _mm_div_ps(m1._vec1, m2._vec1), _mm_div_ps(m1._vec2, m2._vec2));
 }
 
 inline floatNxM<4, 4> operator / (const floatNxM<4, 4>& m1, const floatNxM<4, 4>& m2)
 {
-	__m128 vec0 = _mm_div_ps(m1._vec0, m2._vec0);
-	__m128 vec1 = _mm_div_ps(m1._vec1, m2._vec1);
-	__m128 vec2 = _mm_div_ps(m1._vec2, m2._vec2);
-	__m128 vec3 = _mm_div_ps(m1._vec3, m2._vec3);
-
-	return floatNxM<4, 4>(vec0, vec1, vec2, vec3);
+	return floatNxM<4, 4>(_mm_div_ps(m1._vec0, m2._vec0), _mm_div_ps(m1._vec1, m2._vec1), _mm_div_ps(m1._vec2, m2._vec2), _mm_div_ps(m1._vec3, m2._vec3));
 }
 
 template<int N, int M>
