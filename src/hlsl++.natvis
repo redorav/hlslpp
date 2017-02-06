@@ -21,13 +21,170 @@
     <DisplayString Optional="true">float1 {{ {_vec[0]} }}</DisplayString>
   </Type>
 
+  <Type Name="floatNxM&lt;1, 1&gt;">
+    <DisplayString Optional="true">float1x1 {{ {_vec.m128_f32[0]} }}</DisplayString>
+    <DisplayString Optional="true">float1x1 {{ {_vec[0]} }}</DisplayString>
+  </Type>
+
+  <Type Name="floatNxM&lt;1, 2&gt;">
+    <DisplayString Optional="true">float1x2 {{ {_vec.m128_f32[0]}, {_vec.m128_f32[1]} }}</DisplayString>
+    <DisplayString Optional="true">float1x2 {{ {_vec[0]}, {_vec[1]} }}</DisplayString>
+  </Type>
+
+  <Type Name="floatNxM&lt;1, 3&gt;">
+    <DisplayString Optional="true">float1x3 {{ {_vec.m128_f32[0]}, {_vec.m128_f32[1]}, {_vec.m128_f32[2]} }}</DisplayString>
+    <DisplayString Optional="true">float1x3 {{ {_vec[0]}, {_vec[1]}, {_vec[2]} }}</DisplayString>
+  </Type>
+
+  <Type Name="floatNxM&lt;1, 4&gt;">
+    <DisplayString Optional="true">float1x4 {{ {_vec.m128_f32[0]}, {_vec.m128_f32[1]}, {_vec.m128_f32[2]}, {_vec.m128_f32[3]} }}</DisplayString>
+    <DisplayString Optional="true">float1x4 {{ {_vec[0]}, {_vec[1]}, {_vec[2]}, {_vec[3]} }}</DisplayString>
+  </Type>
+
+  <Type Name="floatNxM&lt;2, 1&gt;">
+    <DisplayString Optional="true">float2x1 {{ {_vec.m128_f32[0]}, {_vec.m128_f32[1]} }}</DisplayString>
+    <DisplayString Optional="true">float2x1 {{ {_vec[0]}, {_vec[1]} }}</DisplayString>
+    <Expand>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec.m128_f32[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec.m128_f32[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec[1]}</DisplayString></Synthetic>
+    </Expand>
+  </Type>
+
+  <Type Name="floatNxM&lt;3, 1&gt;">
+    <DisplayString Optional="true">float3x1 {{ {_vec.m128_f32[0]}, {_vec.m128_f32[1]}, {_vec.m128_f32[2]} }}</DisplayString>
+    <DisplayString Optional="true">float3x1 {{ {_vec[0]}, {_vec[1]}, {_vec[2]} }}</DisplayString>
+    <Expand>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec.m128_f32[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec.m128_f32[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec.m128_f32[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec[2]}</DisplayString></Synthetic>
+    </Expand>
+  </Type>
+
+  <Type Name="floatNxM&lt;4, 1&gt;">
+    <DisplayString Optional="true">float4x1 {{ {_vec.m128_f32[0]}, {_vec.m128_f32[1]}, {_vec.m128_f32[2]}, {_vec.m128_f32[3]} }}</DisplayString>
+    <DisplayString Optional="true">float4x1 {{ {_vec[0]}, {_vec[1]}, {_vec[2]}, {_vec[3]} }}</DisplayString>
+    <Expand>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec.m128_f32[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec.m128_f32[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec.m128_f32[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec3" Optional="true"><DisplayString>{_vec.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec3" Optional="true"><DisplayString>{_vec[3]}</DisplayString></Synthetic>
+    </Expand>
+  </Type>
+  
+  <Type Name="floatNxM&lt;2, 2&gt;">
+    <DisplayString>float2x2</DisplayString>
+    <Expand>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec.m128_f32[0]}, {_vec.m128_f32[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec.m128_f32[2]}, {_vec.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec[0]}, {_vec[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec[2]}, {_vec[3]}</DisplayString></Synthetic>
+    </Expand>
+  </Type>
+  
+  <Type Name="floatNxM&lt;2, 3&gt;">
+    <DisplayString>float2x3</DisplayString>
+    <Expand>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0.m128_f32[0]}, {_vec0.m128_f32[1]}, {_vec0.m128_f32[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec1.m128_f32[0]}, {_vec1.m128_f32[1]}, {_vec1.m128_f32[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0[0]}, {_vec0[1]}, {_vec0[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec1[0]}, {_vec1[1]}, {_vec1[2]}</DisplayString></Synthetic>
+    </Expand>
+  </Type>
+  
+  <Type Name="floatNxM&lt;2, 4&gt;">
+    <DisplayString>float2x4</DisplayString>
+    <Expand>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0.m128_f32[0]}, {_vec0.m128_f32[1]}, {_vec0.m128_f32[2]}, {_vec0.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec1.m128_f32[0]}, {_vec1.m128_f32[1]}, {_vec1.m128_f32[2]}, {_vec1.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0[0]}, {_vec0[1]}, {_vec0[2]}, {_vec0[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec1[0]}, {_vec1[1]}, {_vec1[2]}, {_vec1[3]}</DisplayString></Synthetic>
+    </Expand>
+  </Type>
+  
+  <Type Name="floatNxM&lt;3, 2&gt;">
+    <DisplayString>float3x2</DisplayString>
+    <Expand>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0.m128_f32[0]}, {_vec1.m128_f32[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec0.m128_f32[1]}, {_vec1.m128_f32[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec0.m128_f32[2]}, {_vec1.m128_f32[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0[0]}, {_vec1[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec0[1]}, {_vec1[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec0[2]}, {_vec1[2]}</DisplayString></Synthetic>
+    </Expand>
+  </Type>
+  
+  <Type Name="floatNxM&lt;4, 2&gt;">
+    <DisplayString>float4x2</DisplayString>
+    <Expand>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0.m128_f32[0]}, {_vec1.m128_f32[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec0.m128_f32[1]}, {_vec1.m128_f32[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec0.m128_f32[2]}, {_vec1.m128_f32[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec3" Optional="true"><DisplayString>{_vec0.m128_f32[3]}, {_vec1.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0[0]}, {_vec1[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec0[1]}, {_vec1[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec0[2]}, {_vec1[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec3" Optional="true"><DisplayString>{_vec0[3]}, {_vec1[3]}</DisplayString></Synthetic>
+    </Expand>
+  </Type>
+  
+  <Type Name="floatNxM&lt;3, 3&gt;">
+    <DisplayString>float3x3</DisplayString>
+    <Expand>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0.m128_f32[0]}, {_vec0.m128_f32[1]}, {_vec0.m128_f32[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec1.m128_f32[0]}, {_vec1.m128_f32[1]}, {_vec1.m128_f32[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec2.m128_f32[0]}, {_vec2.m128_f32[1]}, {_vec2.m128_f32[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0[0]}, {_vec0[1]}, {_vec0[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec1[0]}, {_vec1[1]}, {_vec1[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec2[0]}, {_vec2[1]}, {_vec2[2]}</DisplayString></Synthetic>
+    </Expand>
+  </Type>
+  
+  <Type Name="floatNxM&lt;3, 4&gt;">
+    <DisplayString>float3x4</DisplayString>
+    <Expand>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0.m128_f32[0]}, {_vec0.m128_f32[1]}, {_vec0.m128_f32[2]}, {_vec0.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec1.m128_f32[0]}, {_vec1.m128_f32[1]}, {_vec1.m128_f32[2]}, {_vec1.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec2.m128_f32[0]}, {_vec2.m128_f32[1]}, {_vec2.m128_f32[2]}, {_vec2.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0[0]}, {_vec0[1]}, {_vec0[2]}, {_vec0[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec1[0]}, {_vec1[1]}, {_vec1[2]}, {_vec1[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec2[0]}, {_vec2[1]}, {_vec2[2]}, {_vec2[3]}</DisplayString></Synthetic>
+    </Expand>
+  </Type>
+  
+  <Type Name="floatNxM&lt;4, 3&gt;">
+    <DisplayString>float4x3</DisplayString>
+    <Expand>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0.m128_f32[0]}, {_vec1.m128_f32[0]}, {_vec2.m128_f32[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec0.m128_f32[1]}, {_vec1.m128_f32[1]}, {_vec2.m128_f32[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec0.m128_f32[2]}, {_vec1.m128_f32[2]}, {_vec2.m128_f32[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec3" Optional="true"><DisplayString>{_vec0.m128_f32[3]}, {_vec1.m128_f32[3]}, {_vec2.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0[0]}, {_vec1[0]}, {_vec2[0]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec0[1]}, {_vec1[1]}, {_vec2[1]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec0[2]}, {_vec1[2]}, {_vec2[2]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec3" Optional="true"><DisplayString>{_vec0[3]}, {_vec1[3]}, {_vec2[3]}</DisplayString></Synthetic>
+    </Expand>
+  </Type>
+
   <Type Name="floatNxM&lt;4, 4&gt;">
     <DisplayString>float4x4</DisplayString>
     <Expand>
-      <Synthetic Name ="vec0"><DisplayString>{_vec0.m128_f32[0]}, {_vec0.m128_f32[1]}, {_vec0.m128_f32[2]}, {_vec0.m128_f32[3]}</DisplayString></Synthetic>
-      <Synthetic Name ="vec1"><DisplayString>{_vec1.m128_f32[0]}, {_vec1.m128_f32[1]}, {_vec1.m128_f32[2]}, {_vec1.m128_f32[3]}</DisplayString></Synthetic>
-      <Synthetic Name ="vec2"><DisplayString>{_vec2.m128_f32[0]}, {_vec2.m128_f32[1]}, {_vec2.m128_f32[2]}, {_vec2.m128_f32[3]}</DisplayString></Synthetic>
-      <Synthetic Name ="vec3"><DisplayString>{_vec3.m128_f32[0]}, {_vec3.m128_f32[1]}, {_vec3.m128_f32[2]}, {_vec3.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0.m128_f32[0]}, {_vec0.m128_f32[1]}, {_vec0.m128_f32[2]}, {_vec0.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec1.m128_f32[0]}, {_vec1.m128_f32[1]}, {_vec1.m128_f32[2]}, {_vec1.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec2.m128_f32[0]}, {_vec2.m128_f32[1]}, {_vec2.m128_f32[2]}, {_vec2.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec3" Optional="true"><DisplayString>{_vec3.m128_f32[0]}, {_vec3.m128_f32[1]}, {_vec3.m128_f32[2]}, {_vec3.m128_f32[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec0" Optional="true"><DisplayString>{_vec0[0]}, {_vec0[1]}, {_vec0[2]}, {_vec0[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec1" Optional="true"><DisplayString>{_vec1[0]}, {_vec1[1]}, {_vec1[2]}, {_vec1[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec2" Optional="true"><DisplayString>{_vec2[0]}, {_vec2[1]}, {_vec2[2]}, {_vec2[3]}</DisplayString></Synthetic>
+      <Synthetic Name ="vec3" Optional="true"><DisplayString>{_vec3[0]}, {_vec3[1]}, {_vec3[2]}, {_vec3[3]}</DisplayString></Synthetic>
     </Expand>
   </Type>
 
