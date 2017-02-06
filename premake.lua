@@ -51,11 +51,11 @@ workspace "hlsl++"
 		filter { "platforms:"..PlatformLLVM64 }
 			toolset("msc-llvm-vs2014")
 			architecture("x64")
-			buildoptions { "-std=c++11 -Wno-unused-variable -msse4.1" }
+			buildoptions { "-Wno-unused-variable -msse4.1" }
 			
 		filter { "platforms:"..PlatformLLVM32 }
 			toolset("msc-llvm-vs2014")
-			buildoptions { "-std=c++11 -Wno-unused-variable -msse4.1" }
+			buildoptions { "-Wno-unused-variable -msse4.1" }
 	
 	end
 
