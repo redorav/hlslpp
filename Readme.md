@@ -44,13 +44,14 @@ Implemented:
 
 * floatNxM types
 * floatNxM basic operators +, *, -, / and variants
+* Matrix multiplication for all NxM matrix combinations
 
 Missing:
 
-* hlsl matrix functions: determinant, transpose, matrix multiplication
+* hlsl matrix functions: determinant, transpose
 * hlsl functions: smoothstep, atan2, cosh, sinh, tanh
+* Non-hlsl functions: invert
 * floatNxM _m00_m01 style swizzling (rows implemented but missing columns)
 * float1xM implicit conversions with floatM
 * floatM to float1 implicit conversions
 * Integer types int1, int2, int3, int4
-* Non-hlsl functions: invert
