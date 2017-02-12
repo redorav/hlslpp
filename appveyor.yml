@@ -10,5 +10,10 @@ image: Visual Studio 2015
 install:
   start /B /W premake/win/premake5 --file=premake.lua vs2015
 
-platform: MSVC 64
+platform:
+  - MSVC 64
+  - MSVC 32
+  - LLVM 64
+  - LLVM 32
+  
 configuration: Release
