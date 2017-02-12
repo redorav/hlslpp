@@ -90,10 +90,10 @@ void ExhaustiveTest(uint32_t start, uint32_t stop, Transform4 TestFunc, Transfor
 
 void RunUnitTests()
 {
-	float f1 = rand();
-	float f2 = rand();
-	float f3 = rand();
-	float f4 = rand();
+	float f1 = (float) rand();
+	float f2 = (float) rand();
+	float f3 = (float) rand();
+	float f4 = (float) rand();
 
 	// Initialization
 
@@ -1174,7 +1174,7 @@ void RunSpeedTests()
 			v2 = sqrt((v1 * v2 + v2 * v3));
 			//v2 = normalize(v2);
 		}
-		float time = timer.Get();
+		double time = timer.Get();
 		printf("STRUCT: %f, %f, %f, %f = %f\n", v2.x, v2.y, v2.z, v2.w, time);
 	}
 
@@ -1188,7 +1188,7 @@ void RunSpeedTests()
 	{
 		v2 = lerp(v1, v2, v2);
 	}
-	float time = timer.Get();
+	double time = timer.Get();
 	//printf("float4: %f, %f, %f, %f = %f\n", (float)v2.x, (float)v2.y, (float)v2.z, (float)v2.w, time);
 }
 
