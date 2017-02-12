@@ -7,6 +7,7 @@
 #endif
 
 #include <type_traits>
+#include <cstdint>
 
 // Helper constants
 

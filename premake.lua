@@ -60,18 +60,24 @@ workspace "hlsl++"
 	end
 
 project "hlsl++"
-	--kind("StaticLib")
-	kind("ConsoleApp")
+	kind("StaticLib")
 	language("C++")
 	files
 	{
-		srcDir.."/**.h", srcDir.."/**.cpp"
+		srcDir.."/hlsl++.h", srcDir.."/swizzle/**.h",
+		srcDir.."/hlsl++.cpp"
 	}
 	
-project "UnitTests"
-	kind("WindowedApp")
-	--lalal
+project "unit_tests"
+	kind("ConsoleApp")
+	--links { "hlsl++" }
+	files
+	{
+		srcDir.."/hlsl++_unit_tests.cpp",
+		srcDir.."/**.natvis"
+	}
 	
-project("Natvis")
-	kind("StaticLib")
-	files{ srcDir.."/**.natvis" }
+	includedirs
+	{
+		srcDir.."/**.h"
+	}

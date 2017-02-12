@@ -1,9 +1,20 @@
-#include "hlsl++.h"
+#if defined(_WIN32)
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include "windows.h"
+
+//#include "DirectXMath.h"
+#endif
+
 #include <cassert>
 #include <cmath>
 #include <chrono>
+#include <cstdio>
+#include <iostream>
 
-//#include "DirectXMath.h"
+#include "hlsl++.h"
+
+using std::cout;
 
 // Copied from https://randomascii.wordpress.com/2014/01/27/theres-only-four-billion-floatsso-test-them-all/
 union Float_t
@@ -1179,4 +1190,13 @@ void RunSpeedTests()
 	}
 	float time = timer.Get();
 	//printf("float4: %f, %f, %f, %f = %f\n", (float)v2.x, (float)v2.y, (float)v2.z, (float)v2.w, time);
+}
+
+int main()
+{
+	RunSpeedTests();
+	RunUnitTests();
+	RunExperiments();
+
+	getchar();
 }
