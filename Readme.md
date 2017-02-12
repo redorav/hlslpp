@@ -1,3 +1,5 @@
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/x46lrnvdy29ysgqp?svg=true)](https://ci.appveyor.com/project/redorav/hlslpp)
+
 # HLSL++
 
 HLSL++ is a small math library with the same syntax and specific features as hlsl. It features swizzling, all the expected math operators and functions from the hlsl documentation. The library is aimed mainly at game developers. It's meant to ease the C++ to shader bridge by providing a common interface and syntax. It makes use of SSE instructions on PC, and NEON is planned for the future.
