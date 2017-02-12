@@ -1,0 +1,14 @@
+# version format
+version: 1.0.{build}
+
+# Do not build feature branch with open Pull Requests
+skip_branch_with_pr: true
+
+# Build worker image (VM template)
+image: Visual Studio 2015
+
+install:
+  start /B /W premake/win/premake5 --file=premake.lua vs2015
+
+platform: MSVC 64
+configuration: Release
