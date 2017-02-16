@@ -1207,7 +1207,7 @@ public:
 	floatN<1>(const floatN<1>& v) : _vec(v._vec) {}
 	template<int A>
 	floatN<1>(const component1<A>& c);
-	floatN<1>(const floatNxM<1, 1>& m);
+	explicit floatN<1>(const floatNxM<1, 1>& v);
 
 	floatN<1>& operator = (float f);
 	floatN<1>& operator = (const floatN<1>& c);
@@ -1233,6 +1233,9 @@ public:
 	floatN<2>(float x, float y) : _vec(_mm_set_ps(0.0f, 0.0f, y, x)) {}
 	floatN<2>(const floatN<2>& v) : _vec(v._vec) {}
 	floatN<2>(const floatN<1>& v1, const floatN<1>& v2);
+	explicit floatN<2>(const floatNxM<2, 1>& v);
+	explicit floatN<2>(const floatNxM<1, 2>& v);
+
 	template<int A, int B>
 	floatN<2>(const component2<A, B>& c);
 
@@ -1261,6 +1264,8 @@ public:
 	floatN<3>(const floatN<1>& v1, const floatN<1>& v2, const floatN<1>& v3);
 	floatN<3>(const floatN<2>& v1, const floatN<1>& v2);
 	floatN<3>(const floatN<1>& v1, const floatN<2>& v2);
+	explicit floatN<3>(const floatNxM<3, 1>& v);
+	explicit floatN<3>(const floatNxM<1, 3>& v);
 
 	template<int A, int B, int C>
 	floatN<3>(const component3<A, B, C>& c);
@@ -1288,7 +1293,6 @@ public:
 	floatN<4>(float f) : _vec(_mm_set_ps1(f)) {}
 	floatN<4>(float x, float y, float z, float w) : _vec(_mm_set_ps(w, z, y, x)) {}
 	floatN<4>(const floatN<4>& v) : _vec(v._vec) {}
-
 	floatN<4>(const floatN<1>& v1, const floatN<1>& v2, const floatN<1>& v3, const floatN<1>& v4);
 	floatN<4>(const floatN<1>& v1, const floatN<3>& v2);
 	floatN<4>(const floatN<3>& v1, const floatN<1>& v2);
@@ -1296,6 +1300,9 @@ public:
 	floatN<4>(const floatN<2>& v1, const floatN<1>& v2, const floatN<1>& v3);
 	floatN<4>(const floatN<1>& v1, const floatN<2>& v2, const floatN<1>& v3);
 	floatN<4>(const floatN<1>& v1, const floatN<1>& v2, const floatN<2>& v3);
+
+	explicit floatN<4>(const floatNxM<4, 1>& v);
+	explicit floatN<4>(const floatNxM<1, 4>& v);
 
 	template<int A, int B, int C, int D>
 	floatN<4>(const component4<A, B, C, D>& c);
@@ -1784,9 +1791,9 @@ inline float1::floatN(const component1<A>& c)
 	_vec = _mm_shuffle_ps(c._vec, c._vec, _MM_SHUFFLE(A, A, A, A));
 }
 
-inline float1::floatN(const float1x1& m)
+inline float1::floatN(const float1x1& v)
 {
-	_vec = m._vec;
+	_vec = v._vec;
 }
 
 inline float1& float1::operator = (const float1& v)
@@ -1825,6 +1832,16 @@ inline float2::floatN(const component2<A, B>& c)
 	_vec = component2<A, B>::template swizzle<A, B, 0, 1>(c._vec);
 }
 
+inline float2::floatN(const float2x1& v)
+{
+	_vec = v._vec;
+}
+
+inline float2::floatN(const float1x2& v)
+{
+	_vec = v._vec;
+}
+
 inline float2& float2::operator = (const float2& v)
 {
 	_vec = v._vec;
@@ -1857,6 +1874,16 @@ inline float3::floatN(const floatN<2>& v1, const floatN<1>& v2)
 inline float3::floatN(const floatN<1>& v1, const floatN<2>& v2)
 {
 	_vec = _mm_blend_ps(v1._vec, _mm_perm_xxyx_ps(v2._vec), 0x6); // 0110
+}
+
+inline float3::floatN(const float3x1& v)
+{
+	_vec = v._vec;
+}
+
+inline float3::floatN(const float1x3& v)
+{
+	_vec = v._vec;
 }
 
 inline float3& float3::operator = (const float3& v)
@@ -1918,6 +1945,16 @@ template<>
 inline float4::floatN(const component4<0, 1, 2, 3>& c)
 {
 	_vec = c._vec;
+}
+
+inline float4::floatN(const float4x1& v)
+{
+	_vec = v._vec;
+}
+
+inline float4::floatN(const float1x4& v)
+{
+	_vec = v._vec;
 }
 
 inline float4& float4::operator = (const float4& v)
@@ -3146,6 +3183,32 @@ inline float4x4 mul(const float4x4& m1, const float4x4& m2)
 
 	return float4x4(mad1w, mad2w, mad3w, mad4w);
 }
+
+// Matrix-matrix multiplication with floatN<N> vectors and components as operands
+
+template<int N>
+inline floatN<N> mul(const floatNxM<N, 4>& m1, const float4& v) { return floatN<N>(mul(m1, float4x1(v))); }
+
+template<int N>
+inline floatN<N> mul(const floatNxM<N, 3>& m1, const float3& v) { return floatN<N>(mul(m1, float3x1(v))); }
+
+template<int N>
+inline floatN<N> mul(const floatNxM<N, 2>& m1, const float2& v) { return floatN<N>(mul(m1, float2x1(v))); }
+
+template<int N>
+inline floatN<N> mul(const floatNxM<N, 1>& m1, const float1& v) { return floatN<N>(mul(m1, float1x1(v))); }
+
+template<int N>
+inline floatN<N> mul(const float4& v, const floatNxM<N, 4>& m1) { return floatN<N>(mul(float1x4(v), m1)); }
+
+template<int N>
+inline floatN<N> mul(const float3& v, const floatNxM<N, 3>& m1) { return floatN<N>(mul(float1x3(v), m1)); }
+
+template<int N>
+inline floatN<N> mul(const float2& v, const floatNxM<N, 2>& m1) { return floatN<N>(mul(float1x2(v), m1)); }
+
+template<int N>
+inline floatN<N> mul(const float1& v, const floatNxM<N, 1>& m1) { return floatN<N>(mul(float1x1(v), m1)); }
 
 // Addition
 

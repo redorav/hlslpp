@@ -923,50 +923,27 @@ void RunUnitTests()
 	float4x3 mat_mmul_4x4_4x3 = mul(mat_bar_4x4, mat_foo_4x3);
 	float4x4 mat_mmul_4x4_4x4 = mul(mat_bar_4x4, mat_foo_4x4);
 
-	// Misc
-	float4x4 m1 = {
-		1, 2, 3, 4,
-		1, 2, 3, 5,
-		3, 1, 9, 7,
-		2, 4, 4, 1 };
+	// Matrix-vector multiplication
 
-	float4x4 m2 = {
-		1, 2, 3, 4,
-		1, 2, 3, 5,
-		3, 1, 9, 7,
-		2, 4, 4, 1 };
+	float1 vec_vmul_1x1_v1 = mul(mat_foo_1x1, vfoo1);
+	float1 vec_vmul_1x2_v2 = mul(mat_foo_1x2, vfoo2);
+	float1 vec_vmul_1x3_v3 = mul(mat_foo_1x3, vfoo3);
+	float1 vec_vmul_1x4_v4 = mul(mat_foo_1x4, vfoo4);
 
-	float a = 3.0f;
+	float2 vec_vmul_2x1_v1 = mul(mat_foo_2x1, vfoo1);
+	float2 vec_vmul_2x2_v2 = mul(mat_foo_2x2, vfoo2);
+	float2 vec_vmul_2x3_v3 = mul(mat_foo_2x3, vfoo3);
+	float2 vec_vmul_2x4_v4 = mul(mat_foo_2x4, vfoo4);
 
-	float4 perry1(1, 2, 3, 4);
-	float4 perry2(5, 6, 7, 8);
+	float3 vec_vmul_3x1_v1 = mul(mat_foo_3x1, vfoo1);
+	float3 vec_vmul_3x2_v2 = mul(mat_foo_3x2, vfoo2);
+	float3 vec_vmul_3x3_v3 = mul(mat_foo_3x3, vfoo3);
+	float3 vec_vmul_3x4_v4 = mul(mat_foo_3x4, vfoo4);
 
-	float2x2 m2x2_1 = float2x2(1, 2, 3, 4);
-	float2x2 m2x2_2 = float2x2(5, 6, 7, 8);
-
-	float2x2 m2x2_3 = mul(m2x2_1, m2x2_2);
-
-	float4x4 mat0 = float4x4(1, 2, 3, 4,
-		5, 6, 7, 8,
-		9, 10, 11, 12,
-		13, 14, 15, 16);
-
-	float4 vec0(1, 2, 3, 4);
-	float4 vec1(1, 2, 3, 4);
-	float4 vec2(1, 2, 3, 4);
-
-	//float1 alpha = float1(0);
-
-	float4 lrp = lerp(vec0.bgra, vec1.rrgb, vec2.rrrr);
-	//float4 lrp2 = lerp(vec0.bgra, vec1.rrgb, alpha);
-
-	//float4 cmVec = mul(mat0, vec0);
-	//float4 rmVec = mul(vec0, mat0);
-
-	float2 vec20 = float2(1, 2);
-	float2 vec21 = float2(1, 2);
-
-	float1 dot2_0 = dot(vec20.yx, vec21);
+	float4 vec_vmul_4x1_v1 = mul(mat_foo_4x1, vfoo1);
+	float4 vec_vmul_4x2_v2 = mul(mat_foo_4x2, vfoo2);
+	float4 vec_vmul_4x3_v3 = mul(mat_foo_4x3, vfoo3);
+ 	float4 vec_vmul_4x4_v4 = mul(mat_foo_4x4, vfoo4);
 }
 
 void RunExperiments()
