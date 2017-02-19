@@ -627,7 +627,7 @@ static const __m128 f4absMask		= _mm_set_ps1(absMask.f);
 // This implementation does not follow the reference
 // float2 c = frac(abs(a/b))*abs(b);
 // return (a < 0) ? -c : c;    // if ( a < 0 ) c = 0-c
-__m128 _mm_fmod_ps(__m128 x, __m128 y)
+inline __m128 _mm_fmod_ps(__m128 x, __m128 y)
 {
 	__m128 div = _mm_div_ps(x, y);
 	__m128 trnc = _mm_sub_ps(div, _mm_trunc_ps(div));
@@ -636,7 +636,7 @@ __m128 _mm_fmod_ps(__m128 x, __m128 y)
 
 // Cross product for 3-component vectors
 // TODO Can apparently be done with one less shuffle http://fastcpp.blogspot.co.uk/2011/04/vector-cross-product-using-sse-code.html
-__m128 _mm_cross_ps(__m128 x, __m128 y)
+inline __m128 _mm_cross_ps(__m128 x, __m128 y)
 {
 	__m128 yzx_1 = _mm_perm_yzxx_ps(x);
 	__m128 zxy_2 = _mm_perm_zxyx_ps(y);
@@ -656,7 +656,7 @@ static const __m128 log2_c5 = _mm_set_ps1(-3.4436006e-2f);
 
 // See http://jrfonseca.blogspot.co.uk/2008/09/fast-sse2-pow-tables-or-polynomials.html for derivation
 // Fonseca derives from here: http://forum.devmaster.net/t/approximate-math-library/11679
-__m128 _mm_log2_ps(__m128 x)
+inline __m128 _mm_log2_ps(__m128 x)
 {
 	__m128i exp = _mm_set1_epi32(0x7F800000);
 	__m128i mant = _mm_set1_epi32(0x007FFFFF);
@@ -690,12 +690,12 @@ __m128 _mm_log10_ps(__m128 x)
 
 static const __m128 invlog_2_e = _mm_div_ps(f4one, _mm_log2_ps(f4e));
 
-__m128 _mm_log_ps(__m128 x)
+inline __m128 _mm_log_ps(__m128 x)
 {
 	return _mm_mul_ps(_mm_log2_ps(x), invlog_2_e);
 }
 
-__m128 _mm_lrp_ps(__m128 x, __m128 y, __m128 a)
+inline __m128 _mm_lrp_ps(__m128 x, __m128 y, __m128 a)
 {
 	// Slower
 	//__m128 y_minus_x = _mm_sub_ps(y, x);
@@ -720,7 +720,7 @@ static const __m128i exp2_127 = _mm_set1_epi32(127);
 
 // See http://jrfonseca.blogspot.co.uk/2008/09/fast-sse2-pow-tables-or-polynomials.html for derivation
 
-__m128 _mm_exp2_ps(__m128 x)
+inline __m128 _mm_exp2_ps(__m128 x)
 {
 	__m128i ipart;
 	__m128 fpart, expipart, expfpart;
@@ -750,7 +750,7 @@ __m128 _mm_exp2_ps(__m128 x)
 
 static const __m128 log_2_e = _mm_log2_ps(f4e);
 
-__m128 _mm_exp_ps(__m128 x)
+inline __m128 _mm_exp_ps(__m128 x)
 {
 	return _mm_exp2_ps(_mm_mul_ps(x, log_2_e));
 }
@@ -761,7 +761,7 @@ static const __m128 sin_c5 = _mm_set_ps1( 8.3109378e-3f);
 static const __m128 sin_c7 = _mm_set_ps1(-1.84477486e-4f);
 
 // Uses a minimax polynomial fitted to the [-pi/2, pi/2] range
-__m128 _mm_sin_ps(__m128 x)
+inline __m128 _mm_sin_ps(__m128 x)
 {	
 	// Range reduction (into [-2pi, 2pi] range)
 	__m128 reduced;
@@ -796,7 +796,7 @@ static const __m128 cos_c4 = _mm_set_ps1( 4.149392034e-2f);
 static const __m128 cos_c6 = _mm_set_ps1(-1.271243501e-3f);
 
 // Uses a minimax polynomial fitted to the [-pi/2, pi/2] range
-__m128 _mm_cos_ps(__m128 x)
+inline __m128 _mm_cos_ps(__m128 x)
 {	
 	// Range reduction (into [-pi, pi] range)
 	__m128 reduced;
@@ -832,7 +832,7 @@ static const __m128 tan_c7 = _mm_set_ps1(3.769634481e-2f);
 static const __m128 tan_c9 = _mm_set_ps1(4.609737727e-2f);
 
 // Uses a minimax polynomial fitted to the [-pi/4, pi/4] range
-__m128 _mm_tan_ps(__m128 x)
+inline __m128 _mm_tan_ps(__m128 x)
 {
 	// Range reduction (into [-pi/2, pi/2] range)
 	x = _mm_fmod_ps(x, f4_pi2);
@@ -867,7 +867,7 @@ static const __m128 asinacos_c4 = _mm_set_ps1( 1.946746668e-2f);
 static const __m128 asinacos_c5 = _mm_set_ps1(-4.360132611e-3f);
 
 // Max error vs. std::acos = 1.54972076e-6
-__m128 _mm_acos_ps(__m128 x)
+inline __m128 _mm_acos_ps(__m128 x)
 {
 	// We use the trigonometric identity acos(x) = pi - acos(-x) to mirror [0, 1]
 	// into the [-1, 0] range
@@ -893,7 +893,7 @@ __m128 _mm_acos_ps(__m128 x)
 }
 
 // Max error vs. std::asin = 1.5348196e-6
-__m128 _mm_asin_ps(__m128 x)
+inline __m128 _mm_asin_ps(__m128 x)
 {
 	// We use the trigonometric identity asin(x) = -asin(-x) to mirror [0, 1] into the [-1, 0] range
 	__m128 ltZero = _mm_cmplt_ps(x, f4zero);
@@ -925,7 +925,7 @@ static const __m128 atan_c9  = _mm_set_ps1( 5.506335136e-2f);
 static const __m128 atan_c11 = _mm_set_ps1(-1.249072006e-2f);
 
 // Max error vs. std::atan = 2.74181366e-6
-__m128 _mm_atan_ps(__m128 x)
+inline __m128 _mm_atan_ps(__m128 x)
 {
 	__m128 ltgtOne = _mm_cmpgt_ps(_mm_abs_ps(x), f4one); // Check if outside the [-1, 1] range
 	__m128 gtOne = _mm_cmpgt_ps(x, f4one);				 // Check if input > 1 (as we need to select the constant later)
@@ -952,7 +952,7 @@ __m128 _mm_atan_ps(__m128 x)
 	return result;
 }
 
-__m128 _mm_dot4_ps(__m128 x, __m128 y)
+inline __m128 _mm_dot4_ps(__m128 x, __m128 y)
 {
 	// SSE3 slower
 	//__m128 m = _mm_mul_ps(x, y);				// Multiply components together
@@ -972,7 +972,7 @@ __m128 _mm_dot4_ps(__m128 x, __m128 y)
 	return result;
 }
 
-__m128 _mm_dot3_ps(__m128 x, __m128 y)
+inline __m128 _mm_dot3_ps(__m128 x, __m128 y)
 {
 	// SSE4 slower
 	//__m128 result = _mm_dp_ps(v1.xyzw, v2.xyzw, 0x7f);
@@ -987,7 +987,7 @@ __m128 _mm_dot3_ps(__m128 x, __m128 y)
 	return result;
 }
 
-__m128 _mm_dot2_ps(__m128 x, __m128 y)
+inline __m128 _mm_dot2_ps(__m128 x, __m128 y)
 {
 	__m128 multi = _mm_mul_ps(x, y);			// Multiply components together
 	__m128 shuf1 = _mm_perm_yyyy_ps(multi);		// Move y into x
@@ -996,7 +996,7 @@ __m128 _mm_dot2_ps(__m128 x, __m128 y)
 	return result;
 }
 
-__m128 _mm_any_ps(__m128 x)
+inline __m128 _mm_any_ps(__m128 x)
 {
 	__m128 shuf1	= _mm_shuffle_ps(x, x, _MM_SHUFFLE(0, _MM_W, 0, _MM_Y));					// Move y into x, and w into z (ignore the rest)
 	__m128 add1		= _mm_add_ps(shuf1, x);														// Contains x+y, _, z+w, _
@@ -1008,7 +1008,7 @@ __m128 _mm_any_ps(__m128 x)
 	return result;
 }
 
-__m128 _mm_all_ps(__m128 x)
+inline __m128 _mm_all_ps(__m128 x)
 {
 	__m128 shuf1	= _mm_shuffle_ps(x, x, _MM_SHUFFLE(0, _MM_W, 0, _MM_Y));					// Move y into x, and w into z (ignore the rest)
 	__m128 mul1		= _mm_mul_ps(shuf1, x);														// Contains x*y, _, z*w, _
@@ -1021,19 +1021,19 @@ __m128 _mm_all_ps(__m128 x)
 }
 
 // Returns true if x is nan
-__m128 _mm_isnan_ps(__m128 x)
+inline __m128 _mm_isnan_ps(__m128 x)
 {
 	return _mm_cmpneq_ps(x, x);
 }
 
-// Returns true if x is +Infinity or -Infinity
-__m128 _mm_isinf_ps(__m128 x)
+// Returns true if x is +infinity or -infinity
+inline __m128 _mm_isinf_ps(__m128 x)
 {
 	return _mm_or_ps(_mm_cmpeq_ps(x, f4_inf), _mm_cmpeq_ps(x, f4_minusinf));
 }
 
-// Returns true if x is not +Infinity or -Infinity
-__m128 _mm_isfinite_ps(__m128 x)
+// Returns true if x is not +infinity or -infinity
+inline __m128 _mm_isfinite_ps(__m128 x)
 {
 	return _mm_or_ps(_mm_cmpeq_ps(x, f4_inf), _mm_cmpeq_ps(x, f4_minusinf));
 }
@@ -1106,7 +1106,7 @@ class component2
 public:
 	__m128 _vec;
 
-	void StaticAsserts()
+	void staticAsserts()
 	{
 		// Assert that no component is equal to each other for assignment
 		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
@@ -1142,7 +1142,7 @@ class component3
 public:
 	__m128 _vec;
 
-	void StaticAsserts()
+	void staticAsserts()
 	{
 		// Assert that no component is equal to each other for assignment
 		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
@@ -1715,7 +1715,7 @@ template<int A, int B>
 template<int E, int F>
 inline component2<A, B>& component2<A, B>::operator = (const component2<E, F>& c)
 {
-	StaticAsserts();
+	staticAsserts();
 	_vec = blend(_vec, swizzle<E, F, A, B>(c._vec));
 	return *this;
 }
@@ -1723,7 +1723,7 @@ inline component2<A, B>& component2<A, B>::operator = (const component2<E, F>& c
 template<int A, int B>
 inline component2<A, B>& component2<A, B>::operator = (const float2& v)
 {
-	StaticAsserts();
+	staticAsserts();
 	_vec = blend(_vec, swizzle<0, 1, A, B>(v._vec));
 	return *this;
 }
@@ -1732,7 +1732,7 @@ template<int A, int B, int C>
 template<int E, int F, int G>
 inline component3<A, B, C>& component3<A, B, C>::operator = (const component3<E, F, G>& c)
 {
-	StaticAsserts();
+	staticAsserts();
 	_vec = blend(_vec, swizzle<E, F, G, A, B, C>(c._vec));
 	return *this;
 }
@@ -1740,7 +1740,7 @@ inline component3<A, B, C>& component3<A, B, C>::operator = (const component3<E,
 template<int A, int B, int C>
 inline component3<A, B, C>& component3<A, B, C>::operator = (const float3& v)
 {
-	StaticAsserts();
+	staticAsserts();
 	_vec = blend(_vec, swizzle<0, 1, 2, A, B, C>(v._vec));
 	return *this;
 }
@@ -3370,10 +3370,3 @@ inline float1 determinant(const float4x4& m)
 {
 	return float1();
 }
-
-// Matrices
-// mul
-// transpose
-// determinant
-// invert
-// 
