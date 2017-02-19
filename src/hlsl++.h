@@ -683,7 +683,7 @@ inline __m128 _mm_log2_ps(__m128 x)
 
 static const __m128 invlog_2_10 = _mm_div_ps(f4one, _mm_log2_ps(f4ten));
 
-__m128 _mm_log10_ps(__m128 x)
+inline __m128 _mm_log10_ps(__m128 x)
 {
 	return _mm_mul_ps(_mm_log2_ps(x), invlog_2_10);
 }
