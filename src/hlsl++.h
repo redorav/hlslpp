@@ -1038,6 +1038,83 @@ inline __m128 _mm_isfinite_ps(__m128 x)
 	return _mm_or_ps(_mm_cmpeq_ps(x, f4_inf), _mm_cmpeq_ps(x, f4_minusinf));
 }
 
+inline __m128 _mm_transpose_2x2_ps(__m128 m)
+{
+	return _mm_perm_xzyw_ps(m);
+}
+
+inline void _mm_transpose_3x3_ps(const __m128* vec0, const __m128* vec1, const __m128* vec2, __m128* o_vec0, __m128* o_vec1, __m128* o_vec2)
+{
+	__m128 shuf_tmp_0 = _mm_shuf_xyxy_ps(*vec0, *vec1);
+	__m128 shuf_tmp_1 = _mm_shuf_yzyz_ps(*vec0, *vec1);
+
+	*o_vec0 = _mm_shuf_xzxw_ps(shuf_tmp_0, *vec2);
+	*o_vec1 = _mm_shuf_ywyw_ps(shuf_tmp_0, *vec2);
+	*o_vec2 = _mm_shuf_ywzw_ps(shuf_tmp_1, *vec2);
+}
+
+inline void _mm_transpose_4x4_ps(const __m128* vec0, const __m128* vec1, const __m128* vec2, const __m128* vec3, __m128* o_vec0, __m128* o_vec1, __m128* o_vec2, __m128* o_vec3)
+{
+	__m128 shuf_tmp_0 = _mm_shuf_xyxy_ps(*vec0, *vec1);
+	__m128 shuf_tmp_1 = _mm_shuf_zwzw_ps(*vec0, *vec1);
+	__m128 shuf_tmp_2 = _mm_shuf_xyxy_ps(*vec2, *vec3);
+	__m128 shuf_tmp_3 = _mm_shuf_zwzw_ps(*vec2, *vec3);
+
+	*o_vec0 = _mm_shuf_xzxz_ps(shuf_tmp_0, shuf_tmp_2);
+	*o_vec1 = _mm_shuf_ywyw_ps(shuf_tmp_0, shuf_tmp_2);
+	*o_vec2 = _mm_shuf_xzxz_ps(shuf_tmp_1, shuf_tmp_3);
+	*o_vec3 = _mm_shuf_ywyw_ps(shuf_tmp_1, shuf_tmp_3);
+}
+
+inline __m128 _mm_det_2x2_ps(__m128 m)
+{
+	// The determinant for a 2x2 matrix is m00 * m11 - m01 * m10
+	__m128 shuf_1 = _mm_perm_wzxx_ps(m);		// Shuffle w and z into x and y to multiply them together
+	__m128 prod = _mm_mul_ps(m, shuf_1);		// Now this vector contains wx, zy, _, _
+	__m128 shuf_2 = _mm_perm_yxxx_ps(prod);		// Shuffle yz into where xw is to subtract them
+	__m128 result = _mm_sub_ps(prod, shuf_2);	// Determinant is now in the x component
+	return result;
+}
+
+inline __m128 _mm_det_3x3_ps(__m128 vec0, __m128 vec1, __m128 vec2)
+{
+	// The determinant for a 3x3 matrix can be expressed as dot[ (m00, m01, m02), (m11 * m22 - m12 * m21, m12 * m20 - m10 * m22, m10 * m21 - m11 * m20) ]
+	__m128 shuf_1 = _mm_perm_yzxw_ps(vec2);
+	__m128 prod_1 = _mm_mul_ps(vec1, shuf_1);
+	
+	__m128 shuf_2 = _mm_perm_yzxw_ps(vec1);
+	__m128 prod_2 = _mm_mul_ps(shuf_2, vec2);
+	
+	__m128 sub = _mm_sub_ps(prod_1, prod_2);
+
+	__m128 result = _mm_dot3_ps(vec0, _mm_perm_yzxw_ps(sub));
+
+	return result;
+}
+
+inline __m128 _mm_det_4x4_ps(__m128 vec0, __m128 vec1, __m128 vec2, __m128 vec3)
+{
+	// Instead of creating many shuffles and doing the dot product with the top row, do the determinants of the 3x3 matrices
+	// that are already properly swizzled, and shuffle the last vector into place. That way instead of 12 shuffles we do 3.
+
+	__m128 tmp_det_0 = _mm_neg_ps(_mm_det_3x3_ps(vec1, vec2, vec3));
+	__m128 tmp_det_1 = _mm_det_3x3_ps(vec0, vec2, vec3);
+	__m128 tmp_det_2 = _mm_neg_ps(_mm_det_3x3_ps(vec0, vec1, vec3));
+	__m128 tmp_det_3 = _mm_det_3x3_ps(vec0, vec1, vec2);
+
+	__m128 tmp_shuf_0 = _mm_shuf_xxxx_ps(tmp_det_0, tmp_det_1);
+	__m128 tmp_shuf_1 = _mm_shuf_xxxx_ps(tmp_det_2, tmp_det_3);
+	__m128 tmp_shuf_2 = _mm_shuf_xzxz_ps(tmp_shuf_0, tmp_shuf_1);
+
+	__m128 tmp_vec_0 = _mm_shuf_wwww_ps(vec0, vec1);
+	__m128 tmp_vec_1 = _mm_shuf_wwww_ps(vec2, vec3);
+	__m128 tmp_vec_2 = _mm_shuf_xzxz_ps(tmp_vec_0, tmp_vec_1);
+
+	__m128 result = _mm_dot4_ps(tmp_shuf_2, tmp_vec_2);
+
+	return result;
+}
+
 template<int N> class floatN {};
 
 using float1 = floatN<1>;
@@ -1554,16 +1631,25 @@ public:
 	union
 	{
 		__m128 _vec0;
+		#include "swizzle/hlsl++_matrix_row0_1.h"
+		#include "swizzle/hlsl++_matrix_row0_2.h"
+		#include "swizzle/hlsl++_matrix_row0_3.h"
 	};
 
 	union
 	{
 		__m128 _vec1;
+		#include "swizzle/hlsl++_matrix_row1_1.h"
+		#include "swizzle/hlsl++_matrix_row1_2.h"
+		#include "swizzle/hlsl++_matrix_row1_3.h"
 	};
 
 	union
 	{
 		__m128 _vec2;
+		#include "swizzle/hlsl++_matrix_row2_1.h"
+		#include "swizzle/hlsl++_matrix_row2_2.h"
+		#include "swizzle/hlsl++_matrix_row2_3.h"
 	};
 
 	floatNxM() {}
@@ -1575,6 +1661,8 @@ public:
 			 float f20, float f21, float f22) : _vec0(_mm_set_ps(0.0f, f02, f01, f00)), _vec1(_mm_set_ps(0.0f, f12, f11, f10)), _vec2(_mm_set_ps(0.0f, f22, f21, f20)) {}
 
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
+
+	static const float3x3& identity() { static const float3x3 iden = float3x3(1, 0, 0, 0, 1, 0, 0, 0, 1); return iden; };
 };
 
 template<>
@@ -1645,21 +1733,37 @@ public:
 	union
 	{
 		__m128 _vec0;
+		#include "swizzle/hlsl++_matrix_row0_1.h"
+		#include "swizzle/hlsl++_matrix_row0_2.h"
+		#include "swizzle/hlsl++_matrix_row0_3.h"
+		#include "swizzle/hlsl++_matrix_row0_4.h"
 	};
 
 	union
 	{
 		__m128 _vec1;
+		#include "swizzle/hlsl++_matrix_row1_1.h"
+		#include "swizzle/hlsl++_matrix_row1_2.h"
+		#include "swizzle/hlsl++_matrix_row1_3.h"
+		#include "swizzle/hlsl++_matrix_row1_4.h"
 	};
 
 	union
 	{
 		__m128 _vec2;
+		#include "swizzle/hlsl++_matrix_row2_1.h"
+		#include "swizzle/hlsl++_matrix_row2_2.h"
+		#include "swizzle/hlsl++_matrix_row2_3.h"
+		#include "swizzle/hlsl++_matrix_row2_4.h"
 	};
 
 	union
 	{
 		__m128 _vec3;
+		#include "swizzle/hlsl++_matrix_row3_1.h"
+		#include "swizzle/hlsl++_matrix_row3_2.h"
+		#include "swizzle/hlsl++_matrix_row3_3.h"
+		#include "swizzle/hlsl++_matrix_row3_4.h"
 	};
 
 	floatNxM() {}
@@ -1674,6 +1778,8 @@ public:
 		: _vec0(_mm_set_ps(f03, f02, f01, f00)), _vec1(_mm_set_ps(f13, f12, f11, f10)), _vec2(_mm_set_ps(f23, f22, f21, f20)), _vec3(_mm_set_ps(f33, f32, f31, f30)) {}
 
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2), _vec3(m._vec3) {}
+
+	static const float4x4& identity() { static const float4x4 iden = float4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); return iden; };
 };
 
 //********************
@@ -3338,35 +3444,48 @@ inline floatNxM<N, M>& operator /= (floatNxM<N, M>& m1, const floatNxM<N, M>& m2
 	return m1;
 }
 
+inline float2x2 transpose(const float2x2& m)
+{
+	return float2x2(_mm_transpose_2x2_ps(m._vec));
+}
+
+inline float3x3 transpose(const float3x3& m)
+{
+	__m128 vec0, vec1, vec2;
+	_mm_transpose_3x3_ps(&m._vec0, &m._vec1, &m._vec2, &vec0, &vec1, &vec2);
+	return float3x3(vec0, vec1, vec2);
+}
+
+inline float4x4 transpose(const float4x4& m)
+{
+	__m128 vec0, vec1, vec2, vec3;
+	_mm_transpose_4x4_ps(&m._vec0, &m._vec1, &m._vec2, &m._vec3, &vec0, &vec1, &vec2, &vec3);
+	return float4x4(vec0, vec1, vec2, vec3);
+}
+
+// These transpose methods just copy the data because the 1xM, Nx1, 2xM, Nx2, 3xM and Nx3 matrices are always laid out as rows
+// even if they're meant to represent columns.
+
+template<int N, int M, typename std::enable_if<(N == 1) || (M == 1)>::type* = nullptr>
+floatNxM<M, N> transpose(const floatNxM<N, M>& m) { return floatNxM<M, N>(m._vec); }
+
+template<int N, int M, typename std::enable_if<(N == 2 && M > 2) || (M == 2 && N > 2)>::type* = nullptr>
+floatNxM<M, N> transpose(const floatNxM<N, M>& m) {	return floatNxM<M, N>(m._vec0, m._vec1); }
+
+template<int N, int M, typename std::enable_if<(N == 3 && M > 3) || (M == 3 && N > 3)>::type* = nullptr>
+floatNxM<M, N> transpose(const floatNxM<N, M>& m) { return floatNxM<M, N>(m._vec0, m._vec1, m._vec2); }
+
 inline float1 determinant(const float2x2& m)
 {
-	// The determinant for a 2x2 matrix is m00 * m11 - m01 * m10
-	__m128 shuf_1 = _mm_perm_wzxx_ps(m._vec);	// Shuffle w and z into x and y to multiply them together
-	__m128 prod = _mm_mul_ps(m._vec, shuf_1);	// Now this vector contains wx, zy, _, _
-	__m128 shuf_2 = _mm_perm_yxxx_ps(prod);		// Shuffle yz into where xw is to subtract them
-	__m128 result = _mm_sub_ps(prod, shuf_2);
-	return float1(result);
+	return float1(_mm_det_2x2_ps(m._vec));
 }
 
 inline float1 determinant(const float3x3& m)
 {
-	// The determinant for a 3x3 matrix can be expressed as dot[ (m00, m01, m02), (m11 * m22 - m12 * m21, m12 * m20 - m10 * m22, m10 * m21 - m11 * m20) ]
-	__m128 shuf_1 = _mm_perm_yzxx_ps(m._vec1);
-	__m128 shuf_2 = _mm_perm_zxyx_ps(m._vec2);
-	__m128 interMul_1 = _mm_mul_ps(shuf_1, shuf_2);
-
-	__m128 shuf_3 = _mm_perm_zxyx_ps(m._vec1);
-	__m128 shuf_4 = _mm_perm_yzxx_ps(m._vec2);
-	__m128 interMul_2 = _mm_mul_ps(shuf_3, shuf_4);
-
-	__m128 interSub = _mm_sub_ps(interMul_1, interMul_2);
-
-	__m128 result = _mm_dot3_ps(m._vec0, interSub);
-
-	return float1(result);
+	return float1(_mm_det_3x3_ps(m._vec0, m._vec1, m._vec2));
 }
 
 inline float1 determinant(const float4x4& m)
 {
-	return float1();
+	return float1(_mm_det_4x4_ps(m._vec0, m._vec1, m._vec2, m._vec3));
 }

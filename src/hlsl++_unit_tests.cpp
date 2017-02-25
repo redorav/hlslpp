@@ -944,6 +944,31 @@ void RunUnitTests()
 	float4 vec_vmul_4x2_v2 = mul(mat_foo_4x2, vfoo2);
 	float4 vec_vmul_4x3_v3 = mul(mat_foo_4x3, vfoo3);
  	float4 vec_vmul_4x4_v4 = mul(mat_foo_4x4, vfoo4);
+
+	// Matrix transposition
+
+	float1x1 mat_transp_1x1 = transpose(mat_foo_1x1);
+
+	float1x2 mat_transp_1x2 = transpose(mat_foo_2x1);
+	float2x2 mat_transp_2x2 = transpose(mat_foo_2x2);
+	float3x2 mat_transp_3x2 = transpose(mat_foo_2x3);
+	float4x2 mat_transp_4x2 = transpose(mat_foo_2x4);
+
+	float1x3 mat_transp_1x3 = transpose(mat_foo_3x1);
+	float2x3 mat_transp_2x3 = transpose(mat_foo_3x2);
+	float3x3 mat_transp_3x3 = transpose(mat_foo_3x3);
+	float4x3 mat_transp_4x3 = transpose(mat_foo_3x4);
+
+	float1x4 mat_transp_1x4 = transpose(mat_foo_4x1);
+	float2x4 mat_transp_2x4 = transpose(mat_foo_4x2);
+	float3x4 mat_transp_3x4 = transpose(mat_foo_4x3);
+	float4x4 mat_transp_4x4 = transpose(mat_foo_4x4);
+
+	// Determinants
+
+	float1 mat_det_2x2 = determinant(mat_foo_2x2);
+	float1 mat_det_3x3 = determinant(mat_foo_3x3);
+	float1 mat_det_4x4 = determinant(mat_foo_4x4);
 }
 
 void RunExperiments()
