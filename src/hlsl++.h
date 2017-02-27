@@ -996,6 +996,17 @@ inline __m128 _mm_dot2_ps(__m128 x, __m128 y)
 	return result;
 }
 
+// Auxiliary dot3 that adds, subtracts, adds instead of adding all
+inline __m128 _mm_dot3_asa_ps(__m128 x, __m128 y)
+{
+	__m128 multi = _mm_mul_ps(x, y);			// Multiply components together
+	__m128 shuf1 = _mm_perm_yyyy_ps(multi);		// Move y into x
+	__m128 add1 = _mm_sub_ps(multi, shuf1);		// Contains x-y, _, _, _
+	__m128 shuf2 = _mm_perm_zzzz_ps(multi);		// Move z into x
+	__m128 result = _mm_add_ps(add1, shuf2);	// Contains x-y+z, _, _, _
+	return result;
+}
+
 inline __m128 _mm_any_ps(__m128 x)
 {
 	__m128 shuf1	= _mm_shuffle_ps(x, x, _MM_SHUFFLE(0, _MM_W, 0, _MM_Y));					// Move y into x, and w into z (ignore the rest)
@@ -1043,27 +1054,27 @@ inline __m128 _mm_transpose_2x2_ps(__m128 m)
 	return _mm_perm_xzyw_ps(m);
 }
 
-inline void _mm_transpose_3x3_ps(const __m128* vec0, const __m128* vec1, const __m128* vec2, __m128* o_vec0, __m128* o_vec1, __m128* o_vec2)
+inline void _mm_transpose_3x3_ps(const __m128& vec0, const __m128& vec1, const __m128& vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
 {
-	__m128 shuf_tmp_0 = _mm_shuf_xyxy_ps(*vec0, *vec1);
-	__m128 shuf_tmp_1 = _mm_shuf_yzyz_ps(*vec0, *vec1);
+	__m128 shuf_tmp_0 = _mm_shuf_xyxy_ps(vec0, vec1);
+	__m128 shuf_tmp_1 = _mm_shuf_yzyz_ps(vec0, vec1);
 
-	*o_vec0 = _mm_shuf_xzxw_ps(shuf_tmp_0, *vec2);
-	*o_vec1 = _mm_shuf_ywyw_ps(shuf_tmp_0, *vec2);
-	*o_vec2 = _mm_shuf_ywzw_ps(shuf_tmp_1, *vec2);
+	o_vec0 = _mm_shuf_xzxw_ps(shuf_tmp_0, vec2);
+	o_vec1 = _mm_shuf_ywyw_ps(shuf_tmp_0, vec2);
+	o_vec2 = _mm_shuf_ywzw_ps(shuf_tmp_1, vec2);
 }
 
-inline void _mm_transpose_4x4_ps(const __m128* vec0, const __m128* vec1, const __m128* vec2, const __m128* vec3, __m128* o_vec0, __m128* o_vec1, __m128* o_vec2, __m128* o_vec3)
+inline void _mm_transpose_4x4_ps(const __m128& vec0, const __m128& vec1, const __m128& vec2, const __m128& vec3, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2, __m128& o_vec3)
 {
-	__m128 shuf_tmp_0 = _mm_shuf_xyxy_ps(*vec0, *vec1);
-	__m128 shuf_tmp_1 = _mm_shuf_zwzw_ps(*vec0, *vec1);
-	__m128 shuf_tmp_2 = _mm_shuf_xyxy_ps(*vec2, *vec3);
-	__m128 shuf_tmp_3 = _mm_shuf_zwzw_ps(*vec2, *vec3);
+	__m128 shuf_tmp_0 = _mm_shuf_xyxy_ps(vec0, vec1);
+	__m128 shuf_tmp_1 = _mm_shuf_zwzw_ps(vec0, vec1);
+	__m128 shuf_tmp_2 = _mm_shuf_xyxy_ps(vec2, vec3);
+	__m128 shuf_tmp_3 = _mm_shuf_zwzw_ps(vec2, vec3);
 
-	*o_vec0 = _mm_shuf_xzxz_ps(shuf_tmp_0, shuf_tmp_2);
-	*o_vec1 = _mm_shuf_ywyw_ps(shuf_tmp_0, shuf_tmp_2);
-	*o_vec2 = _mm_shuf_xzxz_ps(shuf_tmp_1, shuf_tmp_3);
-	*o_vec3 = _mm_shuf_ywyw_ps(shuf_tmp_1, shuf_tmp_3);
+	o_vec0 = _mm_shuf_xzxz_ps(shuf_tmp_0, shuf_tmp_2);
+	o_vec1 = _mm_shuf_ywyw_ps(shuf_tmp_0, shuf_tmp_2);
+	o_vec2 = _mm_shuf_xzxz_ps(shuf_tmp_1, shuf_tmp_3);
+	o_vec3 = _mm_shuf_ywyw_ps(shuf_tmp_1, shuf_tmp_3);
 }
 
 inline __m128 _mm_det_2x2_ps(__m128 m)
@@ -1092,27 +1103,124 @@ inline __m128 _mm_det_3x3_ps(__m128 vec0, __m128 vec1, __m128 vec2)
 	return result;
 }
 
-inline __m128 _mm_det_4x4_ps(const __m128* vec0, const __m128* vec1, const __m128* vec2, const __m128* vec3)
+inline __m128 _mm_det_4x4_ps(const __m128& vec0, const __m128& vec1, const __m128& vec2, const __m128& vec3)
 {
-	// Instead of creating many shuffles and doing the dot product with the top row, do the determinants of the 3x3 matrices
-	// that are already properly swizzled, and shuffle the last vector into place. That way instead of 12 shuffles we do 3.
+	// Use the Laplace expansion to calculate the determinant in terms of 2x2 determinant multiplies instead of calculating
+	// 3x3 determinants and then doing a dot product. https://www.geometrictools.com/Documentation/LaplaceExpansionTheorem.pdf
+	__m128 tmp_shuf_0 = _mm_perm_xzxy_ps(vec0);
+	__m128 tmp_shuf_1 = _mm_perm_yxwz_ps(vec1);
+	__m128 tmp_shuf_2 = _mm_perm_yxwz_ps(vec0);
+	__m128 tmp_shuf_3 = _mm_perm_xzxy_ps(vec1);
 
-	__m128 tmp_det_0 = _mm_neg_ps(_mm_det_3x3_ps(*vec1, *vec2, *vec3));
-	__m128 tmp_det_1 = _mm_det_3x3_ps(*vec0, *vec2, *vec3);
-	__m128 tmp_det_2 = _mm_neg_ps(_mm_det_3x3_ps(*vec0, *vec1, *vec3));
-	__m128 tmp_det_3 = _mm_det_3x3_ps(*vec0, *vec1, *vec2);
+	__m128 tmp_shuf_4 = _mm_perm_zyyx_ps(vec2);
+	__m128 tmp_shuf_5 = _mm_perm_wwzw_ps(vec3);
+	__m128 tmp_shuf_6 = _mm_perm_wwzw_ps(vec2);
+	__m128 tmp_shuf_7 = _mm_perm_zyyx_ps(vec3);
 
-	__m128 tmp_shuf_0 = _mm_shuf_xxxx_ps(tmp_det_0, tmp_det_1);
-	__m128 tmp_shuf_1 = _mm_shuf_xxxx_ps(tmp_det_2, tmp_det_3);
-	__m128 tmp_shuf_2 = _mm_shuf_xzxz_ps(tmp_shuf_0, tmp_shuf_1);
+	__m128 tmp_4_terms = _mm_mul_ps(_mm_sub_ps(_mm_mul_ps(tmp_shuf_0, tmp_shuf_1), _mm_mul_ps(tmp_shuf_2, tmp_shuf_3)), _mm_sub_ps(_mm_mul_ps(tmp_shuf_4, tmp_shuf_5), _mm_mul_ps(tmp_shuf_6, tmp_shuf_7)));
 
-	__m128 tmp_vec_0 = _mm_shuf_wwww_ps(*vec0, *vec1);
-	__m128 tmp_vec_1 = _mm_shuf_wwww_ps(*vec2, *vec3);
-	__m128 tmp_vec_2 = _mm_shuf_xzxz_ps(tmp_vec_0, tmp_vec_1);
+	__m128 tmp_shuf_8 = _mm_shuf_wzxx_ps(vec0, vec2);
+	__m128 tmp_shuf_9 = _mm_shuf_ywzy_ps(vec1, vec3);
+	__m128 tmp_shuf_10 = _mm_shuf_ywzy_ps(vec0, vec2);
+	__m128 tmp_shuf_11 = _mm_shuf_wzxx_ps(vec1, vec3);
 
-	__m128 result = _mm_dot4_ps(tmp_shuf_2, tmp_vec_2);
+	__m128 tmp_mul_0 = _mm_sub_ps(_mm_mul_ps(tmp_shuf_8, tmp_shuf_9), _mm_mul_ps(tmp_shuf_10, tmp_shuf_11));
 
-	return result;
+	__m128 tmp_2_terms = _mm_mul_ps(_mm_perm_xyxy_ps(tmp_mul_0), _mm_perm_zwzw_ps(tmp_mul_0));
+
+	// Add all the results now (terms that subtract have already been inverted)
+	__m128 tmp_add_0 = _mm_add_ps(_mm_shuf_xzxx_ps(tmp_4_terms, tmp_2_terms), _mm_shuf_ywyy_ps(tmp_4_terms, tmp_2_terms));
+	__m128 tmp_add_1 = _mm_add_ps(_mm_perm_xxxx_ps(tmp_add_0), _mm_perm_yyyy_ps(tmp_add_0));
+	__m128 tmp_add_2 = _mm_add_ps(_mm_perm_xxxx_ps(tmp_add_1), _mm_perm_zzzz_ps(tmp_add_0));
+
+	return tmp_add_2;
+}
+
+inline __m128 _mm_inv_2x2_ps(__m128 m)
+{
+	__m128 det = _mm_perm_xxxx_ps(_mm_det_2x2_ps(m));
+	__m128 shuf = _mm_mul_ps(_mm_perm_wyzx_ps(m), _mm_set_ps(1.0f, -1.0f, -1.0f, 1.0f));
+	return _mm_div_ps(shuf, det);
+}
+
+inline void _mm_inv_3x3_ps(const __m128& vec0, const __m128& vec1, const __m128& vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+{
+	__m128 tmp_shuf_yzx_0 = _mm_perm_yzxw_ps(vec0);
+	__m128 tmp_shuf_zxy_0 = _mm_perm_zxyw_ps(vec0);
+	__m128 tmp_shuf_yzx_1 = _mm_perm_yzxw_ps(vec1);
+	__m128 tmp_shuf_zxy_1 = _mm_perm_zxyw_ps(vec1);
+	__m128 tmp_shuf_yzx_2 = _mm_perm_yzxw_ps(vec2);
+	__m128 tmp_shuf_zxy_2 = _mm_perm_zxyw_ps(vec2);
+
+	// Compute the adjoint matrix directly with 2x2 determinants
+	__m128 tmp_row_0 = _mm_sub_ps(_mm_mul_ps(tmp_shuf_yzx_1, tmp_shuf_zxy_2), _mm_mul_ps(tmp_shuf_zxy_1, tmp_shuf_yzx_2));
+	__m128 tmp_row_1 = _mm_sub_ps(_mm_mul_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_2), _mm_mul_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_2));
+	__m128 tmp_row_2 = _mm_sub_ps(_mm_mul_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_1), _mm_mul_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_1));
+
+	// Transpose the matrix
+	__m128 tmp_transp_row_0, tmp_transp_row_1, tmp_transp_row_2;
+	_mm_transpose_3x3_ps(tmp_row_0, tmp_row_1, tmp_row_2, tmp_transp_row_0, tmp_transp_row_1, tmp_transp_row_2);
+
+	// Compute the determinant and divide all results by it
+	__m128 det = _mm_perm_xxxx_ps(_mm_det_3x3_ps(vec0, vec1, vec2));
+	__m128 invDet = _mm_div_ps(f4one, det);
+
+	o_vec0 = _mm_mul_ps(tmp_transp_row_0, invDet);
+	o_vec1 = _mm_mul_ps(tmp_transp_row_1, invDet);
+	o_vec2 = _mm_mul_ps(tmp_transp_row_2, invDet);
+}
+
+inline void _mm_inv_4x4_ps(const __m128& vec0, const __m128& vec1, const __m128& vec2, const __m128& vec3, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2, __m128& o_vec3)
+{
+	// Use the Laplace expansion to calculate the adjoint in terms of 2x2 determinants and dot products.
+	// Follow https://www.geometrictools.com/Documentation/LaplaceExpansionTheorem.pdf
+
+	// mms means mul mul sub. Here we add the 2x2 determinants we need
+	__m128 tmp_mms_c5_c4_c3 = _mm_sub_ps(_mm_mul_ps(_mm_perm_zyyx_ps(vec2), _mm_perm_wwzx_ps(vec3)), _mm_mul_ps(_mm_perm_wwzx_ps(vec2), _mm_perm_zyyx_ps(vec3)));
+	__m128 tmp_mms_c4_c2_c0 = _mm_sub_ps(_mm_mul_ps(_mm_perm_yxxx_ps(vec2), _mm_perm_wwyx_ps(vec3)), _mm_mul_ps(_mm_perm_wwyx_ps(vec2), _mm_perm_yxxx_ps(vec3)));
+	__m128 tmp_mms_c5_c2_c1 = _mm_sub_ps(_mm_mul_ps(_mm_perm_zxxx_ps(vec2), _mm_perm_wwzx_ps(vec3)), _mm_mul_ps(_mm_perm_wwzx_ps(vec2), _mm_perm_zxxx_ps(vec3)));
+	__m128 tmp_mms_c3_c1_c0 = _mm_sub_ps(_mm_mul_ps(_mm_perm_yxxx_ps(vec2), _mm_perm_zzyx_ps(vec3)), _mm_mul_ps(_mm_perm_zzyx_ps(vec2), _mm_perm_yxxx_ps(vec3)));
+
+	__m128 tmp_mms_s5_s4_s3 = _mm_sub_ps(_mm_mul_ps(_mm_perm_zyyx_ps(vec0), _mm_perm_wwzx_ps(vec1)), _mm_mul_ps(_mm_perm_wwzx_ps(vec0), _mm_perm_zyyx_ps(vec1)));
+	__m128 tmp_mms_s4_s2_s0 = _mm_sub_ps(_mm_mul_ps(_mm_perm_yxxx_ps(vec0), _mm_perm_wwyx_ps(vec1)), _mm_mul_ps(_mm_perm_wwyx_ps(vec0), _mm_perm_yxxx_ps(vec1)));
+	__m128 tmp_mms_s5_s2_s1 = _mm_sub_ps(_mm_mul_ps(_mm_perm_zxxx_ps(vec0), _mm_perm_wwzx_ps(vec1)), _mm_mul_ps(_mm_perm_wwzx_ps(vec0), _mm_perm_zxxx_ps(vec1)));
+	__m128 tmp_mms_s3_s1_s0 = _mm_sub_ps(_mm_mul_ps(_mm_perm_yxxx_ps(vec0), _mm_perm_zzyx_ps(vec1)), _mm_mul_ps(_mm_perm_zzyx_ps(vec0), _mm_perm_yxxx_ps(vec1)));
+
+	// Dot product the determinants with the required elements from the rows
+	__m128 c00 = _mm_dot3_asa_ps(tmp_mms_c5_c4_c3, _mm_perm_yzwx_ps(vec1));
+	__m128 c01 = _mm_dot3_asa_ps(tmp_mms_c5_c4_c3, _mm_neg_ps(_mm_perm_yzwx_ps(vec0)));
+	__m128 c02 = _mm_dot3_asa_ps(tmp_mms_s5_s4_s3, _mm_perm_yzwx_ps(vec3));
+	__m128 c03 = _mm_dot3_asa_ps(tmp_mms_s5_s4_s3, _mm_neg_ps(_mm_perm_yzwx_ps(vec2)));
+
+	__m128 c10 = _mm_dot3_asa_ps(tmp_mms_c5_c2_c1, _mm_neg_ps(_mm_perm_xzwx_ps(vec1)));
+	__m128 c11 = _mm_dot3_asa_ps(tmp_mms_c5_c2_c1, _mm_perm_xzwx_ps(vec0));
+	__m128 c12 = _mm_dot3_asa_ps(tmp_mms_s5_s2_s1, _mm_neg_ps(_mm_perm_xzwx_ps(vec3)));
+	__m128 c13 = _mm_dot3_asa_ps(tmp_mms_s5_s2_s1, _mm_perm_xzwx_ps(vec2));
+
+	__m128 c20 = _mm_dot3_asa_ps(tmp_mms_c4_c2_c0, _mm_perm_xyww_ps(vec1));
+	__m128 c21 = _mm_dot3_asa_ps(tmp_mms_c4_c2_c0, _mm_neg_ps(_mm_perm_xyww_ps(vec0)));
+	__m128 c22 = _mm_dot3_asa_ps(tmp_mms_s4_s2_s0, _mm_perm_xyww_ps(vec3));
+	__m128 c23 = _mm_dot3_asa_ps(tmp_mms_s4_s2_s0, _mm_neg_ps(_mm_perm_xyww_ps(vec2)));
+
+	__m128 c30 = _mm_dot3_asa_ps(tmp_mms_c3_c1_c0, _mm_neg_ps(vec1));
+	__m128 c31 = _mm_dot3_asa_ps(tmp_mms_c3_c1_c0, vec0);
+	__m128 c32 = _mm_dot3_asa_ps(tmp_mms_s3_s1_s0, _mm_neg_ps(vec3));
+	__m128 c33 = _mm_dot3_asa_ps(tmp_mms_s3_s1_s0, vec2);
+
+	// Combine the results
+	__m128 tmp_row0 = _mm_blend_ps(_mm_shuf_xxxx_ps(c00, c02), _mm_shuf_xxxx_ps(c01, c03), 0xA); // 1010
+	__m128 tmp_row1 = _mm_blend_ps(_mm_shuf_xxxx_ps(c10, c12), _mm_shuf_xxxx_ps(c11, c13), 0xA);
+	__m128 tmp_row2 = _mm_blend_ps(_mm_shuf_xxxx_ps(c20, c22), _mm_shuf_xxxx_ps(c21, c23), 0xA);
+	__m128 tmp_row3 = _mm_blend_ps(_mm_shuf_xxxx_ps(c30, c32), _mm_shuf_xxxx_ps(c31, c33), 0xA);
+
+	// Compute the determinant and divide all results by it
+	__m128 det = _mm_perm_xxxx_ps(_mm_det_4x4_ps(vec0, vec1, vec2, vec3));
+	__m128 invDet = _mm_div_ps(f4one, det);
+
+	o_vec0 = _mm_mul_ps(tmp_row0, invDet);
+	o_vec1 = _mm_mul_ps(tmp_row1, invDet);
+	o_vec2 = _mm_mul_ps(tmp_row2, invDet);
+	o_vec3 = _mm_mul_ps(tmp_row3, invDet);
 }
 
 template<int N> class floatN {};
@@ -3452,14 +3560,14 @@ inline float2x2 transpose(const float2x2& m)
 inline float3x3 transpose(const float3x3& m)
 {
 	__m128 vec0, vec1, vec2;
-	_mm_transpose_3x3_ps(&m._vec0, &m._vec1, &m._vec2, &vec0, &vec1, &vec2);
+	_mm_transpose_3x3_ps(m._vec0, m._vec1, m._vec2, vec0, vec1, vec2);
 	return float3x3(vec0, vec1, vec2);
 }
 
 inline float4x4 transpose(const float4x4& m)
 {
 	__m128 vec0, vec1, vec2, vec3;
-	_mm_transpose_4x4_ps(&m._vec0, &m._vec1, &m._vec2, &m._vec3, &vec0, &vec1, &vec2, &vec3);
+	_mm_transpose_4x4_ps(m._vec0, m._vec1, m._vec2, m._vec3, vec0, vec1, vec2, vec3);
 	return float4x4(vec0, vec1, vec2, vec3);
 }
 
@@ -3487,5 +3595,24 @@ inline float1 determinant(const float3x3& m)
 
 inline float1 determinant(const float4x4& m)
 {
-	return float1(_mm_det_4x4_ps(&m._vec0, &m._vec1, &m._vec2, &m._vec3));
+	return float1(_mm_det_4x4_ps(m._vec0, m._vec1, m._vec2, m._vec3));
+}
+
+inline float2x2 inverse(const float2x2& m)
+{
+	return float2x2(_mm_inv_2x2_ps(m._vec));
+}
+
+inline float3x3 inverse(const float3x3& m)
+{
+	__m128 vec0, vec1, vec2;
+	_mm_inv_3x3_ps(m._vec0, m._vec1, m._vec2, vec0, vec1, vec2);
+	return float3x3(vec0, vec1, vec2);
+}
+
+inline float4x4 inverse(const float4x4& m)
+{
+	__m128 vec0, vec1, vec2, vec3;
+	_mm_inv_4x4_ps(m._vec0, m._vec1, m._vec2, m._vec3, vec0, vec1, vec2, vec3);
+	return float4x4(vec0, vec1, vec2, vec3);
 }
