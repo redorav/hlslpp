@@ -1092,22 +1092,22 @@ inline __m128 _mm_det_3x3_ps(__m128 vec0, __m128 vec1, __m128 vec2)
 	return result;
 }
 
-inline __m128 _mm_det_4x4_ps(__m128 vec0, __m128 vec1, __m128 vec2, __m128 vec3)
+inline __m128 _mm_det_4x4_ps(const __m128* vec0, const __m128* vec1, const __m128* vec2, const __m128* vec3)
 {
 	// Instead of creating many shuffles and doing the dot product with the top row, do the determinants of the 3x3 matrices
 	// that are already properly swizzled, and shuffle the last vector into place. That way instead of 12 shuffles we do 3.
 
-	__m128 tmp_det_0 = _mm_neg_ps(_mm_det_3x3_ps(vec1, vec2, vec3));
-	__m128 tmp_det_1 = _mm_det_3x3_ps(vec0, vec2, vec3);
-	__m128 tmp_det_2 = _mm_neg_ps(_mm_det_3x3_ps(vec0, vec1, vec3));
-	__m128 tmp_det_3 = _mm_det_3x3_ps(vec0, vec1, vec2);
+	__m128 tmp_det_0 = _mm_neg_ps(_mm_det_3x3_ps(*vec1, *vec2, *vec3));
+	__m128 tmp_det_1 = _mm_det_3x3_ps(*vec0, *vec2, *vec3);
+	__m128 tmp_det_2 = _mm_neg_ps(_mm_det_3x3_ps(*vec0, *vec1, *vec3));
+	__m128 tmp_det_3 = _mm_det_3x3_ps(*vec0, *vec1, *vec2);
 
 	__m128 tmp_shuf_0 = _mm_shuf_xxxx_ps(tmp_det_0, tmp_det_1);
 	__m128 tmp_shuf_1 = _mm_shuf_xxxx_ps(tmp_det_2, tmp_det_3);
 	__m128 tmp_shuf_2 = _mm_shuf_xzxz_ps(tmp_shuf_0, tmp_shuf_1);
 
-	__m128 tmp_vec_0 = _mm_shuf_wwww_ps(vec0, vec1);
-	__m128 tmp_vec_1 = _mm_shuf_wwww_ps(vec2, vec3);
+	__m128 tmp_vec_0 = _mm_shuf_wwww_ps(*vec0, *vec1);
+	__m128 tmp_vec_1 = _mm_shuf_wwww_ps(*vec2, *vec3);
 	__m128 tmp_vec_2 = _mm_shuf_xzxz_ps(tmp_vec_0, tmp_vec_1);
 
 	__m128 result = _mm_dot4_ps(tmp_shuf_2, tmp_vec_2);
@@ -3487,5 +3487,5 @@ inline float1 determinant(const float3x3& m)
 
 inline float1 determinant(const float4x4& m)
 {
-	return float1(_mm_det_4x4_ps(m._vec0, m._vec1, m._vec2, m._vec3));
+	return float1(_mm_det_4x4_ps(&m._vec0, &m._vec1, &m._vec2, &m._vec3));
 }
