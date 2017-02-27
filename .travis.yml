@@ -1,0 +1,10 @@
+language: cpp
+
+install: ./Make.sh
+
+compiler:
+  - clang
+  - gcc
+  
+os:
+  - linux
