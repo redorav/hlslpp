@@ -969,6 +969,13 @@ void RunUnitTests()
 	float1 mat_det_2x2 = determinant(mat_foo_2x2);
 	float1 mat_det_3x3 = determinant(mat_foo_3x3);
 	float1 mat_det_4x4 = determinant(mat_foo_4x4);
+
+	// Inverses
+
+	float2x2 mat_inv_2x2 = inverse(mat_foo_2x2);
+	float3x3 mat_inv_3x3 = inverse(mat_foo_3x3);
+	float4x4 mat_inv_4x4 = inverse(mat_foo_4x4);
+
 }
 
 void RunExperiments()
@@ -1139,7 +1146,7 @@ void RunSpeedTests()
 	float f3 = (rand() % 1000) / 100.0f;
 	float f4 = (rand() % 1000) / 100.0f;
 
-	const int iter = 1000000;
+	const int iter = 10000000;
 	Timer timer;
 
 	//// DirectX XMVECTOR
@@ -1185,13 +1192,19 @@ void RunSpeedTests()
 	float4 v3(f3);
 	float4 v4(f4);
 
+	float4x4 mat_foo_4x4 = float4x4(10, 20, 1, 1,
+									78, 5, 2, 8,
+									14, 5, 5, 6,
+									8, 4, 5, 6);
+
 	timer.Start();
 	for (int i = 0; i < iter; ++i)
 	{
-		v2 = lerp(v1, v2, v2);
+		mat_foo_4x4 = inverse(mat_foo_4x4);
 	}
 	double time = timer.Get();
 	//printf("float4: %f, %f, %f, %f = %f\n", (float)v2.x, (float)v2.y, (float)v2.z, (float)v2.w, time);
+	printf("Elapsed = %f\n", time);
 }
 
 int main()

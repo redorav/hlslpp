@@ -42,6 +42,7 @@ Implemented:
 * Per-component comparison operators ==, !=, >, <, >=, <= (no ternary operator as overloading is disallowed in C++)
 * hlsl vector functions: abs, acos, all, any, asin, atan, ceil, clamp, cos, cross, degrees, dot, floor, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, max, min, normalize, pow, radians, reflect, round, rsqrt, saturate, sign, sin, sqrt, step, trunc, tan
 * hlsl matrix functions: determinant, transpose
+* non-hlsl matrix functions: inverse
 * floatNxM (all the matrix) types
 * floatNxM basic operators +, *, -, / and variants
 * Matrix multiplication for all NxM matrix combinations
@@ -51,7 +52,6 @@ Implemented:
 Missing:
 
 * hlsl functions: smoothstep, atan2, cosh, sinh, tanh
-* Non-hlsl functions: invert
 * floatNxM _m00_m01 style swizzling (rows implemented but missing columns)
 * floatM to float1 implicit conversions
 * Integer types int1, int2, int3, int4
