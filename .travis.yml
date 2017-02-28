@@ -9,7 +9,11 @@ before_install:
   - make -f Bootstrap.mak linux
   - cd ..
 
-install: ./premake-core/bin/release/premake5 --file=premake.lua gmake
+install:
+  - ./premake-core/bin/release/premake5 --file=premake.lua gmake
+  - cd workspace/gmake
+
+script: make
 
 compiler:
   - clang
