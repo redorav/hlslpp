@@ -1275,14 +1275,14 @@ public:
 	component1<A>& operator = (const float1& v);
 	component1<A>& operator = (const float1x1& m);
 
-	/*explicit operator float()
+	operator float() const
 	{
 #if defined(__clang__) || defined(__GNUG__) // Either clang++ or g++
 		return _vec[A];
 #else
 		return _vec.m128_f32[A];
 #endif
-	}*/
+	}
 };
 
 template<int X, int Y>
@@ -1317,7 +1317,7 @@ public:
 
 	template<int E, int F>
 	component2<X, Y>& operator = (const component2<E, F>& c);
-
+	component2<X, Y>& operator = (const component2<X, Y>& c);
 	component2<X, Y>& operator = (const float2& v);
 };
 
@@ -1353,6 +1353,7 @@ public:
 
 	template<int E, int F, int G>
 	component3<X, Y, Z>& operator = (const component3<E, F, G>& c);
+	component3<X, Y, Z>& operator = (const component3<X, Y, Z>& c);
 	component3<X, Y, Z>& operator = (const float3& v);
 };
 
@@ -1373,6 +1374,7 @@ public:
 
 	template<int E, int F, int G, int H>
 	inline component4<X, Y, Z, W>& operator = (const component4<E, F, G, H>& c);
+	inline component4<X, Y, Z, W>& operator = (const component4<X, Y, Z, W>& c);
 	inline component4<X, Y, Z, W>& operator = (const float4& v);
 };
 
@@ -1515,6 +1517,7 @@ public:
 	explicit floatNxM(__m128 vec) : _vec(vec) {}
 	floatNxM(float f) : _vec(_mm_set_ps(0.0f, 0.0f, 0.0f, f)) {}
 	floatNxM(const float1& v) : _vec(v._vec) {}
+	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
 
 template<>
@@ -1532,6 +1535,7 @@ public:
 	floatNxM(float f0, float f1) : _vec(_mm_set_ps(0.0f, 0.0f, f1, f0)) {}
 	floatNxM(float f) : floatNxM(f, f) {}
 	floatNxM(const float2& v) : _vec(v._vec) {}
+	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
 
 template<>
@@ -1548,6 +1552,7 @@ public:
 	floatNxM(float f0, float f1) : _vec(_mm_set_ps(0.0f, 0.0f, f1, f0)) {}
 	floatNxM(float f) : floatNxM(f, f) {}
 	floatNxM(const float2& v) : _vec(v._vec) {}
+	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
 
 template<>
@@ -1564,6 +1569,7 @@ public:
 	floatNxM(float f0, float f1, float f2) : _vec(_mm_set_ps(0.0f, f2, f1, f0)) {}
 	floatNxM(float f) : floatNxM(f, f, f) {}
 	floatNxM(const float3& v) : _vec(v._vec) {}
+	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
 
 template<>
@@ -1580,6 +1586,7 @@ public:
 	floatNxM(float f0, float f1, float f2) : _vec(_mm_set_ps(0.0f, f2, f1, f0)) {}
 	floatNxM(float f) : floatNxM(f, f, f) {}
 	floatNxM(const float3& v) : _vec(v._vec) {}
+	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
 
 template<>
@@ -1596,6 +1603,7 @@ public:
 	floatNxM(float f0, float f1, float f2, float f3) : _vec(_mm_set_ps(f3, f2, f1, f0)) {}
 	floatNxM(float f) : floatNxM(f, f, f, f) {}
 	floatNxM(const float4& v) : _vec(v._vec) {}
+	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
 
 template<>
@@ -1612,6 +1620,7 @@ public:
 	floatNxM(float f0, float f1, float f2, float f3) : _vec(_mm_set_ps(f3, f2, f1, f0)) {}
 	floatNxM(float f) : floatNxM(f, f, f, f) {}
 	floatNxM(const float4& v) : _vec(v._vec) {}
+	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
 
 template<>
@@ -1631,6 +1640,7 @@ public:
 			 float f10, float f11) : _vec(_mm_set_ps(f11, f10, f01, f00)) {}
 
 	floatNxM(const floatNxM& m) : _vec(m._vec) {}
+	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
 
 template<>
@@ -1655,6 +1665,7 @@ public:
 
 	floatNxM(float f) : floatNxM(f, f, f, f, f, f) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1) {}
+	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; return *this; }
 };
 
 template<>
@@ -1680,6 +1691,7 @@ public:
 
 	floatNxM(float f) : floatNxM(f, f, f, f, f, f) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1) {}
+	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; return *this; }
 };
 
 template<>
@@ -1704,6 +1716,7 @@ public:
 
 	floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1) {}
+	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; return *this; }
 };
 
 template<>
@@ -1730,6 +1743,7 @@ public:
 
 	floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1) {}
+	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; return *this; }
 };
 
 template<>
@@ -1769,6 +1783,7 @@ public:
 			 float f20, float f21, float f22) : _vec0(_mm_set_ps(0.0f, f02, f01, f00)), _vec1(_mm_set_ps(0.0f, f12, f11, f10)), _vec2(_mm_set_ps(0.0f, f22, f21, f20)) {}
 
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
+	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; _vec2 = m._vec2; return *this; }
 
 	static const float3x3& identity() { static const float3x3 iden = float3x3(1, 0, 0, 0, 1, 0, 0, 0, 1); return iden; };
 };
@@ -1801,6 +1816,7 @@ public:
 
 	floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f, f, f, f, f) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
+	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; _vec2 = m._vec2; return *this; }
 };
 
 template<>
@@ -1832,6 +1848,7 @@ public:
 
 	floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f, f, f, f, f) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
+	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; _vec2 = m._vec2; return *this; }
 };
 
 template<>
@@ -1886,6 +1903,7 @@ public:
 		: _vec0(_mm_set_ps(f03, f02, f01, f00)), _vec1(_mm_set_ps(f13, f12, f11, f10)), _vec2(_mm_set_ps(f23, f22, f21, f20)), _vec3(_mm_set_ps(f33, f32, f31, f30)) {}
 
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2), _vec3(m._vec3) {}
+	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; _vec2 = m._vec2; _vec3 = m._vec3; return *this; }
 
 	static const float4x4& identity() { static const float4x4 iden = float4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); return iden; };
 };
@@ -1935,6 +1953,13 @@ inline component2<A, B>& component2<A, B>::operator = (const component2<E, F>& c
 }
 
 template<int A, int B>
+inline component2<A, B>& component2<A, B>::operator = (const component2<A, B>& c)
+{
+	_vec = _mm_blend_ps(_vec, c._vec, 0x3); // 0011
+	return *this;
+}
+
+template<int A, int B>
 inline component2<A, B>& component2<A, B>::operator = (const float2& v)
 {
 	staticAsserts();
@@ -1948,6 +1973,13 @@ inline component3<A, B, C>& component3<A, B, C>::operator = (const component3<E,
 {
 	staticAsserts();
 	_vec = blend(_vec, swizzle<E, F, G, A, B, C>(c._vec));
+	return *this;
+}
+
+template<int A, int B, int C>
+inline component3<A, B, C>& component3<A, B, C>::operator = (const component3<A, B, C>& c)
+{
+	_vec = _mm_blend_ps(_vec, c._vec, 0x7); // 0111
 	return *this;
 }
 
@@ -1976,6 +2008,13 @@ inline component4<A, B, C, D>& component4<A, B, C, D>::operator = (const compone
 	//p = _mm_shuffle_ps(f.p, f.p, _MM_SHUFFLE(H, G, F, E));
 	//p = _mm_shuffle_ps(p, p, _MM_SHUFFLE(D, C, B, A));
 	
+	return *this;
+}
+
+template<int A, int B, int C, int D>
+inline component4<A, B, C, D>& component4<A, B, C, D>::operator = (const component4<A, B, C, D>& c)
+{
+	_vec = c._vec;
 	return *this;
 }
 
