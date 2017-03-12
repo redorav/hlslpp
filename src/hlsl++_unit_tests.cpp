@@ -784,6 +784,23 @@ void RunUnitTests()
 	float4x3 mat_add_4x3 = mat_foo_4x3 + mat_bar_4x3;
 	float4x4 mat_add_4x4 = mat_foo_4x4 + mat_bar_4x4;
 
+	float1x1 mat_add_v_1x1 = mat_foo_1x1 + vfoo1;
+	float1x2 mat_add_v_1x2 = mat_foo_1x2 + vfoo1;
+	float1x3 mat_add_v_1x3 = mat_foo_1x3 + vfoo1;
+	float1x4 mat_add_v_1x4 = mat_foo_1x4 + vfoo1;
+	float2x1 mat_add_v_2x1 = mat_foo_2x1 + vfoo1;
+	float3x1 mat_add_v_3x1 = mat_foo_3x1 + vfoo1;
+	float4x1 mat_add_v_4x1 = mat_foo_4x1 + vfoo1;
+	float2x2 mat_add_v_2x2 = mat_foo_2x2 + vfoo1;
+	float2x3 mat_add_v_2x3 = mat_foo_2x3 + vfoo1;
+	float2x4 mat_add_v_2x4 = mat_foo_2x4 + vfoo1;
+	float3x2 mat_add_v_3x2 = mat_foo_3x2 + vfoo1;
+	float4x2 mat_add_v_4x2 = mat_foo_4x2 + vfoo1;
+	float3x3 mat_add_v_3x3 = mat_foo_3x3 + vfoo1;
+	float3x4 mat_add_v_3x4 = mat_foo_3x4 + vfoo1;
+	float4x3 mat_add_v_4x3 = mat_foo_4x3 + vfoo1;
+	float4x4 mat_add_v_4x4 = mat_foo_4x4 + vfoo1;
+
 	// Subtraction
 
 	float1x1 mat_sub_1x1 = mat_foo_1x1 - mat_bar_1x1;
@@ -802,6 +819,23 @@ void RunUnitTests()
 	float3x4 mat_sub_3x4 = mat_foo_3x4 - mat_bar_3x4;
 	float4x3 mat_sub_4x3 = mat_foo_4x3 - mat_bar_4x3;
 	float4x4 mat_sub_4x4 = mat_foo_4x4 - mat_bar_4x4;
+
+	float1x1 mat_sub_v_1x1 = mat_foo_1x1 - vfoo1;
+	float1x2 mat_sub_v_1x2 = mat_foo_1x2 - vfoo1;
+	float1x3 mat_sub_v_1x3 = mat_foo_1x3 - vfoo1;
+	float1x4 mat_sub_v_1x4 = mat_foo_1x4 - vfoo1;
+	float2x1 mat_sub_v_2x1 = mat_foo_2x1 - vfoo1;
+	float3x1 mat_sub_v_3x1 = mat_foo_3x1 - vfoo1;
+	float4x1 mat_sub_v_4x1 = mat_foo_4x1 - vfoo1;
+	float2x2 mat_sub_v_2x2 = mat_foo_2x2 - vfoo1;
+	float2x3 mat_sub_v_2x3 = mat_foo_2x3 - vfoo1;
+	float2x4 mat_sub_v_2x4 = mat_foo_2x4 - vfoo1;
+	float3x2 mat_sub_v_3x2 = mat_foo_3x2 - vfoo1;
+	float4x2 mat_sub_v_4x2 = mat_foo_4x2 - vfoo1;
+	float3x3 mat_sub_v_3x3 = mat_foo_3x3 - vfoo1;
+	float3x4 mat_sub_v_3x4 = mat_foo_3x4 - vfoo1;
+	float4x3 mat_sub_v_4x3 = mat_foo_4x3 - vfoo1;
+	float4x4 mat_sub_v_4x4 = mat_foo_4x4 - vfoo1;
 
 	// Multiplication
 
@@ -822,6 +856,23 @@ void RunUnitTests()
 	float4x3 mat_mul_4x3 = mat_foo_4x3 * mat_bar_4x3;
 	float4x4 mat_mul_4x4 = mat_foo_4x4 * mat_bar_4x4;
 
+	float1x1 mat_mul_v_1x1 = mat_foo_1x1 * vfoo1;
+	float1x2 mat_mul_v_1x2 = mat_foo_1x2 * vfoo1;
+	float1x3 mat_mul_v_1x3 = mat_foo_1x3 * vfoo1;
+	float1x4 mat_mul_v_1x4 = mat_foo_1x4 * vfoo1;
+	float2x1 mat_mul_v_2x1 = mat_foo_2x1 * vfoo1;
+	float3x1 mat_mul_v_3x1 = mat_foo_3x1 * vfoo1;
+	float4x1 mat_mul_v_4x1 = mat_foo_4x1 * vfoo1;
+	float2x2 mat_mul_v_2x2 = mat_foo_2x2 * vfoo1;
+	float2x3 mat_mul_v_2x3 = mat_foo_2x3 * vfoo1;
+	float2x4 mat_mul_v_2x4 = mat_foo_2x4 * vfoo1;
+	float3x2 mat_mul_v_3x2 = mat_foo_3x2 * vfoo1;
+	float4x2 mat_mul_v_4x2 = mat_foo_4x2 * vfoo1;
+	float3x3 mat_mul_v_3x3 = mat_foo_3x3 * vfoo1;
+	float3x4 mat_mul_v_3x4 = mat_foo_3x4 * vfoo1;
+	float4x3 mat_mul_v_4x3 = mat_foo_4x3 * vfoo1;
+	float4x4 mat_mul_v_4x4 = mat_foo_4x4 * vfoo1;
+
 	// Division
 
 	float1x1 mat_div_1x1 = mat_foo_1x1 / mat_bar_1x1;
@@ -840,6 +891,23 @@ void RunUnitTests()
 	float3x4 mat_div_3x4 = mat_foo_3x4 / mat_bar_3x4;
 	float4x3 mat_div_4x3 = mat_foo_4x3 / mat_bar_4x3;
 	float4x4 mat_div_4x4 = mat_foo_4x4 / mat_bar_4x4;
+
+	float1x1 mat_div_v_1x1 = mat_foo_1x1 / vfoo1;
+	float1x2 mat_div_v_1x2 = mat_foo_1x2 / vfoo1;
+	float1x3 mat_div_v_1x3 = mat_foo_1x3 / vfoo1;
+	float1x4 mat_div_v_1x4 = mat_foo_1x4 / vfoo1;
+	float2x1 mat_div_v_2x1 = mat_foo_2x1 / vfoo1;
+	float3x1 mat_div_v_3x1 = mat_foo_3x1 / vfoo1;
+	float4x1 mat_div_v_4x1 = mat_foo_4x1 / vfoo1;
+	float2x2 mat_div_v_2x2 = mat_foo_2x2 / vfoo1;
+	float2x3 mat_div_v_2x3 = mat_foo_2x3 / vfoo1;
+	float2x4 mat_div_v_2x4 = mat_foo_2x4 / vfoo1;
+	float3x2 mat_div_v_3x2 = mat_foo_3x2 / vfoo1;
+	float4x2 mat_div_v_4x2 = mat_foo_4x2 / vfoo1;
+	float3x3 mat_div_v_3x3 = mat_foo_3x3 / vfoo1;
+	float3x4 mat_div_v_3x4 = mat_foo_3x4 / vfoo1;
+	float4x3 mat_div_v_4x3 = mat_foo_4x3 / vfoo1;
+	float4x4 mat_div_v_4x4 = mat_foo_4x4 / vfoo1;
 
 	// Matrix - matrix multiplication
 
@@ -1209,8 +1277,8 @@ void RunSpeedTests()
 
 int main()
 {
-	RunSpeedTests();
 	RunUnitTests();
+	RunSpeedTests();
 	RunExperiments();
 
 	getchar();

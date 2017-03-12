@@ -3463,7 +3463,7 @@ inline floatN<N> mul(const float2& v, const floatNxM<N, 2>& m1) { return floatN<
 template<int N>
 inline floatN<N> mul(const float1& v, const floatNxM<N, 1>& m1) { return floatN<N>(mul(float1x1(v), m1)); }
 
-// Addition
+// Matrix-Matrix Addition
 
 template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
 inline floatNxM<N, M> operator + (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
@@ -3495,7 +3495,43 @@ inline floatNxM<N, M>& operator += (floatNxM<N, M>& m1, const floatNxM<N, M>& m2
 	return m1;
 }
 
-// Subtraction
+// Matrix-Scalar Addition
+
+template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+inline floatNxM<N, M> operator + (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_add_ps(m._vec, v_perm));
+}
+
+template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+inline floatNxM<N, M> operator + (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_add_ps(m._vec0, v_perm), _mm_add_ps(m._vec1, v_perm));
+}
+
+template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+inline floatNxM<N, M> operator + (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_add_ps(m._vec0, v_perm), _mm_add_ps(m._vec1, v_perm), _mm_add_ps(m._vec2, v_perm));
+}
+
+inline floatNxM<4, 4> operator + (const floatNxM<4, 4>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<4, 4>(_mm_add_ps(m._vec0, v_perm), _mm_add_ps(m._vec1, v_perm), _mm_add_ps(m._vec2, v_perm), _mm_add_ps(m._vec3, v_perm));
+}
+
+template<int N, int M>
+inline floatNxM<N, M>& operator += (floatNxM<N, M>& m, const float1& v)
+{
+	m = m + v;
+	return m;
+}
+
+// Matrix-Matrix Subtraction
 
 template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
 inline floatNxM<N, M> operator - (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
@@ -3525,6 +3561,42 @@ inline floatNxM<N, M>& operator -= (floatNxM<N, M>& m1, const floatNxM<N, M>& m2
 {
 	m1 = m1 - m2;
 	return m1;
+}
+
+// Matrix-Scalar Subtraction
+
+template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+inline floatNxM<N, M> operator - (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_sub_ps(m._vec, v_perm));
+}
+
+template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+inline floatNxM<N, M> operator - (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_sub_ps(m._vec0, v_perm), _mm_sub_ps(m._vec1, v_perm));
+}
+
+template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+inline floatNxM<N, M> operator - (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_sub_ps(m._vec0, v_perm), _mm_sub_ps(m._vec1, v_perm), _mm_sub_ps(m._vec2, v_perm));
+}
+
+inline floatNxM<4, 4> operator - (const floatNxM<4, 4>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<4, 4>(_mm_sub_ps(m._vec0, v_perm), _mm_sub_ps(m._vec1, v_perm), _mm_sub_ps(m._vec2, v_perm), _mm_sub_ps(m._vec3, v_perm));
+}
+
+template<int N, int M>
+inline floatNxM<N, M>& operator -= (floatNxM<N, M>& m, const float1& v)
+{
+	m = m - v;
+	return m;
 }
 
 // Multiplication
@@ -3559,6 +3631,42 @@ inline floatNxM<N, M>& operator *= (floatNxM<N, M>& m1, const floatNxM<N, M>& m2
 	return m1;
 }
 
+// Matrix-Scalar Multiplication
+
+template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+inline floatNxM<N, M> operator * (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_mul_ps(m._vec, v_perm));
+}
+
+template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+inline floatNxM<N, M> operator * (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_mul_ps(m._vec0, v_perm), _mm_mul_ps(m._vec1, v_perm));
+}
+
+template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+inline floatNxM<N, M> operator * (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_mul_ps(m._vec0, v_perm), _mm_mul_ps(m._vec1, v_perm), _mm_mul_ps(m._vec2, v_perm));
+}
+
+inline floatNxM<4, 4> operator * (const floatNxM<4, 4>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<4, 4>(_mm_mul_ps(m._vec0, v_perm), _mm_mul_ps(m._vec1, v_perm), _mm_mul_ps(m._vec2, v_perm), _mm_mul_ps(m._vec3, v_perm));
+}
+
+template<int N, int M>
+inline floatNxM<N, M>& operator *= (floatNxM<N, M>& m, const float1& v)
+{
+	m = m * v;
+	return m;
+}
+
 // Division
 
 template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
@@ -3591,6 +3699,42 @@ inline floatNxM<N, M>& operator /= (floatNxM<N, M>& m1, const floatNxM<N, M>& m2
 	return m1;
 }
 
+// Matrix-Scalar Division
+
+template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+inline floatNxM<N, M> operator / (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_div_ps(m._vec, v_perm));
+}
+
+template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+inline floatNxM<N, M> operator / (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_div_ps(m._vec0, v_perm), _mm_div_ps(m._vec1, v_perm));
+}
+
+template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+inline floatNxM<N, M> operator / (const floatNxM<N, M>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<N, M>(_mm_div_ps(m._vec0, v_perm), _mm_div_ps(m._vec1, v_perm), _mm_div_ps(m._vec2, v_perm));
+}
+
+inline floatNxM<4, 4> operator / (const floatNxM<4, 4>& m, const float1& v)
+{
+	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
+	return floatNxM<4, 4>(_mm_div_ps(m._vec0, v_perm), _mm_div_ps(m._vec1, v_perm), _mm_div_ps(m._vec2, v_perm), _mm_div_ps(m._vec3, v_perm));
+}
+
+template<int N, int M>
+inline floatNxM<N, M>& operator /= (floatNxM<N, M>& m, const float1& v)
+{
+	m = m / v;
+	return m;
+}
+
 inline float2x2 transpose(const float2x2& m)
 {
 	return float2x2(_mm_transpose_2x2_ps(m._vec));
@@ -3610,7 +3754,7 @@ inline float4x4 transpose(const float4x4& m)
 	return float4x4(vec0, vec1, vec2, vec3);
 }
 
-// These transpose methods just copy the data because the 1xM, Nx1, 2xM, Nx2, 3xM and Nx3 matrices are always laid out as rows
+// These transpose functions just copy the data because the 1xM, Nx1, 2xM, Nx2, 3xM and Nx3 matrices are always laid out as rows
 // even if they're meant to represent columns.
 
 template<int N, int M, typename std::enable_if<(N == 1) || (M == 1)>::type* = nullptr>
