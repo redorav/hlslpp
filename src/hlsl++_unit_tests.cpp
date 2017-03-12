@@ -112,8 +112,6 @@ void RunUnitTests()
 	float3 vbar3 = vfoo3.zyx;
 	float4 vbar4 = vfoo4.bgra;
 
-	vbar1 = 0.1f;
-
 	float1 vbaz1 = float1(0.2f);
 	float2 vbaz2 = float2(0.3f, 0.7f);
 	float3 vbaz3 = float3(0.1f, 0.4f, 0.8f);
@@ -140,12 +138,32 @@ void RunUnitTests()
 	float3 vadd3 = vfoo3 + vbar3;
 	float4 vadd4 = vfoo4 + vbar4;
 
+	float1 vadd_f_1 = vfoo1 + 0.1f;
+	float2 vadd_f_2 = vfoo2 + 0.2f;
+	float3 vadd_f_3 = vfoo3 + 0.3f;
+	float4 vadd_f_4 = vfoo4 + 0.4f;
+
+	vadd_f_1 += 0.1f;
+	vadd_f_2 += 0.2f;
+	vadd_f_3 += 0.3f;
+	vadd_f_4 += 0.4f;
+
 	// Subtraction
 
 	float1 vsub1 = vfoo1 - vbar1;
 	float2 vsub2 = vfoo2 - vbar2;
 	float3 vsub3 = vfoo3 - vbar3;
 	float4 vsub4 = vfoo4 - vbar4;
+
+	float1 vsub_f_1 = vfoo1 - 0.1f;
+	float2 vsub_f_2 = vfoo2 - 0.2f;
+	float3 vsub_f_3 = vfoo3 - 0.3f;
+	float4 vsub_f_4 = vfoo4 - 0.4f;
+
+	vsub_f_1 -= 0.1f;
+	vsub_f_2 -= 0.2f;
+	vsub_f_3 -= 0.3f;
+	vsub_f_4 -= 0.4f;
 
 	// Multiplication
 
@@ -154,12 +172,34 @@ void RunUnitTests()
 	float3 vmul3 = vfoo3 * vbar3;
 	float4 vmul4 = vfoo4 * vbar4;
 
+	float1 vmul_f_1 = vfoo1 * 0.1f;
+	float2 vmul_f_2 = vfoo2 * 0.2f;
+	float3 vmul_f_3 = vfoo3 * 0.3f;
+	float4 vmul_f_4 = vfoo4 * 0.4f;
+
+	vmul_f_1 *= 0.1f;
+	vmul_f_2 *= 0.2f;
+	vmul_f_3 *= 0.3f;
+	vmul_f_4 *= 0.4f;
+
 	// Division
 
 	float1 vdiv1 = vfoo1 / vbar1;
 	float2 vdiv2 = vfoo2 / vbar2;
 	float3 vdiv3 = vfoo3 / vbar3;
 	float4 vdiv4 = vfoo4 / vbar4;
+
+	float1 vdiv_f_1 = vfoo1 / 0.1f;
+	float2 vdiv_f_2 = vfoo2 / 0.2f;
+	float3 vdiv_f_3 = vfoo3 / 0.3f;
+	float4 vdiv_f_4 = vfoo4 / 0.4f;
+
+	vdiv_f_1 /= 0.1f;
+	vdiv_f_2 /= 0.2f;
+	vdiv_f_3 /= 0.3f;
+	vdiv_f_4 /= 0.4f;
+
+	// Comparison
 
 	float1 vgt1 = vfoo1 > vbar1;
 	float2 vgt2 = vfoo2 > vbar2;

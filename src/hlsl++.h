@@ -1904,7 +1904,6 @@ public:
 	explicit floatNxM(float f) : _vec0(_mm_set_ps1(f)), _vec1(_mm_set_ps1(f)), _vec2(_mm_set_ps1(f)), _vec3(_mm_set_ps1(f)) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2), _vec3(m._vec3) {}
 	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; _vec2 = m._vec2; _vec3 = m._vec3; return *this; }
-
 	static const float4x4& identity() { static const float4x4 iden = float4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); return iden; };
 };
 
@@ -2248,6 +2247,10 @@ inline floatN<sizeof...(Dim1)> operator + (const components<Dim1...>& v1, const 
 	return floatN<sizeof...(Dim1)>(v1) + floatN<sizeof...(Dim1)>(v2);
 }
 
+template<int N>
+inline floatN<N> operator + (const floatN<N>& v1, const float1& v2) { return v1 + floatN<N>(_mm_perm_xxxx_ps(v2._vec)); }
+inline float1 operator + (const float1& v1, const float1& v2) { return float1(_mm_add_ps(v1._vec, v2._vec)); } // A bit more optimal as it avoids the shuffle
+
 // Plus equals
 template<int N>
 inline floatN<N>& operator += (floatN<N>& v1, const floatN<N>& v2) { v1 = v1 + v2; return v1; }
@@ -2264,6 +2267,9 @@ inline components<Dim1...>& operator += (components<Dim1...>& v1, const componen
 	static_assert(sizeof...(Dim1) == sizeof...(Dim2), "Vectors must be the same dimension!");
 	v1 = floatN<sizeof...(Dim1)>(v1) + floatN<sizeof...(Dim1)>(v2); return v1;
 }
+
+template<int N>
+inline floatN<N>& operator += (floatN<N>& v1, const float1& v2) { v1 = v1 + v2; return v1; }
 
 // Subtraction
 template<int N>
@@ -2282,6 +2288,10 @@ inline floatN<sizeof...(Dim1)> operator - (const components<Dim1...>& v1, const 
 	return floatN<sizeof...(Dim1)>(v1) - floatN<sizeof...(Dim1)>(v2);
 }
 
+template<int N>
+inline floatN<N> operator - (const floatN<N>& v1, const float1& v2) { return v1 - floatN<N>(_mm_perm_xxxx_ps(v2._vec)); }
+inline float1 operator - (const float1& v1, const float1& v2) { return float1(_mm_sub_ps(v1._vec, v2._vec)); } // A bit more optimal as it avoids the shuffle
+
 // Minus equals
 template<int N>
 inline floatN<N>& operator -= (floatN<N>& v1, const floatN<N>& v2) { v1 = v1 - v2; return v1; }
@@ -2299,6 +2309,9 @@ inline components<Dim1...>& operator -= (components<Dim1...>& v1, const componen
 	v1 = floatN<sizeof...(Dim1)>(v1) - floatN<sizeof...(Dim1)>(v2); return v1;
 }
 
+template<int N>
+inline floatN<N>& operator -= (floatN<N>& v1, const float1& v2) { v1 = v1 - v2; return v1; }
+
 // Multiplication
 template<int N>
 inline floatN<N> operator * (const floatN<N>& v1, const floatN<N>& v2) { return floatN<N>(_mm_mul_ps(v1._vec, v2._vec)); }
@@ -2313,8 +2326,12 @@ template<template<int...Dim> class components, int...Dim1, int...Dim2>
 inline floatN<sizeof...(Dim1)> operator * (const components<Dim1...>& v1, const components<Dim2...>& v2)
 {
 	static_assert(sizeof...(Dim1) == sizeof...(Dim2), "Vectors must be the same dimension!");
-	return floatN<sizeof...(Dim1)>(_mm_add_ps(floatN<sizeof...(Dim1)>(v1)._vec, floatN<sizeof...(Dim1)>(v2)._vec));
+	return floatN<sizeof...(Dim1)>(v1) * floatN<sizeof...(Dim1)>(v2);
 }
+
+template<int N>
+inline floatN<N> operator * (const floatN<N>& v1, const float1& v2) { return v1 * floatN<N>(_mm_perm_xxxx_ps(v2._vec)); }
+inline float1 operator * (const float1& v1, const float1& v2) { return float1(_mm_mul_ps(v1._vec, v2._vec)); } // A bit more optimal as it avoids the shuffle
 
 // Times equals
 template<int N>
@@ -2333,6 +2350,9 @@ inline components<Dim1...>& operator *= (components<Dim1...>& v1, const componen
 	v1 = floatN<sizeof...(Dim1)>(v1) * floatN<sizeof...(Dim1)>(v2); return v1;
 }
 
+template<int N>
+inline floatN<N>& operator *= (floatN<N>& v1, const float1& v2) { v1 = v1 * v2; return v1; }
+
 // Division
 template<int N>
 inline floatN<N> operator / (const floatN<N>& v1, const floatN<N>& v2) { return floatN<N>(_mm_div_ps(v1._vec, v2._vec)); }
@@ -2347,8 +2367,12 @@ template<template<int...Dim> class components, int...Dim1, int...Dim2>
 inline floatN<sizeof...(Dim1)> operator / (const components<Dim1...>& v1, const components<Dim2...>& v2)
 {
 	static_assert(sizeof...(Dim1) == sizeof...(Dim2), "Vectors must be the same dimension!");
-	return floatN<sizeof...(Dim1)>(_mm_add_ps(floatN<sizeof...(Dim1)>(v1)._vec, floatN<sizeof...(Dim1)>(v2)._vec));
+	return floatN<sizeof...(Dim1)>(v1) / floatN<sizeof...(Dim1)>(v2);
 }
+
+template<int N>
+inline floatN<N> operator / (const floatN<N>& v1, const float1& v2) { return v1 / floatN<N>(_mm_perm_xxxx_ps(v2._vec)); }
+inline float1 operator / (const float1& v1, const float1& v2) { return float1(_mm_div_ps(v1._vec, v2._vec)); } // A bit more optimal as it avoids the shuffle
 
 // Divide equals
 template<int N>
@@ -2366,6 +2390,9 @@ inline components<Dim1...>& operator /= (components<Dim1...>& v1, const componen
 	static_assert(sizeof...(Dim1) == sizeof...(Dim2), "Vectors must be the same dimension!");
 	v1 = floatN<sizeof...(Dim1)>(v1) / floatN<sizeof...(Dim1)>(v2); return v1;
 }
+
+template<int N>
+inline floatN<N>& operator /= (floatN<N>& v1, const float1& v2) { v1 = v1 / v2; return v1; }
 
 template<int N>
 inline floatN<N> operator - (const floatN<N>& v) { return floatN<N>(_mm_neg_ps(v._vec)); }
