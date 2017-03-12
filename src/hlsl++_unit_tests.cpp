@@ -720,6 +720,11 @@ void RunUnitTests()
 	float4 vsub_swiz_c_4 = vfoo4.bgra - vbar4;
 	vsub_swiz_c_4.bgra = vfoo4.argb - vbar4.ggbr;
 
+	vadd_swiz_a_1 -= vfoo1;
+	vadd_swiz_b_1 -= vfoo1.x;
+	vadd_swiz_c_1.x -= vfoo1;
+	vadd_swiz_c_1.r -= vfoo1.r;
+
 	vsub_swiz_a_2 -= vfoo2;
 	vsub_swiz_b_2 -= vfoo2.xy;
 	vsub_swiz_c_2.xy -= vfoo2;

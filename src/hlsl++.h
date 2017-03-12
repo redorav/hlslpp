@@ -2270,6 +2270,7 @@ inline components<Dim1...>& operator += (components<Dim1...>& v1, const componen
 
 template<int N>
 inline floatN<N>& operator += (floatN<N>& v1, const float1& v2) { v1 = v1 + v2; return v1; }
+inline float1& operator += (float1& v1, const float1& v2) { v1 = v1 + v2; return v1; }
 
 // Subtraction
 template<int N>
@@ -2311,6 +2312,7 @@ inline components<Dim1...>& operator -= (components<Dim1...>& v1, const componen
 
 template<int N>
 inline floatN<N>& operator -= (floatN<N>& v1, const float1& v2) { v1 = v1 - v2; return v1; }
+inline float1& operator -= (float1& v1, const float1& v2) { v1 = v1 - v2; return v1; }
 
 // Multiplication
 template<int N>
@@ -2352,6 +2354,7 @@ inline components<Dim1...>& operator *= (components<Dim1...>& v1, const componen
 
 template<int N>
 inline floatN<N>& operator *= (floatN<N>& v1, const float1& v2) { v1 = v1 * v2; return v1; }
+inline float1& operator *= (float1& v1, const float1& v2) { v1 = v1 * v2; return v1; }
 
 // Division
 template<int N>
@@ -2393,6 +2396,7 @@ inline components<Dim1...>& operator /= (components<Dim1...>& v1, const componen
 
 template<int N>
 inline floatN<N>& operator /= (floatN<N>& v1, const float1& v2) { v1 = v1 / v2; return v1; }
+inline float1& operator /= (float1& v1, const float1& v2) { v1 = v1 / v2; return v1; }
 
 template<int N>
 inline floatN<N> operator - (const floatN<N>& v) { return floatN<N>(_mm_neg_ps(v._vec)); }
