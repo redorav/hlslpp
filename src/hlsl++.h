@@ -1,13 +1,29 @@
 #pragma once
 
-#if defined(_MSC_VER)
-#include <intrin.h>
-#else
-#include <x86intrin.h>
+#define HLSLPP_SSE
+
+#if defined(HLSLPP_SSE)
+
+	#if defined(_MSC_VER)
+		#include <intrin.h>
+	#else
+		#include <x86intrin.h>
+	#endif
+
+	#define n128 __m128
+
+#elif defined(HLSLPP_NEON)
+
+	#include <arm_neon.h>
+
+	#define n128 float32x4_t
+
 #endif
 
 #include <type_traits>
 #include <cstdint>
+
+#define HLSLPP_MATRIX_PACK_ROW_MAJOR
 
 // Helper constants
 
@@ -23,6 +39,7 @@ const BitMask infMask		(0x7f800000u);
 const BitMask minusinfMask	(0xff800000u);
 const BitMask absMask		(0x7fffffffu);
 const BitMask negMask		(0x80000000u);
+
 
 // Constants
 static const __m128 f4zero			= _mm_set_ps1( 0.0f);
@@ -1223,6 +1240,26 @@ inline void _mm_inv_4x4_ps(const __m128& vec0, const __m128& vec1, const __m128&
 	o_vec3 = _mm_mul_ps(tmp_row3, invDet);
 }
 
+// Cross-platform aliases to swap between SSE and NEON implementations
+
+#if defined(HLSLPP_SSE)
+
+#define _hlslpp_dot2_ps(x, y)	_mm_dot2_ps((x), (y))
+#define _hlslpp_dot3_ps(x, y)	_mm_dot3_ps((x), (y))
+#define _hlslpp_dot4_ps(x, y)	_mm_dot4_ps((x), (y))
+
+#define _hlslpp_abs_ps(x)		_mm_abs_ps((x))
+
+#define _hlslpp_div_ps(x, y)	_mm_div_ps((x), (y))
+
+#elif defined(HLSLPP_NEON)
+
+#define _hlslpp_abs_ps(x)		vabsq_f32((x))
+
+#define _hlslpp_div_ps(x, y)	vmulq_f32((x), vrecpsq_f32((y)))
+
+#endif
+
 template<int N> class floatN {};
 
 using float1 = floatN<1>;
@@ -1401,6 +1438,15 @@ public:
 	template<int A>
 	floatN<1>& operator = (const component1<A>& c);
 	floatN<1>& operator = (const float1x1& m);
+
+// 	operator float() const
+// 	{
+// #if defined(__clang__) || defined(__GNUG__) // Either clang++ or g++
+// 		return _vec[0];
+// #else
+// 		return _vec.m128_f32[0];
+// #endif
+// 	}
 };
 
 template<>
@@ -2222,8 +2268,7 @@ inline float4& float4::operator = (const component4<A, B, C, D>& c)
 	return *this;
 }
 
-// Optimize a straight copy if the indices match 0, 1, 2, 3 (doesn't produce/need the shuffle)
-template<>
+template<> // Optimize a straight copy if the indices match 0, 1, 2, 3 (doesn't produce/need the shuffle)
 inline float4& float4::operator = (const component4<0, 1, 2, 3>& c)
 {
 	_vec = c._vec;
@@ -2921,551 +2966,744 @@ inline float4x4 mul(const float4x1& m1, const float1x4& m2)
 
 inline float1x1 mul(const float1x2& m1, const float2x1& m2)
 {
-	return float1x1(_mm_dot2_ps(m1._vec, m2._vec));
+	return float1x1(_hlslpp_dot2_ps(m1._vec, m2._vec));
+}
+
+inline __m128 _mm_mul_1x2_2x1_ps(__m128 m1_vec, __m128 m2_vec)
+{
+	__m128 mul1 = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec), m2_vec);
+	__m128 mul2 = _mm_mul_ps(_mm_perm_yyyy_ps(m1_vec), _mm_perm_zwxx_ps(m2_vec));
+	__m128 result = _mm_add_ps(mul1, mul2);
+	return result;
+}
+
+inline __m128 _mm_mul_1x2_2xM_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1)
+{
+	__m128 mul1 = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec), m2_vec0);
+	__m128 mul2 = _mm_mul_ps(_mm_perm_yyyy_ps(m1_vec), m2_vec1);
+	__m128 result = _mm_add_ps(mul1, mul2);
+	return result;
+}
+
+inline __m128 _mm_mul_1x3_3x2_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1)
+{
+	__m128 dpx = _mm_dot3_ps(m1_vec, m2_vec0);
+	__m128 dpy = _mm_dot3_ps(m1_vec, m2_vec1);
+	__m128 result = _mm_blend_ps(dpx, _mm_perm_xxxx_ps(dpy), 0x2); // 0100b
+	return result;
+}
+
+inline __m128 _mm_mul_1x3_3xM_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2)
+{
+	__m128 mul0 = _mm_mul_ps(m2_vec0, _mm_perm_xxxx_ps(m1_vec));
+	__m128 mul1 = _mm_madd_ps(m2_vec1, _mm_perm_yyyy_ps(m1_vec), mul0);
+	__m128 result = _mm_madd_ps(m2_vec2, _mm_perm_zzzz_ps(m1_vec), mul1);
+	return result;
+}
+
+inline __m128 _mm_mul_1x4_4x2_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1)
+{
+	__m128 dpx = _mm_dot4_ps(m1_vec, m2_vec0);
+	__m128 dpy = _mm_dot4_ps(m1_vec, m2_vec1);
+	__m128 result = _mm_blend_ps(dpx, _mm_perm_xxxx_ps(dpy), 0x2); // 0010b
+	return result;
+}
+
+inline __m128 _mm_mul_1x4_4x3_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2)
+{
+	__m128 dpx = _mm_dot4_ps(m1_vec, m2_vec0);
+	__m128 dpy = _mm_dot4_ps(m1_vec, m2_vec1);
+	__m128 dpz = _mm_dot4_ps(m1_vec, m2_vec2);
+	__m128 result = _mm_blend_ps(dpy, _mm_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
+	return result;
+}
+
+inline __m128 _mm_mul_1x4_4x4_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, const __m128& m2_vec3)
+{
+	__m128 mul0 = _mm_mul_ps(m2_vec0, _mm_perm_xxxx_ps(m1_vec));
+	__m128 mul1 = _mm_madd_ps(m2_vec1, _mm_perm_yyyy_ps(m1_vec), mul0);
+	__m128 mul2 = _mm_madd_ps(m2_vec2, _mm_perm_zzzz_ps(m1_vec), mul1);
+	__m128 result = _mm_madd_ps(m2_vec3, _mm_perm_wwww_ps(m1_vec), mul2);
+	return result;
+}
+
+inline __m128 _mm_mul_2x2_2x1_ps(const __m128& m1_vec, const __m128& m2_vec)
+{
+	__m128 dpx = _mm_dot2_ps(m1_vec, m2_vec);
+	__m128 dpy = _mm_dot2_ps(_mm_perm_zwxx_ps(m1_vec), m2_vec);
+	__m128 result = _mm_blend_ps(dpx, _mm_perm_xxxx_ps(dpy), 0x2); // 0010b
+	return result;
+}
+
+inline __m128 _mm_mul_2x2_2x2_ps(const __m128& m1_vec, const __m128& m2_vec)
+{
+	// First and last elements in the matrix
+	__m128 diag1shuf1 = _mm_perm_xzyw_ps(m2_vec);			// Shuffle m2 to align components with m1
+	__m128 diag1mul1 = _mm_mul_ps(m1_vec, diag1shuf1);		// Multiply. Now contains m00 * n00, m01 * n10, m10 * n01, m11 * n11
+	__m128 diag1shuf2 = _mm_perm_yxxz_ps(diag1mul1);		// Shuffle to align to be able to add
+	__m128 diag1result = _mm_add_ps(diag1mul1, diag1shuf2);	// Now contains m00*n00 + m01*n10, _, _, m10*n01 + m11*n11
+
+	// Second and third elements in the matrix
+	__m128 diag2shuf1 = _mm_perm_ywxz_ps(m2_vec);			// Shuffle matrix to align components with m1
+	__m128 diag2mul1 = _mm_mul_ps(m1_vec, diag2shuf1);		// Multiply. Now contains m00 * n00, m01 * n10, m10 * n01, m11 * n11
+	__m128 diag2shuf2 = _mm_perm_xxwx_ps(diag2mul1);		// Shuffle to align to be able to add
+	__m128 diag2result = _mm_add_ps(diag2mul1, diag2shuf2);	// Now contains m00*n00 + m01*n10, _, _, m10*n01 + m11*n11
+
+	__m128 result = _mm_blend_ps(diag1result, diag2result, 0x6); // 0110b
+	return result;
+}
+
+inline void _mm_mul_2x2_2xM_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1)
+{
+	__m128 mul0 = _mm_mul_ps(m2_vec0, _mm_perm_xxxx_ps(m1_vec));
+	o_vec0 = _mm_madd_ps(m2_vec1, _mm_perm_yyyy_ps(m1_vec), mul0);
+
+	__m128 mul1 = _mm_mul_ps(m2_vec0, _mm_perm_zzzz_ps(m1_vec));
+	o_vec1 = _mm_madd_ps(m2_vec1, _mm_perm_wwww_ps(m1_vec), mul1);
+}
+
+inline __m128 _mm_mul_Nx2_2x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec)
+{
+	__m128 mul0 = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec));
+	__m128 result = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec), mul0);
+	return result;
+}
+
+inline void _mm_mul_Nx2_2x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec, __m128& o_vec0, __m128& o_vec1)
+{
+	__m128 mul0 = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec));
+	o_vec0 = _mm_madd_ps(m1_vec1, _mm_perm_zzzz_ps(m2_vec), mul0);
+
+	__m128 mul1 = _mm_mul_ps(m1_vec0, _mm_perm_yyyy_ps(m2_vec));
+	o_vec1 = _mm_madd_ps(m1_vec1, _mm_perm_wwww_ps(m2_vec), mul1);
+}
+
+inline void _mm_mul_3x2_2xM_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+{
+	__m128 mul0 = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec0), m2_vec0);
+	o_vec0 = _mm_madd_ps(_mm_perm_xxxx_ps(m1_vec1), m2_vec1, mul0);
+
+	__m128 mul1 = _mm_mul_ps(_mm_perm_yyyy_ps(m1_vec0), m2_vec0);
+	o_vec1 = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec1), m2_vec1, mul1);
+
+	__m128 mul2 = _mm_mul_ps(_mm_perm_zzzz_ps(m1_vec0), m2_vec0);
+	o_vec2 = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec1), m2_vec1, mul2);
+}
+
+inline void _mm_mul_4x2_2x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+{
+	__m128 mul0 = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec0));
+	o_vec0 = _mm_madd_ps(m1_vec1, _mm_perm_xxxx_ps(m2_vec1), mul0);
+
+	__m128 mul1 = _mm_mul_ps(m1_vec0, _mm_perm_yyyy_ps(m2_vec0));
+	o_vec1 = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec1), mul1);
+
+	__m128 mul2 = _mm_mul_ps(m1_vec0, _mm_perm_zzzz_ps(m2_vec0));
+	o_vec2 = _mm_madd_ps(m1_vec1, _mm_perm_zzzz_ps(m2_vec1), mul2);
+}
+
+inline void _mm_mul_4x2_2x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2, __m128& o_vec3)
+{
+	__m128 mul0 = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec0), m2_vec0);
+	o_vec0 = _mm_madd_ps(_mm_perm_xxxx_ps(m1_vec1), m2_vec1, mul0);
+
+	__m128 mul1 = _mm_mul_ps(_mm_perm_yyyy_ps(m1_vec0), m2_vec0);
+	o_vec1 = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec1), m2_vec1, mul1);
+
+	__m128 mul2 = _mm_mul_ps(_mm_perm_zzzz_ps(m1_vec0), m2_vec0);
+	o_vec2 = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec1), m2_vec1, mul2);
+
+	__m128 mul3 = _mm_mul_ps(_mm_perm_wwww_ps(m1_vec0), m2_vec0);
+	o_vec3 = _mm_madd_ps(_mm_perm_wwww_ps(m1_vec1), m2_vec1, mul3);
+}
+
+inline __m128 _mm_mul_2x3_3x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec)
+{
+	__m128 dpx = _mm_dot3_ps(m1_vec0, m2_vec);
+	__m128 dpy = _mm_dot3_ps(m1_vec1, m2_vec);
+	__m128 result = _mm_blend_ps(dpx, _mm_perm_xxxx_ps(dpy), 0x2); // 0010b
+	return result;
+}
+
+inline __m128 _mm_mul_2x3_3x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1)
+{
+	__m128 dpx = _mm_dot3_ps(m1_vec0, m2_vec0);
+	__m128 dpy = _mm_dot3_ps(m1_vec0, m2_vec1);
+	__m128 dpz = _mm_dot3_ps(m1_vec1, m2_vec0);
+	__m128 dpw = _mm_dot3_ps(m1_vec1, m2_vec1);
+	__m128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
+	return result;
+}
+
+inline void _mm_mul_4x2_2x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1)
+{
+	__m128 mul0 = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec0), m2_vec0);
+	__m128 mul1 = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec0), m2_vec1, mul0);
+	o_vec0 = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec0), m2_vec2, mul1);
+
+	__m128 mul2 = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec1), m2_vec0);
+	__m128 mul3 = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec1), m2_vec1, mul2);
+	o_vec1 = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec1), m2_vec2, mul3);
+}
+
+inline __m128 _mm_mul_2x3_3x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec)
+{
+	__m128 dpx = _mm_dot4_ps(m1_vec0, m2_vec);
+	__m128 dpy = _mm_dot4_ps(m1_vec1, m2_vec);
+	__m128 result = _mm_blend_ps(dpx, _mm_perm_xxxx_ps(dpy), 0x2); // 0010b
+	return result;
+}
+
+inline __m128 _mm_mul_2x4_4x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1)
+{
+	__m128 dpx = _mm_dot4_ps(m1_vec0, m2_vec0);
+	__m128 dpy = _mm_dot4_ps(m1_vec0, m2_vec1);
+	__m128 dpz = _mm_dot4_ps(m1_vec1, m2_vec0);
+	__m128 dpw = _mm_dot4_ps(m1_vec1, m2_vec1);
+	__m128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
+	return result;
+}
+
+inline void _mm_mul_2x4_4x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1)
+{
+	__m128 dpx0 = _mm_dot4_ps(m1_vec0, m2_vec0);
+	__m128 dpy0 = _mm_dot4_ps(m1_vec0, m2_vec1);
+	__m128 dpz0 = _mm_dot4_ps(m1_vec0, m2_vec2);
+	o_vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
+
+	__m128 dpx1 = _mm_dot4_ps(m1_vec1, m2_vec0);
+	__m128 dpy1 = _mm_dot4_ps(m1_vec1, m2_vec1);
+	__m128 dpz1 = _mm_dot4_ps(m1_vec1, m2_vec2);
+	o_vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
+}
+
+inline void _mm_mul_2x4_4x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, const __m128& m2_vec3, __m128& o_vec0, __m128& o_vec1)
+{
+	// First row
+	__m128 mul0x = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec0), m2_vec0);
+	__m128 mad0y = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec0), m2_vec1, mul0x);
+	__m128 mad0z = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec0), m2_vec2, mad0y);
+	o_vec0 = _mm_madd_ps(_mm_perm_wwww_ps(m1_vec0), m2_vec3, mad0z);
+
+	// Second row
+	__m128 mul1x = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec1), m2_vec0);
+	__m128 mad1y = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec1), m2_vec1, mul1x);
+	__m128 mad1z = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec1), m2_vec2, mad1y);
+	o_vec1 = _mm_madd_ps(_mm_perm_wwww_ps(m1_vec1), m2_vec3, mad1z);
+}
+
+inline __m128 _mm_mul_3x3_3x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec)
+{
+	__m128 dpx = _mm_dot3_ps(m1_vec0, m2_vec);
+	__m128 dpy = _mm_dot3_ps(m1_vec1, m2_vec);
+	__m128 dpz = _mm_dot3_ps(m1_vec2, m2_vec);
+	__m128 result = _mm_blend_ps(dpx, _mm_shuf_xxxx_ps(dpy, dpz), 0x6); // 0110b
+	return result;
+}
+
+inline void _mm_mul_3x3_3x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1)
+{
+	__m128 dpx0 = _mm_dot3_ps(m1_vec0, m2_vec0);
+	__m128 dpy0 = _mm_dot3_ps(m1_vec1, m2_vec0);
+	__m128 dpz0 = _mm_dot3_ps(m1_vec2, m2_vec0);
+	o_vec0 = _mm_blend_ps(dpx0, _mm_shuf_xxxx_ps(dpy0, dpz0), 0x6); // 0110b
+
+	__m128 dpx1 = _mm_dot3_ps(m1_vec0, m2_vec1);
+	__m128 dpy1 = _mm_dot3_ps(m1_vec1, m2_vec1);
+	__m128 dpz1 = _mm_dot3_ps(m1_vec2, m2_vec1);
+	o_vec1 = _mm_blend_ps(dpx1, _mm_shuf_xxxx_ps(dpy1, dpz1), 0x6); // 0110b
+}
+
+inline void _mm_mul_3x3_3x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+{
+	// First row
+	__m128 mul1x = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec0));
+	__m128 mad1y = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec0), mul1x);
+	o_vec0 = _mm_madd_ps(m1_vec2, _mm_perm_zzzz_ps(m2_vec0), mad1y);
+
+	// Second row
+	__m128 mul2x = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec1));
+	__m128 mad2y = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec1), mul2x);
+	o_vec1 = _mm_madd_ps(m1_vec2, _mm_perm_zzzz_ps(m2_vec1), mad2y);
+
+	// Third row
+	__m128 mul3x = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec2));
+	__m128 mad3y = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec2), mul3x);
+	o_vec2 = _mm_madd_ps(m1_vec2, _mm_perm_zzzz_ps(m2_vec2), mad3y);
+}
+
+inline void _mm_mul_3x3_3x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+{
+	// First row
+	__m128 mul1x = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec0), m2_vec0);
+	__m128 mad1y = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec0), m2_vec1, mul1x);
+	o_vec0 = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec0), m2_vec2, mad1y);
+
+	// Second row
+	__m128 mul2x = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec1), m2_vec0);
+	__m128 mad2y = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec1), m2_vec1, mul2x);
+	o_vec1 = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec1), m2_vec2, mad2y);
+
+	// Third row
+	__m128 mul3x = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec2), m2_vec0);
+	__m128 mad3y = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec2), m2_vec1, mul3x);
+	o_vec2 = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec2), m2_vec2, mad3y);
+}
+
+inline __m128 _mm_mul_3x4_4x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec)
+{
+	__m128 dpx = _mm_dot4_ps(m1_vec0, m2_vec);
+	__m128 dpy = _mm_dot4_ps(m1_vec1, m2_vec);
+	__m128 dpz = _mm_dot4_ps(m1_vec2, m2_vec);
+	__m128 result = _mm_blend_ps(dpy, _mm_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
+	return result;
+}
+
+inline void _mm_mul_3x4_4x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1)
+{
+	__m128 dpx0 = _mm_dot4_ps(m1_vec0, m2_vec0);
+	__m128 dpy0 = _mm_dot4_ps(m1_vec1, m2_vec0);
+	__m128 dpz0 = _mm_dot4_ps(m1_vec2, m2_vec0);
+	o_vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
+
+	__m128 dpx1 = _mm_dot4_ps(m1_vec0, m2_vec1);
+	__m128 dpy1 = _mm_dot4_ps(m1_vec1, m2_vec1);
+	__m128 dpz1 = _mm_dot4_ps(m1_vec2, m2_vec1);
+	o_vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
+}
+
+inline void _mm_mul_3x4_4x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+{
+	__m128 dpx0 = _mm_dot4_ps(m1_vec0, m2_vec0);
+	__m128 dpy0 = _mm_dot4_ps(m1_vec0, m2_vec1);
+	__m128 dpz0 = _mm_dot4_ps(m1_vec0, m2_vec2);
+	o_vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
+
+	__m128 dpx1 = _mm_dot4_ps(m1_vec1, m2_vec0);
+	__m128 dpy1 = _mm_dot4_ps(m1_vec1, m2_vec1);
+	__m128 dpz1 = _mm_dot4_ps(m1_vec1, m2_vec2);
+	o_vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
+
+	__m128 dpx2 = _mm_dot4_ps(m1_vec2, m2_vec0);
+	__m128 dpy2 = _mm_dot4_ps(m1_vec2, m2_vec1);
+	__m128 dpz2 = _mm_dot4_ps(m1_vec2, m2_vec2);
+	o_vec2 = _mm_blend_ps(dpy2, _mm_shuf_xxxx_ps(dpx2, dpz2), 0x5); // 0101b
+}
+
+inline void _mm_mul_3x4_4x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, const __m128& m2_vec3, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+{
+	// First row
+	__m128 mul1x = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec0), m2_vec0);
+	__m128 mad1y = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec0), m2_vec1, mul1x);
+	__m128 mad1z = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec0), m2_vec2, mad1y);
+	o_vec0 = _mm_madd_ps(_mm_perm_wwww_ps(m1_vec0), m2_vec3, mad1z);
+
+	// Second row
+	__m128 mul2x = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec1), m2_vec0);
+	__m128 mad2y = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec1), m2_vec1, mul2x);
+	__m128 mad2z = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec1), m2_vec2, mad2y);
+	o_vec1 = _mm_madd_ps(_mm_perm_wwww_ps(m1_vec1), m2_vec3, mad2z);
+
+	// Third row
+	__m128 mul3x = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec2), m2_vec0);
+	__m128 mad3y = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec2), m2_vec1, mul3x);
+	__m128 mad3z = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec2), m2_vec2, mad3y);
+	o_vec2 = _mm_madd_ps(_mm_perm_wwww_ps(m1_vec2), m2_vec3, mad3z);
+}
+
+inline __m128 _mm_mul_4x3_3x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec)
+{
+	__m128 mul1x = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec));
+	__m128 mad1y = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec), mul1x);
+	__m128 result = _mm_madd_ps(m1_vec2, _mm_perm_zzzz_ps(m2_vec), mad1y);
+	return result;
+}
+
+inline void _mm_mul_4x3_3x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1)
+{
+	// First row
+	__m128 mul0x = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec0));
+	__m128 mad0y = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec0), mul0x);
+	o_vec0 = _mm_madd_ps(m1_vec2, _mm_perm_zzzz_ps(m2_vec0), mad0y);
+
+	// Second row
+	__m128 mul1x = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec1));
+	__m128 mad1y = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec1), mul1x);
+	o_vec1 = _mm_madd_ps(m1_vec2, _mm_perm_zzzz_ps(m2_vec1), mad1y);
+}
+
+inline void _mm_mul_4x3_3x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+{
+	// First row
+	__m128 mul0x = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec0));
+	__m128 mad0y = _mm_madd_ps(m1_vec1, _mm_perm_xxxx_ps(m2_vec1), mul0x);
+	o_vec0 = _mm_madd_ps(m1_vec2, _mm_perm_xxxx_ps(m2_vec2), mad0y);
+
+	// Second row
+	__m128 mul1x = _mm_mul_ps(m1_vec0, _mm_perm_yyyy_ps(m2_vec0));
+	__m128 mad1y = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec1), mul1x);
+	o_vec1 = _mm_madd_ps(m1_vec2, _mm_perm_yyyy_ps(m2_vec2), mad1y);
+
+	// Second row
+	__m128 mul2x = _mm_mul_ps(m1_vec0, _mm_perm_zzzz_ps(m2_vec0));
+	__m128 mad2y = _mm_madd_ps(m1_vec1, _mm_perm_zzzz_ps(m2_vec1), mul2x);
+	o_vec2 = _mm_madd_ps(m1_vec2, _mm_perm_zzzz_ps(m2_vec2), mad2y);
+}
+
+inline void _mm_mul_4x3_3x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2, __m128& o_vec3)
+{
+	// First row
+	__m128 mul0x = _mm_mul_ps(_mm_perm_xxxx_ps(m1_vec0), m2_vec0);
+	__m128 mad0y = _mm_madd_ps(_mm_perm_xxxx_ps(m1_vec1), m2_vec1, mul0x);
+	o_vec0 = _mm_madd_ps(_mm_perm_xxxx_ps(m1_vec2), m2_vec2, mad0y);
+
+	// Second row
+	__m128 mul1x = _mm_mul_ps(_mm_perm_yyyy_ps(m1_vec0), m2_vec0);
+	__m128 mad1y = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec1), m2_vec1, mul1x);
+	o_vec1 = _mm_madd_ps(_mm_perm_yyyy_ps(m1_vec2), m2_vec2, mad1y);
+
+	// Second row
+	__m128 mul2x = _mm_mul_ps(_mm_perm_zzzz_ps(m1_vec0), m2_vec0);
+	__m128 mad2y = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec1), m2_vec1, mul2x);
+	o_vec2 = _mm_madd_ps(_mm_perm_zzzz_ps(m1_vec2), m2_vec2, mad2y);
+
+	// Second row
+	__m128 mul3x = _mm_mul_ps(_mm_perm_wwww_ps(m1_vec0), m2_vec0);
+	__m128 mad3y = _mm_madd_ps(_mm_perm_wwww_ps(m1_vec1), m2_vec1, mul3x);
+	o_vec3 = _mm_madd_ps(_mm_perm_wwww_ps(m1_vec2), m2_vec2, mad3y);
+}
+
+inline __m128 _mm_mul_4x4_4x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m1_vec3, const __m128& m2_vec)
+{
+	__m128 dpx = _mm_dot4_ps(m1_vec0, m2_vec);
+	__m128 dpy = _mm_dot4_ps(m1_vec1, m2_vec);
+	__m128 dpz = _mm_dot4_ps(m1_vec2, m2_vec);
+	__m128 dpw = _mm_dot4_ps(m1_vec3, m2_vec);
+
+	__m128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
+	return result;
+}
+
+inline void _mm_mul_4x4_4x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m1_vec3, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1)
+{
+	__m128 dpx0 = _mm_dot4_ps(m1_vec0, m2_vec0);
+	__m128 dpy0 = _mm_dot4_ps(m1_vec1, m2_vec0);
+	__m128 dpz0 = _mm_dot4_ps(m1_vec2, m2_vec0);
+	__m128 dpw0 = _mm_dot4_ps(m1_vec3, m2_vec0);
+
+	o_vec0 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx0, dpz0), _mm_shuf_xxxx_ps(dpy0, dpw0), 0xA); // 1010b
+
+	__m128 dpx1 = _mm_dot4_ps(m1_vec0, m2_vec1);
+	__m128 dpy1 = _mm_dot4_ps(m1_vec1, m2_vec1);
+	__m128 dpz1 = _mm_dot4_ps(m1_vec2, m2_vec1);
+	__m128 dpw1 = _mm_dot4_ps(m1_vec3, m2_vec1);
+
+	o_vec1 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx1, dpz1), _mm_shuf_xxxx_ps(dpy1, dpw1), 0xA); // 1010b
+}
+
+inline void _mm_mul_4x4_4x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m1_vec3, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+{
+	__m128 dpx0 = _mm_dot4_ps(m1_vec0, m2_vec0);
+	__m128 dpy0 = _mm_dot4_ps(m1_vec1, m2_vec0);
+	__m128 dpz0 = _mm_dot4_ps(m1_vec2, m2_vec0);
+	__m128 dpw0 = _mm_dot4_ps(m1_vec3, m2_vec0);
+
+	o_vec0 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx0, dpz0), _mm_shuf_xxxx_ps(dpy0, dpw0), 0xA); // 1010b
+
+	__m128 dpx1 = _mm_dot4_ps(m1_vec0, m2_vec1);
+	__m128 dpy1 = _mm_dot4_ps(m1_vec1, m2_vec1);
+	__m128 dpz1 = _mm_dot4_ps(m1_vec2, m2_vec1);
+	__m128 dpw1 = _mm_dot4_ps(m1_vec3, m2_vec1);
+
+	o_vec1 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx1, dpz1), _mm_shuf_xxxx_ps(dpy1, dpw1), 0xA); // 1010b
+
+	__m128 dpx2 = _mm_dot4_ps(m1_vec0, m2_vec2);
+	__m128 dpy2 = _mm_dot4_ps(m1_vec1, m2_vec2);
+	__m128 dpz2 = _mm_dot4_ps(m1_vec2, m2_vec2);
+	__m128 dpw2 = _mm_dot4_ps(m1_vec3, m2_vec2);
+
+	o_vec2 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx2, dpz2), _mm_shuf_xxxx_ps(dpy2, dpw2), 0xA); // 1010b
+}
+
+inline void _mm_mul_4x4_4x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m1_vec3, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, const __m128& m2_vec3, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2, __m128& o_vec3)
+{
+	// First row
+	__m128 mul1x = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec0));
+	__m128 mad1y = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec0), mul1x);
+	__m128 mad1z = _mm_madd_ps(m1_vec2, _mm_perm_zzzz_ps(m2_vec0), mad1y);
+	o_vec0 = _mm_madd_ps(m1_vec3, _mm_perm_wwww_ps(m2_vec0), mad1z);
+
+	// Second row
+	__m128 mul2x = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec1));
+	__m128 mad2y = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec1), mul2x);
+	__m128 mad2z = _mm_madd_ps(m1_vec2, _mm_perm_zzzz_ps(m2_vec1), mad2y);
+	o_vec1 = _mm_madd_ps(m1_vec3, _mm_perm_wwww_ps(m2_vec1), mad2z);
+
+	// Third row
+	__m128 mul3x = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec2));
+	__m128 mad3y = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec2), mul3x);
+	__m128 mad3z = _mm_madd_ps(m1_vec2, _mm_perm_zzzz_ps(m2_vec2), mad3y);
+	o_vec2 = _mm_madd_ps(m1_vec3, _mm_perm_wwww_ps(m2_vec2), mad3z);
+
+	// Fourth row
+	__m128 mul4x = _mm_mul_ps(m1_vec0, _mm_perm_xxxx_ps(m2_vec3));
+	__m128 mad4y = _mm_madd_ps(m1_vec1, _mm_perm_yyyy_ps(m2_vec3), mul4x);
+	__m128 mad4z = _mm_madd_ps(m1_vec2, _mm_perm_zzzz_ps(m2_vec3), mad4y);
+	o_vec3 = _mm_madd_ps(m1_vec3, _mm_perm_wwww_ps(m2_vec3), mad4z);
 }
 
 inline float1x2 mul(const float1x2& m1, const float2x2& m2)
-{
-	__m128 mul1 = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec), m2._vec);
-	__m128 mul2 = _mm_mul_ps(_mm_perm_yyyy_ps(m1._vec), _mm_perm_zwxx_ps(m2._vec));
-	__m128 result = _mm_add_ps(mul1, mul2);
-	return float1x2(result);
+{	
+	return float1x2(_mm_mul_1x2_2x1_ps(m1._vec, m2._vec));
 }
 
 template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
 inline floatNxM<1, M> mul(const float1x2& m1, const floatNxM<2, M>& m2)
 {
-	__m128 mul1 = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec), m2._vec0);
-	__m128 mul2 = _mm_mul_ps(_mm_perm_yyyy_ps(m1._vec), m2._vec1);
-	__m128 result = _mm_add_ps(mul1, mul2);
-	return floatNxM<1, M>(result);
+	return floatNxM<1, M>(_mm_mul_1x2_2xM_ps(m1._vec, m2._vec0, m2._vec1));
 }
 
 inline float1x1 mul(const float1x3& m1, const float3x1& m2)
 {
-	return float1x1(_mm_dot3_ps(m1._vec, m2._vec));
+	return float1x1(_hlslpp_dot3_ps(m1._vec, m2._vec));
 }
 
 inline float1x2 mul(const float1x3& m1, const float3x2& m2)
 {
-	__m128 dpx = _mm_dot3_ps(m1._vec, m2._vec0);
-	__m128 dpy = _mm_dot3_ps(m1._vec, m2._vec1);
-	__m128 result = _mm_blend_ps(dpx, _mm_perm_xxxx_ps(dpy), 0x2); // 0100b
-	return float1x2(result);
+	return float1x2(_mm_mul_1x3_3x2_ps(m1._vec, m2._vec0, m2._vec1));
 }
 
 template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
 inline floatNxM<1, M> mul(const float1x3& m1, const floatNxM<3, M>& m2)
 {
-	__m128 mul0 = _mm_mul_ps(m2._vec0, _mm_perm_xxxx_ps(m1._vec));
-	__m128 mul1 = _mm_madd_ps(m2._vec1, _mm_perm_yyyy_ps(m1._vec), mul0);
-	__m128 result = _mm_madd_ps(m2._vec2, _mm_perm_zzzz_ps(m1._vec), mul1);
-	return floatNxM<1, M>(result);
+	return floatNxM<1, M>(_mm_mul_1x3_3xM_ps(m1._vec, m2._vec0, m2._vec1, m2._vec2));
 }
 
 inline float1x1 mul(const float1x4& m1, const float4x1& m2)
 {
-	return float1x1(_mm_dot4_ps(m1._vec, m2._vec));
+	return float1x1(_hlslpp_dot4_ps(m1._vec, m2._vec));
 }
 
 inline float1x2 mul(const float1x4& m1, const float4x2& m2)
 {
-	__m128 dpx = _mm_dot4_ps(m1._vec, m2._vec0);
-	__m128 dpy = _mm_dot4_ps(m1._vec, m2._vec1);
-	__m128 result = _mm_blend_ps(dpx, _mm_perm_xxxx_ps(dpy), 0x2); // 0010b
-	return float1x2(result);
+	return float1x2(_mm_mul_1x4_4x2_ps(m1._vec, m2._vec0, m2._vec1));
 }
 
 inline float1x3 mul(const float1x4& m1, const float4x3& m2)
 {
-	__m128 dpx = _mm_dot4_ps(m1._vec, m2._vec0);
-	__m128 dpy = _mm_dot4_ps(m1._vec, m2._vec1);
-	__m128 dpz = _mm_dot4_ps(m1._vec, m2._vec2);
-	__m128 result = _mm_blend_ps(dpy, _mm_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
-	return float1x3(result);
+	return float1x3(_mm_mul_1x4_4x3_ps(m1._vec, m2._vec0, m2._vec1, m2._vec2));
 }
 
 inline float1x4 mul(const float1x4& m1, const float4x4& m2)
 {
-	__m128 mul0 = _mm_mul_ps(m2._vec0, _mm_perm_xxxx_ps(m1._vec));
-	__m128 mul1 = _mm_madd_ps(m2._vec1, _mm_perm_yyyy_ps(m1._vec), mul0);
-	__m128 mul2 = _mm_madd_ps(m2._vec2, _mm_perm_zzzz_ps(m1._vec), mul1);
-	__m128 result = _mm_madd_ps(m2._vec3, _mm_perm_wwww_ps(m1._vec), mul2);
-	return float1x4(result);
+	return float1x4(_mm_mul_1x4_4x4_ps(m1._vec, m2._vec0, m2._vec1, m2._vec2, m2._vec3));
 }
 
 inline float2x1 mul(const float2x2& m1, const float2x1& m2)
 {
-	__m128 dpx = _mm_dot2_ps(m1._vec, m2._vec);
-	__m128 dpy = _mm_dot2_ps(_mm_perm_zwxx_ps(m1._vec), m2._vec);
-	__m128 result = _mm_blend_ps(dpx, _mm_perm_xxxx_ps(dpy), 0x2); // 0010b
-	return float2x1(result);
+	return float2x1(_mm_mul_2x2_2x1_ps(m1._vec, m2._vec));
 }
 
 inline float2x2 mul(const float2x2& m1, const float2x2& m2)
 {
-	// First and last elements in the matrix
-	__m128 diag1shuf1 = _mm_perm_xzyw_ps(m2._vec);			// Shuffle m2 to align components with m1
-	__m128 diag1mul1 = _mm_mul_ps(m1._vec, diag1shuf1);		// Multiply. Now contains m00 * n00, m01 * n10, m10 * n01, m11 * n11
-	__m128 diag1shuf2 = _mm_perm_yxxz_ps(diag1mul1);		// Shuffle to align to be able to add
-	__m128 diag1result = _mm_add_ps(diag1mul1, diag1shuf2);	// Now contains m00*n00 + m01*n10, _, _, m10*n01 + m11*n11
-
-	// Second and third elements in the matrix
-	__m128 diag2shuf1 = _mm_perm_ywxz_ps(m2._vec);			// Shuffle matrix to align components with m1
-	__m128 diag2mul1 = _mm_mul_ps(m1._vec, diag2shuf1);		// Multiply. Now contains m00 * n00, m01 * n10, m10 * n01, m11 * n11
-	__m128 diag2shuf2 = _mm_perm_xxwx_ps(diag2mul1);		// Shuffle to align to be able to add
-	__m128 diag2result = _mm_add_ps(diag2mul1, diag2shuf2);	// Now contains m00*n00 + m01*n10, _, _, m10*n01 + m11*n11
-
-	__m128 result = _mm_blend_ps(diag1result, diag2result, 0x6); // 0110b
-
-	return float2x2(result);
+	return float2x2(_mm_mul_2x2_2x2_ps(m1._vec, m2._vec));
 }
 
 template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
 inline floatNxM<2, M> mul(const float2x2& m1, const floatNxM<2, M>& m2)
 {
-	__m128 mul0 = _mm_mul_ps(m2._vec0, _mm_perm_xxxx_ps(m1._vec));
-	__m128 vec0 = _mm_madd_ps(m2._vec1, _mm_perm_yyyy_ps(m1._vec), mul0);
-
-	__m128 mul1 = _mm_mul_ps(m2._vec0, _mm_perm_zzzz_ps(m1._vec));
-	__m128 vec1 = _mm_madd_ps(m2._vec1, _mm_perm_wwww_ps(m1._vec), mul1);
-
+	__m128 vec0, vec1;
+	_mm_mul_2x2_2xM_ps(m1._vec, m2._vec0, m2._vec1, vec0, vec1);
 	return floatNxM<2, M>(vec0, vec1);
 }
 
 template<int N, typename std::enable_if<(N > 2)>::type* = nullptr>
 inline floatNxM<N, 1> mul(const floatNxM<N, 2>& m1, const float2x1& m2)
 {
-	__m128 mul0 = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec));
-	__m128 result = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec), mul0);
-	return floatNxM<N, 1>(result);
+	return floatNxM<N, 1>(_mm_mul_Nx2_2x1_ps(m1._vec0, m1._vec1, m2._vec));
 }
 
 template<int N, typename std::enable_if<(N > 2)>::type* = nullptr>
 inline floatNxM<N, 2> mul(const floatNxM<N, 2>& m1, const float2x2& m2)
 {
-	__m128 mul0 = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec));
-	__m128 vec0 = _mm_madd_ps(m1._vec1, _mm_perm_zzzz_ps(m2._vec), mul0);
-
-	__m128 mul1 = _mm_mul_ps(m1._vec0, _mm_perm_yyyy_ps(m2._vec));
-	__m128 vec1 = _mm_madd_ps(m1._vec1, _mm_perm_wwww_ps(m2._vec), mul1);
-
+	__m128 vec0, vec1;
+	_mm_mul_Nx2_2x2_ps(m1._vec0, m1._vec1, m2._vec, vec0, vec1);
 	return floatNxM<N, 2>(vec0, vec1);
 }
 
 template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
 inline floatNxM<3, M> mul(const float3x2& m1, const floatNxM<2, M>& m2)
 {
-	__m128 mul0 = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec0), m2._vec0);
-	__m128 vec0 = _mm_madd_ps(_mm_perm_xxxx_ps(m1._vec1), m2._vec1, mul0);
-
-	__m128 mul1 = _mm_mul_ps(_mm_perm_yyyy_ps(m1._vec0), m2._vec0);
-	__m128 vec1 = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec1), m2._vec1, mul1);
-
-	__m128 mul2 = _mm_mul_ps(_mm_perm_zzzz_ps(m1._vec0), m2._vec0);
-	__m128 vec2 = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec1), m2._vec1, mul2);
-
+	__m128 vec0, vec1, vec2;
+	_mm_mul_3x2_2xM_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, vec0, vec1, vec2);
 	return floatNxM<3, M>(vec0, vec1, vec2);
 }
 
 inline float4x3 mul(const float4x2& m1, const float2x3& m2)
 {
-	__m128 mul0 = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec0));
-	__m128 vec0 = _mm_madd_ps(m1._vec1, _mm_perm_xxxx_ps(m2._vec1), mul0);
-
-	__m128 mul1 = _mm_mul_ps(m1._vec0, _mm_perm_yyyy_ps(m2._vec0));
-	__m128 vec1 = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec1), mul1);
-
-	__m128 mul2 = _mm_mul_ps(m1._vec0, _mm_perm_zzzz_ps(m2._vec0));
-	__m128 vec2 = _mm_madd_ps(m1._vec1, _mm_perm_zzzz_ps(m2._vec1), mul2);
-
+	__m128 vec0, vec1, vec2;
+	_mm_mul_4x2_2x3_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, vec0, vec1, vec2);
 	return float4x3(vec0, vec1, vec2);
 }
 
 inline float4x4 mul(const float4x2& m1, const float2x4& m2)
 {
-	__m128 mul0 = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec0), m2._vec0);
-	__m128 vec0 = _mm_madd_ps(_mm_perm_xxxx_ps(m1._vec1), m2._vec1, mul0);
-
-	__m128 mul1 = _mm_mul_ps(_mm_perm_yyyy_ps(m1._vec0), m2._vec0);
-	__m128 vec1 = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec1), m2._vec1, mul1);
-
-	__m128 mul2 = _mm_mul_ps(_mm_perm_zzzz_ps(m1._vec0), m2._vec0);
-	__m128 vec2 = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec1), m2._vec1, mul2);
-
-	__m128 mul3 = _mm_mul_ps(_mm_perm_wwww_ps(m1._vec0), m2._vec0);
-	__m128 vec3 = _mm_madd_ps(_mm_perm_wwww_ps(m1._vec1), m2._vec1, mul3);
-
+	__m128 vec0, vec1, vec2, vec3;
+	_mm_mul_4x2_2x4_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, vec0, vec1, vec2, vec3);
 	return float4x4(vec0, vec1, vec2, vec3);
 }
 
 inline float2x1 mul(const float2x3& m1, const float3x1& m2)
 {
-	__m128 dpx = _mm_dot3_ps(m1._vec0, m2._vec);
-	__m128 dpy = _mm_dot3_ps(m1._vec1, m2._vec);
-	__m128 result = _mm_blend_ps(dpx, _mm_perm_xxxx_ps(dpy), 0x2); // 0010b
-	return float2x1(result);
+	return float2x1(_mm_mul_2x3_3x1_ps(m1._vec0, m1._vec1, m2._vec));
 }
 
 inline float2x2 mul(const float2x3& m1, const float3x2& m2)
 {
-	__m128 dpx = _mm_dot3_ps(m1._vec0, m2._vec0);
-	__m128 dpy = _mm_dot3_ps(m1._vec0, m2._vec1);
-	__m128 dpz = _mm_dot3_ps(m1._vec1, m2._vec0);
-	__m128 dpw = _mm_dot3_ps(m1._vec1, m2._vec1);
-	__m128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
-	return float2x2(result);
+	return float2x2(_mm_mul_2x3_3x2_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1));
 }
 
 template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
 inline floatNxM<2, M> mul(const float2x3& m1, const floatNxM<3, M>& m2)
 {
-	__m128 mul0 = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec0), m2._vec0);
-	__m128 mul1 = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec0), m2._vec1, mul0);
-	__m128 vec0 = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec0), m2._vec2, mul1);
-
-	__m128 mul2 = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec1), m2._vec0);
-	__m128 mul3 = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec1), m2._vec1, mul2);
-	__m128 vec1 = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec1), m2._vec2, mul3);
-
+	__m128 vec0, vec1;
+	_mm_mul_4x2_2x4_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, m2._vec2, vec0, vec1);
 	return floatNxM<2, M>(vec0, vec1);
 }
 
 inline float2x1 mul(const float2x4& m1, const float4x1& m2)
 {
-	__m128 dpx = _mm_dot4_ps(m1._vec0, m2._vec);
-	__m128 dpy = _mm_dot4_ps(m1._vec1, m2._vec);
-	__m128 result = _mm_blend_ps(dpx, _mm_perm_xxxx_ps(dpy), 0x2); // 0010b
-	return float2x1(result);
+	return float2x1(_mm_mul_2x3_3x2_ps(m1._vec0, m1._vec1, m2._vec));
 }
 
 inline float2x2 mul(const float2x4& m1, const float4x2& m2)
 {
-	__m128 dpx = _mm_dot4_ps(m1._vec0, m2._vec0);
-	__m128 dpy = _mm_dot4_ps(m1._vec0, m2._vec1);
-	__m128 dpz = _mm_dot4_ps(m1._vec1, m2._vec0);
-	__m128 dpw = _mm_dot4_ps(m1._vec1, m2._vec1);
-	__m128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
-	return float2x2(result);
+	return float2x2(_mm_mul_2x4_4x2_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1));
 }
 
 inline float2x3 mul(const float2x4& m1, const float4x3& m2)
 {
-	__m128 dpx0 = _mm_dot4_ps(m1._vec0, m2._vec0);
-	__m128 dpy0 = _mm_dot4_ps(m1._vec0, m2._vec1);
-	__m128 dpz0 = _mm_dot4_ps(m1._vec0, m2._vec2);
-	__m128 vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
-
-	__m128 dpx1 = _mm_dot4_ps(m1._vec1, m2._vec0);
-	__m128 dpy1 = _mm_dot4_ps(m1._vec1, m2._vec1);
-	__m128 dpz1 = _mm_dot4_ps(m1._vec1, m2._vec2);
-	__m128 vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
-
+	__m128 vec0, vec1;
+	_mm_mul_2x4_4x3_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, m2._vec2, vec0, vec1);
 	return float2x3(vec0, vec1);
 }
 
 inline float2x4 mul(const float2x4& m1, const float4x4& m2)
 {
-	// First row
-	__m128 mul0x = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec0), m2._vec0);
-	__m128 mad0y = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec0), m2._vec1, mul0x);
-	__m128 mad0z = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec0), m2._vec2, mad0y);
-	__m128 vec0  = _mm_madd_ps(_mm_perm_wwww_ps(m1._vec0), m2._vec3, mad0z);
-
-	// Second row
-	__m128 mul1x = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec1), m2._vec0);
-	__m128 mad1y = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec1), m2._vec1, mul1x);
-	__m128 mad1z = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec1), m2._vec2, mad1y);
-	__m128 vec1  = _mm_madd_ps(_mm_perm_wwww_ps(m1._vec1), m2._vec3, mad1z);
-
+	__m128 vec0, vec1;
+	_mm_mul_2x4_4x4_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, m2._vec2, m2._vec3, vec0, vec1);
 	return float2x4(vec0, vec1);
 }
 
 inline float3x1 mul(const float3x3& m1, const float3x1& m2)
 {
-	__m128 dpx = _mm_dot3_ps(m1._vec0, m2._vec);
-	__m128 dpy = _mm_dot3_ps(m1._vec1, m2._vec);
-	__m128 dpz = _mm_dot3_ps(m1._vec2, m2._vec);
-	__m128 result = _mm_blend_ps(dpx, _mm_shuf_xxxx_ps(dpy, dpz), 0x6); // 0110b
-	return float3x1(result);
+	return float3x1(_mm_mul_3x3_3x1_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec));
 }
 
 inline float3x2 mul(const float3x3& m1, const float3x2& m2)
 {
-	__m128 dpx0 = _mm_dot3_ps(m1._vec0, m2._vec0);
-	__m128 dpy0 = _mm_dot3_ps(m1._vec1, m2._vec0);
-	__m128 dpz0 = _mm_dot3_ps(m1._vec2, m2._vec0);
-	__m128 vec0 = _mm_blend_ps(dpx0, _mm_shuf_xxxx_ps(dpy0, dpz0), 0x6); // 0110b
-
-	__m128 dpx1 = _mm_dot3_ps(m1._vec0, m2._vec1);
-	__m128 dpy1 = _mm_dot3_ps(m1._vec1, m2._vec1);
-	__m128 dpz1 = _mm_dot3_ps(m1._vec2, m2._vec1);
-	__m128 vec1 = _mm_blend_ps(dpx1, _mm_shuf_xxxx_ps(dpy1, dpz1), 0x6); // 0110b
-
+	__m128 vec0, vec1;
+	_mm_mul_3x3_3x2_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, vec0, vec1);
 	return float3x2(vec0, vec1);
 }
 
 inline float3x3 mul(const float3x3& m1, const float3x3& m2)
 {
-	// First row
-	__m128 mul1x = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec0));
-	__m128 mad1y = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec0), mul1x);
-	__m128 mad1z = _mm_madd_ps(m1._vec2, _mm_perm_zzzz_ps(m2._vec0), mad1y);
-
-	// Second row
-	__m128 mul2x = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec1));
-	__m128 mad2y = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec1), mul2x);
-	__m128 mad2z = _mm_madd_ps(m1._vec2, _mm_perm_zzzz_ps(m2._vec1), mad2y);
-
-	// Third row
-	__m128 mul3x = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec2));
-	__m128 mad3y = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec2), mul3x);
-	__m128 mad3z = _mm_madd_ps(m1._vec2, _mm_perm_zzzz_ps(m2._vec2), mad3y);
-
-	return float3x3(mad1z, mad2z, mad3z);
+	__m128 vec0, vec1, vec2;
+	_mm_mul_3x3_3x3_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
+	return float3x3(vec0, vec1, vec2);
 }
 
 inline float3x4 mul(const float3x3& m1, const float3x4& m2)
 {
-	// First row
-	__m128 mul1x = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec0), m2._vec0);
-	__m128 mad1y = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec0), m2._vec1, mul1x);
-	__m128 mad1z = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec0), m2._vec2, mad1y);
-
-	// Second row
-	__m128 mul2x = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec1), m2._vec0);
-	__m128 mad2y = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec1), m2._vec1, mul2x);
-	__m128 mad2z = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec1), m2._vec2, mad2y);
-
-	// Third row
-	__m128 mul3x = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec2), m2._vec0);
-	__m128 mad3y = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec2), m2._vec1, mul3x);
-	__m128 mad3z = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec2), m2._vec2, mad3y);
-
-	return float3x4(mad1z, mad2z, mad3z);
+	__m128 vec0, vec1, vec2;
+	_mm_mul_3x3_3x4_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
+	return float3x4(vec0, vec1, vec2);
 }
 
 inline float3x1 mul(const float3x4& m1, const float4x1& m2)
 {
-	__m128 dpx = _mm_dot4_ps(m1._vec0, m2._vec);
-	__m128 dpy = _mm_dot4_ps(m1._vec1, m2._vec);
-	__m128 dpz = _mm_dot4_ps(m1._vec2, m2._vec);
-	__m128 result = _mm_blend_ps(dpy, _mm_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
-	return float3x1(result);
+	
+	return float3x1(_mm_mul_3x4_4x1_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec));
 }
 
 inline float3x2 mul(const float3x4& m1, const float4x2& m2)
 {
-	__m128 dpx0 = _mm_dot4_ps(m1._vec0, m2._vec0);
-	__m128 dpy0 = _mm_dot4_ps(m1._vec1, m2._vec0);
-	__m128 dpz0 = _mm_dot4_ps(m1._vec2, m2._vec0);
-	__m128 vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
-	
-	__m128 dpx1 = _mm_dot4_ps(m1._vec0, m2._vec1);
-	__m128 dpy1 = _mm_dot4_ps(m1._vec1, m2._vec1);
-	__m128 dpz1 = _mm_dot4_ps(m1._vec2, m2._vec1);
-	__m128 vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
-
+	__m128 vec0, vec1;
+	_mm_mul_3x4_4x2_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, vec0, vec1);
 	return float3x2(vec0, vec1);
 }
 
 inline float3x3 mul(const float3x4& m1, const float4x3& m2)
 {
-	__m128 dpx0 = _mm_dot4_ps(m1._vec0, m2._vec0);
-	__m128 dpy0 = _mm_dot4_ps(m1._vec0, m2._vec1);
-	__m128 dpz0 = _mm_dot4_ps(m1._vec0, m2._vec2);
-	__m128 vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
-
-	__m128 dpx1 = _mm_dot4_ps(m1._vec1, m2._vec0);
-	__m128 dpy1 = _mm_dot4_ps(m1._vec1, m2._vec1);
-	__m128 dpz1 = _mm_dot4_ps(m1._vec1, m2._vec2);
-	__m128 vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
-
-	__m128 dpx2 = _mm_dot4_ps(m1._vec2, m2._vec0);
-	__m128 dpy2 = _mm_dot4_ps(m1._vec2, m2._vec1);
-	__m128 dpz2 = _mm_dot4_ps(m1._vec2, m2._vec2);
-	__m128 vec2 = _mm_blend_ps(dpy2, _mm_shuf_xxxx_ps(dpx2, dpz2), 0x5); // 0101b
-
+	__m128 vec0, vec1, vec2;
+	_mm_mul_3x4_4x3_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
 	return float3x3(vec0, vec1, vec2);
 }
 
 inline float3x4 mul(const float3x4& m1, const float4x4& m2)
 {
-	// First row
-	__m128 mul1x = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec0), m2._vec0);
-	__m128 mad1y = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec0), m2._vec1, mul1x);
-	__m128 mad1z = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec0), m2._vec2, mad1y);
-	__m128 mad1w = _mm_madd_ps(_mm_perm_wwww_ps(m1._vec0), m2._vec3, mad1z);
-
-	// Second row
-	__m128 mul2x = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec1), m2._vec0);
-	__m128 mad2y = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec1), m2._vec1, mul2x);
-	__m128 mad2z = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec1), m2._vec2, mad2y);
-	__m128 mad2w = _mm_madd_ps(_mm_perm_wwww_ps(m1._vec1), m2._vec3, mad2z);
-
-	// Third row
-	__m128 mul3x = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec2), m2._vec0);
-	__m128 mad3y = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec2), m2._vec1, mul3x);
-	__m128 mad3z = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec2), m2._vec2, mad3y);
-	__m128 mad3w = _mm_madd_ps(_mm_perm_wwww_ps(m1._vec2), m2._vec3, mad3z);
-
-	return float3x4(mad1w, mad2w, mad3w);
+	__m128 vec0, vec1, vec2;
+	_mm_mul_3x4_4x4_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, m2._vec3, vec0, vec1, vec2);
+	return float3x4(vec0, vec1, vec2);
 }
 
 inline float4x1 mul(const float4x3& m1, const float3x1& m2)
 {
-	__m128 mul1x  = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec));
-	__m128 mad1y  = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec), mul1x);
-	__m128 result = _mm_madd_ps(m1._vec2, _mm_perm_zzzz_ps(m2._vec), mad1y);
-
-	return float4x1(result);
+	return float4x1(_mm_mul_4x3_3x1_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec));
 }
 
 inline float4x2 mul(const float4x3& m1, const float3x2& m2)
 {
-	// First row
-	__m128 mul0x = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec0));
-	__m128 mad0y = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec0), mul0x);
-	__m128 mad0z = _mm_madd_ps(m1._vec2, _mm_perm_zzzz_ps(m2._vec0), mad0y);
-
-	// Second row
-	__m128 mul1x = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec1));
-	__m128 mad1y = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec1), mul1x);
-	__m128 mad1z = _mm_madd_ps(m1._vec2, _mm_perm_zzzz_ps(m2._vec1), mad1y);
-
-	return float4x2(mad0z, mad1z);
+	__m128 vec0, vec1;
+	_mm_mul_4x3_3x2_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, vec0, vec1);
+	return float4x2(vec0, vec1);
 }
 
 inline float4x3 mul(const float4x3& m1, const float3x3& m2)
 {
-	// First row
-	__m128 mul0x = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec0));
-	__m128 mad0y = _mm_madd_ps(m1._vec1, _mm_perm_xxxx_ps(m2._vec1), mul0x);
-	__m128 mad0z = _mm_madd_ps(m1._vec2, _mm_perm_xxxx_ps(m2._vec2), mad0y);
-
-	// Second row
-	__m128 mul1x = _mm_mul_ps(m1._vec0, _mm_perm_yyyy_ps(m2._vec0));
-	__m128 mad1y = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec1), mul1x);
-	__m128 mad1z = _mm_madd_ps(m1._vec2, _mm_perm_yyyy_ps(m2._vec2), mad1y);
-
-	// Second row
-	__m128 mul2x = _mm_mul_ps(m1._vec0, _mm_perm_zzzz_ps(m2._vec0));
-	__m128 mad2y = _mm_madd_ps(m1._vec1, _mm_perm_zzzz_ps(m2._vec1), mul2x);
-	__m128 mad2z = _mm_madd_ps(m1._vec2, _mm_perm_zzzz_ps(m2._vec2), mad2y);
-
-	return float4x3(mad0z, mad1z, mad2z);
+	__m128 vec0, vec1, vec2;
+	_mm_mul_4x3_3x3_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
+	return float4x3(vec0, vec1, vec2);
 }
 
 inline float4x4 mul(const float4x3& m1, const float3x4& m2)
 {
-	// First row
-	__m128 mul0x = _mm_mul_ps(_mm_perm_xxxx_ps(m1._vec0), m2._vec0);
-	__m128 mad0y = _mm_madd_ps(_mm_perm_xxxx_ps(m1._vec1), m2._vec1, mul0x);
-	__m128 mad0z = _mm_madd_ps(_mm_perm_xxxx_ps(m1._vec2), m2._vec2, mad0y);
-
-	// Second row
-	__m128 mul1x = _mm_mul_ps(_mm_perm_yyyy_ps(m1._vec0), m2._vec0);
-	__m128 mad1y = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec1), m2._vec1, mul1x);
-	__m128 mad1z = _mm_madd_ps(_mm_perm_yyyy_ps(m1._vec2), m2._vec2, mad1y);
-
-	// Second row
-	__m128 mul2x = _mm_mul_ps(_mm_perm_zzzz_ps(m1._vec0), m2._vec0);
-	__m128 mad2y = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec1), m2._vec1, mul2x);
-	__m128 mad2z = _mm_madd_ps(_mm_perm_zzzz_ps(m1._vec2), m2._vec2, mad2y);
-
-	// Second row
-	__m128 mul3x = _mm_mul_ps(_mm_perm_wwww_ps(m1._vec0), m2._vec0);
-	__m128 mad3y = _mm_madd_ps(_mm_perm_wwww_ps(m1._vec1), m2._vec1, mul3x);
-	__m128 mad3z = _mm_madd_ps(_mm_perm_wwww_ps(m1._vec2), m2._vec2, mad3y);
-
-	return float4x4(mad0z, mad1z, mad2z, mad3z);
+	__m128 vec0, vec1, vec2, vec3;
+	_mm_mul_4x3_3x4_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2, vec3);
+	return float4x4(vec0, vec1, vec2, vec3);
 }
 
 inline float4x1 mul(const float4x4& m1, const float4x1& m2)
 {
-	__m128 dpx = _mm_dot4_ps(m1._vec0, m2._vec);
-	__m128 dpy = _mm_dot4_ps(m1._vec1, m2._vec);
-	__m128 dpz = _mm_dot4_ps(m1._vec2, m2._vec);
-	__m128 dpw = _mm_dot4_ps(m1._vec3, m2._vec);
-
-	__m128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
-
-	return float4x1(result);
+	return float4x1(_mm_mul_4x4_4x1_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec));
 }
 
 inline float4x2 mul(const float4x4& m1, const float4x2& m2)
 {
-	__m128 dpx0 = _mm_dot4_ps(m1._vec0, m2._vec0);
-	__m128 dpy0 = _mm_dot4_ps(m1._vec1, m2._vec0);
-	__m128 dpz0 = _mm_dot4_ps(m1._vec2, m2._vec0);
-	__m128 dpw0 = _mm_dot4_ps(m1._vec3, m2._vec0);
-
-	__m128 vec0 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx0, dpz0), _mm_shuf_xxxx_ps(dpy0, dpw0), 0xA); // 1010b
-
-	__m128 dpx1 = _mm_dot4_ps(m1._vec0, m2._vec1);
-	__m128 dpy1 = _mm_dot4_ps(m1._vec1, m2._vec1);
-	__m128 dpz1 = _mm_dot4_ps(m1._vec2, m2._vec1);
-	__m128 dpw1 = _mm_dot4_ps(m1._vec3, m2._vec1);
-
-	__m128 vec1 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx1, dpz1), _mm_shuf_xxxx_ps(dpy1, dpw1), 0xA); // 1010b
-
+	__m128 vec0, vec1;
+	_mm_mul_4x4_4x2_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec0, m2._vec1, vec0, vec1);
 	return float4x2(vec0, vec1);
 }
 
 inline float4x3 mul(const float4x4& m1, const float4x3& m2)
 {
-	__m128 dpx0 = _mm_dot4_ps(m1._vec0, m2._vec0);
-	__m128 dpy0 = _mm_dot4_ps(m1._vec1, m2._vec0);
-	__m128 dpz0 = _mm_dot4_ps(m1._vec2, m2._vec0);
-	__m128 dpw0 = _mm_dot4_ps(m1._vec3, m2._vec0);
-
-	__m128 vec0 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx0, dpz0), _mm_shuf_xxxx_ps(dpy0, dpw0), 0xA); // 1010b
-
-	__m128 dpx1 = _mm_dot4_ps(m1._vec0, m2._vec1);
-	__m128 dpy1 = _mm_dot4_ps(m1._vec1, m2._vec1);
-	__m128 dpz1 = _mm_dot4_ps(m1._vec2, m2._vec1);
-	__m128 dpw1 = _mm_dot4_ps(m1._vec3, m2._vec1);
-
-	__m128 vec1 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx1, dpz1), _mm_shuf_xxxx_ps(dpy1, dpw1), 0xA); // 1010b
-
-	__m128 dpx2 = _mm_dot4_ps(m1._vec0, m2._vec2);
-	__m128 dpy2 = _mm_dot4_ps(m1._vec1, m2._vec2);
-	__m128 dpz2 = _mm_dot4_ps(m1._vec2, m2._vec2);
-	__m128 dpw2 = _mm_dot4_ps(m1._vec3, m2._vec2);
-
-	__m128 vec2 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx2, dpz2), _mm_shuf_xxxx_ps(dpy2, dpw2), 0xA); // 1010b
-
+	__m128 vec0, vec1, vec2;
+	_mm_mul_4x4_4x3_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
 	return float4x3(vec0, vec1, vec2);
 }
 
 inline float4x4 mul(const float4x4& m1, const float4x4& m2)
 {
-	// First row
-	__m128 mul1x = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec0));
-	__m128 mad1y = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec0), mul1x);
-	__m128 mad1z = _mm_madd_ps(m1._vec2, _mm_perm_zzzz_ps(m2._vec0), mad1y);
-	__m128 mad1w = _mm_madd_ps(m1._vec3, _mm_perm_wwww_ps(m2._vec0), mad1z);
+#if defined(HLSLPP_MATRIX_PACK_COLUMN_MAJOR)
 
-	// Second row
-	__m128 mul2x = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec1));
-	__m128 mad2y = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec1), mul2x);
-	__m128 mad2z = _mm_madd_ps(m1._vec2, _mm_perm_zzzz_ps(m2._vec1), mad2y);
-	__m128 mad2w = _mm_madd_ps(m1._vec3, _mm_perm_wwww_ps(m2._vec1), mad2z);
+#else
 
-	// Third row
-	__m128 mul3x = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec2));
-	__m128 mad3y = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec2), mul3x);
-	__m128 mad3z = _mm_madd_ps(m1._vec2, _mm_perm_zzzz_ps(m2._vec2), mad3y);
-	__m128 mad3w = _mm_madd_ps(m1._vec3, _mm_perm_wwww_ps(m2._vec2), mad3z);
-
-	// Fourth row
-	__m128 mul4x = _mm_mul_ps(m1._vec0, _mm_perm_xxxx_ps(m2._vec3));
-	__m128 mad4y = _mm_madd_ps(m1._vec1, _mm_perm_yyyy_ps(m2._vec3), mul4x);
-	__m128 mad4z = _mm_madd_ps(m1._vec2, _mm_perm_zzzz_ps(m2._vec3), mad4y);
-	__m128 mad4w = _mm_madd_ps(m1._vec3, _mm_perm_wwww_ps(m2._vec3), mad4z);
-
-
-	return float4x4(mad1w, mad2w, mad3w, mad4w);
+#endif
+	
+	__m128 vec0, vec1, vec2, vec3;
+	_mm_mul_4x4_4x4_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec0, m2._vec1, m2._vec2, m2._vec3, vec0, vec1, vec2, vec3);
+	return float4x4(vec0, vec1, vec2, vec3);
 }
 
 // Matrix-matrix multiplication with floatN<N> vectors and components as operands
@@ -3514,9 +3752,9 @@ inline floatNxM<N, M> operator + (const floatNxM<N, M>& m1, const floatNxM<N, M>
 	return floatNxM<N, M>(_mm_add_ps(m1._vec0, m2._vec0), _mm_add_ps(m1._vec1, m2._vec1), _mm_add_ps(m1._vec2, m2._vec2));
 }
 
-inline floatNxM<4, 4> operator + (const floatNxM<4, 4>& m1, const floatNxM<4, 4>& m2)
+inline float4x4 operator + (const float4x4& m1, const float4x4& m2)
 {
-	return floatNxM<4, 4>(_mm_add_ps(m1._vec0, m2._vec0), _mm_add_ps(m1._vec1, m2._vec1), _mm_add_ps(m1._vec2, m2._vec2), _mm_add_ps(m1._vec3, m2._vec3));
+	return float4x4(_mm_add_ps(m1._vec0, m2._vec0), _mm_add_ps(m1._vec1, m2._vec1), _mm_add_ps(m1._vec2, m2._vec2), _mm_add_ps(m1._vec3, m2._vec3));
 }
 
 template<int N, int M>
@@ -3549,10 +3787,10 @@ inline floatNxM<N, M> operator + (const floatNxM<N, M>& m, const float1& v)
 	return floatNxM<N, M>(_mm_add_ps(m._vec0, v_perm), _mm_add_ps(m._vec1, v_perm), _mm_add_ps(m._vec2, v_perm));
 }
 
-inline floatNxM<4, 4> operator + (const floatNxM<4, 4>& m, const float1& v)
+inline float4x4 operator + (const float4x4& m, const float1& v)
 {
 	__m128 v_perm = _mm_perm_xxxx_ps(v._vec);
-	return floatNxM<4, 4>(_mm_add_ps(m._vec0, v_perm), _mm_add_ps(m._vec1, v_perm), _mm_add_ps(m._vec2, v_perm), _mm_add_ps(m._vec3, v_perm));
+	return float4x4(_mm_add_ps(m._vec0, v_perm), _mm_add_ps(m._vec1, v_perm), _mm_add_ps(m._vec2, v_perm), _mm_add_ps(m._vec3, v_perm));
 }
 
 template<int N, int M>
@@ -3829,4 +4067,43 @@ inline float4x4 inverse(const float4x4& m)
 	__m128 vec0, vec1, vec2, vec3;
 	_mm_inv_4x4_ps(m._vec0, m._vec1, m._vec2, m._vec3, vec0, vec1, vec2, vec3);
 	return float4x4(vec0, vec1, vec2, vec3);
+}
+
+inline void store(const float1& v, float* f)
+{
+	_mm_store_ss(f + 0, v._vec);
+}
+
+inline void store(const float2& v, float* f)
+{
+	_mm_store_ss(f + 0, v._vec);
+	_mm_store_ss(f + 1, _mm_perm_yyyy_ps(v._vec));
+}
+
+inline void store(const float3& v, float* f)
+{
+	_mm_store_ss(f + 0, v._vec);
+	_mm_store_ss(f + 1, _mm_perm_yyyy_ps(v._vec));
+	_mm_store_ss(f + 2, _mm_perm_zzzz_ps(v._vec));
+}
+
+inline void store(const float4& v, float* f)
+{
+	_mm_storeu_ps(f, v._vec);
+}
+
+inline void store(const float3x3& m, float* f)
+{
+	_mm_storeu_ps(f + 0, m._vec0); // Store first 3
+	_mm_storeu_ps(f + 3, m._vec1); // Store second 3
+	_mm_storeu_ps(f + 5, _mm_perm_wxyz_ps(m._vec2)); // Store last 3, stomping one of the previous values
+	_mm_store_ss(f + 5, _mm_perm_zzzz_ps(m._vec1)); // Restore the stomped value
+}
+
+inline void store(const float4x4& m, float* f)
+{
+	_mm_storeu_ps(f + 0,  m._vec0);
+	_mm_storeu_ps(f + 4,  m._vec1);
+	_mm_storeu_ps(f + 8,  m._vec2);
+	_mm_storeu_ps(f + 12, m._vec3);
 }
