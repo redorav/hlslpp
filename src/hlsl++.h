@@ -4096,8 +4096,7 @@ inline void store(const float3x3& m, float* f)
 {
 	_mm_storeu_ps(f + 0, m._vec0); // Store first 3
 	_mm_storeu_ps(f + 3, m._vec1); // Store second 3
-	_mm_storeu_ps(f + 5, _mm_perm_wxyz_ps(m._vec2)); // Store last 3, stomping one of the previous values
-	_mm_store_ss(f + 5, _mm_perm_zzzz_ps(m._vec1)); // Restore the stomped value
+	_mm_storeu_ps(f + 5, _mm_blend_ps(_mm_perm_zzzz_ps(m._vec1), _mm_perm_wxyz_ps(m._vec2), 0xE)); // Store last 3, stomping one of the previous values but making sure it's the same
 }
 
 inline void store(const float4x4& m, float* f)
