@@ -57,9 +57,9 @@ void ExhaustiveTest(uint32_t start, uint32_t stop, Transform4 TestFunc, Transfor
 		Float_t input;
 		input.i = (int32_t)i;
 #if defined(__clang__) || defined(__GNUG__)
-		Float_t testValue = TestFunc(_mm_set_ps1(input.f))[0];
+		Float_t testValue = TestFunc(_mm_set1_ps(input.f))[0];
 #else
-		Float_t testValue = TestFunc(_mm_set_ps1(input.f)).m128_f32[0];
+		Float_t testValue = TestFunc(_mm_set1_ps(input.f)).m128_f32[0];
 #endif
 		Float_t refValue = RefFunc(input.f);
 		
@@ -90,22 +90,22 @@ void ExhaustiveTest(uint32_t start, uint32_t stop, Transform4 TestFunc, Transfor
 
 void RunUnitTests()
 {
-	float f1 = (float) rand();
-	float f2 = (float) rand();
-	float f3 = (float) rand();
-	float f4 = (float) rand();
+	float f1 = (float) (rand() % 1000);
+	float f2 = (float) (rand() % 1000);
+	float f3 = (float) (rand() % 1000);
+	float f4 = (float) (rand() % 1000);
 
 	// Initialization
 
-	float1 vfoo1 = float1(f1); //assert((float)vfoo1.x == f1);
-	float2 vfoo2 = float2(1, 2);
-	float3 vfoo3 = float3(1, 2, 3);
-	float4 vfoo4 = float4(1, 2, 3, 4);
+	float1 vfoo1 = float1(f1); assert(vfoo1.x == f1);
+	float2 vfoo2 = float2(f1, f2); assert(vfoo2.x == f1 && vfoo2.y == f2);
+	float3 vfoo3 = float3(f1, f2, f3); assert(vfoo3.x == f1 && vfoo3.y == f2 && vfoo3.z == f3);
+	float4 vfoo4 = float4(f1, f2, f3, f4); assert(vfoo4.x == f1 && vfoo4.y == f2 && vfoo4.z == f3 && vfoo4.w == f4);
 
-	vfoo1 = float1(1);
-	vfoo2 = float2(1, 2);
-	vfoo3 = float3(1, 2, 3);
-	vfoo4 = float4(1, 2, 3, 4);
+	vfoo1 = float1(f1);
+	vfoo2 = float2(f1, f2);
+	vfoo3 = float3(f1, f2, f3);
+	vfoo4 = float4(f1, f2, f3, f4);
 
 	float1 vbar1 = vfoo1.x;
 	float2 vbar2 = vfoo2.gr;
