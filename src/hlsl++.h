@@ -908,10 +908,10 @@ inline __m128 _mm_exp_ps(__m128 x)
 	return _mm_exp2_ps(_mm_mul_ps(x, log_2_e));
 }
 
-static const __m128 sin_c1 = f4_1;
-static const __m128 sin_c3 = _mm_set1_ps(-1.6665578e-1f);
-static const __m128 sin_c5 = _mm_set1_ps( 8.3109378e-3f);
-static const __m128 sin_c7 = _mm_set1_ps(-1.84477486e-4f);
+static const n128 sin_c1 = f4_1;
+static const n128 sin_c3 = _hlslpp_set1_ps(-1.6665578e-1f);
+static const n128 sin_c5 = _hlslpp_set1_ps( 8.3109378e-3f);
+static const n128 sin_c7 = _hlslpp_set1_ps(-1.84477486e-4f);
 
 // Uses a minimax polynomial fitted to the [-pi/2, pi/2] range
 inline __m128 _mm_sin_ps(__m128 x)
@@ -943,10 +943,10 @@ inline __m128 _mm_sin_ps(__m128 x)
 	return result;
 }
 
-static const __m128 cos_c0 = f4_1;
-static const __m128 cos_c2 = _mm_set1_ps(-4.999274621e-1f);
-static const __m128 cos_c4 = _mm_set1_ps( 4.149392034e-2f);
-static const __m128 cos_c6 = _mm_set1_ps(-1.271243501e-3f);
+static const n128 cos_c0 = f4_1;
+static const n128 cos_c2 = _hlslpp_set1_ps(-4.999274621e-1f);
+static const n128 cos_c4 = _hlslpp_set1_ps( 4.149392034e-2f);
+static const n128 cos_c6 = _hlslpp_set1_ps(-1.271243501e-3f);
 
 // Uses a minimax polynomial fitted to the [-pi/2, pi/2] range
 inline __m128 _mm_cos_ps(__m128 x)
@@ -1012,12 +1012,12 @@ inline __m128 _mm_tan_ps(__m128 x)
 	return result;
 }
 
-static const __m128 asinacos_c0 = f4_pi2;
-static const __m128 asinacos_c1 = _mm_set1_ps(-2.145329213e-1f);
-static const __m128 asinacos_c2 = _mm_set1_ps( 8.797308928e-2f);
-static const __m128 asinacos_c3 = _mm_set1_ps(-4.513026638e-2f);
-static const __m128 asinacos_c4 = _mm_set1_ps( 1.946746668e-2f);
-static const __m128 asinacos_c5 = _mm_set1_ps(-4.360132611e-3f);
+static const n128 asinacos_c0 = f4_pi2;
+static const n128 asinacos_c1 = _hlslpp_set1_ps(-2.145329213e-1f);
+static const n128 asinacos_c2 = _hlslpp_set1_ps( 8.797308928e-2f);
+static const n128 asinacos_c3 = _hlslpp_set1_ps(-4.513026638e-2f);
+static const n128 asinacos_c4 = _hlslpp_set1_ps( 1.946746668e-2f);
+static const n128 asinacos_c5 = _hlslpp_set1_ps(-4.360132611e-3f);
 
 // Max error vs. std::acos = 1.54972076e-6
 inline __m128 _mm_acos_ps(__m128 x)
@@ -1070,12 +1070,12 @@ inline __m128 _mm_asin_ps(__m128 x)
 	return result;
 }
 
-static const __m128 atan_c1  = f4_1;
-static const __m128 atan_c3  = _mm_set1_ps(-3.329452768e-1f);
-static const __m128 atan_c5  = _mm_set1_ps( 1.949865716e-1f);
-static const __m128 atan_c7  = _mm_set1_ps(-1.192157627e-1f);
-static const __m128 atan_c9  = _mm_set1_ps( 5.506335136e-2f);
-static const __m128 atan_c11 = _mm_set1_ps(-1.249072006e-2f);
+static const n128 atan_c1  = f4_1;
+static const n128 atan_c3  = _hlslpp_set1_ps(-3.329452768e-1f);
+static const n128 atan_c5  = _hlslpp_set1_ps( 1.949865716e-1f);
+static const n128 atan_c7  = _hlslpp_set1_ps(-1.192157627e-1f);
+static const n128 atan_c9  = _hlslpp_set1_ps( 5.506335136e-2f);
+static const n128 atan_c11 = _hlslpp_set1_ps(-1.249072006e-2f);
 
 // Max error vs. std::atan = 2.74181366e-6
 inline __m128 _mm_atan_ps(__m128 x)
@@ -1306,9 +1306,9 @@ inline void _mm_inv_3x3_ps(const __m128& vec0, const __m128& vec1, const __m128&
 	__m128 tmp_shuf_zxy_2 = _hlslpp_perm_zxyw_ps(vec2);
 
 	// Compute the adjoint matrix directly with 2x2 determinants
-	__m128 tmp_row_0 = _mm_sub_ps(_mm_mul_ps(tmp_shuf_yzx_1, tmp_shuf_zxy_2), _mm_mul_ps(tmp_shuf_zxy_1, tmp_shuf_yzx_2));
-	__m128 tmp_row_1 = _mm_sub_ps(_mm_mul_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_2), _mm_mul_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_2));
-	__m128 tmp_row_2 = _mm_sub_ps(_mm_mul_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_1), _mm_mul_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_1));
+	__m128 tmp_row_0 = _hlslpp_msub_ps(tmp_shuf_yzx_1, tmp_shuf_zxy_2, _mm_mul_ps(tmp_shuf_zxy_1, tmp_shuf_yzx_2));
+	__m128 tmp_row_1 = _hlslpp_msub_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_2, _mm_mul_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_2));
+	__m128 tmp_row_2 = _hlslpp_msub_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_1, _mm_mul_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_1));
 
 	// Transpose the matrix
 	__m128 tmp_transp_row_0, tmp_transp_row_1, tmp_transp_row_2;
@@ -1316,7 +1316,7 @@ inline void _mm_inv_3x3_ps(const __m128& vec0, const __m128& vec1, const __m128&
 
 	// Compute the determinant and divide all results by it
 	__m128 det = _hlslpp_perm_xxxx_ps(_mm_det_3x3_ps(vec0, vec1, vec2));
-	__m128 invDet = _mm_div_ps(f4_1, det);
+	__m128 invDet = _hlslpp_div_ps(f4_1, det);
 
 	o_vec0 = _mm_mul_ps(tmp_transp_row_0, invDet);
 	o_vec1 = _mm_mul_ps(tmp_transp_row_1, invDet);
@@ -1329,15 +1329,15 @@ inline void _mm_inv_4x4_ps(const __m128& vec0, const __m128& vec1, const __m128&
 	// Follow https://www.geometrictools.com/Documentation/LaplaceExpansionTheorem.pdf
 
 	// mms means mul mul sub. Here we add the 2x2 determinants we need
-	__m128 tmp_mms_c5_c4_c3 = _mm_sub_ps(_mm_mul_ps(_hlslpp_perm_zyyx_ps(vec2), _hlslpp_perm_wwzx_ps(vec3)), _mm_mul_ps(_hlslpp_perm_wwzx_ps(vec2), _hlslpp_perm_zyyx_ps(vec3)));
-	__m128 tmp_mms_c4_c2_c0 = _mm_sub_ps(_mm_mul_ps(_hlslpp_perm_yxxx_ps(vec2), _hlslpp_perm_wwyx_ps(vec3)), _mm_mul_ps(_hlslpp_perm_wwyx_ps(vec2), _hlslpp_perm_yxxx_ps(vec3)));
-	__m128 tmp_mms_c5_c2_c1 = _mm_sub_ps(_mm_mul_ps(_hlslpp_perm_zxxx_ps(vec2), _hlslpp_perm_wwzx_ps(vec3)), _mm_mul_ps(_hlslpp_perm_wwzx_ps(vec2), _hlslpp_perm_zxxx_ps(vec3)));
-	__m128 tmp_mms_c3_c1_c0 = _mm_sub_ps(_mm_mul_ps(_hlslpp_perm_yxxx_ps(vec2), _hlslpp_perm_zzyx_ps(vec3)), _mm_mul_ps(_hlslpp_perm_zzyx_ps(vec2), _hlslpp_perm_yxxx_ps(vec3)));
+	__m128 tmp_mms_c5_c4_c3 = _hlslpp_msub_ps(_hlslpp_perm_zyyx_ps(vec2), _hlslpp_perm_wwzx_ps(vec3), _mm_mul_ps(_hlslpp_perm_wwzx_ps(vec2), _hlslpp_perm_zyyx_ps(vec3)));
+	__m128 tmp_mms_c4_c2_c0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec2), _hlslpp_perm_wwyx_ps(vec3), _mm_mul_ps(_hlslpp_perm_wwyx_ps(vec2), _hlslpp_perm_yxxx_ps(vec3)));
+	__m128 tmp_mms_c5_c2_c1 = _hlslpp_msub_ps(_hlslpp_perm_zxxx_ps(vec2), _hlslpp_perm_wwzx_ps(vec3), _mm_mul_ps(_hlslpp_perm_wwzx_ps(vec2), _hlslpp_perm_zxxx_ps(vec3)));
+	__m128 tmp_mms_c3_c1_c0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec2), _hlslpp_perm_zzyx_ps(vec3), _mm_mul_ps(_hlslpp_perm_zzyx_ps(vec2), _hlslpp_perm_yxxx_ps(vec3)));
 
-	__m128 tmp_mms_s5_s4_s3 = _mm_sub_ps(_mm_mul_ps(_hlslpp_perm_zyyx_ps(vec0), _hlslpp_perm_wwzx_ps(vec1)), _mm_mul_ps(_hlslpp_perm_wwzx_ps(vec0), _hlslpp_perm_zyyx_ps(vec1)));
-	__m128 tmp_mms_s4_s2_s0 = _mm_sub_ps(_mm_mul_ps(_hlslpp_perm_yxxx_ps(vec0), _hlslpp_perm_wwyx_ps(vec1)), _mm_mul_ps(_hlslpp_perm_wwyx_ps(vec0), _hlslpp_perm_yxxx_ps(vec1)));
-	__m128 tmp_mms_s5_s2_s1 = _mm_sub_ps(_mm_mul_ps(_hlslpp_perm_zxxx_ps(vec0), _hlslpp_perm_wwzx_ps(vec1)), _mm_mul_ps(_hlslpp_perm_wwzx_ps(vec0), _hlslpp_perm_zxxx_ps(vec1)));
-	__m128 tmp_mms_s3_s1_s0 = _mm_sub_ps(_mm_mul_ps(_hlslpp_perm_yxxx_ps(vec0), _hlslpp_perm_zzyx_ps(vec1)), _mm_mul_ps(_hlslpp_perm_zzyx_ps(vec0), _hlslpp_perm_yxxx_ps(vec1)));
+	__m128 tmp_mms_s5_s4_s3 = _hlslpp_msub_ps(_hlslpp_perm_zyyx_ps(vec0), _hlslpp_perm_wwzx_ps(vec1), _mm_mul_ps(_hlslpp_perm_wwzx_ps(vec0), _hlslpp_perm_zyyx_ps(vec1)));
+	__m128 tmp_mms_s4_s2_s0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec0), _hlslpp_perm_wwyx_ps(vec1), _mm_mul_ps(_hlslpp_perm_wwyx_ps(vec0), _hlslpp_perm_yxxx_ps(vec1)));
+	__m128 tmp_mms_s5_s2_s1 = _hlslpp_msub_ps(_hlslpp_perm_zxxx_ps(vec0), _hlslpp_perm_wwzx_ps(vec1), _mm_mul_ps(_hlslpp_perm_wwzx_ps(vec0), _hlslpp_perm_zxxx_ps(vec1)));
+	__m128 tmp_mms_s3_s1_s0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec0), _hlslpp_perm_zzyx_ps(vec1), _mm_mul_ps(_hlslpp_perm_zzyx_ps(vec0), _hlslpp_perm_yxxx_ps(vec1)));
 
 	// Dot product the determinants with the required elements from the rows
 	__m128 c00 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c4_c3, _hlslpp_perm_yzwx_ps(vec1));
@@ -1368,12 +1368,12 @@ inline void _mm_inv_4x4_ps(const __m128& vec0, const __m128& vec1, const __m128&
 
 	// Compute the determinant and divide all results by it
 	__m128 det = _hlslpp_perm_xxxx_ps(_mm_det_4x4_ps(vec0, vec1, vec2, vec3));
-	__m128 invDet = _mm_div_ps(f4_1, det);
+	__m128 invDet = _hlslpp_div_ps(f4_1, det);
 
-	o_vec0 = _mm_mul_ps(tmp_row0, invDet);
-	o_vec1 = _mm_mul_ps(tmp_row1, invDet);
-	o_vec2 = _mm_mul_ps(tmp_row2, invDet);
-	o_vec3 = _mm_mul_ps(tmp_row3, invDet);
+	o_vec0 = _hlslpp_mul_ps(tmp_row0, invDet);
+	o_vec1 = _hlslpp_mul_ps(tmp_row1, invDet);
+	o_vec2 = _hlslpp_mul_ps(tmp_row2, invDet);
+	o_vec3 = _hlslpp_mul_ps(tmp_row3, invDet);
 }
 
 template<int N> class floatN {};
