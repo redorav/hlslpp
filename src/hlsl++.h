@@ -27,9 +27,21 @@
 
 // Initialize basic set and load instructions - we need them for the constants
 #if defined(HLSLPP_SSE)
+
 	#define _hlslpp_set1_ps(x)						_mm_set1_ps((x))
+	#define _hlslpp_set_ps(x, y, z, w)				_mm_set_ps((w), (z), (y), (x))
+
 #elif defined(HLSLPP_NEON)
+
+	float32x4_t vmov4q_n_f32(float x, float y, float z, float w)
+	{
+		float values[4] = { x, y, z, w };
+		return vld1q_f32(values);
+	}
+
 	#define _hlslpp_set1_ps(x)						vmovq_n_f32((x))
+	#define _hlslpp_set_ps(x, y, z, w)				vmov4q_n_f32((x), (y), (z), (w))
+
 #endif
 
 // Helper constants
@@ -1292,7 +1304,7 @@ inline __m128 _mm_det_4x4_ps(const __m128& vec0, const __m128& vec1, const __m12
 inline __m128 _mm_inv_2x2_ps(__m128 m)
 {
 	__m128 det = _hlslpp_perm_xxxx_ps(_mm_det_2x2_ps(m));
-	__m128 shuf = _mm_mul_ps(_hlslpp_perm_wyzx_ps(m), _mm_set_ps(1.0f, -1.0f, -1.0f, 1.0f));
+	__m128 shuf = _mm_mul_ps(_hlslpp_perm_wyzx_ps(m), _hlslpp_set_ps(1.0f, -1.0f, -1.0f, 1.0f));
 	return _mm_div_ps(shuf, det);
 }
 
@@ -1543,7 +1555,7 @@ public:
 
 	explicit floatN<1>(__m128 vec) : _vec(vec) {}
 	floatN<1>() {}
-	floatN<1>(float f) : _vec(_mm_set_ps(0.0f, 0.0f, 0.0f, f)) {}
+	floatN<1>(float f) : _vec(_hlslpp_set_ps(f, 0.0f, 0.0f, 0.0f)) {}
 	floatN<1>(const floatN<1>& v) : _vec(v._vec) {}
 	template<int A>
 	floatN<1>(const component1<A>& c);
@@ -1578,8 +1590,8 @@ public:
 
 	explicit floatN<2>(__m128 vec) : _vec(vec) {}
 	floatN<2>() {}
-	explicit floatN<2>(float f) : _vec(_mm_set_ps(0.0f, 0.0f, f, f)) {}
-	floatN<2>(float x, float y) : _vec(_mm_set_ps(0.0f, 0.0f, y, x)) {}
+	explicit floatN<2>(float f) : _vec(_hlslpp_set_ps(f, f, 0.0f, 0.0f)) {}
+	floatN<2>(float x, float y) : _vec(_hlslpp_set_ps(x, y, 0.0f, 0.0f)) {}
 	floatN<2>(const floatN<2>& v) : _vec(v._vec) {}
 	floatN<2>(const floatN<1>& v1, const floatN<1>& v2);
 	explicit floatN<2>(const floatNxM<2, 1>& v);
@@ -1607,8 +1619,8 @@ public:
 
 	explicit floatN<3>(__m128 vec) : _vec(vec) {}
 	floatN<3>() {}
-	explicit floatN<3>(float f) : _vec(_mm_set_ps(0.0f, f, f, f)) {}
-	floatN<3>(float x, float y, float z) : _vec(_mm_set_ps(0.0f, z, y, x)) {}
+	explicit floatN<3>(float f) : _vec(_hlslpp_set_ps(f, f, f, 0.0f)) {}
+	floatN<3>(float x, float y, float z) : _vec(_hlslpp_set_ps(x, y, z, 0.0f)) {}
 	floatN<3>(const floatN<3>& v) : _vec(v._vec) {}
 	floatN<3>(const floatN<1>& v1, const floatN<1>& v2, const floatN<1>& v3);
 	floatN<3>(const floatN<2>& v1, const floatN<1>& v2);
@@ -1639,8 +1651,8 @@ public:
 
 	explicit floatN<4>(__m128 vec) : _vec(vec) {}
 	floatN<4>() {}
-	explicit floatN<4>(float f) : _vec(_mm_set1_ps(f)) {}
-	floatN<4>(float x, float y, float z, float w) : _vec(_mm_set_ps(w, z, y, x)) {}
+	explicit floatN<4>(float f) : _vec(_hlslpp_set1_ps(f)) {}
+	floatN<4>(float x, float y, float z, float w) : _vec(_hlslpp_set_ps(x, y, z, w)) {}
 	floatN<4>(const floatN<4>& v) : _vec(v._vec) {}
 	floatN<4>(const floatN<1>& v1, const floatN<1>& v2, const floatN<1>& v3, const floatN<1>& v4);
 	floatN<4>(const floatN<1>& v1, const floatN<3>& v2);
@@ -1677,7 +1689,7 @@ public:
 
 	floatNxM() {}
 	explicit floatNxM(__m128 vec) : _vec(vec) {}
-	explicit floatNxM(float f) : _vec(_mm_set_ps(0.0f, 0.0f, 0.0f, f)) {}
+	explicit floatNxM(float f) : _vec(_hlslpp_set_ps(f, 0.0f, 0.0f, 0.0f)) {}
 	floatNxM(const float1& v) : _vec(v._vec) {}
 	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
@@ -1694,8 +1706,8 @@ public:
 
 	floatNxM() {}
 	explicit floatNxM(__m128 vec) : _vec(vec) {} 
-	floatNxM(float f0, float f1) : _vec(_mm_set_ps(0.0f, 0.0f, f1, f0)) {}
-	explicit floatNxM(float f) : floatNxM(f, f) {}
+	floatNxM(float f0, float f1) : _vec(_hlslpp_set_ps(f0, f1, 0.0f, 0.0f)) {}
+	explicit floatNxM(float f) : _vec(_hlslpp_set1_ps(f)) {}
 	floatNxM(const float2& v) : _vec(v._vec) {}
 	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
@@ -1711,8 +1723,8 @@ public:
 
 	floatNxM() {}
 	explicit floatNxM(__m128 vec) : _vec(vec) {}
-	floatNxM(float f0, float f1) : _vec(_mm_set_ps(0.0f, 0.0f, f1, f0)) {}
-	explicit floatNxM(float f) : floatNxM(f, f) {}
+	floatNxM(float f0, float f1) : _vec(_hlslpp_set_ps(f0, f1, 0.0f, 0.0f)) {}
+	explicit floatNxM(float f) : _vec(_hlslpp_set1_ps(f)) {}
 	floatNxM(const float2& v) : _vec(v._vec) {}
 	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
@@ -1728,8 +1740,8 @@ public:
 
 	floatNxM() {}
 	explicit floatNxM(__m128 vec) : _vec(vec) {}
-	floatNxM(float f0, float f1, float f2) : _vec(_mm_set_ps(0.0f, f2, f1, f0)) {}
-	explicit floatNxM(float f) : floatNxM(f, f, f) {}
+	floatNxM(float f0, float f1, float f2) : _vec(_hlslpp_set_ps(f0, f1, f2, 0.0f)) {}
+	explicit floatNxM(float f) : _vec(_hlslpp_set1_ps(f)) {}
 	floatNxM(const float3& v) : _vec(v._vec) {}
 	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
@@ -1745,8 +1757,8 @@ public:
 
 	floatNxM() {}
 	explicit floatNxM(__m128 vec) : _vec(vec) {}
-	floatNxM(float f0, float f1, float f2) : _vec(_mm_set_ps(0.0f, f2, f1, f0)) {}
-	explicit floatNxM(float f) : floatNxM(f, f, f) {}
+	floatNxM(float f0, float f1, float f2) : _vec(_hlslpp_set_ps(f0, f1, f2, 0.0f)) {}
+	explicit floatNxM(float f) : _vec(_hlslpp_set1_ps(f)) {}
 	floatNxM(const float3& v) : _vec(v._vec) {}
 	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
@@ -1762,8 +1774,8 @@ public:
 
 	floatNxM() {}
 	explicit floatNxM(__m128 vec) : _vec(vec) {}
-	floatNxM(float f0, float f1, float f2, float f3) : _vec(_mm_set_ps(f3, f2, f1, f0)) {}
-	explicit floatNxM(float f) : floatNxM(f, f, f, f) {}
+	floatNxM(float f0, float f1, float f2, float f3) : _vec(_hlslpp_set_ps(f0, f1, f2, f3)) {}
+	explicit floatNxM(float f) : _vec(_hlslpp_set1_ps(f)) {}
 	floatNxM(const float4& v) : _vec(v._vec) {}
 	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
@@ -1779,8 +1791,8 @@ public:
 
 	floatNxM() {}
 	explicit floatNxM(__m128 vec) : _vec(vec) {}
-	floatNxM(float f0, float f1, float f2, float f3) : _vec(_mm_set_ps(f3, f2, f1, f0)) {}
-	explicit floatNxM(float f) : floatNxM(f, f, f, f) {}
+	floatNxM(float f0, float f1, float f2, float f3) : _vec(_hlslpp_set_ps(f0, f1, f2, f3)) {}
+	explicit floatNxM(float f) : _vec(_hlslpp_set1_ps(f)) {}
 	floatNxM(const float4& v) : _vec(v._vec) {}
 	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
@@ -1798,9 +1810,9 @@ public:
 	explicit floatNxM(__m128 vec) : _vec(vec) {}
 
 	floatNxM(float f00, float f01,
-			 float f10, float f11) : _vec(_mm_set_ps(f11, f10, f01, f00)) {}
+			 float f10, float f11) : _vec(_hlslpp_set_ps(f00, f01, f10, f11)) {}
 
-	explicit floatNxM(float f) : _vec(_mm_set1_ps(f)) {}
+	explicit floatNxM(float f) : _vec(_hlslpp_set1_ps(f)) {}
 	floatNxM(const floatNxM& m) : _vec(m._vec) {}
 	floatNxM& operator = (const floatNxM& m) { _vec = m._vec; return *this; }
 };
@@ -1823,9 +1835,9 @@ public:
 	explicit floatNxM(__m128 vec0, __m128 vec1) : _vec0(vec0), _vec1(vec1) {}
 
 	floatNxM(float f00, float f01, float f02,
-			 float f10, float f11, float f12) : _vec0(_mm_set_ps(0.0f, f02, f01, f00)), _vec1(_mm_set_ps(0.0f, f12, f11, f10)) {}
+			 float f10, float f11, float f12) : _vec0(_hlslpp_set_ps(f00, f01, f02, 0.0f)), _vec1(_hlslpp_set_ps(f10, f11, f12, 0.0f)) {}
 
-	explicit floatNxM(float f) : floatNxM(f, f, f, f, f, f) {}
+	explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1) {}
 	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; return *this; }
 };
@@ -1849,9 +1861,9 @@ public:
 
 	floatNxM(float f00, float f01, 
 			 float f10, float f11,
-			 float f20, float f21) : _vec0(_mm_set_ps(0.0f, f20, f10, f00)), _vec1(_mm_set_ps(0.0f, f21, f11, f01)) {}
+			 float f20, float f21) : _vec0(_hlslpp_set_ps(f00, f10, f20, 0.0f)), _vec1(_hlslpp_set_ps(f01, f11, f21, 0.0f)) {}
 
-	explicit floatNxM(float f) : floatNxM(f, f, f, f, f, f) {}
+	explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1) {}
 	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; return *this; }
 };
@@ -1874,9 +1886,9 @@ public:
 	explicit floatNxM(__m128 vec0, __m128 vec1) : _vec0(vec0), _vec1(vec1) {}
 
 	floatNxM(float f00, float f01, float f02, float f03,
-			 float f10, float f11, float f12, float f13) : _vec0(_mm_set_ps(f03, f02, f01, f00)), _vec1(_mm_set_ps(f13, f12, f11, f10)) {}
+			 float f10, float f11, float f12, float f13) : _vec0(_hlslpp_set_ps(f00, f01, f02, f03)), _vec1(_hlslpp_set_ps(f10, f11, f12, f13)) {}
 
-	explicit floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f) {}
+	explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1) {}
 	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; return *this; }
 };
@@ -1901,9 +1913,9 @@ public:
 	floatNxM(float f00, float f01,
 			 float f10, float f11,
 			 float f20, float f21, 
-			 float f30, float f31) : _vec0(_mm_set_ps(f30, f20, f10, f00)), _vec1(_mm_set_ps(f31, f21, f11, f01)) {}
+			 float f30, float f31) : _vec0(_hlslpp_set_ps(f00, f10, f20, f30)), _vec1(_hlslpp_set_ps(f01, f11, f21, f31)) {}
 
-	explicit floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f) {}
+	explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1) {}
 	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; return *this; }
 };
@@ -1941,9 +1953,9 @@ public:
 
 	floatNxM(float f00, float f01, float f02,
 			 float f10, float f11, float f12,
-			 float f20, float f21, float f22) : _vec0(_mm_set_ps(0.0f, f02, f01, f00)), _vec1(_mm_set_ps(0.0f, f12, f11, f10)), _vec2(_mm_set_ps(0.0f, f22, f21, f20)) {}
+			 float f20, float f21, float f22) : _vec0(_hlslpp_set_ps(f00, f01, f02, 0.0f)), _vec1(_hlslpp_set_ps(f10, f11, f12, 0.0f)), _vec2(_hlslpp_set_ps(f20, f21, f22, 0.0f)) {}
 
-	explicit floatNxM(float f) : _vec0(_mm_set1_ps(f)), _vec1(_mm_set1_ps(f)), _vec2(_mm_set1_ps(f)) {}
+	explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)), _vec2(_hlslpp_set1_ps(f)) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
 	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; _vec2 = m._vec2; return *this; }
 
@@ -1974,9 +1986,9 @@ public:
 
 	floatNxM(float f00, float f01, float f02, float f03,
 			 float f10, float f11, float f12, float f13,
-			 float f20, float f21, float f22, float f23) : _vec0(_mm_set_ps(f03, f02, f01, f00)), _vec1(_mm_set_ps(f13, f12, f11, f10)), _vec2(_mm_set_ps(f23, f22, f21, f20)) {}
+			 float f20, float f21, float f22, float f23) : _vec0(_hlslpp_set_ps(f00, f01, f02, f03)), _vec1(_hlslpp_set_ps(f10, f11, f12, f13)), _vec2(_hlslpp_set_ps(f20, f21, f22, f23)) {}
 
-	explicit floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f, f, f, f, f) {}
+	explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)), _vec2(_hlslpp_set1_ps(f)) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
 	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; _vec2 = m._vec2; return *this; }
 };
@@ -2006,9 +2018,9 @@ public:
 	floatNxM(float f00, float f01, float f02,
 			 float f10, float f11, float f12,
 			 float f20, float f21, float f22,
-			 float f30, float f31, float f32): _vec0(_mm_set_ps(f30, f20, f10, f00)), _vec1(_mm_set_ps(f31, f21, f11, f01)), _vec2(_mm_set_ps(f32, f22, f12, f02)) {}
+			 float f30, float f31, float f32): _vec0(_hlslpp_set_ps(f00, f10, f20, f30)), _vec1(_hlslpp_set_ps(f01, f11, f21, f31)), _vec2(_hlslpp_set_ps(f02, f12, f22, f32)) {}
 
-	explicit floatNxM(float f) : floatNxM(f, f, f, f, f, f, f, f, f, f, f, f) {}
+	explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)), _vec2(_hlslpp_set1_ps(f)) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
 	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; _vec2 = m._vec2; return *this; }
 };
@@ -2061,9 +2073,9 @@ public:
 			 float f10, float f11, float f12, float f13,
 			 float f20, float f21, float f22, float f23,
 			 float f30, float f31, float f32, float f33)
-		: _vec0(_mm_set_ps(f03, f02, f01, f00)), _vec1(_mm_set_ps(f13, f12, f11, f10)), _vec2(_mm_set_ps(f23, f22, f21, f20)), _vec3(_mm_set_ps(f33, f32, f31, f30)) {}
+		: _vec0(_mm_set_ps(f03, f02, f01, f00)), _vec1(_hlslpp_set_ps(f10, f11, f12, f13)), _vec2(_hlslpp_set_ps(f20, f21, f22, f23)), _vec3(_hlslpp_set_ps(f30, f31, f32, f33)) {}
 
-	explicit floatNxM(float f) : _vec0(_mm_set1_ps(f)), _vec1(_mm_set1_ps(f)), _vec2(_mm_set1_ps(f)), _vec3(_mm_set1_ps(f)) {}
+	explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)), _vec2(_hlslpp_set1_ps(f)), _vec3(_hlslpp_set1_ps(f)) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2), _vec3(m._vec3) {}
 	floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; _vec2 = m._vec2; _vec3 = m._vec3; return *this; }
 	static const float4x4& identity() { static const float4x4 iden = float4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); return iden; };
