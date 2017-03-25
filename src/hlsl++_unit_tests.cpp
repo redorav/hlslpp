@@ -206,30 +206,35 @@ void RunUnitTests()
 
 	// Comparison
 
-	float1 vgt1 = vfoo1 > vbar1;
-	float2 vgt2 = vfoo2 > vbar2;
-	float3 vgt3 = vfoo3 > vbar3;
-	float4 vgt4 = vfoo4 > vbar4;
+	float1 vgt1 = vfoo1 > vbar1;											assert(vgt1.x == (float)vfoo1.x > (float)vbar1.x);
+	float2 vgt2 = vfoo2 > vbar2;											assert(vgt2.x == (float)vfoo2.x > (float)vbar2.x && vgt2.y == (float)vfoo2.y > (float)vbar2.y);
+	float3 vgt3 = vfoo3 > vbar3;											assert(vgt3.x == (float)vfoo3.x > (float)vbar3.x && vgt3.y == (float)vfoo3.y > (float)vbar3.y && vgt3.z == (float)vfoo3.z > (float)vbar3.z);
+	float4 vgt4 = vfoo4 > vbar4;											assert(vgt4.x == (float)vfoo4.x > (float)vbar4.x && vgt4.y == (float)vfoo4.y > (float)vbar4.y && vgt4.z == (float)vfoo4.z > (float)vbar4.z && vgt4.w == (float)vfoo4.w > (float)vbar4.w);
+	
+	float1 vlt1 = vfoo1 < vbar1;											assert(vlt1.x == (float)vfoo1.x < (float)vbar1.x);
+	float2 vlt2 = vfoo2 < vbar2;											assert(vlt2.x == (float)vfoo2.x < (float)vbar2.x && vlt2.y == (float)vfoo2.y < (float)vbar2.y);
+	float3 vlt3 = vfoo3 < vbar3;											assert(vlt3.x == (float)vfoo3.x < (float)vbar3.x && vlt3.y == (float)vfoo3.y < (float)vbar3.y && vlt3.z == (float)vfoo3.z < (float)vbar3.z);
+	float4 vlt4 = vfoo4 < vbar4;											assert(vlt4.x == (float)vfoo4.x < (float)vbar4.x && vlt4.y == (float)vfoo4.y < (float)vbar4.y && vlt4.z == (float)vfoo4.z < (float)vbar4.z && vlt4.w == (float)vfoo4.w < (float)vbar4.w);
 
-	float1 vlt1 = vfoo1 < vbar1;
-	float2 vlt2 = vfoo2 < vbar2;
-	float3 vlt3 = vfoo3 < vbar3;
-	float4 vlt4 = vfoo4 < vbar4;
+	float1 vge1 = vfoo1 >= vbar1;											assert(vge1.x == (float)vfoo1.x >= (float)vbar1.x);
+	float2 vge2 = vfoo2 >= vbar2;											assert(vge2.x == (float)vfoo2.x >= (float)vbar2.x && vge2.y == (float)vfoo2.y >= (float)vbar2.y);
+	float3 vge3 = vfoo3 >= vbar3;											assert(vge3.x == (float)vfoo3.x >= (float)vbar3.x && vge3.y == (float)vfoo3.y >= (float)vbar3.y && vge3.z == (float)vfoo3.z >= (float)vbar3.z);
+	float4 vge4 = vfoo4 >= vbar4;											assert(vge4.x == (float)vfoo4.x >= (float)vbar4.x && vge4.y == (float)vfoo4.y >= (float)vbar4.y && vge4.z == (float)vfoo4.z >= (float)vbar4.z && vge4.w == (float)vfoo4.w >= (float)vbar4.w);
 
-	float1 vge1 = vfoo1 >= vbar1;
-	float2 vge2 = vfoo2 >= vbar2;
-	float3 vge3 = vfoo3 >= vbar3;
-	float4 vge4 = vfoo4 >= vbar4;
+	float1 vle1 = vfoo1 <= vbar1;											assert(vle1.x == (float)vfoo1.x <= (float)vbar1.x);
+	float2 vle2 = vfoo2 <= vbar2;											assert(vle2.x == (float)vfoo2.x <= (float)vbar2.x && vle2.y == (float)vfoo2.y <= (float)vbar2.y);
+	float3 vle3 = vfoo3 <= vbar3;											assert(vle3.x == (float)vfoo3.x <= (float)vbar3.x && vle3.y == (float)vfoo3.y <= (float)vbar3.y && vle3.z == (float)vfoo3.z <= (float)vbar3.z);
+	float4 vle4 = vfoo4 <= vbar4;											assert(vle4.x == (float)vfoo4.x <= (float)vbar4.x && vle4.y == (float)vfoo4.y <= (float)vbar4.y && vle4.z == (float)vfoo4.z <= (float)vbar4.z && vle4.w == (float)vfoo4.w <= (float)vbar4.w);
 
-	float1 vle1 = vfoo1 <= vbar1;
-	float2 vle2 = vfoo2 <= vbar2;
-	float3 vle3 = vfoo3 <= vbar3;
-	float4 vle4 = vfoo4 <= vbar4;
+	float1 veq1 = vfoo1 == vbar1;											assert(veq1.x == ((float)vfoo1.x == (float)vbar1.x));
+	float2 veq2 = vfoo2 == vbar2;											assert(veq2.x == ((float)vfoo2.x == (float)vbar2.x) && veq2.y == ((float)vfoo2.y == (float)vbar2.y));
+	float3 veq3 = vfoo3 == vbar3;											assert(veq3.x == ((float)vfoo3.x == (float)vbar3.x) && veq3.y == ((float)vfoo3.y == (float)vbar3.y) && veq3.z == ((float)vfoo3.z == (float)vbar3.z));
+	float4 veq4 = vfoo4 == vbar4;											assert(veq4.x == ((float)vfoo4.x == (float)vbar4.x) && veq4.y == ((float)vfoo4.y == (float)vbar4.y) && veq4.z == ((float)vfoo4.z == (float)vbar4.z) && veq4.w == ((float)vfoo4.w == (float)vbar4.w));
 
-	float1 veq1 = vfoo1 == vbar1;
-	float2 veq2 = vfoo2 == vbar2;
-	float3 veq3 = vfoo3 == vbar3;
-	float4 veq4 = vfoo4 == vbar4;
+	float1 vneq1 = vfoo1 != vbar1;											assert(vneq1.x == (float)vfoo1.x != (float)vbar1.x);
+	float2 vneq2 = vfoo2 != vbar2;											assert(vneq2.x == (float)vfoo2.x != (float)vbar2.x && vneq2.y == (float)vfoo2.y != (float)vbar2.y);
+	float3 vneq3 = vfoo3 != vbar3;											assert(vneq3.x == (float)vfoo3.x != (float)vbar3.x && vneq3.y == (float)vfoo3.y != (float)vbar3.y && vneq3.z == (float)vfoo3.z != (float)vbar3.z);
+	float4 vneq4 = vfoo4 != vbar4;											assert(vneq4.x == (float)vfoo4.x != (float)vbar4.x && vneq4.y == (float)vfoo4.y != (float)vbar4.y && vneq4.z == (float)vfoo4.z != (float)vbar4.z && vneq4.w == (float)vfoo4.w != (float)vbar4.w);
 
 	vfoo1 = -vbar1.r;
 	vfoo2 = -vbar2.gr;
