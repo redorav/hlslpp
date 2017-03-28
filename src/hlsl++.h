@@ -2575,7 +2575,7 @@ template<int N>
 inline floatN<N> operator - (const floatN<N>& v) { return floatN<N>(_hlslpp_neg_ps(v._vec)); }
 
 template<template<int...Dim> class components, int...Dim1>
-inline floatN<sizeof...(Dim1)> operator - (const components<Dim1...>& v) { return -floatN<sizeof...(Dim1)>(v._vec); }
+inline floatN<sizeof...(Dim1)> operator - (const components<Dim1...>& v) { return -floatN<sizeof...(Dim1)>(v); }
 
 // Equals
 template<int N>
