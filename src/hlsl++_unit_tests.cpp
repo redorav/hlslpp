@@ -1230,11 +1230,11 @@ void RunExperiments()
 	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_sin_ps, std::sin, "sin");
 	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_sin_ps, std::sin, "sin");
 
-	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _mm_cos_ps, std::cos, "cos");
-	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _mm_cos_ps, std::cos, "cos");
+	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_cos_ps, std::cos, "cos");
+	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_cos_ps, std::cos, "cos");
 	
-	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _mm_tan_ps, std::tan, "tan");
-	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _mm_tan_ps, std::tan, "tan");
+	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_tan_ps, std::tan, "tan");
+	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_tan_ps, std::tan, "tan");
 
 	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_exp_ps, std::exp2, "exp2");
 	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_exp2_ps, std::exp2, "exp2");

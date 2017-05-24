@@ -1011,7 +1011,7 @@ static const n128 cos_c4 = _hlslpp_set1_ps( 4.149392034e-2f);
 static const n128 cos_c6 = _hlslpp_set1_ps(-1.271243501e-3f);
 
 // Uses a minimax polynomial fitted to the [-pi/2, pi/2] range
-inline n128 _mm_cos_ps(n128 x)
+inline n128 _hlslpp_cos_ps(n128 x)
 {	
 	// Range reduction (into [-pi, pi] range)
 	n128 reduced;
@@ -1047,7 +1047,7 @@ static const n128 tan_c7 = _hlslpp_set1_ps(3.769634481e-2f);
 static const n128 tan_c9 = _hlslpp_set1_ps(4.609737727e-2f);
 
 // Uses a minimax polynomial fitted to the [-pi/4, pi/4] range
-inline n128 _mm_tan_ps(n128 x)
+inline n128 _hlslpp_tan_ps(n128 x)
 {
 	// Range reduction (into [-pi/2, pi/2] range)
 	x = _hlslpp_fmod_ps(x, f4_pi2);
@@ -2800,7 +2800,7 @@ inline floatN<sizeof...(Dim1)> clamp(const components<Dim1...>& v1, const compon
 }
 
 template<int N>
-inline floatN<N> cos(const floatN<N>& v) { return floatN<N>(_mm_cos_ps(v._vec)); }
+inline floatN<N> cos(const floatN<N>& v) { return floatN<N>(_hlslpp_cos_ps(v._vec)); }
 
 template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> cos(const components<Dim...>& v) { return cos(floatN<sizeof...(Dim)>(v)); }
@@ -2951,7 +2951,7 @@ inline floatN<sizeof...(Dim1)> min(const components<Dim1...>& v1, const componen
 
 // Maximum
 template<int N>
-inline floatN<N> max(const floatN<N>& v1, const floatN<N>& v2) { return floatN<N>(_mm_max_ps(v1._vec, v2._vec)); }
+inline floatN<N> max(const floatN<N>& v1, const floatN<N>& v2) { return floatN<N>(_hlslpp_max_ps(v1._vec, v2._vec)); }
 
 template<int N, template<int...Dim> class components, int...Dim>
 inline floatN<N> max(const floatN<N>& v1, const components<Dim...>& v2) { return max(v1, floatN<N>(v2)); }
@@ -3062,7 +3062,7 @@ inline floatN<sizeof...(Dim1)> step(const components<Dim1...>& v1, const compone
 }
 
 template<int N>
-inline floatN<N> tan(const floatN<N>& v) { return floatN<N>(_mm_tan_ps(v._vec)); }
+inline floatN<N> tan(const floatN<N>& v) { return floatN<N>(_hlslpp_tan_ps(v._vec)); }
 
 template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> tan(const components<Dim...>& v) { return tan(floatN<sizeof...(Dim)>(v)); }
@@ -3147,498 +3147,498 @@ inline float1x1 mul(const float1x2& m1, const float2x1& m2)
 	return float1x1(_hlslpp_dot2_ps(m1._vec, m2._vec));
 }
 
-inline __m128 _mm_mul_1x2_2x1_ps(__m128 m1_vec, __m128 m2_vec)
+inline n128 _hlslpp_mul_1x2_2x1_ps(n128 m1_vec, n128 m2_vec)
 {
-	__m128 mul1 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec), m2_vec);
-	__m128 mul2 = _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1_vec), _hlslpp_perm_zwxx_ps(m2_vec));
-	__m128 result = _hlslpp_add_ps(mul1, mul2);
+	n128 mul1 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec), m2_vec);
+	n128 mul2 = _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1_vec), _hlslpp_perm_zwxx_ps(m2_vec));
+	n128 result = _hlslpp_add_ps(mul1, mul2);
 	return result;
 }
 
-inline __m128 _mm_mul_1x2_2xM_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1)
+inline n128 _hlslpp_mul_1x2_2xM_ps(const n128& m1_vec, const n128& m2_vec0, const n128& m2_vec1)
 {
-	__m128 mul1 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec), m2_vec0);
-	__m128 mul2 = _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1_vec), m2_vec1);
-	__m128 result = _hlslpp_add_ps(mul1, mul2);
+	n128 mul1 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec), m2_vec0);
+	n128 mul2 = _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1_vec), m2_vec1);
+	n128 result = _hlslpp_add_ps(mul1, mul2);
 	return result;
 }
 
-inline __m128 _mm_mul_1x3_3x2_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1)
+inline n128 _hlslpp_mul_1x3_3x2_ps(const n128& m1_vec, const n128& m2_vec0, const n128& m2_vec1)
 {
-	__m128 dpx = _hlslpp_dot3_ps(m1_vec, m2_vec0);
-	__m128 dpy = _hlslpp_dot3_ps(m1_vec, m2_vec1);
-	__m128 result = _mm_blend_ps(dpx, _hlslpp_perm_xxxx_ps(dpy), 0x2); // 0100b
+	n128 dpx = _hlslpp_dot3_ps(m1_vec, m2_vec0);
+	n128 dpy = _hlslpp_dot3_ps(m1_vec, m2_vec1);
+	n128 result = _mm_blend_ps(dpx, _hlslpp_perm_xxxx_ps(dpy), 0x2); // 0100b
 	return result;
 }
 
-inline __m128 _mm_mul_1x3_3xM_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2)
+inline n128 _hlslpp_mul_1x3_3xM_ps(const n128& m1_vec, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2)
 {
-	__m128 mul0 = _hlslpp_mul_ps(m2_vec0, _hlslpp_perm_xxxx_ps(m1_vec));
-	__m128 mul1 = _hlslpp_madd_ps(m2_vec1, _hlslpp_perm_yyyy_ps(m1_vec), mul0);
-	__m128 result = _hlslpp_madd_ps(m2_vec2, _hlslpp_perm_zzzz_ps(m1_vec), mul1);
+	n128 mul0 = _hlslpp_mul_ps(m2_vec0, _hlslpp_perm_xxxx_ps(m1_vec));
+	n128 mul1 = _hlslpp_madd_ps(m2_vec1, _hlslpp_perm_yyyy_ps(m1_vec), mul0);
+	n128 result = _hlslpp_madd_ps(m2_vec2, _hlslpp_perm_zzzz_ps(m1_vec), mul1);
 	return result;
 }
 
-inline __m128 _mm_mul_1x4_4x2_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1)
+inline n128 _hlslpp_mul_1x4_4x2_ps(const n128& m1_vec, const n128& m2_vec0, const n128& m2_vec1)
 {
-	__m128 dpx = _hlslpp_dot4_ps(m1_vec, m2_vec0);
-	__m128 dpy = _hlslpp_dot4_ps(m1_vec, m2_vec1);
-	__m128 result = _mm_blend_ps(dpx, _hlslpp_perm_xxxx_ps(dpy), 0x2); // 0010b
+	n128 dpx = _hlslpp_dot4_ps(m1_vec, m2_vec0);
+	n128 dpy = _hlslpp_dot4_ps(m1_vec, m2_vec1);
+	n128 result = _mm_blend_ps(dpx, _hlslpp_perm_xxxx_ps(dpy), 0x2); // 0010b
 	return result;
 }
 
-inline __m128 _mm_mul_1x4_4x3_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2)
+inline n128 _hlslpp_mul_1x4_4x3_ps(const n128& m1_vec, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2)
 {
-	__m128 dpx = _hlslpp_dot4_ps(m1_vec, m2_vec0);
-	__m128 dpy = _hlslpp_dot4_ps(m1_vec, m2_vec1);
-	__m128 dpz = _hlslpp_dot4_ps(m1_vec, m2_vec2);
-	__m128 result = _mm_blend_ps(dpy, _mm_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
+	n128 dpx = _hlslpp_dot4_ps(m1_vec, m2_vec0);
+	n128 dpy = _hlslpp_dot4_ps(m1_vec, m2_vec1);
+	n128 dpz = _hlslpp_dot4_ps(m1_vec, m2_vec2);
+	n128 result = _mm_blend_ps(dpy, _mm_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
 	return result;
 }
 
-inline __m128 _mm_mul_1x4_4x4_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, const __m128& m2_vec3)
+inline n128 _hlslpp_mul_1x4_4x4_ps(const n128& m1_vec, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, const n128& m2_vec3)
 {
-	__m128 mul0 = _hlslpp_mul_ps(m2_vec0, _hlslpp_perm_xxxx_ps(m1_vec));
-	__m128 mul1 = _hlslpp_madd_ps(m2_vec1, _hlslpp_perm_yyyy_ps(m1_vec), mul0);
-	__m128 mul2 = _hlslpp_madd_ps(m2_vec2, _hlslpp_perm_zzzz_ps(m1_vec), mul1);
-	__m128 result = _hlslpp_madd_ps(m2_vec3, _hlslpp_perm_wwww_ps(m1_vec), mul2);
+	n128 mul0 = _hlslpp_mul_ps(m2_vec0, _hlslpp_perm_xxxx_ps(m1_vec));
+	n128 mul1 = _hlslpp_madd_ps(m2_vec1, _hlslpp_perm_yyyy_ps(m1_vec), mul0);
+	n128 mul2 = _hlslpp_madd_ps(m2_vec2, _hlslpp_perm_zzzz_ps(m1_vec), mul1);
+	n128 result = _hlslpp_madd_ps(m2_vec3, _hlslpp_perm_wwww_ps(m1_vec), mul2);
 	return result;
 }
 
-inline __m128 _mm_mul_2x2_2x1_ps(const __m128& m1_vec, const __m128& m2_vec)
+inline n128 _hlslpp_mul_2x2_2x1_ps(const n128& m1_vec, const n128& m2_vec)
 {
-	__m128 dpx = _hlslpp_dot2_ps(m1_vec, m2_vec);
-	__m128 dpy = _hlslpp_dot2_ps(_hlslpp_perm_zwxx_ps(m1_vec), m2_vec);
-	__m128 result = _mm_blend_ps(dpx, _hlslpp_perm_xxxx_ps(dpy), 0x2); // 0010b
+	n128 dpx = _hlslpp_dot2_ps(m1_vec, m2_vec);
+	n128 dpy = _hlslpp_dot2_ps(_hlslpp_perm_zwxx_ps(m1_vec), m2_vec);
+	n128 result = _mm_blend_ps(dpx, _hlslpp_perm_xxxx_ps(dpy), 0x2); // 0010b
 	return result;
 }
 
-inline __m128 _mm_mul_2x2_2x2_ps(const __m128& m1_vec, const __m128& m2_vec)
+inline n128 _hlslpp_mul_2x2_2x2_ps(const n128& m1_vec, const n128& m2_vec)
 {
 	// First and last elements in the matrix
-	__m128 diag1shuf1 = _hlslpp_perm_xzyw_ps(m2_vec);			// Shuffle m2 to align components with m1
-	__m128 diag1mul1 = _hlslpp_mul_ps(m1_vec, diag1shuf1);		// Multiply. Now contains m00 * n00, m01 * n10, m10 * n01, m11 * n11
-	__m128 diag1shuf2 = _hlslpp_perm_yxxz_ps(diag1mul1);		// Shuffle to align to be able to add
-	__m128 diag1result = _hlslpp_add_ps(diag1mul1, diag1shuf2);	// Now contains m00*n00 + m01*n10, _, _, m10*n01 + m11*n11
+	n128 diag1shuf1 = _hlslpp_perm_xzyw_ps(m2_vec);			// Shuffle m2 to align components with m1
+	n128 diag1mul1 = _hlslpp_mul_ps(m1_vec, diag1shuf1);		// Multiply. Now contains m00 * n00, m01 * n10, m10 * n01, m11 * n11
+	n128 diag1shuf2 = _hlslpp_perm_yxxz_ps(diag1mul1);		// Shuffle to align to be able to add
+	n128 diag1result = _hlslpp_add_ps(diag1mul1, diag1shuf2);	// Now contains m00*n00 + m01*n10, _, _, m10*n01 + m11*n11
 
 	// Second and third elements in the matrix
-	__m128 diag2shuf1 = _hlslpp_perm_ywxz_ps(m2_vec);			// Shuffle matrix to align components with m1
-	__m128 diag2mul1 = _hlslpp_mul_ps(m1_vec, diag2shuf1);		// Multiply. Now contains m00 * n00, m01 * n10, m10 * n01, m11 * n11
-	__m128 diag2shuf2 = _hlslpp_perm_xxwx_ps(diag2mul1);		// Shuffle to align to be able to add
-	__m128 diag2result = _hlslpp_add_ps(diag2mul1, diag2shuf2);	// Now contains m00*n00 + m01*n10, _, _, m10*n01 + m11*n11
+	n128 diag2shuf1 = _hlslpp_perm_ywxz_ps(m2_vec);			// Shuffle matrix to align components with m1
+	n128 diag2mul1 = _hlslpp_mul_ps(m1_vec, diag2shuf1);		// Multiply. Now contains m00 * n00, m01 * n10, m10 * n01, m11 * n11
+	n128 diag2shuf2 = _hlslpp_perm_xxwx_ps(diag2mul1);		// Shuffle to align to be able to add
+	n128 diag2result = _hlslpp_add_ps(diag2mul1, diag2shuf2);	// Now contains m00*n00 + m01*n10, _, _, m10*n01 + m11*n11
 
-	__m128 result = _mm_blend_ps(diag1result, diag2result, 0x6); // 0110b
+	n128 result = _mm_blend_ps(diag1result, diag2result, 0x6); // 0110b
 	return result;
 }
 
-inline void _mm_mul_2x2_2xM_ps(const __m128& m1_vec, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1)
+inline void _hlslpp_mul_2x2_2xM_ps(const n128& m1_vec, const n128& m2_vec0, const n128& m2_vec1, n128& o_vec0, n128& o_vec1)
 {
-	__m128 mul0 = _hlslpp_mul_ps(m2_vec0, _hlslpp_perm_xxxx_ps(m1_vec));
+	n128 mul0 = _hlslpp_mul_ps(m2_vec0, _hlslpp_perm_xxxx_ps(m1_vec));
 	o_vec0 = _hlslpp_madd_ps(m2_vec1, _hlslpp_perm_yyyy_ps(m1_vec), mul0);
 
-	__m128 mul1 = _hlslpp_mul_ps(m2_vec0, _hlslpp_perm_zzzz_ps(m1_vec));
+	n128 mul1 = _hlslpp_mul_ps(m2_vec0, _hlslpp_perm_zzzz_ps(m1_vec));
 	o_vec1 = _hlslpp_madd_ps(m2_vec1, _hlslpp_perm_wwww_ps(m1_vec), mul1);
 }
 
-inline __m128 _mm_mul_Nx2_2x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec)
+inline n128 _hlslpp_mul_Nx2_2x1_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec)
 {
-	__m128 mul0 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec));
-	__m128 result = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec), mul0);
+	n128 mul0 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec));
+	n128 result = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec), mul0);
 	return result;
 }
 
-inline void _mm_mul_Nx2_2x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec, __m128& o_vec0, __m128& o_vec1)
+inline void _hlslpp_mul_Nx2_2x2_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec, n128& o_vec0, n128& o_vec1)
 {
-	__m128 mul0 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec));
+	n128 mul0 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec));
 	o_vec0 = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_zzzz_ps(m2_vec), mul0);
 
-	__m128 mul1 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_yyyy_ps(m2_vec));
+	n128 mul1 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_yyyy_ps(m2_vec));
 	o_vec1 = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_wwww_ps(m2_vec), mul1);
 }
 
-inline void _mm_mul_3x2_2xM_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+inline void _hlslpp_mul_3x2_2xM_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec0, const n128& m2_vec1, n128& o_vec0, n128& o_vec1, n128& o_vec2)
 {
-	__m128 mul0 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
+	n128 mul0 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
 	o_vec0 = _hlslpp_madd_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec1, mul0);
 
-	__m128 mul1 = _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec0);
+	n128 mul1 = _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec0);
 	o_vec1 = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul1);
 
-	__m128 mul2 = _hlslpp_mul_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec0);
+	n128 mul2 = _hlslpp_mul_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec0);
 	o_vec2 = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec1), m2_vec1, mul2);
 }
 
-inline void _mm_mul_4x2_2x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+inline void _hlslpp_mul_4x2_2x3_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec0, const n128& m2_vec1, n128& o_vec0, n128& o_vec1, n128& o_vec2)
 {
-	__m128 mul0 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec0));
+	n128 mul0 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec0));
 	o_vec0 = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_xxxx_ps(m2_vec1), mul0);
 
-	__m128 mul1 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_yyyy_ps(m2_vec0));
+	n128 mul1 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_yyyy_ps(m2_vec0));
 	o_vec1 = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec1), mul1);
 
-	__m128 mul2 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_zzzz_ps(m2_vec0));
+	n128 mul2 = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_zzzz_ps(m2_vec0));
 	o_vec2 = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_zzzz_ps(m2_vec1), mul2);
 }
 
-inline void _mm_mul_4x2_2x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2, __m128& o_vec3)
+inline void _hlslpp_mul_4x2_2x4_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec0, const n128& m2_vec1, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
 {
-	__m128 mul0 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
+	n128 mul0 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
 	o_vec0 = _hlslpp_madd_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec1, mul0);
 
-	__m128 mul1 = _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec0);
+	n128 mul1 = _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec0);
 	o_vec1 = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul1);
 
-	__m128 mul2 = _hlslpp_mul_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec0);
+	n128 mul2 = _hlslpp_mul_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec0);
 	o_vec2 = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec1), m2_vec1, mul2);
 
-	__m128 mul3 = _hlslpp_mul_ps(_hlslpp_perm_wwww_ps(m1_vec0), m2_vec0);
+	n128 mul3 = _hlslpp_mul_ps(_hlslpp_perm_wwww_ps(m1_vec0), m2_vec0);
 	o_vec3 = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(m1_vec1), m2_vec1, mul3);
 }
 
-inline __m128 _mm_mul_2x3_3x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec)
+inline n128 _hlslpp_mul_2x3_3x1_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec)
 {
-	__m128 dpx = _hlslpp_dot3_ps(m1_vec0, m2_vec);
-	__m128 dpy = _hlslpp_dot3_ps(m1_vec1, m2_vec);
-	__m128 result = _mm_blend_ps(dpx, _hlslpp_perm_xxxx_ps(dpy), 0x2); // 0010b
+	n128 dpx = _hlslpp_dot3_ps(m1_vec0, m2_vec);
+	n128 dpy = _hlslpp_dot3_ps(m1_vec1, m2_vec);
+	n128 result = _mm_blend_ps(dpx, _hlslpp_perm_xxxx_ps(dpy), 0x2); // 0010b
 	return result;
 }
 
-inline __m128 _mm_mul_2x3_3x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1)
+inline n128 _hlslpp_mul_2x3_3x2_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec0, const n128& m2_vec1)
 {
-	__m128 dpx = _hlslpp_dot3_ps(m1_vec0, m2_vec0);
-	__m128 dpy = _hlslpp_dot3_ps(m1_vec0, m2_vec1);
-	__m128 dpz = _hlslpp_dot3_ps(m1_vec1, m2_vec0);
-	__m128 dpw = _hlslpp_dot3_ps(m1_vec1, m2_vec1);
-	__m128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
+	n128 dpx = _hlslpp_dot3_ps(m1_vec0, m2_vec0);
+	n128 dpy = _hlslpp_dot3_ps(m1_vec0, m2_vec1);
+	n128 dpz = _hlslpp_dot3_ps(m1_vec1, m2_vec0);
+	n128 dpw = _hlslpp_dot3_ps(m1_vec1, m2_vec1);
+	n128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
 	return result;
 }
 
-inline void _mm_mul_4x2_2x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1)
+inline void _hlslpp_mul_4x2_2x4_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1)
 {
-	__m128 mul0 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
-	__m128 mul1 = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec1, mul0);
+	n128 mul0 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
+	n128 mul1 = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec1, mul0);
 	o_vec0 = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec2, mul1);
 
-	__m128 mul2 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec0);
-	__m128 mul3 = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul2);
+	n128 mul2 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec0);
+	n128 mul3 = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul2);
 	o_vec1 = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec1), m2_vec2, mul3);
 }
 
-inline __m128 _mm_mul_2x3_3x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec)
+inline n128 _hlslpp_mul_2x3_3x2_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec)
 {
-	__m128 dpx = _hlslpp_dot4_ps(m1_vec0, m2_vec);
-	__m128 dpy = _hlslpp_dot4_ps(m1_vec1, m2_vec);
-	__m128 result = _mm_blend_ps(dpx, _hlslpp_perm_xxxx_ps(dpy), 0x2); // 0010b
+	n128 dpx = _hlslpp_dot4_ps(m1_vec0, m2_vec);
+	n128 dpy = _hlslpp_dot4_ps(m1_vec1, m2_vec);
+	n128 result = _mm_blend_ps(dpx, _hlslpp_perm_xxxx_ps(dpy), 0x2); // 0010b
 	return result;
 }
 
-inline __m128 _mm_mul_2x4_4x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1)
+inline n128 _hlslpp_mul_2x4_4x2_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec0, const n128& m2_vec1)
 {
-	__m128 dpx = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
-	__m128 dpy = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
-	__m128 dpz = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
-	__m128 dpw = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
-	__m128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
+	n128 dpx = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
+	n128 dpy = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
+	n128 dpz = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
+	n128 dpw = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
+	n128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
 	return result;
 }
 
-inline void _mm_mul_2x4_4x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1)
+inline void _hlslpp_mul_2x4_4x3_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1)
 {
-	__m128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
-	__m128 dpy0 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
-	__m128 dpz0 = _hlslpp_dot4_ps(m1_vec0, m2_vec2);
+	n128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
+	n128 dpy0 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
+	n128 dpz0 = _hlslpp_dot4_ps(m1_vec0, m2_vec2);
 	o_vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
 
-	__m128 dpx1 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
-	__m128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
-	__m128 dpz1 = _hlslpp_dot4_ps(m1_vec1, m2_vec2);
+	n128 dpx1 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
+	n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
+	n128 dpz1 = _hlslpp_dot4_ps(m1_vec1, m2_vec2);
 	o_vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
 }
 
-inline void _mm_mul_2x4_4x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, const __m128& m2_vec3, __m128& o_vec0, __m128& o_vec1)
+inline void _hlslpp_mul_2x4_4x4_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, const n128& m2_vec3, n128& o_vec0, n128& o_vec1)
 {
 	// First row
-	__m128 mul0x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
-	__m128 mad0y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec1, mul0x);
-	__m128 mad0z = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec2, mad0y);
+	n128 mul0x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
+	n128 mad0y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec1, mul0x);
+	n128 mad0z = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec2, mad0y);
 	o_vec0 = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(m1_vec0), m2_vec3, mad0z);
 
 	// Second row
-	__m128 mul1x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec0);
-	__m128 mad1y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul1x);
-	__m128 mad1z = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec1), m2_vec2, mad1y);
+	n128 mul1x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec0);
+	n128 mad1y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul1x);
+	n128 mad1z = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec1), m2_vec2, mad1y);
 	o_vec1 = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(m1_vec1), m2_vec3, mad1z);
 }
 
-inline __m128 _mm_mul_3x3_3x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec)
+inline n128 _hlslpp_mul_3x3_3x1_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec)
 {
-	__m128 dpx = _hlslpp_dot3_ps(m1_vec0, m2_vec);
-	__m128 dpy = _hlslpp_dot3_ps(m1_vec1, m2_vec);
-	__m128 dpz = _hlslpp_dot3_ps(m1_vec2, m2_vec);
-	__m128 result = _mm_blend_ps(dpx, _mm_shuf_xxxx_ps(dpy, dpz), 0x6); // 0110b
+	n128 dpx = _hlslpp_dot3_ps(m1_vec0, m2_vec);
+	n128 dpy = _hlslpp_dot3_ps(m1_vec1, m2_vec);
+	n128 dpz = _hlslpp_dot3_ps(m1_vec2, m2_vec);
+	n128 result = _mm_blend_ps(dpx, _mm_shuf_xxxx_ps(dpy, dpz), 0x6); // 0110b
 	return result;
 }
 
-inline void _mm_mul_3x3_3x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1)
+inline void _hlslpp_mul_3x3_3x2_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, n128& o_vec0, n128& o_vec1)
 {
-	__m128 dpx0 = _hlslpp_dot3_ps(m1_vec0, m2_vec0);
-	__m128 dpy0 = _hlslpp_dot3_ps(m1_vec1, m2_vec0);
-	__m128 dpz0 = _hlslpp_dot3_ps(m1_vec2, m2_vec0);
+	n128 dpx0 = _hlslpp_dot3_ps(m1_vec0, m2_vec0);
+	n128 dpy0 = _hlslpp_dot3_ps(m1_vec1, m2_vec0);
+	n128 dpz0 = _hlslpp_dot3_ps(m1_vec2, m2_vec0);
 	o_vec0 = _mm_blend_ps(dpx0, _mm_shuf_xxxx_ps(dpy0, dpz0), 0x6); // 0110b
 
-	__m128 dpx1 = _hlslpp_dot3_ps(m1_vec0, m2_vec1);
-	__m128 dpy1 = _hlslpp_dot3_ps(m1_vec1, m2_vec1);
-	__m128 dpz1 = _hlslpp_dot3_ps(m1_vec2, m2_vec1);
+	n128 dpx1 = _hlslpp_dot3_ps(m1_vec0, m2_vec1);
+	n128 dpy1 = _hlslpp_dot3_ps(m1_vec1, m2_vec1);
+	n128 dpz1 = _hlslpp_dot3_ps(m1_vec2, m2_vec1);
 	o_vec1 = _mm_blend_ps(dpx1, _mm_shuf_xxxx_ps(dpy1, dpz1), 0x6); // 0110b
 }
 
-inline void _mm_mul_3x3_3x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+inline void _hlslpp_mul_3x3_3x3_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
 {
 	// First row
-	__m128 mul1x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec0));
-	__m128 mad1y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec0), mul1x);
+	n128 mul1x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec0));
+	n128 mad1y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec0), mul1x);
 	o_vec0 = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec0), mad1y);
 
 	// Second row
-	__m128 mul2x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec1));
-	__m128 mad2y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec1), mul2x);
+	n128 mul2x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec1));
+	n128 mad2y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec1), mul2x);
 	o_vec1 = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec1), mad2y);
 
 	// Third row
-	__m128 mul3x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec2));
-	__m128 mad3y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec2), mul3x);
+	n128 mul3x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec2));
+	n128 mad3y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec2), mul3x);
 	o_vec2 = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec2), mad3y);
 }
 
-inline void _mm_mul_3x3_3x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+inline void _hlslpp_mul_3x3_3x4_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
 {
 	// First row
-	__m128 mul1x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
-	__m128 mad1y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec1, mul1x);
+	n128 mul1x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
+	n128 mad1y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec1, mul1x);
 	o_vec0 = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec2, mad1y);
 
 	// Second row
-	__m128 mul2x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec0);
-	__m128 mad2y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul2x);
+	n128 mul2x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec0);
+	n128 mad2y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul2x);
 	o_vec1 = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec1), m2_vec2, mad2y);
 
 	// Third row
-	__m128 mul3x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec2), m2_vec0);
-	__m128 mad3y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec2), m2_vec1, mul3x);
+	n128 mul3x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec2), m2_vec0);
+	n128 mad3y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec2), m2_vec1, mul3x);
 	o_vec2 = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec2), m2_vec2, mad3y);
 }
 
-inline __m128 _mm_mul_3x4_4x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec)
+inline n128 _hlslpp_mul_3x4_4x1_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec)
 {
-	__m128 dpx = _hlslpp_dot4_ps(m1_vec0, m2_vec);
-	__m128 dpy = _hlslpp_dot4_ps(m1_vec1, m2_vec);
-	__m128 dpz = _hlslpp_dot4_ps(m1_vec2, m2_vec);
-	__m128 result = _mm_blend_ps(dpy, _mm_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
+	n128 dpx = _hlslpp_dot4_ps(m1_vec0, m2_vec);
+	n128 dpy = _hlslpp_dot4_ps(m1_vec1, m2_vec);
+	n128 dpz = _hlslpp_dot4_ps(m1_vec2, m2_vec);
+	n128 result = _mm_blend_ps(dpy, _mm_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
 	return result;
 }
 
-inline void _mm_mul_3x4_4x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1)
+inline void _hlslpp_mul_3x4_4x2_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, n128& o_vec0, n128& o_vec1)
 {
-	__m128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
-	__m128 dpy0 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
-	__m128 dpz0 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
+	n128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
+	n128 dpy0 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
+	n128 dpz0 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
 	o_vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
 
-	__m128 dpx1 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
-	__m128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
-	__m128 dpz1 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
+	n128 dpx1 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
+	n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
+	n128 dpz1 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
 	o_vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
 }
 
-inline void _mm_mul_3x4_4x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+inline void _hlslpp_mul_3x4_4x3_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
 {
-	__m128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
-	__m128 dpy0 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
-	__m128 dpz0 = _hlslpp_dot4_ps(m1_vec0, m2_vec2);
+	n128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
+	n128 dpy0 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
+	n128 dpz0 = _hlslpp_dot4_ps(m1_vec0, m2_vec2);
 	o_vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
 
-	__m128 dpx1 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
-	__m128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
-	__m128 dpz1 = _hlslpp_dot4_ps(m1_vec1, m2_vec2);
+	n128 dpx1 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
+	n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
+	n128 dpz1 = _hlslpp_dot4_ps(m1_vec1, m2_vec2);
 	o_vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
 
-	__m128 dpx2 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
-	__m128 dpy2 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
-	__m128 dpz2 = _hlslpp_dot4_ps(m1_vec2, m2_vec2);
+	n128 dpx2 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
+	n128 dpy2 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
+	n128 dpz2 = _hlslpp_dot4_ps(m1_vec2, m2_vec2);
 	o_vec2 = _mm_blend_ps(dpy2, _mm_shuf_xxxx_ps(dpx2, dpz2), 0x5); // 0101b
 }
 
-inline void _mm_mul_3x4_4x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, const __m128& m2_vec3, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+inline void _hlslpp_mul_3x4_4x4_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, const n128& m2_vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2)
 {
 	// First row
-	__m128 mul1x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
-	__m128 mad1y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec1, mul1x);
-	__m128 mad1z = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec2, mad1y);
+	n128 mul1x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
+	n128 mad1y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec1, mul1x);
+	n128 mad1z = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec2, mad1y);
 	o_vec0 = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(m1_vec0), m2_vec3, mad1z);
 
 	// Second row
-	__m128 mul2x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec0);
-	__m128 mad2y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul2x);
-	__m128 mad2z = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec1), m2_vec2, mad2y);
+	n128 mul2x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec0);
+	n128 mad2y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul2x);
+	n128 mad2z = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec1), m2_vec2, mad2y);
 	o_vec1 = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(m1_vec1), m2_vec3, mad2z);
 
 	// Third row
-	__m128 mul3x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec2), m2_vec0);
-	__m128 mad3y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec2), m2_vec1, mul3x);
-	__m128 mad3z = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec2), m2_vec2, mad3y);
+	n128 mul3x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec2), m2_vec0);
+	n128 mad3y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec2), m2_vec1, mul3x);
+	n128 mad3z = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec2), m2_vec2, mad3y);
 	o_vec2 = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(m1_vec2), m2_vec3, mad3z);
 }
 
-inline __m128 _mm_mul_4x3_3x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec)
+inline n128 _hlslpp_mul_4x3_3x1_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec)
 {
-	__m128 mul1x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec));
-	__m128 mad1y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec), mul1x);
-	__m128 result = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec), mad1y);
+	n128 mul1x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec));
+	n128 mad1y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec), mul1x);
+	n128 result = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec), mad1y);
 	return result;
 }
 
-inline void _mm_mul_4x3_3x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1)
+inline void _hlslpp_mul_4x3_3x2_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, n128& o_vec0, n128& o_vec1)
 {
 	// First row
-	__m128 mul0x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec0));
-	__m128 mad0y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec0), mul0x);
+	n128 mul0x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec0));
+	n128 mad0y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec0), mul0x);
 	o_vec0 = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec0), mad0y);
 
 	// Second row
-	__m128 mul1x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec1));
-	__m128 mad1y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec1), mul1x);
+	n128 mul1x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec1));
+	n128 mad1y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec1), mul1x);
 	o_vec1 = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec1), mad1y);
 }
 
-inline void _mm_mul_4x3_3x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+inline void _hlslpp_mul_4x3_3x3_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
 {
 	// First row
-	__m128 mul0x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec0));
-	__m128 mad0y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_xxxx_ps(m2_vec1), mul0x);
+	n128 mul0x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec0));
+	n128 mad0y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_xxxx_ps(m2_vec1), mul0x);
 	o_vec0 = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_xxxx_ps(m2_vec2), mad0y);
 
 	// Second row
-	__m128 mul1x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_yyyy_ps(m2_vec0));
-	__m128 mad1y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec1), mul1x);
+	n128 mul1x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_yyyy_ps(m2_vec0));
+	n128 mad1y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec1), mul1x);
 	o_vec1 = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_yyyy_ps(m2_vec2), mad1y);
 
 	// Second row
-	__m128 mul2x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_zzzz_ps(m2_vec0));
-	__m128 mad2y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_zzzz_ps(m2_vec1), mul2x);
+	n128 mul2x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_zzzz_ps(m2_vec0));
+	n128 mad2y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_zzzz_ps(m2_vec1), mul2x);
 	o_vec2 = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec2), mad2y);
 }
 
-inline void _mm_mul_4x3_3x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2, __m128& o_vec3)
+inline void _hlslpp_mul_4x3_3x4_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
 {
 	// First row
-	__m128 mul0x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
-	__m128 mad0y = _hlslpp_madd_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec1, mul0x);
+	n128 mul0x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1_vec0), m2_vec0);
+	n128 mad0y = _hlslpp_madd_ps(_hlslpp_perm_xxxx_ps(m1_vec1), m2_vec1, mul0x);
 	o_vec0 = _hlslpp_madd_ps(_hlslpp_perm_xxxx_ps(m1_vec2), m2_vec2, mad0y);
 
 	// Second row
-	__m128 mul1x = _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec0);
-	__m128 mad1y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul1x);
+	n128 mul1x = _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1_vec0), m2_vec0);
+	n128 mad1y = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec1), m2_vec1, mul1x);
 	o_vec1 = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(m1_vec2), m2_vec2, mad1y);
 
 	// Second row
-	__m128 mul2x = _hlslpp_mul_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec0);
-	__m128 mad2y = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec1), m2_vec1, mul2x);
+	n128 mul2x = _hlslpp_mul_ps(_hlslpp_perm_zzzz_ps(m1_vec0), m2_vec0);
+	n128 mad2y = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec1), m2_vec1, mul2x);
 	o_vec2 = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1_vec2), m2_vec2, mad2y);
 
 	// Second row
-	__m128 mul3x = _hlslpp_mul_ps(_hlslpp_perm_wwww_ps(m1_vec0), m2_vec0);
-	__m128 mad3y = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(m1_vec1), m2_vec1, mul3x);
+	n128 mul3x = _hlslpp_mul_ps(_hlslpp_perm_wwww_ps(m1_vec0), m2_vec0);
+	n128 mad3y = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(m1_vec1), m2_vec1, mul3x);
 	o_vec3 = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(m1_vec2), m2_vec2, mad3y);
 }
 
-inline __m128 _mm_mul_4x4_4x1_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m1_vec3, const __m128& m2_vec)
+inline n128 _hlslpp_mul_4x4_4x1_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m1_vec3, const n128& m2_vec)
 {
-	__m128 dpx = _hlslpp_dot4_ps(m1_vec0, m2_vec);
-	__m128 dpy = _hlslpp_dot4_ps(m1_vec1, m2_vec);
-	__m128 dpz = _hlslpp_dot4_ps(m1_vec2, m2_vec);
-	__m128 dpw = _hlslpp_dot4_ps(m1_vec3, m2_vec);
+	n128 dpx = _hlslpp_dot4_ps(m1_vec0, m2_vec);
+	n128 dpy = _hlslpp_dot4_ps(m1_vec1, m2_vec);
+	n128 dpz = _hlslpp_dot4_ps(m1_vec2, m2_vec);
+	n128 dpw = _hlslpp_dot4_ps(m1_vec3, m2_vec);
 
-	__m128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
+	n128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
 	return result;
 }
 
-inline void _mm_mul_4x4_4x2_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m1_vec3, const __m128& m2_vec0, const __m128& m2_vec1, __m128& o_vec0, __m128& o_vec1)
+inline void _hlslpp_mul_4x4_4x2_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m1_vec3, const n128& m2_vec0, const n128& m2_vec1, n128& o_vec0, n128& o_vec1)
 {
-	__m128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
-	__m128 dpy0 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
-	__m128 dpz0 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
-	__m128 dpw0 = _hlslpp_dot4_ps(m1_vec3, m2_vec0);
+	n128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
+	n128 dpy0 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
+	n128 dpz0 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
+	n128 dpw0 = _hlslpp_dot4_ps(m1_vec3, m2_vec0);
 
 	o_vec0 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx0, dpz0), _mm_shuf_xxxx_ps(dpy0, dpw0), 0xA); // 1010b
 
-	__m128 dpx1 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
-	__m128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
-	__m128 dpz1 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
-	__m128 dpw1 = _hlslpp_dot4_ps(m1_vec3, m2_vec1);
+	n128 dpx1 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
+	n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
+	n128 dpz1 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
+	n128 dpw1 = _hlslpp_dot4_ps(m1_vec3, m2_vec1);
 
 	o_vec1 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx1, dpz1), _mm_shuf_xxxx_ps(dpy1, dpw1), 0xA); // 1010b
 }
 
-inline void _mm_mul_4x4_4x3_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m1_vec3, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2)
+inline void _hlslpp_mul_4x4_4x3_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m1_vec3, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
 {
-	__m128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
-	__m128 dpy0 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
-	__m128 dpz0 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
-	__m128 dpw0 = _hlslpp_dot4_ps(m1_vec3, m2_vec0);
+	n128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
+	n128 dpy0 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
+	n128 dpz0 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
+	n128 dpw0 = _hlslpp_dot4_ps(m1_vec3, m2_vec0);
 
 	o_vec0 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx0, dpz0), _mm_shuf_xxxx_ps(dpy0, dpw0), 0xA); // 1010b
 
-	__m128 dpx1 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
-	__m128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
-	__m128 dpz1 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
-	__m128 dpw1 = _hlslpp_dot4_ps(m1_vec3, m2_vec1);
+	n128 dpx1 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
+	n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
+	n128 dpz1 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
+	n128 dpw1 = _hlslpp_dot4_ps(m1_vec3, m2_vec1);
 
 	o_vec1 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx1, dpz1), _mm_shuf_xxxx_ps(dpy1, dpw1), 0xA); // 1010b
 
-	__m128 dpx2 = _hlslpp_dot4_ps(m1_vec0, m2_vec2);
-	__m128 dpy2 = _hlslpp_dot4_ps(m1_vec1, m2_vec2);
-	__m128 dpz2 = _hlslpp_dot4_ps(m1_vec2, m2_vec2);
-	__m128 dpw2 = _hlslpp_dot4_ps(m1_vec3, m2_vec2);
+	n128 dpx2 = _hlslpp_dot4_ps(m1_vec0, m2_vec2);
+	n128 dpy2 = _hlslpp_dot4_ps(m1_vec1, m2_vec2);
+	n128 dpz2 = _hlslpp_dot4_ps(m1_vec2, m2_vec2);
+	n128 dpw2 = _hlslpp_dot4_ps(m1_vec3, m2_vec2);
 
 	o_vec2 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx2, dpz2), _mm_shuf_xxxx_ps(dpy2, dpw2), 0xA); // 1010b
 }
 
-inline void _mm_mul_4x4_4x4_ps(const __m128& m1_vec0, const __m128& m1_vec1, const __m128& m1_vec2, const __m128& m1_vec3, const __m128& m2_vec0, const __m128& m2_vec1, const __m128& m2_vec2, const __m128& m2_vec3, __m128& o_vec0, __m128& o_vec1, __m128& o_vec2, __m128& o_vec3)
+inline void _hlslpp_mul_4x4_4x4_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m1_vec3, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, const n128& m2_vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
 {
 	// First row
-	__m128 mul1x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec0));
-	__m128 mad1y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec0), mul1x);
-	__m128 mad1z = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec0), mad1y);
+	n128 mul1x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec0));
+	n128 mad1y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec0), mul1x);
+	n128 mad1z = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec0), mad1y);
 	o_vec0 = _hlslpp_madd_ps(m1_vec3, _hlslpp_perm_wwww_ps(m2_vec0), mad1z);
 
 	// Second row
-	__m128 mul2x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec1));
-	__m128 mad2y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec1), mul2x);
-	__m128 mad2z = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec1), mad2y);
+	n128 mul2x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec1));
+	n128 mad2y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec1), mul2x);
+	n128 mad2z = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec1), mad2y);
 	o_vec1 = _hlslpp_madd_ps(m1_vec3, _hlslpp_perm_wwww_ps(m2_vec1), mad2z);
 
 	// Third row
-	__m128 mul3x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec2));
-	__m128 mad3y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec2), mul3x);
-	__m128 mad3z = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec2), mad3y);
+	n128 mul3x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec2));
+	n128 mad3y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec2), mul3x);
+	n128 mad3z = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec2), mad3y);
 	o_vec2 = _hlslpp_madd_ps(m1_vec3, _hlslpp_perm_wwww_ps(m2_vec2), mad3z);
 
 	// Fourth row
-	__m128 mul4x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec3));
-	__m128 mad4y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec3), mul4x);
-	__m128 mad4z = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec3), mad4y);
+	n128 mul4x = _hlslpp_mul_ps(m1_vec0, _hlslpp_perm_xxxx_ps(m2_vec3));
+	n128 mad4y = _hlslpp_madd_ps(m1_vec1, _hlslpp_perm_yyyy_ps(m2_vec3), mul4x);
+	n128 mad4z = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec3), mad4y);
 	o_vec3 = _hlslpp_madd_ps(m1_vec3, _hlslpp_perm_wwww_ps(m2_vec3), mad4z);
 }
 
 inline float1x2 mul(const float1x2& m1, const float2x2& m2)
 {	
-	return float1x2(_mm_mul_1x2_2x1_ps(m1._vec, m2._vec));
+	return float1x2(_hlslpp_mul_1x2_2x1_ps(m1._vec, m2._vec));
 }
 
 template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
 inline floatNxM<1, M> mul(const float1x2& m1, const floatNxM<2, M>& m2)
 {
-	return floatNxM<1, M>(_mm_mul_1x2_2xM_ps(m1._vec, m2._vec0, m2._vec1));
+	return floatNxM<1, M>(_hlslpp_mul_1x2_2xM_ps(m1._vec, m2._vec0, m2._vec1));
 }
 
 inline float1x1 mul(const float1x3& m1, const float3x1& m2)
@@ -3648,13 +3648,13 @@ inline float1x1 mul(const float1x3& m1, const float3x1& m2)
 
 inline float1x2 mul(const float1x3& m1, const float3x2& m2)
 {
-	return float1x2(_mm_mul_1x3_3x2_ps(m1._vec, m2._vec0, m2._vec1));
+	return float1x2(_hlslpp_mul_1x3_3x2_ps(m1._vec, m2._vec0, m2._vec1));
 }
 
 template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
 inline floatNxM<1, M> mul(const float1x3& m1, const floatNxM<3, M>& m2)
 {
-	return floatNxM<1, M>(_mm_mul_1x3_3xM_ps(m1._vec, m2._vec0, m2._vec1, m2._vec2));
+	return floatNxM<1, M>(_hlslpp_mul_1x3_3xM_ps(m1._vec, m2._vec0, m2._vec1, m2._vec2));
 }
 
 inline float1x1 mul(const float1x4& m1, const float4x1& m2)
@@ -3664,210 +3664,210 @@ inline float1x1 mul(const float1x4& m1, const float4x1& m2)
 
 inline float1x2 mul(const float1x4& m1, const float4x2& m2)
 {
-	return float1x2(_mm_mul_1x4_4x2_ps(m1._vec, m2._vec0, m2._vec1));
+	return float1x2(_hlslpp_mul_1x4_4x2_ps(m1._vec, m2._vec0, m2._vec1));
 }
 
 inline float1x3 mul(const float1x4& m1, const float4x3& m2)
 {
-	return float1x3(_mm_mul_1x4_4x3_ps(m1._vec, m2._vec0, m2._vec1, m2._vec2));
+	return float1x3(_hlslpp_mul_1x4_4x3_ps(m1._vec, m2._vec0, m2._vec1, m2._vec2));
 }
 
 inline float1x4 mul(const float1x4& m1, const float4x4& m2)
 {
-	return float1x4(_mm_mul_1x4_4x4_ps(m1._vec, m2._vec0, m2._vec1, m2._vec2, m2._vec3));
+	return float1x4(_hlslpp_mul_1x4_4x4_ps(m1._vec, m2._vec0, m2._vec1, m2._vec2, m2._vec3));
 }
 
 inline float2x1 mul(const float2x2& m1, const float2x1& m2)
 {
-	return float2x1(_mm_mul_2x2_2x1_ps(m1._vec, m2._vec));
+	return float2x1(_hlslpp_mul_2x2_2x1_ps(m1._vec, m2._vec));
 }
 
 inline float2x2 mul(const float2x2& m1, const float2x2& m2)
 {
-	return float2x2(_mm_mul_2x2_2x2_ps(m1._vec, m2._vec));
+	return float2x2(_hlslpp_mul_2x2_2x2_ps(m1._vec, m2._vec));
 }
 
 template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
 inline floatNxM<2, M> mul(const float2x2& m1, const floatNxM<2, M>& m2)
 {
-	__m128 vec0, vec1;
-	_mm_mul_2x2_2xM_ps(m1._vec, m2._vec0, m2._vec1, vec0, vec1);
+	n128 vec0, vec1;
+	_hlslpp_mul_2x2_2xM_ps(m1._vec, m2._vec0, m2._vec1, vec0, vec1);
 	return floatNxM<2, M>(vec0, vec1);
 }
 
 template<int N, typename std::enable_if<(N > 2)>::type* = nullptr>
 inline floatNxM<N, 1> mul(const floatNxM<N, 2>& m1, const float2x1& m2)
 {
-	return floatNxM<N, 1>(_mm_mul_Nx2_2x1_ps(m1._vec0, m1._vec1, m2._vec));
+	return floatNxM<N, 1>(_hlslpp_mul_Nx2_2x1_ps(m1._vec0, m1._vec1, m2._vec));
 }
 
 template<int N, typename std::enable_if<(N > 2)>::type* = nullptr>
 inline floatNxM<N, 2> mul(const floatNxM<N, 2>& m1, const float2x2& m2)
 {
-	__m128 vec0, vec1;
-	_mm_mul_Nx2_2x2_ps(m1._vec0, m1._vec1, m2._vec, vec0, vec1);
+	n128 vec0, vec1;
+	_hlslpp_mul_Nx2_2x2_ps(m1._vec0, m1._vec1, m2._vec, vec0, vec1);
 	return floatNxM<N, 2>(vec0, vec1);
 }
 
 template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
 inline floatNxM<3, M> mul(const float3x2& m1, const floatNxM<2, M>& m2)
 {
-	__m128 vec0, vec1, vec2;
-	_mm_mul_3x2_2xM_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, vec0, vec1, vec2);
+	n128 vec0, vec1, vec2;
+	_hlslpp_mul_3x2_2xM_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, vec0, vec1, vec2);
 	return floatNxM<3, M>(vec0, vec1, vec2);
 }
 
 inline float4x3 mul(const float4x2& m1, const float2x3& m2)
 {
-	__m128 vec0, vec1, vec2;
-	_mm_mul_4x2_2x3_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, vec0, vec1, vec2);
+	n128 vec0, vec1, vec2;
+	_hlslpp_mul_4x2_2x3_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, vec0, vec1, vec2);
 	return float4x3(vec0, vec1, vec2);
 }
 
 inline float4x4 mul(const float4x2& m1, const float2x4& m2)
 {
-	__m128 vec0, vec1, vec2, vec3;
-	_mm_mul_4x2_2x4_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, vec0, vec1, vec2, vec3);
+	n128 vec0, vec1, vec2, vec3;
+	_hlslpp_mul_4x2_2x4_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, vec0, vec1, vec2, vec3);
 	return float4x4(vec0, vec1, vec2, vec3);
 }
 
 inline float2x1 mul(const float2x3& m1, const float3x1& m2)
 {
-	return float2x1(_mm_mul_2x3_3x1_ps(m1._vec0, m1._vec1, m2._vec));
+	return float2x1(_hlslpp_mul_2x3_3x1_ps(m1._vec0, m1._vec1, m2._vec));
 }
 
 inline float2x2 mul(const float2x3& m1, const float3x2& m2)
 {
-	return float2x2(_mm_mul_2x3_3x2_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1));
+	return float2x2(_hlslpp_mul_2x3_3x2_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1));
 }
 
 template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
 inline floatNxM<2, M> mul(const float2x3& m1, const floatNxM<3, M>& m2)
 {
-	__m128 vec0, vec1;
-	_mm_mul_4x2_2x4_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, m2._vec2, vec0, vec1);
+	n128 vec0, vec1;
+	_hlslpp_mul_4x2_2x4_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, m2._vec2, vec0, vec1);
 	return floatNxM<2, M>(vec0, vec1);
 }
 
 inline float2x1 mul(const float2x4& m1, const float4x1& m2)
 {
-	return float2x1(_mm_mul_2x3_3x2_ps(m1._vec0, m1._vec1, m2._vec));
+	return float2x1(_hlslpp_mul_2x3_3x2_ps(m1._vec0, m1._vec1, m2._vec));
 }
 
 inline float2x2 mul(const float2x4& m1, const float4x2& m2)
 {
-	return float2x2(_mm_mul_2x4_4x2_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1));
+	return float2x2(_hlslpp_mul_2x4_4x2_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1));
 }
 
 inline float2x3 mul(const float2x4& m1, const float4x3& m2)
 {
-	__m128 vec0, vec1;
-	_mm_mul_2x4_4x3_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, m2._vec2, vec0, vec1);
+	n128 vec0, vec1;
+	_hlslpp_mul_2x4_4x3_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, m2._vec2, vec0, vec1);
 	return float2x3(vec0, vec1);
 }
 
 inline float2x4 mul(const float2x4& m1, const float4x4& m2)
 {
-	__m128 vec0, vec1;
-	_mm_mul_2x4_4x4_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, m2._vec2, m2._vec3, vec0, vec1);
+	n128 vec0, vec1;
+	_hlslpp_mul_2x4_4x4_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1, m2._vec2, m2._vec3, vec0, vec1);
 	return float2x4(vec0, vec1);
 }
 
 inline float3x1 mul(const float3x3& m1, const float3x1& m2)
 {
-	return float3x1(_mm_mul_3x3_3x1_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec));
+	return float3x1(_hlslpp_mul_3x3_3x1_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec));
 }
 
 inline float3x2 mul(const float3x3& m1, const float3x2& m2)
 {
-	__m128 vec0, vec1;
-	_mm_mul_3x3_3x2_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, vec0, vec1);
+	n128 vec0, vec1;
+	_hlslpp_mul_3x3_3x2_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, vec0, vec1);
 	return float3x2(vec0, vec1);
 }
 
 inline float3x3 mul(const float3x3& m1, const float3x3& m2)
 {
-	__m128 vec0, vec1, vec2;
-	_mm_mul_3x3_3x3_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
+	n128 vec0, vec1, vec2;
+	_hlslpp_mul_3x3_3x3_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
 	return float3x3(vec0, vec1, vec2);
 }
 
 inline float3x4 mul(const float3x3& m1, const float3x4& m2)
 {
-	__m128 vec0, vec1, vec2;
-	_mm_mul_3x3_3x4_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
+	n128 vec0, vec1, vec2;
+	_hlslpp_mul_3x3_3x4_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
 	return float3x4(vec0, vec1, vec2);
 }
 
 inline float3x1 mul(const float3x4& m1, const float4x1& m2)
 {
 	
-	return float3x1(_mm_mul_3x4_4x1_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec));
+	return float3x1(_hlslpp_mul_3x4_4x1_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec));
 }
 
 inline float3x2 mul(const float3x4& m1, const float4x2& m2)
 {
-	__m128 vec0, vec1;
-	_mm_mul_3x4_4x2_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, vec0, vec1);
+	n128 vec0, vec1;
+	_hlslpp_mul_3x4_4x2_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, vec0, vec1);
 	return float3x2(vec0, vec1);
 }
 
 inline float3x3 mul(const float3x4& m1, const float4x3& m2)
 {
-	__m128 vec0, vec1, vec2;
-	_mm_mul_3x4_4x3_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
+	n128 vec0, vec1, vec2;
+	_hlslpp_mul_3x4_4x3_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
 	return float3x3(vec0, vec1, vec2);
 }
 
 inline float3x4 mul(const float3x4& m1, const float4x4& m2)
 {
-	__m128 vec0, vec1, vec2;
-	_mm_mul_3x4_4x4_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, m2._vec3, vec0, vec1, vec2);
+	n128 vec0, vec1, vec2;
+	_hlslpp_mul_3x4_4x4_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, m2._vec3, vec0, vec1, vec2);
 	return float3x4(vec0, vec1, vec2);
 }
 
 inline float4x1 mul(const float4x3& m1, const float3x1& m2)
 {
-	return float4x1(_mm_mul_4x3_3x1_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec));
+	return float4x1(_hlslpp_mul_4x3_3x1_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec));
 }
 
 inline float4x2 mul(const float4x3& m1, const float3x2& m2)
 {
-	__m128 vec0, vec1;
-	_mm_mul_4x3_3x2_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, vec0, vec1);
+	n128 vec0, vec1;
+	_hlslpp_mul_4x3_3x2_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, vec0, vec1);
 	return float4x2(vec0, vec1);
 }
 
 inline float4x3 mul(const float4x3& m1, const float3x3& m2)
 {
-	__m128 vec0, vec1, vec2;
-	_mm_mul_4x3_3x3_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
+	n128 vec0, vec1, vec2;
+	_hlslpp_mul_4x3_3x3_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
 	return float4x3(vec0, vec1, vec2);
 }
 
 inline float4x4 mul(const float4x3& m1, const float3x4& m2)
 {
-	__m128 vec0, vec1, vec2, vec3;
-	_mm_mul_4x3_3x4_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2, vec3);
+	n128 vec0, vec1, vec2, vec3;
+	_hlslpp_mul_4x3_3x4_ps(m1._vec0, m1._vec1, m1._vec2, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2, vec3);
 	return float4x4(vec0, vec1, vec2, vec3);
 }
 
 inline float4x1 mul(const float4x4& m1, const float4x1& m2)
 {
-	return float4x1(_mm_mul_4x4_4x1_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec));
+	return float4x1(_hlslpp_mul_4x4_4x1_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec));
 }
 
 inline float4x2 mul(const float4x4& m1, const float4x2& m2)
 {
-	__m128 vec0, vec1;
-	_mm_mul_4x4_4x2_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec0, m2._vec1, vec0, vec1);
+	n128 vec0, vec1;
+	_hlslpp_mul_4x4_4x2_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec0, m2._vec1, vec0, vec1);
 	return float4x2(vec0, vec1);
 }
 
 inline float4x3 mul(const float4x4& m1, const float4x3& m2)
 {
-	__m128 vec0, vec1, vec2;
-	_mm_mul_4x4_4x3_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
+	n128 vec0, vec1, vec2;
+	_hlslpp_mul_4x4_4x3_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec0, m2._vec1, m2._vec2, vec0, vec1, vec2);
 	return float4x3(vec0, vec1, vec2);
 }
 
@@ -3879,8 +3879,8 @@ inline float4x4 mul(const float4x4& m1, const float4x4& m2)
 
 #endif
 	
-	__m128 vec0, vec1, vec2, vec3;
-	_mm_mul_4x4_4x4_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec0, m2._vec1, m2._vec2, m2._vec3, vec0, vec1, vec2, vec3);
+	n128 vec0, vec1, vec2, vec3;
+	_hlslpp_mul_4x4_4x4_ps(m1._vec0, m1._vec1, m1._vec2, m1._vec3, m2._vec0, m2._vec1, m2._vec2, m2._vec3, vec0, vec1, vec2, vec3);
 	return float4x4(vec0, vec1, vec2, vec3);
 }
 
