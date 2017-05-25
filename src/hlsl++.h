@@ -5,57 +5,16 @@
 
 #if defined(HLSLPP_SSE)
 
-	#if defined(_MSC_VER)
-		#include <intrin.h>
-	#else
-		#include <x86intrin.h>
-	#endif
-
-	using n128	= __m128;
-	using n128i = __m128i;
+	#include "hlsl++_sse.h"
 
 #elif defined(HLSLPP_NEON)
 
-	#include <arm_neon.h>
-
-	using n128 = float32x4_t;
-	using n128i = int32x4_t;
+	#include "hlsl++_neon.h"
 
 #endif
 
 #include <type_traits>
 #include <cstdint>
-
-// Initialize basic set and load instructions - we need them for the constants
-#if defined(HLSLPP_SSE)
-
-	#define _hlslpp_set1_ps(x)						_mm_set1_ps((x))
-	#define _hlslpp_set_ps(x, y, z, w)				_mm_set_ps((w), (z), (y), (x))
-
-	#define _hlslpp_set1_epi32(x)					_mm_set1_epi32((x))
-	#define _hlslpp_set_epi32(x, y, z, w)			_mm_set_epi32((w), (z), (y), (x))
-
-#elif defined(HLSLPP_NEON)
-
-	float32x4_t vmov4q_n_f32(float x, float y, float z, float w)
-	{
-		float values[4] = { x, y, z, w };
-		return vld1q_f32(values);
-	}
-
-	float32x4_t vmov4q_n_s32(int x, int y, int z, int w)
-	{
-		int values[4] = { x, y, z, w };
-		return vld1q_s32(values);
-	}
-
-	#define _hlslpp_set1_ps(x)						vmovq_n_f32((x))
-	#define _hlslpp_set_ps(x, y, z, w)				vmov4q_n_f32((x), (y), (z), (w))
-
-	#define _hlslpp_set1_epi32(x)					vmovq_n_s32((x))
-	#define _hlslpp_set_epi32(x, y, z, w)			vmov4q_n_s32((w), (z), (y), (x))
-
-#endif
 
 // Helper constants
 
@@ -111,194 +70,6 @@ static const n128 f4_deg2rad		= _hlslpp_set1_ps(3.14159265f / 180.f);
 // Masks
 static const n128 f4negativeMask	= _hlslpp_set1_ps(negMask.f);
 static const n128 f4absMask			= _hlslpp_set1_ps(absMask.f);
-
-// Cross-platform aliases to swap between SSE and NEON implementations
-
-#if defined(HLSLPP_SSE)
-
-	#define _hlslpp_add_ps(x, y)					_mm_add_ps((x), (y))
-	#define _hlslpp_sub_ps(x, y)					_mm_sub_ps((x), (y))
-	#define _hlslpp_mul_ps(x, y)					_mm_mul_ps((x), (y))
-	#define _hlslpp_div_ps(x, y)					_mm_div_ps((x), (y))
-
-	// The following are alternatives but have been measured to be slower
-	// _mm_sub_ps(f4zero, v.xyzw);			// Slowest
-	// _mm_mul_ps(f4minusOne, v.xyzw);		// Slower
-	#define _hlslpp_neg_ps(x)						_mm_xor_ps((x), f4negativeMask)
-
-	#define _hlslpp_madd_ps(x, y, z)				_mm_add_ps(_mm_mul_ps((x), (y)), (z))
-	#define _hlslpp_msub_ps(x, y, z)				_mm_sub_ps(_mm_mul_ps((x), (y)), (z))
-
-	// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
-	#define _hlslpp_abs_ps(x)						_mm_and_ps(f4absMask, (x))
-
-	#define _hlslpp_sqrt_ps(x)						_mm_sqrt_ps((x))
-
-	#define _hlslpp_cmpeq_ps(x, y)					_mm_cmpeq_ps((x), (y))
-	#define _hlslpp_cmpneq_ps(x, y)					_mm_cmpneq_ps((x), (y))
-
-	#define _hlslpp_cmpgt_ps(x, y)					_mm_cmpgt_ps((x), (y))
-	#define _hlslpp_cmpge_ps(x, y)					_mm_cmpge_ps((x), (y))
-
-	#define _hlslpp_cmplt_ps(x, y)					_mm_cmplt_ps((x), (y))
-	#define _hlslpp_cmple_ps(x, y)					_mm_cmple_ps((x), (y))
-
-	#define _hlslpp_max_ps(x, y)					_mm_max_ps((x), (y))
-	#define _hlslpp_min_ps(x, y)					_mm_min_ps((x), (y))
-
-	#define _hlslpp_trunc_ps(x)						_mm_round_ps((x), _MM_FROUND_TRUNC)
-	#define _hlslpp_floor_ps(x)						_mm_floor_ps((x))
-	#define _hlslpp_ceil_ps(x)						_mm_ceil_ps((x))
-
-	#define _hlslpp_frac_ps(x)						_mm_sub_ps((x), _mm_floor_ps(x))
-
-	#define _hlslpp_clamp_ps(x, minx, maxx)			_mm_max_ps(_mm_min_ps((x), (maxx)), (minx))
-	#define _hlslpp_sat_ps(x)						_mm_max_ps(_mm_min_ps((x), f4_1), f4_0)
-
-	#define _hlslpp_and_ps(x, y)					_mm_and_ps((x), (y))
-	#define _hlslpp_andnot_ps(x, y)					_mm_andnot_ps((x), (y))
-	#define _hlslpp_or_ps(x, y)						_mm_or_ps((x), (y))
-
-	#define _hlslpp_perm_ps(x, X, Y, Z, W)			_mm_shuffle_ps((x), (x), _MM_SHUFFLE(W, Z, Y, X))
-
-	// See https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
-	// Bit-select val1 and val2 based on the contents of the mask
-	#define _hlslpp_sel_ps(x, y, msk)				_mm_xor_ps((x), _mm_and_ps(msk, _mm_xor_ps((y), (x))))
-
-	// Integer
-
-	#define _hlslpp_add_epi32(x, y)					_mm_add_epi32((x), (y))
-	#define _hlslpp_sub_epi32(x, y)					_mm_sub_epi32((x), (y))
-	#define _hlslpp_mul_epi32(x, y)					_mm_mul_epi32((x), (y))
-
-	#define _hlslpp_and_si128(x, y)					_mm_and_si128((x), (y))
-	#define _hlslpp_or_si128(x, y)					_mm_or_si128((x), (y))
-
-	#define _hlslpp_castps_si128(x)					_mm_castps_si128((x))
-	#define _hlslpp_castsi128_ps(x)					_mm_castsi128_ps((x))
-
-	#define _hlslpp_cvtepi32_ps(x)					_mm_cvtepi32_ps((x))
-	#define _hlslpp_cvtps_epi32(x)					_mm_cvtps_epi32((x))
-
-#elif defined(HLSLPP_NEON)
-
-	// Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
-	inline float32x4_t vpermq_f32(float32x4_t x, uint32_t X, uint32_t Y, uint32_t Z, uint32_t W)
-	{
-		// Swizzle x, swizzle y, swizzle z, swizzle w
-		static const uint32_t ControlMask[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C };
-
-		uint8x8x2_t tbl;
-		tbl.val[0] = vget_low_f32(x);			// Get lower two floats
-		tbl.val[1] = vget_high_f32(x);			// Get higher two floats
-
-		const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMask[X]) | (((uint64_t)ControlMask[Y]) << 32));
-		const uint8x8_t rL = vtbl2_u8(tbl, idxL);
-
-		const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMask[Z]) | (((uint64_t)ControlMask[W]) << 32));
-		const uint8x8_t rH = vtbl2_u8(tbl, idxH);
-
-		return vcombine_f32(rL, rH);
-	}
-
-	inline float32x4_t vshufq_f32(float32x4_t x, float32x4_t y, uint32_t X, uint32_t Y, uint32_t Z, uint32_t W)
-	{
-		// Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0, swizzle X1, swizzle Y1, swizzle Z1, swizzle W1
-		static const uint32_t ControlMask[8] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C, 0x13121110, 0x17161514, 0x1B1A1918, 0x1F1E1D1C };
-
-		uint8x8x4_t tbl;
-		tbl.val[0] = vget_low_f32(x);
-		tbl.val[1] = vget_high_f32(x);
-		tbl.val[2] = vget_low_f32(y);
-		tbl.val[3] = vget_high_f32(y);
-
-		const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMask[X]) | (((uint64_t)ControlMask[Y]) << 32));
-		const uint8x8_t rL = vtbl4_u8(tbl, idxL);
-
-		const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMask[Z]) | (((uint64_t)ControlMask[W]) << 32));
-		const uint8x8_t rH = vtbl4_u8(tbl, idxH);
-
-		return vcombine_f32(rL, rH);
-	}
-
-	// Source https://github.com/andrepuschmann/math-neon/blob/master/src/math_floorf.c
-	inline float32x4_t vfloorq_f32(float32x4_t x)
-	{
-		float32x4_t trnc	= vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
-		float32x4_t gt		= vcgtq_f32(trnc, x);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
-		uint32x4_t shr		= vshrq_n_u32(vreinterpretq_u32_f32(gt), 31);	// Shift to leave a 1 or a 0
-		float32x4_t result	= vsubq_f32(trnc, vcvtq_f32_u32(shr));			// Subtract from truncated value
-		return result;
-	}
-
-	// Source https://github.com/andrepuschmann/math-neon/blob/master/src/math_ceilf.c
-	inline float32x4_t vceilq_f32(float32x4_t x)
-	{
-		float32x4_t trnc	= vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
-		float32x4_t gt		= vcgtq_f32(trnc, x);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
-		uint32x4_t shr		= vshrq_n_u32(vreinterpretq_u32_f32(gt), 31);	// Shift to leave a 1 or a 0
-		float32x4_t result	= vaddq_f32(trnc, vcvtq_f32_u32(shr));			// Add to truncated value
-		return result;
-	}
-
-	#define _hlslpp_add_ps(x, y)					vaddq_f32((x), (y))
-	#define _hlslpp_sub_ps(x, y)					vsubq_f32((x), (y))
-	#define _hlslpp_mul_ps(x, y)					vmulq_f32((x), (y))
-	#define _hlslpp_div_ps(x, y)					vmulq_f32((x), vrecpeq_f32((y)))
-
-	#define _hlslpp_neg_ps(x)						veorq_u32(vreinterpretq_u32_f32((x)), vmovq_n_u32(0x80000000u))
-
-	#define _hlslpp_madd_ps(x, y, z)				vmlaq_f32((z), (x), (y))
-	#define _hlslpp_msub_ps(x, y, z)				_hlslpp_neg_ps(vmlsq_f32((z), (x), (y))) // Negate because vmlsq_f32 does z - x * y and we want x * y - z
-
-	#define _hlslpp_abs_ps(x)						vabsq_f32((x))
-
-	#define _hlslpp_sqrt_ps(x)						vrecpeq_f32(vrsqrteq_f32((x)))
-
-	#define _hlslpp_cmpeq_ps(x, y)					vceqq_f32((x), (y))
-	#define _hlslpp_cmpneq_ps(x, y)					veorq_u32(vreinterpretq_u32_f32(vceqq_f32((x), (y))), vmovq_n_u32(0xffffffffu))
-
-	#define _hlslpp_cmpgt_ps(x, y)					vcgtq_f32((x), (y))
-	#define _hlslpp_cmpge_ps(x, y)					vcgeq_f32((x), (y))
-
-	#define _hlslpp_cmplt_ps(x, y)					vcltq_f32((x), (y))
-	#define _hlslpp_cmple_ps(x, y)					vcleq_f32((x), (y))
-
-	#define _hlslpp_max_ps(x, y)					vmaxq_f32((x), (y))
-	#define _hlslpp_min_ps(x, y)					vminq_f32((x), (y))
-
-	#define _hlslpp_trunc_ps(x)						vcvtq_f32_s32(vcvtq_s32_f32(x))
-	#define _hlslpp_floor_ps(x)						vfloorq_f32((x))
-	#define _hlslpp_ceil_ps(x)						vceilq_f32((x))
-
-	#define _hlslpp_clamp_ps(x, minx, maxx)			vmaxq_f32(vminq_f32((x), (maxx)), (minx))
-	#define _hlslpp_sat_ps(x)						vmaxq_f32(vminq_f32((x), f4_1), f4_0)
-
-	http://codesuppository.blogspot.co.uk/2015/02/sse2neonh-porting-guide-and-header-file.html
-	#define _hlslpp_and_ps(x, y)					vreinterpretq_f32_u32(vandq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
-	#define _hlslpp_andnot_ps(x, y)					vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
-	#define _hlslpp_or_ps(x, y)						vreinterpretq_f32_u32(vorrq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
-
-	#define _hlslpp_perm_ps(x, X, Y, Z, W)			vpermq_f32((x), X, Y, Z, W)
-
-	#define _hlslpp_sel_ps(x, y, msk)				vbslq_f32(msk, (x), (y))
-
-	// Integer
-
-	#define _hlslpp_add_epi32(x, y)					vaddq_s32((x), (y))
-	#define _hlslpp_sub_epi32(x, y)					vsubq_s32((x), (y))
-	#define _hlslpp_mul_epi32(x, y)					vmulq_s32((x), (y))
-
-	#define _hlslpp_and_si128(x, y)					vandq_s32((x), (y))
-	#define _hlslpp_or_si128(x, y)					vorrq_s32((x), (y))
-
-	#define _hlslpp_castps_si128(x)					vreinterpretq_s32_f32((x))
-	#define _hlslpp_castsi128_ps(x)					vreinterpretq_f32_s32((x))
-
-	#define _hlslpp_cvtps_epi32(x)					vcvtq_s32_f32((x))
-	#define _hlslpp_cvtepi32_ps(x)					vcvtq_f32_s32((x))
-
-#endif
 
 static const uint32_t _MM_X = 0;
 static const uint32_t _MM_Y = 1;
@@ -579,264 +350,262 @@ static const uint32_t _MM_W = 3;
 #define _hlslpp_perm_wwwz_ps(x)				_hlslpp_perm_ps((x), _MM_W, _MM_W, _MM_W, _MM_Z)
 #define _hlslpp_perm_wwww_ps(x)				_hlslpp_perm_ps((x), _MM_W, _MM_W, _MM_W, _MM_W)
 
-// Shuffles
-
-#define _mm_shuf_xxxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_X, _MM_X))	
-#define _mm_shuf_xxxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_X, _MM_X))	
-#define _mm_shuf_xxxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_X, _MM_X))	
-#define _mm_shuf_xxxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_X, _MM_X))	
-#define _mm_shuf_xxyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_X, _MM_X))	
-#define _mm_shuf_xxyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_X, _MM_X))	
-#define _mm_shuf_xxyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_X, _MM_X))	
-#define _mm_shuf_xxyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_X, _MM_X))	
-#define _mm_shuf_xxzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_X, _MM_X))	
-#define _mm_shuf_xxzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_X, _MM_X))	
-#define _mm_shuf_xxzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_X, _MM_X))	
-#define _mm_shuf_xxzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_X, _MM_X))	
-#define _mm_shuf_xxwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_X, _MM_X))	
-#define _mm_shuf_xxwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_X, _MM_X))	
-#define _mm_shuf_xxwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_X, _MM_X))	
-#define _mm_shuf_xxww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_X, _MM_X))	
-#define _mm_shuf_xyxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_Y, _MM_X))	
-#define _mm_shuf_xyxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_Y, _MM_X))	
-#define _mm_shuf_xyxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_Y, _MM_X))	
-#define _mm_shuf_xyxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_Y, _MM_X))	
-#define _mm_shuf_xyyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_Y, _MM_X))	
-#define _mm_shuf_xyyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_Y, _MM_X))	
-#define _mm_shuf_xyyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_Y, _MM_X))	
-#define _mm_shuf_xyyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_Y, _MM_X))	
-#define _mm_shuf_xyzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_Y, _MM_X))	
-#define _mm_shuf_xyzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_Y, _MM_X))	
-#define _mm_shuf_xyzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_Y, _MM_X))	
-#define _mm_shuf_xyzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_Y, _MM_X))	
-#define _mm_shuf_xywx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_Y, _MM_X))	
-#define _mm_shuf_xywy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_Y, _MM_X))	
-#define _mm_shuf_xywz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_Y, _MM_X))	
-#define _mm_shuf_xyww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_Y, _MM_X))	
-#define _mm_shuf_xzxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_Z, _MM_X))	
-#define _mm_shuf_xzxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_Z, _MM_X))	
-#define _mm_shuf_xzxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_Z, _MM_X))	
-#define _mm_shuf_xzxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_Z, _MM_X))	
-#define _mm_shuf_xzyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_Z, _MM_X))	
-#define _mm_shuf_xzyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_Z, _MM_X))	
-#define _mm_shuf_xzyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_Z, _MM_X))	
-#define _mm_shuf_xzyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_Z, _MM_X))	
-#define _mm_shuf_xzzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_Z, _MM_X))	
-#define _mm_shuf_xzzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_Z, _MM_X))	
-#define _mm_shuf_xzzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_Z, _MM_X))	
-#define _mm_shuf_xzzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_Z, _MM_X))	
-#define _mm_shuf_xzwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_Z, _MM_X))	
-#define _mm_shuf_xzwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_Z, _MM_X))	
-#define _mm_shuf_xzwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_Z, _MM_X))	
-#define _mm_shuf_xzww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_Z, _MM_X))	
-#define _mm_shuf_xwxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_W, _MM_X))	
-#define _mm_shuf_xwxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_W, _MM_X))	
-#define _mm_shuf_xwxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_W, _MM_X))	
-#define _mm_shuf_xwxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_W, _MM_X))	
-#define _mm_shuf_xwyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_W, _MM_X))	
-#define _mm_shuf_xwyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_W, _MM_X))	
-#define _mm_shuf_xwyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_W, _MM_X))	
-#define _mm_shuf_xwyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_W, _MM_X))	
-#define _mm_shuf_xwzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_W, _MM_X))	
-#define _mm_shuf_xwzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_W, _MM_X))	
-#define _mm_shuf_xwzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_W, _MM_X))	
-#define _mm_shuf_xwzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_W, _MM_X))	
-#define _mm_shuf_xwwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_W, _MM_X))	
-#define _mm_shuf_xwwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_W, _MM_X))	
-#define _mm_shuf_xwwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_W, _MM_X))	
-#define _mm_shuf_xwww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_W, _MM_X))	
-#define _mm_shuf_yxxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_X, _MM_Y))	
-#define _mm_shuf_yxxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_X, _MM_Y))	
-#define _mm_shuf_yxxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_X, _MM_Y))	
-#define _mm_shuf_yxxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_X, _MM_Y))	
-#define _mm_shuf_yxyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_X, _MM_Y))	
-#define _mm_shuf_yxyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_X, _MM_Y))	
-#define _mm_shuf_yxyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_X, _MM_Y))	
-#define _mm_shuf_yxyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_X, _MM_Y))	
-#define _mm_shuf_yxzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_X, _MM_Y))	
-#define _mm_shuf_yxzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_X, _MM_Y))	
-#define _mm_shuf_yxzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_X, _MM_Y))	
-#define _mm_shuf_yxzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_X, _MM_Y))	
-#define _mm_shuf_yxwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_X, _MM_Y))	
-#define _mm_shuf_yxwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_X, _MM_Y))	
-#define _mm_shuf_yxwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_X, _MM_Y))	
-#define _mm_shuf_yxww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_X, _MM_Y))	
-#define _mm_shuf_yyxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_Y, _MM_Y))	
-#define _mm_shuf_yywx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_Y, _MM_Y))	
-#define _mm_shuf_yywy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_Y, _MM_Y))	
-#define _mm_shuf_yywz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_Y, _MM_Y))	
-#define _mm_shuf_yyww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_Y, _MM_Y))	
-#define _mm_shuf_yzxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_Z, _MM_Y))	
-#define _mm_shuf_yzww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_Z, _MM_Y))	
-#define _mm_shuf_ywxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_W, _MM_Y))	
-#define _mm_shuf_ywxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_W, _MM_Y))	
-#define _mm_shuf_ywxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_W, _MM_Y))	
-#define _mm_shuf_ywxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_W, _MM_Y))	
-#define _mm_shuf_ywyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_W, _MM_Y))	
-#define _mm_shuf_ywyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_W, _MM_Y))	
-#define _mm_shuf_ywyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_W, _MM_Y))	
-#define _mm_shuf_ywyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_W, _MM_Y))	
-#define _mm_shuf_ywzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_W, _MM_Y))	
-#define _mm_shuf_ywzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_W, _MM_Y))	
-#define _mm_shuf_ywzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_W, _MM_Y))	
-#define _mm_shuf_ywzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_W, _MM_Y))	
-#define _mm_shuf_ywwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_W, _MM_Y))	
-#define _mm_shuf_ywwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_W, _MM_Y))	
-#define _mm_shuf_ywwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_W, _MM_Y))	
-#define _mm_shuf_ywww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_W, _MM_Y))	
-#define _mm_shuf_zxxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_X, _MM_Z))	
-#define _mm_shuf_zxxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_X, _MM_Z))	
-#define _mm_shuf_zxxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_X, _MM_Z))	
-#define _mm_shuf_zxxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_X, _MM_Z))	
-#define _mm_shuf_zxyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_X, _MM_Z))	
-#define _mm_shuf_zxyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_X, _MM_Z))	
-#define _mm_shuf_zxyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_X, _MM_Z))	
-#define _mm_shuf_zxyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_X, _MM_Z))	
-#define _mm_shuf_zxzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_X, _MM_Z))	
-#define _mm_shuf_zxzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_X, _MM_Z))	
-#define _mm_shuf_zxzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_X, _MM_Z))	
-#define _mm_shuf_zxzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_X, _MM_Z))	
-#define _mm_shuf_zxwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_X, _MM_Z))	
-#define _mm_shuf_zxwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_X, _MM_Z))	
-#define _mm_shuf_zxwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_X, _MM_Z))	
-#define _mm_shuf_zxww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_X, _MM_Z))	
-#define _mm_shuf_zyxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_Y, _MM_Z))	
-#define _mm_shuf_zywx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_Y, _MM_Z))	
-#define _mm_shuf_zywy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_Y, _MM_Z))	
-#define _mm_shuf_zywz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_Y, _MM_Z))	
-#define _mm_shuf_zyww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_Y, _MM_Z))	
-#define _mm_shuf_zzxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_Z, _MM_Z))	
-#define _mm_shuf_zzww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_Z, _MM_Z))	
-#define _mm_shuf_zwxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_W, _MM_Z))	
-#define _mm_shuf_zwxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_W, _MM_Z))	
-#define _mm_shuf_zwxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_W, _MM_Z))	
-#define _mm_shuf_zwxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_W, _MM_Z))	
-#define _mm_shuf_zwyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_W, _MM_Z))	
-#define _mm_shuf_zwyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_W, _MM_Z))	
-#define _mm_shuf_zwyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_W, _MM_Z))	
-#define _mm_shuf_zwyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_W, _MM_Z))	
-#define _mm_shuf_zwzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_W, _MM_Z))	
-#define _mm_shuf_zwzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_W, _MM_Z))	
-#define _mm_shuf_zwzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_W, _MM_Z))	
-#define _mm_shuf_zwzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_W, _MM_Z))	
-#define _mm_shuf_zwwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_W, _MM_Z))	
-#define _mm_shuf_zwwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_W, _MM_Z))	
-#define _mm_shuf_zwwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_W, _MM_Z))	
-#define _mm_shuf_zwww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_W, _MM_Z))	
-#define _mm_shuf_wxxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_X, _MM_W))	
-#define _mm_shuf_wxxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_X, _MM_W))	
-#define _mm_shuf_wxxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_X, _MM_W))	
-#define _mm_shuf_wxxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_X, _MM_W))	
-#define _mm_shuf_wxyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_X, _MM_W))	
-#define _mm_shuf_wxyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_X, _MM_W))	
-#define _mm_shuf_wxyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_X, _MM_W))	
-#define _mm_shuf_wxyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_X, _MM_W))	
-#define _mm_shuf_wxzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_X, _MM_W))	
-#define _mm_shuf_wxzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_X, _MM_W))	
-#define _mm_shuf_wxzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_X, _MM_W))	
-#define _mm_shuf_wxzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_X, _MM_W))	
-#define _mm_shuf_wxwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_X, _MM_W))	
-#define _mm_shuf_wxwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_X, _MM_W))	
-#define _mm_shuf_wxwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_X, _MM_W))	
-#define _mm_shuf_wxww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_X, _MM_W))	
-#define _mm_shuf_wyxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_Y, _MM_W))	
-#define _mm_shuf_wyxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_Y, _MM_W))	
-#define _mm_shuf_wyxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_Y, _MM_W))	
-#define _mm_shuf_wyxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_Y, _MM_W))	
-#define _mm_shuf_wyyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_Y, _MM_W))	
-#define _mm_shuf_wyyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_Y, _MM_W))	
-#define _mm_shuf_wyyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_Y, _MM_W))	
-#define _mm_shuf_wyyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_Y, _MM_W))	
-#define _mm_shuf_wyzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_Y, _MM_W))	
-#define _mm_shuf_wyzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_Y, _MM_W))	
-#define _mm_shuf_wyzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_Y, _MM_W))	
-#define _mm_shuf_wyzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_Y, _MM_W))	
-#define _mm_shuf_wywx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_Y, _MM_W))	
-#define _mm_shuf_wywy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_Y, _MM_W))	
-#define _mm_shuf_wywz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_Y, _MM_W))	
-#define _mm_shuf_wyww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_Y, _MM_W))	
-#define _mm_shuf_wzxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_Z, _MM_W))	
-#define _mm_shuf_wzxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_Z, _MM_W))	
-#define _mm_shuf_wzxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_Z, _MM_W))	
-#define _mm_shuf_wzxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_Z, _MM_W))	
-#define _mm_shuf_wzyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_Z, _MM_W))	
-#define _mm_shuf_wzyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_Z, _MM_W))	
-#define _mm_shuf_wzyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_Z, _MM_W))	
-#define _mm_shuf_wzyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_Z, _MM_W))	
-#define _mm_shuf_wzzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_Z, _MM_W))	
-#define _mm_shuf_wzzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_Z, _MM_W))	
-#define _mm_shuf_wzzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_Z, _MM_W))	
-#define _mm_shuf_wzzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_Z, _MM_W))	
-#define _mm_shuf_wzwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_Z, _MM_W))	
-#define _mm_shuf_wzwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_Z, _MM_W))	
-#define _mm_shuf_wzwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_Z, _MM_W))	
-#define _mm_shuf_wzww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_Z, _MM_W))	
-#define _mm_shuf_wwxx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_X, _MM_W, _MM_W))	
-#define _mm_shuf_wwxy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_X, _MM_W, _MM_W))	
-#define _mm_shuf_wwxz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_X, _MM_W, _MM_W))	
-#define _mm_shuf_wwxw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_X, _MM_W, _MM_W))	
-#define _mm_shuf_wwyx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Y, _MM_W, _MM_W))	
-#define _mm_shuf_wwyy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Y, _MM_W, _MM_W))	
-#define _mm_shuf_wwyz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Y, _MM_W, _MM_W))	
-#define _mm_shuf_wwyw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Y, _MM_W, _MM_W))	
-#define _mm_shuf_wwzx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_Z, _MM_W, _MM_W))	
-#define _mm_shuf_wwzy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_Z, _MM_W, _MM_W))	
-#define _mm_shuf_wwzz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_Z, _MM_W, _MM_W))	
-#define _mm_shuf_wwzw_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_Z, _MM_W, _MM_W))	
-#define _mm_shuf_wwwx_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_X, _MM_W, _MM_W, _MM_W))	
-#define _mm_shuf_wwwy_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Y, _MM_W, _MM_W, _MM_W))	
-#define _mm_shuf_wwwz_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_Z, _MM_W, _MM_W, _MM_W))	
-#define _mm_shuf_wwww_ps(val1, val2)				_mm_shuffle_ps((val1), (val2), _MM_SHUFFLE(_MM_W, _MM_W, _MM_W, _MM_W))
+#define _hlslpp_shuf_xxxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_X, _MM_X)	
+#define _hlslpp_shuf_xxxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_xxxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_xxxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_X, _MM_W)	
+#define _hlslpp_shuf_xxyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_xxyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_xxyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_xxyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_xxzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_xxzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_xxzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_xxzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_xxwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_W, _MM_X)	
+#define _hlslpp_shuf_xxwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_xxwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_xxww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_X, _MM_W, _MM_W)	
+#define _hlslpp_shuf_xyxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_X, _MM_X)	
+#define _hlslpp_shuf_xyxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_xyxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_xyxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_X, _MM_W)	
+#define _hlslpp_shuf_xyyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_xyyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_xyyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_xyyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_xyzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_xyzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_xyzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_xyzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_xywx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_W, _MM_X)	
+#define _hlslpp_shuf_xywy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_xywz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_xyww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Y, _MM_W, _MM_W)	
+#define _hlslpp_shuf_xzxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_X, _MM_X)	
+#define _hlslpp_shuf_xzxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_xzxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_xzxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_X, _MM_W)	
+#define _hlslpp_shuf_xzyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_xzyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_xzyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_xzyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_xzzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_xzzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_xzzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_xzzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_xzwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_W, _MM_X)	
+#define _hlslpp_shuf_xzwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_xzwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_xzww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_Z, _MM_W, _MM_W)	
+#define _hlslpp_shuf_xwxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_X, _MM_X)	
+#define _hlslpp_shuf_xwxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_xwxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_xwxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_X, _MM_W)	
+#define _hlslpp_shuf_xwyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_xwyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_xwyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_xwyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_xwzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_xwzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_xwzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_xwzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_xwwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_W, _MM_X)	
+#define _hlslpp_shuf_xwwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_xwwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_xwww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_X, _MM_W, _MM_W, _MM_W)	
+#define _hlslpp_shuf_yxxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_X, _MM_X)	
+#define _hlslpp_shuf_yxxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_yxxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_yxxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_X, _MM_W)	
+#define _hlslpp_shuf_yxyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_yxyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_yxyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_yxyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_yxzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_yxzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_yxzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_yxzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_yxwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_W, _MM_X)	
+#define _hlslpp_shuf_yxwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_yxwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_yxww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_X, _MM_W, _MM_W)	
+#define _hlslpp_shuf_yyxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_X, _MM_X)	
+#define _hlslpp_shuf_yyxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_yyxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_yyxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_X, _MM_W)	
+#define _hlslpp_shuf_yyyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_yyyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_yyyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_yyyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_yyzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_yyzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_yyzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_yyzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_yywx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_W, _MM_X)	
+#define _hlslpp_shuf_yywy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_yywz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_yyww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Y, _MM_W, _MM_W)	
+#define _hlslpp_shuf_yzxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_X, _MM_X)	
+#define _hlslpp_shuf_yzxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_yzxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_yzxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_X, _MM_W)	
+#define _hlslpp_shuf_yzyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_yzyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_yzyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_yzyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_yzzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_yzzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_yzzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_yzzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_yzwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_W, _MM_X)	
+#define _hlslpp_shuf_yzwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_yzwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_yzww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_Z, _MM_W, _MM_W)	
+#define _hlslpp_shuf_ywxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_X, _MM_X)	
+#define _hlslpp_shuf_ywxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_ywxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_ywxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_X, _MM_W)	
+#define _hlslpp_shuf_ywyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_ywyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_ywyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_ywyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_ywzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_ywzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_ywzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_ywzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_ywwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_W, _MM_X)	
+#define _hlslpp_shuf_ywwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_ywwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_ywww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Y, _MM_W, _MM_W, _MM_W)	
+#define _hlslpp_shuf_zxxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_X, _MM_X)	
+#define _hlslpp_shuf_zxxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_zxxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_zxxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_X, _MM_W)	
+#define _hlslpp_shuf_zxyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_zxyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_zxyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_zxyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_zxzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_zxzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_zxzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_zxzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_zxwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_W, _MM_X)	
+#define _hlslpp_shuf_zxwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_zxwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_zxww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_X, _MM_W, _MM_W)	
+#define _hlslpp_shuf_zyxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_X, _MM_X)	
+#define _hlslpp_shuf_zyxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_zyxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_zyxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_X, _MM_W)	
+#define _hlslpp_shuf_zyyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_zyyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_zyyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_zyyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_zyzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_zyzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_zyzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_zyzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_zywx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_W, _MM_X)	
+#define _hlslpp_shuf_zywy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_zywz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_zyww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Y, _MM_W, _MM_W)	
+#define _hlslpp_shuf_zzxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_X, _MM_X)	
+#define _hlslpp_shuf_zzxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_zzxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_zzxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_X, _MM_W)	
+#define _hlslpp_shuf_zzyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_zzyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_zzyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_zzyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_zzzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_zzzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_zzzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_zzzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_zzwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_W, _MM_X)	
+#define _hlslpp_shuf_zzwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_zzwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_zzww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_Z, _MM_W, _MM_W)	
+#define _hlslpp_shuf_zwxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_X, _MM_X)	
+#define _hlslpp_shuf_zwxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_zwxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_zwxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_X, _MM_W)	
+#define _hlslpp_shuf_zwyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_zwyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_zwyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_zwyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_zwzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_zwzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_zwzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_zwzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_zwwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_W, _MM_X)	
+#define _hlslpp_shuf_zwwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_zwwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_zwww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_Z, _MM_W, _MM_W, _MM_W)	
+#define _hlslpp_shuf_wxxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_X, _MM_X)	
+#define _hlslpp_shuf_wxxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_wxxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_wxxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_X, _MM_W)	
+#define _hlslpp_shuf_wxyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_wxyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_wxyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_wxyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_wxzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_wxzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_wxzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_wxzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_wxwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_W, _MM_X)	
+#define _hlslpp_shuf_wxwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_wxwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_wxww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_X, _MM_W, _MM_W)	
+#define _hlslpp_shuf_wyxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_X, _MM_X)	
+#define _hlslpp_shuf_wyxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_wyxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_wyxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_X, _MM_W)	
+#define _hlslpp_shuf_wyyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_wyyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_wyyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_wyyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_wyzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_wyzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_wyzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_wyzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_wywx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_W, _MM_X)	
+#define _hlslpp_shuf_wywy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_wywz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_wyww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Y, _MM_W, _MM_W)	
+#define _hlslpp_shuf_wzxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_X, _MM_X)	
+#define _hlslpp_shuf_wzxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_wzxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_wzxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_X, _MM_W)	
+#define _hlslpp_shuf_wzyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_wzyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_wzyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_wzyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_wzzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_wzzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_wzzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_wzzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_wzwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_W, _MM_X)	
+#define _hlslpp_shuf_wzwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_wzwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_wzww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_Z, _MM_W, _MM_W)	
+#define _hlslpp_shuf_wwxx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_X, _MM_X)	
+#define _hlslpp_shuf_wwxy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_X, _MM_Y)	
+#define _hlslpp_shuf_wwxz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_X, _MM_Z)	
+#define _hlslpp_shuf_wwxw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_X, _MM_W)	
+#define _hlslpp_shuf_wwyx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_Y, _MM_X)	
+#define _hlslpp_shuf_wwyy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_Y, _MM_Y)	
+#define _hlslpp_shuf_wwyz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_Y, _MM_Z)	
+#define _hlslpp_shuf_wwyw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_Y, _MM_W)	
+#define _hlslpp_shuf_wwzx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_Z, _MM_X)	
+#define _hlslpp_shuf_wwzy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_Z, _MM_Y)	
+#define _hlslpp_shuf_wwzz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_Z, _MM_Z)	
+#define _hlslpp_shuf_wwzw_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_Z, _MM_W)	
+#define _hlslpp_shuf_wwwx_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_W, _MM_X)	
+#define _hlslpp_shuf_wwwy_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_W, _MM_Y)	
+#define _hlslpp_shuf_wwwz_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_W, _MM_Z)	
+#define _hlslpp_shuf_wwww_ps(x, y)				_hlslpp_shuffle_ps((x), (y), _MM_W, _MM_W, _MM_W, _MM_W)
 
 // See http://http.developer.nvidia.com/Cg/fmod.html for reference
 // This implementation does not follow the reference
@@ -878,7 +647,7 @@ inline n128 _hlslpp_log2_ps(n128 x)
 
 	n128i i = _hlslpp_castps_si128(x);
 
-	n128 e = _hlslpp_cvtepi32_ps(_hlslpp_sub_epi32(_mm_srli_epi32(_hlslpp_and_si128(i, exp), 23), _hlslpp_set1_epi32(127)));
+	n128 e = _hlslpp_cvtepi32_ps(_hlslpp_sub_epi32(_hlslpp_srli_epi32(_hlslpp_and_si128(i, exp), 23), _hlslpp_set1_epi32(127)));
 
 	n128 m = _hlslpp_or_ps(_hlslpp_castsi128_ps(_hlslpp_and_si128(i, mant)), f4_1);
 
@@ -951,7 +720,7 @@ inline n128 _hlslpp_exp2_ps(n128 x)
 	fpart = _hlslpp_sub_ps(x, _hlslpp_cvtepi32_ps(ipart));
 
 	// expipart = (float) (1 << ipart)
-	expipart = _hlslpp_castsi128_ps(_mm_slli_epi32(_hlslpp_add_epi32(ipart, exp2_127), 23));
+	expipart = _hlslpp_castsi128_ps(_hlslpp_slli_epi32(_hlslpp_add_epi32(ipart, exp2_127), 23));
 
 	// Minimax polynomial fit of 2^x, in range [-0.5, 0.5[
 	expfpart = _hlslpp_madd_ps(fpart, exp2_c5, exp2_c4);
@@ -1082,7 +851,7 @@ static const n128 asinacos_c4 = _hlslpp_set1_ps( 1.946746668e-2f);
 static const n128 asinacos_c5 = _hlslpp_set1_ps(-4.360132611e-3f);
 
 // Max error vs. std::acos = 1.54972076e-6
-inline n128 _mm_acos_ps(n128 x)
+inline n128 _hlslpp_acos_ps(n128 x)
 {
 	// We use the trigonometric identity acos(x) = pi - acos(-x) to mirror [0, 1]
 	// into the [-1, 0] range
@@ -1108,7 +877,7 @@ inline n128 _mm_acos_ps(n128 x)
 }
 
 // Max error vs. std::asin = 1.5348196e-6
-inline n128 _mm_asin_ps(n128 x)
+inline n128 _hlslpp_asin_ps(n128 x)
 {
 	// We use the trigonometric identity asin(x) = -asin(-x) to mirror [0, 1] into the [-1, 0] range
 	n128 ltZero = _hlslpp_cmplt_ps(x, f4_0);
@@ -1140,7 +909,7 @@ static const n128 atan_c9  = _hlslpp_set1_ps( 5.506335136e-2f);
 static const n128 atan_c11 = _hlslpp_set1_ps(-1.249072006e-2f);
 
 // Max error vs. std::atan = 2.74181366e-6
-inline n128 _mm_atan_ps(n128 x)
+inline n128 _hlslpp_atan_ps(n128 x)
 {
 	n128 ltgtOne	= _hlslpp_cmpgt_ps(_hlslpp_abs_ps(x), f4_1); // Check if outside the [-1, 1] range
 	n128 gtOne		= _hlslpp_cmpgt_ps(x, f4_1);				 // Check if input > 1 (as we need to select the constant later)
@@ -1271,25 +1040,25 @@ inline n128 _hlslpp_transpose_2x2_ps(n128 m)
 
 inline void _hlslpp_transpose_3x3_ps(const n128& vec0, const n128& vec1, const n128& vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
 {
-	n128 shuf_tmp_0 = _mm_shuf_xyxy_ps(vec0, vec1);
-	n128 shuf_tmp_1 = _mm_shuf_yzyz_ps(vec0, vec1);
+	n128 shuf_tmp_0 = _hlslpp_shuf_xyxy_ps(vec0, vec1);
+	n128 shuf_tmp_1 = _hlslpp_shuf_yzyz_ps(vec0, vec1);
 
-	o_vec0 = _mm_shuf_xzxw_ps(shuf_tmp_0, vec2);
-	o_vec1 = _mm_shuf_ywyw_ps(shuf_tmp_0, vec2);
-	o_vec2 = _mm_shuf_ywzw_ps(shuf_tmp_1, vec2);
+	o_vec0 = _hlslpp_shuf_xzxw_ps(shuf_tmp_0, vec2);
+	o_vec1 = _hlslpp_shuf_ywyw_ps(shuf_tmp_0, vec2);
+	o_vec2 = _hlslpp_shuf_ywzw_ps(shuf_tmp_1, vec2);
 }
 
 inline void _hlslpp_transpose_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
 {
-	n128 shuf_tmp_0 = _mm_shuf_xyxy_ps(vec0, vec1);
-	n128 shuf_tmp_1 = _mm_shuf_zwzw_ps(vec0, vec1);
-	n128 shuf_tmp_2 = _mm_shuf_xyxy_ps(vec2, vec3);
-	n128 shuf_tmp_3 = _mm_shuf_zwzw_ps(vec2, vec3);
+	n128 shuf_tmp_0 = _hlslpp_shuf_xyxy_ps(vec0, vec1);
+	n128 shuf_tmp_1 = _hlslpp_shuf_zwzw_ps(vec0, vec1);
+	n128 shuf_tmp_2 = _hlslpp_shuf_xyxy_ps(vec2, vec3);
+	n128 shuf_tmp_3 = _hlslpp_shuf_zwzw_ps(vec2, vec3);
 
-	o_vec0 = _mm_shuf_xzxz_ps(shuf_tmp_0, shuf_tmp_2);
-	o_vec1 = _mm_shuf_ywyw_ps(shuf_tmp_0, shuf_tmp_2);
-	o_vec2 = _mm_shuf_xzxz_ps(shuf_tmp_1, shuf_tmp_3);
-	o_vec3 = _mm_shuf_ywyw_ps(shuf_tmp_1, shuf_tmp_3);
+	o_vec0 = _hlslpp_shuf_xzxz_ps(shuf_tmp_0, shuf_tmp_2);
+	o_vec1 = _hlslpp_shuf_ywyw_ps(shuf_tmp_0, shuf_tmp_2);
+	o_vec2 = _hlslpp_shuf_xzxz_ps(shuf_tmp_1, shuf_tmp_3);
+	o_vec3 = _hlslpp_shuf_ywyw_ps(shuf_tmp_1, shuf_tmp_3);
 }
 
 inline n128 _hlslpp_det_2x2_ps(n128 m)
@@ -1334,17 +1103,17 @@ inline n128 _hlslpp_det_4x4_ps(const n128& vec0, const n128& vec1, const n128& v
 
 	n128 tmp_4_terms = _hlslpp_mul_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(tmp_shuf_0, tmp_shuf_1), _hlslpp_mul_ps(tmp_shuf_2, tmp_shuf_3)), _hlslpp_sub_ps(_hlslpp_mul_ps(tmp_shuf_4, tmp_shuf_5), _hlslpp_mul_ps(tmp_shuf_6, tmp_shuf_7)));
 
-	n128 tmp_shuf_8 = _mm_shuf_wzxx_ps(vec0, vec2);
-	n128 tmp_shuf_9 = _mm_shuf_ywzy_ps(vec1, vec3);
-	n128 tmp_shuf_10 = _mm_shuf_ywzy_ps(vec0, vec2);
-	n128 tmp_shuf_11 = _mm_shuf_wzxx_ps(vec1, vec3);
+	n128 tmp_shuf_8 = _hlslpp_shuf_wzxx_ps(vec0, vec2);
+	n128 tmp_shuf_9 = _hlslpp_shuf_ywzy_ps(vec1, vec3);
+	n128 tmp_shuf_10 = _hlslpp_shuf_ywzy_ps(vec0, vec2);
+	n128 tmp_shuf_11 = _hlslpp_shuf_wzxx_ps(vec1, vec3);
 
 	n128 tmp_mul_0 = _hlslpp_sub_ps(_hlslpp_mul_ps(tmp_shuf_8, tmp_shuf_9), _hlslpp_mul_ps(tmp_shuf_10, tmp_shuf_11));
 
 	n128 tmp_2_terms = _hlslpp_mul_ps(_hlslpp_perm_xyxy_ps(tmp_mul_0), _hlslpp_perm_zwzw_ps(tmp_mul_0));
 
 	// Add all the results now (terms that subtract have already been inverted)
-	n128 tmp_add_0 = _hlslpp_add_ps(_mm_shuf_xzxx_ps(tmp_4_terms, tmp_2_terms), _mm_shuf_ywyy_ps(tmp_4_terms, tmp_2_terms));
+	n128 tmp_add_0 = _hlslpp_add_ps(_hlslpp_shuf_xzxx_ps(tmp_4_terms, tmp_2_terms), _hlslpp_shuf_ywyy_ps(tmp_4_terms, tmp_2_terms));
 	n128 tmp_add_1 = _hlslpp_add_ps(_hlslpp_perm_xxxx_ps(tmp_add_0), _hlslpp_perm_yyyy_ps(tmp_add_0));
 	n128 tmp_add_2 = _hlslpp_add_ps(_hlslpp_perm_xxxx_ps(tmp_add_1), _hlslpp_perm_zzzz_ps(tmp_add_0));
 
@@ -1423,10 +1192,10 @@ inline void _hlslpp_inv_4x4_ps(const n128& vec0, const n128& vec1, const n128& v
 	n128 c33 = _hlslpp_dot3_asa_ps(tmp_mms_s3_s1_s0, vec2);
 
 	// Combine the results
-	n128 tmp_row0 = _mm_blend_ps(_mm_shuf_xxxx_ps(c00, c02), _mm_shuf_xxxx_ps(c01, c03), 0xA); // 1010
-	n128 tmp_row1 = _mm_blend_ps(_mm_shuf_xxxx_ps(c10, c12), _mm_shuf_xxxx_ps(c11, c13), 0xA);
-	n128 tmp_row2 = _mm_blend_ps(_mm_shuf_xxxx_ps(c20, c22), _mm_shuf_xxxx_ps(c21, c23), 0xA);
-	n128 tmp_row3 = _mm_blend_ps(_mm_shuf_xxxx_ps(c30, c32), _mm_shuf_xxxx_ps(c31, c33), 0xA);
+	n128 tmp_row0 = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(c00, c02), _hlslpp_shuf_xxxx_ps(c01, c03), 0xA); // 1010
+	n128 tmp_row1 = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(c10, c12), _hlslpp_shuf_xxxx_ps(c11, c13), 0xA);
+	n128 tmp_row2 = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(c20, c22), _hlslpp_shuf_xxxx_ps(c21, c23), 0xA);
+	n128 tmp_row3 = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(c30, c32), _hlslpp_shuf_xxxx_ps(c31, c33), 0xA);
 
 	// Compute the determinant and divide all results by it
 	n128 det = _hlslpp_perm_xxxx_ps(_hlslpp_det_4x4_ps(vec0, vec1, vec2, vec3));
@@ -2139,7 +1908,7 @@ template<int A>
 template<int E>
 inline component1<A>& component1<A>::operator = (const component1<E>& p)
 {
-	__m128 s = _mm_shuffle_ps(p._vec, p._vec, _MM_SHUFFLE(E, E, E, E));
+	n128 s = _hlslpp_shuffle_ps(p._vec, p._vec, E, E, E, E);
 	_vec = _mm_blend_ps(_vec, s, (1 << A));
 	return *this;
 }
@@ -2147,7 +1916,7 @@ inline component1<A>& component1<A>::operator = (const component1<E>& p)
 template<int A>
 inline component1<A>& component1<A>::operator = (float f)
 {
-	const __m128 s = _mm_set1_ps(f);
+	const __m128 s = _hlslpp_set1_ps(f);
 	_vec = _mm_blend_ps(_vec, s, (1 << A));
 	return *this;
 }
@@ -2245,7 +2014,7 @@ template<int A, int B, int C, int D>
 inline component4<A, B, C, D>& component4<A, B, C, D>::operator = (const float4& v)
 {
 	staticAsserts();
-	_vec = _mm_shuffle_ps(v._vec, v._vec, _MM_SHUFFLE(D, C, B, A));
+	_vec = _hlslpp_shuffle_ps(v._vec, v._vec, A, B, C, D);
 	return *this;
 }
 
@@ -2264,7 +2033,7 @@ inline component4<0, 1, 2, 3>& component4<0, 1, 2, 3>::operator = (const float4&
 template<int A>
 inline float1::floatN(const component1<A>& c)
 {
-	_vec = _mm_shuffle_ps(c._vec, c._vec, _MM_SHUFFLE(A, A, A, A));
+	_vec = _hlslpp_shuffle_ps(c._vec, c._vec, A, A, A, A);
 }
 
 inline float1::floatN(const float1x1& v)
@@ -2280,14 +2049,14 @@ inline float1& float1::operator = (const float1& v)
 
 inline float1& float1::operator = (float f)
 {
-	_vec = _mm_set_ps(0.0f, 0.0f, 0.0f, f);
+	_vec = _hlslpp_set_ps(f, 0.0f, 0.0f, 0.0f);
 	return *this;
 }
 
 template<int A>
 inline float1& float1::operator = (const component1<A>& c)
 {
-	_vec = _mm_shuffle_ps(c._vec, c._vec, _MM_SHUFFLE(A, A, A, A));
+	_vec = _hlslpp_shuffle_ps(c._vec, c._vec, A, A, A, A);
 	return *this;
 }
 
@@ -2339,12 +2108,12 @@ inline float3::floatN(const component3<A, B, C>& c)
 
 inline float3::floatN(const floatN<1>& v1, const floatN<1>& v2, const floatN<1>& v3)
 {
-	_vec = _mm_blend_ps(_mm_shuf_xxxx_ps(v1._vec, v3._vec), _hlslpp_perm_xxxx_ps(v2._vec), 0x2); // 0010
+	_vec = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(v1._vec, v3._vec), _hlslpp_perm_xxxx_ps(v2._vec), 0x2); // 0010
 }
 
 inline float3::floatN(const floatN<2>& v1, const floatN<1>& v2)
 {
-	_vec = _mm_shuf_xyxx_ps(v1._vec, v2._vec);
+	_vec = _hlslpp_shuf_xyxx_ps(v1._vec, v2._vec);
 }
 
 inline float3::floatN(const floatN<1>& v1, const floatN<2>& v2)
@@ -2377,7 +2146,7 @@ inline float3& float3::operator = (const component3<A, B, C>& c)
 
 inline float4::floatN(const floatN<1>& v1, const floatN<1>& v2, const floatN<1>& v3, const floatN<1>& v4)
 {
-	_vec = _mm_blend_ps(_mm_shuf_xxxx_ps(v1._vec, v3._vec), _mm_shuf_xxxx_ps(v2._vec, v4._vec), 0xA); // 1010
+	_vec = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(v1._vec, v3._vec), _hlslpp_shuf_xxxx_ps(v2._vec, v4._vec), 0xA); // 1010
 }
 
 inline float4::floatN(const floatN<1>& v1, const floatN<3>& v2)
@@ -2392,22 +2161,22 @@ inline float4::floatN(const floatN<3>& v1, const floatN<1>& v2)
 
 inline float4::floatN(const floatN<2>& v1, const floatN<2>& v2)
 {
-	_vec = _mm_shuf_xyxy_ps(v1._vec, v2._vec);
+	_vec = _hlslpp_shuf_xyxy_ps(v1._vec, v2._vec);
 }
 
 inline float4::floatN(const floatN<2>& v1, const floatN<1>& v2, const floatN<1>& v3)
 {
-	_vec = _mm_blend_ps(_mm_shuf_xyxx_ps(v1._vec, v2._vec), _hlslpp_perm_xxxx_ps(v3._vec), 0x8); // 1000
+	_vec = _mm_blend_ps(_hlslpp_shuf_xyxx_ps(v1._vec, v2._vec), _hlslpp_perm_xxxx_ps(v3._vec), 0x8); // 1000
 }
 
 inline float4::floatN(const floatN<1>& v1, const floatN<2>& v2, const floatN<1>& v3)
 {
-	_vec = _mm_blend_ps(_mm_shuf_xxxx_ps(v1._vec, v3._vec), _hlslpp_perm_xxyx_ps(v2._vec), 0x6); // 0110
+	_vec = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(v1._vec, v3._vec), _hlslpp_perm_xxyx_ps(v2._vec), 0x6); // 0110
 }
 
 inline float4::floatN(const floatN<1>& v1, const floatN<1>& v2, const floatN<2>& v3)
 {
-	_vec = _mm_blend_ps(_mm_shuf_xxxy_ps(v1._vec, v3._vec), _hlslpp_perm_xxxx_ps(v2._vec), 0x2); // 0010
+	_vec = _mm_blend_ps(_hlslpp_shuf_xxxy_ps(v1._vec, v3._vec), _hlslpp_perm_xxxx_ps(v2._vec), 0x2); // 0010
 }
 
 template<int A, int B, int C, int D>
@@ -2442,7 +2211,7 @@ inline float4& float4::operator = (const float4& v)
 template<int A, int B, int C, int D>
 inline float4& float4::operator = (const component4<A, B, C, D>& c)
 {
-	_vec = _mm_shuffle_ps(c._vec, c._vec, _MM_SHUFFLE(D, C, B, A));
+	_vec = _hlslpp_shuffle_ps(c._vec, c._vec, A, B, C, D);
 	return *this;
 }
 
@@ -2736,7 +2505,7 @@ template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> abs(const components<Dim...>& v) { return abs(floatN<sizeof...(Dim)>(v)); }
 
 template<int N>
-inline floatN<N> acos(const floatN<N>& v) { return floatN<N>(_mm_acos_ps(v._vec)); }
+inline floatN<N> acos(const floatN<N>& v) { return floatN<N>(_hlslpp_acos_ps(v._vec)); }
 
 template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> acos(const components<Dim...>& v) { return acos(floatN<sizeof...(Dim)>(v)); }
@@ -2754,13 +2523,13 @@ template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> any(const components<Dim...>& v) { return any(floatN<sizeof...(Dim)>(v)); }
 
 template<int N>
-inline floatN<N> asin(const floatN<N>& v) { return floatN<N>(_mm_asin_ps(v._vec)); }
+inline floatN<N> asin(const floatN<N>& v) { return floatN<N>(_hlslpp_asin_ps(v._vec)); }
 
 template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> asin(const components<Dim...>& v) { return asin(floatN<sizeof...(Dim)>(v)); }
 
 template<int N>
-inline floatN<N> atan(const floatN<N>& v) { return floatN<N>(_mm_atan_ps(v._vec)); }
+inline floatN<N> atan(const floatN<N>& v) { return floatN<N>(_hlslpp_atan_ps(v._vec)); }
 
 template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> atan(const components<Dim...>& v) { return atan(floatN<sizeof...(Dim)>(v)); }
@@ -3192,7 +2961,7 @@ inline n128 _hlslpp_mul_1x4_4x3_ps(const n128& m1_vec, const n128& m2_vec0, cons
 	n128 dpx = _hlslpp_dot4_ps(m1_vec, m2_vec0);
 	n128 dpy = _hlslpp_dot4_ps(m1_vec, m2_vec1);
 	n128 dpz = _hlslpp_dot4_ps(m1_vec, m2_vec2);
-	n128 result = _mm_blend_ps(dpy, _mm_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
+	n128 result = _mm_blend_ps(dpy, _hlslpp_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
 	return result;
 }
 
@@ -3309,7 +3078,7 @@ inline n128 _hlslpp_mul_2x3_3x2_ps(const n128& m1_vec0, const n128& m1_vec1, con
 	n128 dpy = _hlslpp_dot3_ps(m1_vec0, m2_vec1);
 	n128 dpz = _hlslpp_dot3_ps(m1_vec1, m2_vec0);
 	n128 dpw = _hlslpp_dot3_ps(m1_vec1, m2_vec1);
-	n128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
+	n128 result = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(dpx, dpz), _hlslpp_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
 	return result;
 }
 
@@ -3338,7 +3107,7 @@ inline n128 _hlslpp_mul_2x4_4x2_ps(const n128& m1_vec0, const n128& m1_vec1, con
 	n128 dpy = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
 	n128 dpz = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
 	n128 dpw = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
-	n128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
+	n128 result = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(dpx, dpz), _hlslpp_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
 	return result;
 }
 
@@ -3347,12 +3116,12 @@ inline void _hlslpp_mul_2x4_4x3_ps(const n128& m1_vec0, const n128& m1_vec1, con
 	n128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
 	n128 dpy0 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
 	n128 dpz0 = _hlslpp_dot4_ps(m1_vec0, m2_vec2);
-	o_vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
+	o_vec0 = _mm_blend_ps(dpy0, _hlslpp_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
 
 	n128 dpx1 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
 	n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
 	n128 dpz1 = _hlslpp_dot4_ps(m1_vec1, m2_vec2);
-	o_vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
+	o_vec1 = _mm_blend_ps(dpy1, _hlslpp_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
 }
 
 inline void _hlslpp_mul_2x4_4x4_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, const n128& m2_vec3, n128& o_vec0, n128& o_vec1)
@@ -3375,7 +3144,7 @@ inline n128 _hlslpp_mul_3x3_3x1_ps(const n128& m1_vec0, const n128& m1_vec1, con
 	n128 dpx = _hlslpp_dot3_ps(m1_vec0, m2_vec);
 	n128 dpy = _hlslpp_dot3_ps(m1_vec1, m2_vec);
 	n128 dpz = _hlslpp_dot3_ps(m1_vec2, m2_vec);
-	n128 result = _mm_blend_ps(dpx, _mm_shuf_xxxx_ps(dpy, dpz), 0x6); // 0110b
+	n128 result = _mm_blend_ps(dpx, _hlslpp_shuf_xxxx_ps(dpy, dpz), 0x6); // 0110b
 	return result;
 }
 
@@ -3384,12 +3153,12 @@ inline void _hlslpp_mul_3x3_3x2_ps(const n128& m1_vec0, const n128& m1_vec1, con
 	n128 dpx0 = _hlslpp_dot3_ps(m1_vec0, m2_vec0);
 	n128 dpy0 = _hlslpp_dot3_ps(m1_vec1, m2_vec0);
 	n128 dpz0 = _hlslpp_dot3_ps(m1_vec2, m2_vec0);
-	o_vec0 = _mm_blend_ps(dpx0, _mm_shuf_xxxx_ps(dpy0, dpz0), 0x6); // 0110b
+	o_vec0 = _mm_blend_ps(dpx0, _hlslpp_shuf_xxxx_ps(dpy0, dpz0), 0x6); // 0110b
 
 	n128 dpx1 = _hlslpp_dot3_ps(m1_vec0, m2_vec1);
 	n128 dpy1 = _hlslpp_dot3_ps(m1_vec1, m2_vec1);
 	n128 dpz1 = _hlslpp_dot3_ps(m1_vec2, m2_vec1);
-	o_vec1 = _mm_blend_ps(dpx1, _mm_shuf_xxxx_ps(dpy1, dpz1), 0x6); // 0110b
+	o_vec1 = _mm_blend_ps(dpx1, _hlslpp_shuf_xxxx_ps(dpy1, dpz1), 0x6); // 0110b
 }
 
 inline void _hlslpp_mul_3x3_3x3_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
@@ -3433,7 +3202,7 @@ inline n128 _hlslpp_mul_3x4_4x1_ps(const n128& m1_vec0, const n128& m1_vec1, con
 	n128 dpx = _hlslpp_dot4_ps(m1_vec0, m2_vec);
 	n128 dpy = _hlslpp_dot4_ps(m1_vec1, m2_vec);
 	n128 dpz = _hlslpp_dot4_ps(m1_vec2, m2_vec);
-	n128 result = _mm_blend_ps(dpy, _mm_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
+	n128 result = _mm_blend_ps(dpy, _hlslpp_shuf_xxxx_ps(dpx, dpz), 0x5); // 0101b
 	return result;
 }
 
@@ -3442,12 +3211,12 @@ inline void _hlslpp_mul_3x4_4x2_ps(const n128& m1_vec0, const n128& m1_vec1, con
 	n128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
 	n128 dpy0 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
 	n128 dpz0 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
-	o_vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
+	o_vec0 = _mm_blend_ps(dpy0, _hlslpp_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
 
 	n128 dpx1 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
 	n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
 	n128 dpz1 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
-	o_vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
+	o_vec1 = _mm_blend_ps(dpy1, _hlslpp_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
 }
 
 inline void _hlslpp_mul_3x4_4x3_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
@@ -3455,17 +3224,17 @@ inline void _hlslpp_mul_3x4_4x3_ps(const n128& m1_vec0, const n128& m1_vec1, con
 	n128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
 	n128 dpy0 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
 	n128 dpz0 = _hlslpp_dot4_ps(m1_vec0, m2_vec2);
-	o_vec0 = _mm_blend_ps(dpy0, _mm_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
+	o_vec0 = _mm_blend_ps(dpy0, _hlslpp_shuf_xxxx_ps(dpx0, dpz0), 0x5); // 0101b
 
 	n128 dpx1 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
 	n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
 	n128 dpz1 = _hlslpp_dot4_ps(m1_vec1, m2_vec2);
-	o_vec1 = _mm_blend_ps(dpy1, _mm_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
+	o_vec1 = _mm_blend_ps(dpy1, _hlslpp_shuf_xxxx_ps(dpx1, dpz1), 0x5); // 0101b
 
 	n128 dpx2 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
 	n128 dpy2 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
 	n128 dpz2 = _hlslpp_dot4_ps(m1_vec2, m2_vec2);
-	o_vec2 = _mm_blend_ps(dpy2, _mm_shuf_xxxx_ps(dpx2, dpz2), 0x5); // 0101b
+	o_vec2 = _mm_blend_ps(dpy2, _hlslpp_shuf_xxxx_ps(dpx2, dpz2), 0x5); // 0101b
 }
 
 inline void _hlslpp_mul_3x4_4x4_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, const n128& m2_vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2)
@@ -3558,7 +3327,7 @@ inline n128 _hlslpp_mul_4x4_4x1_ps(const n128& m1_vec0, const n128& m1_vec1, con
 	n128 dpz = _hlslpp_dot4_ps(m1_vec2, m2_vec);
 	n128 dpw = _hlslpp_dot4_ps(m1_vec3, m2_vec);
 
-	n128 result = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx, dpz), _mm_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
+	n128 result = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(dpx, dpz), _hlslpp_shuf_xxxx_ps(dpy, dpw), 0xA); // 1010b
 	return result;
 }
 
@@ -3569,14 +3338,14 @@ inline void _hlslpp_mul_4x4_4x2_ps(const n128& m1_vec0, const n128& m1_vec1, con
 	n128 dpz0 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
 	n128 dpw0 = _hlslpp_dot4_ps(m1_vec3, m2_vec0);
 
-	o_vec0 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx0, dpz0), _mm_shuf_xxxx_ps(dpy0, dpw0), 0xA); // 1010b
+	o_vec0 = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(dpx0, dpz0), _hlslpp_shuf_xxxx_ps(dpy0, dpw0), 0xA); // 1010b
 
 	n128 dpx1 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
 	n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
 	n128 dpz1 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
 	n128 dpw1 = _hlslpp_dot4_ps(m1_vec3, m2_vec1);
 
-	o_vec1 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx1, dpz1), _mm_shuf_xxxx_ps(dpy1, dpw1), 0xA); // 1010b
+	o_vec1 = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(dpx1, dpz1), _hlslpp_shuf_xxxx_ps(dpy1, dpw1), 0xA); // 1010b
 }
 
 inline void _hlslpp_mul_4x4_4x3_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m1_vec3, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
@@ -3586,21 +3355,21 @@ inline void _hlslpp_mul_4x4_4x3_ps(const n128& m1_vec0, const n128& m1_vec1, con
 	n128 dpz0 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
 	n128 dpw0 = _hlslpp_dot4_ps(m1_vec3, m2_vec0);
 
-	o_vec0 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx0, dpz0), _mm_shuf_xxxx_ps(dpy0, dpw0), 0xA); // 1010b
+	o_vec0 = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(dpx0, dpz0), _hlslpp_shuf_xxxx_ps(dpy0, dpw0), 0xA); // 1010b
 
 	n128 dpx1 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
 	n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
 	n128 dpz1 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
 	n128 dpw1 = _hlslpp_dot4_ps(m1_vec3, m2_vec1);
 
-	o_vec1 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx1, dpz1), _mm_shuf_xxxx_ps(dpy1, dpw1), 0xA); // 1010b
+	o_vec1 = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(dpx1, dpz1), _hlslpp_shuf_xxxx_ps(dpy1, dpw1), 0xA); // 1010b
 
 	n128 dpx2 = _hlslpp_dot4_ps(m1_vec0, m2_vec2);
 	n128 dpy2 = _hlslpp_dot4_ps(m1_vec1, m2_vec2);
 	n128 dpz2 = _hlslpp_dot4_ps(m1_vec2, m2_vec2);
 	n128 dpw2 = _hlslpp_dot4_ps(m1_vec3, m2_vec2);
 
-	o_vec2 = _mm_blend_ps(_mm_shuf_xxxx_ps(dpx2, dpz2), _mm_shuf_xxxx_ps(dpy2, dpw2), 0xA); // 1010b
+	o_vec2 = _mm_blend_ps(_hlslpp_shuf_xxxx_ps(dpx2, dpz2), _hlslpp_shuf_xxxx_ps(dpy2, dpw2), 0xA); // 1010b
 }
 
 inline void _hlslpp_mul_4x4_4x4_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m1_vec3, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, const n128& m2_vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)

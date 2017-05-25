@@ -113,14 +113,14 @@ void RunUnitTests()
 	float4 vbar4 = vfoo4.bgra;												assert(vbar4.x == f9 && vbar4.y == f8 && vbar4.z == f7 && vbar4.w == f10);
 
 	vbar1 = f11;															assert(vbar1.x == f11);
-	vbar2 = float2(f12, f13);
-	vbar3 = float3(f14, f15, f16);
-	vbar4 = float4(f17, f18, f19, f20);
+	vbar2 = float2(f12, f13);												assert(vbar2.x == f12 && vbar2.y == f13);
+	vbar3 = float3(f14, f15, f16);											assert(vbar3.x == f14 && vbar3.y == f15 && vbar3.z == f16);
+	vbar4 = float4(f17, f18, f19, f20);										assert(vbar4.x == f17 && vbar4.y == f18 && vbar4.z == f19 && vbar4.w == f20);
 
-	float1 vbaz1 = float1(0.2f);
-	float2 vbaz2 = float2(0.3f, 0.7f);
-	float3 vbaz3 = float3(0.1f, 0.4f, 0.8f);
-	float4 vbaz4 = float4(0.0f, 0.2f, 0.6f, 1.0f);
+	float1 vbaz1 = float1(0.2f);											assert(vbaz1.x == 0.2f);
+	float2 vbaz2 = float2(0.3f, 0.7f);										assert(vbaz2.x == 0.3f && vbaz2.y == 0.7f);
+	float3 vbaz3 = float3(0.1f, 0.4f, 0.8f);								assert(vbaz3.x == 0.1f && vbaz3.y == 0.4f && vbaz3.z == 0.8f);
+	float4 vbaz4 = float4(0.0f, 0.2f, 0.6f, 1.0f);							assert(vbaz4.x == 0.0f && vbaz4.y == 0.2f && vbaz4.z == 0.6f && vbaz4.w == 1.0f);
 
 	float2 vfoo_mix_2 = float2(vfoo1, vbar1);								assert(((float)vfoo_mix_2.x == (float)vfoo1.x) && ((float)vfoo_mix_2.y == (float)vbar1.x));
 
@@ -236,10 +236,10 @@ void RunUnitTests()
 	float3 vneq3 = vfoo3 != vbar3;											assert(vneq3.x == (float)vfoo3.x != (float)vbar3.x && vneq3.y == (float)vfoo3.y != (float)vbar3.y && vneq3.z == (float)vfoo3.z != (float)vbar3.z);
 	float4 vneq4 = vfoo4 != vbar4;											assert(vneq4.x == (float)vfoo4.x != (float)vbar4.x && vneq4.y == (float)vfoo4.y != (float)vbar4.y && vneq4.z == (float)vfoo4.z != (float)vbar4.z && vneq4.w == (float)vfoo4.w != (float)vbar4.w);
 
-	vfoo1 = -vbar1.r;
-	vfoo2 = -vbar2.gr;
-	vfoo3 = -vbar3.bgg;
-	vfoo4 = -vbar4.rrrr;
+	vfoo1 = -vbar1.r;														//assert(vfoo1.x == -vbar1.x);
+	vfoo2 = -vbar2.gr;														//assert(vfoo2.x == (float)-vbar2.y && vfoo2.y == (float)-vbar2.x);
+	vfoo3 = -vbar3.bgg;														//assert(vfoo3.x == (float)-vbar3.z && vfoo3.y == (float)-vbar3.y && vfoo3.z == (float)vbar3.y);
+	vfoo4 = -vbar4.rrrr;													//assert(vfoo4.x == (float)-vbar4.x && vfoo4.y == (float)-vbar4.y && vfoo4.z == (float)vbar4.z && vfoo4.w == (float)vbar4.w);
 
 	float1 vabs1 = abs(vfoo1);
 	float2 vabs2 = abs(vfoo2);
