@@ -149,3 +149,13 @@ inline float32x4_t vceilq_f32(float32x4_t x)
 #define _hlslpp_srli_epi32(x, y)				vshrq_n_s32((x), (y))
 
 #define _hlslpp_shuffle_ps(x, y, X, Y, Z, W)	vshufq_f32((x), (y), X, Y, Z, W)
+
+vst1q_lane_f32
+
+#define _hlslpp_store1_ps(p, x)					vst1q_lane_f32(p, x, 0)
+#define _hlslpp_store2_ps(p, x)					vst1_f32(p, vget_low_f32(x))
+#define _hlslpp_store3_ps(p, x)					vst1_f32(p, vget_low_f32(x)); vst1q_lane_f32(p, x, 2)
+#define _hlslpp_store4_ps(p, x)					vst1q_f32(p, x);
+
+#define _hlslpp_store3x3_ps(p, x0, x1, x2)		_hlslpp_store3_ps(p, x0); _hlslpp_store3_ps(p + 3, x1); _hlslpp_store3_ps(p + 5, x2)
+#define _hlslpp_store4x4_ps(p, x0, x1, x2, x3)	_hlslpp_store4_ps(p, x0); _hlslpp_store3_ps(p + 4, x1); _hlslpp_store3_ps(p + 8, x2); _hlslpp_store3_ps(p + 12, x2)

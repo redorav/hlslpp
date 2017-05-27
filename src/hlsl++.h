@@ -3988,38 +3988,30 @@ inline float4x4 inverse(const float4x4& m)
 
 inline void store(const float1& v, float* f)
 {
-	_mm_store_ss(f + 0, v._vec);
+	_hlslpp_store1_ps(f + 0, v._vec);
 }
 
 inline void store(const float2& v, float* f)
 {
-	_mm_store_ss(f + 0, v._vec);
-	_mm_store_ss(f + 1, _hlslpp_perm_yyyy_ps(v._vec));
+	_hlslpp_store2_ps(f, v._vec);
 }
 
 inline void store(const float3& v, float* f)
 {
-	_mm_store_ss(f + 0, v._vec);
-	_mm_store_ss(f + 1, _hlslpp_perm_yyyy_ps(v._vec));
-	_mm_store_ss(f + 2, _hlslpp_perm_zzzz_ps(v._vec));
+	_hlslpp_store3_ps(f, v._vec);
 }
 
 inline void store(const float4& v, float* f)
 {
-	_mm_storeu_ps(f, v._vec);
+	_hlslpp_store4_ps(f, v._vec);
 }
 
 inline void store(const float3x3& m, float* f)
 {
-	_mm_storeu_ps(f + 0, m._vec0); // Store first 3
-	_mm_storeu_ps(f + 3, m._vec1); // Store second 3
-	_mm_storeu_ps(f + 5, _hlslpp_blend_ps(_hlslpp_perm_zzzz_ps(m._vec1), _hlslpp_perm_wxyz_ps(m._vec2), HLSLPP_BLEND_MASK(1, 0, 0, 0))); // Store last 3, stomping one of the previous values but making sure it's the same
+	_hlslpp_store3x3_ps(f, m._vec0, m._vec1, m._vec2);
 }
 
 inline void store(const float4x4& m, float* f)
 {
-	_mm_storeu_ps(f + 0,  m._vec0);
-	_mm_storeu_ps(f + 4,  m._vec1);
-	_mm_storeu_ps(f + 8,  m._vec2);
-	_mm_storeu_ps(f + 12, m._vec3);
+	_hlslpp_store4x4_ps(f, m._vec0, m._vec1, m._vec2, m._vec3);
 }

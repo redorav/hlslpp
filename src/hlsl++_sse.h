@@ -86,3 +86,14 @@ using n128i = __m128i;
 #define _hlslpp_srli_epi32(x, y)				_mm_srli_epi32((x), (y))
 
 #define _hlslpp_shuffle_ps(x, y, X, Y, Z, W)	_mm_shuffle_ps(x, y, _MM_SHUFFLE(W, Z, Y, X))
+
+// Storing
+
+#define _hlslpp_store1_ps(p, x)					_mm_store_ss((p), (x))
+#define _hlslpp_store2_ps(p, x)					_mm_store_ss(p, x); _mm_store_ss(p + 1, _hlslpp_perm_yyyy_ps(x))
+#define _hlslpp_store3_ps(p, x)					_mm_store_ss(p, x);	_mm_store_ss(p + 1, _hlslpp_perm_yyyy_ps(x)); _mm_store_ss(p + 2, _hlslpp_perm_zzzz_ps(x))
+#define _hlslpp_store4_ps(p, x)					_mm_storeu_ps(p, x);
+
+// Store first 3, store second 3, store last 3, stomping one of the previous values but making sure it's the same
+#define _hlslpp_store3x3_ps(p, x0, x1, x2)		_mm_storeu_ps(p + 0, x0); _mm_storeu_ps(p + 3, x1); _mm_storeu_ps(p + 5, _hlslpp_blend_ps(_hlslpp_perm_zzzz_ps(x1), _hlslpp_perm_wxyz_ps(x2), HLSLPP_BLEND_MASK(1, 0, 0, 0)))
+#define _hlslpp_store4x4_ps(p, x0, x1, x2, x3)	_mm_storeu_ps(p + 0,  m._vec0); _mm_storeu_ps(p + 4, m._vec1); _mm_storeu_ps(p + 8, m._vec2); _mm_storeu_ps(p + 12, m._vec3)
