@@ -1,7 +1,27 @@
 #pragma once
 
-#define HLSLPP_SSE
 #define HLSLPP_MATRIX_PACK_ROW_MAJOR
+
+#if defined(__ANDROID__)
+
+	#define HLSLPP_NEON
+
+#elif __APPLE
+
+	#include "TargetConditionals.h"
+    #if TARGET_OS_IPHONE
+		#define HLSLPP_NEON
+    #elif TARGET_OS_MAC
+		#define HLSLPP_SSE
+    #endif
+
+#elif defined(_WIN32) || defined(__linux__)
+
+	#define HLSLPP_SSE
+
+#else
+	#error Platform not supported!
+#endif
 
 #if defined(HLSLPP_SSE)
 
