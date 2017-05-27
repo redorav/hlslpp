@@ -64,7 +64,7 @@ project "hlsl++"
 	language("C++")
 	files
 	{
-		srcDir.."/hlsl++.h", srcDir.."/swizzle/**.h",
+		srcDir.."/**.h",
 		srcDir.."/hlsl++.cpp"
 	}
 	

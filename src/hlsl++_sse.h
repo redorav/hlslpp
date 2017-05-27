@@ -60,9 +60,12 @@ using n128i = __m128i;
 
 #define _hlslpp_perm_ps(x, X, Y, Z, W)			_mm_shuffle_ps((x), (x), _MM_SHUFFLE(W, Z, Y, X))
 
-// See https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
+// SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
+// _mm_xor_ps((x), _mm_and_ps(msk, _mm_xor_ps((y), (x))))
 // Bit-select val1 and val2 based on the contents of the mask
-#define _hlslpp_sel_ps(x, y, msk)				_mm_xor_ps((x), _mm_and_ps(msk, _mm_xor_ps((y), (x))))
+#define _hlslpp_sel_ps(x, y, msk)				_mm_blendv_ps((x), (y), (msk))
+
+#define _hlslpp_blend_ps(x, y, msk)				_mm_blend_ps((x), (y), (msk))
 
 // Integer
 

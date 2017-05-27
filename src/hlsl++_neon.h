@@ -5,15 +5,15 @@
 using n128 = float32x4_t;
 using n128i = int32x4_t;
 
-float32x4_t vmov4q_n_f32(float x, float y, float z, float w)
+inline float32x4_t vmov4q_n_f32(const float x, const float y, const float z, const float w)
 {
-	float values[4] = { x, y, z, w };
+	const float values[4] = { x, y, z, w };
 	return vld1q_f32(values);
 }
 
-float32x4_t vmov4q_n_s32(int x, int y, int z, int w)
+inline float32x4_t vmov4q_n_s32(const int x, const int y, const int z, const int w)
 {
-	int values[4] = { x, y, z, w };
+	const int values[4] = { x, y, z, w };
 	return vld1q_s32(values);
 }
 
@@ -24,7 +24,7 @@ float32x4_t vmov4q_n_s32(int x, int y, int z, int w)
 #define _hlslpp_set_epi32(x, y, z, w)			vmov4q_n_s32((w), (z), (y), (x))
 
 // Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
-inline float32x4_t vpermq_f32(float32x4_t x, uint32_t X, uint32_t Y, uint32_t Z, uint32_t W)
+inline float32x4_t vpermq_f32(const float32x4_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
 {
 	// Swizzle x, swizzle y, swizzle z, swizzle w
 	static const uint32_t ControlMask[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C };
@@ -42,7 +42,7 @@ inline float32x4_t vpermq_f32(float32x4_t x, uint32_t X, uint32_t Y, uint32_t Z,
 	return vcombine_f32(rL, rH);
 }
 
-inline float32x4_t vshufq_f32(float32x4_t x, float32x4_t y, uint32_t X0, uint32_t Y0, uint32_t X1, uint32_t Y1)
+inline float32x4_t vshufq_f32(const float32x4_t x, const float32x4_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
 {
 	// Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0, 
 	static const uint32_t ControlMaskX[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C };
@@ -124,7 +124,11 @@ inline float32x4_t vceilq_f32(float32x4_t x)
 
 #define _hlslpp_perm_ps(x, X, Y, Z, W)			vpermq_f32((x), X, Y, Z, W)
 
-#define _hlslpp_sel_ps(x, y, msk)				vbslq_f32(msk, (x), (y))
+#define _hlslpp_sel_ps(x, y, msk)				vbslq_f32((msk), (x), (y))
+
+// We decompose the mask and turn it into 4 floats
+// The mask follows the format for SSE
+#define _hlslpp_blend_ps(x, y, msk)				vbslq_f32(vreinterpretq_f32_s32(vmov4q_n_s32(((msk >> 3) & 1) * 0xffffffff, ((msk >> 2) & 1) * 0xffffffff, ((msk >> 1) & 1) * 0xffffffff, (msk & 1) * 0xffffffff)), (x), (y))
 
 // Integer
 

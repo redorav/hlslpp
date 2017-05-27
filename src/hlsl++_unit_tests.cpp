@@ -95,6 +95,27 @@ void RunUnitTests()
 	float f3 = (float) (rand() % 1000); float f7 = (float) (rand() % 1000); float f11 = (float) (rand() % 1000); float f15 = (float) (rand() % 1000); float f19 = (float) (rand() % 1000);
 	float f4 = (float) (rand() % 1000); float f8 = (float) (rand() % 1000); float f12 = (float) (rand() % 1000); float f16 = (float) (rand() % 1000); float f20 = (float) (rand() % 1000);
 
+	// TODO Remove experiments
+
+	n128 A_x = _hlslpp_set_ps(1.0f, 2.0f, 3.0f, 4.0f);
+	n128 B_x = _hlslpp_set_ps(5.0f, 6.0f, 7.0f, 8.0f);
+	n128 M_x = _hlslpp_castsi128_ps(_mm_set_epi32(0xffffffff, 0xffffffff, 0, 0));
+
+	n128 C_x = _hlslpp_sel_ps(A_x, B_x, M_x);
+
+	n128 D_x = _mm_blend_ps(A_x, B_x, 0x5); // 0x0111
+
+	n128 E_x = _mm_blendv_ps(A_x, B_x, M_x);
+
+	n128 F_x = _hlslpp_blend_ps(A_x, B_x, HLSLPP_BLEND_MASK(0, 1, 0, 1));
+
+	// 0xE    HLSLPP_BLEND_MASK(1, 0, 0, 0)
+	// 0xA    HLSLPP_BLEND_MASK(1, 0, 1, 0)
+	// 0x8    HLSLPP_BLEND_MASK(1, 1, 1, 0)
+	// 0x6    HLSLPP_BLEND_MASK(1, 0, 0, 1)
+	// 0x5    HLSLPP_BLEND_MASK(0, 1, 0, 1)
+	// 0x2    HLSLPP_BLEND_MASK(1, 0, 1, 1)
+
 	// Initialization
 
 	float1 vfoo1 = float1(f1);												assert(vfoo1.x == f1);
@@ -136,6 +157,30 @@ void RunUnitTests()
 	float4 vfoo_mix_4_f = float4(vbar1, vbaz2, vbaz1);						assert((float)vfoo_mix_4_f.x == (float)vbar1.x && (float)vfoo_mix_4_f.y == (float)vbaz2.x && (float)vfoo_mix_4_f.z == (float)vbaz2.y && (float)vfoo_mix_4_f.w == (float)vbaz1.x);
 	float4 vfoo_mix_4_g = float4(vbar1, vbaz1, vbaz2);						assert((float)vfoo_mix_4_g.x == (float)vbar1.x && (float)vfoo_mix_4_g.y == (float)vbaz1.x && (float)vfoo_mix_4_g.z == (float)vbaz2.x && (float)vfoo_mix_4_g.w == (float)vbaz2.y);
 
+	// Assignment and swizzle
+
+	float1 vassign1 = vfoo1.x;												assert(vassign1.x == (float)vfoo1.x);
+	vassign1 = vfoo1.r;														assert(vassign1.x == (float)vfoo1.x);
+	vassign1.r = vfoo1;														assert(vassign1.x == (float)vfoo1.x);
+	vassign1.r = vfoo1.r;													assert(vassign1.x == (float)vfoo1.x);
+
+	float2 vassign2 = vfoo2.yx;												assert(vassign2.x == (float)vfoo2.y && vassign2.y == (float)vfoo2.x);
+	vassign2 = vfoo2.yy;													assert(vassign2.x == (float)vfoo2.y && vassign2.y == (float)vfoo2.y);
+	vassign2.rg = vfoo2;													assert(vassign2.x == (float)vfoo2.x && vassign2.y == (float)vfoo2.y);
+	vassign2.rg = vfoo2.gr;													assert(vassign2.x == (float)vfoo2.y && vassign2.y == (float)vfoo2.x);
+
+	float3 vassign3 = vfoo3.yxz;											assert(vassign3.x == (float)vfoo3.y && vassign3.y == (float)vfoo3.x && vassign3.z == (float)vfoo3.z);
+	vassign3 = vfoo3.yyx;													assert(vassign3.x == (float)vfoo3.y && vassign3.y == (float)vfoo3.y && vassign3.z == (float)vfoo3.x);
+	vassign3.rbg = vfoo3;													assert(vassign3.x == (float)vfoo3.x && vassign3.y == (float)vfoo3.z && vassign3.z == (float)vfoo3.y);
+	vassign3.rgb = vfoo3.grr;												assert(vassign3.x == (float)vfoo3.y && vassign3.y == (float)vfoo3.x && vassign3.z == (float)vfoo3.x);
+
+	float4 vassign4 = vfoo4.yxzw;											assert(vassign4.x == (float)vfoo4.y && vassign4.y == (float)vfoo4.x && vassign4.z == (float)vfoo4.z && vassign4.w == (float)vfoo4.w);
+	vassign4 = vfoo4.yyxx;													assert(vassign4.x == (float)vfoo4.y && vassign4.y == (float)vfoo4.y && vassign4.z == (float)vfoo4.x && vassign4.w == (float)vfoo4.x);
+	vassign4.bgra = vfoo4;													assert(vassign4.x == (float)vfoo4.b && vassign4.y == (float)vfoo4.g && vassign4.z == (float)vfoo4.r && vassign4.w == (float)vfoo4.a);
+	vassign4.rgba = vfoo4.grba;												assert(vassign4.x == (float)vfoo4.g && vassign4.y == (float)vfoo4.r && vassign4.z == (float)vfoo4.b && vassign4.w == (float)vfoo4.a);
+
+	float2 vneg_swiz_2 = -vfoo2.yx;											//assert(vassign2.x == (float)vfoo2.y && vassign2.y == (float)vfoo2.x);
+
 	// Addition
 
 	float1 vadd1 = vfoo1 + vbar1;											assert(vadd1.x == (float)vfoo1.x + (float)vbar1.x);
@@ -152,6 +197,32 @@ void RunUnitTests()
 	vadd_f_2 += 0.2f;														assert(vadd_f_2.x == (float)vfoo2.x + 0.2f + 0.2f && vadd_f_2.y == (float)vfoo2.y + 0.2f + 0.2f);
 	vadd_f_3 += 0.3f;														assert(vadd_f_3.x == (float)vfoo3.x + 0.3f + 0.3f && vadd_f_3.y == (float)vfoo3.y + 0.3f + 0.3f && vadd_f_3.z == (float)vfoo3.z + 0.3f + 0.3f);
 	vadd_f_4 += 0.4f;														assert(vadd_f_4.x == (float)vfoo4.x + 0.4f + 0.4f && vadd_f_4.y == (float)vfoo4.y + 0.4f + 0.4f && vadd_f_4.z == (float)vfoo4.z + 0.4f + 0.4f && vadd_f_4.w == (float)vfoo4.w + 0.4f + 0.4f);
+
+	float1 vadd_swiz_a_1 = vfoo1 + vbar1.x;
+	float1 vadd_swiz_b_1 = vfoo1.r + vbar1.x;
+	float1 vadd_swiz_c_1 = vfoo1.r + vbar1;
+
+	float2 vadd_swiz_a_2 = vfoo2 + vbar2.yx;
+	float2 vadd_swiz_b_2 = vfoo2.gr + vbar2.yx;
+	float2 vadd_swiz_c_2 = vfoo2.rg + vbar2;
+
+	float3 vadd_swiz_a_3 = vfoo3 + vbar3.yxz;
+	float3 vadd_swiz_b_3 = vfoo3.bgr + vbar3.xyz;
+	float3 vadd_swiz_c_3 = vfoo3.bgr + vbar3;
+
+	float4 vadd_swiz_a_4 = vfoo4 + vbar4.yxzw;
+	float4 vadd_swiz_b_4 = vfoo4.bgra + vbar4.yxzw;
+	float4 vadd_swiz_c_4 = vfoo4.bgra + vbar4;
+
+	vadd_swiz_a_1 += vfoo1;
+	vadd_swiz_b_1 += vfoo1.x;
+	vadd_swiz_c_1.x += vfoo1;
+	vadd_swiz_c_1.r += vfoo1.r;
+
+	vadd_swiz_a_2 += vfoo2;
+	vadd_swiz_b_2 += vfoo2.xy;
+	vadd_swiz_c_2.xy += vfoo2;
+	vadd_swiz_c_2.gr += vfoo2.rg;
 
 	// Subtraction
 
@@ -170,6 +241,36 @@ void RunUnitTests()
 	vsub_f_3 -= 0.3f;														assert(vsub_f_3.x == (float)vfoo3.x - 0.3f - 0.3f && vsub_f_3.y == (float)vfoo3.y - 0.3f - 0.3f && vsub_f_3.z == (float)vfoo3.z - 0.3f - 0.3f);
 	vsub_f_4 -= 0.4f;														assert(vsub_f_4.x == (float)vfoo4.x - 0.4f - 0.4f && vsub_f_4.y == (float)vfoo4.y - 0.4f - 0.4f && vsub_f_4.z == (float)vfoo4.z - 0.4f - 0.4f && vsub_f_4.w == (float)vfoo4.w - 0.4f - 0.4f);
 
+	float1 vsub_swiz_a_1 = vfoo1 - vbar1.x;
+	float1 vsub_swiz_b_1 = vfoo1.r - vbar1.x;
+	float1 vsub_swiz_c_1 = vfoo1.r - vbar1;
+	vsub_swiz_c_1.r = vfoo4.r - vbar4.r;
+
+	float2 vsub_swiz_a_2 = vfoo2 - vbar2.yx;
+	float2 vsub_swiz_b_2 = vfoo2.gr - vbar2.yx;
+	float2 vsub_swiz_c_2 = vfoo2.rg - vbar2;
+	vsub_swiz_c_2.gr = vfoo4.rg - vbar4.gr;
+
+	float3 vsub_swiz_a_3 = vfoo3 - vbar3.yxz;
+	float3 vsub_swiz_b_3 = vfoo3.bgr - vbar3.xyz;
+	float3 vsub_swiz_c_3 = vfoo3.bgr - vbar3;
+	vsub_swiz_c_3.bgr = vfoo4.grb - vbar4.gbr;
+
+	float4 vsub_swiz_a_4 = vfoo4 - vbar4.yxzw;
+	float4 vsub_swiz_b_4 = vfoo4.bgra - vbar4.yxzw;
+	float4 vsub_swiz_c_4 = vfoo4.bgra - vbar4;
+	vsub_swiz_c_4.bgra = vfoo4.argb - vbar4.ggbr;
+
+	vadd_swiz_a_1 -= vfoo1;
+	vadd_swiz_b_1 -= vfoo1.x;
+	vadd_swiz_c_1.x -= vfoo1;
+	vadd_swiz_c_1.r -= vfoo1.r;
+
+	vsub_swiz_a_2 -= vfoo2;
+	vsub_swiz_b_2 -= vfoo2.xy;
+	vsub_swiz_c_2.xy -= vfoo2;
+	vsub_swiz_c_2.gr -= vfoo2.rg;
+
 	// Multiplication
 
 	float1 vmul1 = vfoo1 * vbar1;											assert(vmul1.x == (float)vfoo1.x * (float)vbar1.x);
@@ -187,6 +288,27 @@ void RunUnitTests()
 	vmul_f_3 *= 0.3f;														assert(vmul_f_3.x == (float)vfoo3.x * 0.3f * 0.3f && vmul_f_3.y == (float)vfoo3.y * 0.3f * 0.3f && vmul_f_3.z == (float)vfoo3.z * 0.3f * 0.3f);
 	vmul_f_4 *= 0.4f;														assert(vmul_f_4.x == (float)vfoo4.x * 0.4f * 0.4f && vmul_f_4.y == (float)vfoo4.y * 0.4f * 0.4f && vmul_f_4.z == (float)vfoo4.z * 0.4f * 0.4f && vmul_f_4.w == (float)vfoo4.w * 0.4f * 0.4f);
 
+	float1 vmul_swiz_a_1 = vfoo1 * vbar1.x;
+	float1 vmul_swiz_b_1 = vfoo1.r * vbar1.x;
+	float1 vmul_swiz_c_1 = vfoo1.r * vbar1;
+
+	float2 vmul_swiz_a_2 = vfoo2 * vbar2.yx;
+	float2 vmul_swiz_b_2 = vfoo2.gr * vbar2.yx;
+	float2 vmul_swiz_c_2 = vfoo2.rg * vbar2;
+
+	float3 vmul_swiz_a_3 = vfoo3 * vbar3.yxz;
+	float3 vmul_swiz_b_3 = vfoo3.rgb * vbar3.xyz;
+	float3 vmul_swiz_c_3 = vfoo3.bgr * vbar3;
+
+	float4 vmul_swiz_a_4 = vfoo4 * vbar4.yxzw;
+	float4 vmul_swiz_b_4 = vfoo4.bgra * vbar4.yxzw;
+	float4 vmul_swiz_c_4 = vfoo4.bgra * vbar4;
+
+	vmul_swiz_a_2 *= vfoo2;
+	vmul_swiz_b_2 *= vfoo2.xy;
+	vmul_swiz_c_2.xy *= vfoo2;
+	vmul_swiz_c_2.gr *= vfoo2.rg;
+
 	// Division
 
 	float1 vdiv1 = vfoo1 / vbar1;											assert(vdiv1.x == (float)vfoo1.x / (float)vbar1.x);
@@ -203,6 +325,27 @@ void RunUnitTests()
 	vdiv_f_2 /= 0.2f;														assert(vdiv_f_2.x == (float)vfoo2.x / 0.2f / 0.2f && vdiv_f_2.y == (float)vfoo2.y / 0.2f / 0.2f);
 	vdiv_f_3 /= 0.3f;														assert(vdiv_f_3.x == (float)vfoo3.x / 0.3f / 0.3f && vdiv_f_3.y == (float)vfoo3.y / 0.3f / 0.3f && vdiv_f_3.z == (float)vfoo3.z / 0.3f / 0.3f);
 	vdiv_f_4 /= 0.4f;														assert(vdiv_f_4.x == (float)vfoo4.x / 0.4f / 0.4f && vdiv_f_4.y == (float)vfoo4.y / 0.4f / 0.4f && vdiv_f_4.z == (float)vfoo4.z / 0.4f / 0.4f && vdiv_f_4.w == (float)vfoo4.w / 0.4f / 0.4f);
+
+	float1 vdiv_swiz_a_1 = vfoo1 / vbar1.x;
+	float1 vdiv_swiz_b_1 = vfoo1.r / vbar1.x;
+	float1 vdiv_swiz_c_1 = vfoo1.r / vbar1;
+
+	float2 vdiv_swiz_a_2 = vfoo2 / vbar2.yx;
+	float2 vdiv_swiz_b_2 = vfoo2.gr / vbar2.yx;
+	float2 vdiv_swiz_c_2 = vfoo2.rg / vbar2;
+
+	float3 vdiv_swiz_a_3 = vfoo3 / vbar3.yxz;
+	float3 vdiv_swiz_b_3 = vfoo3.rgb / vbar3.xyz;
+	float3 vdiv_swiz_c_3 = vfoo3.bgr / vbar3;
+
+	float4 vdiv_swiz_a_4 = vfoo4 / vbar4.yxzw;
+	float4 vdiv_swiz_b_4 = vfoo4.bgra / vbar4.yxzw;
+	float4 vdiv_swiz_c_4 = vfoo4.bgra / vbar4;
+
+	vdiv_swiz_a_2 /= vfoo2;
+	vdiv_swiz_b_2 /= vfoo2.xy;
+	vdiv_swiz_c_2.xy /= vfoo2;
+	vdiv_swiz_c_2.gr /= vfoo2.rg;
 
 	// Comparison
 
@@ -241,15 +384,15 @@ void RunUnitTests()
 	vfoo3 = -vbar3.bgg;														//assert(vfoo3.x == (float)-vbar3.z && vfoo3.y == (float)-vbar3.y && vfoo3.z == (float)vbar3.y);
 	vfoo4 = -vbar4.rrrr;													//assert(vfoo4.x == (float)-vbar4.x && vfoo4.y == (float)-vbar4.y && vfoo4.z == (float)vbar4.z && vfoo4.w == (float)vbar4.w);
 
-	float1 vabs1 = abs(vfoo1);
-	float2 vabs2 = abs(vfoo2);
-	float3 vabs3 = abs(vfoo3);
-	float4 vabs4 = abs(vfoo4);
+	float1 vabs1 = abs(vfoo1);												assert(vabs1.x == std::abs((float)vfoo1.x));
+	float2 vabs2 = abs(vfoo2);												assert(vabs2.x == std::abs((float)vfoo2.x) && vabs2.y == std::abs((float)vfoo2.y));
+	float3 vabs3 = abs(vfoo3);												assert(vabs3.x == std::abs((float)vfoo3.x) && vabs3.y == std::abs((float)vfoo3.y) && vabs3.z == std::abs((float)vfoo3.z));
+	float4 vabs4 = abs(vfoo4);												assert(vabs4.x == std::abs((float)vfoo4.x) && vabs4.y == std::abs((float)vfoo4.y) && vabs4.z == std::abs((float)vfoo4.z) && vabs4.w == std::abs((float)vfoo4.w));
 
-	float1 vabs_swiz_1 = abs(vfoo1.r);
-	float2 vabs_swiz_2 = abs(vfoo2.yx);
-	float3 vabs_swiz_3 = abs(vfoo3.bgr);
-	float4 vabs_swiz_4 = abs(vfoo4.wwww);
+	float1 vabs_swiz_1 = abs(vfoo1.r);										assert(vabs_swiz_1.x == std::abs((float)vfoo1.x));
+	float2 vabs_swiz_2 = abs(vfoo2.yx);										assert(vabs_swiz_2.x == std::abs((float)vfoo2.g) && vabs_swiz_2.y == std::abs((float)vfoo2.r));
+	float3 vabs_swiz_3 = abs(vfoo3.bgr);									assert(vabs_swiz_3.x == std::abs((float)vfoo3.b) && vabs_swiz_3.y == std::abs((float)vfoo3.g) && vabs_swiz_3.z == std::abs((float)vfoo3.r));
+	float4 vabs_swiz_4 = abs(vfoo4.wwww);									assert(vabs_swiz_4.x == std::abs((float)vfoo4.a) && vabs_swiz_4.y == std::abs((float)vfoo4.a) && vabs_swiz_4.z == std::abs((float)vfoo4.a) && vabs_swiz_4.w == std::abs((float)vfoo4.a));
 
 	float1 vacos1 = acos(vfoo1);
 	float2 vacos2 = acos(vfoo2);
@@ -658,110 +801,7 @@ void RunUnitTests()
 	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);
 	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);
 
-	float1 vassign1 = vfoo1.x;
-	vassign1 = vfoo1.r;
-	vassign1.r = vfoo1;
-	vassign1.r = vfoo1.r;
-
-	float2 vassign2 = vfoo2.yx;
-	vassign2 = vfoo2.yy;
-	vassign2.rg = vfoo2;
-	vassign2.rg = vfoo2.gr;
-
-	float3 vassign3 = vfoo3.yxz;
-	vassign3 = vfoo3.yyx;
-	vassign3.rgb = vfoo3;
-	vassign3.rgb = vfoo3.grr;
-
-	float4 vassign4 = vfoo4.yxzw;
-	vassign4 = vfoo4.yyxx;
-	vassign4.bgra = vfoo4;
-	vassign4.rgba = vfoo4.grba;
-
-	float2 vneg_swiz_2 = -vfoo2.yx;
-
-	// Addition
-
-	float1 vadd_swiz_a_1 = vfoo1 + vbar1.x;
-	float1 vadd_swiz_b_1 = vfoo1.r + vbar1.x;
-	float1 vadd_swiz_c_1 = vfoo1.r + vbar1;
-
-	float2 vadd_swiz_a_2 = vfoo2 + vbar2.yx;
-	float2 vadd_swiz_b_2 = vfoo2.gr + vbar2.yx;
-	float2 vadd_swiz_c_2 = vfoo2.rg + vbar2;
-
-	float3 vadd_swiz_a_3 = vfoo3 + vbar3.yxz;
-	float3 vadd_swiz_b_3 = vfoo3.bgr + vbar3.xyz;
-	float3 vadd_swiz_c_3 = vfoo3.bgr + vbar3;
 	
-	float4 vadd_swiz_a_4 = vfoo4 + vbar4.yxzw;
-	float4 vadd_swiz_b_4 = vfoo4.bgra + vbar4.yxzw;
-	float4 vadd_swiz_c_4 = vfoo4.bgra + vbar4;	
-
-	vadd_swiz_a_1 += vfoo1;
-	vadd_swiz_b_1 += vfoo1.x;
-	vadd_swiz_c_1.x += vfoo1;
-	vadd_swiz_c_1.r += vfoo1.r;
-
-	vadd_swiz_a_2 += vfoo2;
-	vadd_swiz_b_2 += vfoo2.xy;
-	vadd_swiz_c_2.xy += vfoo2;
-	vadd_swiz_c_2.gr += vfoo2.rg;
-
-	// Subtraction
-
-	float1 vsub_swiz_a_1 = vfoo1 - vbar1.x;
-	float1 vsub_swiz_b_1 = vfoo1.r - vbar1.x;
-	float1 vsub_swiz_c_1 = vfoo1.r - vbar1;
-	vsub_swiz_c_1.r = vfoo4.r - vbar4.r;
-
-	float2 vsub_swiz_a_2 = vfoo2 - vbar2.yx;
-	float2 vsub_swiz_b_2 = vfoo2.gr - vbar2.yx;
-	float2 vsub_swiz_c_2 = vfoo2.rg - vbar2;
-	vsub_swiz_c_2.gr = vfoo4.rg - vbar4.gr;
-
-	float3 vsub_swiz_a_3 = vfoo3 - vbar3.yxz;
-	float3 vsub_swiz_b_3 = vfoo3.bgr - vbar3.xyz;
-	float3 vsub_swiz_c_3 = vfoo3.bgr - vbar3;
-	vsub_swiz_c_3.bgr = vfoo4.grb - vbar4.gbr;
-
-	float4 vsub_swiz_a_4 = vfoo4 - vbar4.yxzw;
-	float4 vsub_swiz_b_4 = vfoo4.bgra - vbar4.yxzw;
-	float4 vsub_swiz_c_4 = vfoo4.bgra - vbar4;
-	vsub_swiz_c_4.bgra = vfoo4.argb - vbar4.ggbr;
-
-	vadd_swiz_a_1 -= vfoo1;
-	vadd_swiz_b_1 -= vfoo1.x;
-	vadd_swiz_c_1.x -= vfoo1;
-	vadd_swiz_c_1.r -= vfoo1.r;
-
-	vsub_swiz_a_2 -= vfoo2;
-	vsub_swiz_b_2 -= vfoo2.xy;
-	vsub_swiz_c_2.xy -= vfoo2;
-	vsub_swiz_c_2.gr -= vfoo2.rg;
-
-	// Multiplication
-
-	float1 vmul_swiz_a_1 = vfoo1 * vbar1.x;
-	float1 vmul_swiz_b_1 = vfoo1.r * vbar1.x;
-	float1 vmul_swiz_c_1 = vfoo1.r * vbar1;
-
-	float2 vmul_swiz_a_2 = vfoo2 * vbar2.yx;
-	float2 vmul_swiz_b_2 = vfoo2.gr * vbar2.yx;
-	float2 vmul_swiz_c_2 = vfoo2.rg * vbar2;
-
-	float3 vmul_swiz_a_3 = vfoo3 * vbar3.yxz;
-	float3 vmul_swiz_b_3 = vfoo3.rgb * vbar3.xyz;
-	float3 vmul_swiz_c_3 = vfoo3.bgr * vbar3;
-	
-	float4 vmul_swiz_a_4 = vfoo4 * vbar4.yxzw;
-	float4 vmul_swiz_b_4 = vfoo4.bgra * vbar4.yxzw;
-	float4 vmul_swiz_c_4 = vfoo4.bgra * vbar4;
-	
-	vadd_swiz_a_2 *= vfoo2;
-	vadd_swiz_b_2 *= vfoo2.xy;
-	vadd_swiz_c_2.xy *= vfoo2;
-	vadd_swiz_c_2.gr *= vfoo2.rg;
 
 	// Infinities and NaNs
 
@@ -1337,7 +1377,7 @@ void RunSpeedTests()
 	float f3 = (rand() % 1000) / 100.0f;
 	float f4 = (rand() % 1000) / 100.0f;
 
-	const int iter = 10000000;
+	const int iter = 1000000000;
 	Timer timer;
 
 	//// DirectX XMVECTOR
@@ -1363,19 +1403,19 @@ void RunSpeedTests()
 
 	// Plain old struct vector
 	{
-		Vector4 v1(f1);
-		Vector4 v2(f2);
-		Vector4 v3(f3);
-		Vector4 v4(f4);
-
-		timer.Start();
-		for (int i = 0; i < iter; ++i)
-		{
-			v2 = sqrt((v1 * v2 + v2 * v3));
-			//v2 = normalize(v2);
-		}
-		double time = timer.Get();
-		printf("STRUCT: %f, %f, %f, %f = %f\n", v2.x, v2.y, v2.z, v2.w, time);
+// 		Vector4 v1(f1);
+// 		Vector4 v2(f2);
+// 		Vector4 v3(f3);
+// 		Vector4 v4(f4);
+// 
+// 		timer.Start();
+// 		for (int i = 0; i < iter; ++i)
+// 		{
+// 			v2 = sqrt((v1 * v2 + v2 * v3));
+// 			//v2 = normalize(v2);
+// 		}
+// 		double time = timer.Get();
+// 		printf("STRUCT: %f, %f, %f, %f = %f\n", v2.x, v2.y, v2.z, v2.w, time);
 	}
 
 	float4 v1(f1);
@@ -1391,7 +1431,8 @@ void RunSpeedTests()
 	timer.Start();
 	for (int i = 0; i < iter; ++i)
 	{
-		mat_foo_4x4 = inverse(mat_foo_4x4);
+		v1._vec = _hlslpp_sel_ps(v1._vec, v2._vec, v1._vec);
+		//mat_foo_4x4 = inverse(mat_foo_4x4);
 	}
 	double time = timer.Get();
 	//printf("float4: %f, %f, %f, %f = %f\n", (float)v2.x, (float)v2.y, (float)v2.z, (float)v2.w, time);
