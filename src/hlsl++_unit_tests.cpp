@@ -95,27 +95,6 @@ void RunUnitTests()
 	float f3 = (float) (rand() % 1000); float f7 = (float) (rand() % 1000); float f11 = (float) (rand() % 1000); float f15 = (float) (rand() % 1000); float f19 = (float) (rand() % 1000);
 	float f4 = (float) (rand() % 1000); float f8 = (float) (rand() % 1000); float f12 = (float) (rand() % 1000); float f16 = (float) (rand() % 1000); float f20 = (float) (rand() % 1000);
 
-	// TODO Remove experiments
-
-	n128 A_x = _hlslpp_set_ps(1.0f, 2.0f, 3.0f, 4.0f);
-	n128 B_x = _hlslpp_set_ps(5.0f, 6.0f, 7.0f, 8.0f);
-	n128 M_x = _hlslpp_castsi128_ps(_mm_set_epi32(0xffffffff, 0xffffffff, 0, 0));
-
-	n128 C_x = _hlslpp_sel_ps(A_x, B_x, M_x);
-
-	n128 D_x = _mm_blend_ps(A_x, B_x, 0x5); // 0x0111
-
-	n128 E_x = _mm_blendv_ps(A_x, B_x, M_x);
-
-	n128 F_x = _hlslpp_blend_ps(A_x, B_x, HLSLPP_BLEND_MASK(0, 1, 0, 1));
-
-	// 0xE    HLSLPP_BLEND_MASK(1, 0, 0, 0)
-	// 0xA    HLSLPP_BLEND_MASK(1, 0, 1, 0)
-	// 0x8    HLSLPP_BLEND_MASK(1, 1, 1, 0)
-	// 0x6    HLSLPP_BLEND_MASK(1, 0, 0, 1)
-	// 0x5    HLSLPP_BLEND_MASK(0, 1, 0, 1)
-	// 0x2    HLSLPP_BLEND_MASK(1, 0, 1, 1)
-
 	// Initialization
 
 	float1 vfoo1 = float1(f1);												assert(vfoo1.x == f1);
