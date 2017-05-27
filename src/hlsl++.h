@@ -81,7 +81,7 @@ static const uint32_t _MM_Z = 2;
 static const uint32_t _MM_W = 3;
 
 // Create a mask where 1 selects from x, 0 selects from y
-#define HLSLPP_BLEND_MASK(X, Y, Z, W)			~(X + (Y << 1) + (Z << 2) + (W << 3))
+#define HLSLPP_BLEND_MASK(X, Y, Z, W)			(~(X | (Y << 1) | (Z << 2) | (W << 3)) & 0xf)
 
 #define HLSLPP_COMPONENT_X(X)					(1 << X)
 #define HLSLPP_COMPONENT_XY(X, Y)				((1 << X) | (1 << Y))
