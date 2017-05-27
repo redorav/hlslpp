@@ -150,8 +150,6 @@ inline float32x4_t vceilq_f32(float32x4_t x)
 
 #define _hlslpp_shuffle_ps(x, y, X, Y, Z, W)	vshufq_f32((x), (y), X, Y, Z, W)
 
-vst1q_lane_f32
-
 #define _hlslpp_store1_ps(p, x)					vst1q_lane_f32(p, x, 0)
 #define _hlslpp_store2_ps(p, x)					vst1_f32(p, vget_low_f32(x))
 #define _hlslpp_store3_ps(p, x)					vst1_f32(p, vget_low_f32(x)); vst1q_lane_f32(p, x, 2)
