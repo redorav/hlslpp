@@ -58,7 +58,8 @@ using n128i = __m128i;
 #define _hlslpp_andnot_ps(x, y)					_mm_andnot_ps((x), (y))
 #define _hlslpp_or_ps(x, y)						_mm_or_ps((x), (y))
 
-#define _hlslpp_perm_ps(x, X, Y, Z, W)			_mm_shuffle_ps((x), (x), _MM_SHUFFLE(W, Z, Y, X))
+#define _hlslpp_perm_ps(x, msk)					_mm_shuffle_ps((x), (x), msk)
+#define _hlslpp_shuffle_ps(x, y, msk)			_mm_shuffle_ps((x), (y), msk)
 
 // SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
 // _mm_xor_ps((x), _mm_and_ps(msk, _mm_xor_ps((y), (x))))
@@ -84,8 +85,6 @@ using n128i = __m128i;
 
 #define _hlslpp_slli_epi32(x, y)				_mm_slli_epi32((x), (y))
 #define _hlslpp_srli_epi32(x, y)				_mm_srli_epi32((x), (y))
-
-#define _hlslpp_shuffle_ps(x, y, X, Y, Z, W)	_mm_shuffle_ps(x, y, _MM_SHUFFLE(W, Z, Y, X))
 
 // Storing
 

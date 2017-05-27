@@ -122,7 +122,8 @@ inline float32x4_t vceilq_f32(float32x4_t x)
 #define _hlslpp_andnot_ps(x, y)					vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
 #define _hlslpp_or_ps(x, y)						vreinterpretq_f32_u32(vorrq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
 
-#define _hlslpp_perm_ps(x, X, Y, Z, W)			vpermq_f32((x), X, Y, Z, W)
+#define _hlslpp_perm_ps(x, msk)					vpermq_f32((x), msk & 0x3, (msk >> 2) & 0x3, (msk >> 4) & 0x3, (msk >> 6) & 0x3)
+#define _hlslpp_shuffle_ps(x, y, msk)			vshufq_f32((x), (y), msk & 0x3, (msk >> 2) & 0x3, (msk >> 4) & 0x3, (msk >> 6) & 0x3)
 
 #define _hlslpp_sel_ps(x, y, msk)				vbslq_f32((msk), (x), (y))
 
@@ -147,8 +148,6 @@ inline float32x4_t vceilq_f32(float32x4_t x)
 
 #define _hlslpp_slli_epi32(x, y)				vshlq_n_s32((x), (y))
 #define _hlslpp_srli_epi32(x, y)				vshrq_n_s32((x), (y))
-
-#define _hlslpp_shuffle_ps(x, y, X, Y, Z, W)	vshufq_f32((x), (y), X, Y, Z, W)
 
 #define _hlslpp_store1_ps(p, x)					vst1q_lane_f32(p, x, 0)
 #define _hlslpp_store2_ps(p, x)					vst1_f32(p, vget_low_f32(x))
