@@ -1359,9 +1359,9 @@ public:
 	template<int E, int F, int G, int A, int B, int C>
 	static n128 swizzle(n128 x)
 	{
-		static const int neutralMask = _MM_SHUFFLE(_MM_W, _MM_Z, _MM_Y, _MM_X);
+		static const int neutralMask = HLSLPP_SHUFFLE_MASK(_MM_X, _MM_Y, _MM_Z, _MM_W);
 #define _C3_SHUFFLE(bitmask, X1, Y1, Z1, X2, Y2, Z2) (((bitmask >> (2 * X1)) & 0x3) << (2 * X2)) | (((bitmask >> (2 * Y1)) & 0x3) << (2 * Y2)) | (((bitmask >> (2 * Z1)) & 0x3) << (2 * Z2))
-		n128 inputShuffle = _mm_shuffle_ps(x, x, _C3_SHUFFLE(neutralMask, E, F, G, A, B, C));	// Swizzle input mask with property mask
+		n128 inputShuffle = _hlslpp_shuffle_ps(x, x, _C3_SHUFFLE(neutralMask, E, F, G, A, B, C));	// Swizzle input mask with property mask
 #undef _C3_SHUFFLE
 		return inputShuffle;
 	}
@@ -2783,12 +2783,12 @@ inline float2 reflect(const float2& i, const float2& n) { return float2(_hlslpp_
 inline float3 reflect(const float3& i, const float3& n) { return float3(_hlslpp_sub_ps(i._vec, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n._vec, _hlslpp_perm_xxxx_ps(_hlslpp_dot3_ps(i._vec, n._vec)))))); }
 inline float4 reflect(const float4& i, const float4& n) { return float4(_hlslpp_sub_ps(i._vec, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n._vec, _hlslpp_perm_xxxx_ps(_hlslpp_dot4_ps(i._vec, n._vec)))))); }
 
-template<int N> inline floatN<N> rsqrt(const floatN<N>& v) { return floatN<N>(_mm_rsqrt_ps(v._vec)); }
+template<int N> inline floatN<N> rsqrt(const floatN<N>& v) { return floatN<N>(_hlslpp_rsqrt_ps(v._vec)); }
 
 template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> rsqrt(const components<Dim...>& v) { return rsqrt(floatN<sizeof...(Dim)>(v)); }
 
-template<int N> inline floatN<N> round(const floatN<N>& v) { return floatN<N>(_mm_round_ps(v._vec, _MM_FROUND_TO_POS_INF)); } // _MM_FROUND_TO_POS_INF to match fxc behavior
+template<int N> inline floatN<N> round(const floatN<N>& v) { return floatN<N>(_hlslpp_round_ps(v._vec)); }
 
 template<template<int...Dim> class components, int...Dim>
 inline floatN<sizeof...(Dim)> round(const components<Dim...>& v) { return round(floatN<sizeof...(Dim)>(v)); }

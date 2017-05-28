@@ -11,6 +11,7 @@
 #include <chrono>
 #include <cstdio>
 #include <iostream>
+#include <cstdlib>
 
 #include "hlsl++.h"
 
@@ -38,7 +39,7 @@ union Float_t
 };
 
 typedef float(*Transform)(float);
-typedef __m128(*Transform4)(__m128);
+typedef n128(*Transform4)(n128);
 
 // Pass in a uint32_t range of float representations to test. start and stop are inclusive. Pass in 0, 0xFFFFFFFF to scan all
 // floats. The floats are iterated through by incrementing their integer representation.
@@ -1246,17 +1247,17 @@ void RunExperiments()
 	//ExhaustiveTest(signBit, signBit | (uint32_t)maxfloatasint.i, _mm_atan_ps, std::atan, "atan");
 
 	
-	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_sin_ps, std::sin, "sin");
-	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_sin_ps, std::sin, "sin");
+// 	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_sin_ps, std::sin, "sin");
+// 	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_sin_ps, std::sin, "sin");
+// 
+// 	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_cos_ps, std::cos, "cos");
+// 	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_cos_ps, std::cos, "cos");
+// 	
+// 	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_tan_ps, std::tan, "tan");
+// 	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_tan_ps, std::tan, "tan");
 
-	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_cos_ps, std::cos, "cos");
-	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_cos_ps, std::cos, "cos");
-	
-	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_tan_ps, std::tan, "tan");
-	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_tan_ps, std::tan, "tan");
-
-	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_exp_ps, std::exp2, "exp2");
-	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_exp2_ps, std::exp2, "exp2");
+// 	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_exp_ps, std::exp2, "exp2");
+// 	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_exp2_ps, std::exp2, "exp2");
 }
 
 class Timer
@@ -1320,10 +1321,10 @@ inline float dot(const Vector4& v1, const Vector4& v2)
 	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }
 
-inline Vector4 exp2(const Vector4& v)
-{
-	return Vector4(std::exp2(v.x), std::exp2(v.y), std::exp2(v.z), std::exp2(v.w));
-}
+// inline Vector4 exp2(const Vector4& v)
+// {
+// 	return Vector4(std::exp2(v.x), std::exp2(v.y), std::exp2(v.z), std::exp2(v.w));
+// }
 
 inline Vector4 exp(const Vector4& v)
 {

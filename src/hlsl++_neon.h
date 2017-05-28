@@ -5,6 +5,9 @@
 using n128 = float32x4_t;
 using n128i = int32x4_t;
 
+typedef float32x4_t vec_float4; // for iOS
+typedef uint32x4_t vec_uint4;
+
 inline float32x4_t vmov4q_n_f32(const float x, const float y, const float z, const float w)
 {
 	const float values[4] = { x, y, z, w };
@@ -80,7 +83,15 @@ inline float32x4_t vceilq_f32(float32x4_t x)
 	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
 	float32x4_t gt = vcgtq_f32(trnc, x);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
 	uint32x4_t shr = vshrq_n_u32(vreinterpretq_u32_f32(gt), 31);	// Shift to leave a 1 or a 0
-	float32x4_t result = vaddq_f32(trnc, vcvtq_f32_u32(shr));			// Add to truncated value
+	float32x4_t result = vaddq_f32(trnc, vcvtq_f32_u32(shr));		// Add to truncated value
+	return result;
+}
+
+inline float32x4_t vroundq_f32(float32x4_t x)
+{
+	float32x4_t add = vaddq_f32(x, vmovq_n_f32(0.5f));				// Add 0.5
+	float32x4_t frc_add = vsubq_f32(add, vfloorq_f32(add));			// Get the fractional part
+	float32x4_t result = vsubq_f32(add, frc_add);					// Subtract from result
 	return result;
 }
 
@@ -97,6 +108,7 @@ inline float32x4_t vceilq_f32(float32x4_t x)
 #define _hlslpp_abs_ps(x)						vabsq_f32((x))
 
 #define _hlslpp_sqrt_ps(x)						vrecpeq_f32(vrsqrteq_f32((x)))
+#define _hlslpp_rsqrt_ps(x)						vrsqrteq_f32((x))
 
 #define _hlslpp_cmpeq_ps(x, y)					vceqq_f32((x), (y))
 #define _hlslpp_cmpneq_ps(x, y)					veorq_u32(vreinterpretq_u32_f32(vceqq_f32((x), (y))), vmovq_n_u32(0xffffffffu))
@@ -113,6 +125,9 @@ inline float32x4_t vceilq_f32(float32x4_t x)
 #define _hlslpp_trunc_ps(x)						vcvtq_f32_s32(vcvtq_s32_f32(x))
 #define _hlslpp_floor_ps(x)						vfloorq_f32((x))
 #define _hlslpp_ceil_ps(x)						vceilq_f32((x))
+#define _hlslpp_round_ps(x)						vroundq_f32((x))
+
+#define _hlslpp_frac_ps(x)						vsubq_f32((x), vfloorq_f32(x))
 
 #define _hlslpp_clamp_ps(x, minx, maxx)			vmaxq_f32(vminq_f32((x), (maxx)), (minx))
 #define _hlslpp_sat_ps(x)						vmaxq_f32(vminq_f32((x), f4_1), f4_0)
