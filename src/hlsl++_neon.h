@@ -143,7 +143,7 @@ inline float32x4_t vroundq_f32(float32x4_t x)
 #define _hlslpp_sel_ps(x, y, msk)				vbslq_f32((msk), (x), (y))
 
 // We decompose the mask and turn it into 4 floats
-// The mask follows the format for SSE
+// The input mask follows the format for SSE
 #define _hlslpp_blend_ps(x, y, msk)				vbslq_f32(vreinterpretq_f32_s32(vmov4q_n_s32(((msk >> 3) & 1) * 0xffffffff, ((msk >> 2) & 1) * 0xffffffff, ((msk >> 1) & 1) * 0xffffffff, (msk & 1) * 0xffffffff)), (x), (y))
 
 // Integer

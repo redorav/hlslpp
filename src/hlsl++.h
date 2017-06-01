@@ -1323,10 +1323,9 @@ public:
 	template<int E, int F, int A, int B>
 	static n128 swizzle(n128 x)
 	{
-		static const int neutralMask = HLSLPP_SHUFFLE_MASK(_MM_X, _MM_Y, _MM_Z, _MM_W);
-#define C2_SHUFFLE(bitmask, X1, Y1, X2, Y2) (((bitmask >> (2 * X1)) & 0x3) << (2 * X2)) | (((bitmask >> (2 * Y1)) & 0x3) << (2 * Y2))
-		const n128 inputShuffle = _hlslpp_shuffle_ps(x, x, C2_SHUFFLE(neutralMask, E, F, A, B));	// Swizzle input mask with property mask
-#undef C2_SHUFFLE
+		const int mask = HLSLPP_SHUFFLE_MASK(_MM_X, _MM_Y, _MM_Z, _MM_W);
+		const uint32_t reshuffledMask = (((mask >> (2 * E)) & 3) << (2 * A)) | (((mask >> (2 * F)) & 3) << (2 * B)) | (mask & ~((3 << 2 * A) | (3 << 2 * B)));
+		const n128 inputShuffle = _hlslpp_shuffle_ps(x, x, reshuffledMask);	// Swizzle input mask with property mask
 		return inputShuffle;
 	}
 	
@@ -1359,10 +1358,9 @@ public:
 	template<int E, int F, int G, int A, int B, int C>
 	static n128 swizzle(n128 x)
 	{
-		static const int neutralMask = HLSLPP_SHUFFLE_MASK(_MM_X, _MM_Y, _MM_Z, _MM_W);
-#define _C3_SHUFFLE(bitmask, X1, Y1, Z1, X2, Y2, Z2) (((bitmask >> (2 * X1)) & 0x3) << (2 * X2)) | (((bitmask >> (2 * Y1)) & 0x3) << (2 * Y2)) | (((bitmask >> (2 * Z1)) & 0x3) << (2 * Z2))
-		n128 inputShuffle = _hlslpp_shuffle_ps(x, x, _C3_SHUFFLE(neutralMask, E, F, G, A, B, C));	// Swizzle input mask with property mask
-#undef _C3_SHUFFLE
+		static const int mask = HLSLPP_SHUFFLE_MASK(_MM_X, _MM_Y, _MM_Z, _MM_W);
+		const uint32_t reshuffledMask = (((mask >> (2 * E)) & 0x3) << (2 * A)) | (((mask >> (2 * F)) & 0x3) << (2 * B)) | (((mask >> (2 * G)) & 0x3) << (2 * C)) | (mask & ~((3 << 2 * A) | (3 << 2 * B) | (3 << 2 * C)));
+		n128 inputShuffle = _hlslpp_shuffle_ps(x, x, reshuffledMask);	// Swizzle input mask with property mask
 		return inputShuffle;
 	}
 
@@ -2021,14 +2019,10 @@ template<int A, int B, int C, int D>
 template<int E, int F, int G, int H>
 inline component4<A, B, C, D>& component4<A, B, C, D>::operator = (const component4<E, F, G, H>& c)
 {
-	staticAsserts();
-	
-#define C4_RESHUFFLE(bitmask, X, Y, Z, W) ((bitmask & 0x3) << (2 * W)) | (((bitmask >> 2) & 0x3) << (2 * Z)) | (((bitmask >> 4) & 0x3) << (2 * Y)) | (((bitmask >> 6) & 0x3) << (2 * X))
-	const int inSwizzleMask = HLSLPP_SHUFFLE_MASK(E, F, G, H);					// Swizzle input mask
-	const int reSwizzleMask = C4_RESHUFFLE(inSwizzleMask, D, C, B, A);	// Re-Swizzle with property mask
-#undef C4_RESHUFFLE
-
-	_vec = _hlslpp_shuffle_ps(c._vec, c._vec, reSwizzleMask);
+	staticAsserts();	
+	const uint32_t mask = HLSLPP_SHUFFLE_MASK(E, F, G, H);
+	const uint32_t reshuffleMask = ((mask & 3) << (2 * A)) | (((mask >> 2) & 3) << (2 * B)) | (((mask >> 4) & 3) << (2 * C)) | (((mask >> 6) & 3) << (2 * D));	// Re-swizzle with property mask
+	_vec = _hlslpp_shuffle_ps(c._vec, c._vec, reshuffleMask);
 
 	// Reference for correctness
 	//p = _mm_shuffle_ps(f.p, f.p, _MM_SHUFFLE(H, G, F, E));
