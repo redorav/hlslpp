@@ -14,10 +14,16 @@ inline float32x4_t vmov4q_n_f32(const float x, const float y, const float z, con
 	return vld1q_f32(values);
 }
 
-inline float32x4_t vmov4q_n_s32(const int x, const int y, const int z, const int w)
+inline float32x4_t vmov4q_n_s32(const int32_t x, const int32_t y, const int32_t z, const int32_t w)
 {
-	const int values[4] = { x, y, z, w };
+	const int32_t values[4] = { x, y, z, w };
 	return vld1q_s32(values);
+}
+
+inline float32x4_t vmov4q_n_u32(const uint32_t x, const uint32_t y, const uint32_t z, const uint32_t w)
+{
+	const uint32_t values[4] = { x, y, z, w };
+	return vld1q_u32(values);
 }
 
 #define _hlslpp_set1_ps(x)						vmovq_n_f32((x))
@@ -137,14 +143,14 @@ inline float32x4_t vroundq_f32(float32x4_t x)
 #define _hlslpp_andnot_ps(x, y)					vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
 #define _hlslpp_or_ps(x, y)						vreinterpretq_f32_u32(vorrq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
 
-#define _hlslpp_perm_ps(x, msk)					vpermq_f32((x), msk & 0x3, (msk >> 2) & 0x3, (msk >> 4) & 0x3, (msk >> 6) & 0x3)
-#define _hlslpp_shuffle_ps(x, y, msk)			vshufq_f32((x), (y), msk & 0x3, (msk >> 2) & 0x3, (msk >> 4) & 0x3, (msk >> 6) & 0x3)
+#define _hlslpp_perm_ps(x, msk)					vpermq_f32((x), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
+#define _hlslpp_shuffle_ps(x, y, msk)			vshufq_f32((x), (y), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
 
 #define _hlslpp_sel_ps(x, y, msk)				vbslq_f32((msk), (x), (y))
 
 // We decompose the mask and turn it into 4 floats
 // The input mask follows the format for SSE
-#define _hlslpp_blend_ps(x, y, msk)				vbslq_f32(vreinterpretq_f32_s32(vmov4q_n_s32(((msk >> 3) & 1) * 0xffffffff, ((msk >> 2) & 1) * 0xffffffff, ((msk >> 1) & 1) * 0xffffffff, (msk & 1) * 0xffffffff)), (x), (y))
+#define _hlslpp_blend_ps(x, y, msk)				vbslq_f32(vmov4q_n_u32(~((msk & 1) * 0xffffffff), ~(((msk >> 1) & 1) * 0xffffffff), ~(((msk >> 2) & 1) * 0xffffffff), ~(((msk >> 3) & 1) * 0xffffffff)), (x), (y))
 
 // Integer
 
