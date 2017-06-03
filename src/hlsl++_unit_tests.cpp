@@ -89,6 +89,21 @@ void ExhaustiveTest(uint32_t start, uint32_t stop, Transform4 TestFunc, Transfor
 	printf("%s Max Error: %1.9g, In: %.9g, Exptd: %.9g, Rslt: %1.9g.\n", desc, maxError, maxErrorInput, maxErrorRefValue, maxErrorTestValue);
 }
 
+namespace hlslppunit
+{
+	bool eq(float a, float b, float tolerance = 0.0f)
+	{
+		float error = std::abs(a - b);
+		bool withinTolerance = std::abs(a - b) <= tolerance;
+		return withinTolerance;
+	}
+
+	float div(float a, float b)
+	{
+		return a / b;
+	}
+}
+
 void RunUnitTests()
 {
 	float f1 = (float) (rand() % 1000); float f5 = (float) (rand() % 1000); float f9 =  (float) (rand() % 1000); float f13 = (float) (rand() % 1000); float f17 = (float) (rand() % 1000); 
@@ -98,8 +113,10 @@ void RunUnitTests()
 
 	// Initialization
 
-	float1 vfoo1 = float1(f1);												assert(vfoo1.x == f1);
-	float2 vfoo2 = float2(f2, f3);											assert(vfoo2.x == f2 && vfoo2.y == f3);
+	using namespace hlslppunit;
+
+	float1 vfoo1 = float1(f1);												assert(eq(vfoo1.x, f1));
+	float2 vfoo2 = float2(f2, f3);											assert(eq(vfoo2.x, f2) && eq(vfoo2.y, f3));
 	float3 vfoo3 = float3(f4, f5, f6);										assert(vfoo3.x == f4 && vfoo3.y == f5 && vfoo3.z == f6);
 	float4 vfoo4 = float4(f7, f8, f9, f10);									assert(vfoo4.x == f7 && vfoo4.y == f8 && vfoo4.z == f9 && vfoo4.w == f10);
 
@@ -291,20 +308,22 @@ void RunUnitTests()
 
 	// Division
 
-	float1 vdiv1 = vfoo1 / vbar1;											assert(vdiv1.x == (float)vfoo1.x / (float)vbar1.x);
-	float2 vdiv2 = vfoo2 / vbar2;											assert(vdiv2.x == (float)vfoo2.x / (float)vbar2.x && vdiv2.y == (float)vfoo2.y / (float)vbar2.y);
-	float3 vdiv3 = vfoo3 / vbar3;											assert(vdiv3.x == (float)vfoo3.x / (float)vbar3.x && vdiv3.y == (float)vfoo3.y / (float)vbar3.y && vdiv3.z == (float)vfoo3.z / (float)vbar3.z);
-	float4 vdiv4 = vfoo4 / vbar4;											assert(vdiv4.x == (float)vfoo4.x / (float)vbar4.x && vdiv4.y == (float)vfoo4.y / (float)vbar4.y && vdiv4.z == (float)vfoo4.z / (float)vbar4.z && vdiv4.w == (float)vfoo4.w / (float)vbar4.w);
+	float tolDiv = 1e-2f;
 
-	float1 vdiv_f_1 = vfoo1 / 0.1f;											assert(vdiv_f_1.x == (float)vfoo1.x / 0.1f);
-	float2 vdiv_f_2 = vfoo2 / 0.2f;											assert(vdiv_f_2.x == (float)vfoo2.x / 0.2f && vdiv_f_2.y == (float)vfoo2.y / 0.2f);
-	float3 vdiv_f_3 = vfoo3 / 0.3f;											assert(vdiv_f_3.x == (float)vfoo3.x / 0.3f && vdiv_f_3.y == (float)vfoo3.y / 0.3f && vdiv_f_3.z == (float)vfoo3.z / 0.3f);
-	float4 vdiv_f_4 = vfoo4 / 0.4f;											assert(vdiv_f_4.x == (float)vfoo4.x / 0.4f && vdiv_f_4.y == (float)vfoo4.y / 0.4f && vdiv_f_4.z == (float)vfoo4.z / 0.4f && vdiv_f_4.w == (float)vfoo4.w / 0.4f);
+	float1 vdiv1 = vfoo1 / vbar1;							assert(eq(vdiv1.x, div(vfoo1.x, vbar1.x), tolDiv));
+	float2 vdiv2 = vfoo2 / vbar2;							assert(eq(vdiv2.x, div(vfoo2.x, vbar2.x), tolDiv) && eq(vdiv2.y, div(vfoo2.y, vbar2.y), tolDiv));
+	float3 vdiv3 = vfoo3 / vbar3;							assert(eq(vdiv3.x, div(vfoo3.x, vbar3.x), tolDiv) && eq(vdiv3.y, div(vfoo3.y, vbar3.y), tolDiv) && eq(vdiv3.z, div(vfoo3.z, vbar3.z), tolDiv));
+	float4 vdiv4 = vfoo4 / vbar4;							assert(eq(vdiv4.x, div(vfoo4.x, vbar4.x), tolDiv) && eq(vdiv4.y, div(vfoo4.y, vbar4.y), tolDiv) && eq(vdiv4.z, div(vfoo4.z, vbar4.z), tolDiv) && eq(vdiv4.w, div(vfoo4.w, vbar4.w), tolDiv));
 
-	vdiv_f_1 /= 0.1f;														assert(vdiv_f_1.x == (float)vfoo1.x / 0.1f / 0.1f);
-	vdiv_f_2 /= 0.2f;														assert(vdiv_f_2.x == (float)vfoo2.x / 0.2f / 0.2f && vdiv_f_2.y == (float)vfoo2.y / 0.2f / 0.2f);
-	vdiv_f_3 /= 0.3f;														assert(vdiv_f_3.x == (float)vfoo3.x / 0.3f / 0.3f && vdiv_f_3.y == (float)vfoo3.y / 0.3f / 0.3f && vdiv_f_3.z == (float)vfoo3.z / 0.3f / 0.3f);
-	vdiv_f_4 /= 0.4f;														assert(vdiv_f_4.x == (float)vfoo4.x / 0.4f / 0.4f && vdiv_f_4.y == (float)vfoo4.y / 0.4f / 0.4f && vdiv_f_4.z == (float)vfoo4.z / 0.4f / 0.4f && vdiv_f_4.w == (float)vfoo4.w / 0.4f / 0.4f);
+	float1 vdiv_f_1 = vfoo1 / 0.1f;							assert(eq(vdiv_f_1.x, div(vfoo1.x, 0.1f), tolDiv));
+	float2 vdiv_f_2 = vfoo2 / 0.2f;							assert(eq(vdiv_f_2.x, div(vfoo2.x, 0.2f), tolDiv) && eq(vdiv_f_2.y, div(vfoo2.y, 0.2f), tolDiv));
+	float3 vdiv_f_3 = vfoo3 / 0.3f;							assert(eq(vdiv_f_3.x, div(vfoo3.x, 0.3f), tolDiv) && eq(vdiv_f_3.y, div(vfoo3.y, 0.3f), tolDiv) && eq(vdiv_f_3.z, div(vfoo3.z, 0.3f), tolDiv));
+	float4 vdiv_f_4 = vfoo4 / 0.4f;							assert(eq(vdiv_f_4.x, div(vfoo4.x, 0.4f), tolDiv) && eq(vdiv_f_4.y, div(vfoo4.y, 0.4f), tolDiv) && eq(vdiv_f_4.z, div(vfoo4.z, 0.4f), tolDiv) && eq(vdiv_f_4.w, div(vfoo4.w, 0.4f), tolDiv));
+
+	vdiv_f_1 /= 0.1f;										assert(eq(vdiv_f_1.x, div(div(vfoo1.x, 0.1f), 0.1f), tolDiv));
+	vdiv_f_2 /= 0.2f;										assert(eq(vdiv_f_2.x, div(div(vfoo2.x, 0.2f), 0.2f), tolDiv) && eq(vdiv_f_2.y, div(div(vfoo2.y, 0.2f), 0.2f), tolDiv));
+	vdiv_f_3 /= 0.3f;										assert(eq(vdiv_f_3.x, div(div(vfoo3.x, 0.3f), 0.3f), tolDiv) && eq(vdiv_f_3.y, div(div(vfoo3.y, 0.3f), 0.3f), tolDiv) && eq(vdiv_f_3.z, div(div(vfoo3.z, 0.3f), 0.3f), tolDiv));
+	vdiv_f_4 /= 0.4f;										assert(eq(vdiv_f_4.x, div(div(vfoo4.x, 0.4f), 0.4f), tolDiv) && eq(vdiv_f_4.y, div(div(vfoo4.y, 0.4f), 0.4f), tolDiv) && eq(vdiv_f_4.z, div(div(vfoo4.z, 0.4f), 0.4f), tolDiv) && eq(vdiv_f_4.w, div(div(vfoo4.w, 0.4f), 0.4f), tolDiv));
 
 	float1 vdiv_swiz_a_1 = vfoo1 / vbar1.x;
 	float1 vdiv_swiz_b_1 = vfoo1.r / vbar1.x;
@@ -368,6 +387,11 @@ void RunUnitTests()
 	float2 vabs2 = abs(vfoo2);												assert(vabs2.x == std::abs((float)vfoo2.x) && vabs2.y == std::abs((float)vfoo2.y));
 	float3 vabs3 = abs(vfoo3);												assert(vabs3.x == std::abs((float)vfoo3.x) && vabs3.y == std::abs((float)vfoo3.y) && vabs3.z == std::abs((float)vfoo3.z));
 	float4 vabs4 = abs(vfoo4);												assert(vabs4.x == std::abs((float)vfoo4.x) && vabs4.y == std::abs((float)vfoo4.y) && vabs4.z == std::abs((float)vfoo4.z) && vabs4.w == std::abs((float)vfoo4.w));
+
+	vfoo1 = abs(vfoo1);
+	vfoo2 = abs(vfoo2);
+	vfoo3 = abs(vfoo3);
+	vfoo4 = abs(vfoo4);
 
 	float1 vabs_swiz_1 = abs(vfoo1.r);										assert(vabs_swiz_1.x == std::abs((float)vfoo1.x));
 	float2 vabs_swiz_2 = abs(vfoo2.yx);										assert(vabs_swiz_2.x == std::abs((float)vfoo2.g) && vabs_swiz_2.y == std::abs((float)vfoo2.r));

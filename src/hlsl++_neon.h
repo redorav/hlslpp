@@ -2,6 +2,8 @@
 
 #include <arm_neon.h>
 
+// For NEON version check flags, see https://github.com/magnumripper/JohnTheRipper/issues/1998
+
 using n128 = float32x4_t;
 using n128i = int32x4_t;
 
@@ -101,11 +103,37 @@ inline float32x4_t vroundq_f32(float32x4_t x)
 	return result;
 }
 
+inline float32x4_t vrsqrtq_f32(float32x4_t x)
+{
+	float32x4_t e = vrsqrteq_f32(x);								// Calculate a first estimate of the rsqrt
+	e = vmulq_f32(e, vrsqrtsq_f32(vmulq_f32(e, x), e));				// First Newton-Raphson iteration
+	e = vmulq_f32(e, vrsqrtsq_f32(vmulq_f32(e, x), e));				// Second Newton-Raphson iteration
+	return e;
+}
+
+#if __ARM_ARCH <= 7
+
+inline float32x4_t vsqrtq_f32(float32x4_t x)
+{
+	uint32x4_t cmpZero = vceqq_f32(x, vmovq_n_f32(0.0f));							// Sqrt of 0 is NaN (since we use rsqrt to compute it) which is incorrect but we still want it to go NaN on negatives
+	float32x4_t sqrt = vmulq_f32(x, vrsqrtq_f32(x));								// Multiply by x to get x * rqsrt(x)
+	return vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32(sqrt), cmpZero));	// Select 0 if input is 0
+}
+
+inline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
+{
+	float32x4_t rcpy_e = vrecpeq_f32(y);					// Calculate a first estimate of the rcp
+	rcpy_e = vmulq_f32(rcpy_e, vrecpsq_f32(y, rcpy_e));		// Refine
+	rcpy_e = vmulq_f32(rcpy_e, vrecpsq_f32(y, rcpy_e));		// Refine
+	return vmulq_f32(x, rcpy_e);							// Multiply by x
+}
+
+#endif
+
 #define _hlslpp_add_ps(x, y)					vaddq_f32((x), (y))
 #define _hlslpp_sub_ps(x, y)					vsubq_f32((x), (y))
 #define _hlslpp_mul_ps(x, y)					vmulq_f32((x), (y))
-#define _hlslpp_div_ps(x, y)					vmulq_f32((x), vrecpeq_f32((y)))
-
+#define _hlslpp_div_ps(x, y)					vdivq_f32(x, y)
 #define _hlslpp_neg_ps(x)						veorq_u32(vreinterpretq_u32_f32((x)), vmovq_n_u32(0x80000000u))
 
 #define _hlslpp_madd_ps(x, y, z)				vmlaq_f32((z), (x), (y))
@@ -113,8 +141,8 @@ inline float32x4_t vroundq_f32(float32x4_t x)
 
 #define _hlslpp_abs_ps(x)						vabsq_f32((x))
 
-#define _hlslpp_sqrt_ps(x)						vrecpeq_f32(vrsqrteq_f32((x)))
-#define _hlslpp_rsqrt_ps(x)						vrsqrteq_f32((x))
+#define _hlslpp_sqrt_ps(x)						vsqrtq_f32((x))
+#define _hlslpp_rsqrt_ps(x)						vrsqrtq_f32((x))
 
 #define _hlslpp_cmpeq_ps(x, y)					vceqq_f32((x), (y))
 #define _hlslpp_cmpneq_ps(x, y)					veorq_u32(vreinterpretq_u32_f32(vceqq_f32((x), (y))), vmovq_n_u32(0xffffffffu))
