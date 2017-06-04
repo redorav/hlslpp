@@ -1510,7 +1510,7 @@ public:
 	template<int A, int B> floatN<3>(const component1<A>& v1,	const float1& v2,			const component1<B>& v3)	: floatN<3>(float1(v1), v2, float1(v3)) {}
 	template<int A, int B> floatN<3>(const component1<A>& v1,	const component1<B>& v2,	const float1& v3)			: floatN<3>(float1(v1), float1(v2), v3) {}
 
-	template<int A, int B> floatN<3>(const float1& v1,	const component2<A, B>& v3)	: floatN<3>(v1, float2(v2)) {}
+	template<int A, int B> floatN<3>(const float1& v1,	const component2<A, B>& v2)	: floatN<3>(v1, float2(v2)) {}
 	template<int A, int B> floatN<3>(const component2<A, B>& v1, const float1& v2)	: floatN<3>(float2(v1), v2) {}
 
 	// float + componentN constructors
