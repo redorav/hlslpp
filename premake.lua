@@ -58,6 +58,14 @@ workspace "hlsl++"
 			buildoptions { "-Wno-unused-variable -msse4.1" }
 	
 	end
+	
+	configuration "Debug"
+		defines { "DEBUG" }
+		symbols "on"
+
+	configuration "Release"
+		defines { "NDEBUG" }
+		optimize "on"
 
 project "hlsl++"
 	kind("StaticLib")
