@@ -117,42 +117,98 @@ void RunUnitTests()
 
 	float1 vfoo1 = float1(f1);												assert(eq(vfoo1.x, f1));
 	float2 vfoo2 = float2(f2, f3);											assert(eq(vfoo2.x, f2) && eq(vfoo2.y, f3));
-	float3 vfoo3 = float3(f4, f5, f6);										assert(vfoo3.x == f4 && vfoo3.y == f5 && vfoo3.z == f6);
-	float4 vfoo4 = float4(f7, f8, f9, f10);									assert(vfoo4.x == f7 && vfoo4.y == f8 && vfoo4.z == f9 && vfoo4.w == f10);
+	float3 vfoo3 = float3(f4, f5, f6);										assert(eq(vfoo3.x, f4) && eq(vfoo3.y, f5) && eq(vfoo3.z, f6));
+	float4 vfoo4 = float4(f7, f8, f9, f10);									assert(eq(vfoo4.x, f7) && eq(vfoo4.y, f8) && eq(vfoo4.z, f9) && eq(vfoo4.w, f10));
 
-	vfoo1 = float1(f1);														assert(vfoo1.x == f1);
-	vfoo2 = float2(f2, f3);													assert(vfoo2.x == f2 && vfoo2.y == f3);
-	vfoo3 = float3(f4, f5, f6);												assert(vfoo3.x == f4 && vfoo3.y == f5 && vfoo3.z == f6);
-	vfoo4 = float4(f7, f8, f9, f10);										assert(vfoo4.x == f7 && vfoo4.y == f8 && vfoo4.z == f9 && vfoo4.w == f10);
+	vfoo1 = float1(f1);														assert(eq(vfoo1.x, f1));
+	vfoo2 = float2(f2, f3);													assert(eq(vfoo2.x, f2) && eq(vfoo2.y, f3));
+	vfoo3 = float3(f4, f5, f6);												assert(eq(vfoo3.x, f4) && eq(vfoo3.y, f5) && vfoo3.z == f6);
+	vfoo4 = float4(f7, f8, f9, f10);										assert(eq(vfoo4.x, f7) && eq(vfoo4.y, f8) && vfoo4.z == f9 && vfoo4.w == f10);
 
-	float1 vbar1 = vfoo1.x;													assert(vbar1.x == f1);
-	float2 vbar2 = vfoo2.gr;												assert(vbar2.x == f3 && vbar2.y == f2);
-	float3 vbar3 = vfoo3.zyx;												assert(vbar3.x == f6 && vbar3.y == f5 && vbar3.z == f4);
-	float4 vbar4 = vfoo4.bgra;												assert(vbar4.x == f9 && vbar4.y == f8 && vbar4.z == f7 && vbar4.w == f10);
+	float1 vbar1 = vfoo1.x;													assert(eq(vbar1.x, f1));
+	float2 vbar2 = vfoo2.gr;												assert(eq(vbar2.x, f3) && eq(vbar2.y, f2));
+	float3 vbar3 = vfoo3.zyx;												assert(eq(vbar3.x, f6) && eq(vbar3.y, f5) && eq(vbar3.z, f4));
+	float4 vbar4 = vfoo4.bgra;												assert(eq(vbar4.x, f9) && eq(vbar4.y, f8) && eq(vbar4.z, f7) && eq(vbar4.w, f10));
 
-	vbar1 = f11;															assert(vbar1.x == f11);
-	vbar2 = float2(f12, f13);												assert(vbar2.x == f12 && vbar2.y == f13);
-	vbar3 = float3(f14, f15, f16);											assert(vbar3.x == f14 && vbar3.y == f15 && vbar3.z == f16);
-	vbar4 = float4(f17, f18, f19, f20);										assert(vbar4.x == f17 && vbar4.y == f18 && vbar4.z == f19 && vbar4.w == f20);
+	vbar1 = f11;															assert(eq(vbar1.x, f11));
+	vbar2 = float2(f12, f13);												assert(eq(vbar2.x, f12) && eq(vbar2.y, f13));
+	vbar3 = float3(f14, f15, f16);											assert(eq(vbar3.x, f14) && eq(vbar3.y, f15) && eq(vbar3.z, f16));
+	vbar4 = float4(f17, f18, f19, f20);										assert(eq(vbar4.x, f17) && eq(vbar4.y, f18) && eq(vbar4.z, f19) && eq(vbar4.w, f20));
 
-	float1 vbaz1 = float1(0.2f);											assert(vbaz1.x == 0.2f);
-	float2 vbaz2 = float2(0.3f, 0.7f);										assert(vbaz2.x == 0.3f && vbaz2.y == 0.7f);
-	float3 vbaz3 = float3(0.1f, 0.4f, 0.8f);								assert(vbaz3.x == 0.1f && vbaz3.y == 0.4f && vbaz3.z == 0.8f);
-	float4 vbaz4 = float4(0.0f, 0.2f, 0.6f, 1.0f);							assert(vbaz4.x == 0.0f && vbaz4.y == 0.2f && vbaz4.z == 0.6f && vbaz4.w == 1.0f);
+	float1 vbaz1 = float1(0.2f);											assert(eq(vbaz1.x, 0.2f));
+	float2 vbaz2 = float2(0.3f, 0.7f);										assert(eq(vbaz2.x, 0.3f) && eq(vbaz2.y, 0.7f));
+	float3 vbaz3 = float3(0.1f, 0.4f, 0.8f);								assert(eq(vbaz3.x, 0.1f) && eq(vbaz3.y, 0.4f) && eq(vbaz3.z, 0.8f));
+	float4 vbaz4 = float4(0.0f, 0.2f, 0.6f, 1.0f);							assert(eq(vbaz4.x, 0.0f) && eq(vbaz4.y, 0.2f) && eq(vbaz4.z, 0.6f) && eq(vbaz4.w, 1.0f));
 
-	float2 vfoo_mix_2 = float2(vfoo1, vbar1);								assert(((float)vfoo_mix_2.x == (float)vfoo1.x) && ((float)vfoo_mix_2.y == (float)vbar1.x));
+	float2 vfoo_mix_2_a	= float2(vfoo1, vbar1);								assert(eq(vfoo_mix_2_a.x, vfoo1) && eq(vfoo_mix_2_a.y, vbar1));
+	float2 vfoo_mix_2_b	= float2(vfoo2.y, vbar1);							assert(eq(vfoo_mix_2_b.x, vfoo2.y) && eq(vfoo_mix_2_b.y, vbar1));
+	float2 vfoo_mix_2_c	= float2(vfoo1, vbar1.x);							assert(eq(vfoo_mix_2_c.x, vfoo1) && eq(vfoo_mix_2_c.y, vbar1.x));
+	float2 vfoo_mix_2_d	= float2(vfoo1.x, vbar2.y);							assert(eq(vfoo_mix_2_d.x, vfoo1.x) && eq(vfoo_mix_2_d.y, vbar2.y));
 
-	float3 vfoo_mix_3_a = float3(vfoo1, vbar1, vbaz1);						assert((float)vfoo_mix_3_a.x == (float)vfoo1.x && (float)vfoo_mix_3_a.y == (float)vbar1.x && (float)vfoo_mix_3_a.z == (float)vbaz1.x);
-	float3 vfoo_mix_3_b = float3(vfoo2, vbar1);								assert((float)vfoo_mix_3_b.x == (float)vfoo2.x && (float)vfoo_mix_3_b.y == (float)vfoo2.y && (float)vfoo_mix_3_b.z == (float)vbar1.x);
-	float3 vfoo_mix_3_c = float3(vbar1, vbar2);								assert((float)vfoo_mix_3_c.x == (float)vbar1.x && (float)vfoo_mix_3_c.y == (float)vbar2.x && (float)vfoo_mix_3_c.z == (float)vbar2.y);
+	float2 vfoo_mix_2_f_a = float2(vfoo1, f1);								assert(eq(vfoo_mix_2_f_a.x, vfoo1.x) && eq(vfoo_mix_2_f_a.y, f1));
+	float2 vfoo_mix_2_f_b = float2(f2, vbar1);								assert(eq(vfoo_mix_2_f_b.x, f2) && eq(vfoo_mix_2_f_b.y, vbar1));
+	float2 vfoo_mix_2_f_c = float2(vfoo2.y, f1);							assert(eq(vfoo_mix_2_f_c.x, vfoo2.y) && eq(vfoo_mix_2_f_c.y, f1));
+	float2 vfoo_mix_2_f_d = float2(f2, vbar3.z);							assert(eq(vfoo_mix_2_f_d.x, f2) && eq(vfoo_mix_2_f_d.y, vbar3.z));
+	float2 vfoo_mix_2_f_e = float2(f3, f4);									assert(eq(vfoo_mix_2_f_e.x, f3) && eq(vfoo_mix_2_f_e.y, f4));
 
-	float4 vfoo_mix_4_a = float4(vbaz1, vbaz2.x, vbaz3.y, 0.5f);			assert((float)vfoo_mix_4_a.x == (float)vbaz1.x && (float)vfoo_mix_4_a.y == (float)vbaz2.x && (float)vfoo_mix_4_a.z == (float)vbaz3.y && (float)vfoo_mix_4_a.w == 0.5f);
+	float3 vfoo_mix_3_a = float3(vfoo1, vbar1, vbaz1);						assert(eq(vfoo_mix_3_a.x, vfoo1.x) && eq(vfoo_mix_3_a.y, vbar1.x) && eq(vfoo_mix_3_a.z, vbaz1.x));
+	float3 vfoo_mix_3_b = float3(vfoo2, vbar1);								assert(eq(vfoo_mix_3_b.x, vfoo2.x) && eq(vfoo_mix_3_b.y, vfoo2.y) && eq(vfoo_mix_3_b.z, vbar1.x));
+	float3 vfoo_mix_3_c = float3(vbar1, vbar2);								assert(eq(vfoo_mix_3_c.x, vbar1.x) && eq(vfoo_mix_3_c.y, vbar2.x) && eq(vfoo_mix_3_c.z, vbar2.y));
+
+	float3 vfoo_mix_3_d = float3(vfoo1, vbar1, vbaz1.x);					assert(eq(vfoo_mix_3_d.x, vfoo1.x) && eq(vfoo_mix_3_d.y, vbar1.x) && eq(vfoo_mix_3_d.z, vbaz1.x));
+	float3 vfoo_mix_3_e = float3(vfoo1, vbar1.x, vbaz1);					assert(eq(vfoo_mix_3_e.x, vfoo1.x) && eq(vfoo_mix_3_e.y, vbar1.x) && eq(vfoo_mix_3_e.z, vbaz1.x));
+	float3 vfoo_mix_3_f = float3(vfoo1.x, vbar1, vbaz1);					assert(eq(vfoo_mix_3_f.x, vfoo1.x) && eq(vfoo_mix_3_f.y, vbar1.x) && eq(vfoo_mix_3_f.z, vbaz1.x));
+
+	float3 vfoo_mix_3_g = float3(vfoo1, vbar1.x, vbaz1.x);					assert(eq(vfoo_mix_3_g.x, vfoo1.x) && eq(vfoo_mix_3_g.y, vbar1.x) && eq(vfoo_mix_3_g.z, vbaz1.x));
+	float3 vfoo_mix_3_h = float3(vfoo1.x, vbar1, vbaz1.x);					assert(eq(vfoo_mix_3_h.x, vfoo1.x) && eq(vfoo_mix_3_h.y, vbar1.x) && eq(vfoo_mix_3_h.z, vbaz1.x));
+	float3 vfoo_mix_3_i = float3(vfoo1.x, vbar1.x, vbaz1);					assert(eq(vfoo_mix_3_i.x, vfoo1.x) && eq(vfoo_mix_3_i.y, vbar1.x) && eq(vfoo_mix_3_i.z, vbaz1.x));
+	float3 vfoo_mix_3_j = float3(vfoo1.x, vbar1.x, vbaz1.x);				assert(eq(vfoo_mix_3_j.x, vfoo1.x) && eq(vfoo_mix_3_j.y, vbar1.x) && eq(vfoo_mix_3_j.z, vbaz1.x));
+	
+	float3 vfoo_mix_3_f_a = float3(vfoo1, vbar1, f1);						assert(eq(vfoo_mix_3_f_a.x, vfoo1.x) && eq(vfoo_mix_3_f_a.y, vbar1.x) && eq(vfoo_mix_3_f_a.z, f1));
+	float3 vfoo_mix_3_f_b = float3(vfoo1, f1, vbaz1);						assert(eq(vfoo_mix_3_f_b.x, vfoo1.x) && eq(vfoo_mix_3_f_b.y, f1) && eq(vfoo_mix_3_f_b.z, vbaz1.x));
+	float3 vfoo_mix_3_f_c = float3(f1, vbar1, vbaz1);						assert(eq(vfoo_mix_3_f_c.x, f1) && eq(vfoo_mix_3_f_c.y, vbar1.x) && eq(vfoo_mix_3_f_c.z, vbaz1.x));
+
+	float3 vfoo_mix_3_f_d = float3(vfoo1, f1, f2);							assert(eq(vfoo_mix_3_f_d.x, vfoo1.x) && eq(vfoo_mix_3_f_d.y, f1) && eq(vfoo_mix_3_f_d.z, f2));
+	float3 vfoo_mix_3_f_e = float3(f1, vbar1, f2);							assert(eq(vfoo_mix_3_f_e.x, f1) && eq(vfoo_mix_3_f_e.y, vbar1.x) && eq(vfoo_mix_3_f_e.z, f2));
+	float3 vfoo_mix_3_f_f = float3(f1, f2, vbaz1);							assert(eq(vfoo_mix_3_f_f.x, f1) && eq(vfoo_mix_3_f_f.y, f2) && eq(vfoo_mix_3_f_f.z, vbaz1));
+
+	float3 vfoo_mix_3_f_g = float3(vfoo1.x, f1, f2);						assert(eq(vfoo_mix_3_f_g.x, vfoo1.x) && eq(vfoo_mix_3_f_g.y, f1) && eq(vfoo_mix_3_f_g.z, f2));
+	float3 vfoo_mix_3_f_h = float3(f1, vbar2.y, f2);						assert(eq(vfoo_mix_3_f_h.x, f1) && eq(vfoo_mix_3_f_h.y, vbar2.y) && eq(vfoo_mix_3_f_h.z, f2));
+	float3 vfoo_mix_3_f_i = float3(f1, f2, vbaz3.z);						assert(eq(vfoo_mix_3_f_i.x, f1) && eq(vfoo_mix_3_f_i.y, f2) && eq(vfoo_mix_3_f_i.z, vbaz3.z));
+
+	float3 vfoo_mix_3_f_j = float3(vfoo1.x, vbar2.y, f2);					assert(eq(vfoo_mix_3_f_j.x, vfoo1.x) && eq(vfoo_mix_3_f_j.y, vbar2.y) && eq(vfoo_mix_3_f_j.z, f2));
+	float3 vfoo_mix_3_f_k = float3(f1, vbar2.y, vbaz3.x);					assert(eq(vfoo_mix_3_f_k.x, f1) && eq(vfoo_mix_3_f_k.y, vbar2.y) && eq(vfoo_mix_3_f_k.z, vbaz3.x));
+	float3 vfoo_mix_3_f_l = float3(vfoo1.x, f2, vbaz3.z);					assert(eq(vfoo_mix_3_f_l.x, vfoo1.x) && eq(vfoo_mix_3_f_l.y, f2) && eq(vfoo_mix_3_f_l.z, vbaz3.z));
+
+	float3 vfoo_mix_3_f_m = float3(vfoo2, f1);								assert(eq(vfoo_mix_3_f_m.x, vfoo2.x) && eq(vfoo_mix_3_f_m.y, vfoo2.y) && eq(vfoo_mix_3_f_m.z, f1));
+	float3 vfoo_mix_3_f_n = float3(f2, vbar2);								assert(eq(vfoo_mix_3_f_n.x, f2) && eq(vfoo_mix_3_f_n.y, vbar2.x) && eq(vfoo_mix_3_f_n.z, vbar2.y));
+
+	float3 vfoo_mix_3_f_o = float3(vfoo2.xy, f1);							assert(eq(vfoo_mix_3_f_o.x, vfoo2.x) && eq(vfoo_mix_3_f_o.y, vfoo2.y) && eq(vfoo_mix_3_f_o.z, f1));
+	float3 vfoo_mix_3_f_p = float3(f2, vbar2.xy);							assert(eq(vfoo_mix_3_f_p.x, f2) && eq(vfoo_mix_3_f_p.y, vbar2.x) && eq(vfoo_mix_3_f_p.z, vbar2.y));
+
+	float4 vfoo_mix_4_a = float4(vbaz1, vbaz2.x, vbaz3.x, 0.5f);			assert((float)vfoo_mix_4_a.x == (float)vbaz1.x && (float)vfoo_mix_4_a.y == (float)vbaz2.x && (float)vfoo_mix_4_a.z == (float)vbaz3.x && (float)vfoo_mix_4_a.w == 0.5f);
 	float4 vfoo_mix_4_b = float4(vbaz1, vbaz3);								assert((float)vfoo_mix_4_b.x == (float)vbaz1.x && (float)vfoo_mix_4_b.y == (float)vbaz3.x && (float)vfoo_mix_4_b.z == (float)vbaz3.y && (float)vfoo_mix_4_b.w == (float)vbaz3.z);
 	float4 vfoo_mix_4_c = float4(vbaz3, vbaz1);								assert((float)vfoo_mix_4_c.x == (float)vbaz3.x && (float)vfoo_mix_4_c.y == (float)vbaz3.y && (float)vfoo_mix_4_c.z == (float)vbaz3.z && (float)vfoo_mix_4_c.w == (float)vbaz1.x);
 	float4 vfoo_mix_4_d = float4(vbaz2, vbar2);								assert((float)vfoo_mix_4_d.x == (float)vbaz2.x && (float)vfoo_mix_4_d.y == (float)vbaz2.y && (float)vfoo_mix_4_d.z == (float)vbar2.x && (float)vfoo_mix_4_d.w == (float)vbar2.y);
 	float4 vfoo_mix_4_e = float4(vbaz2, vbar1, vbaz1);						assert((float)vfoo_mix_4_e.x == (float)vbaz2.x && (float)vfoo_mix_4_e.y == (float)vbaz2.y && (float)vfoo_mix_4_e.z == (float)vbar1.x && (float)vfoo_mix_4_e.w == (float)vbaz1.x);
 	float4 vfoo_mix_4_f = float4(vbar1, vbaz2, vbaz1);						assert((float)vfoo_mix_4_f.x == (float)vbar1.x && (float)vfoo_mix_4_f.y == (float)vbaz2.x && (float)vfoo_mix_4_f.z == (float)vbaz2.y && (float)vfoo_mix_4_f.w == (float)vbaz1.x);
 	float4 vfoo_mix_4_g = float4(vbar1, vbaz1, vbaz2);						assert((float)vfoo_mix_4_g.x == (float)vbar1.x && (float)vfoo_mix_4_g.y == (float)vbaz1.x && (float)vfoo_mix_4_g.z == (float)vbaz2.x && (float)vfoo_mix_4_g.w == (float)vbaz2.y);
+
+	float4 vfoo_mix_4_f_a = float4(f1, vfoo1, vbar1, vbaz1);
+	float4 vfoo_mix_4_f_b = float4(f2, f3, vbar1, vbaz1);
+	float4 vfoo_mix_4_f_c = float4(f4, f5, f6, vbaz1);
+
+	float4 vfoo_mix_4_f_d = float4(f1, vfoo1.x, vbar2.y, vbaz3.z);
+	float4 vfoo_mix_4_f_e = float4(f2, f3, vbar2.y, vbaz3.z);
+	float4 vfoo_mix_4_f_f = float4(f4, f5, f6, vbaz3.z);
+	
+	float4 vfoo_mix_4_f_g = float4(f1, vfoo1, vbar2.y, vbaz3.z);
+	float4 vfoo_mix_4_f_h = float4(f2, vfoo1, vbar1, vbaz3.z);
+	float4 vfoo_mix_4_f_i = float4(f3, vfoo1.x, vbar1, vbaz3.z);
+	float4 vfoo_mix_4_f_j = float4(f4, vfoo1.x, vbar2.y, vbaz1);
+
+	float4 vfoo_mix_4_f_k = float4(f1, f2, vbar1, vbaz3.z);
+	float4 vfoo_mix_4_f_l = float4(f3, f4, vbar2.y, vbaz1);
 
 	// Assignment and swizzle
 
@@ -180,7 +236,7 @@ void RunUnitTests()
 
 	// Addition
 
-	float1 vadd1 = vfoo1 + vbar1;											assert(vadd1.x == (float)vfoo1.x + (float)vbar1.x);
+	float1 vadd1 = vfoo1 + vbar1;											assert(vadd1.x == (float)vfoo1.x + (float)vbar1.x); 
 	float2 vadd2 = vfoo2 + vbar2;											assert(vadd2.x == (float)vfoo2.x + (float)vbar2.x && vadd2.y == (float)vfoo2.y + (float)vbar2.y);
 	float3 vadd3 = vfoo3 + vbar3;											assert(vadd3.x == (float)vfoo3.x + (float)vbar3.x && vadd3.y == (float)vfoo3.y + (float)vbar3.y && vadd3.z == (float)vfoo3.z + (float)vbar3.z);
 	float4 vadd4 = vfoo4 + vbar4;											assert(vadd4.x == (float)vfoo4.x + (float)vbar4.x && vadd4.y == (float)vfoo4.y + (float)vbar4.y && vadd4.z == (float)vfoo4.z + (float)vbar4.z && vadd4.w == (float)vfoo4.w + (float)vbar4.w);
