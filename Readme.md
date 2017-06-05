@@ -24,7 +24,7 @@ float4 myTransformedVector = mul(fooMatrix4x4, baz4);
 
 The natvis files provided for Visual Studio debugging allow you to see both vectors and the result of the swizzling in the debugging window in a programmer-friendly way.
 
-![Alt text](/github/images/swizzle_natvis_preview.png?raw=true "Swizzle Natvis Preview")
+<img align="center" src="/github/images/swizzle_natvis_preview.png?raw=true" alt="Swizzle Natvis Preview">
 
 # Requirements
 
