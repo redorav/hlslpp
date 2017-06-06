@@ -15,10 +15,10 @@ float3 bar3 = foo4.xzy;
 float2 logFoo2 = log(bar3.xz);
 foo4.wx = logFoo2.yx;
 float4 baz4 = float4(logFoo2, foo4.zz);
-float4x4 fooMatrix4x4 = float4x4(	1, 2, 3, 4,
-									5, 6, 7, 8,
-									8, 7, 6, 5,
-									4, 3, 2, 1);
+float4x4 fooMatrix4x4 = float4x4( 1, 2, 3, 4,
+                                  5, 6, 7, 8,
+                                  8, 7, 6, 5,
+                                  4, 3, 2, 1);
 float4 myTransformedVector = mul(fooMatrix4x4, baz4);
 ```
 
