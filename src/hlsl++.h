@@ -4224,5 +4224,3 @@ hlslpp_forceinline void store(const float4x4& m, float* f)
 {
 	_hlslpp_store4x4_ps(f, m._vec0, m._vec1, m._vec2, m._vec3);
 }
-
-#include "hlsl++_quaternion.h"
