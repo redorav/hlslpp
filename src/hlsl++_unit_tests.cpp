@@ -104,6 +104,38 @@ namespace hlslppunit
 	}
 }
 
+class Timer
+{
+private:
+	//LARGE_INTEGER m_startTime, m_endTime, m_elapsedMicroseconds;
+	//LARGE_INTEGER m_frequency;
+	std::chrono::high_resolution_clock::time_point m_startTime;
+	std::chrono::high_resolution_clock::time_point m_endTime;
+
+public:
+	void Start()
+	{
+		//QueryPerformanceFrequency(&m_frequency);
+		//QueryPerformanceCounter(&m_startTime);
+
+		m_startTime = std::chrono::high_resolution_clock::now();
+	}
+
+	double Get()
+	{
+		//QueryPerformanceCounter(&m_endTime);
+		//m_elapsedMicroseconds.QuadPart = m_endTime.QuadPart - m_startTime.QuadPart;
+		//m_elapsedMicroseconds.QuadPart *= 1000000;
+		//m_elapsedMicroseconds.QuadPart /= m_frequency.QuadPart;
+		//
+		//return double(m_elapsedMicroseconds.QuadPart) / 1.0e6;
+
+		m_endTime = std::chrono::high_resolution_clock::now();
+
+		return std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count() / 1e9f;
+	}
+};
+
 void RunUnitTests()
 {
 	float f1 = (float) (rand() % 1000); float f5 = (float) (rand() % 1000); float f9 =  (float) (rand() % 1000); float f13 = (float) (rand() % 1000); float f17 = (float) (rand() % 1000); 
@@ -1267,6 +1299,28 @@ void RunUnitTests()
 	float3x3 mat_inv_3x3 = inverse(mat_foo_3x3);
 	float4x4 mat_inv_4x4 = inverse(mat_foo_4x4);
 
+	quaternion quat0(f5, f6, f7, f8);
+	quaternion quat1(f1, f2, f3, f4);
+
+	quaternion quat_add = quat0 + quat1;
+	quaternion quat_mul = quat0 * quat1;
+
+	float4 vec40(f5, f6, f7, f8);
+	float4 vec41(f1, f2, f3, f4);
+
+ 	float4 vec4_mul = vec40 * vec41;
+	Timer timer;
+	timer.Start();
+	for (uint32_t i = 0; i < 1000000000; ++i)
+	{
+		vec4_mul = sin(vec4_mul);
+	}
+	double elapsed = timer.Get();
+
+	//float4 vec4_add = vec40 + vec41;
+	//float4 vec4_mul = vec4_add * vec4_add;
+
+	printf("%f%f%f%f%f", (float)quat_mul.x, (float)quat_mul.y, (float)quat_mul.z, (float)quat_mul.w, (float)elapsed);
 }
 
 void RunExperiments()
@@ -1326,7 +1380,7 @@ void RunExperiments()
 	//ExhaustiveTest(0, (uint32_t)maxfloatasint.i, _mm_atan_ps, std::atan, "atan");
 	//ExhaustiveTest(signBit, signBit | (uint32_t)maxfloatasint.i, _mm_atan_ps, std::atan, "atan");
 
-	
+
 // 	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_sin_ps, std::sin, "sin");
 // 	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_sin_ps, std::sin, "sin");
 // 
@@ -1339,39 +1393,6 @@ void RunExperiments()
 // 	ExhaustiveTest((uint32_t)minfloatasint.i, (uint32_t)maxfloatasint.i, _hlslpp_exp_ps, std::exp2, "exp2");
 // 	ExhaustiveTest(signBit | minfloatasint.i, signBit | (uint32_t)maxfloatasint.i, _hlslpp_exp2_ps, std::exp2, "exp2");
 }
-
-class Timer
-{
-private:
-	//LARGE_INTEGER m_startTime, m_endTime, m_elapsedMicroseconds;
-	//LARGE_INTEGER m_frequency;
-	std::chrono::high_resolution_clock::time_point m_startTime;
-	std::chrono::high_resolution_clock::time_point m_endTime;
-
-public:
-	void Start()
-	{
-		//QueryPerformanceFrequency(&m_frequency);
-		//QueryPerformanceCounter(&m_startTime);
-
-		m_startTime = std::chrono::high_resolution_clock::now();
-	}
-
-	double Get()
-	{
-		//QueryPerformanceCounter(&m_endTime);
-		//m_elapsedMicroseconds.QuadPart = m_endTime.QuadPart - m_startTime.QuadPart;
-		//m_elapsedMicroseconds.QuadPart *= 1000000;
-		//m_elapsedMicroseconds.QuadPart /= m_frequency.QuadPart;
-		//
-		//return double(m_elapsedMicroseconds.QuadPart) / 1.0e6;
-
-		m_endTime = std::chrono::high_resolution_clock::now();
-
-		return std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count() / 1e9f;
-	}
-};
-
 
 struct Vector4
 {
