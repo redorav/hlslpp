@@ -27,6 +27,7 @@ using n128i = __m128i;
 
 #define _hlslpp_madd_ps(x, y, z)				_mm_add_ps(_mm_mul_ps((x), (y)), (z))
 #define _hlslpp_msub_ps(x, y, z)				_mm_sub_ps(_mm_mul_ps((x), (y)), (z))
+#define _hlslpp_subm_ps(x, y, z)				_mm_sub_ps((x), _mm_mul_ps((y), (z)))
 
 // Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
 #define _hlslpp_abs_ps(x)						_mm_and_ps(f4absMask, (x))

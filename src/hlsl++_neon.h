@@ -138,6 +138,7 @@ inline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
 
 #define _hlslpp_madd_ps(x, y, z)				vmlaq_f32((z), (x), (y))
 #define _hlslpp_msub_ps(x, y, z)				_hlslpp_neg_ps(vmlsq_f32((z), (x), (y))) // Negate because vmlsq_f32 does z - x * y and we want x * y - z
+#define _hlslpp_subm_ps(x, y, z)				vmlsq_f32((z), (x), (y))
 
 #define _hlslpp_abs_ps(x)						vabsq_f32((x))
 
