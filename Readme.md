@@ -35,6 +35,10 @@ Required features for the library to compile are C++11, and SSE4.1 for x86/64 an
 * I use some features of C++11 such as anonymous unions and some template extensions that would make it more complicated to implement in previous versions of C++.
 * I also use specific SSE4.1 intrinsics such as _mm_blend_ps and _mm_round_ps that make the code faster and easier to develop. Since it's aimed at game developers and most modern consoles and computers support it I though it best not to carry SSE2 implementations of these functions without justification. In some cases I have made conscious decisions to keep SSE2 versions of functions, such as the dot product, because my tests showed they were faster than the SSE4 equivalent (_mm_dp_ps in this case)
 
+# How to use
+
+Simply include hlsl++.h in your project and add an include path to the src directory. Do not include any of the other files as those get included as appropriate by the main header file. 
+
 # Features
 
 * float1, float2, float3, float4 types

@@ -1406,18 +1406,19 @@ public:
 	{
 		n128 _vec;
 		#include "swizzle/hlsl++_vector_x.h"
+		#include "swizzle/hlsl++_vector_r.h"
 	};
 
 	explicit floatN<1>(n128 vec) : _vec(vec) {}
 	floatN<1>() {}
 	/*explicit*/ floatN<1>(float f) : _vec(_hlslpp_set_ps(f, 0.0f, 0.0f, 0.0f)) {}
-	floatN<1>(const floatN<1>& v) : _vec(v._vec) {}
+	floatN<1>(const float1& v) : _vec(v._vec) {}
 	template<int A>
 	floatN<1>(const component1<A>& c);
-	explicit floatN<1>(const floatNxM<1, 1>& v);
+	explicit floatN<1>(const float1x1& v);
 
 	floatN<1>& operator = (float f);
-	floatN<1>& operator = (const floatN<1>& c);
+	floatN<1>& operator = (const float1& c);
 	template<int A>
 	floatN<1>& operator = (const component1<A>& c);
 	floatN<1>& operator = (const float1x1& m);
@@ -1440,15 +1441,17 @@ public:
 	{
 		n128 _vec;
 		#include "swizzle/hlsl++_vector_x.h"
+		#include "swizzle/hlsl++_vector_r.h"
 		#include "swizzle/hlsl++_vector_y.h"
+		#include "swizzle/hlsl++_vector_g.h"
 	};
 
 	explicit floatN<2>(n128 vec) : _vec(vec) {}
 	floatN<2>() {}
 	explicit floatN<2>(float f) : _vec(_hlslpp_set_ps(f, f, 0.0f, 0.0f)) {}
 	floatN<2>(float x, float y) : _vec(_hlslpp_set_ps(x, y, 0.0f, 0.0f)) {}
-	floatN<2>(const floatN<2>& v) : _vec(v._vec) {}
-	floatN<2>(const floatN<1>& v1,	const floatN<1>& v2);
+	floatN<2>(const float2& v) : _vec(v._vec) {}
+	floatN<2>(const float1& v1,	const float1& v2);
 	
 	explicit floatN<2>(const float2x1& v);
 	explicit floatN<2>(const float1x2& v);
@@ -1478,6 +1481,9 @@ public:
 		#include "swizzle/hlsl++_vector_x.h"
 		#include "swizzle/hlsl++_vector_y.h"
 		#include "swizzle/hlsl++_vector_z.h"
+		#include "swizzle/hlsl++_vector_r.h"
+		#include "swizzle/hlsl++_vector_g.h"
+		#include "swizzle/hlsl++_vector_b.h"
 	};
 
 	explicit floatN<3>(n128 vec) : _vec(vec) {}
@@ -1487,7 +1493,7 @@ public:
 	floatN<3>(const float x,		const float y,			const float z) : _vec(_hlslpp_set_ps(x, y, z, 0.0f)) {}
 
 	// floatN constructors
-	floatN<3>(const float1& v1,	const float1& v2,	const floatN<1>& v3);
+	floatN<3>(const float1& v1,	const float1& v2,	const float1& v3);
 	floatN<3>(const float2& v1,	const float1& v2);
 	floatN<3>(const float1& v1,	const float2& v2);
 
@@ -1558,6 +1564,10 @@ public:
 		#include "swizzle/hlsl++_vector_y.h"
 		#include "swizzle/hlsl++_vector_z.h"
 		#include "swizzle/hlsl++_vector_w.h"
+		#include "swizzle/hlsl++_vector_r.h"
+		#include "swizzle/hlsl++_vector_g.h"
+		#include "swizzle/hlsl++_vector_b.h"
+		#include "swizzle/hlsl++_vector_a.h"
 	};
 
 	explicit floatN<4>(n128 vec) : _vec(vec) {}
@@ -1566,14 +1576,14 @@ public:
 	floatN<4>(float x, float y, float z, float w) : _vec(_hlslpp_set_ps(x, y, z, w)) {}
 	
 	// floatN constructors
-	floatN<4>(const floatN<4>& v) : _vec(v._vec) {}
-	floatN<4>(const floatN<1>& v1,	const floatN<1>& v2,	const floatN<1>& v3,	const floatN<1>& v4);
-	floatN<4>(const floatN<2>& v1,	const floatN<1>& v2,	const floatN<1>& v3);
-	floatN<4>(const floatN<1>& v1,	const floatN<2>& v2,	const floatN<1>& v3);
-	floatN<4>(const floatN<1>& v1,	const floatN<1>& v2,	const floatN<2>& v3);
-	floatN<4>(const floatN<2>& v1,	const floatN<2>& v2);
-	floatN<4>(const floatN<1>& v1,	const floatN<3>& v2);
-	floatN<4>(const floatN<3>& v1,	const floatN<1>& v2);
+	floatN<4>(const float4& v) : _vec(v._vec) {}
+	floatN<4>(const float1& v1,	const float1& v2,	const float1& v3,	const float1& v4);
+	floatN<4>(const float2& v1,	const float1& v2,	const float1& v3);
+	floatN<4>(const float1& v1,	const float2& v2,	const float1& v3);
+	floatN<4>(const float1& v1,	const float1& v2,	const float2& v3);
+	floatN<4>(const float2& v1,	const float2& v2);
+	floatN<4>(const float1& v1,	const float3& v2);
+	floatN<4>(const float3& v1,	const float1& v2);
 
 	// componentN constructors
 	template<int A, int B, int C, int D> floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const component1<C>& v3,	const component1<D>& v4) : floatN<4>(float1(v1), float1(v2), float1(v2), float1(v2)) {}
