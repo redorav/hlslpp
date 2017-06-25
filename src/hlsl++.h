@@ -699,18 +699,16 @@ inline n128 _hlslpp_log2_ps(n128 x)
 	return _hlslpp_add_ps(p, e);
 }
 
-static const n128 invlog_2_10 = _hlslpp_div_ps(f4_1, _hlslpp_log2_ps(f4_10));
-
 inline n128 _hlslpp_log10_ps(n128 x)
 {
+	static const n128 invlog_2_10 = _hlslpp_div_ps(f4_1, _hlslpp_log2_ps(f4_10));
 	return _hlslpp_mul_ps(_hlslpp_log2_ps(x), invlog_2_10);
 }
-
-static const n128 invlog_2_e = _hlslpp_div_ps(f4_1, _hlslpp_log2_ps(f4_e));
 
 inline n128 _hlslpp_log_ps(n128 x)
 {
 	static const n128 log_2_e = _hlslpp_log2_ps(f4_e);
+	static const n128 invlog_2_e = _hlslpp_div_ps(f4_1, _hlslpp_log2_ps(f4_e));
 	return _hlslpp_mul_ps(_hlslpp_log2_ps(x), invlog_2_e);
 }
 
