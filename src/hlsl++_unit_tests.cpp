@@ -1298,29 +1298,6 @@ void RunUnitTests()
 	float2x2 mat_inv_2x2 = inverse(mat_foo_2x2);
 	float3x3 mat_inv_3x3 = inverse(mat_foo_3x3);
 	float4x4 mat_inv_4x4 = inverse(mat_foo_4x4);
-
-	quaternion quat0(f5, f6, f7, f8);
-	quaternion quat1(f1, f2, f3, f4);
-
-	quaternion quat_add = quat0 + quat1;
-	quaternion quat_mul = quat0 * quat1;
-
-	float4 vec40(f5, f6, f7, f8);
-	float4 vec41(f1, f2, f3, f4);
-
- 	float4 vec4_mul = vec40 * vec41;
-	Timer timer;
-	timer.Start();
-	for (uint32_t i = 0; i < 1000000000; ++i)
-	{
-		vec4_mul = sin(vec4_mul);
-	}
-	double elapsed = timer.Get();
-
-	//float4 vec4_add = vec40 + vec41;
-	//float4 vec4_mul = vec4_add * vec4_add;
-
-	printf("%f%f%f%f%f", (float)quat_mul.x, (float)quat_mul.y, (float)quat_mul.z, (float)quat_mul.w, (float)elapsed);
 }
 
 void RunExperiments()
