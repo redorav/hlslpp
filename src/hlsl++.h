@@ -91,8 +91,6 @@ static const n128 f4_minusinf		= _hlslpp_set1_ps(minusinfMask.f);	// -Infinity
 static const n128 f4_rad2deg		= _hlslpp_set1_ps(180.0f / 3.14159265f);
 static const n128 f4_deg2rad		= _hlslpp_set1_ps(3.14159265f / 180.f);
 
-static const n128 log_2_e			= _hlslpp_log2_ps(f4_e);
-
 // Masks
 static const n128 f4negativeMask	= _hlslpp_set1_ps(negMask.f);
 static const n128 f4absMask			= _hlslpp_set1_ps(absMask.f);
@@ -712,6 +710,7 @@ static const n128 invlog_2_e = _hlslpp_div_ps(f4_1, _hlslpp_log2_ps(f4_e));
 
 inline n128 _hlslpp_log_ps(n128 x)
 {
+	static const n128 log_2_e = _hlslpp_log2_ps(f4_e);
 	return _hlslpp_mul_ps(_hlslpp_log2_ps(x), invlog_2_e);
 }
 
@@ -769,6 +768,7 @@ inline n128 _hlslpp_exp2_ps(n128 x)
 
 inline n128 _hlslpp_exp_ps(n128 x)
 {
+	static const n128 log_2_e = _hlslpp_log2_ps(f4_e);
 	return _hlslpp_exp2_ps(_hlslpp_mul_ps(x, log_2_e));
 }
 
@@ -912,6 +912,13 @@ inline n128 _hlslpp_acos_ps(n128 x)
 // Max error vs. std::asin = 1.5348196e-6
 inline n128 _hlslpp_asin_ps(n128 x)
 {
+	static const n128 asinacos_c0 = f4_pi2;
+	static const n128 asinacos_c1 = _hlslpp_set1_ps(-2.145329213e-1f);
+	static const n128 asinacos_c2 = _hlslpp_set1_ps(8.797308928e-2f);
+	static const n128 asinacos_c3 = _hlslpp_set1_ps(-4.513026638e-2f);
+	static const n128 asinacos_c4 = _hlslpp_set1_ps(1.946746668e-2f);
+	static const n128 asinacos_c5 = _hlslpp_set1_ps(-4.360132611e-3f);
+
 	// We use the trigonometric identity asin(x) = -asin(-x) to mirror [0, 1] into the [-1, 0] range
 	n128 ltZero = _hlslpp_cmplt_ps(x, f4_0);
 	x = _hlslpp_sel_ps(x, _hlslpp_neg_ps(x), ltZero);
