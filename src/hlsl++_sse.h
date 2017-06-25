@@ -52,7 +52,7 @@ using n128i = __m128i;
 #define _hlslpp_ceil_ps(x)						_mm_ceil_ps((x))
 
 // _MM_FROUND_TO_NEAREST_INT to match fxc behavior
-#define _hlslpp_round_ps(x)						_mm_round_ps(v._vec, _MM_FROUND_TO_NEAREST_INT)
+#define _hlslpp_round_ps(x)						_mm_round_ps((x), _MM_FROUND_TO_NEAREST_INT)
 
 #define _hlslpp_frac_ps(x)						_mm_sub_ps((x), _mm_floor_ps(x))
 
