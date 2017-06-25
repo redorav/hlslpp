@@ -61,6 +61,7 @@ using n128i = __m128i;
 #define _hlslpp_and_ps(x, y)					_mm_and_ps((x), (y))
 #define _hlslpp_andnot_ps(x, y)					_mm_andnot_ps((x), (y))
 #define _hlslpp_or_ps(x, y)						_mm_or_ps((x), (y))
+#define _hlslpp_xor_ps(x, y)					_mm_xor_ps((x), (y))
 
 #define _hlslpp_perm_ps(x, msk)					_mm_shuffle_ps((x), (x), msk)
 #define _hlslpp_shuffle_ps(x, y, msk)			_mm_shuffle_ps((x), (y), msk)
