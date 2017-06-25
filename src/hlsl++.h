@@ -1633,123 +1633,123 @@ public:
 	floatN<4>(const float3& v1,		const float v2)		: float4(v1, float1(v2)) {}
 
 	// floatN + componentN constructors
-	template<int A> floatN<4>(const component1<A>& v1,	const float1& v2,			const float1& v3,			const float1& v4)			: floatN<4>(float1(v1), v2, v3, v4) {}
-	template<int A> floatN<4>(const float1& v1,			const component1<A>& v2,	const float1& v3,			const float1& v4)			: floatN<4>(v1, float1(v2), v3, v4) {}
-	template<int A> floatN<4>(const float1& v1,			const float1& v2,			const component1<A>& v3,	const float1& v4)			: floatN<4>(v1, v2, float1(v3), v4) {}
-	template<int A> floatN<4>(const float1& v1,			const float1& v2,			const float1& v3,			const component1<A>& v4)	: floatN<4>(v1, v2, v3, float1(v4)) {}
+	template<int A> floatN<4>(const component1<A>& v1,	const float1& v2,			const float1& v3,			const float1& v4)			: float4(float1(v1), v2, v3, v4) {}
+	template<int A> floatN<4>(const float1& v1,			const component1<A>& v2,	const float1& v3,			const float1& v4)			: float4(v1, float1(v2), v3, v4) {}
+	template<int A> floatN<4>(const float1& v1,			const float1& v2,			const component1<A>& v3,	const float1& v4)			: float4(v1, v2, float1(v3), v4) {}
+	template<int A> floatN<4>(const float1& v1,			const float1& v2,			const float1& v3,			const component1<A>& v4)	: float4(v1, v2, v3, float1(v4)) {}
 
-	template<int A, int B, int C> floatN<4>(const float1& v1,			const component1<A>& v2,	const component1<B>& v3,	const component1<C>& v4)	: floatN<4>(v1, float1(v2), float1(v3), float1(v4)) {}
-	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const float1& v2,			const component1<B>& v3,	const component1<C>& v4)	: floatN<4>(float1(v1), v2, float1(v3), float1(v4)) {}
-	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float1& v3,			const component1<C>& v4)	: floatN<4>(float1(v1), float1(v2), v3, float1(v4)) {}
-	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const component1<C>& v3,	const float1& v4)			: floatN<4>(float1(v1), float1(v2), float1(v3), v4) {}
+	template<int A, int B, int C> floatN<4>(const float1& v1,			const component1<A>& v2,	const component1<B>& v3,	const component1<C>& v4)	: float4(v1, float1(v2), float1(v3), float1(v4)) {}
+	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const float1& v2,			const component1<B>& v3,	const component1<C>& v4)	: float4(float1(v1), v2, float1(v3), float1(v4)) {}
+	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float1& v3,			const component1<C>& v4)	: float4(float1(v1), float1(v2), v3, float1(v4)) {}
+	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const component1<C>& v3,	const float1& v4)			: float4(float1(v1), float1(v2), float1(v3), v4) {}
 
-	template<int A, int B> floatN<4>(const component1<A>& v1,	const float1& v2,			const float1& v3,			const component1<B>& v4)	: floatN<4>(float1(v1), v2, v3, float1(v4)) {}
-	template<int A, int B> floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float1& v3,			const float1& v4)			: floatN<4>(float1(v1), float1(v2), v3, v4) {}
-	template<int A, int B> floatN<4>(const component1<A>& v1,	const float1& v2,			const component1<B>& v3,	const float1& v4)			: floatN<4>(float1(v1), v2, float1(v3), v4) {}
+	template<int A, int B> floatN<4>(const component1<A>& v1,	const float1& v2,			const float1& v3,			const component1<B>& v4)	: float4(float1(v1), v2, v3, float1(v4)) {}
+	template<int A, int B> floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float1& v3,			const float1& v4)			: float4(float1(v1), float1(v2), v3, v4) {}
+	template<int A, int B> floatN<4>(const component1<A>& v1,	const float1& v2,			const component1<B>& v3,	const float1& v4)			: float4(float1(v1), v2, float1(v3), v4) {}
 
-	template<int A, int B> floatN<4>(const float1& v1,			const component1<A>& v2,	const component1<B>& v3,	const float1& v4)			: floatN<4>(v1, float1(v2), float1(v3), v4) {}
-	template<int A, int B> floatN<4>(const float1& v1,			const float1& v2,			const component1<A>& v3,	const component1<B>& v4)	: floatN<4>(v1, v2, float1(v3), float1(v4)) {}
-	template<int A, int B> floatN<4>(const float1& v1,			const component1<A>& v2,	const float1& v3,			const component1<B>& v4)	: floatN<4>(v1, float1(v2), v3, float1(v4)) {}
+	template<int A, int B> floatN<4>(const float1& v1,			const component1<A>& v2,	const component1<B>& v3,	const float1& v4)			: float4(v1, float1(v2), float1(v3), v4) {}
+	template<int A, int B> floatN<4>(const float1& v1,			const float1& v2,			const component1<A>& v3,	const component1<B>& v4)	: float4(v1, v2, float1(v3), float1(v4)) {}
+	template<int A, int B> floatN<4>(const float1& v1,			const component1<A>& v2,	const float1& v3,			const component1<B>& v4)	: float4(v1, float1(v2), v3, float1(v4)) {}
 
-	template<int A>			floatN<4>(const float2& v1,		const component1<A>& v2,	const float1& v3)			: floatN<4>(v1, float1(v2), v3) {}
-	template<int A>			floatN<4>(const float2& v1,		const float1& v2,			const component1<A>& v3)	: floatN<4>(v1, v2, float1(v3)) {}
+	template<int A>			floatN<4>(const float2& v1,		const component1<A>& v2,	const float1& v3)			: float4(v1, float1(v2), v3) {}
+	template<int A>			floatN<4>(const float2& v1,		const float1& v2,			const component1<A>& v3)	: float4(v1, v2, float1(v3)) {}
 	template<int A, int B>	floatN<4>(const float2& v1,		const component1<A>& v2,	const component1<B>& v3)	: float4(v1, v2, float1(v3)) {}
 
-	template<int A> floatN<4>(const component1<A>& v1,	const float2& v2,	const float1& v3)			: floatN<4>(float1(v1), v2, v3) {}
-	template<int A> floatN<4>(const float1& v1,			const float2& v2,	const component1<A>& v3)	: floatN<4>(v1, v2, float1(v3)) {}
+	template<int A> floatN<4>(const component1<A>& v1,	const float2& v2,	const float1& v3)			: float4(float1(v1), v2, v3) {}
+	template<int A> floatN<4>(const float1& v1,			const float2& v2,	const component1<A>& v3)	: float4(v1, v2, float1(v3)) {}
 
-	template<int A>			floatN<4>(const float1& v1,			const component1<A>& v2,	const float2& v3)	: floatN<4>(v1, float1(v2), v3) {}
-	template<int A>			floatN<4>(const component1<A>& v1,	const float1& v2,			const float2& v3)	: floatN<4>(float1(v1), v2, v3) {}
-	template<int A, int B>	floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float2& v3)	: floatN<4>(float1(v1), float1(v2), v3) {}
+	template<int A>			floatN<4>(const float1& v1,			const component1<A>& v2,	const float2& v3)	: float4(v1, float1(v2), v3) {}
+	template<int A>			floatN<4>(const component1<A>& v1,	const float1& v2,			const float2& v3)	: float4(float1(v1), v2, v3) {}
+	template<int A, int B>	floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float2& v3)	: float4(float1(v1), float1(v2), v3) {}
 
-	template<int A> floatN<4>(const component1<A>& v1,	const float3& v2)			: floatN<4>(float1(v1), v2) {}
+	template<int A> floatN<4>(const component1<A>& v1,	const float3& v2)			: float4(float1(v1), v2) {}
 	template<int A> floatN<4>(const float3& v1,			const component1<A>& v2)	: float4(v1, float1(v2)) {}
 
 	// componentN + float constructors
-	template<int A> floatN<4>(const component1<A>& v1,	const float v2,				const float v3,				const float v4)				: floatN<4>(float1(v1), float3(v2, v3, v4)) {}
-	template<int A> floatN<4>(const float v1,			const component1<A>& v2,	const float v3,				const float v4)				: floatN<4>(float1(v1), float1(v2), float2(v3, v4)) {}
-	template<int A> floatN<4>(const float v1,			const float v2,				const component1<A>& v3,	const float v4)				: floatN<4>(float2(v1, v2), float1(v3), float1(v4)) {}
-	template<int A> floatN<4>(const float v1,			const float v2,				const float v3,				const component1<A>& v4)	: floatN<4>(float3(v1, v2, v3), float1(v4)) {}
+	template<int A> floatN<4>(const component1<A>& v1,	const float v2,				const float v3,				const float v4)				: float4(float1(v1), float3(v2, v3, v4)) {}
+	template<int A> floatN<4>(const float v1,			const component1<A>& v2,	const float v3,				const float v4)				: float4(float1(v1), float1(v2), float2(v3, v4)) {}
+	template<int A> floatN<4>(const float v1,			const float v2,				const component1<A>& v3,	const float v4)				: float4(float2(v1, v2), float1(v3), float1(v4)) {}
+	template<int A> floatN<4>(const float v1,			const float v2,				const float v3,				const component1<A>& v4)	: float4(float3(v1, v2, v3), float1(v4)) {}
 
-	template<int A, int B, int C> floatN<4>(const float v1,				const component1<A>& v2,	const component1<B>& v3,	const component1<C>& v4)	: floatN<4>(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const float v2,				const component1<B>& v3,	const component1<C>& v4)	: floatN<4>(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float v3,				const component1<C>& v4)	: floatN<4>(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const component1<C>& v3,	const float v4)				: floatN<4>(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+	template<int A, int B, int C> floatN<4>(const float v1,				const component1<A>& v2,	const component1<B>& v3,	const component1<C>& v4)	: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const float v2,				const component1<B>& v3,	const component1<C>& v4)	: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float v3,				const component1<C>& v4)	: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const component1<C>& v3,	const float v4)				: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
 
-	template<int A, int B> floatN<4>(const component1<A>& v1,		const float v2,				const float v3,				const component1<B>& v4)	: floatN<4>(float1(v1), float2(v2, v3), float1(v4)) {}
-	template<int A, int B> floatN<4>(const component1<A>& v1,		const component1<B>& v2,	const float v3,				const float v4)				: floatN<4>(float1(v1), float1(v2), float2(v3, v4)) {}
-	template<int A, int B> floatN<4>(const component1<A>& v1,		const float v2,				const component1<B>& v3,	const float v4)				: floatN<4>(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+	template<int A, int B> floatN<4>(const component1<A>& v1,		const float v2,				const float v3,				const component1<B>& v4)	: float4(float1(v1), float2(v2, v3), float1(v4)) {}
+	template<int A, int B> floatN<4>(const component1<A>& v1,		const component1<B>& v2,	const float v3,				const float v4)				: float4(float1(v1), float1(v2), float2(v3, v4)) {}
+	template<int A, int B> floatN<4>(const component1<A>& v1,		const float v2,				const component1<B>& v3,	const float v4)				: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
 
-	template<int A, int B> floatN<4>(const float v1,				const component1<A>& v2,	const component1<B>& v3,	const float v4)				: floatN<4>(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-	template<int A, int B> floatN<4>(const float v1,				const float v2,				const component1<A>& v3,	const component1<B>& v4)	: floatN<4>(float2(v1, v2), float1(v3), float1(v4)) {}
-	template<int A, int B> floatN<4>(const float v1,				const component1<A>& v2,	const float v3,				const component1<B>& v4)	: floatN<4>(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+	template<int A, int B> floatN<4>(const float v1,				const component1<A>& v2,	const component1<B>& v3,	const float v4)				: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+	template<int A, int B> floatN<4>(const float v1,				const float v2,				const component1<A>& v3,	const component1<B>& v4)	: float4(float2(v1, v2), float1(v3), float1(v4)) {}
+	template<int A, int B> floatN<4>(const float v1,				const component1<A>& v2,	const float v3,				const component1<B>& v4)	: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
 
 
-	template<int A, int B> floatN<4>(const component2<A, B>& v1,	const float v2,				const float v3)				: floatN<4>(float2(v1), float1(v2), float1(v3)) {}
-	template<int A, int B> floatN<4>(const float v1,				const component2<A, B>& v2,	const float v3)				: floatN<4>(float1(v1), float2(v2), float1(v3)) {}
-	template<int A, int B> floatN<4>(const float v1,				const float v2,				const component2<A, B>& v3)	: floatN<4>(float1(v1), float1(v2), float2(v3)) {}
+	template<int A, int B> floatN<4>(const component2<A, B>& v1,	const float v2,				const float v3)				: float4(float2(v1), float1(v2), float1(v3)) {}
+	template<int A, int B> floatN<4>(const float v1,				const component2<A, B>& v2,	const float v3)				: float4(float1(v1), float2(v2), float1(v3)) {}
+	template<int A, int B> floatN<4>(const float v1,				const float v2,				const component2<A, B>& v3)	: float4(float1(v1), float1(v2), float2(v3)) {}
 
-	template<int A, int B, int C> floatN<4>(const float v1,				const component2<A, B>& v2,	const component1<C>& v3)	: floatN<4>(float1(v1), float2(v2), float1(v3)) {}
-	template<int A, int B, int C> floatN<4>(const float v1,				const component1<A>& v2,	const component2<B, C>& v3)	: floatN<4>(float1(v1), float1(v2), float2(v3)) {}
+	template<int A, int B, int C> floatN<4>(const float v1,				const component2<A, B>& v2,	const component1<C>& v3)	: float4(float1(v1), float2(v2), float1(v3)) {}
+	template<int A, int B, int C> floatN<4>(const float v1,				const component1<A>& v2,	const component2<B, C>& v3)	: float4(float1(v1), float1(v2), float2(v3)) {}
 
-	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const component2<B, C>& v2,	const float v3)				: floatN<4>(float1(v1), float2(v2), float1(v3)) {}
-	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const float v2,				const component2<B, C>& v3)	: floatN<4>(float1(v1), float1(v2), float2(v3)) {}
+	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const component2<B, C>& v2,	const float v3)				: float4(float1(v1), float2(v2), float1(v3)) {}
+	template<int A, int B, int C> floatN<4>(const component1<A>& v1,	const float v2,				const component2<B, C>& v3)	: float4(float1(v1), float1(v2), float2(v3)) {}
 
-	template<int A, int B, int C> floatN<4>(const component2<A, B>& v1,	const float v2,				const component1<C>& v3)	: floatN<4>(float2(v1), float1(v2), float1(v3)) {}
-	template<int A, int B, int C> floatN<4>(const component2<A, B>& v1,	const component1<C>& v2,	const float v3)				: floatN<4>(float2(v1), float1(v2), float1(v3)) {}
+	template<int A, int B, int C> floatN<4>(const component2<A, B>& v1,	const float v2,				const component1<C>& v3)	: float4(float2(v1), float1(v2), float1(v3)) {}
+	template<int A, int B, int C> floatN<4>(const component2<A, B>& v1,	const component1<C>& v2,	const float v3)				: float4(float2(v1), float1(v2), float1(v3)) {}
 
-	template<int A, int B, int C> floatN<4>(const float v1,				const component3<A, B, C>& v2)	: floatN<4>(float1(v1), float3(v2)) {}
-	template<int A, int B, int C> floatN<4>(const component3<A, B, C>& v1,	const float v2)				: floatN<4>(float3(v1), float1(v2)) {}
+	template<int A, int B, int C> floatN<4>(const float v1,				const component3<A, B, C>& v2)	: float4(float1(v1), float3(v2)) {}
+	template<int A, int B, int C> floatN<4>(const component3<A, B, C>& v1,	const float v2)				: float4(float3(v1), float1(v2)) {}
 
 	// floatN + componentN + float constructors
-	template<int A>			floatN<4>(const float v1,	const component1<A>& v2,	const float1& v3,		const float v4)				: floatN<4>(float1(v1), float1(v2), v3, float1(v4)) {}
-	template<int A>			floatN<4>(const float v1,	const component1<A>& v2,	const float1& v3,		const float1& v4)			: floatN<4>(float1(v1), float1(v2), v3, v4) {}
-	template<int A, int B>	floatN<4>(const float v1,	const component1<A>& v2,	const float1& v3,		const component1<B>& v4)	: floatN<4>(float1(v1), float1(v2), v3, float1(v4)) {}
+	template<int A>			floatN<4>(const float v1,	const component1<A>& v2,	const float1& v3,		const float v4)				: float4(float1(v1), float1(v2), v3, float1(v4)) {}
+	template<int A>			floatN<4>(const float v1,	const component1<A>& v2,	const float1& v3,		const float1& v4)			: float4(float1(v1), float1(v2), v3, v4) {}
+	template<int A, int B>	floatN<4>(const float v1,	const component1<A>& v2,	const float1& v3,		const component1<B>& v4)	: float4(float1(v1), float1(v2), v3, float1(v4)) {}
 
-	template<int A>			floatN<4>(const float v1,	const float1& v2,		const component1<A>& v3,	const float v4)				: floatN<4>(float1(v1), v2, float1(v3), float1(v4)) {}
-	template<int A>			floatN<4>(const float v1,	const float1& v2,		const component1<A>& v3,	const float1& v4)			: floatN<4>(float1(v1), v2, float1(v3), v4) {}
-	template<int A, int B>	floatN<4>(const float v1,	const float1& v2,		const component1<A>& v3,	const component1<B>& v4)	: floatN<4>(float1(v1), v2, float1(v3), float1(v4)) {}
+	template<int A>			floatN<4>(const float v1,	const float1& v2,		const component1<A>& v3,	const float v4)				: float4(float1(v1), v2, float1(v3), float1(v4)) {}
+	template<int A>			floatN<4>(const float v1,	const float1& v2,		const component1<A>& v3,	const float1& v4)			: float4(float1(v1), v2, float1(v3), v4) {}
+	template<int A, int B>	floatN<4>(const float v1,	const float1& v2,		const component1<A>& v3,	const component1<B>& v4)	: float4(float1(v1), v2, float1(v3), float1(v4)) {}
 
-	template<int A>			floatN<4>(const float v1,	const float v2,			const component1<A>& v3,	const float1& v4)			: floatN<4>(float2(v1, v2), float1(v3), v4) {}
-	template<int A>			floatN<4>(const float v1,	const float v2,			const float1& v3,			const component1<A>& v4)	: floatN<4>(float2(v1, v2), v3, float1(v4)) {}
+	template<int A>			floatN<4>(const float v1,	const float v2,			const component1<A>& v3,	const float1& v4)			: float4(float2(v1, v2), float1(v3), v4) {}
+	template<int A>			floatN<4>(const float v1,	const float v2,			const float1& v3,			const component1<A>& v4)	: float4(float2(v1, v2), v3, float1(v4)) {}
 
-	template<int A, int B>	floatN<4>(const float v1,	const component1<A>& v2,	const float v3,				const float1& v4)		: floatN<4>(float1(v1), float1(v2), float1(v3), v4) {}
-	template<int A, int B>	floatN<4>(const float v1,	const component1<A>& v2,	const component1<B>& v3,	const float1& v4)		: floatN<4>(float1(v1), float1(v2), float1(v3), v4) {}
+	template<int A, int B>	floatN<4>(const float v1,	const component1<A>& v2,	const float v3,				const float1& v4)		: float4(float1(v1), float1(v2), float1(v3), v4) {}
+	template<int A, int B>	floatN<4>(const float v1,	const component1<A>& v2,	const component1<B>& v3,	const float1& v4)		: float4(float1(v1), float1(v2), float1(v3), v4) {}
 
-	template<int A>			floatN<4>(const float v1,	const float1& v2,			const float1& v3,			const component1<A>& v4)	: floatN<4>(float1(v1), v2, v3, float1(v4)) {}
+	template<int A>			floatN<4>(const float v1,	const float1& v2,			const float1& v3,			const component1<A>& v4)	: float4(float1(v1), v2, v3, float1(v4)) {}
 
-	template<int A>			floatN<4>(const component1<A>& v1,	const float v2,	const float1& v3,	const float v4)				: floatN<4>(float1(v1), v2, v3, float1(v4)) {}
-	template<int A>			floatN<4>(const component1<A>& v1,	const float v2,	const float1& v3,	const float1& v4)			: floatN<4>(float1(v1), float1(v2), v3, v4) {}
-	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float v2,	const float1& v3,	const component1<B>& v4)	: floatN<4>(float1(v1), float1(v2), v3, float1(v4)) {}
+	template<int A>			floatN<4>(const component1<A>& v1,	const float v2,	const float1& v3,	const float v4)				: float4(float1(v1), v2, v3, float1(v4)) {}
+	template<int A>			floatN<4>(const component1<A>& v1,	const float v2,	const float1& v3,	const float1& v4)			: float4(float1(v1), float1(v2), v3, v4) {}
+	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float v2,	const float1& v3,	const component1<B>& v4)	: float4(float1(v1), float1(v2), v3, float1(v4)) {}
 	
-	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float1& v2,		const float v3,			const float v4)				: floatN<4>(float1(v1), v2, float1(v3), float1(v4)) {}
-	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float1& v2,		const float v3,			const float1& v4)			: floatN<4>(float1(v1), v2, float1(v3), v4) {}
-	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float1& v2,		const float v3,			const component1<B>& v4)	: floatN<4>(float1(v1), v2, float1(v3), float1(v4)) {}
+	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float1& v2,		const float v3,			const float v4)				: float4(float1(v1), v2, float1(v3), float1(v4)) {}
+	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float1& v2,		const float v3,			const float1& v4)			: float4(float1(v1), v2, float1(v3), v4) {}
+	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float1& v2,		const float v3,			const component1<B>& v4)	: float4(float1(v1), v2, float1(v3), float1(v4)) {}
 
-	template<int A, int B>	floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float1& v3,	const float v4)			: floatN<4>(float1(v1), float1(v2), v3, float1(v4)) {}
-	template<int A, int B>	floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float v3,		const float1& v4)		: floatN<4>(float1(v1), float1(v2), float1(v3), v4) {}
+	template<int A, int B>	floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float1& v3,	const float v4)			: float4(float1(v1), float1(v2), v3, float1(v4)) {}
+	template<int A, int B>	floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float v3,		const float1& v4)		: float4(float1(v1), float1(v2), float1(v3), v4) {}
 
-	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float1& v2,	const component1<B>& v3,	const float v4)		: floatN<4>(float1(v1), v2, float1(v3), float1(v4)) {}
-	template<int A>			floatN<4>(const component1<A>& v1,	const float1& v2,	const float v3,				const float1& v4)	: floatN<4>(float1(v1), v2, float1(v3), v4) {}
+	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float1& v2,	const component1<B>& v3,	const float v4)		: float4(float1(v1), v2, float1(v3), float1(v4)) {}
+	template<int A>			floatN<4>(const component1<A>& v1,	const float1& v2,	const float v3,				const float1& v4)	: float4(float1(v1), v2, float1(v3), v4) {}
 
-	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float v2,		const component1<B>& v3,	const float1& v4)	: floatN<4>(float1(v1), float1(v2), float1(v3), v4) {}
+	template<int A, int B>	floatN<4>(const component1<A>& v1,	const float v2,		const component1<B>& v3,	const float1& v4)	: float4(float1(v1), float1(v2), float1(v3), v4) {}
 
-	template<int A>			floatN<4>(const float1& v1,	const component1<A>& v2,	const float  v3,			const float v4)				: floatN<4>(v1, float1(v2), float1(v3), float1(v4)) {}
-	template<int A>			floatN<4>(const float1& v1,	const component1<A>& v2,	const float v3,				const float1& v4)			: floatN<4>(v1, float1(v2), float1(v3), v4) {}
-	template<int A, int B>	floatN<4>(const float1& v1,	const component1<A>& v2,	const float  v3,			const component1<B>& v4)	: floatN<4>(v1, float1(v2), float1(v3), float1(v4)) {}
+	template<int A>			floatN<4>(const float1& v1,	const component1<A>& v2,	const float  v3,			const float v4)				: float4(v1, float1(v2), float1(v3), float1(v4)) {}
+	template<int A>			floatN<4>(const float1& v1,	const component1<A>& v2,	const float v3,				const float1& v4)			: float4(v1, float1(v2), float1(v3), v4) {}
+	template<int A, int B>	floatN<4>(const float1& v1,	const component1<A>& v2,	const float  v3,			const component1<B>& v4)	: float4(v1, float1(v2), float1(v3), float1(v4)) {}
 
-	template<int A>			floatN<4>(const float1& v1, const float v2,			const component1<A>&  v3,	const float v4)				: floatN<4>(v1, float1(v2), float1(v3), float1(v4)) {}
-	template<int A>			floatN<4>(const float1& v1, const float v2,			const component1<A>& v3,	const float1& v4)			: floatN<4>(v1, float1(v2), float1(v3), v4) {}
-	template<int A, int B>	floatN<4>(const float1& v1, const float v2,			const component1<A>&  v3,	const component1<B>& v4)	: floatN<4>(v1, float1(v2), float1(v3), float1(v4)) {}
+	template<int A>			floatN<4>(const float1& v1, const float v2,			const component1<A>&  v3,	const float v4)				: float4(v1, float1(v2), float1(v3), float1(v4)) {}
+	template<int A>			floatN<4>(const float1& v1, const float v2,			const component1<A>& v3,	const float1& v4)			: float4(v1, float1(v2), float1(v3), v4) {}
+	template<int A, int B>	floatN<4>(const float1& v1, const float v2,			const component1<A>&  v3,	const component1<B>& v4)	: float4(v1, float1(v2), float1(v3), float1(v4)) {}
 
-	template<int A>			floatN<4>(const float1& v1, const float1& v2,		const float v3,				const component1<A>& v4)	: floatN<4>(v1, v2, float1(v3), float1(v4)) {}
-	template<int A>			floatN<4>(const float1& v1, const float1& v2,		const component1<A>& v3,	const float v4)				: floatN<4>(v1, v2, float1(v3), float1(v4)) {}
+	template<int A>			floatN<4>(const float1& v1, const float1& v2,		const float v3,				const component1<A>& v4)	: float4(v1, v2, float1(v3), float1(v4)) {}
+	template<int A>			floatN<4>(const float1& v1, const float1& v2,		const component1<A>& v3,	const float v4)				: float4(v1, v2, float1(v3), float1(v4)) {}
 
-	template<int A>			floatN<4>(const float1& v1, const float v2,			const float1& v3,		const component1<A>& v4)	: floatN<4>(v1, float1(v2), v3, float1(v4)) {}
-	template<int A>			floatN<4>(const float1& v1, const float v2,			const float  v3,		const component1<A>& v4)	: floatN<4>(v1, float1(v2), float1(v3), float1(v4)) {}
+	template<int A>			floatN<4>(const float1& v1, const float v2,			const float1& v3,		const component1<A>& v4)	: float4(v1, float1(v2), v3, float1(v4)) {}
+	template<int A>			floatN<4>(const float1& v1, const float v2,			const float  v3,		const component1<A>& v4)	: float4(v1, float1(v2), float1(v3), float1(v4)) {}
 
-	template<int A>			floatN<4>(const float1& v1, const component1<A>& v2,	const float1& v3,			const float v4)		: floatN<4>(v1, float1(v2), v3, float1(v4)) {}
-	template<int A, int B>	floatN<4>(const float1& v1, const component1<A>& v2,	const component1<B>&  v3,	const float v4)		: floatN<4>(v1, float1(v2), float1(v3), float1(v4)) {}
+	template<int A>			floatN<4>(const float1& v1, const component1<A>& v2,	const float1& v3,			const float v4)		: float4(v1, float1(v2), v3, float1(v4)) {}
+	template<int A, int B>	floatN<4>(const float1& v1, const component1<A>& v2,	const component1<B>&  v3,	const float v4)		: float4(v1, float1(v2), float1(v3), float1(v4)) {}
 
 	explicit floatN<4>(const float4x1& v);
 	explicit floatN<4>(const float1x4& v);
@@ -4224,3 +4224,5 @@ hlslpp_forceinline void store(const float4x4& m, float* f)
 {
 	_hlslpp_store4x4_ps(f, m._vec0, m._vec1, m._vec2, m._vec3);
 }
+
+#include "hlsl++_quaternion.h"
