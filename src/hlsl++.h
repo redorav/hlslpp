@@ -2133,7 +2133,7 @@ public:
 			 float f10, float f11, float f12, float f13,
 			 float f20, float f21, float f22, float f23,
 			 float f30, float f31, float f32, float f33)
-		: _vec0(_hlslpp_set_ps(f03, f02, f01, f00)), _vec1(_hlslpp_set_ps(f10, f11, f12, f13)), _vec2(_hlslpp_set_ps(f20, f21, f22, f23)), _vec3(_hlslpp_set_ps(f30, f31, f32, f33)) {}
+		: _vec0(_hlslpp_set_ps(f00, f01, f02, f03)), _vec1(_hlslpp_set_ps(f10, f11, f12, f13)), _vec2(_hlslpp_set_ps(f20, f21, f22, f23)), _vec3(_hlslpp_set_ps(f30, f31, f32, f33)) {}
 
 	explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)), _vec2(_hlslpp_set1_ps(f)), _vec3(_hlslpp_set1_ps(f)) {}
 	floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2), _vec3(m._vec3) {}
