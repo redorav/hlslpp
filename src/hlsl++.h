@@ -23,6 +23,16 @@
 	#error Platform not supported!
 #endif
 
+#if defined(_MSC_VER)
+
+#define hlslpp_forceinline __forceinline
+
+#else
+
+#define hlslpp_forceinline inline __attribute__((always_inline))
+
+#endif
+
 #if defined(HLSLPP_SSE)
 
 	#include "hlsl++_sse.h"
@@ -30,16 +40,6 @@
 #elif defined(HLSLPP_NEON)
 
 	#include "hlsl++_neon.h"
-
-#endif
-
-#if defined(_MSC_VER)
-
-	#define hlslpp_forceinline __forceinline
-
-#else
-
-	#define hlslpp_forceinline inline __attribute__((always_inline))
 
 #endif
 
