@@ -717,7 +717,6 @@ hlslpp_forceinline n128 _hlslpp_log10_ps(n128 x)
 
 hlslpp_forceinline n128 _hlslpp_log_ps(n128 x)
 {
-	static const n128 log_2_e = _hlslpp_log2_ps(f4_e);
 	static const n128 invlog_2_e = _hlslpp_div_ps(f4_1, _hlslpp_log2_ps(f4_e));
 	return _hlslpp_mul_ps(_hlslpp_log2_ps(x), invlog_2_e);
 }
