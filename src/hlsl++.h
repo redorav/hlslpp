@@ -3048,6 +3048,9 @@ hlslpp_forceinline floatN<sizeof...(Dim)> trunc(const components<Dim...>& v) { r
 // For matrices, use SFINAE with dummy template parameters to reduce code repetition and enforce conditions to make sure templates aren't ambiguous
 // (e.g. a template for <1, N> and a template for <M, 2>)
 
+template< bool B, class T = void >
+using hlslpp_enableif_t = typename std::enable_if<B, T>::type*;
+
 // Matrix - Matrix multiplication
 
 // Note that matrix-vector multiplication assumes the matrix data is laid out as row major.
@@ -3058,7 +3061,7 @@ hlslpp_forceinline floatNxM<1, M> mul(const float1x1& m1, const floatNxM<1, M>& 
 	return floatNxM<1, M>(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1._vec), m2._vec));
 }
 
-template<int N, typename std::enable_if<(N > 1)>::type* = nullptr>
+template<int N, hlslpp_enableif_t<(N > 1)> = nullptr>
 hlslpp_forceinline floatNxM<N, 1> mul(const floatNxM<N, 1>& m1, const float1x1& m2)
 {
 	return floatNxM<N, 1>(_hlslpp_mul_ps(m1._vec, _hlslpp_perm_xxxx_ps(m2._vec)));
@@ -3069,19 +3072,19 @@ hlslpp_forceinline float2x2 mul(const float2x1& m1, const float1x2& m2)
 	return float2x2(_hlslpp_mul_ps(_hlslpp_perm_xxyy_ps(m1._vec), _hlslpp_perm_xyxy_ps(m2._vec)));
 }
 
-template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
+template<int M, hlslpp_enableif_t<(M > 2)> = nullptr>
 hlslpp_forceinline floatNxM<2, M> mul(const float2x1& m1, const floatNxM<1, M>& m2)
 {
 	return floatNxM<2, M>(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1._vec), m2._vec), _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1._vec), m2._vec));
 }
 
-template<int N, typename std::enable_if<(N > 2)>::type* = nullptr>
+template<int N, hlslpp_enableif_t<(N > 2)> = nullptr>
 hlslpp_forceinline floatNxM<N, 2> mul(const floatNxM<N, 1>& m1, const float1x2& m2)
 {
 	return floatNxM<N, 2>(_hlslpp_mul_ps(m1._vec, _hlslpp_perm_xxxx_ps(m2._vec)), _hlslpp_mul_ps(m1._vec, _hlslpp_perm_yyyy_ps(m2._vec)));
 }
 
-template<int N, typename std::enable_if<(N > 2)>::type* = nullptr>
+template<int N, hlslpp_enableif_t<(N > 2)> = nullptr>
 hlslpp_forceinline floatNxM<N, 3> mul(const floatNxM<N, 1>& m1, const float1x3& m2)
 {
 	return floatNxM<N, 3>(_hlslpp_mul_ps(m1._vec, _hlslpp_perm_xxxx_ps(m2._vec)), _hlslpp_mul_ps(m1._vec, _hlslpp_perm_yyyy_ps(m2._vec)), _hlslpp_mul_ps(m1._vec, _hlslpp_perm_zzzz_ps(m2._vec)));
@@ -3590,7 +3593,7 @@ hlslpp_forceinline float1x2 mul(const float1x2& m1, const float2x2& m2)
 	return float1x2(_hlslpp_mul_1x2_2x1_ps(m1._vec, m2._vec));
 }
 
-template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
+template<int M, hlslpp_enableif_t<(M > 2)> = nullptr>
 hlslpp_forceinline floatNxM<1, M> mul(const float1x2& m1, const floatNxM<2, M>& m2)
 {
 	return floatNxM<1, M>(_hlslpp_mul_1x2_2xM_ps(m1._vec, m2._vec0, m2._vec1));
@@ -3606,7 +3609,7 @@ hlslpp_forceinline float1x2 mul(const float1x3& m1, const float3x2& m2)
 	return float1x2(_hlslpp_mul_1x3_3x2_ps(m1._vec, m2._vec0, m2._vec1));
 }
 
-template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
+template<int M, hlslpp_enableif_t<(M > 2)> = nullptr>
 hlslpp_forceinline floatNxM<1, M> mul(const float1x3& m1, const floatNxM<3, M>& m2)
 {
 	return floatNxM<1, M>(_hlslpp_mul_1x3_3xM_ps(m1._vec, m2._vec0, m2._vec1, m2._vec2));
@@ -3642,7 +3645,7 @@ hlslpp_forceinline float2x2 mul(const float2x2& m1, const float2x2& m2)
 	return float2x2(_hlslpp_mul_2x2_2x2_ps(m1._vec, m2._vec));
 }
 
-template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
+template<int M, hlslpp_enableif_t<(M > 2)> = nullptr>
 hlslpp_forceinline floatNxM<2, M> mul(const float2x2& m1, const floatNxM<2, M>& m2)
 {
 	n128 vec0, vec1;
@@ -3650,13 +3653,13 @@ hlslpp_forceinline floatNxM<2, M> mul(const float2x2& m1, const floatNxM<2, M>& 
 	return floatNxM<2, M>(vec0, vec1);
 }
 
-template<int N, typename std::enable_if<(N > 2)>::type* = nullptr>
+template<int N, hlslpp_enableif_t<(N > 2)> = nullptr>
 hlslpp_forceinline floatNxM<N, 1> mul(const floatNxM<N, 2>& m1, const float2x1& m2)
 {
 	return floatNxM<N, 1>(_hlslpp_mul_Nx2_2x1_ps(m1._vec0, m1._vec1, m2._vec));
 }
 
-template<int N, typename std::enable_if<(N > 2)>::type* = nullptr>
+template<int N, hlslpp_enableif_t<(N > 2)> = nullptr>
 hlslpp_forceinline floatNxM<N, 2> mul(const floatNxM<N, 2>& m1, const float2x2& m2)
 {
 	n128 vec0, vec1;
@@ -3664,7 +3667,7 @@ hlslpp_forceinline floatNxM<N, 2> mul(const floatNxM<N, 2>& m1, const float2x2& 
 	return floatNxM<N, 2>(vec0, vec1);
 }
 
-template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
+template<int M, hlslpp_enableif_t<(M > 2)> = nullptr>
 hlslpp_forceinline floatNxM<3, M> mul(const float3x2& m1, const floatNxM<2, M>& m2)
 {
 	n128 vec0, vec1, vec2;
@@ -3696,7 +3699,7 @@ hlslpp_forceinline float2x2 mul(const float2x3& m1, const float3x2& m2)
 	return float2x2(_hlslpp_mul_2x3_3x2_ps(m1._vec0, m1._vec1, m2._vec0, m2._vec1));
 }
 
-template<int M, typename std::enable_if<(M > 2)>::type* = nullptr>
+template<int M, hlslpp_enableif_t<(M > 2)> = nullptr>
 hlslpp_forceinline floatNxM<2, M> mul(const float2x3& m1, const floatNxM<3, M>& m2)
 {
 	n128 vec0, vec1;
@@ -3859,19 +3862,19 @@ template<int N> hlslpp_forceinline floatN<N> mul(const float1& v, const floatNxM
 
 // Matrix-Matrix Addition
 
-template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator + (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_add_ps(m1._vec, m2._vec));
 }
 
-template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator + (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_add_ps(m1._vec0, m2._vec0), _hlslpp_add_ps(m1._vec1, m2._vec1));
 }
 
-template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator + (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_add_ps(m1._vec0, m2._vec0), _hlslpp_add_ps(m1._vec1, m2._vec1), _hlslpp_add_ps(m1._vec2, m2._vec2));
@@ -3891,21 +3894,21 @@ hlslpp_forceinline floatNxM<N, M>& operator += (floatNxM<N, M>& m1, const floatN
 
 // Matrix-Scalar Addition
 
-template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator + (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
 	return floatNxM<N, M>(_hlslpp_add_ps(m._vec, v_perm));
 }
 
-template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator + (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
 	return floatNxM<N, M>(_hlslpp_add_ps(m._vec0, v_perm), _hlslpp_add_ps(m._vec1, v_perm));
 }
 
-template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator + (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
@@ -3927,19 +3930,19 @@ hlslpp_forceinline floatNxM<N, M>& operator += (floatNxM<N, M>& m, const float1&
 
 // Matrix-Matrix Subtraction
 
-template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator - (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_sub_ps(m1._vec, m2._vec));
 }
 
-template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator - (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_sub_ps(m1._vec0, m2._vec0), _hlslpp_sub_ps(m1._vec1, m2._vec1));
 }
 
-template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator - (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_sub_ps(m1._vec0, m2._vec0), _hlslpp_sub_ps(m1._vec1, m2._vec1), _hlslpp_sub_ps(m1._vec2, m2._vec2));
@@ -3959,21 +3962,21 @@ hlslpp_forceinline floatNxM<N, M>& operator -= (floatNxM<N, M>& m1, const floatN
 
 // Matrix-Scalar Subtraction
 
-template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator - (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
 	return floatNxM<N, M>(_hlslpp_sub_ps(m._vec, v_perm));
 }
 
-template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator - (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
 	return floatNxM<N, M>(_hlslpp_sub_ps(m._vec0, v_perm), _hlslpp_sub_ps(m._vec1, v_perm));
 }
 
-template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator - (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
@@ -3995,19 +3998,19 @@ hlslpp_forceinline floatNxM<N, M>& operator -= (floatNxM<N, M>& m, const float1&
 
 // Multiplication
 
-template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator * (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_mul_ps(m1._vec, m2._vec));
 }
 
-template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator * (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_mul_ps(m1._vec0, m2._vec0), _hlslpp_mul_ps(m1._vec1, m2._vec1));
 }
 
-template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator * (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_mul_ps(m1._vec0, m2._vec0), _hlslpp_mul_ps(m1._vec1, m2._vec1), _hlslpp_mul_ps(m1._vec2, m2._vec2));
@@ -4027,21 +4030,21 @@ hlslpp_forceinline floatNxM<N, M>& operator *= (floatNxM<N, M>& m1, const floatN
 
 // Matrix-Scalar Multiplication
 
-template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator * (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
 	return floatNxM<N, M>(_hlslpp_mul_ps(m._vec, v_perm));
 }
 
-template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator * (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
 	return floatNxM<N, M>(_hlslpp_mul_ps(m._vec0, v_perm), _hlslpp_mul_ps(m._vec1, v_perm));
 }
 
-template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator * (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
@@ -4063,19 +4066,19 @@ hlslpp_forceinline floatNxM<N, M>& operator *= (floatNxM<N, M>& m, const float1&
 
 // Division
 
-template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator / (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_div_ps(m1._vec, m2._vec));
 }
 
-template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator / (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_div_ps(m1._vec0, m2._vec0), _hlslpp_div_ps(m1._vec1, m2._vec1));
 }
 
-template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator / (const floatNxM<N, M>& m1, const floatNxM<N, M>& m2)
 {
 	return floatNxM<N, M>(_hlslpp_div_ps(m1._vec0, m2._vec0), _hlslpp_div_ps(m1._vec1, m2._vec1), _hlslpp_div_ps(m1._vec2, m2._vec2));
@@ -4095,21 +4098,21 @@ hlslpp_forceinline floatNxM<N, M>& operator /= (floatNxM<N, M>& m1, const floatN
 
 // Matrix-Scalar Division
 
-template<int N, int M, typename std::enable_if<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 1) || (M == 1) || ((N == 2) && (M == 2)))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator / (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
 	return floatNxM<N, M>(_hlslpp_div_ps(m._vec, v_perm));
 }
 
-template<int N, int M, typename std::enable_if<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 2) && (M > 2)) || ((N > 2) && (M == 2))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator / (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
 	return floatNxM<N, M>(_hlslpp_div_ps(m._vec0, v_perm), _hlslpp_div_ps(m._vec1, v_perm));
 }
 
-template<int N, int M, typename std::enable_if<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<((N == 3) && (M >= 3)) || ((N >= 3) && (M == 3))> = nullptr>
 hlslpp_forceinline floatNxM<N, M> operator / (const floatNxM<N, M>& m, const float1& v)
 {
 	n128 v_perm = _hlslpp_perm_xxxx_ps(v._vec);
@@ -4151,13 +4154,13 @@ hlslpp_forceinline float4x4 transpose(const float4x4& m)
 // These transpose functions just copy the data because the 1xM, Nx1, 2xM, Nx2, 3xM and Nx3 matrices are always laid out as rows
 // even if they're meant to represent columns.
 
-template<int N, int M, typename std::enable_if<(N == 1) || (M == 1)>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<(N == 1) || (M == 1)> = nullptr>
 floatNxM<M, N> transpose(const floatNxM<N, M>& m) { return floatNxM<M, N>(m._vec); }
 
-template<int N, int M, typename std::enable_if<(N == 2 && M > 2) || (M == 2 && N > 2)>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<(N == 2 && M > 2) || (M == 2 && N > 2)> = nullptr>
 floatNxM<M, N> transpose(const floatNxM<N, M>& m) {	return floatNxM<M, N>(m._vec0, m._vec1); }
 
-template<int N, int M, typename std::enable_if<(N == 3 && M > 3) || (M == 3 && N > 3)>::type* = nullptr>
+template<int N, int M, hlslpp_enableif_t<(N == 3 && M > 3) || (M == 3 && N > 3)> = nullptr>
 floatNxM<M, N> transpose(const floatNxM<N, M>& m) { return floatNxM<M, N>(m._vec0, m._vec1, m._vec2); }
 
 hlslpp_forceinline float1 determinant(const float2x2& m)
