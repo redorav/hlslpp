@@ -16,6 +16,7 @@
 #include "hlsl++.h"
 
 using std::cout;
+using namespace hlslpp;
 
 // Copied from https://randomascii.wordpress.com/2014/01/27/theres-only-four-billion-floatsso-test-them-all/
 union Float_t
