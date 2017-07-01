@@ -6,7 +6,7 @@ install:
   - unzip /tmp/premake5.zip
   - pushd ./premake-5.0.0-alpha11/build/gmake.unix && sudo make && popd
   - export PATH=$PATH:$PWD/premake-5.0.0-alpha11/bin/release
-  - ./premake5 --file=premake.lua gmake
+  - premake5 --file=premake.lua gmake
   - cd workspace/gmake
 
 script: make
