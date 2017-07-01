@@ -8,23 +8,23 @@ before_install:
   - git submodule update
   - make -f Bootstrap.mak linux
   - cd ..
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-get update -qq
-  - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 
 install:
   - ./premake-core/bin/release/premake5 --file=premake.lua gmake
   - cd workspace/gmake
 
-script:
+script: make
 
-  - if ["$CXX" = "g++"]; then make debug_linux64_gcc;
-  - if ["$CXX" = "clang"]; then make debug_linux64_clang;
-
-compiler:
-  - gcc
-  - clang
-  
-os:
-  - linux
+matrix:
+  include:
+    - os: linux
+	  addons:
+	    apt:
+		  sources:
+		    - ubuntu-toolchain-r-test
+		  packages:
+		    - g++-4.8
+	  compiler: gcc
+	  env:
+	    - MATRIX_EVAL="CXX=g++-4.8"
+	    - config="debug_linux64_gcc"
