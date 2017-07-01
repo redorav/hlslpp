@@ -19,8 +19,8 @@ install:
 
 script:
 
-  - if ["$CXX" = "g++"]; then make debug_linux64_gcc
-  - if ["$CXX" = "clang"]; then make debug_linux64_clang
+  - if ["$CXX" = "g++"]; then make debug_linux64_gcc;
+  - if ["$CXX" = "clang"]; then make debug_linux64_clang;
 
 compiler:
   - gcc
