@@ -1,5 +1,3 @@
-
-
 Workspace = "workspace/".._ACTION
 
 -- Compilers
@@ -62,10 +60,14 @@ workspace "hlsl++"
 	configuration "Debug"
 		defines { "DEBUG" }
 		symbols "on"
-
+		inlining("auto") -- hlslpp relies on inlining for speed, big gains in debug builds without losing legibility
+		optimize("debug")
+		
 	configuration "Release"
 		defines { "NDEBUG" }
 		optimize "on"
+		inlining("auto")
+		optimize("full")
 
 project "hlsl++"
 	kind("StaticLib")

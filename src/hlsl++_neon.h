@@ -10,19 +10,19 @@ using n128i = int32x4_t;
 typedef float32x4_t vec_float4; // for iOS
 typedef uint32x4_t vec_uint4;
 
-hlslpp_forceinline float32x4_t vmov4q_n_f32(const float x, const float y, const float z, const float w)
+hlslpp_inline float32x4_t vmov4q_n_f32(const float x, const float y, const float z, const float w)
 {
 	const float values[4] = { x, y, z, w };
 	return vld1q_f32(values);
 }
 
-hlslpp_forceinline float32x4_t vmov4q_n_s32(const int32_t x, const int32_t y, const int32_t z, const int32_t w)
+hlslpp_inline float32x4_t vmov4q_n_s32(const int32_t x, const int32_t y, const int32_t z, const int32_t w)
 {
 	const int32_t values[4] = { x, y, z, w };
 	return vld1q_s32(values);
 }
 
-hlslpp_forceinline float32x4_t vmov4q_n_u32(const uint32_t x, const uint32_t y, const uint32_t z, const uint32_t w)
+hlslpp_inline float32x4_t vmov4q_n_u32(const uint32_t x, const uint32_t y, const uint32_t z, const uint32_t w)
 {
 	const uint32_t values[4] = { x, y, z, w };
 	return vld1q_u32(values);
@@ -35,7 +35,7 @@ hlslpp_forceinline float32x4_t vmov4q_n_u32(const uint32_t x, const uint32_t y, 
 #define _hlslpp_set_epi32(x, y, z, w)			vmov4q_n_s32((w), (z), (y), (x))
 
 // Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
-hlslpp_forceinline float32x4_t vpermq_f32(const float32x4_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
+hlslpp_inline float32x4_t vpermq_f32(const float32x4_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
 {
 	// Swizzle x, swizzle y, swizzle z, swizzle w
 	static const uint32_t ControlMask[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C };
@@ -53,7 +53,7 @@ hlslpp_forceinline float32x4_t vpermq_f32(const float32x4_t x, const uint32_t X,
 	return vcombine_f32(rL, rH);
 }
 
-hlslpp_forceinline float32x4_t vshufq_f32(const float32x4_t x, const float32x4_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
+hlslpp_inline float32x4_t vshufq_f32(const float32x4_t x, const float32x4_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
 {
 	// Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0, 
 	static const uint32_t ControlMaskX[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C };
@@ -76,7 +76,7 @@ hlslpp_forceinline float32x4_t vshufq_f32(const float32x4_t x, const float32x4_t
 }
 
 // Source https://github.com/andrepuschmann/math-neon/blob/master/src/math_floorf.c
-hlslpp_forceinline float32x4_t vfloorq_f32(float32x4_t x)
+hlslpp_inline float32x4_t vfloorq_f32(float32x4_t x)
 {
 	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
 	float32x4_t gt = vcgtq_f32(trnc, x);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
@@ -86,7 +86,7 @@ hlslpp_forceinline float32x4_t vfloorq_f32(float32x4_t x)
 }
 
 // Source https://github.com/andrepuschmann/math-neon/blob/master/src/math_ceilf.c
-hlslpp_forceinline float32x4_t vceilq_f32(float32x4_t x)
+hlslpp_inline float32x4_t vceilq_f32(float32x4_t x)
 {
 	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
 	float32x4_t gt = vcgtq_f32(trnc, x);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
@@ -95,7 +95,7 @@ hlslpp_forceinline float32x4_t vceilq_f32(float32x4_t x)
 	return result;
 }
 
-hlslpp_forceinline float32x4_t vroundq_f32(float32x4_t x)
+hlslpp_inline float32x4_t vroundq_f32(float32x4_t x)
 {
 	float32x4_t add = vaddq_f32(x, vmovq_n_f32(0.5f));				// Add 0.5
 	float32x4_t frc_add = vsubq_f32(add, vfloorq_f32(add));			// Get the fractional part
@@ -103,7 +103,7 @@ hlslpp_forceinline float32x4_t vroundq_f32(float32x4_t x)
 	return result;
 }
 
-hlslpp_forceinline float32x4_t vrsqrtq_f32(float32x4_t x)
+hlslpp_inline float32x4_t vrsqrtq_f32(float32x4_t x)
 {
 	float32x4_t e = vrsqrteq_f32(x);								// Calculate a first estimate of the rsqrt
 	e = vmulq_f32(e, vrsqrtsq_f32(vmulq_f32(e, x), e));				// First Newton-Raphson iteration
@@ -114,14 +114,14 @@ hlslpp_forceinline float32x4_t vrsqrtq_f32(float32x4_t x)
 // ARMv8 has these functions natively but we need to emulate them for ARMv7
 #if __ARM_ARCH <= 7
 
-hlslpp_forceinline float32x4_t vsqrtq_f32(float32x4_t x)
+hlslpp_inline float32x4_t vsqrtq_f32(float32x4_t x)
 {
 	uint32x4_t cmpZero = vceqq_f32(x, vmovq_n_f32(0.0f));							// Sqrt of 0 is NaN (since we use rsqrt to compute it) which is incorrect but we still want it to go NaN on negatives
 	float32x4_t sqrt = vmulq_f32(x, vrsqrtq_f32(x));								// Multiply by x to get x * rqsrt(x)
 	return vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32(sqrt), cmpZero));	// Select 0 if input is 0
 }
 
-hlslpp_forceinline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
+hlslpp_inline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
 {
 	float32x4_t rcpy_e = vrecpeq_f32(y);					// Calculate a first estimate of the rcp
 	rcpy_e = vmulq_f32(rcpy_e, vrecpsq_f32(y, rcpy_e));		// Refine
