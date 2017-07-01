@@ -8,7 +8,8 @@ PlatformLLVM32	= "LLVM 32"
 
 PlatformOSX64	= "OSX 64"
 
-PlatformLinux64	= "Linux64"
+PlatformLinux64_GCC		= "Linux64_GCC"
+PlatformLinux64_Clang	= "Linux64_Clang"
 
 -- Directories
 srcDir = "src"
@@ -31,10 +32,16 @@ workspace "hlsl++"
 		buildoptions { "-std=c++11 -msse4.1 -Wno-unused-variable" }
 		linkoptions { "-stdlib=libc++" }
 	elseif(_ACTION == "gmake") then
-		platforms { PlatformLinux64 }
-		toolset("gcc")
+		platforms { PlatformLinux64_GCC, PlatformLinux64_Clang }
 		architecture("x64")
 		buildoptions { "-std=c++11 -msse4.1 -Wno-unused-variable" }
+		
+		filter { "platforms:"..PlatformLinux64_GCC }
+			toolset("gcc")
+		
+		filter { "platforms:"..PlatformLinux64_Clang }
+			toolset("clang")
+		
 	else
 	
 		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32 }
