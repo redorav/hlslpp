@@ -1,29 +1,26 @@
 language: cpp
 sudo: required
 
+before_install:
+  - git clone https://github.com/premake/premake-core.git
+  - cd premake-core/
+  - git submodule init
+  - git submodule update
+  - make -f Bootstrap.mak linux
+  - cd ..
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update -qq
+  - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+
 install:
-  - wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha11/premake-5.0.0-alpha11-src.zip -O /tmp/premake5.zip
-  - unzip /tmp/premake5.zip
-  - pushd ./premake-5.0.0-alpha11/build/gmake.unix
-  - ls
-  - sudo make
-  - popd
-  - export PATH=$PATH:$PWD/premake-5.0.0-alpha11/bin/release/
-  - premake5 --file=premake.lua gmake
+  - ./premake-core/bin/release/premake5 --file=premake.lua gmake
   - cd workspace/gmake
 
 script: make
 
-matrix:
-  include:
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-4.8
-      compiler: gcc
-      env:
-        - MATRIX_EVAL="CXX=g++-4.8"
-        - config="debug_linux64_gcc"
+compiler:
+  - gcc
+  
+os:
+  - linux
