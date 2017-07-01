@@ -4223,5 +4223,3 @@ namespace hlslpp
 		_hlslpp_store4x4_ps(f, m._vec0, m._vec1, m._vec2, m._vec3);
 	}
 }
-
-#include "hlsl++_quaternion.h"
