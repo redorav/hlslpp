@@ -17,7 +17,10 @@ install:
   - ./premake-core/bin/release/premake5 --file=premake.lua gmake
   - cd workspace/gmake
 
-script: make
+script:
+
+  - if ["$CXX" = "g++"]; then make debug_linux64_gcc
+  - if ["$CXX" = "clang"]; then make debug_linux64_clang
 
 compiler:
   - gcc
