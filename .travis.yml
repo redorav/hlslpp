@@ -20,7 +20,6 @@ install:
 script: make
 
 compiler:
-  - clang
   - gcc
   
 os:
