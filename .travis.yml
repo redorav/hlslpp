@@ -13,8 +13,16 @@ install:
 
 script: make
 
-compiler:
-  - gcc
-  
-os:
-  - linux
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.8
+      compiler: gcc
+      env:
+        - MATRIX_EVAL="CXX=g++-4.8"
+        - config="debug_linux64_gcc"
