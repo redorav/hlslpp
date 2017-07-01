@@ -4,7 +4,7 @@ sudo: required
 install:
   - wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha11/premake-5.0.0-alpha11-src.zip -O /tmp/premake5.zip
   - unzip /tmp/premake5.zip
-  - pushd premake-5.0.0-alpha11/build/gmake.unix && make && popd
+  - pushd premake-5.0.0-alpha11/build/gmake.unix && sudo make && popd
   - export PATH=$PATH:$PWD/premake-5.0.0-alpha11/bin/release
   - ./premake5 --file=premake.lua gmake
   - cd workspace/gmake
