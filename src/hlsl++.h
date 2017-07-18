@@ -20,7 +20,9 @@
 	#define HLSLPP_SSE
 
 #else
+
 	#error Platform not supported!
+
 #endif
 
 #if defined(_MSC_VER)
@@ -1081,180 +1083,6 @@ namespace hlslpp
 	hlslpp_inline n128 _hlslpp_isfinite_ps(n128 x)
 	{
 		return _hlslpp_and_ps(_hlslpp_and_ps(_hlslpp_cmpneq_ps(x, f4_inf), _hlslpp_cmpneq_ps(x, f4_minusinf)), _hlslpp_cmpeq_ps(x, x));
-	}
-
-	hlslpp_inline n128 _hlslpp_transpose_2x2_ps(n128 m)
-	{
-		return _hlslpp_perm_xzyw_ps(m);
-	}
-
-	hlslpp_inline void _hlslpp_transpose_3x3_ps(const n128& vec0, const n128& vec1, const n128& vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
-	{
-		n128 shuf_tmp_0 = _hlslpp_shuf_xyxy_ps(vec0, vec1);
-		n128 shuf_tmp_1 = _hlslpp_shuf_yzyz_ps(vec0, vec1);
-
-		o_vec0 = _hlslpp_shuf_xzxw_ps(shuf_tmp_0, vec2);
-		o_vec1 = _hlslpp_shuf_ywyw_ps(shuf_tmp_0, vec2);
-		o_vec2 = _hlslpp_shuf_ywzw_ps(shuf_tmp_1, vec2);
-	}
-
-	hlslpp_inline void _hlslpp_transpose_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
-	{
-		n128 shuf_tmp_0 = _hlslpp_shuf_xyxy_ps(vec0, vec1);
-		n128 shuf_tmp_1 = _hlslpp_shuf_zwzw_ps(vec0, vec1);
-		n128 shuf_tmp_2 = _hlslpp_shuf_xyxy_ps(vec2, vec3);
-		n128 shuf_tmp_3 = _hlslpp_shuf_zwzw_ps(vec2, vec3);
-
-		o_vec0 = _hlslpp_shuf_xzxz_ps(shuf_tmp_0, shuf_tmp_2);
-		o_vec1 = _hlslpp_shuf_ywyw_ps(shuf_tmp_0, shuf_tmp_2);
-		o_vec2 = _hlslpp_shuf_xzxz_ps(shuf_tmp_1, shuf_tmp_3);
-		o_vec3 = _hlslpp_shuf_ywyw_ps(shuf_tmp_1, shuf_tmp_3);
-	}
-
-	hlslpp_inline n128 _hlslpp_det_2x2_ps(n128 m)
-	{
-		// The determinant for a 2x2 matrix is m00 * m11 - m01 * m10
-		n128 shuf_1 = _hlslpp_perm_wzxx_ps(m);	// Shuffle w and z into x and y to multiply them together
-		n128 prod = _hlslpp_mul_ps(m, shuf_1);		// Now this vector contains wx, zy, _, _
-		n128 shuf_2 = _hlslpp_perm_yxxx_ps(prod);	// Shuffle yz into where xw is to subtract them
-		n128 result = _hlslpp_sub_ps(prod, shuf_2);	// Determinant is now in the x component
-		return result;
-	}
-
-	hlslpp_inline n128 _hlslpp_det_3x3_ps(n128 vec0, n128 vec1, n128 vec2)
-	{
-		// The determinant for a 3x3 matrix can be expressed as dot[ (m00, m01, m02), (m11 * m22 - m12 * m21, m12 * m20 - m10 * m22, m10 * m21 - m11 * m20) ]
-		n128 shuf_1 = _hlslpp_perm_yzxw_ps(vec2);
-		n128 prod_1 = _hlslpp_mul_ps(vec1, shuf_1);
-	
-		n128 shuf_2 = _hlslpp_perm_yzxw_ps(vec1);
-		n128 prod_2 = _hlslpp_mul_ps(shuf_2, vec2);
-	
-		n128 sub	= _hlslpp_sub_ps(prod_1, prod_2);
-
-		n128 result = _hlslpp_dot3_ps(vec0, _hlslpp_perm_yzxw_ps(sub));
-
-		return result;
-	}
-
-	hlslpp_inline n128 _hlslpp_det_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3)
-	{
-		// Use the Laplace expansion to calculate the determinant in terms of 2x2 determinant multiplies instead of calculating
-		// 3x3 determinants and then doing a dot product. https://www.geometrictools.com/Documentation/LaplaceExpansionTheorem.pdf
-		n128 tmp_shuf_0 = _hlslpp_perm_xzxy_ps(vec0);
-		n128 tmp_shuf_1 = _hlslpp_perm_yxwz_ps(vec1);
-		n128 tmp_shuf_2 = _hlslpp_perm_yxwz_ps(vec0);
-		n128 tmp_shuf_3 = _hlslpp_perm_xzxy_ps(vec1);
-
-		n128 tmp_shuf_4 = _hlslpp_perm_zyyx_ps(vec2);
-		n128 tmp_shuf_5 = _hlslpp_perm_wwzw_ps(vec3);
-		n128 tmp_shuf_6 = _hlslpp_perm_wwzw_ps(vec2);
-		n128 tmp_shuf_7 = _hlslpp_perm_zyyx_ps(vec3);
-
-		n128 tmp_4_terms = _hlslpp_mul_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(tmp_shuf_0, tmp_shuf_1), _hlslpp_mul_ps(tmp_shuf_2, tmp_shuf_3)), _hlslpp_sub_ps(_hlslpp_mul_ps(tmp_shuf_4, tmp_shuf_5), _hlslpp_mul_ps(tmp_shuf_6, tmp_shuf_7)));
-
-		n128 tmp_shuf_8 = _hlslpp_shuf_wzxx_ps(vec0, vec2);
-		n128 tmp_shuf_9 = _hlslpp_shuf_ywzy_ps(vec1, vec3);
-		n128 tmp_shuf_10 = _hlslpp_shuf_ywzy_ps(vec0, vec2);
-		n128 tmp_shuf_11 = _hlslpp_shuf_wzxx_ps(vec1, vec3);
-
-		n128 tmp_mul_0 = _hlslpp_sub_ps(_hlslpp_mul_ps(tmp_shuf_8, tmp_shuf_9), _hlslpp_mul_ps(tmp_shuf_10, tmp_shuf_11));
-
-		n128 tmp_2_terms = _hlslpp_mul_ps(_hlslpp_perm_xyxy_ps(tmp_mul_0), _hlslpp_perm_zwzw_ps(tmp_mul_0));
-
-		// Add all the results now (terms that subtract have already been inverted)
-		n128 tmp_add_0 = _hlslpp_add_ps(_hlslpp_shuf_xzxx_ps(tmp_4_terms, tmp_2_terms), _hlslpp_shuf_ywyy_ps(tmp_4_terms, tmp_2_terms));
-		n128 tmp_add_1 = _hlslpp_add_ps(_hlslpp_perm_xxxx_ps(tmp_add_0), _hlslpp_perm_yyyy_ps(tmp_add_0));
-		n128 tmp_add_2 = _hlslpp_add_ps(_hlslpp_perm_xxxx_ps(tmp_add_1), _hlslpp_perm_zzzz_ps(tmp_add_0));
-
-		return tmp_add_2;
-	}
-
-	hlslpp_inline n128 _hlslpp_inv_2x2_ps(n128 m)
-	{
-		n128 det = _hlslpp_perm_xxxx_ps(_hlslpp_det_2x2_ps(m));
-		n128 shuf = _hlslpp_mul_ps(_hlslpp_perm_wyzx_ps(m), _hlslpp_set_ps(1.0f, -1.0f, -1.0f, 1.0f));
-		return _hlslpp_div_ps(shuf, det);
-	}
-
-	hlslpp_inline void _hlslpp_inv_3x3_ps(const n128& vec0, const n128& vec1, const n128& vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
-	{
-		n128 tmp_shuf_yzx_0 = _hlslpp_perm_yzxw_ps(vec0);
-		n128 tmp_shuf_zxy_0 = _hlslpp_perm_zxyw_ps(vec0);
-		n128 tmp_shuf_yzx_1 = _hlslpp_perm_yzxw_ps(vec1);
-		n128 tmp_shuf_zxy_1 = _hlslpp_perm_zxyw_ps(vec1);
-		n128 tmp_shuf_yzx_2 = _hlslpp_perm_yzxw_ps(vec2);
-		n128 tmp_shuf_zxy_2 = _hlslpp_perm_zxyw_ps(vec2);
-
-		// Compute the adjoint matrix directly with 2x2 determinants
-		n128 tmp_row_0 = _hlslpp_msub_ps(tmp_shuf_yzx_1, tmp_shuf_zxy_2, _hlslpp_mul_ps(tmp_shuf_zxy_1, tmp_shuf_yzx_2));
-		n128 tmp_row_1 = _hlslpp_msub_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_2, _hlslpp_mul_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_2));
-		n128 tmp_row_2 = _hlslpp_msub_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_1, _hlslpp_mul_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_1));
-
-		// Transpose the matrix
-		n128 tmp_transp_row_0, tmp_transp_row_1, tmp_transp_row_2;
-		_hlslpp_transpose_3x3_ps(tmp_row_0, tmp_row_1, tmp_row_2, tmp_transp_row_0, tmp_transp_row_1, tmp_transp_row_2);
-
-		// Compute the determinant and divide all results by it
-		n128 det = _hlslpp_perm_xxxx_ps(_hlslpp_det_3x3_ps(vec0, vec1, vec2));
-		n128 invDet = _hlslpp_div_ps(f4_1, det);
-
-		o_vec0 = _hlslpp_mul_ps(tmp_transp_row_0, invDet);
-		o_vec1 = _hlslpp_mul_ps(tmp_transp_row_1, invDet);
-		o_vec2 = _hlslpp_mul_ps(tmp_transp_row_2, invDet);
-	}
-
-	hlslpp_inline void _hlslpp_inv_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
-	{
-		// Use the Laplace expansion to calculate the adjoint in terms of 2x2 determinants and dot products.
-		// Follow https://www.geometrictools.com/Documentation/LaplaceExpansionTheorem.pdf
-
-		// mms means mul mul sub. Here we add the 2x2 determinants we need
-		n128 tmp_mms_c5_c4_c3 = _hlslpp_msub_ps(_hlslpp_perm_zyyx_ps(vec2), _hlslpp_perm_wwzx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec2), _hlslpp_perm_zyyx_ps(vec3)));
-		n128 tmp_mms_c4_c2_c0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec2), _hlslpp_perm_wwyx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_wwyx_ps(vec2), _hlslpp_perm_yxxx_ps(vec3)));
-		n128 tmp_mms_c5_c2_c1 = _hlslpp_msub_ps(_hlslpp_perm_zxxx_ps(vec2), _hlslpp_perm_wwzx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec2), _hlslpp_perm_zxxx_ps(vec3)));
-		n128 tmp_mms_c3_c1_c0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec2), _hlslpp_perm_zzyx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_zzyx_ps(vec2), _hlslpp_perm_yxxx_ps(vec3)));
-
-		n128 tmp_mms_s5_s4_s3 = _hlslpp_msub_ps(_hlslpp_perm_zyyx_ps(vec0), _hlslpp_perm_wwzx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec0), _hlslpp_perm_zyyx_ps(vec1)));
-		n128 tmp_mms_s4_s2_s0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec0), _hlslpp_perm_wwyx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_wwyx_ps(vec0), _hlslpp_perm_yxxx_ps(vec1)));
-		n128 tmp_mms_s5_s2_s1 = _hlslpp_msub_ps(_hlslpp_perm_zxxx_ps(vec0), _hlslpp_perm_wwzx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec0), _hlslpp_perm_zxxx_ps(vec1)));
-		n128 tmp_mms_s3_s1_s0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec0), _hlslpp_perm_zzyx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_zzyx_ps(vec0), _hlslpp_perm_yxxx_ps(vec1)));
-
-		// Dot product the determinants with the required elements from the rows
-		n128 c00 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c4_c3, _hlslpp_perm_yzwx_ps(vec1));
-		n128 c01 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c4_c3, _hlslpp_neg_ps(_hlslpp_perm_yzwx_ps(vec0)));
-		n128 c02 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s4_s3, _hlslpp_perm_yzwx_ps(vec3));
-		n128 c03 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s4_s3, _hlslpp_neg_ps(_hlslpp_perm_yzwx_ps(vec2)));
-
-		n128 c10 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c2_c1, _hlslpp_neg_ps(_hlslpp_perm_xzwx_ps(vec1)));
-		n128 c11 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c2_c1, _hlslpp_perm_xzwx_ps(vec0));
-		n128 c12 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s2_s1, _hlslpp_neg_ps(_hlslpp_perm_xzwx_ps(vec3)));
-		n128 c13 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s2_s1, _hlslpp_perm_xzwx_ps(vec2));
-
-		n128 c20 = _hlslpp_dot3_asa_ps(tmp_mms_c4_c2_c0, _hlslpp_perm_xyww_ps(vec1));
-		n128 c21 = _hlslpp_dot3_asa_ps(tmp_mms_c4_c2_c0, _hlslpp_neg_ps(_hlslpp_perm_xyww_ps(vec0)));
-		n128 c22 = _hlslpp_dot3_asa_ps(tmp_mms_s4_s2_s0, _hlslpp_perm_xyww_ps(vec3));
-		n128 c23 = _hlslpp_dot3_asa_ps(tmp_mms_s4_s2_s0, _hlslpp_neg_ps(_hlslpp_perm_xyww_ps(vec2)));
-
-		n128 c30 = _hlslpp_dot3_asa_ps(tmp_mms_c3_c1_c0, _hlslpp_neg_ps(vec1));
-		n128 c31 = _hlslpp_dot3_asa_ps(tmp_mms_c3_c1_c0, vec0);
-		n128 c32 = _hlslpp_dot3_asa_ps(tmp_mms_s3_s1_s0, _hlslpp_neg_ps(vec3));
-		n128 c33 = _hlslpp_dot3_asa_ps(tmp_mms_s3_s1_s0, vec2);
-
-		// Combine the results
-		n128 tmp_row0 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c00, c02), _hlslpp_shuf_xxxx_ps(c01, c03), HLSLPP_BLEND_MASK(1, 0, 1, 0));
-		n128 tmp_row1 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c10, c12), _hlslpp_shuf_xxxx_ps(c11, c13), HLSLPP_BLEND_MASK(1, 0, 1, 0));
-		n128 tmp_row2 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c20, c22), _hlslpp_shuf_xxxx_ps(c21, c23), HLSLPP_BLEND_MASK(1, 0, 1, 0));
-		n128 tmp_row3 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c30, c32), _hlslpp_shuf_xxxx_ps(c31, c33), HLSLPP_BLEND_MASK(1, 0, 1, 0));
-
-		// Compute the determinant and divide all results by it
-		n128 det = _hlslpp_perm_xxxx_ps(_hlslpp_det_4x4_ps(vec0, vec1, vec2, vec3));
-		n128 invDet = _hlslpp_div_ps(f4_1, det);
-
-		o_vec0 = _hlslpp_mul_ps(tmp_row0, invDet);
-		o_vec1 = _hlslpp_mul_ps(tmp_row1, invDet);
-		o_vec2 = _hlslpp_mul_ps(tmp_row2, invDet);
-		o_vec3 = _hlslpp_mul_ps(tmp_row3, invDet);
 	}
 
 	template<int N> class floatN {};
@@ -2450,17 +2278,17 @@ namespace hlslpp
 
 	hlslpp_inline float4::floatN(const float v1, const float v2, const float v3, const float1& v4)
 	{
-		_vec = _hlslpp_blend_ps(_hlslpp_set_ps(v1, v2, v3, 0.0f), _hlslpp_shuf_xxxx_ps(v4._vec, v4._vec), HLSLPP_BLEND_MASK(1, 1, 1, 0));
+		_vec = _hlslpp_blend_ps(_hlslpp_set_ps(v1, v2, v3, 0.0f), _hlslpp_perm_xxxx_ps(v4._vec), HLSLPP_BLEND_MASK(1, 1, 1, 0));
 	}
 
 	hlslpp_inline float4::floatN(const float v1, const float v2, const float1& v3, const float v4)
 	{
-		_vec = _hlslpp_blend_ps(_hlslpp_set_ps(v1, v2, 0.0f, v4), _hlslpp_shuf_xxxx_ps(v3._vec, v3._vec), HLSLPP_BLEND_MASK(1, 1, 0, 1));
+		_vec = _hlslpp_blend_ps(_hlslpp_set_ps(v1, v2, 0.0f, v4), _hlslpp_perm_xxxx_ps(v3._vec), HLSLPP_BLEND_MASK(1, 1, 0, 1));
 	}
 
 	hlslpp_inline float4::floatN(const float v1, const float1& v2, const float v3, const float v4)
 	{
-		_vec = _hlslpp_blend_ps(_hlslpp_set_ps(v1, 0.0f, v3, v4), _hlslpp_shuf_xxxx_ps(v2._vec, v2._vec), HLSLPP_BLEND_MASK(1, 0, 1, 1));
+		_vec = _hlslpp_blend_ps(_hlslpp_set_ps(v1, 0.0f, v3, v4), _hlslpp_perm_xxxx_ps(v2._vec), HLSLPP_BLEND_MASK(1, 0, 1, 1));
 	}
 
 	hlslpp_inline float4::floatN(const float1& v1, const float v2, const float v3, const float v4)
@@ -2587,10 +2415,10 @@ namespace hlslpp
 	hlslpp_inline floatN<N> operator * (const components<Dim...>& v1, const floatN<N>& v2) { return floatN<N>(v1) * v2; }
 
 	template<int...D1, int...D2>
-	hlslpp_inline componentbase<sizeof...(D1)> operator * (const components<D1...>& v1, const components<D2...>& v2)
+	hlslpp_inline floatN<sizeof...(D1)> operator * (const components<D1...>& v1, const components<D2...>& v2)
 	{
 		static_assert(sizeof...(D1) == sizeof...(D2), "Vectors must be the same dimension");
-		return componentbase<sizeof...(D1)>(_hlslpp_mul_ps(componentbase<sizeof...(D1)>(v1)._vec, componentbase<sizeof...(D1)>(v2)._vec));
+		return floatN<sizeof...(D1)>(_hlslpp_mul_ps(floatN<sizeof...(D1)>(v1)._vec, floatN<sizeof...(D1)>(v2)._vec));
 	}
 
 	template<int N> hlslpp_inline floatN<N> operator * (const floatN<N>& v1, const float1& v2) { return v1 * floatN<N>(_hlslpp_perm_xxxx_ps(v2._vec)); }
@@ -2631,10 +2459,10 @@ namespace hlslpp
 	hlslpp_inline floatN<N> operator / (const components<Dim...>& v1, const floatN<N>& v2) { return floatN<N>(v1) / v2; }
 
 	template<int...D1, int...D2>
-	hlslpp_inline componentbase<sizeof...(D1)> operator / (const components<D1...>& v1, const components<D2...>& v2)
+	hlslpp_inline floatN<sizeof...(D1)> operator / (const components<D1...>& v1, const components<D2...>& v2)
 	{
 		static_assert(sizeof...(D1) == sizeof...(D2), "Vectors must be the same dimension");
-		return componentbase<sizeof...(D1)>(_hlslpp_div_ps(componentbase<sizeof...(D1)>(v1)._vec, componentbase<sizeof...(D1)>(v2)._vec));
+		return floatN<sizeof...(D1)>(_hlslpp_div_ps(floatN<sizeof...(D1)>(v1)._vec, floatN<sizeof...(D1)>(v2)._vec));
 	}
 
 	template<int N> inline floatN<N> operator / (const floatN<N>& v1, const float1& v2) { return v1 / floatN<N>(_hlslpp_perm_xxxx_ps(v2._vec)); }
@@ -2781,26 +2609,26 @@ namespace hlslpp
 		return componentbase<sizeof...(D1)>(_hlslpp_cmple1_ps(componentbase<sizeof...(D1)>(v1)._vec, componentbase<sizeof...(D1)>(v2)._vec));
 	}
 
-	template<int N>		hlslpp_inline floatN<N> abs(const floatN<N>& v) { return floatN<N>(_hlslpp_abs_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...> abs(const components<Dim...>& v) { return components<Dim...>(_hlslpp_abs_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>				abs(const floatN<N>& v) { return floatN<N>(_hlslpp_abs_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline components<Dim...>	abs(const components<Dim...>& v) { return components<Dim...>(_hlslpp_abs_ps(v._vec)); }
 
-	template<int N>		hlslpp_inline floatN<N> acos(const floatN<N>& v) { return floatN<N>(_hlslpp_acos_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...> acos(const components<Dim...>& v) { return components<Dim...>(_hlslpp_acos_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>					acos(const floatN<N>& v) { return floatN<N>(_hlslpp_acos_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	acos(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_acos_ps(v._vec)); }
 
-	template<int N>		hlslpp_inline floatN<N> all(const floatN<N>& v) { return floatN<N>(_hlslpp_all1_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...> all(const components<Dim...>& v) { return components<Dim...>(_hlslpp_all1_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>				all(const floatN<N>& v) { return floatN<N>(_hlslpp_all1_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline components<Dim...>	all(const components<Dim...>& v) { return components<Dim...>(_hlslpp_all1_ps(v._vec)); }
 
-	template<int N>		hlslpp_inline floatN<N> any(const floatN<N>& v) { return floatN<N>(_hlslpp_any1_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...> any(const components<Dim...>& v) { return components<Dim...>(_hlslpp_any1_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>				any(const floatN<N>& v) { return floatN<N>(_hlslpp_any1_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline components<Dim...>	any(const components<Dim...>& v) { return components<Dim...>(_hlslpp_any1_ps(v._vec)); }
 
-	template<int N>		hlslpp_inline floatN<N> asin(const floatN<N>& v) { return floatN<N>(_hlslpp_asin_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...> asin(const components<Dim...>& v) { return components<Dim...>(_hlslpp_asin_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>					asin(const floatN<N>& v) { return floatN<N>(_hlslpp_asin_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	asin(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_asin_ps(v._vec)); }
 
-	template<int N>		hlslpp_inline floatN<N> atan(const floatN<N>& v) { return floatN<N>(_hlslpp_atan_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...> atan(const components<Dim...>& v) { return components<Dim...>(_hlslpp_atan_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>					atan(const floatN<N>& v) { return floatN<N>(_hlslpp_atan_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	atan(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_atan_ps(v._vec)); }
 
-	template<int N>		hlslpp_inline floatN<N> ceil(const floatN<N>& v) { return floatN<N>(_hlslpp_ceil_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...> ceil(const components<Dim...>& v) { return components<Dim...>(_hlslpp_ceil_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>					ceil(const floatN<N>& v) { return floatN<N>(_hlslpp_ceil_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	ceil(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_ceil_ps(v._vec)); }
 
 	template<int N> hlslpp_inline floatN<N> clamp(const floatN<N>& v, const floatN<N>& minv, const floatN<N>& maxv) { return floatN<N>(_hlslpp_clamp_ps(v._vec, minv._vec, maxv._vec)); }
 
@@ -2823,52 +2651,55 @@ namespace hlslpp
 	hlslpp_inline floatN<N> clamp(const components<Dim...>& v1, const components<Dim...>& v2, const floatN<N>& a) { return clamp(floatN<N>(v1), floatN<N>(v2), a); }
 
 	template<int...D1, int...D2, int...D3>
-	hlslpp_inline componentbase<sizeof...(D1)> clamp(const components<D1...>& v1, const components<D2...>& v2, const components<D3...>& a)
+	hlslpp_inline floatN<sizeof...(D1)> clamp(const components<D1...>& v1, const components<D2...>& v2, const components<D3...>& a)
 	{
 		static_assert((sizeof...(D1) == sizeof...(D2)) && (sizeof...(D2) == sizeof...(D3)), "Vectors must be the same dimension");
-		return componentbase<sizeof...(D1)>(_hlslpp_clamp_ps((componentbase<sizeof...(D1)>(v1)._vec), (componentbase<sizeof...(D1)>(v2)._vec), (componentbase<sizeof...(D3)>(a)._vec)));
+		return floatN<sizeof...(D1)>(_hlslpp_clamp_ps((floatN<sizeof...(D1)>(v1)._vec), (floatN<sizeof...(D1)>(v2)._vec), (floatN<sizeof...(D3)>(a)._vec)));
 	}
 
-	template<int N>		hlslpp_inline floatN<N> cos(const floatN<N>& v) { return floatN<N>(_hlslpp_cos_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...> cos(const components<Dim...>& v) { return components<Dim...>(_hlslpp_cos_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>					cos(const floatN<N>& v) { return floatN<N>(_hlslpp_cos_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	cos(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_cos_ps(v._vec)); }
 
 	hlslpp_inline float3 cross(const float3& v1, const float3& v2) { return float3(_hlslpp_cross_ps(v1._vec, v2._vec)); }
 
-	template<int N>		hlslpp_inline floatN<N>			degrees(const floatN<N>& v) { return floatN<N>(_hlslpp_mul_ps(v._vec, f4_rad2deg)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	degrees(const components<Dim...>& v) { return components<Dim...>(_hlslpp_mul_ps(v._vec, f4_rad2deg)); }
+	template<int N>		hlslpp_inline floatN<N>					degrees(const floatN<N>& v) { return floatN<N>(_hlslpp_mul_ps(v._vec, f4_rad2deg)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	degrees(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_mul_ps(v._vec, f4_rad2deg)); }
 
 	hlslpp_inline float1 dot(const float2& v1, const float2& v2) { return float1(_hlslpp_dot2_ps(v1._vec, v2._vec)); }
 	hlslpp_inline float1 dot(const float3& v1, const float3& v2) { return float1(_hlslpp_dot3_ps(v1._vec, v2._vec)); }
 	hlslpp_inline float1 dot(const float4& v1, const float4& v2) { return float1(_hlslpp_dot4_ps(v1._vec, v2._vec)); }
 
-	template<int N>		hlslpp_inline floatN<N>			exp(const floatN<N>& v) { return floatN<N>(_hlslpp_exp_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	exp(const components<Dim...>& v) { return components<Dim...>(_hlslpp_exp_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>					exp(const floatN<N>& v) { return floatN<N>(_hlslpp_exp_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	exp(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_exp_ps(v._vec)); }
 
-	template<int N>		hlslpp_inline floatN<N>			exp2(const floatN<N>& v) { return floatN<N>(_hlslpp_exp2_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	exp2(const components<Dim...>& v) { return components<Dim...>(_hlslpp_exp2_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>					exp2(const floatN<N>& v) { return floatN<N>(_hlslpp_exp2_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	exp2(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_exp2_ps(v._vec)); }
 
-	template<int N>		hlslpp_inline floatN<N>			floor(const floatN<N>& v) { return floatN<N>(_hlslpp_floor_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	floor(const components<Dim...>& v) { return components<Dim...>(_hlslpp_floor_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>					floor(const floatN<N>& v) { return floatN<N>(_hlslpp_floor_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	floor(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_floor_ps(v._vec)); }
 
 	// A note on negative numbers. Contrary to intuition, frac(-0.75) != 0.75,
 	// but is actually frac(-0.75) == 0.25 This is because hlsl defines frac
 	// as frac(x) = x - floor(x)
-	template<int N>		hlslpp_inline floatN<N>			frac(const floatN<N>& v) { return floatN<N>(_hlslpp_frac_ps(v._vec)); }
+	template<int N>		hlslpp_inline floatN<N>				frac(const floatN<N>& v) { return floatN<N>(_hlslpp_frac_ps(v._vec)); }
 	template<int...Dim>	hlslpp_inline components<Dim...>	frac(const components<Dim...>& v) { return components<Dim...>(_hlslpp_frac_ps(v._vec)); }
 
-	template<int N>		hlslpp_inline floatN<N>			isfinite(const floatN<N>& v) { return floatN<N>(_hlslpp_andnot_ps(_hlslpp_isfinite_ps(v._vec), f4_1)); }
+	template<int N>		hlslpp_inline floatN<N>				isfinite(const floatN<N>& v) { return floatN<N>(_hlslpp_andnot_ps(_hlslpp_isfinite_ps(v._vec), f4_1)); }
 	template<int...Dim>	hlslpp_inline components<Dim...>	isfinite(const components<Dim...>& v) { return components<Dim...>(_hlslpp_andnot_ps(_hlslpp_isfinite_ps(v._vec), f4_1)); }
 
-	template<int N>		hlslpp_inline floatN<N>			isinf(const floatN<N>& v) { return floatN<N>(_hlslpp_and_ps(_hlslpp_isinf_ps(v._vec), f4_1)); }
+	template<int N>		hlslpp_inline floatN<N>				isinf(const floatN<N>& v) { return floatN<N>(_hlslpp_and_ps(_hlslpp_isinf_ps(v._vec), f4_1)); }
 	template<int...Dim>	hlslpp_inline components<Dim...>	isinf(const components<Dim...>& v) { return components<Dim...>(_hlslpp_and_ps(_hlslpp_isinf_ps(v._vec), f4_1)); }
 
-	template<int N>		hlslpp_inline floatN<N>			isnan(const floatN<N>& v) { return floatN<N>(_hlslpp_and_ps(_hlslpp_isnan_ps(v._vec), f4_1)); }
+	template<int N>		hlslpp_inline floatN<N>				isnan(const floatN<N>& v) { return floatN<N>(_hlslpp_and_ps(_hlslpp_isnan_ps(v._vec), f4_1)); }
 	template<int...Dim>	hlslpp_inline components<Dim...>	isnan(const components<Dim...>& v) { return components<Dim...>(_hlslpp_and_ps(_hlslpp_isnan_ps(v._vec), f4_1)); }
 
 	hlslpp_inline float1 length(const float1& v) { return v; }
 	hlslpp_inline float1 length(const float2& v) { return float1(_hlslpp_sqrt_ps(_hlslpp_dot2_ps(v._vec, v._vec))); }
 	hlslpp_inline float1 length(const float3& v) { return float1(_hlslpp_sqrt_ps(_hlslpp_dot3_ps(v._vec, v._vec))); }
 	hlslpp_inline float1 length(const float4& v) { return float1(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(v._vec, v._vec))); }
+
+	template<int X, int Y, int Z, int W>
+	hlslpp_inline float1 length(const component4<X, Y, Z, W>& v) { return float1(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(v._vec, v._vec))); }
 
 	template<int N> hlslpp_inline floatN<N> lerp(const floatN<N>& v1, const floatN<N>& v2, const floatN<N>& a) { return floatN<N>(_hlslpp_lrp_ps(v1._vec, v2._vec, a._vec)); }
 
@@ -2900,13 +2731,13 @@ namespace hlslpp
 	}
 
 	template<int N>		hlslpp_inline floatN<N>			log(const floatN<N>& v) { return floatN<N>(_hlslpp_log_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	log(const components<Dim...>& v) { return components<Dim...>(_hlslpp_log_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	log(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_log_ps(v._vec)); }
 
 	template<int N>		hlslpp_inline floatN<N>			log2(const floatN<N>& v) { return floatN<N>(_hlslpp_log2_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	log2(const components<Dim...>& v) { return components<Dim...>(_hlslpp_log2_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	log2(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_log2_ps(v._vec)); }
 
 	template<int N>		hlslpp_inline floatN<N>			log10(const floatN<N>& v) { return floatN<N>(_hlslpp_log10_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	log10(const components<Dim...>& v) { return components<Dim...>(_hlslpp_log10_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	log10(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_log10_ps(v._vec)); }
 
 	// Minimum
 	template<int N> hlslpp_inline floatN<N> min(const floatN<N>& v1, const floatN<N>& v2) { return floatN<N>(_hlslpp_min_ps(v1._vec, v2._vec)); }
@@ -2944,12 +2775,6 @@ namespace hlslpp
 
 	template<int X, int Y, int Z, int W>
 	hlslpp_inline component4<0, 1, 2, 3>	normalize(const component4<X, Y, Z, W>& v) { return component4<0, 1, 2, 3>(_hlslpp_div_ps(v._vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(v._vec, v._vec))))); }
-	template<int X, int Y, int Z>
-	hlslpp_inline component3<0, 1, 2>		normalize(const component3<X, Y, Z>& v) { return component3<0, 1, 2>(_hlslpp_div_ps(v._vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot3_ps(v._vec, v._vec))))); }
-	template<int X, int Y>
-	hlslpp_inline component2<0, 1>			normalize(const component2<X, Y>& v) { return component2<0, 1>(_hlslpp_div_ps(v._vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot2_ps(v._vec, v._vec))))); }
-	template<int X>
-	hlslpp_inline component1<0>			normalize(const component1<X>& v) { return component1<0>(1.0f); }
 
 	hlslpp_inline float4					normalize(const float4& v) { return float4(_hlslpp_div_ps(v._vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(v._vec, v._vec))))); }
 	hlslpp_inline float3					normalize(const float3& v) { return float3(_hlslpp_div_ps(v._vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot3_ps(v._vec, v._vec))))); }
@@ -2966,14 +2791,14 @@ namespace hlslpp
 	hlslpp_inline floatN<N> pow(const components<Dim...>& v1, const floatN<N>& v2) { return pow(floatN<N>(v1), v2); }
 
 	template<int...D1, int...D2>
-	hlslpp_inline componentbase<sizeof...(D1)> pow(const components<D1...>& v1, const components<D2...>& v2)
+	hlslpp_inline floatN<sizeof...(D1)> pow(const components<D1...>& v1, const components<D2...>& v2)
 	{
 		static_assert(sizeof...(D1) == sizeof...(D2), "Vectors must be the same dimension");
-		return componentbase<sizeof...(D1)>(_hlslpp_exp2_ps(_hlslpp_mul_ps(componentbase<sizeof...(D1)>(v1)._vec, _hlslpp_log2_ps(componentbase<sizeof...(D1)>(v2)._vec))));
+		return floatN<sizeof...(D1)>(_hlslpp_exp2_ps(_hlslpp_mul_ps(floatN<sizeof...(D1)>(v1)._vec, _hlslpp_log2_ps(floatN<sizeof...(D1)>(v2)._vec))));
 	}
 
 	template<int N>		hlslpp_inline floatN<N>			radians(const floatN<N>& v) { return floatN<N>(_hlslpp_mul_ps(v._vec, f4_deg2rad)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	radians(const components<Dim...>& v) { return components<Dim...>(_hlslpp_mul_ps(v._vec, f4_deg2rad)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	radians(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_mul_ps(v._vec, f4_deg2rad)); }
 
 
 	hlslpp_inline float1 reflect(const float1& i, const float1& n) { return float1(_hlslpp_sub_ps(i._vec, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n._vec, _hlslpp_perm_xxxx_ps(_hlslpp_mul_ps(i._vec, n._vec)))))); }
@@ -2982,10 +2807,10 @@ namespace hlslpp
 	hlslpp_inline float4 reflect(const float4& i, const float4& n) { return float4(_hlslpp_sub_ps(i._vec, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n._vec, _hlslpp_perm_xxxx_ps(_hlslpp_dot4_ps(i._vec, n._vec)))))); }
 
 	template<int N>		hlslpp_inline floatN<N>			rsqrt(const floatN<N>& v) { return floatN<N>(_hlslpp_rsqrt_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	rsqrt(const components<Dim...>& v) { return components<Dim...>(_hlslpp_rsqrt_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	rsqrt(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_rsqrt_ps(v._vec)); }
 
 	template<int N>		hlslpp_inline floatN<N>			round(const floatN<N>& v) { return floatN<N>(_hlslpp_round_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	round(const components<Dim...>& v) { return components<Dim...>(_hlslpp_round_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	round(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_round_ps(v._vec)); }
 
 	template<int N>		hlslpp_inline floatN<N>			saturate(const floatN<N>& v) { return floatN<N>(_hlslpp_sat_ps(v._vec)); }
 	template<int...Dim>	hlslpp_inline components<Dim...>	saturate(const components<Dim...>& v) { return components<Dim...>(_hlslpp_sat_ps(v._vec)); }
@@ -2994,10 +2819,10 @@ namespace hlslpp
 	template<int...Dim>	hlslpp_inline components<Dim...>	sign(const components<Dim...>& v) { return components<Dim...>(_hlslpp_sign_ps(v._vec)); }
 
 	template<int N>		hlslpp_inline floatN<N>			sin(const floatN<N>& v) { return floatN<N>(_hlslpp_sin_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	sin(const components<Dim...>& v) { return components<Dim...>(_hlslpp_sin_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	sin(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_sin_ps(v._vec)); }
 
 	template<int N>		hlslpp_inline floatN<N>			sqrt(const floatN<N>& v) { return floatN<N>(_hlslpp_sqrt_ps(v._vec)); }
-	template<int...Dim>	hlslpp_inline components<Dim...>	sqrt(const components<Dim...>& v) { return components<Dim...>(_hlslpp_sqrt_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	sqrt(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_sqrt_ps(v._vec)); }
 
 	// Step
 	// Hlsl, glsl and Cg behavior is to swap the operands.
@@ -3046,6 +2871,197 @@ namespace hlslpp
 
 	template< bool B, class T = void >
 	using enable_if_dim = typename std::enable_if<B, T>::type*;
+
+	hlslpp_inline n128 _hlslpp_transpose_2x2_ps(n128 m)
+	{
+		return _hlslpp_perm_xzyw_ps(m);
+	}
+
+	hlslpp_inline void _hlslpp_transpose_3x3_ps(const n128& vec0, const n128& vec1, const n128& vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
+	{
+		n128 shuf_tmp_0 = _hlslpp_shuf_xyxy_ps(vec0, vec1);
+		n128 shuf_tmp_1 = _hlslpp_shuf_yzyz_ps(vec0, vec1);
+
+		o_vec0 = _hlslpp_shuf_xzxw_ps(shuf_tmp_0, vec2);
+		o_vec1 = _hlslpp_shuf_ywyw_ps(shuf_tmp_0, vec2);
+		o_vec2 = _hlslpp_shuf_ywzw_ps(shuf_tmp_1, vec2);
+	}
+
+	hlslpp_inline void _hlslpp_transpose_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
+	{
+		n128 shuf_tmp_0 = _hlslpp_shuf_xyxy_ps(vec0, vec1);
+		n128 shuf_tmp_1 = _hlslpp_shuf_zwzw_ps(vec0, vec1);
+		n128 shuf_tmp_2 = _hlslpp_shuf_xyxy_ps(vec2, vec3);
+		n128 shuf_tmp_3 = _hlslpp_shuf_zwzw_ps(vec2, vec3);
+
+		o_vec0 = _hlslpp_shuf_xzxz_ps(shuf_tmp_0, shuf_tmp_2);
+		o_vec1 = _hlslpp_shuf_ywyw_ps(shuf_tmp_0, shuf_tmp_2);
+		o_vec2 = _hlslpp_shuf_xzxz_ps(shuf_tmp_1, shuf_tmp_3);
+		o_vec3 = _hlslpp_shuf_ywyw_ps(shuf_tmp_1, shuf_tmp_3);
+	}
+
+	hlslpp_inline n128 _hlslpp_det_2x2_ps(n128 m)
+	{
+		// The determinant for a 2x2 matrix is m00 * m11 - m01 * m10
+		n128 shuf_1 = _hlslpp_perm_wzxx_ps(m);	// Shuffle w and z into x and y to multiply them together
+		n128 prod = _hlslpp_mul_ps(m, shuf_1);		// Now this vector contains wx, zy, _, _
+		n128 shuf_2 = _hlslpp_perm_yxxx_ps(prod);	// Shuffle yz into where xw is to subtract them
+		n128 result = _hlslpp_sub_ps(prod, shuf_2);	// Determinant is now in the x component
+		return result;
+	}
+
+	hlslpp_inline n128 _hlslpp_det_3x3_ps(n128 vec0, n128 vec1, n128 vec2)
+	{
+		// The determinant for a 3x3 matrix can be expressed as dot[ (m00, m01, m02), (m11 * m22 - m12 * m21, m12 * m20 - m10 * m22, m10 * m21 - m11 * m20) ]
+		n128 shuf_1 = _hlslpp_perm_yzxw_ps(vec2);
+		n128 prod_1 = _hlslpp_mul_ps(vec1, shuf_1);
+
+		n128 shuf_2 = _hlslpp_perm_yzxw_ps(vec1);
+		n128 prod_2 = _hlslpp_mul_ps(shuf_2, vec2);
+
+		n128 sub = _hlslpp_sub_ps(prod_1, prod_2);
+
+		n128 result = _hlslpp_dot3_ps(vec0, _hlslpp_perm_yzxw_ps(sub));
+
+		return result;
+	}
+
+	hlslpp_inline n128 _hlslpp_det_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3)
+	{
+		// Use the Laplace expansion to calculate the determinant in terms of 2x2 determinant multiplies instead of calculating
+		// 3x3 determinants and then doing a dot product. https://www.geometrictools.com/Documentation/LaplaceExpansionTheorem.pdf
+		n128 tmp_shuf_0 = _hlslpp_perm_xzxy_ps(vec0);
+		n128 tmp_shuf_1 = _hlslpp_perm_yxwz_ps(vec1);
+		n128 tmp_shuf_2 = _hlslpp_perm_yxwz_ps(vec0);
+		n128 tmp_shuf_3 = _hlslpp_perm_xzxy_ps(vec1);
+
+		n128 tmp_shuf_4 = _hlslpp_perm_zyyx_ps(vec2);
+		n128 tmp_shuf_5 = _hlslpp_perm_wwzw_ps(vec3);
+		n128 tmp_shuf_6 = _hlslpp_perm_wwzw_ps(vec2);
+		n128 tmp_shuf_7 = _hlslpp_perm_zyyx_ps(vec3);
+
+		n128 tmp_4_terms = _hlslpp_mul_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(tmp_shuf_0, tmp_shuf_1), _hlslpp_mul_ps(tmp_shuf_2, tmp_shuf_3)), _hlslpp_sub_ps(_hlslpp_mul_ps(tmp_shuf_4, tmp_shuf_5), _hlslpp_mul_ps(tmp_shuf_6, tmp_shuf_7)));
+
+		n128 tmp_shuf_8 = _hlslpp_shuf_wzxx_ps(vec0, vec2);
+		n128 tmp_shuf_9 = _hlslpp_shuf_ywzy_ps(vec1, vec3);
+		n128 tmp_shuf_10 = _hlslpp_shuf_ywzy_ps(vec0, vec2);
+		n128 tmp_shuf_11 = _hlslpp_shuf_wzxx_ps(vec1, vec3);
+
+		n128 tmp_mul_0 = _hlslpp_sub_ps(_hlslpp_mul_ps(tmp_shuf_8, tmp_shuf_9), _hlslpp_mul_ps(tmp_shuf_10, tmp_shuf_11));
+
+		n128 tmp_2_terms = _hlslpp_mul_ps(_hlslpp_perm_xyxy_ps(tmp_mul_0), _hlslpp_perm_zwzw_ps(tmp_mul_0));
+
+		// Add all the results now (terms that subtract have already been inverted)
+		n128 tmp_add_0 = _hlslpp_add_ps(_hlslpp_shuf_xzxx_ps(tmp_4_terms, tmp_2_terms), _hlslpp_shuf_ywyy_ps(tmp_4_terms, tmp_2_terms));
+		n128 tmp_add_1 = _hlslpp_add_ps(_hlslpp_perm_xxxx_ps(tmp_add_0), _hlslpp_perm_yyyy_ps(tmp_add_0));
+		n128 tmp_add_2 = _hlslpp_add_ps(_hlslpp_perm_xxxx_ps(tmp_add_1), _hlslpp_perm_zzzz_ps(tmp_add_0));
+
+		return tmp_add_2;
+	}
+
+	hlslpp_inline n128 _hlslpp_inv_2x2_ps(n128 m)
+	{
+		n128 det = _hlslpp_perm_xxxx_ps(_hlslpp_det_2x2_ps(m));
+		n128 shuf = _hlslpp_mul_ps(_hlslpp_perm_wyzx_ps(m), _hlslpp_set_ps(1.0f, -1.0f, -1.0f, 1.0f));
+		return _hlslpp_div_ps(shuf, det);
+	}
+
+	hlslpp_inline void _hlslpp_inv_3x3_ps(const n128& vec0, const n128& vec1, const n128& vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
+	{
+		n128 tmp_shuf_yzx_0 = _hlslpp_perm_yzxw_ps(vec0);
+		n128 tmp_shuf_zxy_0 = _hlslpp_perm_zxyw_ps(vec0);
+		n128 tmp_shuf_yzx_1 = _hlslpp_perm_yzxw_ps(vec1);
+		n128 tmp_shuf_zxy_1 = _hlslpp_perm_zxyw_ps(vec1);
+		n128 tmp_shuf_yzx_2 = _hlslpp_perm_yzxw_ps(vec2);
+		n128 tmp_shuf_zxy_2 = _hlslpp_perm_zxyw_ps(vec2);
+
+		// Compute the adjoint matrix directly with 2x2 determinants
+		n128 tmp_row_0 = _hlslpp_msub_ps(tmp_shuf_yzx_1, tmp_shuf_zxy_2, _hlslpp_mul_ps(tmp_shuf_zxy_1, tmp_shuf_yzx_2));
+		n128 tmp_row_1 = _hlslpp_msub_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_2, _hlslpp_mul_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_2));
+		n128 tmp_row_2 = _hlslpp_msub_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_1, _hlslpp_mul_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_1));
+
+		// Transpose the matrix
+		n128 tmp_transp_row_0, tmp_transp_row_1, tmp_transp_row_2;
+		_hlslpp_transpose_3x3_ps(tmp_row_0, tmp_row_1, tmp_row_2, tmp_transp_row_0, tmp_transp_row_1, tmp_transp_row_2);
+
+		// Compute the determinant and divide all results by it
+		n128 det = _hlslpp_perm_xxxx_ps(_hlslpp_det_3x3_ps(vec0, vec1, vec2));
+		n128 invDet = _hlslpp_div_ps(f4_1, det);
+
+		o_vec0 = _hlslpp_mul_ps(tmp_transp_row_0, invDet);
+		o_vec1 = _hlslpp_mul_ps(tmp_transp_row_1, invDet);
+		o_vec2 = _hlslpp_mul_ps(tmp_transp_row_2, invDet);
+	}
+
+	hlslpp_inline void _hlslpp_inv_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
+	{
+		// Use the Laplace expansion to calculate the adjoint in terms of 2x2 determinants and dot products.
+		// Follow https://www.geometrictools.com/Documentation/LaplaceExpansionTheorem.pdf
+
+		// mms means mul mul sub. Here we add the 2x2 determinants we need
+		n128 tmp_mms_c5_c4_c3 = _hlslpp_msub_ps(_hlslpp_perm_zyyx_ps(vec2), _hlslpp_perm_wwzx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec2), _hlslpp_perm_zyyx_ps(vec3)));
+		n128 tmp_mms_c4_c2_c0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec2), _hlslpp_perm_wwyx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_wwyx_ps(vec2), _hlslpp_perm_yxxx_ps(vec3)));
+		n128 tmp_mms_c5_c2_c1 = _hlslpp_msub_ps(_hlslpp_perm_zxxx_ps(vec2), _hlslpp_perm_wwzx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec2), _hlslpp_perm_zxxx_ps(vec3)));
+		n128 tmp_mms_c3_c1_c0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec2), _hlslpp_perm_zzyx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_zzyx_ps(vec2), _hlslpp_perm_yxxx_ps(vec3)));
+
+		n128 tmp_mms_s5_s4_s3 = _hlslpp_msub_ps(_hlslpp_perm_zyyx_ps(vec0), _hlslpp_perm_wwzx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec0), _hlslpp_perm_zyyx_ps(vec1)));
+		n128 tmp_mms_s4_s2_s0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec0), _hlslpp_perm_wwyx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_wwyx_ps(vec0), _hlslpp_perm_yxxx_ps(vec1)));
+		n128 tmp_mms_s5_s2_s1 = _hlslpp_msub_ps(_hlslpp_perm_zxxx_ps(vec0), _hlslpp_perm_wwzx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec0), _hlslpp_perm_zxxx_ps(vec1)));
+		n128 tmp_mms_s3_s1_s0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec0), _hlslpp_perm_zzyx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_zzyx_ps(vec0), _hlslpp_perm_yxxx_ps(vec1)));
+
+		// Dot product the determinants with the required elements from the rows
+		n128 c00 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c4_c3, _hlslpp_perm_yzwx_ps(vec1));
+		n128 c01 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c4_c3, _hlslpp_neg_ps(_hlslpp_perm_yzwx_ps(vec0)));
+		n128 c02 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s4_s3, _hlslpp_perm_yzwx_ps(vec3));
+		n128 c03 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s4_s3, _hlslpp_neg_ps(_hlslpp_perm_yzwx_ps(vec2)));
+
+		n128 c10 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c2_c1, _hlslpp_neg_ps(_hlslpp_perm_xzwx_ps(vec1)));
+		n128 c11 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c2_c1, _hlslpp_perm_xzwx_ps(vec0));
+		n128 c12 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s2_s1, _hlslpp_neg_ps(_hlslpp_perm_xzwx_ps(vec3)));
+		n128 c13 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s2_s1, _hlslpp_perm_xzwx_ps(vec2));
+
+		n128 c20 = _hlslpp_dot3_asa_ps(tmp_mms_c4_c2_c0, _hlslpp_perm_xyww_ps(vec1));
+		n128 c21 = _hlslpp_dot3_asa_ps(tmp_mms_c4_c2_c0, _hlslpp_neg_ps(_hlslpp_perm_xyww_ps(vec0)));
+		n128 c22 = _hlslpp_dot3_asa_ps(tmp_mms_s4_s2_s0, _hlslpp_perm_xyww_ps(vec3));
+		n128 c23 = _hlslpp_dot3_asa_ps(tmp_mms_s4_s2_s0, _hlslpp_neg_ps(_hlslpp_perm_xyww_ps(vec2)));
+
+		n128 c30 = _hlslpp_dot3_asa_ps(tmp_mms_c3_c1_c0, _hlslpp_neg_ps(vec1));
+		n128 c31 = _hlslpp_dot3_asa_ps(tmp_mms_c3_c1_c0, vec0);
+		n128 c32 = _hlslpp_dot3_asa_ps(tmp_mms_s3_s1_s0, _hlslpp_neg_ps(vec3));
+		n128 c33 = _hlslpp_dot3_asa_ps(tmp_mms_s3_s1_s0, vec2);
+
+		// Combine the results
+		n128 tmp_row0 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c00, c02), _hlslpp_shuf_xxxx_ps(c01, c03), HLSLPP_BLEND_MASK(1, 0, 1, 0));
+		n128 tmp_row1 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c10, c12), _hlslpp_shuf_xxxx_ps(c11, c13), HLSLPP_BLEND_MASK(1, 0, 1, 0));
+		n128 tmp_row2 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c20, c22), _hlslpp_shuf_xxxx_ps(c21, c23), HLSLPP_BLEND_MASK(1, 0, 1, 0));
+		n128 tmp_row3 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c30, c32), _hlslpp_shuf_xxxx_ps(c31, c33), HLSLPP_BLEND_MASK(1, 0, 1, 0));
+
+		// Compute the determinant and divide all results by it
+		n128 det = _hlslpp_perm_xxxx_ps(_hlslpp_det_4x4_ps(vec0, vec1, vec2, vec3));
+		n128 invDet = _hlslpp_div_ps(f4_1, det);
+
+		o_vec0 = _hlslpp_mul_ps(tmp_row0, invDet);
+		o_vec1 = _hlslpp_mul_ps(tmp_row1, invDet);
+		o_vec2 = _hlslpp_mul_ps(tmp_row2, invDet);
+		o_vec3 = _hlslpp_mul_ps(tmp_row3, invDet);
+	}
+
+	hlslpp_inline n128 _hlslpp_trace_2x2_ps(const n128 m)
+	{
+		return _hlslpp_add_ps(_hlslpp_perm_xxxx_ps(m), _hlslpp_perm_wwww_ps(m));
+	}
+
+	hlslpp_inline n128 _hlslpp_trace_3x3_ps(const n128 vec0, const n128 vec1, const n128 vec2)
+	{
+		return _hlslpp_add_ps(_hlslpp_add_ps(_hlslpp_perm_xxxx_ps(vec0), _hlslpp_perm_yyyy_ps(vec1)), _hlslpp_perm_zzzz_ps(vec2));
+	}
+
+	hlslpp_inline n128 _hlslpp_trace_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3)
+	{
+		n128 sum1 = _hlslpp_add_ps(_hlslpp_perm_xxxx_ps(vec0), _hlslpp_perm_yyyy_ps(vec1));
+		n128 sum2 = _hlslpp_add_ps(_hlslpp_perm_zzzz_ps(vec2), _hlslpp_perm_wwww_ps(vec3));
+		return _hlslpp_add_ps(sum1, sum2);
+	}
 
 	// Matrix - Matrix multiplication
 
@@ -4128,6 +4144,21 @@ namespace hlslpp
 		return m;
 	}
 
+	hlslpp_inline float1 trace(const float2x2& m)
+	{
+		return float1(_hlslpp_trace_2x2_ps(m._vec));
+	}
+
+	hlslpp_inline float1 trace(const float3x3& m)
+	{
+		return float1(_hlslpp_trace_3x3_ps(m._vec0, m._vec1, m._vec2));
+	}
+
+	hlslpp_inline float1 trace(const float4x4& m)
+	{
+		return float1(_hlslpp_trace_4x4_ps(m._vec0, m._vec1, m._vec2, m._vec3));
+	}
+
 	hlslpp_inline float2x2 transpose(const float2x2& m)
 	{
 		return float2x2(_hlslpp_transpose_2x2_ps(m._vec));
@@ -4223,3 +4254,5 @@ namespace hlslpp
 		_hlslpp_store4x4_ps(f, m._vec0, m._vec1, m._vec2, m._vec3);
 	}
 }
+
+#include "hlsl++_quaternion.h"
