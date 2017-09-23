@@ -213,12 +213,6 @@ namespace hlslpp
 		return _hlslpp_xor_ps(q, _hlslpp_castsi128_ps(signMask)); // Flip the sign bits of the vector part of the quaternion
 	}
 
-	hlslpp_inline n128 _hlslpp_quat_slerp_ps(const n128 q0, const n128 q1)
-	{
-		const n128 result = _hlslpp_set1_ps(0.0f);
-		return result;
-	}
-
 	hlslpp_inline n128 _hlslpp_quat_inverse_ps(const n128 q)
 	{
 		n128 conjugate = _hlslpp_quat_conjugate_ps(q);
