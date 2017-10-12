@@ -4029,7 +4029,7 @@ namespace hlslpp
 	template<int E>
 	hlslpp_inline icomponents<A>& icomponents<A>::operator = (const icomponent1<E>& c)
 	{
-		n128 s = _hlslpp_shuffle_epi32(c._vec, c._vec, HLSLPP_SHUFFLE_MASK(E, E, E, E));
+		n128i s = _hlslpp_shuffle_epi32(c._vec, c._vec, HLSLPP_SHUFFLE_MASK(E, E, E, E));
 		_vec = _hlslpp_blend_epi32(_vec, s, HLSLPP_COMPONENT_X(A));
 		return *this;
 	}
@@ -4037,8 +4037,7 @@ namespace hlslpp
 	template<int A>
 	hlslpp_inline icomponents<A>& icomponents<A>::operator = (int32_t i)
 	{
-		const n128 s = _hlslpp_set1_epi32(i);
-		_vec = _hlslpp_blend_epi32(_vec, s, HLSLPP_COMPONENT_X(A));
+		_vec = _hlslpp_blend_epi32(_vec, _hlslpp_set1_epi32(i), HLSLPP_COMPONENT_X(A));
 		return *this;
 	}
 
