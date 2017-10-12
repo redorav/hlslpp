@@ -506,6 +506,8 @@ void RunUnitTests()
 	vfoo3 = -vbar3.bgg;														assert(eq(vfoo3, (float)-vbar3.b, (float)-vbar3.g, (float)-vbar3.g));
 	vfoo4 = -vbar4.rbgr;													assert(eq(vfoo4, (float)-vbar4.r, (float)-vbar4.b, (float)-vbar4.g, (float)-vbar4.r));
 
+	using std::abs;
+
 	float1 vabs1 = abs(vfoo1);												assert(eq(vabs1, abs((float)vfoo1.x)));
 	float2 vabs2 = abs(vfoo2);												assert(eq(vabs2, abs((float)vfoo2.x), abs((float)vfoo2.y)));
 	float3 vabs3 = abs(vfoo3);												assert(eq(vabs3, abs((float)vfoo3.x), abs((float)vfoo3.y), abs((float)vfoo3.z)));
