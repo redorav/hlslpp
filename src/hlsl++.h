@@ -4045,8 +4045,8 @@ namespace hlslpp
 	template<int A>
 	hlslpp_inline icomponents<A>& icomponents<A>::operator = (const int1& v) { _vec = _hlslpp_blend_epi32(_vec, v._vec, HLSLPP_COMPONENT_X(A)); return *this; }
 
-	template<int A>
-	hlslpp_inline icomponents<A>& icomponents<A>::operator = (const int1x1& m) { _vec = _hlslpp_blend_epi32(_vec, m._vec, HLSLPP_COMPONENT_X(A)); return *this; }
+	//template<int A>
+	//hlslpp_inline icomponents<A>& icomponents<A>::operator = (const int1x1& m) { _vec = _hlslpp_blend_epi32(_vec, m._vec, HLSLPP_COMPONENT_X(A)); return *this; }
 
 	template<int A, int B>
 	template<int E, int F>

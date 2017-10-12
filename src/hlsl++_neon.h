@@ -33,7 +33,7 @@ hlslpp_inline float32x4_t vpermq_f32(const float32x4_t x, const uint32_t X, cons
 {
 	static const uint32_t ControlMask[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle x, swizzle y, swizzle z, swizzle w
 
-	uint8x8x2_t tbl = { vget_low_f32(x), vget_high_f32(x) }; // Get floats
+	uint8x8x2_t tbl = { { vget_low_f32(x), vget_high_f32(x) } }; // Get floats
 
 	const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMask[X]) | (((uint64_t)ControlMask[Y]) << 32));
 	const uint8x8_t rL = vtbl2_u8(tbl, idxL);
@@ -49,7 +49,7 @@ hlslpp_inline float32x4_t vshufq_f32(const float32x4_t x, const float32x4_t y, c
 	static const uint32_t ControlMaskX[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0,
 	static const uint32_t ControlMaskY[4] = { 0x13121110, 0x17161514, 0x1B1A1918, 0x1F1E1D1C }; // Swizzle X1, swizzle Y1, swizzle Z1, swizzle W1
 
-	uint8x8x4_t tbl = { vget_low_f32(x), vget_high_f32(x), vget_low_f32(y), vget_high_f32(y) };
+	uint8x8x4_t tbl = { { vget_low_f32(x), vget_high_f32(x), vget_low_f32(y), vget_high_f32(y) } };
 
 	const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMaskX[X0]) | (((uint64_t)ControlMaskX[Y0]) << 32));
 	const uint8x8_t rL = vtbl4_u8(tbl, idxL);
@@ -65,7 +65,7 @@ hlslpp_inline float32x4_t vpermq_s32(const float32x4_t x, const uint32_t X, cons
 {
 	static const uint32_t ControlMask[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle x, swizzle y, swizzle z, swizzle w
 
-	uint8x8x2_t tbl = { vget_low_s32(x), vget_high_s32(x) }; // Get ints
+	uint8x8x2_t tbl = { { vget_low_s32(x), vget_high_s32(x) } }; // Get ints
 
 	const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMask[X]) | (((uint64_t)ControlMask[Y]) << 32));
 	const uint8x8_t rL = vtbl2_u8(tbl, idxL);
@@ -81,7 +81,7 @@ hlslpp_inline float32x4_t vshufq_s32(const float32x4_t x, const float32x4_t y, c
 	static const uint32_t ControlMaskX[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0,
 	static const uint32_t ControlMaskY[4] = { 0x13121110, 0x17161514, 0x1B1A1918, 0x1F1E1D1C }; // Swizzle X1, swizzle Y1, swizzle Z1, swizzle W1
 
-	uint8x8x4_t tbl = { vget_low_s32(x), vget_high_s32(x), vget_low_s32(y), vget_high_s32(y) };
+	uint8x8x4_t tbl = { { vget_low_s32(x), vget_high_s32(x), vget_low_s32(y), vget_high_s32(y) } };
 
 	const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMaskX[X0]) | (((uint64_t)ControlMaskX[Y0]) << 32));
 	const uint8x8_t rL = vtbl4_u8(tbl, idxL);
@@ -221,11 +221,11 @@ hlslpp_inline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
 
 #define _hlslpp_neg_epi32(x)					veorq_u32((x), vmovq_n_u32(0x80000000u))
 
-#define _hlslpp_madd_ps(x, y, z)				vmlaq_s32((z), (x), (y))
-#define _hlslpp_msub_ps(x, y, z)				_hlslpp_neg_epi32(vmlsq_s32((z), (x), (y))) // Negate because vmlsq_u32 does z - x * y and we want x * y - z
-#define _hlslpp_subm_ps(x, y, z)				vmlsq_s32((z), (x), (y))
+#define _hlslpp_madd_epi32(x, y, z)				vmlaq_s32((z), (x), (y))
+#define _hlslpp_msub_epi32(x, y, z)				_hlslpp_neg_epi32(vmlsq_s32((z), (x), (y))) // Negate because vmlsq_u32 does z - x * y and we want x * y - z
+#define _hlslpp_subm_epi32(x, y, z)				vmlsq_s32((z), (x), (y))
 
-#define _hlslpp_abs_ps(x)						vabsq_s32((x))
+#define _hlslpp_abs_epi32(x)					vabsq_s32((x))
 
 #define _hlslpp_max_epi32(x, y)					vmaxq_s32((x), (y))
 #define _hlslpp_min_epi32(x, y)					vminq_s32((x), (y))
@@ -239,7 +239,7 @@ hlslpp_inline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
 #define _hlslpp_perm_epi32(x, msk)				vpermq_f32((x), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
 #define _hlslpp_shuffle_epi32(x, y, msk)		vshufq_f32((x), (y), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
 
-#define _hlslpp_blend_epi32(x, y, msk)			vbslq_s32((x), (y), ((msk & 1) * 3) | ((((msk >> 1) & 1) * 3) << 2) | ((((msk >> 2) & 1) * 3) << 4) | ((((msk >> 3) & 1) * 3) << 6))
+#define _hlslpp_blend_epi32(x, y, msk)			vbslq_s32(vmov4q_n_u32(~((msk & 1) * 0xffffffff), ~(((msk >> 1) & 1) * 0xffffffff), ~(((msk >> 2) & 1) * 0xffffffff), ~(((msk >> 3) & 1) * 0xffffffff)), (x), (y))
 
 #define _hlslpp_castps_si128(x)					vreinterpretq_s32_f32((x))
 #define _hlslpp_castsi128_ps(x)					vreinterpretq_f32_s32((x))

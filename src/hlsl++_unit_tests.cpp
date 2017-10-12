@@ -67,7 +67,7 @@ void ExhaustiveTest(uint32_t start, uint32_t stop, Transform4 TestFunc, Transfor
 		//if  (testValue.f != refValue.f && // If the results don’t match then report an error.
 		//	(testValue.f == testValue.f || refValue.f == refValue.f)) // If both results are NaNs then we treat that as a match.
 		//{
-		float absError = std::abs(testValue.f - refValue.f);
+		float absError = abs(testValue.f - refValue.f);
 		
 		if (absError > maxError)
 		{
@@ -93,8 +93,8 @@ namespace hlslpp_unit
 {
 	bool eq(float a, float b, float tolerance = 0.0f)
 	{
-		float error = std::abs(a - b);
-		bool withinTolerance = std::abs(a - b) <= tolerance;
+		float error = abs(a - b);
+		bool withinTolerance = abs(a - b) <= tolerance;
 		return withinTolerance;
 	}
 
@@ -170,63 +170,6 @@ public:
 		return std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count() / 1e9f;
 	}
 };
-
-struct Vector4
-{
-	float x, y, z, w;
-
-	hlslpp_inline Vector4(float f) : x(f), y(f), z(f), w(f) {}
-	hlslpp_inline Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
-
-	hlslpp_inline Vector4 operator + (const Vector4& v) { return Vector4(x + v.x, y + v.y, z + v.z, w + v.w); }
-	hlslpp_inline Vector4& operator += (const Vector4& v)
-	{
-		x += v.x; y += v.y; z += v.z; w += v.w;
-		return *this;
-	}
-
-	hlslpp_inline Vector4 operator * (const Vector4& v) { return Vector4(x * v.x, y * v.y, z * v.z, w * v.w); }
-	hlslpp_inline Vector4& operator = (const Vector4& v) { x = v.x; y = v.y; z = v.z; w = v.w; return *this; }
-};
-
-hlslpp_inline Vector4 operator / (const Vector4& v1, const Vector4& v2)
-{
-	return Vector4(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z, v1.w / v2.w);
-}
-
-hlslpp_inline float dot(const Vector4& v1, const Vector4& v2)
-{
-	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
-}
-
-// inline Vector4 exp2(const Vector4& v)
-// {
-// 	return Vector4(std::exp2(v.x), std::exp2(v.y), std::exp2(v.z), std::exp2(v.w));
-// }
-
-hlslpp_inline Vector4 exp(const Vector4& v)
-{
-	return Vector4(std::exp(v.x), std::exp(v.y), std::exp(v.z), std::exp(v.w));
-}
-
-hlslpp_inline Vector4 length(const Vector4& v)
-{
-	return Vector4(sqrt(dot(v, v)));
-}
-
-hlslpp_inline Vector4 sqrt(const Vector4& v)
-{
-	float sqrtX = std::sqrt(v.x);
-	float sqrtY = std::sqrt(v.y);
-	float sqrtZ = std::sqrt(v.z);
-	float sqrtW = std::sqrt(v.w);
-	return Vector4(sqrtX, sqrtY, sqrtZ, sqrtW);
-}
-
-hlslpp_inline Vector4 normalize(const Vector4& v)
-{
-	return v / length(v);
-}
 
 void RunUnitTests()
 {
@@ -1816,10 +1759,6 @@ void RunSpeedTests()
 									78, 5, 2, 8,
 									14, 5, 5, 6,
 									8, 4, 5, 6);
-
-	Vector4 v1f(f1);
-	Vector4 v3f(f3);
-	Vector4 v4f(f4);
 
 	timer.Start();
 	for (int i = 0; i < iter; ++i)
