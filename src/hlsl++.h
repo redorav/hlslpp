@@ -28,7 +28,7 @@
 #define hlslpp_str2(x) #x
 #define hlslpp_str(x) hlslpp_str2(x)
 
-#if defined(__clang__) || defined(__GCC__)
+#if defined(__clang__) || defined(__GNUG__)
 
 #define hlslpp_inline inline __attribute__((always_inline))
 
