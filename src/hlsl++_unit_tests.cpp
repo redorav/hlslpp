@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <iostream>
 #include <cstdlib>
+#include <cmath>
 
 #include "hlsl++.h"
 
