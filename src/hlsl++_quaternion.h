@@ -8,10 +8,10 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
-#include "swizzle/hlsl++_vector_x.h"
-#include "swizzle/hlsl++_vector_y.h"
-#include "swizzle/hlsl++_vector_z.h"
-#include "swizzle/hlsl++_vector_w.h"
+			#include "swizzle/hlsl++_vector_float_x.h"
+			#include "swizzle/hlsl++_vector_float_y.h"
+			#include "swizzle/hlsl++_vector_float_z.h"
+			#include "swizzle/hlsl++_vector_float_w.h"
 		};
 
 		explicit quaternion(n128 vec) : _vec(vec) {}
