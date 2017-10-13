@@ -2,16 +2,6 @@
 
 #define HLSLPP_MATRIX_PACK_ROW_MAJOR
 
-#if defined(_M_ARM) || defined(__arm__)
-
-	#include "hlsl++_neon.h"
-
-#else
-
-	#include "hlsl++_sse.h"
-
-#endif
-
 #define hlslpp_str2(x) #x
 #define hlslpp_str(x) hlslpp_str2(x)
 
@@ -28,6 +18,16 @@
 #define hlslpp_inline __forceinline
 
 #define hlslpp_warning(msg) __pragma(message(__FILE__"(" hlslpp_str(__LINE__) "): warning: "##msg))
+
+#endif
+
+#if defined(_M_ARM) || defined(__arm__)
+
+#include "hlsl++_neon.h"
+
+#else
+
+#include "hlsl++_sse.h"
 
 #endif
 
