@@ -2,26 +2,13 @@
 
 #define HLSLPP_MATRIX_PACK_ROW_MAJOR
 
-#if defined(__ANDROID__)
+#if defined(_M_ARM) || defined(__arm__)
 
-	#define HLSLPP_NEON
-
-#elif __APPLE
-
-	#include "TargetConditionals.h"
-    #if TARGET_OS_IPHONE
-		#define HLSLPP_NEON
-    #elif TARGET_OS_MAC
-		#define HLSLPP_SSE
-    #endif
-
-#elif defined(_WIN32) || defined(__linux__)
-
-	#define HLSLPP_SSE
+	#include "hlsl++_neon.h"
 
 #else
 
-	#error Platform not supported!
+	#include "hlsl++_sse.h"
 
 #endif
 
@@ -41,16 +28,6 @@
 #define hlslpp_inline __forceinline
 
 #define hlslpp_warning(msg) __pragma(message(__FILE__"(" hlslpp_str(__LINE__) "): warning: "##msg))
-
-#endif
-
-#if defined(HLSLPP_SSE)
-
-	#include "hlsl++_sse.h"
-
-#elif defined(HLSLPP_NEON)
-
-	#include "hlsl++_neon.h"
 
 #endif
 
@@ -1730,7 +1707,11 @@ namespace hlslpp
 	class components<X>
 	{
 	public:
-		n128 _vec;
+		union
+		{
+			n128 _vec;
+			float _f32[4];
+		};
 
 		components<X>() {}
 		hlslpp_inline explicit components<X>(n128 vec) : _vec(vec) {}
@@ -1747,11 +1728,7 @@ namespace hlslpp
 
 		hlslpp_inline operator float() const
 		{
-	#if defined(__clang__) || defined(__GNUG__)
-			return _vec[X];
-	#else
-			return _vec.m128_f32[X];
-	#endif
+			return _f32[X];
 		}
 	};
 
@@ -1759,7 +1736,11 @@ namespace hlslpp
 	class components<X, Y>
 	{
 	public:
-		n128 _vec;
+		union
+		{
+			n128 _vec;
+			float _f32[4];
+		};
 
 		hlslpp_inline void staticAsserts()
 		{
@@ -1796,7 +1777,11 @@ namespace hlslpp
 	class components<X, Y, Z>
 	{
 	public:
-		n128 _vec;
+		union
+		{
+			n128 _vec;
+			float _f32[4];
+		};
 
 		hlslpp_inline void staticAsserts()
 		{
@@ -1833,7 +1818,11 @@ namespace hlslpp
 	class components<X, Y, Z, W>
 	{
 	public:
-		n128 _vec;
+		union
+		{
+			n128 _vec;
+			float _f32[4];
+		};
 
 		hlslpp_inline void staticAsserts()
 		{
@@ -1859,6 +1848,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
+			float _f32[4];
 			#include "swizzle/hlsl++_vector_float_x.h"
 			#include "swizzle/hlsl++_vector_float_r.h"
 		};
@@ -1885,11 +1875,7 @@ namespace hlslpp
 
 		hlslpp_inline operator float() const
 		{
-	#if defined(__clang__) || defined(__GNUG__)
-			return _vec[0];
-	#else
-			return _vec.m128_f32[0];
-	#endif
+			return _f32[0];
 		}
 	};
 
@@ -1900,6 +1886,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
+			float _f32[4];
 			#include "swizzle/hlsl++_vector_float_x.h"
 			#include "swizzle/hlsl++_vector_float_r.h"
 			#include "swizzle/hlsl++_vector_float_y.h"
@@ -1942,6 +1929,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
+			float _f32[4];
 			#include "swizzle/hlsl++_vector_float_x.h"
 			#include "swizzle/hlsl++_vector_float_y.h"
 			#include "swizzle/hlsl++_vector_float_z.h"
@@ -2033,6 +2021,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
+			float _f32[4];
 			#include "swizzle/hlsl++_vector_float_x.h"
 			#include "swizzle/hlsl++_vector_float_y.h"
 			#include "swizzle/hlsl++_vector_float_z.h"
@@ -2756,6 +2745,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
+			float _f32[4];
 			#include "swizzle/hlsl++_matrix_row0_1.h"
 		};
 
@@ -2773,6 +2763,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
+			float _f32[4];
 			#include "swizzle/hlsl++_matrix_row0_2.h"
 		};
 
@@ -2791,6 +2782,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
+			float _f32[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -2808,6 +2800,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
+			float _f32[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -2825,6 +2818,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
+			float _f32[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -2842,6 +2836,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
+			float _f32[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -2859,6 +2854,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec;
+			float _f32[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -2876,6 +2872,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec; // We can store it in a single vector to save memory
+			float _f32[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -2896,11 +2893,13 @@ namespace hlslpp
 		union
 		{
 			n128 _vec0;
+			float _f32_0[4];
 		};
 
 		union
 		{
 			n128 _vec1;
+			float _f32_1[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -2921,11 +2920,13 @@ namespace hlslpp
 		union
 		{
 			n128 _vec0;
+			float _f32_0[4];
 		};
 
 		union
 		{
 			n128 _vec1;
+			float _f32_1[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -2947,11 +2948,13 @@ namespace hlslpp
 		union
 		{
 			n128 _vec0;
+			float _f32_0[4];
 		};
 
 		union
 		{
 			n128 _vec1;
+			float _f32_1[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -2972,11 +2975,13 @@ namespace hlslpp
 		union
 		{
 			n128 _vec0;
+			float _f32_0[4];
 		};
 
 		union
 		{
 			n128 _vec1;
+			float _f32_1[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -2999,6 +3004,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec0;
+			float _f32_0[4];
 			#include "swizzle/hlsl++_matrix_row0_1.h"
 			#include "swizzle/hlsl++_matrix_row0_2.h"
 			#include "swizzle/hlsl++_matrix_row0_3.h"
@@ -3007,6 +3013,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec1;
+			float _f32_1[4];
 			#include "swizzle/hlsl++_matrix_row1_1.h"
 			#include "swizzle/hlsl++_matrix_row1_2.h"
 			#include "swizzle/hlsl++_matrix_row1_3.h"
@@ -3015,6 +3022,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec2;
+			float _f32_2[4];
 			#include "swizzle/hlsl++_matrix_row2_1.h"
 			#include "swizzle/hlsl++_matrix_row2_2.h"
 			#include "swizzle/hlsl++_matrix_row2_3.h"
@@ -3041,16 +3049,19 @@ namespace hlslpp
 		union
 		{
 			n128 _vec0;
+			float _f32_0[4];
 		};
 
 		union
 		{
 			n128 _vec1;
+			float _f32_1[4];
 		};
 
 		union
 		{
 			n128 _vec2;
+			float _f32_2[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -3072,16 +3083,19 @@ namespace hlslpp
 		union
 		{
 			n128 _vec0;
+			float _f32_0[4];
 		};
 
 		union
 		{
 			n128 _vec1;
+			float _f32_1[4];
 		};
 
 		union
 		{
 			n128 _vec2;
+			float _f32_2[4];
 		};
 
 		hlslpp_inline floatNxM() {}
@@ -3104,6 +3118,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec0;
+			float _f32_0[4];
 			#include "swizzle/hlsl++_matrix_row0_1.h"
 			#include "swizzle/hlsl++_matrix_row0_2.h"
 			#include "swizzle/hlsl++_matrix_row0_3.h"
@@ -3113,6 +3128,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec1;
+			float _f32_1[4];
 			#include "swizzle/hlsl++_matrix_row1_1.h"
 			#include "swizzle/hlsl++_matrix_row1_2.h"
 			#include "swizzle/hlsl++_matrix_row1_3.h"
@@ -3122,6 +3138,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec2;
+			float _f32_2[4];
 			#include "swizzle/hlsl++_matrix_row2_1.h"
 			#include "swizzle/hlsl++_matrix_row2_2.h"
 			#include "swizzle/hlsl++_matrix_row2_3.h"
@@ -3131,6 +3148,7 @@ namespace hlslpp
 		union
 		{
 			n128 _vec3;
+			float _f32_3[4];
 			#include "swizzle/hlsl++_matrix_row3_1.h"
 			#include "swizzle/hlsl++_matrix_row3_2.h"
 			#include "swizzle/hlsl++_matrix_row3_3.h"
