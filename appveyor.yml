@@ -15,5 +15,6 @@ platform:
   - MSVC 32
   - LLVM 64
   - LLVM 32
+  - MSVC ARM
   
 configuration: Release
