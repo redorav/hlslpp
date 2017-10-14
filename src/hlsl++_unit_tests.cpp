@@ -58,11 +58,7 @@ void ExhaustiveTest(uint32_t start, uint32_t stop, Transform4 TestFunc, Transfor
 	{
 		Float_t input;
 		input.i = (int32_t)i;
-#if defined(__clang__) || defined(__GNUG__)
-		Float_t testValue = TestFunc(_hlslpp_set1_ps(input.f))[0];
-#else
-		Float_t testValue = TestFunc(_hlslpp_set1_ps(input.f)).m128_f32[0];
-#endif
+		Float_t testValue = 0.0f;// TestFunc(_hlslpp_set1_ps(input.f));
 		Float_t refValue = RefFunc(input.f);
 		
 		//if  (testValue.f != refValue.f && // If the results don’t match then report an error.

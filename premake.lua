@@ -11,6 +11,9 @@ PlatformOSX64	= "OSX 64"
 PlatformLinux64_GCC		= "Linux64_GCC"
 PlatformLinux64_Clang	= "Linux64_Clang"
 
+PlatformARM = "MSVC ARM"
+PlatformARM64 = "MSVC ARM64"
+
 -- Directories
 srcDir = "src"
 
@@ -26,12 +29,15 @@ workspace "hlsl++"
 	vectorextensions ("SSE4.1")
 		
 	if(_ACTION == "xcode4") then
+	
 		platforms { PlatformOSX64 }
 		toolset("clang")
 		architecture("x64")
 		buildoptions { "-std=c++11 -msse4.1 -Wno-unused-variable" }
 		linkoptions { "-stdlib=libc++" }
+		
 	elseif(_ACTION == "gmake") then
+	
 		platforms { PlatformLinux64_GCC, PlatformLinux64_Clang }
 		architecture("x64")
 		buildoptions { "-std=c++11 -msse4.1 -Wno-unused-variable" }
@@ -44,7 +50,7 @@ workspace "hlsl++"
 		
 	else
 	
-		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32 }
+		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32, PlatformARM }
 	
 		filter { "platforms:"..PlatformMSVC64 }
 			toolset("msc")
@@ -61,6 +67,14 @@ workspace "hlsl++"
 		filter { "platforms:"..PlatformLLVM32 }
 			toolset("msc-llvm-vs2014")
 			buildoptions { "-Wno-unused-variable -msse4.1" }
+			
+		filter { "platforms:"..PlatformARM }
+			architecture("arm")
+			vectorextensions ("default")
+			
+		-- Doesn't work until a future premake
+		--filter { "platforms:"..PlatformARM64 }
+			--architecture("arm64")
 	
 	end
 	
