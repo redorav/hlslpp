@@ -65,16 +65,17 @@ static const n128 f4_minus2			= _hlslpp_set1_ps(-2.0f);
 static const n128 f4_10				= _hlslpp_set1_ps(10.0f);
 static const n128 f4_e				= _hlslpp_set1_ps(2.718281828f);
 
-static const n128 f4_pi				= _hlslpp_set1_ps( 3.14159265f);
-static const n128 f4_minusPi		= _hlslpp_set1_ps(-3.14159265f);
-static const n128 f4_invPi			= _hlslpp_set1_ps( 0.31830988f);
+static const n128 f4_pi				= _hlslpp_set1_ps( 3.14159265f); // pi
+static const n128 f4_minusPi		= _hlslpp_set1_ps(-3.14159265f); // -pi
+static const n128 f4_invPi			= _hlslpp_set1_ps( 0.31830988f); // 1 / pi
 
 static const n128 f4_2pi			= _hlslpp_set1_ps( 6.28318530f); //  2 * pi
 static const n128 f4_minus2pi		= _hlslpp_set1_ps(-6.28318530f); // -2 * pi
-static const n128 f4_inv2pi			= _hlslpp_set1_ps( 0.15915494f); // 1.0 / 2 * pi
+static const n128 f4_inv2pi			= _hlslpp_set1_ps( 0.15915494f); // 1 / (2 * pi)
 
 static const n128 f4_pi2			= _hlslpp_set1_ps( 1.57079632f); //  pi / 2
 static const n128 f4_minusPi2		= _hlslpp_set1_ps(-1.57079632f); // -pi / 2
+static const n128 f4_invPi2			= _hlslpp_set1_ps( 0.63661977f); // 2 / pi
 
 static const n128 f4_3pi2			= _hlslpp_set1_ps( 4.71238898f); //  3 * pi / 2
 static const n128 f4_minus3pi2		= _hlslpp_set1_ps(-4.71238898f); // -3 * pi / 2
@@ -1190,15 +1191,17 @@ namespace hlslpp
 	// Fonseca derives from here: http://forum.devmaster.net/t/approximate-math-library/11679
 	hlslpp_inline n128 _hlslpp_log2_ps(n128 x)
 	{
-		static const n128 log2_c0 = _hlslpp_set1_ps(3.1157899f);
-		static const n128 log2_c1 = _hlslpp_set1_ps(-3.3241990f);
-		static const n128 log2_c2 = _hlslpp_set1_ps(2.5988452f);
-		static const n128 log2_c3 = _hlslpp_set1_ps(-1.2315303f);
-		static const n128 log2_c4 = _hlslpp_set1_ps(3.1821337e-1f);
-		static const n128 log2_c5 = _hlslpp_set1_ps(-3.4436006e-2f);
+		static const n128 log2_c0	= _hlslpp_set1_ps( 3.1157899f);
+		static const n128 log2_c1	= _hlslpp_set1_ps(-3.3241990f);
+		static const n128 log2_c2	= _hlslpp_set1_ps( 2.5988452f);
+		static const n128 log2_c3	= _hlslpp_set1_ps(-1.2315303f);
+		static const n128 log2_c4	= _hlslpp_set1_ps( 3.1821337e-1f);
+		static const n128 log2_c5	= _hlslpp_set1_ps(-3.4436006e-2f);
 
-		n128i exp = _hlslpp_set1_epi32(0x7F800000);
-		n128i mant = _hlslpp_set1_epi32(0x007FFFFF);
+		static const n128i exp		= _hlslpp_set1_epi32(0x7F800000);
+		static const n128i mant		= _hlslpp_set1_epi32(0x007FFFFF);
+
+		static const n128 minus127 = _hlslpp_set1_ps(-127.0f);
 
 		n128i i = _hlslpp_castps_si128(x);
 
@@ -1217,7 +1220,17 @@ namespace hlslpp
 		// This effectively increases the polynomial degree by one, but ensures that log2(1) == 0
 		p = _hlslpp_mul_ps(p, _hlslpp_sub_ps(m, f4_1));
 
-		return _hlslpp_add_ps(p, e);
+		n128 result = _hlslpp_add_ps(p, e);
+
+		// We can't compute a logarithm beyond this value, so we'll mark it as -infinity to indicate close to 0
+		n128 ltminus127 = _hlslpp_cmple_ps(result, minus127);
+		result = _hlslpp_sel_ps(result, f4_minusinf, ltminus127);
+
+		// Check for negative values and return NaN
+		n128 lt0 = _hlslpp_cmplt_ps(x, f4_0);
+		result = _hlslpp_sel_ps(result, f4_NaN, lt0);
+
+		return result;
 	}
 
 	hlslpp_inline n128 _hlslpp_log10_ps(n128 x)
@@ -1254,16 +1267,16 @@ namespace hlslpp
 		static const n128 exp2_c4 = _hlslpp_set1_ps(8.9893397e-3f);
 		static const n128 exp2_c5 = _hlslpp_set1_ps(1.8775767e-3f);
 
-		static const n128 exp2_129 = _hlslpp_set1_ps(129.00000f);
-		static const n128 exp2_m127 = _hlslpp_set1_ps(-126.99999f);
-		static const n128i exp2_127 = _hlslpp_set1_epi32(127);
+		static const n128 exp2_129		= _hlslpp_set1_ps(129.00000f);
+		static const n128 exp2_minus127	= _hlslpp_set1_ps(-126.99999f);
+		static const n128i exp2_127i	= _hlslpp_set1_epi32(127);
 
 		n128i ipart;
 		n128 fpart, expipart, expfpart;
 
 		// Clamp values
 		x = _hlslpp_min_ps(x, exp2_129);
-		x = _hlslpp_max_ps(x, exp2_m127);
+		x = _hlslpp_max_ps(x, exp2_minus127);
 
 		// ipart = int(x - 0.5)
 		ipart = _hlslpp_cvtps_epi32(_hlslpp_sub_ps(x, f4_05));
@@ -1272,7 +1285,7 @@ namespace hlslpp
 		fpart = _hlslpp_sub_ps(x, _hlslpp_cvtepi32_ps(ipart));
 
 		// expipart = (float) (1 << ipart)
-		expipart = _hlslpp_castsi128_ps(_hlslpp_slli_epi32(_hlslpp_add_epi32(ipart, exp2_127), 23));
+		expipart = _hlslpp_castsi128_ps(_hlslpp_slli_epi32(_hlslpp_add_epi32(ipart, exp2_127i), 23));
 
 		// Minimax polynomial fit of 2^x, in range [-0.5, 0.5[
 		expfpart = _hlslpp_madd_ps(fpart, exp2_c5, exp2_c4);
@@ -1298,23 +1311,19 @@ namespace hlslpp
 		static const n128 sin_c5 = _hlslpp_set1_ps(8.3109378e-3f);
 		static const n128 sin_c7 = _hlslpp_set1_ps(-1.84477486e-4f);
 
-		// Range reduction (into [-2pi, 2pi] range)
-		n128 reduced;
-		reduced = _hlslpp_mul_ps(x, f4_inv2pi);
-		x = _hlslpp_sub_ps(x, _hlslpp_mul_ps(_hlslpp_trunc_ps(reduced), f4_2pi));
+		// Range reduction (into [-pi, pi] range)
+		// Formula is x = x - round(x / 2pi) * 2pi
+
+		x = _hlslpp_subm_ps(x, _hlslpp_round_ps(_hlslpp_mul_ps(x, f4_inv2pi)), f4_2pi);
 
 		n128 gtpi2			= _hlslpp_cmpgt_ps(x, f4_pi2);
 		n128 ltminusPi2		= _hlslpp_cmplt_ps(x, f4_minusPi2);
-		n128 gt3pi2			= _hlslpp_cmpgt_ps(x, f4_3pi2);
-		n128 lt3minus3pi2	= _hlslpp_cmplt_ps(x, f4_minus3pi2);
 
 		n128 ox = x;
 
 		// Use identities/mirroring to remap into the range of the minimax polynomial
 		x = _hlslpp_sel_ps(x, _hlslpp_sub_ps(f4_pi, ox),		gtpi2);
 		x = _hlslpp_sel_ps(x, _hlslpp_sub_ps(f4_minusPi, ox),	ltminusPi2);
-		x = _hlslpp_sel_ps(x, _hlslpp_add_ps(ox, f4_minus2pi),	gt3pi2);
-		x = _hlslpp_sel_ps(x, _hlslpp_add_ps(ox, f4_2pi),		lt3minus3pi2);
 
 		n128 x2 = _hlslpp_mul_ps(x, x);
 		n128 result;
@@ -1325,39 +1334,9 @@ namespace hlslpp
 		return result;
 	}
 
-	// Uses a minimax polynomial fitted to the [-pi/2, pi/2] range
 	hlslpp_inline n128 _hlslpp_cos_ps(n128 x)
 	{	
-		static const n128 cos_c0 = f4_1;
-		static const n128 cos_c2 = _hlslpp_set1_ps(-4.999274621e-1f);
-		static const n128 cos_c4 = _hlslpp_set1_ps(4.149392034e-2f);
-		static const n128 cos_c6 = _hlslpp_set1_ps(-1.271243501e-3f);
-
-		// Range reduction (into [-pi, pi] range)
-		n128 reduced;
-		reduced = _hlslpp_div_ps(x, f4_2pi);
-		n128 reduceTrunc = _hlslpp_mul_ps(_hlslpp_trunc_ps(reduced), f4_2pi);
-		x = _hlslpp_sub_ps(x, reduceTrunc);
-
-		n128 gtPi2		= _hlslpp_cmpgt_ps(x, f4_pi2);			// x >  pi/2 ?
-		n128 ltMinusPi2	= _hlslpp_cmplt_ps(x, f4_minusPi2);		// x < -pi/2 ?
-
-		x = _hlslpp_sel_ps(x, _hlslpp_add_ps(f4_minusPi, x), gtPi2);
-		x = _hlslpp_sel_ps(x, _hlslpp_add_ps(f4_pi, x), ltMinusPi2);
-
-		n128 x2 = _hlslpp_mul_ps(x, x);
-		n128 result;
-		result = _hlslpp_madd_ps(x2, cos_c6, cos_c4);
-		result = _hlslpp_madd_ps(x2, result, cos_c2);
-		result = _hlslpp_madd_ps(x2, result, cos_c0);
-
-		// if(abs(x) < pi/2) return cos(x)
-		// if(x >  pi/2) return -cos(-pi + x)
-		// if(x < -pi/2) return -cos( pi + x)
-
-		//result = _hlslpp_sel_ps(result, _hlslpp_neg_ps(result), _mm_or_ps(gtPi2, ltMinusPi2));
-
-		return result;
+		return _hlslpp_sin_ps(_hlslpp_sub_ps(f4_pi2, x));
 	}
 
 	// Uses a minimax polynomial fitted to the [-pi/4, pi/4] range
@@ -1370,7 +1349,9 @@ namespace hlslpp
 		static const n128 tan_c9 = _hlslpp_set1_ps(4.609737727e-2f);
 
 		// Range reduction (into [-pi/2, pi/2] range)
-		x = _hlslpp_fmod_ps(x, f4_pi2);
+		// Formula is x = x - round(x / pi) * pi
+
+		x = _hlslpp_subm_ps(x, _hlslpp_round_ps(_hlslpp_mul_ps(x, f4_invPi)), f4_pi);
 
 		n128 gtPi4		= _hlslpp_cmpgt_ps(x, f4_pi4);
 		n128 ltMinusPi4	= _hlslpp_cmplt_ps(x, f4_minusPi4);
@@ -1387,14 +1368,15 @@ namespace hlslpp
 		centerResult = _hlslpp_madd_ps(x2, centerResult, tan_c1);
 		centerResult = _hlslpp_mul_ps(centerResult, x);				// Valid within [-pi/4, pi/4]
 
-		n128 lateralResult = _hlslpp_div_ps(f4_1, centerResult); // Valid from [-pi/2, -pi/4) U (pi/4, pi/2]
+		n128 lateralResult = _hlslpp_div_ps(f4_1, centerResult); // Valid in [-pi/2, -pi/4) U (pi/4, pi/2]
 
 		n128 result = _hlslpp_sel_ps(centerResult, lateralResult, gtltPi4);
 
 		return result;
 	}
 
-	// Max error vs. std::acos = 1.54972076e-6
+	// Max error vs. std::acos
+	// SSE : 1.54972076e-6
 	hlslpp_inline n128 _hlslpp_acos_ps(n128 x)
 	{
 		static const n128 asinacos_c0 = f4_pi2;
@@ -1427,7 +1409,8 @@ namespace hlslpp
 		return result;
 	}
 
-	// Max error vs. std::asin = 1.5348196e-6
+	// Max error vs. std::asin
+	// SSE : 1.5348196e-6
 	hlslpp_inline n128 _hlslpp_asin_ps(n128 x)
 	{
 		static const n128 asinacos_c0 = f4_pi2;
@@ -1459,7 +1442,8 @@ namespace hlslpp
 		return result;
 	}
 
-	// Max error vs. std::atan = 2.74181366e-6
+	// Max error vs. std::atan
+	// SSE : 2.74181366e-6
 	hlslpp_inline n128 _hlslpp_atan_ps(n128 x)
 	{
 		static const n128 atan_c1 = f4_1;
@@ -4027,13 +4011,13 @@ namespace hlslpp
 	// 	return float4(_hlslpp_mul_ps(v._vec, _hlslpp_perm_xxxx_ps(_mm_rsqrt_ps(_hlslpp_dot4_ps(v._vec, v._vec)))));
 	// }
 
-	// hlslpp_forceinline float4 smoothstep
-
 	// https://books.google.co.uk/books?id=yphBBAAAQBAJ&pg=PA99&lpg=PA99&dq=_mm_cmpnltps&source=bl&ots=zLVjV__tgU&sig=8uNKfkS_-hIbiLRSFODgG5EWMzw&hl=en&sa=X&ved=0ahUKEwjlkY3126nRAhUHI8AKHSqUCJ4Q6AEIGjAA#v=onepage&q&f=false
+	//hlslpp_forceinline float4 smoothstep
 	//hlslpp_forceinline float4 atan2
 	//hlslpp_forceinline float4 cosh
 	//hlslpp_forceinline float4 sinh
 	//hlslpp_forceinline float4 tanh
+	//hlslpp_forceinline float4 modf
 
 	//----------------------------
 	// Component integer functions
