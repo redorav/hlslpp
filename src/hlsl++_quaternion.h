@@ -281,6 +281,40 @@ namespace hlslpp
 		return result;
 	}
 
+	hlslpp_inline void _hlslpp_quat_to_3x3_ps(const n128 q, n128& row0, n128& row1, n128& row2)
+	{
+		n128 q_xxy		= _hlslpp_perm_xxyx_ps(q);
+		n128 q_zyz		= _hlslpp_perm_zyzx_ps(q);
+		n128 q_mul0		= _hlslpp_mul_ps(q_xxy, q_zyz);
+
+		n128 q_yzx		= _hlslpp_perm_yzxx_ps(q);
+		n128 q_www		= _hlslpp_perm_wwwx_ps(q);
+		n128 q_mul1		= _hlslpp_mul_ps(q_yzx, q_www);
+
+		n128 q_add		= _hlslpp_perm_yzxx_ps(_hlslpp_add_ps(q_mul0, q_mul1)); // swizzle to get in place
+		q_add			= _hlslpp_add_ps(q_add, q_add);
+
+		n128 q_sub		= _hlslpp_sub_ps(q_mul0, q_mul1);
+		q_sub			= _hlslpp_add_ps(q_sub, q_sub);
+
+		n128 q_xyz_2	= _hlslpp_mul_ps(q, q);
+
+		n128 q_yxx_2	= _hlslpp_perm_yxxx_ps(q_xyz_2);
+		n128 q_zzy_2	= _hlslpp_perm_zzyx_ps(q_xyz_2);
+
+		n128 oneMinus_2 = _hlslpp_sub_ps(f4_05, _hlslpp_add_ps(q_yxx_2, q_zzy_2));
+		oneMinus_2		= _hlslpp_add_ps(oneMinus_2, oneMinus_2);
+
+		row0 = _hlslpp_blend_ps(oneMinus_2, q_sub,	HLSLPP_BLEND_MASK(1, 0, 0, 0));
+		row0 = _hlslpp_blend_ps(row0, q_add,		HLSLPP_BLEND_MASK(1, 1, 0, 0));
+
+		row1 = _hlslpp_blend_ps(oneMinus_2, q_sub,	HLSLPP_BLEND_MASK(0, 1, 0, 0));
+		row1 = _hlslpp_blend_ps(row1, q_add,		HLSLPP_BLEND_MASK(0, 1, 1, 0));
+
+		row2 = _hlslpp_blend_ps(oneMinus_2, q_sub,	HLSLPP_BLEND_MASK(0, 0, 1, 0));
+		row2 = _hlslpp_blend_ps(row2, q_add,		HLSLPP_BLEND_MASK(1, 0, 1, 0));
+	}
+
 	hlslpp_inline quaternion::quaternion(const float1& v1, const float1& v2, const float1& v3, const float1& v4)
 	{
 		_vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(v1._vec, v3._vec), _hlslpp_shuf_xxxx_ps(v2._vec, v4._vec), HLSLPP_BLEND_MASK(1, 0, 1, 0));

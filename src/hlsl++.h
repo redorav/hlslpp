@@ -1175,7 +1175,7 @@ namespace hlslpp
 	}
 
 	// Cross product for 3-component vectors
-	// TODO Can apparently be done with one less shuffle http://fastcpp.blogspot.co.uk/2011/04/vector-cross-product-using-sse-code.html
+	// TODO Can apparently be done with one less shuffle http://fastcpp.blogspot.co.uk/2011/04/vector-cross-product-using-sse-code.html and http://threadlocalmutex.com/?p=8
 	hlslpp_inline n128 _hlslpp_cross_ps(n128 x, n128 y)
 	{
 		n128 yzx_0 = _hlslpp_perm_yzxx_ps(x);
@@ -2981,6 +2981,8 @@ namespace hlslpp
 		hlslpp_inline floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; return *this; }
 	};
 
+	class quaternion; // Forward declare for float3x3 and float4x4
+
 	template<>
 	class floatNxM<3, 3>
 	{
@@ -3018,6 +3020,8 @@ namespace hlslpp
 		hlslpp_inline floatNxM(float f00, float f01, float f02,
 				 float f10, float f11, float f12,
 				 float f20, float f21, float f22) : _vec0(_hlslpp_set_ps(f00, f01, f02, 0.0f)), _vec1(_hlslpp_set_ps(f10, f11, f12, 0.0f)), _vec2(_hlslpp_set_ps(f20, f21, f22, 0.0f)) {}
+
+		hlslpp_inline floatNxM(const quaternion& q);
 
 		hlslpp_inline explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)), _vec2(_hlslpp_set1_ps(f)) {}
 		hlslpp_inline floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
@@ -6205,3 +6209,11 @@ namespace hlslpp
 }
 
 #include "hlsl++_quaternion.h"
+
+namespace hlslpp
+{
+	hlslpp_inline float3x3::floatNxM(const quaternion& q)
+	{
+		_hlslpp_quat_to_3x3_ps(q._vec, _vec0, _vec1, _vec2);
+	}
+}
