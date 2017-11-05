@@ -1738,14 +1738,31 @@ void RunExperiments()
 
 	const float deg2rad = 3.14159265f / 180.0f;
 	
-	quaternion q1 = quaternion::euler(float3(0.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
-	quaternion q2 = quaternion::euler(float3(180.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
-	quaternion fax = quaternion::axisangle(float3(0.0f, 1.0f, 0.0f), 1.57f);
+	quaternion q1 = euler(float3(90.0f * deg2rad, 45.0f * deg2rad, 0.0f * deg2rad));
+	quaternion q2 = euler(float3(180.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
+	quaternion fax = axisangle(float3(0.0f, 1.0f, 0.0f), 1.57f);
 	
 	quaternion slerp1 = slerp(q1, q2, 0.0f);
 	quaternion slerp2 = slerp(q1, q2, 1.0f);
 
 	quaternion slerp3 = slerp(q1, q2, 0.5f);
+
+	quaternion testq = quaternion(0.66519f, 0.1881441f, 0.282216f, 0.665190f);
+
+	float3x3 matSlerp(testq);
+
+
+	// Quaternion vector tests
+	quaternion qEuler = euler(float3(0.0f * deg2rad, 90 * deg2rad, 0 * deg2rad));
+	quaternion qPure = quaternion(1.0f, 0.0f, 0.0f, 0.0f);
+
+	float3 vector = float3(1, 0, 0);
+
+	quaternion normalMultiply = qEuler * qPure;
+
+	float3 rotatedVector = mul(qEuler, vector);
+
+	float2 a;
 
 	//float2 p = (float2) q1.xyzw;
 }
@@ -1757,7 +1774,7 @@ void RunSpeedTests()
 	float f3 = (rand() % 1000) / 100.0f;
 	float f4 = (rand() % 1000) / 100.0f;
 
-	const int iter = 100;
+	const long int iter = 1000000000;
 	Timer timer;
 
 	//// DirectX XMVECTOR
@@ -1803,21 +1820,30 @@ void RunSpeedTests()
 	float4 v3(f3);
 	float4 v4(f4);
 
+	float3 v5(f4);
+
 	float4x4 mat_foo_4x4 = float4x4(10, 20, 1, 1,
 									78, 5, 2, 8,
 									14, 5, 5, 6,
 									8, 4, 5, 6);
 
+	quaternion q(f1, f2, f3, f4);
+
+	float1 dp = 1.0f;
+
+	float1 verify = dot(v3, v4);
+
 	timer.Start();
-	for (int i = 0; i < iter; ++i)
+	for (long int i = 0; i < iter; ++i)
 	{
-		v4 = v4.xxxx + v3.yyzw;
+		v5 = mul(q, v5);
+		//v4 = v4.xxxx + v3.yyzw;
 		//Vector4 yyzw = Vector4(v3f.y, v3f.y, v3f.z, v3f.w);
 		//Vector4 xxxx = Vector4(v4f.x, v4f.x, v4f.x, v4f.x);
 		//v4f = xxxx + yyzw;
 	}
 	double time = timer.Get();
-	printf("float4: %f, %f, %f, %f = %f\n", (float)v4.x, (float)v4.y, (float)v4.z, (float)v4.w, time);
+	//printf("float4: %f, %f, %f, %f = %f\n", (float)v4.x, (float)v4.y, (float)v4.z, (float)v4.w, time);
 	//printf("Vector4: %f, %f, %f, %f\n\n", (float)v4f.x, (float)v4f.y, (float)v4f.z, (float)v4f.w);
 	printf("Elapsed = %f\n", time);
 }

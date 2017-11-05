@@ -1175,16 +1175,13 @@ namespace hlslpp
 	}
 
 	// Cross product for 3-component vectors
-	// TODO Can apparently be done with one less shuffle http://fastcpp.blogspot.co.uk/2011/04/vector-cross-product-using-sse-code.html and http://threadlocalmutex.com/?p=8
+	// http://threadlocalmutex.com/?p=8
+	// Measured to be marginally faster than the 4-shuffle
 	hlslpp_inline n128 _hlslpp_cross_ps(n128 x, n128 y)
 	{
 		n128 yzx_0 = _hlslpp_perm_yzxx_ps(x);
-		n128 zxy_1 = _hlslpp_perm_zxyx_ps(y);
-
-		n128 zxy_0 = _hlslpp_perm_zxyx_ps(x);
 		n128 yzx_1 = _hlslpp_perm_yzxx_ps(y);
-
-		return _hlslpp_msub_ps(yzx_0, zxy_1, _hlslpp_mul_ps(zxy_0, yzx_1));
+		return _hlslpp_perm_yzxx_ps(_hlslpp_msub_ps(x, yzx_1, _hlslpp_mul_ps(yzx_0, y)));
 	}
 
 	// See http://jrfonseca.blogspot.co.uk/2008/09/fast-sse2-pow-tables-or-polynomials.html for derivation

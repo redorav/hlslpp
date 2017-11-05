@@ -192,8 +192,7 @@ namespace hlslpp
 		quaternion& operator = (const float4& c);
 		template<int A, int B, int C, int D> quaternion& operator = (const component4<A, B, C, D>& c);
 
-		static quaternion axisangle(const float3& axis, const float1& angle);
-		static quaternion euler(const float3& angles);
+		static const quaternion& identity() { static const quaternion identity = quaternion(0.0f, 0.0f, 0.0f, 1.0f); return identity; };
 	};
 
 	hlslpp_inline n128 _hlslpp_quat_mul_ps(const n128 q0, const n128 q1)
@@ -211,6 +210,19 @@ namespace hlslpp
 	{
 		static const n128i signMask = _hlslpp_set_epi32(0x80000000, 0x80000000, 0x80000000, 0);
 		return _hlslpp_xor_ps(q, _hlslpp_castsi128_ps(signMask)); // Flip the sign bits of the vector part of the quaternion
+	}
+
+	// Quaternion - vector multiplication. Faster version of q * v * q*
+	// Rotates a vector using a quaternion
+	// https://blog.molecular-matters.com/2013/05/24/a-faster-quaternion-vector-multiplication/
+	hlslpp_inline n128 _hlslpp_quat_mul_vec_ps(const n128 q, const n128 v)
+	{
+		n128 t = _hlslpp_cross_ps(q, v);
+		n128 t2 = _hlslpp_add_ps(t, t);
+		n128 qxt = _hlslpp_cross_ps(q, t);
+		n128 v_qxt = _hlslpp_add_ps(v, qxt);
+		n128 result = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(q), t2, v_qxt);
+		return result;
 	}
 
 	hlslpp_inline n128 _hlslpp_quat_inverse_ps(const n128 q)
@@ -264,9 +276,9 @@ namespace hlslpp
 		n128 cosHalfTheta		= _hlslpp_dot4_ps(q0, q1);
 		n128 halfTheta			= _hlslpp_acos_ps(cosHalfTheta);
 
-		n128 t4					= _hlslpp_shuf_xxxx_ps(t, f4_1);	// Contains t, t, 1, 0
-		n128 oneMinusT			= _hlslpp_sub_ps(f4_1, t4);			// Contains all 1 - t
-		n128 lerpFactors		= _hlslpp_blend_ps(oneMinusT, t4, HLSLPP_BLEND_MASK(1, 0, 0, 1));	// Contains (1 - t), t, 1
+		n128 t4					= _hlslpp_shuf_xxxx_ps(t, f4_1);	// Contains t, t, 1, unused
+		n128 oneMinusT			= _hlslpp_sub_ps(f4_1, t4);			// Contains 1 - t, 1 - t, 0, unused
+		n128 lerpFactors		= _hlslpp_blend_ps(oneMinusT, t4, HLSLPP_BLEND_MASK(1, 0, 0, 1));	// Contains (1 - t), t, 1, unused
 		n128 tTheta				= _hlslpp_mul_ps(lerpFactors, _hlslpp_perm_xxxx_ps(halfTheta));		// Contains (1 - t) * theta, t * theta, theta
 		n128 sinVec				= _hlslpp_sin_ps(tTheta);											// Contains sin((1 - t) * theta), sin(t * theta), sin(theta)
 		
@@ -416,66 +428,69 @@ namespace hlslpp
 
 	template<> hlslpp_inline quaternion& quaternion::operator = (const component4<0, 1, 2, 3>& c) { _vec = c._vec; return *this; } // Optimize a straight copy if the indices match 0, 1, 2, 3 (doesn't produce/need the shuffle)
 
-	hlslpp_inline quaternion operator + (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_add_ps(q1._vec, q2._vec)); }
-	hlslpp_inline quaternion& operator += (quaternion& q1, const quaternion& q2) { q1 = q1 + q2; return q1; }
+	hlslpp_inline quaternion	operator + (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_add_ps(q1._vec, q2._vec)); }
+	hlslpp_inline quaternion&	operator += (quaternion& q1, const quaternion& q2) { q1 = q1 + q2; return q1; }
 
-	hlslpp_inline quaternion operator - (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_sub_ps(q1._vec, q2._vec)); }
-	hlslpp_inline quaternion& operator -= (quaternion& q1, const quaternion& q2) { q1 = q1 - q2; return q1; }
+	hlslpp_inline quaternion	operator - (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_sub_ps(q1._vec, q2._vec)); }
+	hlslpp_inline quaternion&	operator -= (quaternion& q1, const quaternion& q2) { q1 = q1 - q2; return q1; }
 
-	hlslpp_inline quaternion operator * (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_quat_mul_ps(q1._vec, q2._vec)); }
+	hlslpp_inline quaternion	operator * (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_quat_mul_ps(q1._vec, q2._vec)); }
+	hlslpp_inline float3		operator * (const quaternion& q, const float3& v) { return float3(_hlslpp_quat_mul_vec_ps(q._vec, v._vec)); }
 
-	hlslpp_inline quaternion operator * (const quaternion& q, const float1& v) { return quaternion(_hlslpp_mul_ps(q._vec, _hlslpp_perm_xxxx_ps(v._vec))); }
-	hlslpp_inline quaternion operator * (const float1& v, const quaternion& q) { return q * v; }
+	hlslpp_inline quaternion	operator * (const quaternion& q, const float1& v) { return quaternion(_hlslpp_mul_ps(q._vec, _hlslpp_perm_xxxx_ps(v._vec))); }
+	hlslpp_inline quaternion	operator * (const float1& v, const quaternion& q) { return q * v; }
 
-	hlslpp_inline quaternion operator * (const quaternion& q, const float v) { return q * float1(v); }
-	hlslpp_inline quaternion operator * (const float v, const quaternion& q) { return float1(v) * q; }
+	hlslpp_inline quaternion	operator * (const quaternion& q, const float v) { return q * float1(v); }
+	hlslpp_inline quaternion	operator * (const float v, const quaternion& q) { return float1(v) * q; }
 
-	hlslpp_inline quaternion& operator *= (quaternion& q1, const quaternion& q2) { q1 = q1 * q2; return q1; }
-	hlslpp_inline quaternion& operator *= (quaternion& q, const float1& v) { q = q * v; return q; }
-	hlslpp_inline quaternion& operator *= (quaternion& q, const float v) { q = q * v; return q; }
+	hlslpp_inline quaternion&	operator *= (quaternion& q1, const quaternion& q2) { q1 = q1 * q2; return q1; }
+	hlslpp_inline quaternion&	operator *= (quaternion& q, const float1& v) { q = q * v; return q; }
+	hlslpp_inline quaternion&	operator *= (quaternion& q, const float v) { q = q * v; return q; }
 
 	//inline quaternion operator / (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_div_ps(q1._vec, q2._vec)); }
 	//inline quaternion& operator /= (quaternion& q1, const quaternion& q2) { q1 = q1 / q2; return q1; }
 
-	hlslpp_inline quaternion operator / (const quaternion& q, const float1& v) { return quaternion(_hlslpp_div_ps(q._vec, _hlslpp_perm_xxxx_ps(v._vec))); }
-	hlslpp_inline quaternion operator / (const quaternion& q, const float v) { return q / float1(v); }
+	hlslpp_inline quaternion	operator / (const quaternion& q, const float1& v) { return quaternion(_hlslpp_div_ps(q._vec, _hlslpp_perm_xxxx_ps(v._vec))); }
+	hlslpp_inline quaternion	operator / (const quaternion& q, const float v) { return q / float1(v); }
 
-	hlslpp_inline quaternion& operator /= (quaternion& q, const float1& v) { q = q / v; return q; }
-	hlslpp_inline quaternion& operator /= (quaternion& q, const float v) { q = q / v; return q; }
+	hlslpp_inline quaternion&	operator /= (quaternion& q, const float1& v) { q = q / v; return q; }
+	hlslpp_inline quaternion&	operator /= (quaternion& q, const float v) { q = q / v; return q; }
 
-	hlslpp_inline quaternion operator - (const quaternion& q) { return quaternion(_hlslpp_neg_ps(q._vec)); }
-	hlslpp_inline quaternion operator == (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_cmpeq1_ps(q1._vec, q2._vec)); }
-	hlslpp_inline quaternion operator != (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_cmpneq1_ps(q1._vec, q2._vec)); }
-	hlslpp_inline quaternion operator > (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_cmpgt1_ps(q1._vec, q2._vec)); }
-	hlslpp_inline quaternion operator >= (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_cmpge1_ps(q1._vec, q2._vec)); }
-	hlslpp_inline quaternion operator < (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_cmplt1_ps(q1._vec, q2._vec)); }
-	hlslpp_inline quaternion operator <= (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_cmple1_ps(q1._vec, q2._vec)); }
+	hlslpp_inline quaternion	operator - (const quaternion& q) { return quaternion(_hlslpp_neg_ps(q._vec)); }
+	hlslpp_inline quaternion	operator * (const quaternion& q) { return quaternion(_hlslpp_quat_conjugate_ps(q._vec)); }
+	hlslpp_inline float4		operator == (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpeq1_ps(q1._vec, q2._vec)); }
+	hlslpp_inline float4		operator != (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpneq1_ps(q1._vec, q2._vec)); }
+	hlslpp_inline float4		operator >  (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpgt1_ps(q1._vec, q2._vec)); }
+	hlslpp_inline float4		operator >= (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpge1_ps(q1._vec, q2._vec)); }
+	hlslpp_inline float4		operator <  (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmplt1_ps(q1._vec, q2._vec)); }
+	hlslpp_inline float4		operator <= (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmple1_ps(q1._vec, q2._vec)); }
 
-	hlslpp_inline quaternion abs(const quaternion& q) { return quaternion(_hlslpp_abs_ps(q._vec)); }
-	hlslpp_inline quaternion all(const quaternion& q) { return quaternion(_hlslpp_all1_ps(q._vec)); }
-	hlslpp_inline quaternion any(const quaternion& q) { return quaternion(_hlslpp_any1_ps(q._vec)); }
-	hlslpp_inline quaternion quaternion::axisangle(const float3& axis, const float1& angle) { return quaternion(_hlslpp_quat_axis_angle_ps(axis._vec, angle._vec)); }
-	hlslpp_inline quaternion conjugate(const quaternion& q) { return quaternion(_hlslpp_quat_conjugate_ps(q._vec)); }
+	hlslpp_inline quaternion	abs(const quaternion& q) { return quaternion(_hlslpp_abs_ps(q._vec)); }
+	hlslpp_inline float4		all(const quaternion& q) { return float4(_hlslpp_all1_ps(q._vec)); }
+	hlslpp_inline float4		any(const quaternion& q) { return float4(_hlslpp_any1_ps(q._vec)); }
+	hlslpp_inline quaternion	axisangle(const float3& axis, const float1& angle) { return quaternion(_hlslpp_quat_axis_angle_ps(axis._vec, angle._vec)); }
+	hlslpp_inline quaternion	conjugate(const quaternion& q) { return quaternion(_hlslpp_quat_conjugate_ps(q._vec)); }
 	//clamp TODO
-	hlslpp_inline float1	 dot(const quaternion& q0, const quaternion& q1) { return float1(_hlslpp_dot4_ps(q0._vec, q1._vec)); }
-	hlslpp_inline quaternion quaternion::euler(const float3& angles) { return quaternion(_hlslpp_quat_euler_zxy_ps(angles._vec)); }
+	hlslpp_inline float1		dot(const quaternion& q0, const quaternion& q1) { return float1(_hlslpp_dot4_ps(q0._vec, q1._vec)); }
+	hlslpp_inline quaternion	euler(const float3& angles) { return quaternion(_hlslpp_quat_euler_zxy_ps(angles._vec)); }
 	//hlslpp_inline quaternion exp(const quaternion& q) { return quaternion(_hlslpp_exp_ps(q._vec)); }
-	hlslpp_inline quaternion frac(const quaternion& q) { return quaternion(_hlslpp_frac_ps(q._vec)); }
-	hlslpp_inline quaternion inverse(const quaternion& q) { return quaternion(_hlslpp_quat_inverse_ps(q._vec)); }
-	hlslpp_inline quaternion isfinite(const quaternion& q) { return quaternion(_hlslpp_andnot_ps(_hlslpp_isfinite_ps(q._vec), f4_1)); }
-	hlslpp_inline quaternion isinf(const quaternion& q) { return quaternion(_hlslpp_and_ps(_hlslpp_isinf_ps(q._vec), f4_1)); }
-	hlslpp_inline quaternion isnan(const quaternion& q) { return quaternion(_hlslpp_and_ps(_hlslpp_isnan_ps(q._vec), f4_1)); }
-	hlslpp_inline float1	 length(const quaternion& q) { return float1(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(q._vec, q._vec))); }
-	hlslpp_inline quaternion lerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_lrp_ps(q1._vec, q2._vec, _hlslpp_perm_xxxx_ps(a._vec))); }
-	hlslpp_inline quaternion lerp(const quaternion& q1, const quaternion& q2, float a) { return quaternion(_hlslpp_lrp_ps(q1._vec, q2._vec, float4(a)._vec)); }
+	hlslpp_inline quaternion	frac(const quaternion& q) { return quaternion(_hlslpp_frac_ps(q._vec)); }
+	hlslpp_inline quaternion	inverse(const quaternion& q) { return quaternion(_hlslpp_quat_inverse_ps(q._vec)); }
+	hlslpp_inline float4		isfinite(const quaternion& q) { return float4(_hlslpp_andnot_ps(_hlslpp_isfinite_ps(q._vec), f4_1)); }
+	hlslpp_inline float4		isinf(const quaternion& q) { return float4(_hlslpp_and_ps(_hlslpp_isinf_ps(q._vec), f4_1)); }
+	hlslpp_inline float4		isnan(const quaternion& q) { return float4(_hlslpp_and_ps(_hlslpp_isnan_ps(q._vec), f4_1)); }
+	hlslpp_inline float1		length(const quaternion& q) { return float1(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(q._vec, q._vec))); }
+	hlslpp_inline quaternion	lerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_lrp_ps(q1._vec, q2._vec, _hlslpp_perm_xxxx_ps(a._vec))); }
+	hlslpp_inline quaternion	lerp(const quaternion& q1, const quaternion& q2, float a) { return quaternion(_hlslpp_lrp_ps(q1._vec, q2._vec, float4(a)._vec)); }
 
-	hlslpp_inline quaternion slerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_slerp_ps(q1._vec, q2._vec, _hlslpp_perm_xxxx_ps(a._vec))); }
-	hlslpp_inline quaternion slerp(const quaternion& q1, const quaternion& q2, float a) { return quaternion(_hlslpp_quat_slerp_ps(q1._vec, q2._vec, float4(a)._vec)); }
+	hlslpp_inline quaternion	slerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_slerp_ps(q1._vec, q2._vec, _hlslpp_perm_xxxx_ps(a._vec))); }
+	hlslpp_inline quaternion	slerp(const quaternion& q1, const quaternion& q2, float a) { return quaternion(_hlslpp_quat_slerp_ps(q1._vec, q2._vec, float4(a)._vec)); }
 
 	//hlslpp_inline quaternion log(const quaternion& q) { return quaternion(_hlslpp_log_ps(q._vec)); }
-	hlslpp_inline quaternion min(const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_min_ps(q1._vec, q2._vec)); }
-	hlslpp_inline quaternion max(const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_max_ps(q1._vec, q2._vec)); }
-	hlslpp_inline quaternion normalize(const quaternion& q) { return quaternion(_hlslpp_div_ps(q._vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(q._vec, q._vec))))); }
-	hlslpp_inline quaternion saturate(const quaternion& q) { return quaternion(_hlslpp_sat_ps(q._vec)); }
-	hlslpp_inline quaternion sign(const quaternion& q) { return quaternion(_hlslpp_sign_ps(q._vec)); }
+	hlslpp_inline quaternion	min(const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_min_ps(q1._vec, q2._vec)); }
+	hlslpp_inline quaternion	max(const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_max_ps(q1._vec, q2._vec)); }
+	hlslpp_inline float3		mul(const quaternion& q, const float3& v) { return float3(_hlslpp_quat_mul_vec_ps(q._vec, v._vec)); }
+	hlslpp_inline quaternion	normalize(const quaternion& q) { return quaternion(_hlslpp_div_ps(q._vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(q._vec, q._vec))))); }
+	hlslpp_inline quaternion	saturate(const quaternion& q) { return quaternion(_hlslpp_sat_ps(q._vec)); }
+	hlslpp_inline quaternion	sign(const quaternion& q) { return quaternion(_hlslpp_sign_ps(q._vec)); }
 }
