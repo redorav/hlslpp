@@ -218,10 +218,10 @@ namespace hlslpp
 	hlslpp_inline n128 _hlslpp_quat_mul_vec_ps(const n128 q, const n128 v)
 	{
 		n128 t = _hlslpp_cross_ps(q, v);
-		n128 t2 = _hlslpp_add_ps(t, t);
+		t = _hlslpp_add_ps(t, t);
 		n128 qxt = _hlslpp_cross_ps(q, t);
 		n128 v_qxt = _hlslpp_add_ps(v, qxt);
-		n128 result = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(q), t2, v_qxt);
+		n128 result = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(q), t, v_qxt);
 		return result;
 	}
 
@@ -325,6 +325,16 @@ namespace hlslpp
 
 		row2 = _hlslpp_blend_ps(oneMinus_2, q_sub,	HLSLPP_BLEND_MASK(0, 0, 1, 0));
 		row2 = _hlslpp_blend_ps(row2, q_add,		HLSLPP_BLEND_MASK(1, 0, 1, 0));
+	}
+
+	hlslpp_inline void _hlslpp_quat_to_4x4_ps(const n128 q, n128& row0, n128& row1, n128& row2, n128& row3)
+	{
+		_hlslpp_quat_to_3x3_ps(q, row0, row1, row2);
+		const n128 zeroLast = _hlslpp_castsi128_ps(_hlslpp_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0));
+		row0 = _hlslpp_and_ps(row0, zeroLast);
+		row1 = _hlslpp_and_ps(row1, zeroLast);
+		row2 = _hlslpp_and_ps(row2, zeroLast);
+		row3 = _hlslpp_set_ps(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	hlslpp_inline quaternion::quaternion(const float1& v1, const float1& v2, const float1& v3, const float1& v4)

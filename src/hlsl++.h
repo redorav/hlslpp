@@ -1901,6 +1901,9 @@ namespace hlslpp
 		floatN<2>& operator = (const float f);
 
 		template<int A, int B> floatN<2>& operator = (const component2<A, B>& c);
+
+		static const float2& one() { static const float2 one = float2(1.0f, 1.0f); return one; };
+		static const float2& zero() { static const float2 zero = float2(0.0f, 0.0f); return zero; };
 	};
 
 	template<>
@@ -1990,6 +1993,9 @@ namespace hlslpp
 		floatN<3>& operator = (const float f);
 		template<int A, int B, int C>
 		floatN<3>& operator = (const component3<A, B, C>& c);
+
+		static const float3& one() { static const float3 one = float3(1.0f, 1.0f, 1.0f); return one; };
+		static const float3& zero() { static const float3 zero = float3(0.0f, 0.0f, 0.0f); return zero; };
 
 		// Disallow these constructors, as implicit construction rules could allow them to be valid
 		floatN<3>(float v1, float v2) = delete;
@@ -2193,6 +2199,9 @@ namespace hlslpp
 		floatN<4>& operator = (const float4& c);
 		floatN<4>& operator = (const float f);
 		template<int A, int B, int C, int D> floatN<4>& operator = (const component4<A, B, C, D>& c);
+
+		static const float4& one() { static const float4 one = float4(1.0f, 1.0f, 1.0f, 1.0f); return one; };
+		static const float4& zero() { static const float4 zero = float4(0.0f, 0.0f, 0.0f, 0.0f); return zero; };
 
 		// Disallow these constructors, as implicit construction rules could allow them to be valid
 		floatN<4>(float v1, float v2) = delete;
@@ -3149,6 +3158,8 @@ namespace hlslpp
 				 float f20, float f21, float f22, float f23,
 				 float f30, float f31, float f32, float f33)
 			: _vec0(_hlslpp_set_ps(f00, f01, f02, f03)), _vec1(_hlslpp_set_ps(f10, f11, f12, f13)), _vec2(_hlslpp_set_ps(f20, f21, f22, f23)), _vec3(_hlslpp_set_ps(f30, f31, f32, f33)) {}
+
+		hlslpp_inline floatNxM(const quaternion& q);
 
 		hlslpp_inline explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)), _vec2(_hlslpp_set1_ps(f)), _vec3(_hlslpp_set1_ps(f)) {}
 		hlslpp_inline floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2), _vec3(m._vec3) {}
@@ -6212,5 +6223,10 @@ namespace hlslpp
 	hlslpp_inline float3x3::floatNxM(const quaternion& q)
 	{
 		_hlslpp_quat_to_3x3_ps(q._vec, _vec0, _vec1, _vec2);
+	}
+
+	hlslpp_inline float4x4::floatNxM(const quaternion& q)
+	{
+		_hlslpp_quat_to_4x4_ps(q._vec, _vec0, _vec1, _vec2, _vec3);
 	}
 }
