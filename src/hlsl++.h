@@ -45,65 +45,65 @@ namespace hlslpp
 		explicit BitMask(uint32_t i) : i(i) {}
 		explicit BitMask(float f) : f(f) {}
 	};
+
+	const hlslpp::BitMask fffMask		(0xffffffffu); // Negative NaN
+	const hlslpp::BitMask nanMask		(0x7fffffffu); // Positive NaN
+	const hlslpp::BitMask infMask		(0x7f800000u);
+	const hlslpp::BitMask minusinfMask	(0xff800000u);
+	const hlslpp::BitMask absMask		(0x7fffffffu);
+	const hlslpp::BitMask negMask		(0x80000000u);
+	
+	//----- Constants
+	const n128 f4_0				= _hlslpp_set1_ps( 0.0f);
+	const n128 f4_1				= _hlslpp_set1_ps( 1.0f);
+	const n128 f4minusOne		= _hlslpp_set1_ps(-1.0f);
+	const n128 f4_05			= _hlslpp_set1_ps( 0.5f);
+	const n128 f4_minus05		= _hlslpp_set1_ps(-0.5f);
+	const n128 f4_2				= _hlslpp_set1_ps( 2.0f);
+	const n128 f4_minus2		= _hlslpp_set1_ps(-2.0f);
+	const n128 f4_10			= _hlslpp_set1_ps(10.0f);
+	const n128 f4_e				= _hlslpp_set1_ps(2.718281828f);
+	
+	const n128 f4_pi			= _hlslpp_set1_ps( 3.14159265f); // pi
+	const n128 f4_minusPi		= _hlslpp_set1_ps(-3.14159265f); // -pi
+	const n128 f4_invPi			= _hlslpp_set1_ps( 0.31830988f); // 1 / pi
+	
+	const n128 f4_2pi			= _hlslpp_set1_ps( 6.28318530f); //  2 * pi
+	const n128 f4_minus2pi		= _hlslpp_set1_ps(-6.28318530f); // -2 * pi
+	const n128 f4_inv2pi		= _hlslpp_set1_ps( 0.15915494f); // 1 / (2 * pi)
+	
+	const n128 f4_pi2			= _hlslpp_set1_ps( 1.57079632f); //  pi / 2
+	const n128 f4_minusPi2		= _hlslpp_set1_ps(-1.57079632f); // -pi / 2
+	const n128 f4_invPi2		= _hlslpp_set1_ps( 0.63661977f); // 2 / pi
+	
+	const n128 f4_3pi2			= _hlslpp_set1_ps( 4.71238898f); //  3 * pi / 2
+	const n128 f4_minus3pi2		= _hlslpp_set1_ps(-4.71238898f); // -3 * pi / 2
+	
+	const n128 f4_pi4			= _hlslpp_set1_ps( 0.78539816f); //  pi / 4
+	const n128 f4_minusPi4		= _hlslpp_set1_ps(-0.78539816f); // -pi / 4
+	
+	const n128 f4_NaN			= _hlslpp_set1_ps(nanMask.f);		// Quiet NaN
+	const n128 f4_inf			= _hlslpp_set1_ps(infMask.f);		// Infinity
+	const n128 f4_minusinf		= _hlslpp_set1_ps(minusinfMask.f);	// -Infinity
+	
+	const n128 f4_rad2deg		= _hlslpp_set1_ps(180.0f / 3.14159265f);
+	const n128 f4_deg2rad		= _hlslpp_set1_ps(3.14159265f / 180.f);
+	
+	const n128i i4_0			= _hlslpp_set1_epi32( 0);
+	const n128i i4_1			= _hlslpp_set1_epi32( 1);
+	
+	//----- Masks
+	const n128 f4negativeMask	= _hlslpp_set1_ps(negMask.f);
+	const n128 f4absMask		= _hlslpp_set1_ps(absMask.f);
+	
+	const n128i i4negativeMask	= _hlslpp_set1_epi32(negMask.i);
+	const n128i i4absMask		= _hlslpp_set1_epi32(absMask.i);
+	
+	const uint32_t _MM_X		= 0;
+	const uint32_t _MM_Y		= 1;
+	const uint32_t _MM_Z		= 2;
+	const uint32_t _MM_W		= 3;
 }
-
-static const hlslpp::BitMask fffMask		(0xffffffffu); // Negative NaN
-static const hlslpp::BitMask nanMask		(0x7fffffffu); // Positive NaN
-static const hlslpp::BitMask infMask		(0x7f800000u);
-static const hlslpp::BitMask minusinfMask	(0xff800000u);
-static const hlslpp::BitMask absMask		(0x7fffffffu);
-static const hlslpp::BitMask negMask		(0x80000000u);
-
-//----- Constants
-static const n128 f4_0				= _hlslpp_set1_ps( 0.0f);
-static const n128 f4_1				= _hlslpp_set1_ps( 1.0f);
-static const n128 f4minusOne		= _hlslpp_set1_ps(-1.0f);
-static const n128 f4_05				= _hlslpp_set1_ps( 0.5f);
-static const n128 f4_minus05		= _hlslpp_set1_ps(-0.5f);
-static const n128 f4_2				= _hlslpp_set1_ps( 2.0f);
-static const n128 f4_minus2			= _hlslpp_set1_ps(-2.0f);
-static const n128 f4_10				= _hlslpp_set1_ps(10.0f);
-static const n128 f4_e				= _hlslpp_set1_ps(2.718281828f);
-
-static const n128 f4_pi				= _hlslpp_set1_ps( 3.14159265f); // pi
-static const n128 f4_minusPi		= _hlslpp_set1_ps(-3.14159265f); // -pi
-static const n128 f4_invPi			= _hlslpp_set1_ps( 0.31830988f); // 1 / pi
-
-static const n128 f4_2pi			= _hlslpp_set1_ps( 6.28318530f); //  2 * pi
-static const n128 f4_minus2pi		= _hlslpp_set1_ps(-6.28318530f); // -2 * pi
-static const n128 f4_inv2pi			= _hlslpp_set1_ps( 0.15915494f); // 1 / (2 * pi)
-
-static const n128 f4_pi2			= _hlslpp_set1_ps( 1.57079632f); //  pi / 2
-static const n128 f4_minusPi2		= _hlslpp_set1_ps(-1.57079632f); // -pi / 2
-static const n128 f4_invPi2			= _hlslpp_set1_ps( 0.63661977f); // 2 / pi
-
-static const n128 f4_3pi2			= _hlslpp_set1_ps( 4.71238898f); //  3 * pi / 2
-static const n128 f4_minus3pi2		= _hlslpp_set1_ps(-4.71238898f); // -3 * pi / 2
-
-static const n128 f4_pi4			= _hlslpp_set1_ps( 0.78539816f); //  pi / 4
-static const n128 f4_minusPi4		= _hlslpp_set1_ps(-0.78539816f); // -pi / 4
-
-static const n128 f4_NaN			= _hlslpp_set1_ps(nanMask.f);		// Quiet NaN
-static const n128 f4_inf			= _hlslpp_set1_ps(infMask.f);		// Infinity
-static const n128 f4_minusinf		= _hlslpp_set1_ps(minusinfMask.f);	// -Infinity
-
-static const n128 f4_rad2deg		= _hlslpp_set1_ps(180.0f / 3.14159265f);
-static const n128 f4_deg2rad		= _hlslpp_set1_ps(3.14159265f / 180.f);
-
-static const n128i i4_0				= _hlslpp_set1_epi32( 0);
-static const n128i i4_1				= _hlslpp_set1_epi32( 1);
-
-//----- Masks
-static const n128 f4negativeMask	= _hlslpp_set1_ps(negMask.f);
-static const n128 f4absMask			= _hlslpp_set1_ps(absMask.f);
-
-static const n128i i4negativeMask	= _hlslpp_set1_epi32(negMask.i);
-static const n128i i4absMask		= _hlslpp_set1_epi32(absMask.i);
-
-static const uint32_t _MM_X = 0;
-static const uint32_t _MM_Y = 1;
-static const uint32_t _MM_Z = 2;
-static const uint32_t _MM_W = 3;
 
 #define HLSLPP_SHUFFLE_MASK(X, Y, Z, W)			(((W) << 6) | ((Z) << 4) | ((Y) << 2) | (X))
 
@@ -1575,12 +1575,6 @@ namespace hlslpp
 	//----- Float type -----//
 
 	template<int N> class floatN {};
-
-	using float1 = floatN<1>;
-	using float2 = floatN<2>;
-	using float3 = floatN<3>;
-	using float4 = floatN<4>;
-
 	template<int N, int M> class floatNxM {};
 
 	// These need to be explicitly declared, otherwise floatN types cannot reference any float1xM or floatNx1 types, as the compiler looks for specialization
@@ -1591,26 +1585,6 @@ namespace hlslpp
 	template<> class floatNxM<2, 1>;
 	template<> class floatNxM<3, 1>;
 	template<> class floatNxM<4, 1>;
-
-	using float1x1 = floatNxM<1, 1>;
-	using float1x2 = floatNxM<1, 2>;
-	using float2x1 = floatNxM<2, 1>;
-	using float1x3 = floatNxM<1, 3>;
-	using float3x1 = floatNxM<3, 1>;
-	using float1x4 = floatNxM<1, 4>;
-	using float4x1 = floatNxM<4, 1>;
-
-	using float2x2 = floatNxM<2, 2>;
-	using float2x3 = floatNxM<2, 3>;
-	using float3x2 = floatNxM<3, 2>;
-	using float2x4 = floatNxM<2, 4>;
-	using float4x2 = floatNxM<4, 2>;
-
-	using float3x3 = floatNxM<3, 3>;
-	using float3x4 = floatNxM<3, 4>;
-	using float4x3 = floatNxM<4, 3>;
-
-	using float4x4 = floatNxM<4, 4>;
 
 	// Auxiliary types to help template functions that take and return component types
 	template<int...C> class components {};
@@ -1630,12 +1604,6 @@ namespace hlslpp
 	//----- Integer type -----//
 
 	template<int N> class intN {};
-
-	using int1 = intN<1>;
-	using int2 = intN<2>;
-	using int3 = intN<3>;
-	using int4 = intN<4>;
-
 	template<int N, int M> class intNxM {};
 
 	// These need to be explicitly declared, otherwise floatN types cannot reference any float1xM or floatNx1 types, as the compiler looks for specialization
@@ -1646,26 +1614,6 @@ namespace hlslpp
 	template<> class intNxM<2, 1>;
 	template<> class intNxM<3, 1>;
 	template<> class intNxM<4, 1>;
-
-	using int1x1 = intNxM<1, 1>;
-	using int1x2 = intNxM<1, 2>;
-	using int2x1 = intNxM<2, 1>;
-	using int1x3 = intNxM<1, 3>;
-	using int3x1 = intNxM<3, 1>;
-	using int1x4 = intNxM<1, 4>;
-	using int4x1 = intNxM<4, 1>;
-
-	using int2x2 = intNxM<2, 2>;
-	using int2x3 = intNxM<2, 3>;
-	using int3x2 = intNxM<3, 2>;
-	using int2x4 = intNxM<2, 4>;
-	using int4x2 = intNxM<4, 2>;
-
-	using int3x3 = intNxM<3, 3>;
-	using int3x4 = intNxM<3, 4>;
-	using int4x3 = intNxM<4, 3>;
-
-	using int4x4 = intNxM<4, 4>;
 
 	template<int...C> class icomponents {};
 	template<int X> using icomponent1 = icomponents<X>;
@@ -1704,8 +1652,8 @@ namespace hlslpp
 		template<int E>
 		components<X>& operator = (const component1<E>& v);
 		components<X>& operator = (float f);
-		components<X>& operator = (const float1& v);
-		components<X>& operator = (const float1x1& m);
+		components<X>& operator = (const floatN<1>& v);
+		components<X>& operator = (const floatNxM<1, 1>& m);
 
 		hlslpp_inline operator float() const
 		{
@@ -1751,7 +1699,7 @@ namespace hlslpp
 		template<int E, int F>
 		components<X, Y>& operator = (const component2<E, F>& c);
 		components<X, Y>& operator = (const component2<X, Y>& c);
-		components<X, Y>& operator = (const float2& v);
+		components<X, Y>& operator = (const floatN<2>& v);
 	};
 
 	template<int X, int Y, int Z>
@@ -1792,7 +1740,7 @@ namespace hlslpp
 		template<int E, int F, int G>
 		components<X, Y, Z>& operator = (const component3<E, F, G>& c);
 		components<X, Y, Z>& operator = (const component3<X, Y, Z>& c);
-		components<X, Y, Z>& operator = (const float3& v);
+		components<X, Y, Z>& operator = (const floatN<3>& v);
 	};
 
 	template<int X, int Y, int Z, int W>
@@ -1819,7 +1767,7 @@ namespace hlslpp
 		template<int E, int F, int G, int H>
 		inline components<X, Y, Z, W>& operator = (const component4<E, F, G, H>& c);
 		inline components<X, Y, Z, W>& operator = (const component4<X, Y, Z, W>& c);
-		inline components<X, Y, Z, W>& operator = (const float4& v);
+		inline components<X, Y, Z, W>& operator = (const floatN<4>& v);
 	};
 
 	template<>
@@ -1837,22 +1785,22 @@ namespace hlslpp
 		hlslpp_inline explicit floatN<1>(n128 vec) : _vec(vec) {}
 		floatN<1>() {}
 		hlslpp_inline floatN<1>(float f) : _vec(_hlslpp_set_ps(f, 0.0f, 0.0f, 0.0f)) {}
-		hlslpp_inline floatN<1>(const float1& v) : _vec(v._vec) {}
+		hlslpp_inline floatN<1>(const floatN<1>& v) : _vec(v._vec) {}
 
 		// Force compiler to instantiate this later as the template specialization hasn't yet taken place, while restricting the dimension
 		template<int N, enable_if_dim<(N == 1)> = nullptr> floatN<1>(const intN<N>& v);
 
 		template<int A>
 		floatN<1>(const component1<A>& c);
-		explicit floatN<1>(const float1x1& v);
+		explicit floatN<1>(const floatNxM<1, 1>& v);
 
 		floatN<1>& operator = (float f);
-		floatN<1>& operator = (const float1& c);
+		floatN<1>& operator = (const floatN<1>& c);
 		template<int A>
 		floatN<1>& operator = (const component1<A>& c);
-		floatN<1>& operator = (const float1x1& m);
+		floatN<1>& operator = (const floatNxM<1, 1>& m);
 
-		floatN<1>& operator = (const int1& m);
+		floatN<1>& operator = (const intN<1>& m);
 
 		hlslpp_inline operator float() const
 		{
@@ -1878,32 +1826,32 @@ namespace hlslpp
 		floatN<2>() {}
 		hlslpp_inline floatN<2>(float f) : _vec(_hlslpp_set_ps(f, f, 0.0f, 0.0f)) {}
 		hlslpp_inline floatN<2>(float x, float y) : _vec(_hlslpp_set_ps(x, y, 0.0f, 0.0f)) {}
-		hlslpp_inline floatN<2>(const float2& v) : _vec(v._vec) {}
-		floatN<2>(const float1& v1,	const float1& v2);
+		hlslpp_inline floatN<2>(const floatN<2>& v) : _vec(v._vec) {}
+		floatN<2>(const floatN<1>& v1,	const floatN<1>& v2);
 	
-		explicit floatN<2>(const float2x1& v);
-		explicit floatN<2>(const float1x2& v);
+		explicit floatN<2>(const floatNxM<2, 1>& v);
+		explicit floatN<2>(const floatNxM<1, 2>& v);
 
 		// Force compiler to instantiate this later as the template specialization hasn't yet taken place, while restricting the dimension
 		template<int N, enable_if_dim<(N == 2)> = nullptr> floatN<2>(const intN<N>& v);
 
-		hlslpp_inline floatN<2>(const float1& v1,	const float v2)		: floatN<2>(v1, float1(v2)) {}
-		hlslpp_inline floatN<2>(const float v1,		const float1& v2)	: floatN<2>(float1(v1), v2) {}
-		template<int A> hlslpp_inline floatN<2>(const component1<A>& v1,	const float1& v2)				: floatN<2>(float1(v1), v2) {}
-		template<int A> hlslpp_inline floatN<2>(const float1& v1,			const component1<A>& v2)		: floatN<2>(v1, float1(v2)) {}
-		template<int A> hlslpp_inline floatN<2>(const component1<A>& v1,	const float v2)					: floatN<2>(float1(v1), float1(v2)) {}
-		template<int A> hlslpp_inline floatN<2>(const float v1,			const component1<A>& v2)		: floatN<2>(float1(v1), float1(v2)) {}
-		template<int A, int B> hlslpp_inline floatN<2>(const component1<A>& v1, const component1<B>& v2)	: floatN<2>(float1(v1), float1(v2)) {}
+		hlslpp_inline floatN<2>(const floatN<1>& v1,	const float v2)			: floatN<2>(v1, floatN<1>(v2)) {}
+		hlslpp_inline floatN<2>(const float v1,			const floatN<1>& v2)	: floatN<2>(floatN<1>(v1), v2) {}
+		template<int A> hlslpp_inline floatN<2>(const component1<A>& v1,		const floatN<1>& v2)		: floatN<2>(floatN<1>(v1), v2) {}
+		template<int A> hlslpp_inline floatN<2>(const floatN<1>& v1,			const component1<A>& v2)	: floatN<2>(v1, floatN<1>(v2)) {}
+		template<int A> hlslpp_inline floatN<2>(const component1<A>& v1,		const float v2)				: floatN<2>(floatN<1>(v1), floatN<1>(v2)) {}
+		template<int A> hlslpp_inline floatN<2>(const float v1,					const component1<A>& v2)	: floatN<2>(floatN<1>(v1), floatN<1>(v2)) {}
+		template<int A, int B> hlslpp_inline floatN<2>(const component1<A>& v1, const component1<B>& v2)	: floatN<2>(floatN<1>(v1), floatN<1>(v2)) {}
 
 		template<int A, int B> floatN<2>(const component2<A, B>& c);
 
-		floatN<2>& operator = (const float2& c);
+		floatN<2>& operator = (const floatN<2>& c);
 		floatN<2>& operator = (const float f);
 
 		template<int A, int B> floatN<2>& operator = (const component2<A, B>& c);
 
-		static const float2& one() { static const float2 one = float2(1.0f, 1.0f); return one; };
-		static const float2& zero() { static const float2 zero = float2(0.0f, 0.0f); return zero; };
+		static const floatN<2>& one() { static const floatN<2> one = floatN<2>(1.0f, 1.0f); return one; };
+		static const floatN<2>& zero() { static const floatN<2> zero = floatN<2>(0.0f, 0.0f); return zero; };
 	};
 
 	template<>
@@ -1932,70 +1880,70 @@ namespace hlslpp
 		template<int N, enable_if_dim<(N == 3)> = nullptr> floatN<3>(const intN<N>& v);
 
 		// floatN constructors
-		floatN<3>(const float1& v1,	const float1& v2,	const float1& v3);
-		floatN<3>(const float2& v1,	const float1& v2);
-		floatN<3>(const float1& v1,	const float2& v2);
+		floatN<3>(const floatN<1>& v1,	const floatN<1>& v2,	const floatN<1>& v3);
+		floatN<3>(const floatN<2>& v1,	const floatN<1>& v2);
+		floatN<3>(const floatN<1>& v1,	const floatN<2>& v2);
 
 		// componentN constructors
-		template<int A, int B, int C> hlslpp_inline floatN<3>(const component1<A>& v1,		const component1<B>& v2,	const component1<C>& v3)	: floatN<3>(float1(v1), float1(v2), float1(v3)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<3>(const component2<A, B>& v1,	const component1<C>& v2)								: floatN<3>(float2(v1), float1(v2)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<3>(const component1<A>& v1,		const component2<B, C>& v2)								: floatN<3>(float1(v1), float2(v2)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<3>(const component1<A>& v1,		const component1<B>& v2,	const component1<C>& v3)	: floatN<3>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<3>(const component2<A, B>& v1,	const component1<C>& v2)								: floatN<3>(floatN<2>(v1), floatN<1>(v2)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<3>(const component1<A>& v1,		const component2<B, C>& v2)								: floatN<3>(floatN<1>(v1), floatN<2>(v2)) {}
 		template<int A, int B, int C> floatN<3>(const component3<A, B, C>& c);
 
 		// floatN + float constructors
-		floatN<3>(const float v1,	const float1& v2,	const float1& v3);
-		floatN<3>(const float1& v1,	const float v2,		const float1& v3);
-		floatN<3>(const float1& v1,	const float1& v2,	const float v3);
-		floatN<3>(const float v1,	const float v2,		const float1& v3);
-		floatN<3>(const float1& v1,	const float v2,		const float v3);
-		floatN<3>(const float v1,	const float1& v2,	const float v3);
-		floatN<3>(const float v1,	const float2& v2)	: floatN<3>(float1(v1), v2) {}
-		floatN<3>(const float2& v1, const float v2)		: floatN<3>(v1, float1(v2)) {}
+		floatN<3>(const float v1,	const floatN<1>& v2,	const floatN<1>& v3);
+		floatN<3>(const floatN<1>& v1,	const float v2,		const floatN<1>& v3);
+		floatN<3>(const floatN<1>& v1,	const floatN<1>& v2,	const float v3);
+		floatN<3>(const float v1,	const float v2,		const floatN<1>& v3);
+		floatN<3>(const floatN<1>& v1,	const float v2,		const float v3);
+		floatN<3>(const float v1,	const floatN<1>& v2,	const float v3);
+		floatN<3>(const float v1,	const floatN<2>& v2)	: floatN<3>(floatN<1>(v1), v2) {}
+		floatN<3>(const floatN<2>& v1, const float v2)		: floatN<3>(v1, floatN<1>(v2)) {}
 
 		// floatN + componentN constructors
-		template<int A> hlslpp_inline floatN<3>(const float1& v1,	const float1& v2,			const component1<A>& v3)	: floatN<3>(v1, v2, float1(v3)) {}
-		template<int A> hlslpp_inline floatN<3>(const float1& v1,	const component1<A>& v2,	const float1& v3)			: floatN<3>(v1, float1(v2), v3) {}
-		template<int A> hlslpp_inline floatN<3>(const component1<A>& v1,	const float1& v2,	const float1& v3)			: floatN<3>(float1(v1), v2, v3) {}
+		template<int A> hlslpp_inline floatN<3>(const floatN<1>& v1,	const floatN<1>& v2,			const component1<A>& v3)	: floatN<3>(v1, v2, floatN<1>(v3)) {}
+		template<int A> hlslpp_inline floatN<3>(const floatN<1>& v1,	const component1<A>& v2,	const floatN<1>& v3)			: floatN<3>(v1, floatN<1>(v2), v3) {}
+		template<int A> hlslpp_inline floatN<3>(const component1<A>& v1,	const floatN<1>& v2,	const floatN<1>& v3)			: floatN<3>(floatN<1>(v1), v2, v3) {}
 
-		template<int A, int B> hlslpp_inline floatN<3>(const float1& v1,			const component1<A>& v2,	const component1<B>& v3)	: floatN<3>(v1, float1(v2), float1(v3)) {}
-		template<int A, int B> hlslpp_inline floatN<3>(const component1<A>& v1,	const float1& v2,			const component1<B>& v3)	: floatN<3>(float1(v1), v2, float1(v3)) {}
-		template<int A, int B> hlslpp_inline floatN<3>(const component1<A>& v1,	const component1<B>& v2,	const float1& v3)			: floatN<3>(float1(v1), float1(v2), v3) {}
+		template<int A, int B> hlslpp_inline floatN<3>(const floatN<1>& v1,			const component1<A>& v2,	const component1<B>& v3)	: floatN<3>(v1, floatN<1>(v2), floatN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline floatN<3>(const component1<A>& v1,	const floatN<1>& v2,			const component1<B>& v3)	: floatN<3>(floatN<1>(v1), v2, floatN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline floatN<3>(const component1<A>& v1,	const component1<B>& v2,	const floatN<1>& v3)			: floatN<3>(floatN<1>(v1), floatN<1>(v2), v3) {}
 
-		template<int A, int B> hlslpp_inline floatN<3>(const float1& v1,	const component2<A, B>& v2)	: floatN<3>(v1, float2(v2)) {}
-		template<int A, int B> hlslpp_inline floatN<3>(const component2<A, B>& v1, const float1& v2)	: floatN<3>(float2(v1), v2) {}
+		template<int A, int B> hlslpp_inline floatN<3>(const floatN<1>& v1,	const component2<A, B>& v2)	: floatN<3>(v1, floatN<2>(v2)) {}
+		template<int A, int B> hlslpp_inline floatN<3>(const component2<A, B>& v1, const floatN<1>& v2)	: floatN<3>(floatN<2>(v1), v2) {}
 
 		// float + componentN constructors
-		template<int A> hlslpp_inline floatN<3>(const float v1, const float v2, const component1<A>& v3) : floatN<3>(float2(v1, v2), float1(v3)) {}
-		template<int A> hlslpp_inline floatN<3>(const float v1, const component1<A>& v2, const float v3) : floatN<3>(float1(v1), float1(v2), float1(v3)) {}
-		template<int A> hlslpp_inline floatN<3>(const component1<A>& v1, const float v2, const float v3) : floatN<3>(float1(v1), float2(v2, v3)) {}
+		template<int A> hlslpp_inline floatN<3>(const float v1, const float v2, const component1<A>& v3) : floatN<3>(floatN<2>(v1, v2), floatN<1>(v3)) {}
+		template<int A> hlslpp_inline floatN<3>(const float v1, const component1<A>& v2, const float v3) : floatN<3>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3)) {}
+		template<int A> hlslpp_inline floatN<3>(const component1<A>& v1, const float v2, const float v3) : floatN<3>(floatN<1>(v1), floatN<2>(v2, v3)) {}
 
-		template<int A, int B> hlslpp_inline floatN<3>(const float v1, const component1<A>& v2, const component1<B>& v3) : floatN<3>(float1(v1), float1(v2), float1(v3)) {}
-		template<int A, int B> hlslpp_inline floatN<3>(const component1<A>& v1, const float v2, const component1<B>& v3) : floatN<3>(float1(v1), float1(v2), float1(v3)) {}
-		template<int A, int B> hlslpp_inline floatN<3>(const component1<A>& v1, const component1<B>& v2, const float v3) : floatN<3>(float1(v1), float1(v2), float1(v3)) {}
+		template<int A, int B> hlslpp_inline floatN<3>(const float v1, const component1<A>& v2, const component1<B>& v3) : floatN<3>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline floatN<3>(const component1<A>& v1, const float v2, const component1<B>& v3) : floatN<3>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline floatN<3>(const component1<A>& v1, const component1<B>& v2, const float v3) : floatN<3>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3)) {}
 
-		template<int A, int B> hlslpp_inline floatN<3>(const float v1, const component2<A, B>& v2) : floatN<3>(float1(v1), float2(v2)) {}
-		template<int A, int B> hlslpp_inline floatN<3>(const component2<A, B>& v1, const float v2) : floatN<3>(float2(v1), float1(v2)) {}
+		template<int A, int B> hlslpp_inline floatN<3>(const float v1, const component2<A, B>& v2) : floatN<3>(floatN<1>(v1), floatN<2>(v2)) {}
+		template<int A, int B> hlslpp_inline floatN<3>(const component2<A, B>& v1, const float v2) : floatN<3>(floatN<2>(v1), floatN<1>(v2)) {}
 
 		// floatN + componentN + float constructors
-		template<int A> hlslpp_inline floatN<3>(const float1& v1,	const component1<A>& v2,	const float v3)				: floatN<3>(v1, float1(v2), float1(v3)) {}
-		template<int A> hlslpp_inline floatN<3>(const float1& v1,	const float v2,				const component1<A>& v3)	: floatN<3>(v1, float1(v2), float1(v3)) {}
+		template<int A> hlslpp_inline floatN<3>(const floatN<1>& v1,	const component1<A>& v2,	const float v3)				: floatN<3>(v1, floatN<1>(v2), floatN<1>(v3)) {}
+		template<int A> hlslpp_inline floatN<3>(const floatN<1>& v1,	const float v2,				const component1<A>& v3)	: floatN<3>(v1, floatN<1>(v2), floatN<1>(v3)) {}
 
-		template<int A> hlslpp_inline floatN<3>(const float v1,	const float1& v2,			const component1<A>& v3)	: floatN<3>(float1(v1), v2, float1(v3)) {}
-		template<int A> hlslpp_inline floatN<3>(const float v1,	const component1<A>& v2,	const float1& v3)			: floatN<3>(float1(v1), float1(v2), v3) {}
+		template<int A> hlslpp_inline floatN<3>(const float v1,	const floatN<1>& v2,			const component1<A>& v3)	: floatN<3>(floatN<1>(v1), v2, floatN<1>(v3)) {}
+		template<int A> hlslpp_inline floatN<3>(const float v1,	const component1<A>& v2,	const floatN<1>& v3)			: floatN<3>(floatN<1>(v1), floatN<1>(v2), v3) {}
 
-		template<int A> hlslpp_inline floatN<3>(const component1<A>& v1,	const float1& v2,	const float v3)			: floatN<3>(float1(v1), v2, float1(v3)) {}
-		template<int A> hlslpp_inline floatN<3>(const component1<A>& v1,	const float v2,		const float1& v3)		: floatN<3>(float1(v1), float1(v2), v3) {}
+		template<int A> hlslpp_inline floatN<3>(const component1<A>& v1,	const floatN<1>& v2,	const float v3)			: floatN<3>(floatN<1>(v1), v2, floatN<1>(v3)) {}
+		template<int A> hlslpp_inline floatN<3>(const component1<A>& v1,	const float v2,		const floatN<1>& v3)		: floatN<3>(floatN<1>(v1), floatN<1>(v2), v3) {}
 
-		explicit floatN<3>(const float3x1& v);
-		explicit floatN<3>(const float1x3& v);
+		explicit floatN<3>(const floatNxM<3, 1>& v);
+		explicit floatN<3>(const floatNxM<1, 3>& v);
 
-		floatN<3>& operator = (const float3& c);
+		floatN<3>& operator = (const floatN<3>& c);
 		floatN<3>& operator = (const float f);
 		template<int A, int B, int C>
 		floatN<3>& operator = (const component3<A, B, C>& c);
 
-		static const float3& one() { static const float3 one = float3(1.0f, 1.0f, 1.0f); return one; };
-		static const float3& zero() { static const float3 zero = float3(0.0f, 0.0f, 0.0f); return zero; };
+		static const floatN<3>& one() { static const floatN<3> one = floatN<3>(1.0f, 1.0f, 1.0f); return one; };
+		static const floatN<3>& zero() { static const floatN<3> zero = floatN<3>(0.0f, 0.0f, 0.0f); return zero; };
 
 		// Disallow these constructors, as implicit construction rules could allow them to be valid
 		floatN<3>(float v1, float v2) = delete;
@@ -2028,185 +1976,190 @@ namespace hlslpp
 		template<int N, enable_if_dim<(N == 4)> = nullptr> floatN<4>(const intN<N>& v);
 
 		// floatN constructors
-		hlslpp_inline floatN<4>(const float4& v) : _vec(v._vec) {}
-		floatN<4>(const float1& v1,	const float1& v2,	const float1& v3,	const float1& v4);
-		floatN<4>(const float2& v1,	const float1& v2,	const float1& v3);
-		floatN<4>(const float1& v1,	const float2& v2,	const float1& v3);
-		floatN<4>(const float1& v1,	const float1& v2,	const float2& v3);
-		floatN<4>(const float2& v1,	const float2& v2);
-		floatN<4>(const float1& v1,	const float3& v2);
-		floatN<4>(const float3& v1,	const float1& v2);
+		hlslpp_inline floatN<4>(const floatN<4>& v) : _vec(v._vec) {}
+		floatN<4>(const floatN<1>& v1,	const floatN<1>& v2,	const floatN<1>& v3,	const floatN<1>& v4);
+		floatN<4>(const floatN<2>& v1,	const floatN<1>& v2,	const floatN<1>& v3);
+		floatN<4>(const floatN<1>& v1,	const floatN<2>& v2,	const floatN<1>& v3);
+		floatN<4>(const floatN<1>& v1,	const floatN<1>& v2,	const floatN<2>& v3);
+		floatN<4>(const floatN<2>& v1,	const floatN<2>& v2);
+		floatN<4>(const floatN<1>& v1,	const floatN<3>& v2);
+		floatN<4>(const floatN<3>& v1,	const floatN<1>& v2);
 
 		// componentN constructors
-		template<int A, int B, int C, int D> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const component1<C>& v3,	const component1<D>& v4) : floatN<4>(float1(v1), float1(v2), float1(v2), float1(v2)) {}
+		template<int A, int B, int C, int D> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const component1<C>& v3,	const component1<D>& v4) : floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v2), floatN<1>(v2)) {}
 		template<int A, int B, int C, int D> floatN<4>(const component4<A, B, C, D>& c);
 
 		// floatN + float constructors
-		hlslpp_inline floatN<4>(const float v1,		const float1& v2,	const float1& v3,	const float1& v4)	: float4(float1(v1), v2, v3, v4) {}
-		hlslpp_inline floatN<4>(const float1& v1,	const float v2,		const float1& v3,	const float1& v4)	: float4(v1, float1(v2), v3, v4) {}
-		hlslpp_inline floatN<4>(const float1& v1,	const float1& v2,	const float v3,		const float1& v4)	: float4(v1, v2, float1(v3), v4) {}
-		hlslpp_inline floatN<4>(const float1& v1,	const float1& v2,	const float1& v3,	const float v4)		: float4(v1, v2, v3, float1(v4)) {}
+		hlslpp_inline floatN<4>(const float v1,		const floatN<1>& v2,	const floatN<1>& v3,	const floatN<1>& v4)	: floatN<4>(floatN<1>(v1), v2, v3, v4) {}
+		hlslpp_inline floatN<4>(const floatN<1>& v1,	const float v2,		const floatN<1>& v3,	const floatN<1>& v4)	: floatN<4>(v1, floatN<1>(v2), v3, v4) {}
+		hlslpp_inline floatN<4>(const floatN<1>& v1,	const floatN<1>& v2,	const float v3,		const floatN<1>& v4)	: floatN<4>(v1, v2, floatN<1>(v3), v4) {}
+		hlslpp_inline floatN<4>(const floatN<1>& v1,	const floatN<1>& v2,	const floatN<1>& v3,	const float v4)		: floatN<4>(v1, v2, v3, floatN<1>(v4)) {}
 
-		floatN<4>(const float1& v1,		const float v2,		const float v3,		const float v4);
-		floatN<4>(const float v1,		const float1& v2,	const float v3,		const float v4);
-		floatN<4>(const float v1,		const float v2,		const float1& v3,	const float v4);
-		floatN<4>(const float v1,		const float v2,		const float v3,		const float1& v4);
+		floatN<4>(const floatN<1>& v1,		const float v2,		const float v3,		const float v4);
+		floatN<4>(const float v1,		const floatN<1>& v2,	const float v3,		const float v4);
+		floatN<4>(const float v1,		const float v2,		const floatN<1>& v3,	const float v4);
+		floatN<4>(const float v1,		const float v2,		const float v3,		const floatN<1>& v4);
 	
-		floatN<4>(const float v1,		const float1& v2,	const float1& v3,	const float v4);
-		floatN<4>(const float v1,		const float v2,		const float1& v3,	const float1& v4);
-		floatN<4>(const float v1,		const float1& v2,	const float v3,		const float1& v4);
+		floatN<4>(const float v1,		const floatN<1>& v2,	const floatN<1>& v3,	const float v4);
+		floatN<4>(const float v1,		const float v2,		const floatN<1>& v3,	const floatN<1>& v4);
+		floatN<4>(const float v1,		const floatN<1>& v2,	const float v3,		const floatN<1>& v4);
 
-		floatN<4>(const float1& v1,		const float v2,		const float v3,		const float1& v4);
-		floatN<4>(const float1& v1,		const float1& v2,	const float v3,		const float v4);
-		floatN<4>(const float1& v1,		const float v2,		const float1& v3,	const float v4);
+		floatN<4>(const floatN<1>& v1,		const float v2,		const float v3,		const floatN<1>& v4);
+		floatN<4>(const floatN<1>& v1,		const floatN<1>& v2,	const float v3,		const float v4);
+		floatN<4>(const floatN<1>& v1,		const float v2,		const floatN<1>& v3,	const float v4);
 
-		hlslpp_inline floatN<4>(const float2& v1,	const float v2,		const float1& v3)	: float4(v1, float1(v2), v3) {}
-		hlslpp_inline floatN<4>(const float2& v1,	const float1& v2,	const float v3)		: float4(v1, v2, float1(v3)) {}
-		hlslpp_inline floatN<4>(const float2& v1,	const float v2,		const float v3)		: float4(v1, v2, float1(v3)) {}
+		hlslpp_inline floatN<4>(const floatN<2>& v1,	const float v2,		const floatN<1>& v3)	: floatN<4>(v1, floatN<1>(v2), v3) {}
+		hlslpp_inline floatN<4>(const floatN<2>& v1,	const floatN<1>& v2,	const float v3)		: floatN<4>(v1, v2, floatN<1>(v3)) {}
+		hlslpp_inline floatN<4>(const floatN<2>& v1,	const float v2,		const float v3)		: floatN<4>(v1, v2, floatN<1>(v3)) {}
 
-		hlslpp_inline floatN<4>(const float v1,		const float2& v2,	const float1& v3)	: float4(float1(v1), v2, v3) {}
-		hlslpp_inline floatN<4>(const float1& v1,	const float2& v2,	const float v3)		: float4(v1, v2, float1(v3)) {}
+		hlslpp_inline floatN<4>(const float v1,		const floatN<2>& v2,	const floatN<1>& v3)	: floatN<4>(floatN<1>(v1), v2, v3) {}
+		hlslpp_inline floatN<4>(const floatN<1>& v1,	const floatN<2>& v2,	const float v3)		: floatN<4>(v1, v2, floatN<1>(v3)) {}
 
-		hlslpp_inline floatN<4>(const float v1,		const float1& v2,	const float2& v3)	: float4(float1(v1), v2, v3) {}
-		hlslpp_inline floatN<4>(const float1& v1,	const float v2,		const float2& v3)	: float4(v1, float1(v2), v3) {}
-		hlslpp_inline floatN<4>(const float v1,		const float v2,		const float2& v3)	: float4(float2(v1, v2), v3) {}
+		hlslpp_inline floatN<4>(const float v1,		const floatN<1>& v2,	const floatN<2>& v3)	: floatN<4>(floatN<1>(v1), v2, v3) {}
+		hlslpp_inline floatN<4>(const floatN<1>& v1,	const float v2,		const floatN<2>& v3)	: floatN<4>(v1, floatN<1>(v2), v3) {}
+		hlslpp_inline floatN<4>(const float v1,		const float v2,		const floatN<2>& v3)	: floatN<4>(floatN<2>(v1, v2), v3) {}
 
-		hlslpp_inline floatN<4>(const float v1,		const float3& v2)	: float4(float1(v1), v2) {}
-		hlslpp_inline floatN<4>(const float3& v1,	const float v2)		: float4(v1, float1(v2)) {}
+		hlslpp_inline floatN<4>(const float v1,		const floatN<3>& v2)	: floatN<4>(floatN<1>(v1), v2) {}
+		hlslpp_inline floatN<4>(const floatN<3>& v1,	const float v2)		: floatN<4>(v1, floatN<1>(v2)) {}
 
 		// floatN + componentN constructors
-		template<int A> hlslpp_inline floatN<4>(const component1<A>& v1,	const float1& v2,			const float1& v3,			const float1& v4)			: float4(float1(v1), v2, v3, v4) {}
-		template<int A> hlslpp_inline floatN<4>(const float1& v1,			const component1<A>& v2,	const float1& v3,			const float1& v4)			: float4(v1, float1(v2), v3, v4) {}
-		template<int A> hlslpp_inline floatN<4>(const float1& v1,			const float1& v2,			const component1<A>& v3,	const float1& v4)			: float4(v1, v2, float1(v3), v4) {}
-		template<int A> hlslpp_inline floatN<4>(const float1& v1,			const float1& v2,			const float1& v3,			const component1<A>& v4)	: float4(v1, v2, v3, float1(v4)) {}
+		template<int A> hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<1>& v2,			const floatN<1>& v3,			const floatN<1>& v4)			: floatN<4>(floatN<1>(v1), v2, v3, v4) {}
+		template<int A> hlslpp_inline floatN<4>(const floatN<1>& v1,			const component1<A>& v2,	const floatN<1>& v3,			const floatN<1>& v4)			: floatN<4>(v1, floatN<1>(v2), v3, v4) {}
+		template<int A> hlslpp_inline floatN<4>(const floatN<1>& v1,			const floatN<1>& v2,			const component1<A>& v3,	const floatN<1>& v4)			: floatN<4>(v1, v2, floatN<1>(v3), v4) {}
+		template<int A> hlslpp_inline floatN<4>(const floatN<1>& v1,			const floatN<1>& v2,			const floatN<1>& v3,			const component1<A>& v4)	: floatN<4>(v1, v2, v3, floatN<1>(v4)) {}
 
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const float1& v1,			const component1<A>& v2,	const component1<B>& v3,	const component1<C>& v4)	: float4(v1, float1(v2), float1(v3), float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const float1& v2,			const component1<B>& v3,	const component1<C>& v4)	: float4(float1(v1), v2, float1(v3), float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float1& v3,			const component1<C>& v4)	: float4(float1(v1), float1(v2), v3, float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const component1<C>& v3,	const float1& v4)			: float4(float1(v1), float1(v2), float1(v3), v4) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const floatN<1>& v1,			const component1<A>& v2,	const component1<B>& v3,	const component1<C>& v4)	: floatN<4>(v1, floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<1>& v2,			const component1<B>& v3,	const component1<C>& v4)	: floatN<4>(floatN<1>(v1), v2, floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const floatN<1>& v3,			const component1<C>& v4)	: floatN<4>(floatN<1>(v1), floatN<1>(v2), v3, floatN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const component1<C>& v3,	const floatN<1>& v4)			: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), v4) {}
 
-		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,	const float1& v2,			const float1& v3,			const component1<B>& v4)	: float4(float1(v1), v2, v3, float1(v4)) {}
-		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float1& v3,			const float1& v4)			: float4(float1(v1), float1(v2), v3, v4) {}
-		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,	const float1& v2,			const component1<B>& v3,	const float1& v4)			: float4(float1(v1), v2, float1(v3), v4) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<1>& v2,			const floatN<1>& v3,			const component1<B>& v4)	: floatN<4>(floatN<1>(v1), v2, v3, floatN<1>(v4)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const floatN<1>& v3,			const floatN<1>& v4)			: floatN<4>(floatN<1>(v1), floatN<1>(v2), v3, v4) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<1>& v2,			const component1<B>& v3,	const floatN<1>& v4)			: floatN<4>(floatN<1>(v1), v2, floatN<1>(v3), v4) {}
 
-		template<int A, int B> hlslpp_inline floatN<4>(const float1& v1,			const component1<A>& v2,	const component1<B>& v3,	const float1& v4)			: float4(v1, float1(v2), float1(v3), v4) {}
-		template<int A, int B> hlslpp_inline floatN<4>(const float1& v1,			const float1& v2,			const component1<A>& v3,	const component1<B>& v4)	: float4(v1, v2, float1(v3), float1(v4)) {}
-		template<int A, int B> hlslpp_inline floatN<4>(const float1& v1,			const component1<A>& v2,	const float1& v3,			const component1<B>& v4)	: float4(v1, float1(v2), v3, float1(v4)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const floatN<1>& v1,			const component1<A>& v2,	const component1<B>& v3,	const floatN<1>& v4)			: floatN<4>(v1, floatN<1>(v2), floatN<1>(v3), v4) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const floatN<1>& v1,			const floatN<1>& v2,			const component1<A>& v3,	const component1<B>& v4)	: floatN<4>(v1, v2, floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const floatN<1>& v1,			const component1<A>& v2,	const floatN<1>& v3,			const component1<B>& v4)	: floatN<4>(v1, floatN<1>(v2), v3, floatN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline floatN<4>(const float2& v1,		const component1<A>& v2,	const float1& v3)			: float4(v1, float1(v2), v3) {}
-		template<int A>			hlslpp_inline floatN<4>(const float2& v1,		const float1& v2,			const component1<A>& v3)	: float4(v1, v2, float1(v3)) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const float2& v1,		const component1<A>& v2,	const component1<B>& v3)	: float4(v1, v2, float1(v3)) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<2>& v1,		const component1<A>& v2,	const floatN<1>& v3)			: floatN<4>(v1, floatN<1>(v2), v3) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<2>& v1,		const floatN<1>& v2,			const component1<A>& v3)	: floatN<4>(v1, v2, floatN<1>(v3)) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const floatN<2>& v1,		const component1<A>& v2,	const component1<B>& v3)	: floatN<4>(v1, v2, floatN<1>(v3)) {}
 
-		template<int A> hlslpp_inline floatN<4>(const component1<A>& v1,	const float2& v2,	const float1& v3)			: float4(float1(v1), v2, v3) {}
-		template<int A> hlslpp_inline floatN<4>(const float1& v1,			const float2& v2,	const component1<A>& v3)	: float4(v1, v2, float1(v3)) {}
+		template<int A> hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<2>& v2,	const floatN<1>& v3)			: floatN<4>(floatN<1>(v1), v2, v3) {}
+		template<int A> hlslpp_inline floatN<4>(const floatN<1>& v1,			const floatN<2>& v2,	const component1<A>& v3)	: floatN<4>(v1, v2, floatN<1>(v3)) {}
 
-		template<int A>			hlslpp_inline floatN<4>(const float1& v1,			const component1<A>& v2,	const float2& v3)	: float4(v1, float1(v2), v3) {}
-		template<int A>			hlslpp_inline floatN<4>(const component1<A>& v1,	const float1& v2,			const float2& v3)	: float4(float1(v1), v2, v3) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float2& v3)	: float4(float1(v1), float1(v2), v3) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<1>& v1,			const component1<A>& v2,	const floatN<2>& v3)	: floatN<4>(v1, floatN<1>(v2), v3) {}
+		template<int A>			hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<1>& v2,			const floatN<2>& v3)	: floatN<4>(floatN<1>(v1), v2, v3) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const floatN<2>& v3)	: floatN<4>(floatN<1>(v1), floatN<1>(v2), v3) {}
 
-		template<int A> hlslpp_inline floatN<4>(const component1<A>& v1,	const float3& v2)			: float4(float1(v1), v2) {}
-		template<int A> hlslpp_inline floatN<4>(const float3& v1,			const component1<A>& v2)	: float4(v1, float1(v2)) {}
+		template<int A> hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<3>& v2)			: floatN<4>(floatN<1>(v1), v2) {}
+		template<int A> hlslpp_inline floatN<4>(const floatN<3>& v1,			const component1<A>& v2)	: floatN<4>(v1, floatN<1>(v2)) {}
 
 		// componentN + float constructors
-		template<int A> hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,				const float v3,				const float v4)				: float4(float1(v1), float3(v2, v3, v4)) {}
-		template<int A> hlslpp_inline floatN<4>(const float v1,			const component1<A>& v2,	const float v3,				const float v4)				: float4(float1(v1), float1(v2), float2(v3, v4)) {}
-		template<int A> hlslpp_inline floatN<4>(const float v1,			const float v2,				const component1<A>& v3,	const float v4)				: float4(float2(v1, v2), float1(v3), float1(v4)) {}
-		template<int A> hlslpp_inline floatN<4>(const float v1,			const float v2,				const float v3,				const component1<A>& v4)	: float4(float3(v1, v2, v3), float1(v4)) {}
+		template<int A> hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,				const float v3,				const float v4)				: floatN<4>(floatN<1>(v1), floatN<3>(v2, v3, v4)) {}
+		template<int A> hlslpp_inline floatN<4>(const float v1,			const component1<A>& v2,	const float v3,				const float v4)				: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<2>(v3, v4)) {}
+		template<int A> hlslpp_inline floatN<4>(const float v1,			const float v2,				const component1<A>& v3,	const float v4)				: floatN<4>(floatN<2>(v1, v2), floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A> hlslpp_inline floatN<4>(const float v1,			const float v2,				const float v3,				const component1<A>& v4)	: floatN<4>(floatN<3>(v1, v2, v3), floatN<1>(v4)) {}
 
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const float v1,				const component1<A>& v2,	const component1<B>& v3,	const component1<C>& v4)	: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,				const component1<B>& v3,	const component1<C>& v4)	: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float v3,				const component1<C>& v4)	: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const component1<C>& v3,	const float v4)				: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const float v1,				const component1<A>& v2,	const component1<B>& v3,	const component1<C>& v4)	: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,				const component1<B>& v3,	const component1<C>& v4)	: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float v3,				const component1<C>& v4)	: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const component1<C>& v3,	const float v4)				: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
 
-		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,		const float v2,				const float v3,				const component1<B>& v4)	: float4(float1(v1), float2(v2, v3), float1(v4)) {}
-		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,		const component1<B>& v2,	const float v3,				const float v4)				: float4(float1(v1), float1(v2), float2(v3, v4)) {}
-		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,		const float v2,				const component1<B>& v3,	const float v4)				: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,		const float v2,				const float v3,				const component1<B>& v4)	: floatN<4>(floatN<1>(v1), floatN<2>(v2, v3), floatN<1>(v4)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,		const component1<B>& v2,	const float v3,				const float v4)				: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<2>(v3, v4)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const component1<A>& v1,		const float v2,				const component1<B>& v3,	const float v4)				: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
 
-		template<int A, int B> hlslpp_inline floatN<4>(const float v1,				const component1<A>& v2,	const component1<B>& v3,	const float v4)				: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-		template<int A, int B> hlslpp_inline floatN<4>(const float v1,				const float v2,				const component1<A>& v3,	const component1<B>& v4)	: float4(float2(v1, v2), float1(v3), float1(v4)) {}
-		template<int A, int B> hlslpp_inline floatN<4>(const float v1,				const component1<A>& v2,	const float v3,				const component1<B>& v4)	: float4(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const float v1,				const component1<A>& v2,	const component1<B>& v3,	const float v4)				: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const float v1,				const float v2,				const component1<A>& v3,	const component1<B>& v4)	: floatN<4>(floatN<2>(v1, v2), floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const float v1,				const component1<A>& v2,	const float v3,				const component1<B>& v4)	: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
 
 
-		template<int A, int B> hlslpp_inline floatN<4>(const component2<A, B>& v1,	const float v2,				const float v3)				: float4(float2(v1), float1(v2), float1(v3)) {}
-		template<int A, int B> hlslpp_inline floatN<4>(const float v1,				const component2<A, B>& v2,	const float v3)				: float4(float1(v1), float2(v2), float1(v3)) {}
-		template<int A, int B> hlslpp_inline floatN<4>(const float v1,				const float v2,				const component2<A, B>& v3)	: float4(float1(v1), float1(v2), float2(v3)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const component2<A, B>& v1,	const float v2,				const float v3)				: floatN<4>(floatN<2>(v1), floatN<1>(v2), floatN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const float v1,				const component2<A, B>& v2,	const float v3)				: floatN<4>(floatN<1>(v1), floatN<2>(v2), floatN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline floatN<4>(const float v1,				const float v2,				const component2<A, B>& v3)	: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<2>(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const float v1, const component2<A, B>& v2, const component1<C>& v3) : float4(float1(v1), float2(v2), float1(v3)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const float v1, const component1<A>& v2, const component2<B, C>& v3) : float4(float1(v1), float1(v2), float2(v3)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const float v1, const component2<A, B>& v2, const component1<C>& v3) : floatN<4>(floatN<1>(v1), floatN<2>(v2), floatN<1>(v3)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const float v1, const component1<A>& v2, const component2<B, C>& v3) : floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<2>(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const component2<B, C>& v2,	const float v3)				: float4(float1(v1), float2(v2), float1(v3)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,				const component2<B, C>& v3)	: float4(float1(v1), float1(v2), float2(v3)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const component2<B, C>& v2,	const float v3)				: floatN<4>(floatN<1>(v1), floatN<2>(v2), floatN<1>(v3)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,				const component2<B, C>& v3)	: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<2>(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const component2<A, B>& v1,	const float v2,				const component1<C>& v3)	: float4(float2(v1), float1(v2), float1(v3)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const component2<A, B>& v1,	const component1<C>& v2,	const float v3)				: float4(float2(v1), float1(v2), float1(v3)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const component2<A, B>& v1,	const float v2,				const component1<C>& v3)	: floatN<4>(floatN<2>(v1), floatN<1>(v2), floatN<1>(v3)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const component2<A, B>& v1,	const component1<C>& v2,	const float v3)				: floatN<4>(floatN<2>(v1), floatN<1>(v2), floatN<1>(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const float v1,				const component3<A, B, C>& v2)	: float4(float1(v1), float3(v2)) {}
-		template<int A, int B, int C> hlslpp_inline floatN<4>(const component3<A, B, C>& v1,	const float v2)				: float4(float3(v1), float1(v2)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const float v1,				const component3<A, B, C>& v2)	: floatN<4>(floatN<1>(v1), floatN<3>(v2)) {}
+		template<int A, int B, int C> hlslpp_inline floatN<4>(const component3<A, B, C>& v1,	const float v2)				: floatN<4>(floatN<3>(v1), floatN<1>(v2)) {}
 
 		// floatN + componentN + float constructors
-		template<int A>			hlslpp_inline floatN<4>(const float v1, const component1<A>& v2, const float1& v3, const float v4) : float4(float1(v1), float1(v2), v3, float1(v4)) {}
-		template<int A>			hlslpp_inline floatN<4>(const float v1, const component1<A>& v2, const float1& v3, const float1& v4) : float4(float1(v1), float1(v2), v3, v4) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const float v1, const component1<A>& v2, const float1& v3, const component1<B>& v4) : float4(float1(v1), float1(v2), v3, float1(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const float v1, const component1<A>& v2, const floatN<1>& v3, const float v4) : floatN<4>(floatN<1>(v1), floatN<1>(v2), v3, floatN<1>(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const float v1, const component1<A>& v2, const floatN<1>& v3, const floatN<1>& v4) : floatN<4>(floatN<1>(v1), floatN<1>(v2), v3, v4) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const float v1, const component1<A>& v2, const floatN<1>& v3, const component1<B>& v4) : floatN<4>(floatN<1>(v1), floatN<1>(v2), v3, floatN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline floatN<4>(const float v1,	const float1& v2,		const component1<A>& v3,	const float v4)				: float4(float1(v1), v2, float1(v3), float1(v4)) {}
-		template<int A>			hlslpp_inline floatN<4>(const float v1,	const float1& v2,		const component1<A>& v3,	const float1& v4)			: float4(float1(v1), v2, float1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const float v1,	const float1& v2,		const component1<A>& v3,	const component1<B>& v4)	: float4(float1(v1), v2, float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const float v1,	const floatN<1>& v2,		const component1<A>& v3,	const float v4)				: floatN<4>(floatN<1>(v1), v2, floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const float v1,	const floatN<1>& v2,		const component1<A>& v3,	const floatN<1>& v4)			: floatN<4>(floatN<1>(v1), v2, floatN<1>(v3), v4) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const float v1,	const floatN<1>& v2,		const component1<A>& v3,	const component1<B>& v4)	: floatN<4>(floatN<1>(v1), v2, floatN<1>(v3), floatN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline floatN<4>(const float v1,	const float v2,			const component1<A>& v3,	const float1& v4)			: float4(float2(v1, v2), float1(v3), v4) {}
-		template<int A>			hlslpp_inline floatN<4>(const float v1,	const float v2,			const float1& v3,			const component1<A>& v4)	: float4(float2(v1, v2), v3, float1(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const float v1,	const float v2,			const component1<A>& v3,	const floatN<1>& v4)			: floatN<4>(floatN<2>(v1, v2), floatN<1>(v3), v4) {}
+		template<int A>			hlslpp_inline floatN<4>(const float v1,	const float v2,			const floatN<1>& v3,			const component1<A>& v4)	: floatN<4>(floatN<2>(v1, v2), v3, floatN<1>(v4)) {}
 
-		template<int A, int B>	hlslpp_inline floatN<4>(const float v1,	const component1<A>& v2,	const float v3,				const float1& v4)		: float4(float1(v1), float1(v2), float1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const float v1,	const component1<A>& v2,	const component1<B>& v3,	const float1& v4)		: float4(float1(v1), float1(v2), float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const float v1,	const component1<A>& v2,	const float v3,				const floatN<1>& v4)		: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), v4) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const float v1,	const component1<A>& v2,	const component1<B>& v3,	const floatN<1>& v4)		: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), v4) {}
 
-		template<int A>			hlslpp_inline floatN<4>(const float v1,	const float1& v2,			const float1& v3,			const component1<A>& v4)	: float4(float1(v1), v2, v3, float1(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const float v1,	const floatN<1>& v2,			const floatN<1>& v3,			const component1<A>& v4)	: floatN<4>(floatN<1>(v1), v2, v3, floatN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,	const float1& v3,	const float v4)				: float4(float1(v1), v2, v3, float1(v4)) {}
-		template<int A>			hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,	const float1& v3,	const float1& v4)			: float4(float1(v1), float1(v2), v3, v4) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,	const float1& v3,	const component1<B>& v4)	: float4(float1(v1), float1(v2), v3, float1(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,	const floatN<1>& v3,	const float v4)				: floatN<4>(floatN<1>(v1), v2, v3, floatN<1>(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,	const floatN<1>& v3,	const floatN<1>& v4)			: floatN<4>(floatN<1>(v1), floatN<1>(v2), v3, v4) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,	const floatN<1>& v3,	const component1<B>& v4)	: floatN<4>(floatN<1>(v1), floatN<1>(v2), v3, floatN<1>(v4)) {}
 
-		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const float1& v2,		const float v3,			const float v4)				: float4(float1(v1), v2, float1(v3), float1(v4)) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const float1& v2,		const float v3,			const float1& v4)			: float4(float1(v1), v2, float1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const float1& v2,		const float v3,			const component1<B>& v4)	: float4(float1(v1), v2, float1(v3), float1(v4)) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<1>& v2,		const float v3,			const float v4)				: floatN<4>(floatN<1>(v1), v2, floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<1>& v2,		const float v3,			const floatN<1>& v4)			: floatN<4>(floatN<1>(v1), v2, floatN<1>(v3), v4) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<1>& v2,		const float v3,			const component1<B>& v4)	: floatN<4>(floatN<1>(v1), v2, floatN<1>(v3), floatN<1>(v4)) {}
 
-		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float1& v3,	const float v4)			: float4(float1(v1), float1(v2), v3, float1(v4)) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float v3,		const float1& v4)		: float4(float1(v1), float1(v2), float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const floatN<1>& v3,	const float v4)			: floatN<4>(floatN<1>(v1), floatN<1>(v2), v3, floatN<1>(v4)) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const component1<B>& v2,	const float v3,		const floatN<1>& v4)		: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), v4) {}
 
-		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const float1& v2,	const component1<B>& v3,	const float v4)		: float4(float1(v1), v2, float1(v3), float1(v4)) {}
-		template<int A>			hlslpp_inline floatN<4>(const component1<A>& v1,	const float1& v2,	const float v3,				const float1& v4)	: float4(float1(v1), v2, float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<1>& v2,	const component1<B>& v3,	const float v4)		: floatN<4>(floatN<1>(v1), v2, floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const component1<A>& v1,	const floatN<1>& v2,	const float v3,				const floatN<1>& v4)	: floatN<4>(floatN<1>(v1), v2, floatN<1>(v3), v4) {}
 
-		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,		const component1<B>& v3,	const float1& v4)	: float4(float1(v1), float1(v2), float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const component1<A>& v1,	const float v2,		const component1<B>& v3,	const floatN<1>& v4)	: floatN<4>(floatN<1>(v1), floatN<1>(v2), floatN<1>(v3), v4) {}
 
-		template<int A>			hlslpp_inline floatN<4>(const float1& v1,	const component1<A>& v2,	const float  v3,			const float v4)				: float4(v1, float1(v2), float1(v3), float1(v4)) {}
-		template<int A>			hlslpp_inline floatN<4>(const float1& v1,	const component1<A>& v2,	const float v3,				const float1& v4)			: float4(v1, float1(v2), float1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const float1& v1,	const component1<A>& v2,	const float  v3,			const component1<B>& v4)	: float4(v1, float1(v2), float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<1>& v1,	const component1<A>& v2,	const float  v3,			const float v4)				: floatN<4>(v1, floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<1>& v1,	const component1<A>& v2,	const float v3,				const floatN<1>& v4)			: floatN<4>(v1, floatN<1>(v2), floatN<1>(v3), v4) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const floatN<1>& v1,	const component1<A>& v2,	const float  v3,			const component1<B>& v4)	: floatN<4>(v1, floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline floatN<4>(const float1& v1, const float v2,			const component1<A>&  v3,	const float v4)				: float4(v1, float1(v2), float1(v3), float1(v4)) {}
-		template<int A>			hlslpp_inline floatN<4>(const float1& v1, const float v2,			const component1<A>& v3,	const float1& v4)			: float4(v1, float1(v2), float1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const float1& v1, const float v2,			const component1<A>&  v3,	const component1<B>& v4)	: float4(v1, float1(v2), float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<1>& v1, const float v2,			const component1<A>&  v3,	const float v4)				: floatN<4>(v1, floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<1>& v1, const float v2,			const component1<A>& v3,	const floatN<1>& v4)			: floatN<4>(v1, floatN<1>(v2), floatN<1>(v3), v4) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const floatN<1>& v1, const float v2,			const component1<A>&  v3,	const component1<B>& v4)	: floatN<4>(v1, floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline floatN<4>(const float1& v1, const float1& v2,		const float v3,				const component1<A>& v4)	: float4(v1, v2, float1(v3), float1(v4)) {}
-		template<int A>			hlslpp_inline floatN<4>(const float1& v1, const float1& v2,		const component1<A>& v3,	const float v4)				: float4(v1, v2, float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<1>& v1, const floatN<1>& v2,		const float v3,				const component1<A>& v4)	: floatN<4>(v1, v2, floatN<1>(v3), floatN<1>(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<1>& v1, const floatN<1>& v2,		const component1<A>& v3,	const float v4)				: floatN<4>(v1, v2, floatN<1>(v3), floatN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline floatN<4>(const float1& v1, const float v2,			const float1& v3,		const component1<A>& v4)	: float4(v1, float1(v2), v3, float1(v4)) {}
-		template<int A>			hlslpp_inline floatN<4>(const float1& v1, const float v2,			const float  v3,		const component1<A>& v4)	: float4(v1, float1(v2), float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<1>& v1, const float v2,			const floatN<1>& v3,		const component1<A>& v4)	: floatN<4>(v1, floatN<1>(v2), v3, floatN<1>(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<1>& v1, const float v2,			const float  v3,		const component1<A>& v4)	: floatN<4>(v1, floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline floatN<4>(const float1& v1, const component1<A>& v2,	const float1& v3,			const float v4)		: float4(v1, float1(v2), v3, float1(v4)) {}
-		template<int A, int B>	hlslpp_inline floatN<4>(const float1& v1, const component1<A>& v2,	const component1<B>&  v3,	const float v4)		: float4(v1, float1(v2), float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline floatN<4>(const floatN<1>& v1, const component1<A>& v2,	const floatN<1>& v3,			const float v4)		: floatN<4>(v1, floatN<1>(v2), v3, floatN<1>(v4)) {}
+		template<int A, int B>	hlslpp_inline floatN<4>(const floatN<1>& v1, const component1<A>& v2,	const component1<B>&  v3,	const float v4)		: floatN<4>(v1, floatN<1>(v2), floatN<1>(v3), floatN<1>(v4)) {}
 
-		explicit floatN<4>(const float4x1& v);
-		explicit floatN<4>(const float1x4& v);
+		explicit floatN<4>(const floatNxM<4, 1>& v);
+		explicit floatN<4>(const floatNxM<1, 4>& v);
 
-		floatN<4>& operator = (const float4& c);
+		floatN<4>& operator = (const floatN<4>& c);
 		floatN<4>& operator = (const float f);
 		template<int A, int B, int C, int D> floatN<4>& operator = (const component4<A, B, C, D>& c);
 
-		static const float4& one() { static const float4 one = float4(1.0f, 1.0f, 1.0f, 1.0f); return one; };
-		static const float4& zero() { static const float4 zero = float4(0.0f, 0.0f, 0.0f, 0.0f); return zero; };
+		static const floatN<4>& one() { static const floatN<4> one = floatN<4>(1.0f, 1.0f, 1.0f, 1.0f); return one; };
+		static const floatN<4>& zero() { static const floatN<4> zero = floatN<4>(0.0f, 0.0f, 0.0f, 0.0f); return zero; };
 
 		// Disallow these constructors, as implicit construction rules could allow them to be valid
 		floatN<4>(float v1, float v2) = delete;
 		floatN<4>(float v1, float v2, float v3) = delete;
 	};
+
+	using float1 = floatN<1>;
+	using float2 = floatN<2>;
+	using float3 = floatN<3>;
+	using float4 = floatN<4>;
 
 	//--------------------
 	// Integer class types
@@ -2232,8 +2185,8 @@ namespace hlslpp
 		template<int E>
 		icomponents<X>& operator = (const icomponent1<E>& v);
 		icomponents<X>& operator = (int32_t i);
-		icomponents<X>& operator = (const int1& v);
-		icomponents<X>& operator = (const int1x1& m);
+		icomponents<X>& operator = (const intN<1>& v);
+		icomponents<X>& operator = (const intNxM<1, 1>& m);
 
 		hlslpp_inline operator int32_t() const
 		{
@@ -2279,7 +2232,7 @@ namespace hlslpp
 		template<int E, int F>
 		icomponents<X, Y>& operator = (const icomponent2<E, F>& c);
 		icomponents<X, Y>& operator = (const icomponent2<X, Y>& c);
-		icomponents<X, Y>& operator = (const int2& v);
+		icomponents<X, Y>& operator = (const intN<2>& v);
 	};
 
 	template<int X, int Y, int Z>
@@ -2320,7 +2273,7 @@ namespace hlslpp
 		template<int E, int F, int G>
 		icomponents<X, Y, Z>& operator = (const icomponent3<E, F, G>& c);
 		icomponents<X, Y, Z>& operator = (const icomponent3<X, Y, Z>& c);
-		icomponents<X, Y, Z>& operator = (const int3& v);
+		icomponents<X, Y, Z>& operator = (const intN<3>& v);
 	};
 
 	template<int X, int Y, int Z, int W>
@@ -2347,7 +2300,7 @@ namespace hlslpp
 		template<int E, int F, int G, int H>
 		inline icomponents<X, Y, Z, W>& operator = (const icomponent4<E, F, G, H>& c);
 		inline icomponents<X, Y, Z, W>& operator = (const icomponent4<X, Y, Z, W>& c);
-		inline icomponents<X, Y, Z, W>& operator = (const int4& v);
+		inline icomponents<X, Y, Z, W>& operator = (const intN<4>& v);
 	};
 
 	template<>
@@ -2365,19 +2318,19 @@ namespace hlslpp
 		hlslpp_inline explicit intN<1>(n128i vec) : _vec(vec) {}
 		intN<1>() {}
 		hlslpp_inline intN<1>(int32_t i) : _vec(_hlslpp_set_epi32(i, 0, 0, 0)) {}
-		hlslpp_inline intN<1>(const int1& v) : _vec(v._vec) {}
+		hlslpp_inline intN<1>(const intN<1>& v) : _vec(v._vec) {}
 		template<int A>
 		intN<1>(const icomponent1<A>& c);
-		explicit intN<1>(const int1x1& v);
+		explicit intN<1>(const intNxM<1, 1>& v);
 
 		// Force compiler to instantiate this later as the template specialization hasn't yet taken place, while restricting the dimension
 		template<int N, enable_if_dim<(N == 1)> = nullptr> intN<1>(const floatN<N>& v);
 
 		intN<1>& operator = (int f);
-		intN<1>& operator = (const int1& c);
+		intN<1>& operator = (const intN<1>& c);
 		template<int A>
 		intN<1>& operator = (const icomponent1<A>& c);
-		intN<1>& operator = (const int1x1& m);
+		intN<1>& operator = (const intNxM<1, 1>& m);
 
 		operator int32_t() const
 		{
@@ -2403,26 +2356,26 @@ namespace hlslpp
 		intN<2>() {}
 		hlslpp_inline intN<2>(int32_t i) : _vec(_hlslpp_set_epi32(i, i, 0, 0)) {}
 		hlslpp_inline intN<2>(int32_t x, int32_t y) : _vec(_hlslpp_set_epi32(x, y, 0, 0)) {}
-		hlslpp_inline intN<2>(const int2& v) : _vec(v._vec) {}
-		intN<2>(const int1& v1,	const int1& v2);
+		hlslpp_inline intN<2>(const intN<2>& v) : _vec(v._vec) {}
+		intN<2>(const intN<1>& v1,	const intN<1>& v2);
 	
-		explicit intN<2>(const int2x1& v);
-		explicit intN<2>(const int1x2& v);
+		explicit intN<2>(const intNxM<2, 1>& v);
+		explicit intN<2>(const intNxM<1, 2>& v);
 
 		// Force compiler to instantiate this later as the template specialization hasn't yet taken place, while restricting the dimension
 		template<int N, enable_if_dim<(N == 2)> = nullptr> intN<2>(const floatN<N>& v);
 
-		hlslpp_inline intN<2>(const int1& v1,	const int32_t v2)	: intN<2>(v1, int1(v2)) {}
-		hlslpp_inline intN<2>(const int32_t v1,	const int1& v2)		: intN<2>(int1(v1), v2) {}
-		template<int A> hlslpp_inline intN<2>(const icomponent1<A>& v1,	const int1& v2)						: intN<2>(int1(v1), v2) {}
-		template<int A> hlslpp_inline intN<2>(const int1& v1,			const icomponent1<A>& v2)			: intN<2>(v1, int1(v2)) {}
-		template<int A> hlslpp_inline intN<2>(const icomponent1<A>& v1,	const int32_t v2)					: intN<2>(int1(v1), int1(v2)) {}
-		template<int A> hlslpp_inline intN<2>(const int32_t v1,			const icomponent1<A>& v2)			: intN<2>(int1(v1), int1(v2)) {}
-		template<int A, int B> hlslpp_inline intN<2>(const icomponent1<A>& v1, const icomponent1<B>& v2)	: intN<2>(int1(v1), int1(v2)) {}
+		hlslpp_inline intN<2>(const intN<1>& v1,	const int32_t v2)	: intN<2>(v1, intN<1>(v2)) {}
+		hlslpp_inline intN<2>(const int32_t v1,	const intN<1>& v2)		: intN<2>(intN<1>(v1), v2) {}
+		template<int A> hlslpp_inline intN<2>(const icomponent1<A>& v1,	const intN<1>& v2)						: intN<2>(intN<1>(v1), v2) {}
+		template<int A> hlslpp_inline intN<2>(const intN<1>& v1,			const icomponent1<A>& v2)			: intN<2>(v1, intN<1>(v2)) {}
+		template<int A> hlslpp_inline intN<2>(const icomponent1<A>& v1,	const int32_t v2)					: intN<2>(intN<1>(v1), intN<1>(v2)) {}
+		template<int A> hlslpp_inline intN<2>(const int32_t v1,			const icomponent1<A>& v2)			: intN<2>(intN<1>(v1), intN<1>(v2)) {}
+		template<int A, int B> hlslpp_inline intN<2>(const icomponent1<A>& v1, const icomponent1<B>& v2)	: intN<2>(intN<1>(v1), intN<1>(v2)) {}
 
 		template<int A, int B> intN<2>(const icomponent2<A, B>& c);
 
-		intN<2>& operator = (const int2& c);
+		intN<2>& operator = (const intN<2>& c);
 		intN<2>& operator = (const int32_t i);
 
 		template<int A, int B> intN<2>& operator = (const icomponent2<A, B>& c);
@@ -2454,64 +2407,64 @@ namespace hlslpp
 		template<int N, enable_if_dim<(N == 3)> = nullptr> intN<3>(const floatN<N>& v);
 
 		// intN constructors
-		intN<3>(const int1& v1,	const int1& v2,	const int1& v3);
-		intN<3>(const int2& v1,	const int1& v2);
-		intN<3>(const int1& v1,	const int2& v2);
+		intN<3>(const intN<1>& v1,	const intN<1>& v2,	const intN<1>& v3);
+		intN<3>(const intN<2>& v1,	const intN<1>& v2);
+		intN<3>(const intN<1>& v1,	const intN<2>& v2);
 
 		// icomponentN constructors
-		template<int A, int B, int C> hlslpp_inline intN<3>(const icomponent1<A>& v1,		const icomponent1<B>& v2,	const icomponent1<C>& v3)	: intN<3>(int1(v1), int1(v2), int1(v3)) {}
-		template<int A, int B, int C> hlslpp_inline intN<3>(const icomponent2<A, B>& v1,	const icomponent1<C>& v2)								: intN<3>(int2(v1), int1(v2)) {}
-		template<int A, int B, int C> hlslpp_inline intN<3>(const icomponent1<A>& v1,		const icomponent2<B, C>& v2)								: intN<3>(int1(v1), int2(v2)) {}
+		template<int A, int B, int C> hlslpp_inline intN<3>(const icomponent1<A>& v1,		const icomponent1<B>& v2,	const icomponent1<C>& v3)	: intN<3>(intN<1>(v1), intN<1>(v2), intN<1>(v3)) {}
+		template<int A, int B, int C> hlslpp_inline intN<3>(const icomponent2<A, B>& v1,	const icomponent1<C>& v2)								: intN<3>(intN<2>(v1), intN<1>(v2)) {}
+		template<int A, int B, int C> hlslpp_inline intN<3>(const icomponent1<A>& v1,		const icomponent2<B, C>& v2)								: intN<3>(intN<1>(v1), intN<2>(v2)) {}
 		template<int A, int B, int C> intN<3>(const icomponent3<A, B, C>& c);
 
 		// intN + int32_t constructors
-		intN<3>(const int32_t v1,	const int1& v2,	const int1& v3);
-		intN<3>(const int1& v1,	const int32_t v2,		const int1& v3);
-		intN<3>(const int1& v1,	const int1& v2,	const int32_t v3);
-		intN<3>(const int32_t v1,	const int32_t v2,		const int1& v3);
-		intN<3>(const int1& v1,	const int32_t v2,		const int32_t v3);
-		intN<3>(const int32_t v1,	const int1& v2,	const int32_t v3);
-		intN<3>(const int32_t v1,	const int2& v2)	: intN<3>(int1(v1), v2) {}
-		intN<3>(const int2& v1, const int32_t v2)		: intN<3>(v1, int1(v2)) {}
+		intN<3>(const int32_t v1,	const intN<1>& v2,	const intN<1>& v3);
+		intN<3>(const intN<1>& v1,	const int32_t v2,		const intN<1>& v3);
+		intN<3>(const intN<1>& v1,	const intN<1>& v2,	const int32_t v3);
+		intN<3>(const int32_t v1,	const int32_t v2,		const intN<1>& v3);
+		intN<3>(const intN<1>& v1,	const int32_t v2,		const int32_t v3);
+		intN<3>(const int32_t v1,	const intN<1>& v2,	const int32_t v3);
+		intN<3>(const int32_t v1,	const intN<2>& v2)	: intN<3>(intN<1>(v1), v2) {}
+		intN<3>(const intN<2>& v1, const int32_t v2)		: intN<3>(v1, intN<1>(v2)) {}
 
 		// intN + icomponentN constructors
-		template<int A> hlslpp_inline intN<3>(const int1& v1,	const int1& v2,			const icomponent1<A>& v3)	: intN<3>(v1, v2, int1(v3)) {}
-		template<int A> hlslpp_inline intN<3>(const int1& v1,	const icomponent1<A>& v2,	const int1& v3)			: intN<3>(v1, int1(v2), v3) {}
-		template<int A> hlslpp_inline intN<3>(const icomponent1<A>& v1,	const int1& v2,	const int1& v3)			: intN<3>(int1(v1), v2, v3) {}
+		template<int A> hlslpp_inline intN<3>(const intN<1>& v1,	const intN<1>& v2,			const icomponent1<A>& v3)	: intN<3>(v1, v2, intN<1>(v3)) {}
+		template<int A> hlslpp_inline intN<3>(const intN<1>& v1,	const icomponent1<A>& v2,	const intN<1>& v3)			: intN<3>(v1, intN<1>(v2), v3) {}
+		template<int A> hlslpp_inline intN<3>(const icomponent1<A>& v1,	const intN<1>& v2,	const intN<1>& v3)			: intN<3>(intN<1>(v1), v2, v3) {}
 
-		template<int A, int B> hlslpp_inline intN<3>(const int1& v1,			const icomponent1<A>& v2,	const icomponent1<B>& v3)	: intN<3>(v1, int1(v2), int1(v3)) {}
-		template<int A, int B> hlslpp_inline intN<3>(const icomponent1<A>& v1,	const int1& v2,			const icomponent1<B>& v3)	: intN<3>(int1(v1), v2, int1(v3)) {}
-		template<int A, int B> hlslpp_inline intN<3>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const int1& v3)			: intN<3>(int1(v1), int1(v2), v3) {}
+		template<int A, int B> hlslpp_inline intN<3>(const intN<1>& v1,			const icomponent1<A>& v2,	const icomponent1<B>& v3)	: intN<3>(v1, intN<1>(v2), intN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline intN<3>(const icomponent1<A>& v1,	const intN<1>& v2,			const icomponent1<B>& v3)	: intN<3>(intN<1>(v1), v2, intN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline intN<3>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const intN<1>& v3)			: intN<3>(intN<1>(v1), intN<1>(v2), v3) {}
 
-		template<int A, int B> hlslpp_inline intN<3>(const int1& v1,	const icomponent2<A, B>& v2)	: intN<3>(v1, int2(v2)) {}
-		template<int A, int B> hlslpp_inline intN<3>(const icomponent2<A, B>& v1, const int1& v2)	: intN<3>(int2(v1), v2) {}
+		template<int A, int B> hlslpp_inline intN<3>(const intN<1>& v1,	const icomponent2<A, B>& v2)	: intN<3>(v1, intN<2>(v2)) {}
+		template<int A, int B> hlslpp_inline intN<3>(const icomponent2<A, B>& v1, const intN<1>& v2)	: intN<3>(intN<2>(v1), v2) {}
 
 		// int32_t + icomponentN constructors
-		template<int A> hlslpp_inline intN<3>(const int32_t v1, const int32_t v2, const icomponent1<A>& v3) : intN<3>(int2(v1, v2), int1(v3)) {}
-		template<int A> hlslpp_inline intN<3>(const int32_t v1, const icomponent1<A>& v2, const int32_t v3) : intN<3>(int1(v1), int1(v2), int1(v3)) {}
-		template<int A> hlslpp_inline intN<3>(const icomponent1<A>& v1, const int32_t v2, const int32_t v3) : intN<3>(int1(v1), int2(v2, v3)) {}
+		template<int A> hlslpp_inline intN<3>(const int32_t v1, const int32_t v2, const icomponent1<A>& v3) : intN<3>(intN<2>(v1, v2), intN<1>(v3)) {}
+		template<int A> hlslpp_inline intN<3>(const int32_t v1, const icomponent1<A>& v2, const int32_t v3) : intN<3>(intN<1>(v1), intN<1>(v2), intN<1>(v3)) {}
+		template<int A> hlslpp_inline intN<3>(const icomponent1<A>& v1, const int32_t v2, const int32_t v3) : intN<3>(intN<1>(v1), intN<2>(v2, v3)) {}
 
-		template<int A, int B> hlslpp_inline intN<3>(const int32_t v1, const icomponent1<A>& v2, const icomponent1<B>& v3) : intN<3>(int1(v1), int1(v2), int1(v3)) {}
-		template<int A, int B> hlslpp_inline intN<3>(const icomponent1<A>& v1, const int32_t v2, const icomponent1<B>& v3) : intN<3>(int1(v1), int1(v2), int1(v3)) {}
-		template<int A, int B> hlslpp_inline intN<3>(const icomponent1<A>& v1, const icomponent1<B>& v2, const int32_t v3) : intN<3>(int1(v1), int1(v2), int1(v3)) {}
+		template<int A, int B> hlslpp_inline intN<3>(const int32_t v1, const icomponent1<A>& v2, const icomponent1<B>& v3) : intN<3>(intN<1>(v1), intN<1>(v2), intN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline intN<3>(const icomponent1<A>& v1, const int32_t v2, const icomponent1<B>& v3) : intN<3>(intN<1>(v1), intN<1>(v2), intN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline intN<3>(const icomponent1<A>& v1, const icomponent1<B>& v2, const int32_t v3) : intN<3>(intN<1>(v1), intN<1>(v2), intN<1>(v3)) {}
 
-		template<int A, int B> hlslpp_inline intN<3>(const int32_t v1, const icomponent2<A, B>& v2) : intN<3>(int1(v1), int2(v2)) {}
-		template<int A, int B> hlslpp_inline intN<3>(const icomponent2<A, B>& v1, const int32_t v2) : intN<3>(int2(v1), int1(v2)) {}
+		template<int A, int B> hlslpp_inline intN<3>(const int32_t v1, const icomponent2<A, B>& v2) : intN<3>(intN<1>(v1), intN<2>(v2)) {}
+		template<int A, int B> hlslpp_inline intN<3>(const icomponent2<A, B>& v1, const int32_t v2) : intN<3>(intN<2>(v1), intN<1>(v2)) {}
 
 		// intN + icomponentN + int32_t constructors
-		template<int A> hlslpp_inline intN<3>(const int1& v1,	const icomponent1<A>& v2,	const int32_t v3)				: intN<3>(v1, int1(v2), int1(v3)) {}
-		template<int A> hlslpp_inline intN<3>(const int1& v1,	const int32_t v2,				const icomponent1<A>& v3)	: intN<3>(v1, int1(v2), int1(v3)) {}
+		template<int A> hlslpp_inline intN<3>(const intN<1>& v1,	const icomponent1<A>& v2,	const int32_t v3)				: intN<3>(v1, intN<1>(v2), intN<1>(v3)) {}
+		template<int A> hlslpp_inline intN<3>(const intN<1>& v1,	const int32_t v2,				const icomponent1<A>& v3)	: intN<3>(v1, intN<1>(v2), intN<1>(v3)) {}
 
-		template<int A> hlslpp_inline intN<3>(const int32_t v1,	const int1& v2,			const icomponent1<A>& v3)	: intN<3>(int1(v1), v2, int1(v3)) {}
-		template<int A> hlslpp_inline intN<3>(const int32_t v1,	const icomponent1<A>& v2,	const int1& v3)			: intN<3>(int1(v1), int1(v2), v3) {}
+		template<int A> hlslpp_inline intN<3>(const int32_t v1,	const intN<1>& v2,			const icomponent1<A>& v3)	: intN<3>(intN<1>(v1), v2, intN<1>(v3)) {}
+		template<int A> hlslpp_inline intN<3>(const int32_t v1,	const icomponent1<A>& v2,	const intN<1>& v3)			: intN<3>(intN<1>(v1), intN<1>(v2), v3) {}
 
-		template<int A> hlslpp_inline intN<3>(const icomponent1<A>& v1,	const int1& v2,	const int32_t v3)			: intN<3>(int1(v1), v2, int1(v3)) {}
-		template<int A> hlslpp_inline intN<3>(const icomponent1<A>& v1,	const int32_t v2,		const int1& v3)		: intN<3>(int1(v1), int1(v2), v3) {}
+		template<int A> hlslpp_inline intN<3>(const icomponent1<A>& v1,	const intN<1>& v2,	const int32_t v3)			: intN<3>(intN<1>(v1), v2, intN<1>(v3)) {}
+		template<int A> hlslpp_inline intN<3>(const icomponent1<A>& v1,	const int32_t v2,		const intN<1>& v3)		: intN<3>(intN<1>(v1), intN<1>(v2), v3) {}
 
-		explicit intN<3>(const int3x1& v);
-		explicit intN<3>(const int1x3& v);
+		explicit intN<3>(const intNxM<3, 1>& v);
+		explicit intN<3>(const intNxM<1, 3>& v);
 
-		intN<3>& operator = (const int3& c);
+		intN<3>& operator = (const intN<3>& c);
 		intN<3>& operator = (const int32_t f);
 		template<int A, int B, int C>
 		intN<3>& operator = (const icomponent3<A, B, C>& c);
@@ -2547,175 +2500,175 @@ namespace hlslpp
 		template<int N, enable_if_dim<(N == 4)> = nullptr> intN<4>(const floatN<N>& v);
 	
 		// intN constructors
-		hlslpp_inline intN<4>(const int4& v) : _vec(v._vec) {}
-		intN<4>(const int1& v1,	const int1& v2,	const int1& v3,	const int1& v4);
-		intN<4>(const int2& v1,	const int1& v2,	const int1& v3);
-		intN<4>(const int1& v1,	const int2& v2,	const int1& v3);
-		intN<4>(const int1& v1,	const int1& v2,	const int2& v3);
-		intN<4>(const int2& v1,	const int2& v2);
-		intN<4>(const int1& v1,	const int3& v2);
-		intN<4>(const int3& v1,	const int1& v2);
+		hlslpp_inline intN<4>(const intN<4>& v) : _vec(v._vec) {}
+		intN<4>(const intN<1>& v1,	const intN<1>& v2,	const intN<1>& v3,	const intN<1>& v4);
+		intN<4>(const intN<2>& v1,	const intN<1>& v2,	const intN<1>& v3);
+		intN<4>(const intN<1>& v1,	const intN<2>& v2,	const intN<1>& v3);
+		intN<4>(const intN<1>& v1,	const intN<1>& v2,	const intN<2>& v3);
+		intN<4>(const intN<2>& v1,	const intN<2>& v2);
+		intN<4>(const intN<1>& v1,	const intN<3>& v2);
+		intN<4>(const intN<3>& v1,	const intN<1>& v2);
 
 		// icomponentN constructors
-		template<int A, int B, int C, int D> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const icomponent1<C>& v3,	const icomponent1<D>& v4) : intN<4>(int1(v1), int1(v2), int1(v2), int1(v2)) {}
+		template<int A, int B, int C, int D> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const icomponent1<C>& v3,	const icomponent1<D>& v4) : intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v2), intN<1>(v2)) {}
 		template<int A, int B, int C, int D> intN<4>(const icomponent4<A, B, C, D>& c);
 
 		// intN + int32_t constructors
-		hlslpp_inline intN<4>(const int32_t v1,		const int1& v2,	const int1& v3,	const int1& v4)	: int4(int1(v1), v2, v3, v4) {}
-		hlslpp_inline intN<4>(const int1& v1,	const int32_t v2,		const int1& v3,	const int1& v4)	: int4(v1, int1(v2), v3, v4) {}
-		hlslpp_inline intN<4>(const int1& v1,	const int1& v2,	const int32_t v3,		const int1& v4)	: int4(v1, v2, int1(v3), v4) {}
-		hlslpp_inline intN<4>(const int1& v1,	const int1& v2,	const int1& v3,	const int32_t v4)		: int4(v1, v2, v3, int1(v4)) {}
+		hlslpp_inline intN<4>(const int32_t v1,		const intN<1>& v2,	const intN<1>& v3,	const intN<1>& v4)	: intN<4>(intN<1>(v1), v2, v3, v4) {}
+		hlslpp_inline intN<4>(const intN<1>& v1,	const int32_t v2,		const intN<1>& v3,	const intN<1>& v4)	: intN<4>(v1, intN<1>(v2), v3, v4) {}
+		hlslpp_inline intN<4>(const intN<1>& v1,	const intN<1>& v2,	const int32_t v3,		const intN<1>& v4)	: intN<4>(v1, v2, intN<1>(v3), v4) {}
+		hlslpp_inline intN<4>(const intN<1>& v1,	const intN<1>& v2,	const intN<1>& v3,	const int32_t v4)		: intN<4>(v1, v2, v3, intN<1>(v4)) {}
 
-		intN<4>(const int1& v1,		const int32_t v2,		const int32_t v3,		const int32_t v4);
-		intN<4>(const int32_t v1,		const int1& v2,	const int32_t v3,		const int32_t v4);
-		intN<4>(const int32_t v1,		const int32_t v2,		const int1& v3,	const int32_t v4);
-		intN<4>(const int32_t v1,		const int32_t v2,		const int32_t v3,		const int1& v4);
+		intN<4>(const intN<1>& v1,		const int32_t v2,		const int32_t v3,		const int32_t v4);
+		intN<4>(const int32_t v1,		const intN<1>& v2,	const int32_t v3,		const int32_t v4);
+		intN<4>(const int32_t v1,		const int32_t v2,		const intN<1>& v3,	const int32_t v4);
+		intN<4>(const int32_t v1,		const int32_t v2,		const int32_t v3,		const intN<1>& v4);
 	
-		intN<4>(const int32_t v1,		const int1& v2,	const int1& v3,	const int32_t v4);
-		intN<4>(const int32_t v1,		const int32_t v2,		const int1& v3,	const int1& v4);
-		intN<4>(const int32_t v1,		const int1& v2,	const int32_t v3,		const int1& v4);
+		intN<4>(const int32_t v1,		const intN<1>& v2,	const intN<1>& v3,	const int32_t v4);
+		intN<4>(const int32_t v1,		const int32_t v2,		const intN<1>& v3,	const intN<1>& v4);
+		intN<4>(const int32_t v1,		const intN<1>& v2,	const int32_t v3,		const intN<1>& v4);
 
-		intN<4>(const int1& v1,		const int32_t v2,		const int32_t v3,		const int1& v4);
-		intN<4>(const int1& v1,		const int1& v2,	const int32_t v3,		const int32_t v4);
-		intN<4>(const int1& v1,		const int32_t v2,		const int1& v3,	const int32_t v4);
+		intN<4>(const intN<1>& v1,		const int32_t v2,		const int32_t v3,		const intN<1>& v4);
+		intN<4>(const intN<1>& v1,		const intN<1>& v2,	const int32_t v3,		const int32_t v4);
+		intN<4>(const intN<1>& v1,		const int32_t v2,		const intN<1>& v3,	const int32_t v4);
 
-		hlslpp_inline intN<4>(const int2& v1,	const int32_t v2,		const int1& v3)	: int4(v1, int1(v2), v3) {}
-		hlslpp_inline intN<4>(const int2& v1,	const int1& v2,	const int32_t v3)		: int4(v1, v2, int1(v3)) {}
-		hlslpp_inline intN<4>(const int2& v1,	const int32_t v2,		const int32_t v3)		: int4(v1, v2, int1(v3)) {}
+		hlslpp_inline intN<4>(const intN<2>& v1,	const int32_t v2,		const intN<1>& v3)	: intN<4>(v1, intN<1>(v2), v3) {}
+		hlslpp_inline intN<4>(const intN<2>& v1,	const intN<1>& v2,	const int32_t v3)		: intN<4>(v1, v2, intN<1>(v3)) {}
+		hlslpp_inline intN<4>(const intN<2>& v1,	const int32_t v2,		const int32_t v3)		: intN<4>(v1, v2, intN<1>(v3)) {}
 
-		hlslpp_inline intN<4>(const int32_t v1,		const int2& v2,	const int1& v3)	: int4(int1(v1), v2, v3) {}
-		hlslpp_inline intN<4>(const int1& v1,	const int2& v2,	const int32_t v3)		: int4(v1, v2, int1(v3)) {}
+		hlslpp_inline intN<4>(const int32_t v1,		const intN<2>& v2,	const intN<1>& v3)	: intN<4>(intN<1>(v1), v2, v3) {}
+		hlslpp_inline intN<4>(const intN<1>& v1,	const intN<2>& v2,	const int32_t v3)		: intN<4>(v1, v2, intN<1>(v3)) {}
 
-		hlslpp_inline intN<4>(const int32_t v1,		const int1& v2,	const int2& v3)	: int4(int1(v1), v2, v3) {}
-		hlslpp_inline intN<4>(const int1& v1,	const int32_t v2,		const int2& v3)	: int4(v1, int1(v2), v3) {}
-		hlslpp_inline intN<4>(const int32_t v1,		const int32_t v2,		const int2& v3)	: int4(int2(v1, v2), v3) {}
+		hlslpp_inline intN<4>(const int32_t v1,		const intN<1>& v2,	const intN<2>& v3)	: intN<4>(intN<1>(v1), v2, v3) {}
+		hlslpp_inline intN<4>(const intN<1>& v1,	const int32_t v2,		const intN<2>& v3)	: intN<4>(v1, intN<1>(v2), v3) {}
+		hlslpp_inline intN<4>(const int32_t v1,		const int32_t v2,		const intN<2>& v3)	: intN<4>(intN<2>(v1, v2), v3) {}
 
-		hlslpp_inline intN<4>(const int32_t v1,		const int3& v2)	: int4(int1(v1), v2) {}
-		hlslpp_inline intN<4>(const int3& v1,	const int32_t v2)		: int4(v1, int1(v2)) {}
+		hlslpp_inline intN<4>(const int32_t v1,		const intN<3>& v2)	: intN<4>(intN<1>(v1), v2) {}
+		hlslpp_inline intN<4>(const intN<3>& v1,	const int32_t v2)		: intN<4>(v1, intN<1>(v2)) {}
 
 		// intN + icomponentN constructors
-		template<int A> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int1& v2,			const int1& v3,			const int1& v4)			: int4(int1(v1), v2, v3, v4) {}
-		template<int A> hlslpp_inline intN<4>(const int1& v1,			const icomponent1<A>& v2,	const int1& v3,			const int1& v4)			: int4(v1, int1(v2), v3, v4) {}
-		template<int A> hlslpp_inline intN<4>(const int1& v1,			const int1& v2,			const icomponent1<A>& v3,	const int1& v4)			: int4(v1, v2, int1(v3), v4) {}
-		template<int A> hlslpp_inline intN<4>(const int1& v1,			const int1& v2,			const int1& v3,			const icomponent1<A>& v4)	: int4(v1, v2, v3, int1(v4)) {}
+		template<int A> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<1>& v2,			const intN<1>& v3,			const intN<1>& v4)			: intN<4>(intN<1>(v1), v2, v3, v4) {}
+		template<int A> hlslpp_inline intN<4>(const intN<1>& v1,			const icomponent1<A>& v2,	const intN<1>& v3,			const intN<1>& v4)			: intN<4>(v1, intN<1>(v2), v3, v4) {}
+		template<int A> hlslpp_inline intN<4>(const intN<1>& v1,			const intN<1>& v2,			const icomponent1<A>& v3,	const intN<1>& v4)			: intN<4>(v1, v2, intN<1>(v3), v4) {}
+		template<int A> hlslpp_inline intN<4>(const intN<1>& v1,			const intN<1>& v2,			const intN<1>& v3,			const icomponent1<A>& v4)	: intN<4>(v1, v2, v3, intN<1>(v4)) {}
 
-		template<int A, int B, int C> hlslpp_inline intN<4>(const int1& v1,			const icomponent1<A>& v2,	const icomponent1<B>& v3,	const icomponent1<C>& v4)	: int4(v1, int1(v2), int1(v3), int1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int1& v2,			const icomponent1<B>& v3,	const icomponent1<C>& v4)	: int4(int1(v1), v2, int1(v3), int1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const int1& v3,			const icomponent1<C>& v4)	: int4(int1(v1), int1(v2), v3, int1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const icomponent1<C>& v3,	const int1& v4)			: int4(int1(v1), int1(v2), int1(v3), v4) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const intN<1>& v1,			const icomponent1<A>& v2,	const icomponent1<B>& v3,	const icomponent1<C>& v4)	: intN<4>(v1, intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<1>& v2,			const icomponent1<B>& v3,	const icomponent1<C>& v4)	: intN<4>(intN<1>(v1), v2, intN<1>(v3), intN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const intN<1>& v3,			const icomponent1<C>& v4)	: intN<4>(intN<1>(v1), intN<1>(v2), v3, intN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const icomponent1<C>& v3,	const intN<1>& v4)			: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), v4) {}
 
-		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int1& v2,			const int1& v3,			const icomponent1<B>& v4)	: int4(int1(v1), v2, v3, int1(v4)) {}
-		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const int1& v3,			const int1& v4)			: int4(int1(v1), int1(v2), v3, v4) {}
-		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int1& v2,			const icomponent1<B>& v3,	const int1& v4)			: int4(int1(v1), v2, int1(v3), v4) {}
+		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<1>& v2,			const intN<1>& v3,			const icomponent1<B>& v4)	: intN<4>(intN<1>(v1), v2, v3, intN<1>(v4)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const intN<1>& v3,			const intN<1>& v4)			: intN<4>(intN<1>(v1), intN<1>(v2), v3, v4) {}
+		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<1>& v2,			const icomponent1<B>& v3,	const intN<1>& v4)			: intN<4>(intN<1>(v1), v2, intN<1>(v3), v4) {}
 
-		template<int A, int B> hlslpp_inline intN<4>(const int1& v1,			const icomponent1<A>& v2,	const icomponent1<B>& v3,	const int1& v4)			: int4(v1, int1(v2), int1(v3), v4) {}
-		template<int A, int B> hlslpp_inline intN<4>(const int1& v1,			const int1& v2,			const icomponent1<A>& v3,	const icomponent1<B>& v4)	: int4(v1, v2, int1(v3), int1(v4)) {}
-		template<int A, int B> hlslpp_inline intN<4>(const int1& v1,			const icomponent1<A>& v2,	const int1& v3,			const icomponent1<B>& v4)	: int4(v1, int1(v2), v3, int1(v4)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const intN<1>& v1,			const icomponent1<A>& v2,	const icomponent1<B>& v3,	const intN<1>& v4)			: intN<4>(v1, intN<1>(v2), intN<1>(v3), v4) {}
+		template<int A, int B> hlslpp_inline intN<4>(const intN<1>& v1,			const intN<1>& v2,			const icomponent1<A>& v3,	const icomponent1<B>& v4)	: intN<4>(v1, v2, intN<1>(v3), intN<1>(v4)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const intN<1>& v1,			const icomponent1<A>& v2,	const intN<1>& v3,			const icomponent1<B>& v4)	: intN<4>(v1, intN<1>(v2), v3, intN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline intN<4>(const int2& v1,		const icomponent1<A>& v2,	const int1& v3)			: int4(v1, int1(v2), v3) {}
-		template<int A>			hlslpp_inline intN<4>(const int2& v1,		const int1& v2,			const icomponent1<A>& v3)	: int4(v1, v2, int1(v3)) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const int2& v1,		const icomponent1<A>& v2,	const icomponent1<B>& v3)	: int4(v1, v2, int1(v3)) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<2>& v1,		const icomponent1<A>& v2,	const intN<1>& v3)			: intN<4>(v1, intN<1>(v2), v3) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<2>& v1,		const intN<1>& v2,			const icomponent1<A>& v3)	: intN<4>(v1, v2, intN<1>(v3)) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const intN<2>& v1,		const icomponent1<A>& v2,	const icomponent1<B>& v3)	: intN<4>(v1, v2, intN<1>(v3)) {}
 
-		template<int A> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int2& v2,	const int1& v3)			: int4(int1(v1), v2, v3) {}
-		template<int A> hlslpp_inline intN<4>(const int1& v1,			const int2& v2,	const icomponent1<A>& v3)	: int4(v1, v2, int1(v3)) {}
+		template<int A> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<2>& v2,	const intN<1>& v3)			: intN<4>(intN<1>(v1), v2, v3) {}
+		template<int A> hlslpp_inline intN<4>(const intN<1>& v1,			const intN<2>& v2,	const icomponent1<A>& v3)	: intN<4>(v1, v2, intN<1>(v3)) {}
 
-		template<int A>			hlslpp_inline intN<4>(const int1& v1,			const icomponent1<A>& v2,	const int2& v3)	: int4(v1, int1(v2), v3) {}
-		template<int A>			hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int1& v2,			const int2& v3)	: int4(int1(v1), v2, v3) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const int2& v3)	: int4(int1(v1), int1(v2), v3) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<1>& v1,			const icomponent1<A>& v2,	const intN<2>& v3)	: intN<4>(v1, intN<1>(v2), v3) {}
+		template<int A>			hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<1>& v2,			const intN<2>& v3)	: intN<4>(intN<1>(v1), v2, v3) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const intN<2>& v3)	: intN<4>(intN<1>(v1), intN<1>(v2), v3) {}
 
-		template<int A> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int3& v2)			: int4(int1(v1), v2) {}
-		template<int A> hlslpp_inline intN<4>(const int3& v1,			const icomponent1<A>& v2)	: int4(v1, int1(v2)) {}
+		template<int A> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<3>& v2)			: intN<4>(intN<1>(v1), v2) {}
+		template<int A> hlslpp_inline intN<4>(const intN<3>& v1,			const icomponent1<A>& v2)	: intN<4>(v1, intN<1>(v2)) {}
 
 		// icomponentN + int32_t constructors
-		template<int A> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,				const int32_t v3,				const int32_t v4)				: int4(int1(v1), int3(v2, v3, v4)) {}
-		template<int A> hlslpp_inline intN<4>(const int32_t v1,			const icomponent1<A>& v2,	const int32_t v3,				const int32_t v4)				: int4(int1(v1), int1(v2), int2(v3, v4)) {}
-		template<int A> hlslpp_inline intN<4>(const int32_t v1,			const int32_t v2,				const icomponent1<A>& v3,	const int32_t v4)				: int4(int2(v1, v2), int1(v3), int1(v4)) {}
-		template<int A> hlslpp_inline intN<4>(const int32_t v1,			const int32_t v2,				const int32_t v3,				const icomponent1<A>& v4)	: int4(int3(v1, v2, v3), int1(v4)) {}
+		template<int A> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,				const int32_t v3,				const int32_t v4)				: intN<4>(intN<1>(v1), intN<3>(v2, v3, v4)) {}
+		template<int A> hlslpp_inline intN<4>(const int32_t v1,			const icomponent1<A>& v2,	const int32_t v3,				const int32_t v4)				: intN<4>(intN<1>(v1), intN<1>(v2), intN<2>(v3, v4)) {}
+		template<int A> hlslpp_inline intN<4>(const int32_t v1,			const int32_t v2,				const icomponent1<A>& v3,	const int32_t v4)				: intN<4>(intN<2>(v1, v2), intN<1>(v3), intN<1>(v4)) {}
+		template<int A> hlslpp_inline intN<4>(const int32_t v1,			const int32_t v2,				const int32_t v3,				const icomponent1<A>& v4)	: intN<4>(intN<3>(v1, v2, v3), intN<1>(v4)) {}
 
-		template<int A, int B, int C> hlslpp_inline intN<4>(const int32_t v1,				const icomponent1<A>& v2,	const icomponent1<B>& v3,	const icomponent1<C>& v4)	: int4(int1(v1), int1(v2), int1(v3), int1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,				const icomponent1<B>& v3,	const icomponent1<C>& v4)	: int4(int1(v1), int1(v2), int1(v3), int1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const int32_t v3,				const icomponent1<C>& v4)	: int4(int1(v1), int1(v2), int1(v3), int1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const icomponent1<C>& v3,	const int32_t v4)				: int4(int1(v1), int1(v2), int1(v3), int1(v4)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const int32_t v1,				const icomponent1<A>& v2,	const icomponent1<B>& v3,	const icomponent1<C>& v4)	: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,				const icomponent1<B>& v3,	const icomponent1<C>& v4)	: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const int32_t v3,				const icomponent1<C>& v4)	: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const icomponent1<C>& v3,	const int32_t v4)				: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
 
-		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,		const int32_t v2,				const int32_t v3,				const icomponent1<B>& v4)	: int4(int1(v1), int2(v2, v3), int1(v4)) {}
-		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,		const icomponent1<B>& v2,	const int32_t v3,				const int32_t v4)				: int4(int1(v1), int1(v2), int2(v3, v4)) {}
-		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,		const int32_t v2,				const icomponent1<B>& v3,	const int32_t v4)				: int4(int1(v1), int1(v2), int1(v3), int1(v4)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,		const int32_t v2,				const int32_t v3,				const icomponent1<B>& v4)	: intN<4>(intN<1>(v1), intN<2>(v2, v3), intN<1>(v4)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,		const icomponent1<B>& v2,	const int32_t v3,				const int32_t v4)				: intN<4>(intN<1>(v1), intN<1>(v2), intN<2>(v3, v4)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const icomponent1<A>& v1,		const int32_t v2,				const icomponent1<B>& v3,	const int32_t v4)				: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
 
-		template<int A, int B> hlslpp_inline intN<4>(const int32_t v1,				const icomponent1<A>& v2,	const icomponent1<B>& v3,	const int32_t v4)				: int4(int1(v1), int1(v2), int1(v3), int1(v4)) {}
-		template<int A, int B> hlslpp_inline intN<4>(const int32_t v1,				const int32_t v2,				const icomponent1<A>& v3,	const icomponent1<B>& v4)	: int4(int2(v1, v2), int1(v3), int1(v4)) {}
-		template<int A, int B> hlslpp_inline intN<4>(const int32_t v1,				const icomponent1<A>& v2,	const int32_t v3,				const icomponent1<B>& v4)	: int4(int1(v1), int1(v2), int1(v3), int1(v4)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const int32_t v1,				const icomponent1<A>& v2,	const icomponent1<B>& v3,	const int32_t v4)				: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const int32_t v1,				const int32_t v2,				const icomponent1<A>& v3,	const icomponent1<B>& v4)	: intN<4>(intN<2>(v1, v2), intN<1>(v3), intN<1>(v4)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const int32_t v1,				const icomponent1<A>& v2,	const int32_t v3,				const icomponent1<B>& v4)	: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
 
 
-		template<int A, int B> hlslpp_inline intN<4>(const icomponent2<A, B>& v1,	const int32_t v2,				const int32_t v3)				: int4(int2(v1), int1(v2), int1(v3)) {}
-		template<int A, int B> hlslpp_inline intN<4>(const int32_t v1,				const icomponent2<A, B>& v2,	const int32_t v3)				: int4(int1(v1), int2(v2), int1(v3)) {}
-		template<int A, int B> hlslpp_inline intN<4>(const int32_t v1,				const int32_t v2,				const icomponent2<A, B>& v3)	: int4(int1(v1), int1(v2), int2(v3)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const icomponent2<A, B>& v1,	const int32_t v2,				const int32_t v3)				: intN<4>(intN<2>(v1), intN<1>(v2), intN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const int32_t v1,				const icomponent2<A, B>& v2,	const int32_t v3)				: intN<4>(intN<1>(v1), intN<2>(v2), intN<1>(v3)) {}
+		template<int A, int B> hlslpp_inline intN<4>(const int32_t v1,				const int32_t v2,				const icomponent2<A, B>& v3)	: intN<4>(intN<1>(v1), intN<1>(v2), intN<2>(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline intN<4>(const int32_t v1, const icomponent2<A, B>& v2, const icomponent1<C>& v3) : int4(int1(v1), int2(v2), int1(v3)) {}
-		template<int A, int B, int C> hlslpp_inline intN<4>(const int32_t v1, const icomponent1<A>& v2, const icomponent2<B, C>& v3) : int4(int1(v1), int1(v2), int2(v3)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const int32_t v1, const icomponent2<A, B>& v2, const icomponent1<C>& v3) : intN<4>(intN<1>(v1), intN<2>(v2), intN<1>(v3)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const int32_t v1, const icomponent1<A>& v2, const icomponent2<B, C>& v3) : intN<4>(intN<1>(v1), intN<1>(v2), intN<2>(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent2<B, C>& v2,	const int32_t v3)				: int4(int1(v1), int2(v2), int1(v3)) {}
-		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,				const icomponent2<B, C>& v3)	: int4(int1(v1), int1(v2), int2(v3)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent2<B, C>& v2,	const int32_t v3)				: intN<4>(intN<1>(v1), intN<2>(v2), intN<1>(v3)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,				const icomponent2<B, C>& v3)	: intN<4>(intN<1>(v1), intN<1>(v2), intN<2>(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent2<A, B>& v1,	const int32_t v2,				const icomponent1<C>& v3)	: int4(int2(v1), int1(v2), int1(v3)) {}
-		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent2<A, B>& v1,	const icomponent1<C>& v2,	const int32_t v3)				: int4(int2(v1), int1(v2), int1(v3)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent2<A, B>& v1,	const int32_t v2,				const icomponent1<C>& v3)	: intN<4>(intN<2>(v1), intN<1>(v2), intN<1>(v3)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent2<A, B>& v1,	const icomponent1<C>& v2,	const int32_t v3)				: intN<4>(intN<2>(v1), intN<1>(v2), intN<1>(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline intN<4>(const int32_t v1,				const icomponent3<A, B, C>& v2)	: int4(int1(v1), int3(v2)) {}
-		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent3<A, B, C>& v1,	const int32_t v2)				: int4(int3(v1), int1(v2)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const int32_t v1,				const icomponent3<A, B, C>& v2)	: intN<4>(intN<1>(v1), intN<3>(v2)) {}
+		template<int A, int B, int C> hlslpp_inline intN<4>(const icomponent3<A, B, C>& v1,	const int32_t v2)				: intN<4>(intN<3>(v1), intN<1>(v2)) {}
 
 		// intN + icomponentN + int32_t constructors
-		template<int A>			hlslpp_inline intN<4>(const int32_t v1, const icomponent1<A>& v2, const int1& v3, const int32_t v4) : int4(int1(v1), int1(v2), v3, int1(v4)) {}
-		template<int A>			hlslpp_inline intN<4>(const int32_t v1, const icomponent1<A>& v2, const int1& v3, const int1& v4) : int4(int1(v1), int1(v2), v3, v4) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const int32_t v1, const icomponent1<A>& v2, const int1& v3, const icomponent1<B>& v4) : int4(int1(v1), int1(v2), v3, int1(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const int32_t v1, const icomponent1<A>& v2, const intN<1>& v3, const int32_t v4) : intN<4>(intN<1>(v1), intN<1>(v2), v3, intN<1>(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const int32_t v1, const icomponent1<A>& v2, const intN<1>& v3, const intN<1>& v4) : intN<4>(intN<1>(v1), intN<1>(v2), v3, v4) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const int32_t v1, const icomponent1<A>& v2, const intN<1>& v3, const icomponent1<B>& v4) : intN<4>(intN<1>(v1), intN<1>(v2), v3, intN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline intN<4>(const int32_t v1,	const int1& v2,		const icomponent1<A>& v3,	const int32_t v4)				: int4(int1(v1), v2, int1(v3), int1(v4)) {}
-		template<int A>			hlslpp_inline intN<4>(const int32_t v1,	const int1& v2,		const icomponent1<A>& v3,	const int1& v4)			: int4(int1(v1), v2, int1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const int32_t v1,	const int1& v2,		const icomponent1<A>& v3,	const icomponent1<B>& v4)	: int4(int1(v1), v2, int1(v3), int1(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const int32_t v1,	const intN<1>& v2,		const icomponent1<A>& v3,	const int32_t v4)				: intN<4>(intN<1>(v1), v2, intN<1>(v3), intN<1>(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const int32_t v1,	const intN<1>& v2,		const icomponent1<A>& v3,	const intN<1>& v4)			: intN<4>(intN<1>(v1), v2, intN<1>(v3), v4) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const int32_t v1,	const intN<1>& v2,		const icomponent1<A>& v3,	const icomponent1<B>& v4)	: intN<4>(intN<1>(v1), v2, intN<1>(v3), intN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline intN<4>(const int32_t v1,	const int32_t v2,			const icomponent1<A>& v3,	const int1& v4)			: int4(int2(v1, v2), int1(v3), v4) {}
-		template<int A>			hlslpp_inline intN<4>(const int32_t v1,	const int32_t v2,			const int1& v3,			const icomponent1<A>& v4)	: int4(int2(v1, v2), v3, int1(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const int32_t v1,	const int32_t v2,			const icomponent1<A>& v3,	const intN<1>& v4)			: intN<4>(intN<2>(v1, v2), intN<1>(v3), v4) {}
+		template<int A>			hlslpp_inline intN<4>(const int32_t v1,	const int32_t v2,			const intN<1>& v3,			const icomponent1<A>& v4)	: intN<4>(intN<2>(v1, v2), v3, intN<1>(v4)) {}
 
-		template<int A, int B>	hlslpp_inline intN<4>(const int32_t v1,	const icomponent1<A>& v2,	const int32_t v3,				const int1& v4)		: int4(int1(v1), int1(v2), int1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const int32_t v1,	const icomponent1<A>& v2,	const icomponent1<B>& v3,	const int1& v4)		: int4(int1(v1), int1(v2), int1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const int32_t v1,	const icomponent1<A>& v2,	const int32_t v3,				const intN<1>& v4)		: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), v4) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const int32_t v1,	const icomponent1<A>& v2,	const icomponent1<B>& v3,	const intN<1>& v4)		: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), v4) {}
 
-		template<int A>			hlslpp_inline intN<4>(const int32_t v1,	const int1& v2,			const int1& v3,			const icomponent1<A>& v4)	: int4(int1(v1), v2, v3, int1(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const int32_t v1,	const intN<1>& v2,			const intN<1>& v3,			const icomponent1<A>& v4)	: intN<4>(intN<1>(v1), v2, v3, intN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,	const int1& v3,	const int32_t v4)				: int4(int1(v1), v2, v3, int1(v4)) {}
-		template<int A>			hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,	const int1& v3,	const int1& v4)			: int4(int1(v1), int1(v2), v3, v4) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,	const int1& v3,	const icomponent1<B>& v4)	: int4(int1(v1), int1(v2), v3, int1(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,	const intN<1>& v3,	const int32_t v4)				: intN<4>(intN<1>(v1), v2, v3, intN<1>(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,	const intN<1>& v3,	const intN<1>& v4)			: intN<4>(intN<1>(v1), intN<1>(v2), v3, v4) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,	const intN<1>& v3,	const icomponent1<B>& v4)	: intN<4>(intN<1>(v1), intN<1>(v2), v3, intN<1>(v4)) {}
 
-		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int1& v2,		const int32_t v3,			const int32_t v4)				: int4(int1(v1), v2, int1(v3), int1(v4)) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int1& v2,		const int32_t v3,			const int1& v4)			: int4(int1(v1), v2, int1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int1& v2,		const int32_t v3,			const icomponent1<B>& v4)	: int4(int1(v1), v2, int1(v3), int1(v4)) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<1>& v2,		const int32_t v3,			const int32_t v4)				: intN<4>(intN<1>(v1), v2, intN<1>(v3), intN<1>(v4)) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<1>& v2,		const int32_t v3,			const intN<1>& v4)			: intN<4>(intN<1>(v1), v2, intN<1>(v3), v4) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<1>& v2,		const int32_t v3,			const icomponent1<B>& v4)	: intN<4>(intN<1>(v1), v2, intN<1>(v3), intN<1>(v4)) {}
 
-		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const int1& v3,	const int32_t v4)			: int4(int1(v1), int1(v2), v3, int1(v4)) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const int32_t v3,		const int1& v4)		: int4(int1(v1), int1(v2), int1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const intN<1>& v3,	const int32_t v4)			: intN<4>(intN<1>(v1), intN<1>(v2), v3, intN<1>(v4)) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const icomponent1<B>& v2,	const int32_t v3,		const intN<1>& v4)		: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), v4) {}
 
-		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int1& v2,	const icomponent1<B>& v3,	const int32_t v4)		: int4(int1(v1), v2, int1(v3), int1(v4)) {}
-		template<int A>			hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int1& v2,	const int32_t v3,				const int1& v4)	: int4(int1(v1), v2, int1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<1>& v2,	const icomponent1<B>& v3,	const int32_t v4)		: intN<4>(intN<1>(v1), v2, intN<1>(v3), intN<1>(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const icomponent1<A>& v1,	const intN<1>& v2,	const int32_t v3,				const intN<1>& v4)	: intN<4>(intN<1>(v1), v2, intN<1>(v3), v4) {}
 
-		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,		const icomponent1<B>& v3,	const int1& v4)	: int4(int1(v1), int1(v2), int1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const icomponent1<A>& v1,	const int32_t v2,		const icomponent1<B>& v3,	const intN<1>& v4)	: intN<4>(intN<1>(v1), intN<1>(v2), intN<1>(v3), v4) {}
 
-		template<int A>			hlslpp_inline intN<4>(const int1& v1,	const icomponent1<A>& v2,	const int32_t  v3,			const int32_t v4)				: int4(v1, int1(v2), int1(v3), int1(v4)) {}
-		template<int A>			hlslpp_inline intN<4>(const int1& v1,	const icomponent1<A>& v2,	const int32_t v3,				const int1& v4)			: int4(v1, int1(v2), int1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const int1& v1,	const icomponent1<A>& v2,	const int32_t  v3,			const icomponent1<B>& v4)	: int4(v1, int1(v2), int1(v3), int1(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<1>& v1,	const icomponent1<A>& v2,	const int32_t  v3,			const int32_t v4)				: intN<4>(v1, intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<1>& v1,	const icomponent1<A>& v2,	const int32_t v3,				const intN<1>& v4)			: intN<4>(v1, intN<1>(v2), intN<1>(v3), v4) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const intN<1>& v1,	const icomponent1<A>& v2,	const int32_t  v3,			const icomponent1<B>& v4)	: intN<4>(v1, intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline intN<4>(const int1& v1, const int32_t v2,			const icomponent1<A>&  v3,	const int32_t v4)				: int4(v1, int1(v2), int1(v3), int1(v4)) {}
-		template<int A>			hlslpp_inline intN<4>(const int1& v1, const int32_t v2,			const icomponent1<A>& v3,	const int1& v4)			: int4(v1, int1(v2), int1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const int1& v1, const int32_t v2,			const icomponent1<A>&  v3,	const icomponent1<B>& v4)	: int4(v1, int1(v2), int1(v3), int1(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<1>& v1, const int32_t v2,			const icomponent1<A>&  v3,	const int32_t v4)				: intN<4>(v1, intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<1>& v1, const int32_t v2,			const icomponent1<A>& v3,	const intN<1>& v4)			: intN<4>(v1, intN<1>(v2), intN<1>(v3), v4) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const intN<1>& v1, const int32_t v2,			const icomponent1<A>&  v3,	const icomponent1<B>& v4)	: intN<4>(v1, intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline intN<4>(const int1& v1, const int1& v2,		const int32_t v3,				const icomponent1<A>& v4)	: int4(v1, v2, int1(v3), int1(v4)) {}
-		template<int A>			hlslpp_inline intN<4>(const int1& v1, const int1& v2,		const icomponent1<A>& v3,	const int32_t v4)				: int4(v1, v2, int1(v3), int1(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<1>& v1, const intN<1>& v2,		const int32_t v3,				const icomponent1<A>& v4)	: intN<4>(v1, v2, intN<1>(v3), intN<1>(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<1>& v1, const intN<1>& v2,		const icomponent1<A>& v3,	const int32_t v4)				: intN<4>(v1, v2, intN<1>(v3), intN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline intN<4>(const int1& v1, const int32_t v2,			const int1& v3,		const icomponent1<A>& v4)	: int4(v1, int1(v2), v3, int1(v4)) {}
-		template<int A>			hlslpp_inline intN<4>(const int1& v1, const int32_t v2,			const int32_t  v3,		const icomponent1<A>& v4)	: int4(v1, int1(v2), int1(v3), int1(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<1>& v1, const int32_t v2,			const intN<1>& v3,		const icomponent1<A>& v4)	: intN<4>(v1, intN<1>(v2), v3, intN<1>(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<1>& v1, const int32_t v2,			const int32_t  v3,		const icomponent1<A>& v4)	: intN<4>(v1, intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
 
-		template<int A>			hlslpp_inline intN<4>(const int1& v1, const icomponent1<A>& v2,	const int1& v3,			const int32_t v4)		: int4(v1, int1(v2), v3, int1(v4)) {}
-		template<int A, int B>	hlslpp_inline intN<4>(const int1& v1, const icomponent1<A>& v2,	const icomponent1<B>&  v3,	const int32_t v4)		: int4(v1, int1(v2), int1(v3), int1(v4)) {}
+		template<int A>			hlslpp_inline intN<4>(const intN<1>& v1, const icomponent1<A>& v2,	const intN<1>& v3,			const int32_t v4)		: intN<4>(v1, intN<1>(v2), v3, intN<1>(v4)) {}
+		template<int A, int B>	hlslpp_inline intN<4>(const intN<1>& v1, const icomponent1<A>& v2,	const icomponent1<B>&  v3,	const int32_t v4)		: intN<4>(v1, intN<1>(v2), intN<1>(v3), intN<1>(v4)) {}
 
-		explicit intN<4>(const int4x1& v);
-		explicit intN<4>(const int1x4& v);
+		explicit intN<4>(const intNxM<4, 1>& v);
+		explicit intN<4>(const intNxM<1, 4>& v);
 
-		intN<4>& operator = (const int4& c);
+		intN<4>& operator = (const intN<4>& c);
 		intN<4>& operator = (const int32_t f);
 		template<int A, int B, int C, int D> intN<4>& operator = (const icomponent4<A, B, C, D>& c);
 
@@ -2723,6 +2676,11 @@ namespace hlslpp
 		intN<4>(int32_t v1, int32_t v2) = delete;
 		intN<4>(int32_t v1, int32_t v2, int32_t v3) = delete;
 	};
+
+	using int1 = intN<1>;
+	using int2 = intN<2>;
+	using int3 = intN<3>;
+	using int4 = intN<4>;
 
 	//-------------------
 	// Matrix class types
@@ -3033,7 +2991,7 @@ namespace hlslpp
 		hlslpp_inline floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2) {}
 		hlslpp_inline floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; _vec2 = m._vec2; return *this; }
 
-		static const float3x3& identity() { static const float3x3 iden = float3x3(1, 0, 0, 0, 1, 0, 0, 0, 1); return iden; };
+		static const floatNxM<3, 3>& identity() { static const floatNxM<3, 3> iden = floatNxM<3, 3>(1, 0, 0, 0, 1, 0, 0, 0, 1); return iden; };
 	};
 
 	template<>
@@ -3164,8 +3122,50 @@ namespace hlslpp
 		hlslpp_inline explicit floatNxM(float f) : _vec0(_hlslpp_set1_ps(f)), _vec1(_hlslpp_set1_ps(f)), _vec2(_hlslpp_set1_ps(f)), _vec3(_hlslpp_set1_ps(f)) {}
 		hlslpp_inline floatNxM(const floatNxM& m) : _vec0(m._vec0), _vec1(m._vec1), _vec2(m._vec2), _vec3(m._vec3) {}
 		hlslpp_inline floatNxM& operator = (const floatNxM& m) { _vec0 = m._vec0; _vec1 = m._vec1; _vec2 = m._vec2; _vec3 = m._vec3; return *this; }
-		static const float4x4& identity() { static const float4x4 iden = float4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); return iden; };
+		static const floatNxM<4, 4>& identity() { static const floatNxM<4, 4> iden = floatNxM<4, 4>(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); return iden; };
 	};
+
+	using float1x1 = floatNxM<1, 1>;
+	using float1x2 = floatNxM<1, 2>;
+	using float2x1 = floatNxM<2, 1>;
+	using float1x3 = floatNxM<1, 3>;
+	using float3x1 = floatNxM<3, 1>;
+	using float1x4 = floatNxM<1, 4>;
+	using float4x1 = floatNxM<4, 1>;
+
+	using float2x2 = floatNxM<2, 2>;
+	using float2x3 = floatNxM<2, 3>;
+	using float3x2 = floatNxM<3, 2>;
+	using float2x4 = floatNxM<2, 4>;
+	using float4x2 = floatNxM<4, 2>;
+
+	using float3x3 = floatNxM<3, 3>;
+	using float3x4 = floatNxM<3, 4>;
+	using float4x3 = floatNxM<4, 3>;
+
+	using float4x4 = floatNxM<4, 4>;
+
+	// TODO Add integer matrix classes here
+
+	using int1x1 = intNxM<1, 1>;
+	using int1x2 = intNxM<1, 2>;
+	using int2x1 = intNxM<2, 1>;
+	using int1x3 = intNxM<1, 3>;
+	using int3x1 = intNxM<3, 1>;
+	using int1x4 = intNxM<1, 4>;
+	using int4x1 = intNxM<4, 1>;
+
+	using int2x2 = intNxM<2, 2>;
+	using int2x3 = intNxM<2, 3>;
+	using int3x2 = intNxM<3, 2>;
+	using int2x4 = intNxM<2, 4>;
+	using int4x2 = intNxM<4, 2>;
+
+	using int3x3 = intNxM<3, 3>;
+	using int3x4 = intNxM<3, 4>;
+	using int4x3 = intNxM<4, 3>;
+
+	using int4x4 = intNxM<4, 4>;
 
 	//--------------------------
 	// Component float functions
