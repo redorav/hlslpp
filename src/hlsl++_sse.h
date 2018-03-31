@@ -1,7 +1,10 @@
 #pragma once
 
 #if defined(_MSC_VER)
-#include <intrin.h>
+
+#include <immintrin.h>
+#include <ammintrin.h>
+
 #else
 #include <x86intrin.h>
 #endif

@@ -1,7 +1,7 @@
 #if defined(_WIN32)
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
-#include "windows.h"
+#include <windows.h>
 
 //#include "DirectXMath.h"
 #endif
@@ -1299,8 +1299,6 @@ void RunUnitTests()
 	int1 vint3 = vint.r + vint2;
 	vint.r = vint2.x;
 
-	int2 perryint2 = int2(1, 2);
-
 	float1 flala(vint);
 	float1 flala2 = vint;
 
@@ -1319,7 +1317,32 @@ void RunUnitTests()
 	int2 f = d.yx - b.zz;
 	int2 g = d.yx * b.zz;
 
-	int2 roro = abs(g);
+	int2 iabs2 = abs(g);
+
+	int4 icast4 = int4(1, 3, 4, 7);
+	int3 icast3 = int3(6, 3, 1);
+	int2 icast2 = int2(1, 3);
+	int1 icast1 = int1(9);
+
+	float4 ficast4 = icast4;
+	float3 ficast3 = icast3;
+	float2 ficast2 = icast2;
+	float1 ficast1 = icast1;
+
+	ficast4 = icast4;
+	ficast3 = icast3;
+	ficast2 = icast2;
+	ficast1 = icast1;
+
+	float4 ficast_swiz_4 = icast4.xxwz;
+	float3 ficast_swiz_3 = icast3.zyx;
+	float2 ficast_swiz_2 = icast2.yy;
+	float1 ficast_swiz_1 = icast1.x;
+
+	ficast_swiz_4 = icast4.xxwz;
+	ficast_swiz_3 = icast3.zyx;
+	ficast_swiz_2 = icast2.yy;
+	ficast_swiz_1 = icast1.x;
 
 	// Infinities and NaNs
 
