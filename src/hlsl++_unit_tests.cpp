@@ -713,6 +713,16 @@ void RunUnitTests()
 	float3 vcos_swiz_3 = cos(vfoo3.rrg);
 	float4 vcos_swiz_4 = cos(vfoo4.rrbg);
 
+	float1 vcosh1 = cosh(vfoo1);
+	float2 vcosh2 = cosh(vfoo2);
+	float3 vcosh3 = cosh(vfoo3);
+	float4 vcosh4 = cosh(vfoo4);
+
+	float1 vcosh_swiz_1 = cosh(vfoo1.x);
+	float2 vcosh_swiz_2 = cosh(vfoo2.yy);
+	float3 vcosh_swiz_3 = cosh(vfoo3.rrg);
+	float4 vcosh_swiz_4 = cosh(vfoo4.rrbg);
+
 	float3 vcross3			= cross(vfoo3, vbar3);
 	float3 vcross_swiz_3_a	= cross(vfoo3, vbar3.yyx);
 	float3 vcross_swiz_3_b	= cross(vfoo3.xyz, vbar3);
@@ -990,6 +1000,16 @@ void RunUnitTests()
 	float3 vsin_swiz_3 = sin(vfoo3.rrg);
 	float4 vsin_swiz_4 = sin(vfoo4.rrbg);
 
+	float1 vsinh1 = sinh(vfoo1);
+	float2 vsinh2 = sinh(vfoo2);
+	float3 vsinh3 = sinh(vfoo3);
+	float4 vsinh4 = sinh(vfoo4);
+
+	float1 vsinh_swiz_1 = sinh(vfoo1.x);
+	float2 vsinh_swiz_2 = sinh(vfoo2.yy);
+	float3 vsinh_swiz_3 = sinh(vfoo3.rrg);
+	float4 vsinh_swiz_4 = sinh(vfoo4.rrbg);
+
 	float1 vsmoothstep_1 = smoothstep(vfoo1, vfoo1 + 2.0f, vbar1);
 	float2 vsmoothstep_2 = smoothstep(vfoo2, vfoo2 + 5.0f, vbar2);
 	float3 vsmoothstep_3 = smoothstep(vfoo3, vfoo3 + 8.0f, vbar3);
@@ -1039,6 +1059,16 @@ void RunUnitTests()
 	float2 vtan_swiz_2 = tan(vfoo2.yy);
 	float3 vtan_swiz_3 = tan(vfoo3.zzz);
 	float4 vtan_swiz_4 = tan(vfoo4.wwzw);
+
+	float1 vtanh1 = tanh(vfoo1);
+	float2 vtanh2 = tanh(vfoo2);
+	float3 vtanh3 = tanh(vfoo3);
+	float4 vtanh4 = tanh(vfoo4);
+
+	float1 vtanh_swiz_1 = tanh(vfoo1.r);
+	float2 vtanh_swiz_2 = tanh(vfoo2.yy);
+	float3 vtanh_swiz_3 = tanh(vfoo3.zzz);
+	float4 vtanh_swiz_4 = tanh(vfoo4.wwzw);
 
 	float1 vtrunc1 = trunc(vfoo1);
 	float2 vtrunc2 = trunc(vfoo2);

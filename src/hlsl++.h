@@ -1489,6 +1489,30 @@ namespace hlslpp
 		return result;
 	}
 
+	// sinh(x) = (exp(x) - exp(-x)) / 2.0
+	hlslpp_inline n128 _hlslpp_sinh_ps(n128 x)
+	{
+		n128 expx = _hlslpp_exp_ps(x);
+		n128 exp_minusx = _hlslpp_rcp_ps(expx);
+		return _hlslpp_mul_ps(_hlslpp_sub_ps(expx, exp_minusx), f4_05);
+	}
+
+	// cosh(x) = (exp(x) + exp(-x)) / 2.0
+	hlslpp_inline n128 _hlslpp_cosh_ps(n128 x)
+	{
+		n128 expx = _hlslpp_exp_ps(x);
+		n128 exp_minusx = _hlslpp_rcp_ps(expx);
+		return _hlslpp_mul_ps(_hlslpp_add_ps(expx, exp_minusx), f4_05);
+	}
+
+	// tanh(x) = (exp(x) - exp(-x)) / (exp(x) + exp(-x))
+	hlslpp_inline n128 _hlslpp_tanh_ps(n128 x)
+	{
+		n128 expx = _hlslpp_exp_ps(x);
+		n128 exp_minusx = _hlslpp_rcp_ps(expx);
+		return _hlslpp_div_ps(_hlslpp_sub_ps(expx, exp_minusx), _hlslpp_add_ps(expx, exp_minusx));
+	}
+
 	// Inspiration for some bits from https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-float-vector-sum-on-x86
 	// Can optimize further in SSE3 via _mm_movehdup_ps instead of _hlslpp_perm_yxwx_ps, but is slower in MSVC and
 	// only marginally faster on clang
@@ -3668,6 +3692,9 @@ namespace hlslpp
 	template<int N>		hlslpp_inline floatN<N>					cos(const floatN<N>& v) { return floatN<N>(_hlslpp_cos_ps(v._vec)); }
 	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	cos(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_cos_ps(v._vec)); }
 
+	template<int N>		hlslpp_inline floatN<N>					cosh(const floatN<N>& v) { return floatN<N>(_hlslpp_cosh_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	cosh(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_cosh_ps(v._vec)); }
+
 	hlslpp_inline float3 cross(const float3& v1, const float3& v2) { return float3(_hlslpp_cross_ps(v1._vec, v2._vec)); }
 
 	template<int N>		hlslpp_inline floatN<N>					degrees(const floatN<N>& v) { return floatN<N>(_hlslpp_mul_ps(v._vec, f4_rad2deg)); }
@@ -3835,6 +3862,9 @@ namespace hlslpp
 	template<int N>		hlslpp_inline floatN<N>			sin(const floatN<N>& v) { return floatN<N>(_hlslpp_sin_ps(v._vec)); }
 	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	sin(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_sin_ps(v._vec)); }
 
+	template<int N>		hlslpp_inline floatN<N>			sinh(const floatN<N>& v) { return floatN<N>(_hlslpp_sinh_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	sinh(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_sinh_ps(v._vec)); }
+
 	//----- smoothstep
 
 	template<int N> hlslpp_inline floatN<N> smoothstep(const floatN<N>& v1, const floatN<N>& v2, const floatN<N>& a) { return floatN<N>(_hlslpp_smoothstep_ps(v1._vec, v2._vec, a._vec)); }
@@ -3891,6 +3921,9 @@ namespace hlslpp
 	template<int N>		hlslpp_inline floatN<N>			tan(const floatN<N>& v) { return floatN<N>(_hlslpp_tan_ps(v._vec)); }
 	template<int...Dim>	hlslpp_inline components<Dim...>	tan(const components<Dim...>& v) { return components<Dim...>(_hlslpp_tan_ps(v._vec)); }
 
+	template<int N>		hlslpp_inline floatN<N>			tanh(const floatN<N>& v) { return floatN<N>(_hlslpp_tanh_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline components<Dim...>	tanh(const components<Dim...>& v) { return components<Dim...>(_hlslpp_tanh_ps(v._vec)); }
+
 	template<int N>		hlslpp_inline floatN<N>			trunc(const floatN<N>& v) { return floatN<N>(_hlslpp_trunc_ps(v._vec)); }
 	template<int...Dim>	hlslpp_inline components<Dim...>	trunc(const components<Dim...>& v) { return components<Dim...>(_hlslpp_trunc_ps(v._vec)); }
 
@@ -3901,9 +3934,6 @@ namespace hlslpp
 
 	// https://books.google.co.uk/books?id=yphBBAAAQBAJ&pg=PA99&lpg=PA99&dq=_mm_cmpnltps&source=bl&ots=zLVjV__tgU&sig=8uNKfkS_-hIbiLRSFODgG5EWMzw&hl=en&sa=X&ved=0ahUKEwjlkY3126nRAhUHI8AKHSqUCJ4Q6AEIGjAA#v=onepage&q&f=false
 	//hlslpp_forceinline float4 atan2
-	//hlslpp_forceinline float4 cosh
-	//hlslpp_forceinline float4 sinh
-	//hlslpp_forceinline float4 tanh
 	//hlslpp_forceinline float4 modf
 
 	//----------------------------
@@ -4575,6 +4605,9 @@ namespace hlslpp
 	template<int N>		hlslpp_inline floatN<N>					cos(const intN<N>& v) { return floatN<N>(_hlslpp_cos_ps(_hlslpp_cvtepi32_ps(v._vec))); }
 	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	cos(const icomponents<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_cos_ps(_hlslpp_cvtepi32_ps(v._vec))); }
 	
+	template<int N>		hlslpp_inline floatN<N>					cosh(const intN<N>& v) { return floatN<N>(_hlslpp_cosh_ps(_hlslpp_cvtepi32_ps(v._vec))); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	cosh(const icomponents<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_cosh_ps(_hlslpp_cvtepi32_ps(v._vec))); }
+
 	hlslpp_inline float3 cross(const int3& v1, const int3& v2) { return float3(_hlslpp_cross_ps(_hlslpp_cvtepi32_ps(v1._vec), _hlslpp_cvtepi32_ps(v2._vec))); }
 
 	template<int N>		hlslpp_inline floatN<N>					degrees(const intN<N>& v) { return floatN<N>(_hlslpp_mul_ps(_hlslpp_cvtepi32_ps(v._vec), f4_rad2deg)); }
@@ -4697,6 +4730,18 @@ namespace hlslpp
 
 	template<int N>		hlslpp_inline intN<N>				sign(const intN<N>& v) { return intN<N>(_hlslpp_sign_epi32(v._vec)); }
 	template<int...Dim>	hlslpp_inline icomponents<Dim...>	sign(const icomponents<Dim...>& v) { return icomponents<Dim...>(_hlslpp_sign_epi32(v._vec)); }
+
+	template<int N>		hlslpp_inline floatN<N>					sin(const intN<N>& v) { return floatN<N>(_hlslpp_sin_ps(_hlslpp_cvtepi32_ps(v._vec))); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	sin(const icomponents<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_sin_ps(_hlslpp_cvtepi32_ps(v._vec))); }
+
+	template<int N>		hlslpp_inline floatN<N>					sinh(const intN<N>& v) { return floatN<N>(_hlslpp_sinh_ps(_hlslpp_cvtepi32_ps(v._vec))); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	sinh(const icomponents<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_sinh_ps(_hlslpp_cvtepi32_ps(v._vec))); }
+
+	template<int N>		hlslpp_inline floatN<N>					tan(const intN<N>& v) { return floatN<N>(_hlslpp_tan_ps(_hlslpp_cvtepi32_ps(v._vec))); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	tan(const icomponents<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_tan_ps(_hlslpp_cvtepi32_ps(v._vec))); }
+
+	template<int N>		hlslpp_inline floatN<N>					tanh(const intN<N>& v) { return floatN<N>(_hlslpp_tanh_ps(_hlslpp_cvtepi32_ps(v._vec))); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	tanh(const icomponents<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_tanh_ps(_hlslpp_cvtepi32_ps(v._vec))); }
 
 	template<int N>		hlslpp_inline intN<N>				trunc(const intN<N>& v) { hlslpp_warning("Noop. Consider removing this code."); return v; }
 	template<int...Dim>	hlslpp_inline icomponents<Dim...>	trunc(const icomponents<Dim...>& v) { hlslpp_warning("Noop. Consider removing this code."); return icomponents<Dim...>(v._vec); }

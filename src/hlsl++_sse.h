@@ -29,6 +29,8 @@ using n128i = __m128i;
 #define _hlslpp_mul_ss(x, y)					_mm_mul_ss((x), (y))
 #define _hlslpp_div_ss(x, y)					_mm_div_ss((x), (y))
 
+#define _hlslpp_rcp_ps(x)						_mm_rcp_ps((x))
+
 // The following are alternatives but have been measured to be slower
 // _mm_sub_ps(f4zero, v.xyzw);			// Slowest
 // _mm_mul_ps(f4minusOne, v.xyzw);		// Slower
