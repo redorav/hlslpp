@@ -24,6 +24,11 @@ using n128i = __m128i;
 #define _hlslpp_mul_ps(x, y)					_mm_mul_ps((x), (y))
 #define _hlslpp_div_ps(x, y)					_mm_div_ps((x), (y))
 
+#define _hlslpp_add_ss(x, y)					_mm_add_ss((x), (y))
+#define _hlslpp_sub_ss(x, y)					_mm_sub_ss((x), (y))
+#define _hlslpp_mul_ss(x, y)					_mm_mul_ss((x), (y))
+#define _hlslpp_div_ss(x, y)					_mm_div_ss((x), (y))
+
 // The following are alternatives but have been measured to be slower
 // _mm_sub_ps(f4zero, v.xyzw);			// Slowest
 // _mm_mul_ps(f4minusOne, v.xyzw);		// Slower
@@ -67,6 +72,9 @@ using n128i = __m128i;
 #define _hlslpp_andnot_ps(x, y)					_mm_andnot_ps((x), (y))
 #define _hlslpp_or_ps(x, y)						_mm_or_ps((x), (y))
 #define _hlslpp_xor_ps(x, y)					_mm_xor_ps((x), (y))
+
+#define _hlslpp_movehl_ps(x, y)					_mm_movehl_ps((x), (y))
+#define _hlslpp_movehdup_ps(x)					_mm_movehdup_ps((x))
 
 #define _hlslpp_perm_ps(x, msk)					_mm_shuffle_ps((x), (x), msk)
 #define _hlslpp_shuffle_ps(x, y, msk)			_mm_shuffle_ps((x), (y), msk)

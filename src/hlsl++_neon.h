@@ -160,6 +160,13 @@ hlslpp_inline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
 #define _hlslpp_mul_ps(x, y)					vmulq_f32((x), (y))
 #define _hlslpp_div_ps(x, y)					vdivq_f32(x, y)
 
+// In NEON vadd_f32 produces the exact same instruction as vaddq_f32 so just define it as the same.
+// These are only here for the benefit of SSE
+#define _hlslpp_add_ss(x, y)					vaddq_f32((x), (y))
+#define _hlslpp_sub_ss(x, y)					vsubq_f32((x), (y))
+#define _hlslpp_mul_ss(x, y)					vmulq_f32((x), (y))
+#define _hlslpp_div_ss(x, y)					vdivq_f32(x, y)
+
 #define _hlslpp_neg_ps(x)						veorq_u32(vreinterpretq_u32_f32((x)), vmovq_n_u32(0x80000000u))
 
 #define _hlslpp_madd_ps(x, y, z)				vmlaq_f32((z), (x), (y))
@@ -198,6 +205,12 @@ hlslpp_inline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
 #define _hlslpp_andnot_ps(x, y)					vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
 #define _hlslpp_or_ps(x, y)						vreinterpretq_f32_u32(vorrq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
 #define _hlslpp_xor_ps(x, y)					vreinterpretq_f32_u32(veorq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
+
+// SSE: Move the upper 2 single-precision (32-bit) floating-point elements from b to the lower 2 elements of dst, and copy the upper 2 elements from a to the upper 2 elements of dst.
+#define _hlslpp_movehl_ps(x, y)					vcombine_f32(vget_high_f32(y), vget_high_f32(x))
+
+// SSE: Duplicate odd-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst.
+#define _hlslpp_movehdup_ps(x)					vcombine_f32(vdup_lane_f32(vget_low_f32(x), 1), vdup_lane_f32(vget_high_f32(x), 1))
 
 #define _hlslpp_perm_ps(x, msk)					vpermq_f32((x), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
 #define _hlslpp_shuffle_ps(x, y, msk)			vshufq_f32((x), (y), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)

@@ -990,6 +990,16 @@ void RunUnitTests()
 	float3 vsin_swiz_3 = sin(vfoo3.rrg);
 	float4 vsin_swiz_4 = sin(vfoo4.rrbg);
 
+	float1 vsmoothstep_1 = smoothstep(vfoo1, vfoo1 + 2.0f, vbar1);
+	float2 vsmoothstep_2 = smoothstep(vfoo2, vfoo2 + 5.0f, vbar2);
+	float3 vsmoothstep_3 = smoothstep(vfoo3, vfoo3 + 8.0f, vbar3);
+	float4 vsmoothstep_4 = smoothstep(vfoo4, vfoo4 + 3.0f, vbar4);
+
+	float1 vsmoothstep_swiz_1 = smoothstep(vfoo1.x, vfoo1.x, vfoo1.x);
+	float2 vsmoothstep_swiz_2 = smoothstep(vfoo2.yy, vfoo2.yy, vfoo2.yy);
+	float3 vsmoothstep_swiz_3 = smoothstep(vfoo3.rrg, vfoo3.rrg, vfoo3.rrg);
+	float4 vsmoothstep_swiz_4 = smoothstep(vfoo4.rrbg, vfoo4.rrbg, vfoo4.rrbg);
+
 	float1 vsqrt1 = sqrt(vfoo1);
 	float2 vsqrt2 = sqrt(vfoo2);
 	float3 vsqrt3 = sqrt(vfoo3);
@@ -1319,30 +1329,27 @@ void RunUnitTests()
 
 	int2 iabs2 = abs(g);
 
-	int4 icast4 = int4(1, 3, 4, 7);
-	int3 icast3 = int3(6, 3, 1);
-	int2 icast2 = int2(1, 3);
-	int1 icast1 = int1(9);
+	float4 ficast4 = ivfoo4;
+	float3 ficast3 = ivfoo3;
+	float2 ficast2 = ivfoo2;
+	float1 ficast1 = ivfoo1;
 
-	float4 ficast4 = icast4;
-	float3 ficast3 = icast3;
-	float2 ficast2 = icast2;
-	float1 ficast1 = icast1;
+	ficast4 = ivfoo4;
+	ficast3 = ivfoo3;
+	ficast2 = ivfoo2;
+	ficast1 = ivfoo1;
 
-	ficast4 = icast4;
-	ficast3 = icast3;
-	ficast2 = icast2;
-	ficast1 = icast1;
+	float4 ficast_swiz_4 = ivfoo4.xxwz;
+	float3 ficast_swiz_3 = ivfoo3.zyx;
+	float2 ficast_swiz_2 = ivfoo2.yy;
+	float1 ficast_swiz_1 = ivfoo1.x;
 
-	float4 ficast_swiz_4 = icast4.xxwz;
-	float3 ficast_swiz_3 = icast3.zyx;
-	float2 ficast_swiz_2 = icast2.yy;
-	float1 ficast_swiz_1 = icast1.x;
+	ficast_swiz_4 = ivfoo4.xxwz;
+	ficast_swiz_3 = ivfoo3.zyx;
+	ficast_swiz_2 = ivfoo2.yy;
+	ficast_swiz_1 = ivfoo1.x;
 
-	ficast_swiz_4 = icast4.xxwz;
-	ficast_swiz_3 = icast3.zyx;
-	ficast_swiz_2 = icast2.yy;
-	ficast_swiz_1 = icast1.x;
+	int4 ifcast4 = int4(ivfoo1.xx, vfoo2);
 
 	// Infinities and NaNs
 
@@ -1859,7 +1866,7 @@ void RunSpeedTests()
 	timer.Start();
 	for (long int i = 0; i < iter; ++i)
 	{
-		v5 = mul(q, v5);
+		dp = dot(v1, v4 * dp);
 		//v4 = v4.xxxx + v3.yyzw;
 		//Vector4 yyzw = Vector4(v3f.y, v3f.y, v3f.z, v3f.w);
 		//Vector4 xxxx = Vector4(v4f.x, v4f.x, v4f.x, v4f.x);
@@ -1868,7 +1875,7 @@ void RunSpeedTests()
 	double time = timer.Get();
 	//printf("float4: %f, %f, %f, %f = %f\n", (float)v4.x, (float)v4.y, (float)v4.z, (float)v4.w, time);
 	//printf("Vector4: %f, %f, %f, %f\n\n", (float)v4f.x, (float)v4f.y, (float)v4f.z, (float)v4f.w);
-	printf("Elapsed = %f\n", time);
+	printf("Result: %f, Elapsed = %f\n", (float) dp.x, time);
 }
 
 int main()

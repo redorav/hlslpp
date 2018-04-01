@@ -63,6 +63,7 @@ namespace hlslpp
 	const n128 f4_minus05		= _hlslpp_set1_ps(-0.5f);
 	const n128 f4_2				= _hlslpp_set1_ps( 2.0f);
 	const n128 f4_minus2		= _hlslpp_set1_ps(-2.0f);
+	const n128 f4_3				= _hlslpp_set1_ps( 3.0f);
 	const n128 f4_10			= _hlslpp_set1_ps(10.0f);
 	const n128 f4_e				= _hlslpp_set1_ps(2.718281828f);
 	
@@ -1255,6 +1256,18 @@ namespace hlslpp
 		return result;
 	}
 
+	// https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/smoothstep.xhtml
+	// x = (x - edge0) / (edge1 - edge0);
+	// 0,           x <= 0
+	// 3x^2 - 2x^3, 0 < x < 1
+	// 1,           x >= 1
+	hlslpp_inline n128 _hlslpp_smoothstep_ps(n128 edge0, n128 edge1, n128 x)
+	{
+		x = _hlslpp_sat_ps(_hlslpp_div_ps(_hlslpp_sub_ps(x, edge0), _hlslpp_sub_ps(edge1, edge0))); // x = saturate((x - edge0) / (edge1 - edge0))
+		n128 result = _hlslpp_mul_ps(_hlslpp_mul_ps(x, x), _hlslpp_sub_ps(f4_3, _hlslpp_add_ps(x, x))); // result = x^2(3 - 2x)
+		return result;
+	}
+
 	// See http://jrfonseca.blogspot.co.uk/2008/09/fast-sse2-pow-tables-or-polynomials.html for derivation
 	hlslpp_inline n128 _hlslpp_exp2_ps(n128 x)
 	{
@@ -1476,82 +1489,78 @@ namespace hlslpp
 		return result;
 	}
 
+	// Inspiration for some bits from https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-float-vector-sum-on-x86
+	// Can optimize further in SSE3 via _mm_movehdup_ps instead of _hlslpp_perm_yxwx_ps, but is slower in MSVC and
+	// only marginally faster on clang
 	hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
 	{
 		// SSE3 slower
-		// __m128 m			= _mm_mul_ps(x, y);				// Multiply components together
-		// __m128 h1		= _mm_hadd_ps(m, m);			// Add once
-		// __m128 result	= _mm_hadd_ps(h1, h1);		// Add twice
+		// n128 m      = _hlslpp_mul_ps(x, y);    // Multiply components together
+		// n128 h1     = _hlslpp_hadd_ps(m, m);   // Add once
+		// n128 result = _hlslpp_hadd_ps(h1, h1); // Add twice
 
 		// SSE4 slower
-		// __m128 result	= _mm_dp_ps(x, y, 0xff);
+		// n128 result = _hlslpp_dp_ps(x, y, 0xff);
 
 		// SSE2
-		n128 multi	= _hlslpp_mul_ps(x, y);				// Multiply components together
-		n128 shuf1	= _hlslpp_perm_yxwx_ps(multi);		// Move y into x, and w into z (ignore the rest)
-		n128 add1	= _hlslpp_add_ps(shuf1, multi);		// Contains x+y, _, z+w, _
-		n128 shuf2	= _hlslpp_perm_zzzz_ps(add1);		// Move (z + w) into x
-		n128 result	= _hlslpp_add_ps(add1, shuf2);		// Contains x+y+z+w, _, _, _
-
-		return result;
+		n128 multi = _hlslpp_mul_ps(x, y);         // Multiply components
+		n128 shuf  = _hlslpp_perm_yxwx_ps(multi);  // Move y into x, and w into z (ignore the rest)
+		n128 add   = _hlslpp_add_ps(shuf, multi);  // Contains x+y, _, z+w, _
+		shuf       = _hlslpp_movehl_ps(shuf, add); // Move (z + w) into x
+		add        = _hlslpp_add_ss(add, shuf);    // Contains x+y+z+w, _, _, _
+		return add;
 	}
 
 	hlslpp_inline n128 _hlslpp_dot3_ps(n128 x, n128 y)
 	{
 		// SSE4 slower
-		// __m128 result = _mm_dp_ps(v1.xyzw, v2.xyzw, 0x7f);
+		// n128 result = _hlslpp_dp_ps(v1.xyzw, v2.xyzw, 0x7f);
 
 		// SSE2
-		n128 multi	= _hlslpp_mul_ps(x, y);			// Multiply components together
-		n128 shuf1	= _hlslpp_perm_yyyy_ps(multi);	// Move y into x
-		n128 add1	= _hlslpp_add_ps(shuf1, multi);	// Contains x+y, _, _, _
-		n128 shuf2	= _hlslpp_perm_zzzz_ps(multi);	// Move z into x
-		n128 result	= _hlslpp_add_ps(add1, shuf2);	// Contains x+y+z, _, _, _
-
+		n128 multi  = _hlslpp_mul_ps(x, y);         // Multiply components together
+		n128 shuf1  = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
+		n128 add1   = _hlslpp_add_ps(shuf1, multi); // Contains x+y, _, _, _
+		n128 shuf2  = _hlslpp_perm_zzzz_ps(multi);  // Move z into x
+		n128 result = _hlslpp_add_ss(add1, shuf2);  // Contains x+y+z, _, _, _
 		return result;
 	}
 
 	hlslpp_inline n128 _hlslpp_dot2_ps(n128 x, n128 y)
 	{
-		n128 multi	= _hlslpp_mul_ps(x, y);			// Multiply components together
-		n128 shuf1	= _hlslpp_perm_yyyy_ps(multi);	// Move y into x
-		n128 result = _hlslpp_add_ps(shuf1, multi);	// Contains x+y, _, _, _
-
+		n128 multi  = _hlslpp_mul_ps(x, y);         // Multiply components together
+		n128 shuf1  = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
+		n128 result = _hlslpp_add_ss(shuf1, multi); // Contains x+y, _, _, _
 		return result;
 	}
 
 	// Auxiliary dot3 that adds, subtracts, adds instead of adding all
 	hlslpp_inline n128 _hlslpp_dot3_asa_ps(n128 x, n128 y)
 	{
-		n128 multi	= _hlslpp_mul_ps(x, y);			// Multiply components together
-		n128 shuf1	= _hlslpp_perm_yyyy_ps(multi);	// Move y into x
-		n128 add1	= _hlslpp_sub_ps(multi, shuf1);	// Contains x-y, _, _, _
-		n128 shuf2	= _hlslpp_perm_zzzz_ps(multi);	// Move z into x
-		n128 result	= _hlslpp_add_ps(add1, shuf2);	// Contains x-y+z, _, _, _
+		n128 multi  = _hlslpp_mul_ps(x, y);         // Multiply components together
+		n128 shuf1  = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
+		n128 add1   = _hlslpp_sub_ps(multi, shuf1); // Contains x-y, _, _, _
+		n128 shuf2  = _hlslpp_perm_zzzz_ps(multi);  // Move z into x
+		n128 result = _hlslpp_add_ss(add1, shuf2);  // Contains x-y+z, _, _, _
 		return result;
 	}
 
 	hlslpp_inline n128 _hlslpp_any_ps(n128 x)
 	{
-		n128 shuf1	= _hlslpp_perm_yxwx_ps(x);					// Move y into x, and w into z (ignore the rest)
-		n128 add1	= _hlslpp_add_ps(shuf1, x);					// Contains x+y, _, z+w, _
-		n128 shuf2	= _hlslpp_perm_zxxx_ps(add1);				// Move (z + w) into x
-		n128 add2	= _hlslpp_add_ps(add1, shuf2);				// Contains x+y+z+w, _, _, _
-		n128 neZero	= _hlslpp_cmpneq_ps(add2, f4_0);
-		n128 result	= _hlslpp_perm_xxxx_ps(neZero);				// Replicate in all components
-
+		n128 shuf1  = _hlslpp_perm_yxwx_ps(x);       // Move y into x, and w into z (ignore the rest)
+		n128 add1   = _hlslpp_add_ps(shuf1, x);      // Contains x+y, _, z+w, _
+		n128 shuf2  = _hlslpp_perm_zxxx_ps(add1);    // Move (z + w) into x
+		n128 add2   = _hlslpp_add_ps(add1, shuf2);   // Contains x+y+z+w, _, _, _
+		n128 result = _hlslpp_cmpneq_ps(add2, f4_0);
 		return result;
 	}
 
 	hlslpp_inline n128 _hlslpp_all_ps(n128 x)
 	{
-		n128 shuf1	= _hlslpp_perm_yxwx_ps(x);					// Move y into x, and w into z (ignore the rest)
-		n128 mul1	= _hlslpp_mul_ps(shuf1, x);					// Contains x*y, _, z*w, _
-		n128 shuf2	= _hlslpp_perm_zxxx_ps(mul1);				// Move (z * w) into x
-		n128 mul2	= _hlslpp_mul_ps(mul1, shuf2);				// Contains x*y*z*w, _, _, _
-		n128 neZero	= _hlslpp_cmpneq_ps(mul2, f4_0);
-		n128 result	= _hlslpp_perm_xxxx_ps(neZero);				// Replicate in all components
-
+		n128 shuf1  = _hlslpp_perm_yxwx_ps(x);       // Move y into x, and w into z (ignore the rest)
+		n128 mul1   = _hlslpp_mul_ps(shuf1, x);      // Contains x*y, _, z*w, _
+		n128 shuf2  = _hlslpp_perm_zxxx_ps(mul1);    // Move (z * w) into x
+		n128 mul2   = _hlslpp_mul_ps(mul1, shuf2);   // Contains x*y*z*w, _, _, _
+		n128 result = _hlslpp_cmpneq_ps(mul2, f4_0);
 		return result;
 	}
 
@@ -3826,6 +3835,37 @@ namespace hlslpp
 	template<int N>		hlslpp_inline floatN<N>			sin(const floatN<N>& v) { return floatN<N>(_hlslpp_sin_ps(v._vec)); }
 	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	sin(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_sin_ps(v._vec)); }
 
+	//----- smoothstep
+
+	template<int N> hlslpp_inline floatN<N> smoothstep(const floatN<N>& v1, const floatN<N>& v2, const floatN<N>& a) { return floatN<N>(_hlslpp_smoothstep_ps(v1._vec, v2._vec, a._vec)); }
+
+	template<int N> hlslpp_inline floatN<N> smoothstep(const floatN<N>& v1, const floatN<N>& v2, float a) { return smoothstep(v1, v2, floatN<N>(a)); }
+
+	template<int N, int...Dim>
+	hlslpp_inline floatN<N> smoothstep(const floatN<N>& v1, const floatN<N>& v2, const components<Dim...>& a) { return smoothstep(v1, v2, floatN<N>(a)); }
+
+	template<int N, int...Dim>
+	hlslpp_inline floatN<N> smoothstep(const floatN<N>& v1, const components<Dim...>& v2, const floatN<N>& a) { return smoothstep(v1, floatN<N>(v2), a); }
+
+	template<int N, int...Dim>
+	hlslpp_inline floatN<N> smoothstep(const components<Dim...>& v1, const floatN<N>& v2, const floatN<N>& a) { return smoothstep(floatN<N>(v1), v2, a); }
+
+	template<int N, int...Dim>
+	hlslpp_inline floatN<N> smoothstep(const floatN<N>& v1, const components<Dim...>& v2, const components<Dim...>& a) { return smoothstep(v1, floatN<N>(v2), floatN<N>(a)); }
+
+	template<int N, int...Dim>
+	hlslpp_inline floatN<N> smoothstep(const components<Dim...>& v1, const floatN<N>& v2, const components<Dim...>& a) { return smoothstep(floatN<N>(v1), v2, floatN<N>(a)); }
+
+	template<int N, int...Dim>
+	hlslpp_inline floatN<N> smoothstep(const components<Dim...>& v1, const components<Dim...>& v2, const floatN<N>& a) { return smoothstep(floatN<N>(v1), floatN<N>(v2), a); }
+
+	template<int...D1, int...D2, int...D3>
+	hlslpp_inline componentbase<sizeof...(D1)> smoothstep(const components<D1...>& v1, const components<D2...>& v2, const components<D3...>& a)
+	{
+		static_assert((sizeof...(D1) == sizeof...(D2)) && (sizeof...(D2) == sizeof...(D3)), "Vectors must be the same dimension");
+		return componentbase<sizeof...(D1)>(_hlslpp_smoothstep_ps((componentbase<sizeof...(D1)>(v1)._vec), (componentbase<sizeof...(D1)>(v2)._vec), (componentbase<sizeof...(D3)>(a)._vec)));
+	}
+
 	template<int N>		hlslpp_inline floatN<N>			sqrt(const floatN<N>& v) { return floatN<N>(_hlslpp_sqrt_ps(v._vec)); }
 	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	sqrt(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_sqrt_ps(v._vec)); }
 
@@ -3860,7 +3900,6 @@ namespace hlslpp
 	// }
 
 	// https://books.google.co.uk/books?id=yphBBAAAQBAJ&pg=PA99&lpg=PA99&dq=_mm_cmpnltps&source=bl&ots=zLVjV__tgU&sig=8uNKfkS_-hIbiLRSFODgG5EWMzw&hl=en&sa=X&ved=0ahUKEwjlkY3126nRAhUHI8AKHSqUCJ4Q6AEIGjAA#v=onepage&q&f=false
-	//hlslpp_forceinline float4 smoothstep
 	//hlslpp_forceinline float4 atan2
 	//hlslpp_forceinline float4 cosh
 	//hlslpp_forceinline float4 sinh
