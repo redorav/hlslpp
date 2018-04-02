@@ -10,8 +10,8 @@ image:
 
 environment:
   matrix:
-      vsversion: 2015    
-      vsversion: 2017
+    - vsversion: 2015
+    - vsversion: 2017
 
 install:
   - if %vsversion%==2015 start /B /W premake/win/premake5 --file=premake.lua vs2015
