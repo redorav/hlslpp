@@ -1,14 +1,9 @@
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/18dgjfa958f4xqkm/branch/master?svg=true)](https://ci.appveyor.com/project/redorav/hlslpp)
+[![Travis CI](https://travis-ci.org/redorav/hlslpp.svg?branch=master)](https://travis-ci.org/redorav/hlslpp)
 
 # HLSL++
 
 HLSL++ is a small math library for C++ with the same syntax and features as hlsl, with support for SSE and NEON. It features swizzling and all the expected math operators and functions from the hlsl documentation. The library is aimed mainly at game developers. It's meant to ease the C++ to shader bridge by providing a common interface and syntax. It also adds some functionality that hlsl doesn't natively provide, such as convenient math functions and quaternions.
-
-## Build
-
-| OS | Compiler | Status |
-| -- | ------ | ------ |
-| Windows x86 32/64 bits, ARM 32 | MSVC2015, MSVC2017, MSVC ARM, LLVM Clang 5  | [![AppVeyor](https://ci.appveyor.com/api/projects/status/18dgjfa958f4xqkm/branch/master?svg=true)](https://ci.appveyor.com/project/redorav/hlslpp)
-| Linux 64 bits | GCC 4.8 | [![Travis CI](https://travis-ci.org/redorav/hlslpp.svg?branch=master)](https://travis-ci.org/redorav/hlslpp)
 
 ## Example
 
