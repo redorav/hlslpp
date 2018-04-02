@@ -4,9 +4,12 @@ version: 1.0.{build}
 # Do not build feature branch with open Pull Requests
 skip_branch_with_pr: true
 
-vsversion:
-  - 2015
-  - 2017
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      vsversion: 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      vsversion: 2017
 
 install:
   - if %vsversion%==2015 start /B /W premake/win/premake5 --file=premake.lua vs2015
