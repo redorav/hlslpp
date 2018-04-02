@@ -1,11 +1,16 @@
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/18dgjfa958f4xqkm/branch/master?svg=true)](https://ci.appveyor.com/project/redorav/hlslpp)
-[![Travis CI](https://travis-ci.org/redorav/hlslpp.svg?branch=master)](https://travis-ci.org/redorav/hlslpp)
 
 # HLSL++
 
 HLSL++ is a small math library for C++ with the same syntax and features as hlsl, with support for SSE and NEON. It features swizzling and all the expected math operators and functions from the hlsl documentation. The library is aimed mainly at game developers. It's meant to ease the C++ to shader bridge by providing a common interface and syntax. It also adds some functionality that hlsl doesn't natively provide, such as convenient math functions and quaternions.
 
-# Example
+## Build
+
+| OS | Compiler | Status |
+| -- | ------ | ------ |
+| Windows x86 32/64 bits, ARM 32 | MSVC2015, MSVC2017, MSVC ARM, LLVM Clang 5  | [![AppVeyor](https://ci.appveyor.com/api/projects/status/18dgjfa958f4xqkm/branch/master?svg=true)](https://ci.appveyor.com/project/redorav/hlslpp)
+| Linux 64 bits | GCC 4.8 | [![Travis CI](https://travis-ci.org/redorav/hlslpp.svg?branch=master)](https://travis-ci.org/redorav/hlslpp)
+
+## Example
 
 hlsl++ allows you to be as expressive with the math as you typically are when programming in the shader language. Constructs such as the following are possible.
 
@@ -31,18 +36,18 @@ The natvis files provided for Visual Studio debugging allow you to see both vect
   <img align="center" src="/github/images/swizzle_natvis_preview.png?raw=true" alt="Swizzle Natvis Preview">
 </p>
 
-# Requirements
+## Requirements
 
 Required features for the library to compile are C++11, SSE4.1 for x86/64 and NEON for ARM. 
 
 * Some features of C++11 such as anonymous unions and some template extensions would make it more complicated to implement in previous versions of C++.
 * Specific SSE4.1 intrinsics such as _mm_blend_ps and _mm_round_ps make the code faster and easier to develop. Since it's aimed at game developers and most modern consoles and computers support it there are no SSE2 implementations of these functions without justification. In some cases SSE2 versions of functions, such as the dot product, can be faster than the SSE4 equivalent (_mm_dp_ps)
 
-# How to use
+## How to use
 
 Simply include hlsl++.h in your project and add an include path to the src directory. Do not include any of the other files as those get included as appropriate by the main header file. 
 
-# Features
+## Features
 
 * float1, float2, float3, float4 types
 * int1, int2, int3, int4 types
