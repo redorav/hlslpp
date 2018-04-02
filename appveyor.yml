@@ -7,11 +7,12 @@ skip_branch_with_pr: true
 environment:
   matrix:
     - image: Visual Studio 2015
-      install: start /B /W premake/win/premake5 --file=premake.lua vs2015
-      
     - image: Visual Studio 2017
-      install: start /B /W premake/win/premake5 --file=premake.lua vs2017
 
+install:
+  - if %image%==Visual Studio 2015 start /B /W premake/win/premake5 --file=premake.lua vs2015
+  - if %image%==Visual Studio 2017 start /B /W premake/win/premake5 --file=premake.lua vs2017
+      
 platform:
   - MSVC 64
   - MSVC 32
