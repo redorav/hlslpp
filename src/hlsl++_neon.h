@@ -272,6 +272,9 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_slli_epi32(x, y)				vshlq_n_s32((x), (y))
 #define _hlslpp_srli_epi32(x, y)				vshrq_n_s32((x), (y))
 
+#define _hlslpp_sllv_epi32(x, y)				vshlq_s32((x), (y))
+#define _hlslpp_srlv_epi32(x, y)				vshrq_s32((x), (y))
+
 //--------
 // Storing
 //--------

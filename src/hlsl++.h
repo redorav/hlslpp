@@ -4554,6 +4554,48 @@ namespace hlslpp
 		return icomponentbase<sizeof...(D1)>(_hlslpp_cmple1_epi32(icomponentbase<sizeof...(D1)>(v1)._vec, icomponentbase<sizeof...(D1)>(v2)._vec));
 	}
 
+	//----- Shift left
+
+	template<int N> hlslpp_inline intN<N> operator << (const intN<N>& v1, const intN<N>& v2) { return intN<N>(_hlslpp_sllv_epi32(v1._vec, v2._vec)); }
+
+	// If we pass in an int use the version taking a constant instead of a vector, as it's faster in SSE
+	template<int N> hlslpp_inline intN<N> operator << (const intN<N>& v1, const int32_t v2) { return intN<N>(_hlslpp_slli(v1._vec, v2)); }
+	template<int N> hlslpp_inline intN<N> operator << (const int32_t v1, const intN<N>& v2) { return intN<N>(v1) << v2; }
+
+	template<int N, int...Dim>
+	hlslpp_inline intN<N> operator << (const intN<N>& v1, const icomponents<Dim...>& v2) { return v1 << intN<N>(v2); }
+
+	template<int N, int...Dim>
+	hlslpp_inline intN<N> operator << (const icomponents<Dim...>& v1, const intN<N>& v2) { return intN<N>(v1) << v2; }
+
+	template<int...D1, int...D2>
+	hlslpp_inline icomponentbase<sizeof...(D1)> operator << (const icomponents<D1...>& v1, const icomponents<D2...>& v2)
+	{
+		static_assert(sizeof...(D1) == sizeof...(D2), "Vectors must be the same dimension");
+		return icomponentbase<sizeof...(D1)>(_hlslpp_sllv_epi32(icomponentbase<sizeof...(D1)>(v1)._vec, icomponentbase<sizeof...(D1)>(v2)._vec));
+	}
+
+	//----- Shift right
+
+	template<int N> hlslpp_inline intN<N> operator >> (const intN<N>& v1, const intN<N>& v2) { return intN<N>(_hlslpp_srlv_epi32(v1._vec, v2._vec)); }
+
+	// If we pass in an int use the version taking a constant instead of a vector, as it's faster in SSE
+	template<int N> hlslpp_inline intN<N> operator >> (const intN<N>& v1, const int32_t v2) { return intN<N>(_hlslpp_srli(v1._vec, v2)); }
+	template<int N> hlslpp_inline intN<N> operator >> (const int32_t v1, const intN<N>& v2) { return intN<N>(v1) >> v2; }
+
+	template<int N, int...Dim>
+	hlslpp_inline intN<N> operator >> (const intN<N>& v1, const icomponents<Dim...>& v2) { return v1 >> intN<N>(v2); }
+
+	template<int N, int...Dim>
+	hlslpp_inline intN<N> operator >> (const icomponents<Dim...>& v1, const intN<N>& v2) { return intN<N>(v1) >> v2; }
+
+	template<int...D1, int...D2>
+	hlslpp_inline icomponentbase<sizeof...(D1)> operator >> (const icomponents<D1...>& v1, const icomponents<D2...>& v2)
+	{
+		static_assert(sizeof...(D1) == sizeof...(D2), "Vectors must be the same dimension");
+		return icomponentbase<sizeof...(D1)>(_hlslpp_srlv_epi32(icomponentbase<sizeof...(D1)>(v1)._vec, icomponentbase<sizeof...(D1)>(v2)._vec));
+	}
+
 	template<int N>		hlslpp_inline intN<N>					abs(const intN<N>& v) { return intN<N>(_hlslpp_abs_epi32(v._vec)); }
 	template<int...Dim>	hlslpp_inline icomponents<Dim...>		abs(const icomponents<Dim...>& v) { return icomponents<Dim...>(_hlslpp_abs_epi32(v._vec)); }
 

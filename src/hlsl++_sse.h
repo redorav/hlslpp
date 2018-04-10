@@ -119,8 +119,8 @@ using n128i = __m128i;
 #define _hlslpp_or_si128(x, y)					_mm_or_si128((x), (y))
 
 // https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epi32(x, msk)				_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(x), msk))
-#define _hlslpp_shuffle_epi32(x, y, msk)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), msk))
+#define _hlslpp_perm_epi32(x, msk)				_mm_shuffle_epi32((x), (msk))
+#define _hlslpp_shuffle_epi32(x, y, msk)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), (msk)))
 
 // Reshuffle the mask because we use _mm_blend_epi16 as that's what's available in SSE4.1 
 // _mm_blend_epi32 was added later in AVX2
@@ -132,8 +132,66 @@ using n128i = __m128i;
 #define _hlslpp_cvtepi32_ps(x)					_mm_cvtepi32_ps((x))
 #define _hlslpp_cvtps_epi32(x)					_mm_cvtps_epi32((x))
 
+#define _hlslpp_sll_epi32(x, y)					_mm_sll_epi32((x), (y))
 #define _hlslpp_slli_epi32(x, y)				_mm_slli_epi32((x), (y))
+
+#define _hlslpp_srl_epi32(x, y)					_mm_srl_epi32((x), (y))
 #define _hlslpp_srli_epi32(x, y)				_mm_srli_epi32((x), (y))
+
+#define HLSLPP_SHUFFLE_MASK(X, Y, Z, W)			(((W) << 6) | ((Z) << 4) | ((Y) << 2) | (X))
+
+// Create a mask where 1 selects from x, 0 selects from y
+#define HLSLPP_BLEND_MASK(X, Y, Z, W)			(~(X | (Y << 1) | (Z << 2) | (W << 3)) & 0xf)
+
+hlslpp_inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
+{
+	n128i sb = _hlslpp_perm_epi32((count), HLSLPP_SHUFFLE_MASK(1, 0, 0, 0));
+	n128i sc = _hlslpp_perm_epi32((count), HLSLPP_SHUFFLE_MASK(2, 0, 0, 0));
+
+	n128i im0 = _hlslpp_set_epi32(0xffffffff, 0, 0, 0);
+
+	n128i imask0 = _hlslpp_and_si128(count, im0);
+	n128i imask1 = _hlslpp_and_si128(sb, im0);
+	n128i imask2 = _hlslpp_and_si128(sc, im0);
+	n128i imask3 = _hlslpp_srli_epi32(count, 96);
+
+	n128i ic0 = _hlslpp_sll_epi32(x, imask0);
+	n128i ic1 = _hlslpp_sll_epi32(x, imask1);
+	n128i ic2 = _hlslpp_sll_epi32(x, imask2);
+	n128i ic3 = _hlslpp_sll_epi32(x, imask3);
+
+	n128i blend0 = _hlslpp_blend_epi32(ic0, ic1, HLSLPP_BLEND_MASK(1, 0, 0, 0));
+	n128i blend1 = _hlslpp_blend_epi32(ic2, ic3, HLSLPP_BLEND_MASK(0, 0, 1, 0));
+
+	n128i result = _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
+
+	return result;
+}
+
+hlslpp_inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
+{
+	n128i sb = _hlslpp_perm_epi32((count), HLSLPP_SHUFFLE_MASK(1, 0, 0, 0));
+	n128i sc = _hlslpp_perm_epi32((count), HLSLPP_SHUFFLE_MASK(2, 0, 0, 0));
+
+	n128i im0 = _hlslpp_set_epi32(0xffffffff, 0, 0, 0);
+
+	n128i imask0 = _hlslpp_and_si128(count, im0);
+	n128i imask1 = _hlslpp_and_si128(sb, im0);
+	n128i imask2 = _hlslpp_and_si128(sc, im0);
+	n128i imask3 = _hlslpp_srli_epi32(count, 96);
+
+	n128i ic0 = _hlslpp_srl_epi32(x, imask0);
+	n128i ic1 = _hlslpp_srl_epi32(x, imask1);
+	n128i ic2 = _hlslpp_srl_epi32(x, imask2);
+	n128i ic3 = _hlslpp_srl_epi32(x, imask3);
+
+	n128i blend0 = _hlslpp_blend_epi32(ic0, ic1, HLSLPP_BLEND_MASK(1, 0, 0, 0));
+	n128i blend1 = _hlslpp_blend_epi32(ic2, ic3, HLSLPP_BLEND_MASK(0, 0, 1, 0));
+
+	n128i result = _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
+
+	return result;
+}
 
 //--------
 // Storing
