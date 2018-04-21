@@ -3841,6 +3841,8 @@ namespace hlslpp
 	template<int N>		hlslpp_inline floatN<N>			radians(const floatN<N>& v) { return floatN<N>(_hlslpp_mul_ps(v._vec, f4_deg2rad)); }
 	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	radians(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_mul_ps(v._vec, f4_deg2rad)); }
 
+	template<int N>		hlslpp_inline floatN<N>			rcp(const floatN<N>& v) { return floatN<N>(_hlslpp_rcp_ps(v._vec)); }
+	template<int...Dim>	hlslpp_inline floatN<sizeof...(Dim)>	rcp(const components<Dim...>& v) { return floatN<sizeof...(Dim)>(_hlslpp_rcp_ps(v._vec)); }
 
 	hlslpp_inline float1 reflect(const float1& i, const float1& n) { return float1(_hlslpp_sub_ps(i._vec, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n._vec, _hlslpp_perm_xxxx_ps(_hlslpp_mul_ps(i._vec, n._vec)))))); }
 	hlslpp_inline float2 reflect(const float2& i, const float2& n) { return float2(_hlslpp_sub_ps(i._vec, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n._vec, _hlslpp_perm_xxxx_ps(_hlslpp_dot2_ps(i._vec, n._vec)))))); }
