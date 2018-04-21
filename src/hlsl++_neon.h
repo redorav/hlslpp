@@ -16,13 +16,13 @@ hlslpp_inline float32x4_t vmov4q_n_f32(const float x, const float y, const float
 	return vld1q_f32(values);
 }
 
-hlslpp_inline float32x4_t vmov4q_n_s32(const int32_t x, const int32_t y, const int32_t z, const int32_t w)
+hlslpp_inline int32x4_t vmov4q_n_s32(const int32_t x, const int32_t y, const int32_t z, const int32_t w)
 {
 	const int32_t values[4] = { x, y, z, w };
 	return vld1q_s32(values);
 }
 
-hlslpp_inline float32x4_t vmov4q_n_u32(const uint32_t x, const uint32_t y, const uint32_t z, const uint32_t w)
+hlslpp_inline uint32x4_t vmov4q_n_u32(const uint32_t x, const uint32_t y, const uint32_t z, const uint32_t w)
 {
 	const uint32_t values[4] = { x, y, z, w };
 	return vld1q_u32(values);
@@ -235,7 +235,7 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 //--------
 
 #define _hlslpp_set1_epi32(x)					vmovq_n_s32((x))
-#define _hlslpp_set_epi32(x, y, z, w)			vmov4q_n_s32((w), (z), (y), (x))
+#define _hlslpp_set_epi32(x, y, z, w)			vmov4q_n_s32((x), (y), (z), (w))
 
 #define _hlslpp_add_epi32(x, y)					vaddq_s32((x), (y))
 #define _hlslpp_sub_epi32(x, y)					vsubq_s32((x), (y))

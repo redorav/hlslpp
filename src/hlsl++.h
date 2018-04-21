@@ -1721,7 +1721,7 @@ namespace hlslpp
 		{
 			const int mask = HLSLPP_SHUFFLE_MASK(_MM_X, _MM_Y, _MM_Z, _MM_W);
 			const uint32_t reshuffledMask = (((mask >> (2 * E)) & 3) << (2 * A)) | (((mask >> (2 * F)) & 3) << (2 * B)) | (mask & ~((3 << 2 * A) | (3 << 2 * B)));
-			const n128 inputShuffle = _hlslpp_shuffle_ps(x, x, reshuffledMask); // Swizzle input mask with property mask
+			const n128 inputShuffle = _hlslpp_perm_ps(x, reshuffledMask); // Swizzle input mask with property mask
 			return inputShuffle;
 		}
 	
@@ -1762,7 +1762,7 @@ namespace hlslpp
 		{
 			static const int mask = HLSLPP_SHUFFLE_MASK(_MM_X, _MM_Y, _MM_Z, _MM_W);
 			const uint32_t reshuffledMask = (((mask >> (2 * E)) & 0x3) << (2 * A)) | (((mask >> (2 * F)) & 0x3) << (2 * B)) | (((mask >> (2 * G)) & 0x3) << (2 * C)) | (mask & ~((3 << 2 * A) | (3 << 2 * B) | (3 << 2 * C)));
-			n128 inputShuffle = _hlslpp_shuffle_ps(x, x, reshuffledMask);	// Swizzle input mask with property mask
+			n128 inputShuffle = _hlslpp_perm_ps(x, reshuffledMask);	// Swizzle input mask with property mask
 			return inputShuffle;
 		}
 
@@ -1881,7 +1881,7 @@ namespace hlslpp
 
 		// intN/icomponentN constructors
 		template<int N, enable_if_dim<(N == 2)> = nullptr> hlslpp_inline floatN<2>(const intN<N>& v) { _vec = _hlslpp_cvtepi32_ps(v._vec); }
-		template<int A, int B> hlslpp_inline floatN<2>(const icomponent2<A, B>& c) { n128i swizzled = icomponent2<A, B>::template swizzle<A, B, 0, 1>(c._vec); _vec = _hlslpp_cvtepi32_ps(swizzled); }
+		template<int A, int B> hlslpp_inline floatN<2>(const icomponent2<A, B>& c) { _vec = _hlslpp_cvtepi32_ps((icomponent2<A, B>::template swizzle<A, B, 0, 1>(c._vec))); }
 
 		// floatN constructors
 		hlslpp_inline floatN<2>(const floatN<1>& v1, const float v2)                                     : floatN<2>(v1, floatN<1>(v2)) {}
@@ -1898,7 +1898,7 @@ namespace hlslpp
 		hlslpp_inline floatN<2>& operator = (const float f);
 
 		template<int A, int B> hlslpp_inline floatN<2>& operator = (const component2<A, B>& c) { _vec = component2<A, B>::template swizzle<A, B, 0, 1>(c._vec); return *this; }
-		template<int A, int B> hlslpp_inline floatN<2>& operator = (const icomponent2<A, B>& c) { n128i swizzled = icomponent2<A, B>::template swizzle<A, B, 0, 1>(c._vec); _vec = _hlslpp_cvtepi32_ps(swizzled); return *this; }
+		template<int A, int B> hlslpp_inline floatN<2>& operator = (const icomponent2<A, B>& c) { _vec = _hlslpp_cvtepi32_ps((icomponent2<A, B>::template swizzle<A, B, 0, 1>(c._vec))); return *this; }
 
 		hlslpp_inline static const floatN<2>& one() { static const floatN<2> one = floatN<2>(1.0f, 1.0f); return one; };
 		hlslpp_inline static const floatN<2>& zero() { static const floatN<2> zero = floatN<2>(0.0f, 0.0f); return zero; };
@@ -1933,7 +1933,7 @@ namespace hlslpp
 		hlslpp_inline floatN<3>(const float x, const float y, const float z) : _vec(_hlslpp_set_ps(x, y, z, 0.0f)) {}
 
 		template<int N, enable_if_dim<(N == 3)> = nullptr> hlslpp_inline floatN<3>(const intN<N>& v) { _vec = _hlslpp_cvtepi32_ps(v._vec); }
-		template<int A, int B, int C> hlslpp_inline floatN<3>(const icomponent3<A, B, C>& c) { n128i swizzled = icomponent3<A, B, C>::template swizzle<A, B, C, 0, 1, 2>(c._vec); _vec = _hlslpp_cvtepi32_ps(swizzled); }
+		template<int A, int B, int C> hlslpp_inline floatN<3>(const icomponent3<A, B, C>& c) { _vec = _hlslpp_cvtepi32_ps((icomponent3<A, B, C>::template swizzle<A, B, C, 0, 1, 2>(c._vec))); }
 
 		// floatN constructors
 		hlslpp_inline floatN<3>(const floatN<1>& v1, const floatN<1>& v2, const floatN<1>& v3) { _vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(v1._vec, v3._vec), _hlslpp_perm_xxxx_ps(v2._vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
@@ -1996,7 +1996,7 @@ namespace hlslpp
 		hlslpp_inline floatN<3>& operator = (const floatN<3>& v) { _vec = v._vec; return *this; }
 		hlslpp_inline floatN<3>& operator = (const float f);
 		template<int A, int B, int C> hlslpp_inline floatN<3>& operator = (const component3<A, B, C>& c) { _vec = component3<A, B, C>::template swizzle<A, B, C, 0, 1, 2>(c._vec); return *this; }
-		template<int A, int B, int C> hlslpp_inline floatN<3>& operator = (const icomponent3<A, B, C>& c) { n128i swizzled = icomponent3<A, B, C>::template swizzle<A, B, C, 0, 1, 2>(c._vec); _vec = _hlslpp_cvtepi32_ps(swizzled); return *this; }
+		template<int A, int B, int C> hlslpp_inline floatN<3>& operator = (const icomponent3<A, B, C>& c) { _vec = _hlslpp_cvtepi32_ps((icomponent3<A, B, C>::template swizzle<A, B, C, 0, 1, 2>(c._vec))); return *this; }
 
 		hlslpp_inline static const floatN<3>& one() { static const floatN<3> one = floatN<3>(1.0f, 1.0f, 1.0f); return one; };
 		hlslpp_inline static const floatN<3>& zero() { static const floatN<3> zero = floatN<3>(0.0f, 0.0f, 0.0f); return zero; };
@@ -2284,7 +2284,7 @@ namespace hlslpp
 		{
 			const int mask = HLSLPP_SHUFFLE_MASK(_MM_X, _MM_Y, _MM_Z, _MM_W);
 			const uint32_t reshuffledMask = (((mask >> (2 * E)) & 3) << (2 * A)) | (((mask >> (2 * F)) & 3) << (2 * B)) | (mask & ~((3 << 2 * A) | (3 << 2 * B)));
-			const n128i inputShuffle = _hlslpp_shuffle_epi32(x, x, reshuffledMask);	// Swizzle input mask with property mask
+			const n128i inputShuffle = _hlslpp_perm_epi32(x, reshuffledMask);	// Swizzle input mask with property mask
 			return inputShuffle;
 		}
 	
@@ -2325,7 +2325,7 @@ namespace hlslpp
 		{
 			static const int mask = HLSLPP_SHUFFLE_MASK(_MM_X, _MM_Y, _MM_Z, _MM_W);
 			const uint32_t reshuffledMask = (((mask >> (2 * E)) & 0x3) << (2 * A)) | (((mask >> (2 * F)) & 0x3) << (2 * B)) | (((mask >> (2 * G)) & 0x3) << (2 * C)) | (mask & ~((3 << 2 * A) | (3 << 2 * B) | (3 << 2 * C)));
-			n128i inputShuffle = _hlslpp_shuffle_epi32(x, x, reshuffledMask);	// Swizzle input mask with property mask
+			n128i inputShuffle = _hlslpp_perm_epi32(x, reshuffledMask);	// Swizzle input mask with property mask
 			return inputShuffle;
 		}
 
