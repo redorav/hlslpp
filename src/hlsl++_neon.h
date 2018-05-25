@@ -258,8 +258,8 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_and_si128(x, y)					vandq_s32((x), (y))
 #define _hlslpp_or_si128(x, y)					vorrq_s32((x), (y))
 
-#define _hlslpp_perm_epi32(x, msk)				vpermq_f32((x), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
-#define _hlslpp_shuffle_epi32(x, y, msk)		vshufq_f32((x), (y), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
+#define _hlslpp_perm_epi32(x, msk)				vpermq_s32((x), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
+#define _hlslpp_shuffle_epi32(x, y, msk)		vshufq_s32((x), (y), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
 
 #define _hlslpp_blend_epi32(x, y, msk)			vbslq_s32(vmov4q_n_u32(~((msk & 1) * 0xffffffff), ~(((msk >> 1) & 1) * 0xffffffff), ~(((msk >> 2) & 1) * 0xffffffff), ~(((msk >> 3) & 1) * 0xffffffff)), (x), (y))
 
