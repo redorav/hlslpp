@@ -2,7 +2,7 @@
 // XYZW
 // -------------------------------
 
-component1<0> x;
-component2<0, 0> xx;
-component3<0, 0, 0> xxx;
-component4<0, 0, 0, 0> xxxx;
+components<0> x;
+components<0, 0> xx;
+components<0, 0, 0> xxx;
+components<0, 0, 0, 0> xxxx;

@@ -1,4 +1,7 @@
-#if defined(_WIN32)
+#if defined(_XBOX)
+
+#elif defined(_WIN32)
+
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -7,7 +10,7 @@
 #endif
 
 #include <cassert>
-#include <chrono>
+//#include <chrono>
 #include <cstdio>
 #include <iostream>
 #include <cstdlib>
@@ -204,8 +207,8 @@ class Timer
 private:
 	//LARGE_INTEGER m_startTime, m_endTime, m_elapsedMicroseconds;
 	//LARGE_INTEGER m_frequency;
-	std::chrono::high_resolution_clock::time_point m_startTime;
-	std::chrono::high_resolution_clock::time_point m_endTime;
+	//std::chrono::high_resolution_clock::time_point m_startTime;
+	//std::chrono::high_resolution_clock::time_point m_endTime;
 
 public:
 	void Start()
@@ -213,7 +216,7 @@ public:
 		//QueryPerformanceFrequency(&m_frequency);
 		//QueryPerformanceCounter(&m_startTime);
 
-		m_startTime = std::chrono::high_resolution_clock::now();
+		//m_startTime = std::chrono::high_resolution_clock::now();
 	}
 
 	double Get()
@@ -225,9 +228,9 @@ public:
 		//
 		//return double(m_elapsedMicroseconds.QuadPart) / 1.0e6;
 
-		m_endTime = std::chrono::high_resolution_clock::now();
-
-		return std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count() / 1e9f;
+		//m_endTime = std::chrono::high_resolution_clock::now();
+		//
+		//return std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count() / 1e9f;
 	}
 };
 
@@ -1811,7 +1814,6 @@ void RunExperiments()
 
 	float3x3 matSlerp(testq);
 
-
 	// Quaternion vector tests
 	quaternion qEuler = euler(float3(0.0f * deg2rad, 90 * deg2rad, 0 * deg2rad));
 	quaternion qPure = quaternion(1.0f, 0.0f, 0.0f, 0.0f);
@@ -1821,6 +1823,8 @@ void RunExperiments()
 	quaternion normalMultiply = qEuler * qPure;
 
 	float3 rotatedVector = mul(qEuler, vector);
+
+	float4 p = rcp(test);
 
 	float2 a;
 
