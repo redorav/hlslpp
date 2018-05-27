@@ -10,7 +10,7 @@
 #endif
 
 #include <cassert>
-//#include <chrono>
+#include <chrono>
 #include <cstdio>
 #include <iostream>
 #include <cstdlib>
@@ -207,8 +207,8 @@ class Timer
 private:
 	//LARGE_INTEGER m_startTime, m_endTime, m_elapsedMicroseconds;
 	//LARGE_INTEGER m_frequency;
-	//std::chrono::high_resolution_clock::time_point m_startTime;
-	//std::chrono::high_resolution_clock::time_point m_endTime;
+	std::chrono::high_resolution_clock::time_point m_startTime;
+	std::chrono::high_resolution_clock::time_point m_endTime;
 
 public:
 	void Start()
@@ -216,7 +216,7 @@ public:
 		//QueryPerformanceFrequency(&m_frequency);
 		//QueryPerformanceCounter(&m_startTime);
 
-		//m_startTime = std::chrono::high_resolution_clock::now();
+		m_startTime = std::chrono::high_resolution_clock::now();
 	}
 
 	double Get()
@@ -228,9 +228,9 @@ public:
 		//
 		//return double(m_elapsedMicroseconds.QuadPart) / 1.0e6;
 
-		//m_endTime = std::chrono::high_resolution_clock::now();
-		//
-		//return std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count() / 1e9f;
+		m_endTime = std::chrono::high_resolution_clock::now();
+		
+		return std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count() / 1e9f;
 	}
 };
 
