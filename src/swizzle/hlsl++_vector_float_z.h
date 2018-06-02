@@ -2,120 +2,120 @@
 // XYZW
 // -------------------------------
 
-components<2> z;
+component1<2> z;
 
-components<0, 2> xz;
-components<1, 2> yz;
-components<2, 0> zx;
-components<2, 1> zy;
-components<2, 2> zz;
+component2<0, 2> xz;
+component2<1, 2> yz;
+component2<2, 0> zx;
+component2<2, 1> zy;
+component2<2, 2> zz;
 
-components<0, 0, 2> xxz;
-components<0, 1, 2> xyz;
-components<0, 2, 0> xzx;
-components<0, 2, 1> xzy;
-components<0, 2, 2> xzz;
+component3<0, 0, 2> xxz;
+component3<0, 1, 2> xyz;
+component3<0, 2, 0> xzx;
+component3<0, 2, 1> xzy;
+component3<0, 2, 2> xzz;
 
-components<1, 0, 2> yxz;
-components<1, 1, 2> yyz;
-components<1, 2, 0> yzx;
-components<1, 2, 1> yzy;
-components<1, 2, 2> yzz;
+component3<1, 0, 2> yxz;
+component3<1, 1, 2> yyz;
+component3<1, 2, 0> yzx;
+component3<1, 2, 1> yzy;
+component3<1, 2, 2> yzz;
 
-components<2, 0, 0> zxx;
-components<2, 0, 1> zxy;
-components<2, 0, 2> zxz;
-components<2, 1, 0> zyx;
-components<2, 1, 1> zyy;
-components<2, 1, 2> zyz;
+component3<2, 0, 0> zxx;
+component3<2, 0, 1> zxy;
+component3<2, 0, 2> zxz;
+component3<2, 1, 0> zyx;
+component3<2, 1, 1> zyy;
+component3<2, 1, 2> zyz;
 
-components<2, 2, 0> zzx;
-components<2, 2, 1> zzy;
-components<2, 2, 2> zzz;
+component3<2, 2, 0> zzx;
+component3<2, 2, 1> zzy;
+component3<2, 2, 2> zzz;
 
-components<0, 0, 0, 2> xxxz;
-components<0, 0, 1, 2> xxyz;
+component4<0, 0, 0, 2> xxxz;
+component4<0, 0, 1, 2> xxyz;
 
-components<0, 0, 2, 0> xxzx;
-components<0, 0, 2, 1> xxzy;
-components<0, 0, 2, 2> xxzz;
+component4<0, 0, 2, 0> xxzx;
+component4<0, 0, 2, 1> xxzy;
+component4<0, 0, 2, 2> xxzz;
 
-components<0, 1, 0, 2> xyxz;
-components<0, 1, 1, 2> xyyz;
+component4<0, 1, 0, 2> xyxz;
+component4<0, 1, 1, 2> xyyz;
 
-components<0, 1, 2, 0> xyzx;
-components<0, 1, 2, 1> xyzy;
-components<0, 1, 2, 2> xyzz;
+component4<0, 1, 2, 0> xyzx;
+component4<0, 1, 2, 1> xyzy;
+component4<0, 1, 2, 2> xyzz;
 
-components<0, 2, 0, 0> xzxx;
-components<0, 2, 0, 1> xzxy;
-components<0, 2, 0, 2> xzxz;
+component4<0, 2, 0, 0> xzxx;
+component4<0, 2, 0, 1> xzxy;
+component4<0, 2, 0, 2> xzxz;
 
-components<0, 2, 1, 0> xzyx;
-components<0, 2, 1, 1> xzyy;
-components<0, 2, 1, 2> xzyz;
+component4<0, 2, 1, 0> xzyx;
+component4<0, 2, 1, 1> xzyy;
+component4<0, 2, 1, 2> xzyz;
 
-components<0, 2, 2, 0> xzzx;
-components<0, 2, 2, 1> xzzy;
-components<0, 2, 2, 2> xzzz;
+component4<0, 2, 2, 0> xzzx;
+component4<0, 2, 2, 1> xzzy;
+component4<0, 2, 2, 2> xzzz;
 
-components<1, 0, 0, 2> yxxz;
-components<1, 0, 1, 2> yxyz;
-components<1, 0, 2, 0> yxzx;
-components<1, 0, 2, 1> yxzy;
-components<1, 0, 2, 2> yxzz;
+component4<1, 0, 0, 2> yxxz;
+component4<1, 0, 1, 2> yxyz;
+component4<1, 0, 2, 0> yxzx;
+component4<1, 0, 2, 1> yxzy;
+component4<1, 0, 2, 2> yxzz;
 
-components<1, 1, 0, 2> yyxz;
-components<1, 1, 1, 2> yyyz;
+component4<1, 1, 0, 2> yyxz;
+component4<1, 1, 1, 2> yyyz;
 
-components<1, 1, 2, 0> yyzx;
-components<1, 1, 2, 1> yyzy;
-components<1, 1, 2, 2> yyzz;
+component4<1, 1, 2, 0> yyzx;
+component4<1, 1, 2, 1> yyzy;
+component4<1, 1, 2, 2> yyzz;
 
-components<1, 2, 0, 0> yzxx;
-components<1, 2, 0, 1> yzxy;
-components<1, 2, 0, 2> yzxz;
+component4<1, 2, 0, 0> yzxx;
+component4<1, 2, 0, 1> yzxy;
+component4<1, 2, 0, 2> yzxz;
 
-components<1, 2, 1, 0> yzyx;
-components<1, 2, 1, 1> yzyy;
-components<1, 2, 1, 2> yzyz;
+component4<1, 2, 1, 0> yzyx;
+component4<1, 2, 1, 1> yzyy;
+component4<1, 2, 1, 2> yzyz;
 
-components<1, 2, 2, 0> yzzx;
-components<1, 2, 2, 1> yzzy;
-components<1, 2, 2, 2> yzzz;
+component4<1, 2, 2, 0> yzzx;
+component4<1, 2, 2, 1> yzzy;
+component4<1, 2, 2, 2> yzzz;
 
-components<2, 0, 0, 0> zxxx;
-components<2, 0, 0, 1> zxxy;
-components<2, 0, 0, 2> zxxz;
+component4<2, 0, 0, 0> zxxx;
+component4<2, 0, 0, 1> zxxy;
+component4<2, 0, 0, 2> zxxz;
 
-components<2, 0, 1, 0> zxyx;
-components<2, 0, 1, 1> zxyy;
-components<2, 0, 1, 2> zxyz;
+component4<2, 0, 1, 0> zxyx;
+component4<2, 0, 1, 1> zxyy;
+component4<2, 0, 1, 2> zxyz;
 
-components<2, 0, 2, 0> zxzx;
-components<2, 0, 2, 1> zxzy;
-components<2, 0, 2, 2> zxzz;
+component4<2, 0, 2, 0> zxzx;
+component4<2, 0, 2, 1> zxzy;
+component4<2, 0, 2, 2> zxzz;
 
-components<2, 1, 0, 0> zyxx;
-components<2, 1, 0, 1> zyxy;
-components<2, 1, 0, 2> zyxz;
+component4<2, 1, 0, 0> zyxx;
+component4<2, 1, 0, 1> zyxy;
+component4<2, 1, 0, 2> zyxz;
 
-components<2, 1, 1, 0> zyyx;
-components<2, 1, 1, 1> zyyy;
-components<2, 1, 1, 2> zyyz;
+component4<2, 1, 1, 0> zyyx;
+component4<2, 1, 1, 1> zyyy;
+component4<2, 1, 1, 2> zyyz;
 
-components<2, 1, 2, 0> zyzx;
-components<2, 1, 2, 1> zyzy;
-components<2, 1, 2, 2> zyzz;
+component4<2, 1, 2, 0> zyzx;
+component4<2, 1, 2, 1> zyzy;
+component4<2, 1, 2, 2> zyzz;
 
-components<2, 2, 0, 0> zzxx;
-components<2, 2, 0, 1> zzxy;
-components<2, 2, 0, 2> zzxz;
+component4<2, 2, 0, 0> zzxx;
+component4<2, 2, 0, 1> zzxy;
+component4<2, 2, 0, 2> zzxz;
 
-components<2, 2, 1, 0> zzyx;
-components<2, 2, 1, 1> zzyy;
-components<2, 2, 1, 2> zzyz;
+component4<2, 2, 1, 0> zzyx;
+component4<2, 2, 1, 1> zzyy;
+component4<2, 2, 1, 2> zzyz;
 
-components<2, 2, 2, 0> zzzx;
-components<2, 2, 2, 1> zzzy;
-components<2, 2, 2, 2> zzzz;
+component4<2, 2, 2, 0> zzzx;
+component4<2, 2, 2, 1> zzzy;
+component4<2, 2, 2, 2> zzzz;

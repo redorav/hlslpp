@@ -2,16 +2,16 @@
 // _mNM
 // -------------------------------
 
-components<0> _m20;
-components<0, 0> _m20_m20;
-components<0, 0, 0> _m20_m20_m20;
-components<0, 0, 0, 0> _m20_m20_m20_m20;
+component1<0> _m20;
+component2<0, 0> _m20_m20;
+component3<0, 0, 0> _m20_m20_m20;
+component4<0, 0, 0, 0> _m20_m20_m20_m20;
 
 // -------------------------------
 // _NM
 // -------------------------------
 
-components<0> _31;
-components<0, 0> _31_31;
-components<0, 0, 0> _31_31_31;
-components<0, 0, 0, 0> _31_31_31_31;
+component1<0> _31;
+component2<0, 0> _31_31;
+component3<0, 0, 0> _31_31_31;
+component4<0, 0, 0, 0> _31_31_31_31;

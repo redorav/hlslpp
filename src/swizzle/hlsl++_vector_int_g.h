@@ -2,40 +2,40 @@
 // RGBA
 // -------------------------------
 
-icomponents<1> g;
+icomponent1<1> g;
 
-icomponents<0, 1> rg;
-icomponents<1, 0> gr;
-icomponents<1, 1> gg;
+icomponent2<0, 1> rg;
+icomponent2<1, 0> gr;
+icomponent2<1, 1> gg;
 
-icomponents<0, 0, 1> rrg;
-icomponents<0, 1, 0> rgr;
-icomponents<0, 1, 1> rgg;
+icomponent3<0, 0, 1> rrg;
+icomponent3<0, 1, 0> rgr;
+icomponent3<0, 1, 1> rgg;
 
-icomponents<1, 0, 0> grr;
-icomponents<1, 0, 1> grg;
-icomponents<1, 1, 0> ggr;
-icomponents<1, 1, 1> ggg;
+icomponent3<1, 0, 0> grr;
+icomponent3<1, 0, 1> grg;
+icomponent3<1, 1, 0> ggr;
+icomponent3<1, 1, 1> ggg;
 
-icomponents<0, 0, 0, 1> rrrg;
+icomponent4<0, 0, 0, 1> rrrg;
 
-icomponents<0, 0, 1, 0> rrgr;
-icomponents<0, 0, 1, 1> rrgg;
+icomponent4<0, 0, 1, 0> rrgr;
+icomponent4<0, 0, 1, 1> rrgg;
 
-icomponents<0, 1, 0, 0> rgrr;
-icomponents<0, 1, 0, 1> rgrg;
+icomponent4<0, 1, 0, 0> rgrr;
+icomponent4<0, 1, 0, 1> rgrg;
 
-icomponents<0, 1, 1, 0> rggr;
-icomponents<0, 1, 1, 1> rggg;
+icomponent4<0, 1, 1, 0> rggr;
+icomponent4<0, 1, 1, 1> rggg;
 
-icomponents<1, 0, 0, 0> grrr;
-icomponents<1, 0, 0, 1> grrg;
+icomponent4<1, 0, 0, 0> grrr;
+icomponent4<1, 0, 0, 1> grrg;
 
-icomponents<1, 0, 1, 0> grgr;
-icomponents<1, 0, 1, 1> grgg;
+icomponent4<1, 0, 1, 0> grgr;
+icomponent4<1, 0, 1, 1> grgg;
 
-icomponents<1, 1, 0, 0> ggrr;
-icomponents<1, 1, 0, 1> ggrg;
+icomponent4<1, 1, 0, 0> ggrr;
+icomponent4<1, 1, 0, 1> ggrg;
 
-icomponents<1, 1, 1, 0> gggr;
-icomponents<1, 1, 1, 1> gggg;
+icomponent4<1, 1, 1, 0> gggr;
+icomponent4<1, 1, 1, 1> gggg;

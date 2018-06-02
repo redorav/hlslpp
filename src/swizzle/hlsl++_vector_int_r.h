@@ -2,7 +2,7 @@
 // RGBA
 // -------------------------------
 
-icomponents<0> r;
-icomponents<0, 0> rr;
-icomponents<0, 0, 0> rrr;
-icomponents<0, 0, 0, 0> rrrr;
+icomponent1<0> r;
+icomponent2<0, 0> rr;
+icomponent3<0, 0, 0> rrr;
+icomponent4<0, 0, 0, 0> rrrr;

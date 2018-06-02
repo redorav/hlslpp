@@ -30,8 +30,8 @@ namespace hlslpp
 		quaternion(const float3& v1, const float1& v2);
 
 		// componentN constructors
-		template<int A, int B, int C, int D> hlslpp_inline quaternion(const components<A>& v1, const components<B>& v2, const components<C>& v3, const components<D>& v4) : quaternion(float1(v1), float1(v2), float1(v2), float1(v2)) {}
-		template<int A, int B, int C, int D> quaternion(const components<A, B, C, D>& c);
+		template<int A, int B, int C, int D> hlslpp_inline quaternion(const component1<A>& v1, const component1<B>& v2, const component1<C>& v3, const component1<D>& v4) : quaternion(float1(v1), float1(v2), float1(v2), float1(v2)) {}
+		template<int A, int B, int C, int D> quaternion(const component4<A, B, C, D>& c);
 
 		// floatN + float constructors
 		hlslpp_inline quaternion(const float v1, const float1& v2, const float1& v3, const float1& v4) : quaternion(float1(v1), v2, v3, v4) {}
@@ -67,130 +67,130 @@ namespace hlslpp
 		hlslpp_inline quaternion(const float3& v1, const float v2) : quaternion(v1, float1(v2)) {}
 
 		// floatN + componentN constructors
-		template<int A> hlslpp_inline quaternion(const components<A>& v1, const float1& v2, const float1& v3, const float1& v4) : quaternion(float1(v1), v2, v3, v4) {}
-		template<int A> hlslpp_inline quaternion(const float1& v1, const components<A>& v2, const float1& v3, const float1& v4) : quaternion(v1, float1(v2), v3, v4) {}
-		template<int A> hlslpp_inline quaternion(const float1& v1, const float1& v2, const components<A>& v3, const float1& v4) : quaternion(v1, v2, float1(v3), v4) {}
-		template<int A> hlslpp_inline quaternion(const float1& v1, const float1& v2, const float1& v3, const components<A>& v4) : quaternion(v1, v2, v3, float1(v4)) {}
+		template<int A> hlslpp_inline quaternion(const component1<A>& v1, const float1& v2, const float1& v3, const float1& v4) : quaternion(float1(v1), v2, v3, v4) {}
+		template<int A> hlslpp_inline quaternion(const float1& v1, const component1<A>& v2, const float1& v3, const float1& v4) : quaternion(v1, float1(v2), v3, v4) {}
+		template<int A> hlslpp_inline quaternion(const float1& v1, const float1& v2, const component1<A>& v3, const float1& v4) : quaternion(v1, v2, float1(v3), v4) {}
+		template<int A> hlslpp_inline quaternion(const float1& v1, const float1& v2, const float1& v3, const component1<A>& v4) : quaternion(v1, v2, v3, float1(v4)) {}
 
-		template<int A, int B, int C> hlslpp_inline quaternion(const float1& v1, const components<A>& v2, const components<B>& v3, const components<C>& v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline quaternion(const components<A>& v1, const float1& v2, const components<B>& v3, const components<C>& v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline quaternion(const components<A>& v1, const components<B>& v2, const float1& v3, const components<C>& v4) : quaternion(float1(v1), float1(v2), v3, float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline quaternion(const components<A>& v1, const components<B>& v2, const components<C>& v3, const float1& v4) : quaternion(float1(v1), float1(v2), float1(v3), v4) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const float1& v1, const component1<A>& v2, const component1<B>& v3, const component1<C>& v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const component1<A>& v1, const float1& v2, const component1<B>& v3, const component1<C>& v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const component1<A>& v1, const component1<B>& v2, const float1& v3, const component1<C>& v4) : quaternion(float1(v1), float1(v2), v3, float1(v4)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const component1<A>& v1, const component1<B>& v2, const component1<C>& v3, const float1& v4) : quaternion(float1(v1), float1(v2), float1(v3), v4) {}
 
-		template<int A, int B> hlslpp_inline quaternion(const components<A>& v1, const float1& v2, const float1& v3, const components<B>& v4) : quaternion(float1(v1), v2, v3, float1(v4)) {}
-		template<int A, int B> hlslpp_inline quaternion(const components<A>& v1, const components<B>& v2, const float1& v3, const float1& v4) : quaternion(float1(v1), float1(v2), v3, v4) {}
-		template<int A, int B> hlslpp_inline quaternion(const components<A>& v1, const float1& v2, const components<B>& v3, const float1& v4) : quaternion(float1(v1), v2, float1(v3), v4) {}
+		template<int A, int B> hlslpp_inline quaternion(const component1<A>& v1, const float1& v2, const float1& v3, const component1<B>& v4) : quaternion(float1(v1), v2, v3, float1(v4)) {}
+		template<int A, int B> hlslpp_inline quaternion(const component1<A>& v1, const component1<B>& v2, const float1& v3, const float1& v4) : quaternion(float1(v1), float1(v2), v3, v4) {}
+		template<int A, int B> hlslpp_inline quaternion(const component1<A>& v1, const float1& v2, const component1<B>& v3, const float1& v4) : quaternion(float1(v1), v2, float1(v3), v4) {}
 
-		template<int A, int B> hlslpp_inline quaternion(const float1& v1, const components<A>& v2, const components<B>& v3, const float1& v4) : quaternion(v1, float1(v2), float1(v3), v4) {}
-		template<int A, int B> hlslpp_inline quaternion(const float1& v1, const float1& v2, const components<A>& v3, const components<B>& v4) : quaternion(v1, v2, float1(v3), float1(v4)) {}
-		template<int A, int B> hlslpp_inline quaternion(const float1& v1, const components<A>& v2, const float1& v3, const components<B>& v4) : quaternion(v1, float1(v2), v3, float1(v4)) {}
+		template<int A, int B> hlslpp_inline quaternion(const float1& v1, const component1<A>& v2, const component1<B>& v3, const float1& v4) : quaternion(v1, float1(v2), float1(v3), v4) {}
+		template<int A, int B> hlslpp_inline quaternion(const float1& v1, const float1& v2, const component1<A>& v3, const component1<B>& v4) : quaternion(v1, v2, float1(v3), float1(v4)) {}
+		template<int A, int B> hlslpp_inline quaternion(const float1& v1, const component1<A>& v2, const float1& v3, const component1<B>& v4) : quaternion(v1, float1(v2), v3, float1(v4)) {}
 
-		template<int A>			hlslpp_inline quaternion(const float2& v1, const components<A>& v2, const float1& v3) : quaternion(v1, float1(v2), v3) {}
-		template<int A>			hlslpp_inline quaternion(const float2& v1, const float1& v2, const components<A>& v3) : quaternion(v1, v2, float1(v3)) {}
-		template<int A, int B>	hlslpp_inline quaternion(const float2& v1, const components<A>& v2, const components<B>& v3) : quaternion(v1, v2, float1(v3)) {}
+		template<int A>			hlslpp_inline quaternion(const float2& v1, const component1<A>& v2, const float1& v3) : quaternion(v1, float1(v2), v3) {}
+		template<int A>			hlslpp_inline quaternion(const float2& v1, const float1& v2, const component1<A>& v3) : quaternion(v1, v2, float1(v3)) {}
+		template<int A, int B>	hlslpp_inline quaternion(const float2& v1, const component1<A>& v2, const component1<B>& v3) : quaternion(v1, v2, float1(v3)) {}
 
-		template<int A> hlslpp_inline quaternion(const components<A>& v1, const float2& v2, const float1& v3) : quaternion(float1(v1), v2, v3) {}
-		template<int A> hlslpp_inline quaternion(const float1& v1, const float2& v2, const components<A>& v3) : quaternion(v1, v2, float1(v3)) {}
+		template<int A> hlslpp_inline quaternion(const component1<A>& v1, const float2& v2, const float1& v3) : quaternion(float1(v1), v2, v3) {}
+		template<int A> hlslpp_inline quaternion(const float1& v1, const float2& v2, const component1<A>& v3) : quaternion(v1, v2, float1(v3)) {}
 
-		template<int A>			hlslpp_inline quaternion(const float1& v1, const components<A>& v2, const float2& v3) : quaternion(v1, float1(v2), v3) {}
-		template<int A>			hlslpp_inline quaternion(const components<A>& v1, const float1& v2, const float2& v3) : quaternion(float1(v1), v2, v3) {}
-		template<int A, int B>	hlslpp_inline quaternion(const components<A>& v1, const components<B>& v2, const float2& v3) : quaternion(float1(v1), float1(v2), v3) {}
+		template<int A>			hlslpp_inline quaternion(const float1& v1, const component1<A>& v2, const float2& v3) : quaternion(v1, float1(v2), v3) {}
+		template<int A>			hlslpp_inline quaternion(const component1<A>& v1, const float1& v2, const float2& v3) : quaternion(float1(v1), v2, v3) {}
+		template<int A, int B>	hlslpp_inline quaternion(const component1<A>& v1, const component1<B>& v2, const float2& v3) : quaternion(float1(v1), float1(v2), v3) {}
 
-		template<int A> hlslpp_inline quaternion(const components<A>& v1, const float3& v2) : quaternion(float1(v1), v2) {}
-		template<int A> hlslpp_inline quaternion(const float3& v1, const components<A>& v2) : quaternion(v1, float1(v2)) {}
+		template<int A> hlslpp_inline quaternion(const component1<A>& v1, const float3& v2) : quaternion(float1(v1), v2) {}
+		template<int A> hlslpp_inline quaternion(const float3& v1, const component1<A>& v2) : quaternion(v1, float1(v2)) {}
 
 		// componentN + float constructors
-		template<int A> hlslpp_inline quaternion(const components<A>& v1, const float v2, const float v3, const float v4) : quaternion(float1(v1), float3(v2, v3, v4)) {}
-		template<int A> hlslpp_inline quaternion(const float v1, const components<A>& v2, const float v3, const float v4) : quaternion(float1(v1), float1(v2), float2(v3, v4)) {}
-		template<int A> hlslpp_inline quaternion(const float v1, const float v2, const components<A>& v3, const float v4) : quaternion(float2(v1, v2), float1(v3), float1(v4)) {}
-		template<int A> hlslpp_inline quaternion(const float v1, const float v2, const float v3, const components<A>& v4) : quaternion(float3(v1, v2, v3), float1(v4)) {}
+		template<int A> hlslpp_inline quaternion(const component1<A>& v1, const float v2, const float v3, const float v4) : quaternion(float1(v1), float3(v2, v3, v4)) {}
+		template<int A> hlslpp_inline quaternion(const float v1, const component1<A>& v2, const float v3, const float v4) : quaternion(float1(v1), float1(v2), float2(v3, v4)) {}
+		template<int A> hlslpp_inline quaternion(const float v1, const float v2, const component1<A>& v3, const float v4) : quaternion(float2(v1, v2), float1(v3), float1(v4)) {}
+		template<int A> hlslpp_inline quaternion(const float v1, const float v2, const float v3, const component1<A>& v4) : quaternion(float3(v1, v2, v3), float1(v4)) {}
 
-		template<int A, int B, int C> hlslpp_inline quaternion(const float v1, const components<A>& v2, const components<B>& v3, const components<C>& v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline quaternion(const components<A>& v1, const float v2, const components<B>& v3, const components<C>& v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline quaternion(const components<A>& v1, const components<B>& v2, const float v3, const components<C>& v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-		template<int A, int B, int C> hlslpp_inline quaternion(const components<A>& v1, const components<B>& v2, const components<C>& v3, const float v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const float v1, const component1<A>& v2, const component1<B>& v3, const component1<C>& v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const component1<A>& v1, const float v2, const component1<B>& v3, const component1<C>& v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const component1<A>& v1, const component1<B>& v2, const float v3, const component1<C>& v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const component1<A>& v1, const component1<B>& v2, const component1<C>& v3, const float v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
 
-		template<int A, int B> hlslpp_inline quaternion(const components<A>& v1, const float v2, const float v3, const components<B>& v4) : quaternion(float1(v1), float2(v2, v3), float1(v4)) {}
-		template<int A, int B> hlslpp_inline quaternion(const components<A>& v1, const components<B>& v2, const float v3, const float v4) : quaternion(float1(v1), float1(v2), float2(v3, v4)) {}
-		template<int A, int B> hlslpp_inline quaternion(const components<A>& v1, const float v2, const components<B>& v3, const float v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+		template<int A, int B> hlslpp_inline quaternion(const component1<A>& v1, const float v2, const float v3, const component1<B>& v4) : quaternion(float1(v1), float2(v2, v3), float1(v4)) {}
+		template<int A, int B> hlslpp_inline quaternion(const component1<A>& v1, const component1<B>& v2, const float v3, const float v4) : quaternion(float1(v1), float1(v2), float2(v3, v4)) {}
+		template<int A, int B> hlslpp_inline quaternion(const component1<A>& v1, const float v2, const component1<B>& v3, const float v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
 
-		template<int A, int B> hlslpp_inline quaternion(const float v1, const components<A>& v2, const components<B>& v3, const float v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
-		template<int A, int B> hlslpp_inline quaternion(const float v1, const float v2, const components<A>& v3, const components<B>& v4) : quaternion(float2(v1, v2), float1(v3), float1(v4)) {}
-		template<int A, int B> hlslpp_inline quaternion(const float v1, const components<A>& v2, const float v3, const components<B>& v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+		template<int A, int B> hlslpp_inline quaternion(const float v1, const component1<A>& v2, const component1<B>& v3, const float v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
+		template<int A, int B> hlslpp_inline quaternion(const float v1, const float v2, const component1<A>& v3, const component1<B>& v4) : quaternion(float2(v1, v2), float1(v3), float1(v4)) {}
+		template<int A, int B> hlslpp_inline quaternion(const float v1, const component1<A>& v2, const float v3, const component1<B>& v4) : quaternion(float1(v1), float1(v2), float1(v3), float1(v4)) {}
 
 
-		template<int A, int B> hlslpp_inline quaternion(const components<A, B>& v1, const float v2, const float v3) : quaternion(float2(v1), float1(v2), float1(v3)) {}
-		template<int A, int B> hlslpp_inline quaternion(const float v1, const components<A, B>& v2, const float v3) : quaternion(float1(v1), float2(v2), float1(v3)) {}
-		template<int A, int B> hlslpp_inline quaternion(const float v1, const float v2, const components<A, B>& v3) : quaternion(float1(v1), float1(v2), float2(v3)) {}
+		template<int A, int B> hlslpp_inline quaternion(const component2<A, B>& v1, const float v2, const float v3) : quaternion(float2(v1), float1(v2), float1(v3)) {}
+		template<int A, int B> hlslpp_inline quaternion(const float v1, const component2<A, B>& v2, const float v3) : quaternion(float1(v1), float2(v2), float1(v3)) {}
+		template<int A, int B> hlslpp_inline quaternion(const float v1, const float v2, const component2<A, B>& v3) : quaternion(float1(v1), float1(v2), float2(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline quaternion(const float v1, const components<A, B>& v2, const components<C>& v3) : quaternion(float1(v1), float2(v2), float1(v3)) {}
-		template<int A, int B, int C> hlslpp_inline quaternion(const float v1, const components<A>& v2, const components<B, C>& v3) : quaternion(float1(v1), float1(v2), float2(v3)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const float v1, const component2<A, B>& v2, const component1<C>& v3) : quaternion(float1(v1), float2(v2), float1(v3)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const float v1, const component1<A>& v2, const component2<B, C>& v3) : quaternion(float1(v1), float1(v2), float2(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline quaternion(const components<A>& v1, const components<B, C>& v2, const float v3) : quaternion(float1(v1), float2(v2), float1(v3)) {}
-		template<int A, int B, int C> hlslpp_inline quaternion(const components<A>& v1, const float v2, const components<B, C>& v3) : quaternion(float1(v1), float1(v2), float2(v3)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const component1<A>& v1, const component2<B, C>& v2, const float v3) : quaternion(float1(v1), float2(v2), float1(v3)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const component1<A>& v1, const float v2, const component2<B, C>& v3) : quaternion(float1(v1), float1(v2), float2(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline quaternion(const components<A, B>& v1, const float v2, const components<C>& v3) : quaternion(float2(v1), float1(v2), float1(v3)) {}
-		template<int A, int B, int C> hlslpp_inline quaternion(const components<A, B>& v1, const components<C>& v2, const float v3) : quaternion(float2(v1), float1(v2), float1(v3)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const component2<A, B>& v1, const float v2, const component1<C>& v3) : quaternion(float2(v1), float1(v2), float1(v3)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const component2<A, B>& v1, const component1<C>& v2, const float v3) : quaternion(float2(v1), float1(v2), float1(v3)) {}
 
-		template<int A, int B, int C> hlslpp_inline quaternion(const float v1, const components<A, B, C>& v2) : quaternion(float1(v1), float3(v2)) {}
-		template<int A, int B, int C> hlslpp_inline quaternion(const components<A, B, C>& v1, const float v2) : quaternion(float3(v1), float1(v2)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const float v1, const component3<A, B, C>& v2) : quaternion(float1(v1), float3(v2)) {}
+		template<int A, int B, int C> hlslpp_inline quaternion(const component3<A, B, C>& v1, const float v2) : quaternion(float3(v1), float1(v2)) {}
 
 		// floatN + componentN + float constructors
-		template<int A>			hlslpp_inline quaternion(const float v1, const components<A>& v2, const float1& v3, const float v4) : quaternion(float1(v1), float1(v2), v3, float1(v4)) {}
-		template<int A>			hlslpp_inline quaternion(const float v1, const components<A>& v2, const float1& v3, const float1& v4) : quaternion(float1(v1), float1(v2), v3, v4) {}
-		template<int A, int B>	hlslpp_inline quaternion(const float v1, const components<A>& v2, const float1& v3, const components<B>& v4) : quaternion(float1(v1), float1(v2), v3, float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float v1, const component1<A>& v2, const float1& v3, const float v4) : quaternion(float1(v1), float1(v2), v3, float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float v1, const component1<A>& v2, const float1& v3, const float1& v4) : quaternion(float1(v1), float1(v2), v3, v4) {}
+		template<int A, int B>	hlslpp_inline quaternion(const float v1, const component1<A>& v2, const float1& v3, const component1<B>& v4) : quaternion(float1(v1), float1(v2), v3, float1(v4)) {}
 
-		template<int A>			hlslpp_inline quaternion(const float v1, const float1& v2, const components<A>& v3, const float v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
-		template<int A>			hlslpp_inline quaternion(const float v1, const float1& v2, const components<A>& v3, const float1& v4) : quaternion(float1(v1), v2, float1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline quaternion(const float v1, const float1& v2, const components<A>& v3, const components<B>& v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float v1, const float1& v2, const component1<A>& v3, const float v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float v1, const float1& v2, const component1<A>& v3, const float1& v4) : quaternion(float1(v1), v2, float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline quaternion(const float v1, const float1& v2, const component1<A>& v3, const component1<B>& v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
 
-		template<int A>			hlslpp_inline quaternion(const float v1, const float v2, const components<A>& v3, const float1& v4) : quaternion(float2(v1, v2), float1(v3), v4) {}
-		template<int A>			hlslpp_inline quaternion(const float v1, const float v2, const float1& v3, const components<A>& v4) : quaternion(float2(v1, v2), v3, float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float v1, const float v2, const component1<A>& v3, const float1& v4) : quaternion(float2(v1, v2), float1(v3), v4) {}
+		template<int A>			hlslpp_inline quaternion(const float v1, const float v2, const float1& v3, const component1<A>& v4) : quaternion(float2(v1, v2), v3, float1(v4)) {}
 
-		template<int A, int B>	hlslpp_inline quaternion(const float v1, const components<A>& v2, const float v3, const float1& v4) : quaternion(float1(v1), float1(v2), float1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline quaternion(const float v1, const components<A>& v2, const components<B>& v3, const float1& v4) : quaternion(float1(v1), float1(v2), float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline quaternion(const float v1, const component1<A>& v2, const float v3, const float1& v4) : quaternion(float1(v1), float1(v2), float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline quaternion(const float v1, const component1<A>& v2, const component1<B>& v3, const float1& v4) : quaternion(float1(v1), float1(v2), float1(v3), v4) {}
 
-		template<int A>			hlslpp_inline quaternion(const float v1, const float1& v2, const float1& v3, const components<A>& v4) : quaternion(float1(v1), v2, v3, float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float v1, const float1& v2, const float1& v3, const component1<A>& v4) : quaternion(float1(v1), v2, v3, float1(v4)) {}
 
-		template<int A>			hlslpp_inline quaternion(const components<A>& v1, const float v2, const float1& v3, const float v4) : quaternion(float1(v1), v2, v3, float1(v4)) {}
-		template<int A>			hlslpp_inline quaternion(const components<A>& v1, const float v2, const float1& v3, const float1& v4) : quaternion(float1(v1), float1(v2), v3, v4) {}
-		template<int A, int B>	hlslpp_inline quaternion(const components<A>& v1, const float v2, const float1& v3, const components<B>& v4) : quaternion(float1(v1), float1(v2), v3, float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const component1<A>& v1, const float v2, const float1& v3, const float v4) : quaternion(float1(v1), v2, v3, float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const component1<A>& v1, const float v2, const float1& v3, const float1& v4) : quaternion(float1(v1), float1(v2), v3, v4) {}
+		template<int A, int B>	hlslpp_inline quaternion(const component1<A>& v1, const float v2, const float1& v3, const component1<B>& v4) : quaternion(float1(v1), float1(v2), v3, float1(v4)) {}
 
-		template<int A, int B>	hlslpp_inline quaternion(const components<A>& v1, const float1& v2, const float v3, const float v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
-		template<int A, int B>	hlslpp_inline quaternion(const components<A>& v1, const float1& v2, const float v3, const float1& v4) : quaternion(float1(v1), v2, float1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline quaternion(const components<A>& v1, const float1& v2, const float v3, const components<B>& v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
+		template<int A, int B>	hlslpp_inline quaternion(const component1<A>& v1, const float1& v2, const float v3, const float v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
+		template<int A, int B>	hlslpp_inline quaternion(const component1<A>& v1, const float1& v2, const float v3, const float1& v4) : quaternion(float1(v1), v2, float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline quaternion(const component1<A>& v1, const float1& v2, const float v3, const component1<B>& v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
 
-		template<int A, int B>	hlslpp_inline quaternion(const components<A>& v1, const components<B>& v2, const float1& v3, const float v4) : quaternion(float1(v1), float1(v2), v3, float1(v4)) {}
-		template<int A, int B>	hlslpp_inline quaternion(const components<A>& v1, const components<B>& v2, const float v3, const float1& v4) : quaternion(float1(v1), float1(v2), float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline quaternion(const component1<A>& v1, const component1<B>& v2, const float1& v3, const float v4) : quaternion(float1(v1), float1(v2), v3, float1(v4)) {}
+		template<int A, int B>	hlslpp_inline quaternion(const component1<A>& v1, const component1<B>& v2, const float v3, const float1& v4) : quaternion(float1(v1), float1(v2), float1(v3), v4) {}
 
-		template<int A, int B>	hlslpp_inline quaternion(const components<A>& v1, const float1& v2, const components<B>& v3, const float v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
-		template<int A>			hlslpp_inline quaternion(const components<A>& v1, const float1& v2, const float v3, const float1& v4) : quaternion(float1(v1), v2, float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline quaternion(const component1<A>& v1, const float1& v2, const component1<B>& v3, const float v4) : quaternion(float1(v1), v2, float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const component1<A>& v1, const float1& v2, const float v3, const float1& v4) : quaternion(float1(v1), v2, float1(v3), v4) {}
 
-		template<int A, int B>	hlslpp_inline quaternion(const components<A>& v1, const float v2, const components<B>& v3, const float1& v4) : quaternion(float1(v1), float1(v2), float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline quaternion(const component1<A>& v1, const float v2, const component1<B>& v3, const float1& v4) : quaternion(float1(v1), float1(v2), float1(v3), v4) {}
 
-		template<int A>			hlslpp_inline quaternion(const float1& v1, const components<A>& v2, const float  v3, const float v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
-		template<int A>			hlslpp_inline quaternion(const float1& v1, const components<A>& v2, const float v3, const float1& v4) : quaternion(v1, float1(v2), float1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline quaternion(const float1& v1, const components<A>& v2, const float  v3, const components<B>& v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float1& v1, const component1<A>& v2, const float  v3, const float v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float1& v1, const component1<A>& v2, const float v3, const float1& v4) : quaternion(v1, float1(v2), float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline quaternion(const float1& v1, const component1<A>& v2, const float  v3, const component1<B>& v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
 
-		template<int A>			hlslpp_inline quaternion(const float1& v1, const float v2, const components<A>&  v3, const float v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
-		template<int A>			hlslpp_inline quaternion(const float1& v1, const float v2, const components<A>& v3, const float1& v4) : quaternion(v1, float1(v2), float1(v3), v4) {}
-		template<int A, int B>	hlslpp_inline quaternion(const float1& v1, const float v2, const components<A>&  v3, const components<B>& v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float1& v1, const float v2, const component1<A>&  v3, const float v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float1& v1, const float v2, const component1<A>& v3, const float1& v4) : quaternion(v1, float1(v2), float1(v3), v4) {}
+		template<int A, int B>	hlslpp_inline quaternion(const float1& v1, const float v2, const component1<A>&  v3, const component1<B>& v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
 
-		template<int A>			hlslpp_inline quaternion(const float1& v1, const float1& v2, const float v3, const components<A>& v4) : quaternion(v1, v2, float1(v3), float1(v4)) {}
-		template<int A>			hlslpp_inline quaternion(const float1& v1, const float1& v2, const components<A>& v3, const float v4) : quaternion(v1, v2, float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float1& v1, const float1& v2, const float v3, const component1<A>& v4) : quaternion(v1, v2, float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float1& v1, const float1& v2, const component1<A>& v3, const float v4) : quaternion(v1, v2, float1(v3), float1(v4)) {}
 
-		template<int A>			hlslpp_inline quaternion(const float1& v1, const float v2, const float1& v3, const components<A>& v4) : quaternion(v1, float1(v2), v3, float1(v4)) {}
-		template<int A>			hlslpp_inline quaternion(const float1& v1, const float v2, const float  v3, const components<A>& v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float1& v1, const float v2, const float1& v3, const component1<A>& v4) : quaternion(v1, float1(v2), v3, float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float1& v1, const float v2, const float  v3, const component1<A>& v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
 
-		template<int A>			hlslpp_inline quaternion(const float1& v1, const components<A>& v2, const float1& v3, const float v4) : quaternion(v1, float1(v2), v3, float1(v4)) {}
-		template<int A, int B>	hlslpp_inline quaternion(const float1& v1, const components<A>& v2, const components<B>&  v3, const float v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
+		template<int A>			hlslpp_inline quaternion(const float1& v1, const component1<A>& v2, const float1& v3, const float v4) : quaternion(v1, float1(v2), v3, float1(v4)) {}
+		template<int A, int B>	hlslpp_inline quaternion(const float1& v1, const component1<A>& v2, const component1<B>&  v3, const float v4) : quaternion(v1, float1(v2), float1(v3), float1(v4)) {}
 
 		explicit quaternion(const float4x1& q);
 		explicit quaternion(const float1x4& q);
 
 		quaternion& operator = (const quaternion& c);
 		quaternion& operator = (const float4& c);
-		template<int A, int B, int C, int D> quaternion& operator = (const components<A, B, C, D>& c);
+		template<int A, int B, int C, int D> quaternion& operator = (const component4<A, B, C, D>& c);
 
 		static const quaternion& identity() { static const quaternion identity = quaternion(0.0f, 0.0f, 0.0f, 1.0f); return identity; };
 	};
@@ -423,9 +423,9 @@ namespace hlslpp
 	}
 
 	template<int A, int B, int C, int D>
-	hlslpp_inline quaternion::quaternion(const components<A, B, C, D>& c) { *this = c; }
+	hlslpp_inline quaternion::quaternion(const component4<A, B, C, D>& c) { *this = c; }
 
-	template<> hlslpp_inline quaternion::quaternion(const components<0, 1, 2, 3>& c) { _vec = c._vec; } // Optimize a straight copy if the indices match 0, 1, 2, 3 (doesn't produce/need the shuffle)
+	template<> hlslpp_inline quaternion::quaternion(const component4<0, 1, 2, 3>& c) { _vec = c._vec; } // Optimize a straight copy if the indices match 0, 1, 2, 3 (doesn't produce/need the shuffle)
 
 	hlslpp_inline quaternion::quaternion(const float4x1& q) { _vec = q._vec; }
 	hlslpp_inline quaternion::quaternion(const float1x4& q) { _vec = q._vec; }
@@ -434,9 +434,9 @@ namespace hlslpp
 	hlslpp_inline quaternion& quaternion::operator = (const quaternion& q) { _vec = q._vec; return *this; }
 
 	template<int A, int B, int C, int D>
-	hlslpp_inline quaternion& quaternion::operator = (const components<A, B, C, D>& c) { _vec = _hlslpp_shuffle_ps(c._vec, c._vec, HLSLPP_SHUFFLE_MASK(A, B, C, D)); return *this; }
+	hlslpp_inline quaternion& quaternion::operator = (const component4<A, B, C, D>& c) { _vec = _hlslpp_shuffle_ps(c._vec, c._vec, HLSLPP_SHUFFLE_MASK(A, B, C, D)); return *this; }
 
-	template<> hlslpp_inline quaternion& quaternion::operator = (const components<0, 1, 2, 3>& c) { _vec = c._vec; return *this; } // Optimize a straight copy if the indices match 0, 1, 2, 3 (doesn't produce/need the shuffle)
+	template<> hlslpp_inline quaternion& quaternion::operator = (const component4<0, 1, 2, 3>& c) { _vec = c._vec; return *this; } // Optimize a straight copy if the indices match 0, 1, 2, 3 (doesn't produce/need the shuffle)
 
 	hlslpp_inline quaternion	operator + (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_add_ps(q1._vec, q2._vec)); }
 	hlslpp_inline quaternion&	operator += (quaternion& q1, const quaternion& q2) { q1 = q1 + q2; return q1; }
