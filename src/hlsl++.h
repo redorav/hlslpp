@@ -5110,21 +5110,12 @@ namespace hlslpp
 		return result;
 	}
 
+	// https://lxjk.github.io/2017/09/03/Fast-4x4-Matrix-Inverse-with-SSE-SIMD-Explained.html
 	hlslpp_inline n128 _hlslpp_mul_2x2_2x2_ps(const n128& m1_vec, const n128& m2_vec)
 	{
-		// First and last elements in the matrix
-		n128 diag1shuf1 = _hlslpp_perm_xzyw_ps(m2_vec);			// Shuffle m2 to align components with m1
-		n128 diag1mul1 = _hlslpp_mul_ps(m1_vec, diag1shuf1);		// Multiply. Now contains m00 * n00, m01 * n10, m10 * n01, m11 * n11
-		n128 diag1shuf2 = _hlslpp_perm_yxxz_ps(diag1mul1);		// Shuffle to align to be able to add
-		n128 diag1result = _hlslpp_add_ps(diag1mul1, diag1shuf2);	// Now contains m00*n00 + m01*n10, _, _, m10*n01 + m11*n11
-
-		// Second and third elements in the matrix
-		n128 diag2shuf1 = _hlslpp_perm_ywxz_ps(m2_vec);			// Shuffle matrix to align components with m1
-		n128 diag2mul1 = _hlslpp_mul_ps(m1_vec, diag2shuf1);		// Multiply. Now contains m00 * n00, m01 * n10, m10 * n01, m11 * n11
-		n128 diag2shuf2 = _hlslpp_perm_xxwx_ps(diag2mul1);		// Shuffle to align to be able to add
-		n128 diag2result = _hlslpp_add_ps(diag2mul1, diag2shuf2);	// Now contains m00*n00 + m01*n10, _, _, m10*n01 + m11*n11
-
-		n128 result = _hlslpp_blend_ps(diag1result, diag2result, HLSLPP_BLEND_MASK(1, 0, 0, 1));
+		n128 mul0 = _hlslpp_mul_ps(m1_vec, _hlslpp_perm_xwxw_ps(m2_vec));
+		n128 mul1 = _hlslpp_mul_ps(_hlslpp_perm_yxwz_ps(m1_vec), _hlslpp_perm_zyzy_ps(m2_vec));
+		n128 result = _hlslpp_add_ps(mul0, mul1);
 		return result;
 	}
 
