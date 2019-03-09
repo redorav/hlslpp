@@ -52,6 +52,14 @@ workspace "hlsl++"
 	
 		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32, PlatformARM }
 	
+		local llvmToolset;
+		
+		if (_ACTION == "vs2015") then
+			llvmToolset = "msc-llvm-vs2014";
+		else
+			llvmToolset = "msc-llvm";
+		end
+		
 		filter { "platforms:"..PlatformMSVC64 }
 			toolset("msc")
 			architecture("x64")
@@ -60,12 +68,12 @@ workspace "hlsl++"
 			toolset("msc")
 			
 		filter { "platforms:"..PlatformLLVM64 }
-			toolset("msc-llvm")
+			toolset(llvmToolset)
 			architecture("x64")
 			buildoptions { "-Wno-unused-variable -msse4.1" }
 			
 		filter { "platforms:"..PlatformLLVM32 }
-			toolset("msc-llvm")
+			toolset(llvmToolset)
 			buildoptions { "-Wno-unused-variable -msse4.1" }
 			
 		filter { "platforms:"..PlatformARM }
