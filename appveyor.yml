@@ -24,11 +24,11 @@ platform:
   
 matrix:
   exclude:
-    - image: Visual Studio 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       platform: MSVC ARM64
-    - image: Visual Studio 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       platform: LLVM 64
-    - image: Visual Studio 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       platform: LLVM 32
   
 configuration:
