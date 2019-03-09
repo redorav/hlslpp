@@ -249,6 +249,15 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 
 #define _hlslpp_abs_epi32(x)					vabsq_s32((x))
 
+#define _hlslpp_cmpeq_epi32(x, y)				vceqq_u32((x), (y))
+#define _hlslpp_cmpneq_epi32(x, y)				veorq_u32(vceqq_u32((x), (y)), vmovq_n_u32(0xffffffffu))
+
+#define _hlslpp_cmpgt_epi32(x, y)				vcgtq_u32((x), (y))
+#define _hlslpp_cmpge_epi32(x, y)				vcgeq_u32((x), (y))
+
+#define _hlslpp_cmplt_epi32(x, y)				vcltq_u32((x), (y))
+#define _hlslpp_cmple_epi32(x, y)				vcleq_u32((x), (y))
+
 #define _hlslpp_max_epi32(x, y)					vmaxq_s32((x), (y))
 #define _hlslpp_min_epi32(x, y)					vminq_s32((x), (y))
 

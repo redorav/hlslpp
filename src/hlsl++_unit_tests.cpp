@@ -1,27 +1,31 @@
-#if defined(_XBOX)
-
-#elif defined(_WIN32)
-
-#define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
-//#include "DirectXMath.h"
-#endif
-
-#include <cassert>
-#include <chrono>
 #include <cstdio>
-#include <iostream>
-#include <cstdlib>
+
 #define _USE_MATH_DEFINES
+#include "math.h"
 #include <cmath>
 #include <algorithm>
+#include <cassert>
+
+using namespace std;
 
 #include "hlsl++.h"
 
-using std::cout;
+//#if defined(_WIN32)
+//
+//#define NOMINMAX
+//#define WIN32_LEAN_AND_MEAN
+//#include <windows.h>
+//
+////#include "DirectXMath.h"
+//#endif
+//
+#include <chrono>
+//#include <iostream>
+//
+
 using namespace hlslpp;
+
+const float deg2rad = 3.14159265f / 180.0f;
 
 namespace hlslpp_unit
 {
@@ -48,13 +52,14 @@ namespace hlslpp_unit
 
 	void eq(float a, float b, float tolerance = 0.0f)
 	{
-		float error = abs(a - b);
 		bool withinTolerance = abs(a - b) <= tolerance;
 		assert(withinTolerance);
 	}
-
+	
 	void eq(const float2& v, float x, float y, float tolerance = 0.0f)
 	{
+		//printf("eq(float2, float, float) (%f, %f) == (%f, %f)\n", (float)v.x, (float)v.y, x, y);
+
 		eq(v.x, x, tolerance);
 		eq(v.y, y, tolerance);
 	}
@@ -65,7 +70,7 @@ namespace hlslpp_unit
 		eq(v.y, y, tolerance);
 		eq(v.z, z, tolerance);
 	}
-
+	
 	void eq(const float4& v, float x, float y, float z, float w, float tolerance = 0.0f)
 	{
 		eq(v.x, x, tolerance);
@@ -73,12 +78,39 @@ namespace hlslpp_unit
 		eq(v.z, z, tolerance);
 		eq(v.w, w, tolerance);
 	}
-
+	
 	float div(float a, float b)
 	{
 		return a / b;
 	}
-
+	
+	void eq(float a, bool c)
+	{
+		bool equals = (bool)a == c;
+		assert(equals);
+	}
+	
+	void eq(float2 v, bool x, bool y)
+	{
+		eq(v.x, x);
+		eq(v.y, y);
+	}
+	
+	void eq(float3 v, bool x, bool y, bool z)
+	{
+		eq(v.x, x);
+		eq(v.y, y);
+		eq(v.z, z);
+	}
+	
+	void eq(float4 v, bool x, bool y, bool z, bool w)
+	{
+		eq(v.x, x);
+		eq(v.y, y);
+		eq(v.z, z);
+		eq(v.w, w);
+	}
+	
 	void eq(int32_t a, int32_t b)
 	{
 		assert(a == b);
@@ -136,12 +168,12 @@ namespace hlslpp_unit
 
 		int32_t negRangeStart = rangeStart_t.i >= 0 ? int32_t(0x80000000) : rangeStart_t.i;
 
-		for(int64_t i = negRangeStart; i > int32_t(0x80000000); --i)
+		for (int64_t i = negRangeStart; i > int32_t(0x80000000); --i)
 		{
 			float_t input;
 			input.i = (int32_t)i;
 
-			float_t testValue = (float) vectorFunction(float4(input.f, input.f, input.f, input.f)).x;
+			float_t testValue = (float)vectorFunction(float4(input.f, input.f, input.f, input.f)).x;
 			float_t refValue = scalarFunction(input.f);
 
 			float absError = abs(testValue.f - refValue.f);
@@ -169,7 +201,7 @@ namespace hlslpp_unit
 		int32_t posRangeStart = std::max<int32_t>(0, rangeStart_t.i);
 		int32_t posRangeEnd = std::max<int32_t>(0, rangeEnd_t.i);
 
-		for(uint64_t i = posRangeStart; i < posRangeEnd; ++i)
+		for (uint64_t i = posRangeStart; i < posRangeEnd; ++i)
 		{
 			float_t input;
 			input.i = (int32_t)i;
@@ -238,12 +270,12 @@ void RunUnitTests()
 {
 	using namespace hlslpp_unit;
 
-	float f1 = (float) (rand() % 1000); float f5 = (float) (rand() % 1000); float f9 =  (float) (rand() % 1000); float f13 = (float) (rand() % 1000); float f17 = (float) (rand() % 1000); 
-	float f2 = (float) (rand() % 1000); float f6 = (float) (rand() % 1000); float f10 = (float) (rand() % 1000); float f14 = (float) (rand() % 1000); float f18 = (float) (rand() % 1000);
-	float f3 = (float) (rand() % 1000); float f7 = (float) (rand() % 1000); float f11 = (float) (rand() % 1000); float f15 = (float) (rand() % 1000); float f19 = (float) (rand() % 1000);
-	float f4 = (float) (rand() % 1000); float f8 = (float) (rand() % 1000); float f12 = (float) (rand() % 1000); float f16 = (float) (rand() % 1000); float f20 = (float) (rand() % 1000);
+	float f1 = (rand() % 1000) / 100.0f; float f5 = (rand() % 1000) / 100.0f; float f9 =  (rand() % 1000) / 100.0f; float f13 = (rand() % 1000) / 100.0f; float f17 = (rand() % 1000) / 100.0f; 
+	float f2 = (rand() % 1000) / 100.0f; float f6 = (rand() % 1000) / 100.0f; float f10 = (rand() % 1000) / 100.0f; float f14 = (rand() % 1000) / 100.0f; float f18 = (rand() % 1000) / 100.0f;
+	float f3 = (rand() % 1000) / 100.0f; float f7 = (rand() % 1000) / 100.0f; float f11 = (rand() % 1000) / 100.0f; float f15 = (rand() % 1000) / 100.0f; float f19 = (rand() % 1000) / 100.0f;
+	float f4 = (rand() % 1000) / 100.0f; float f8 = (rand() % 1000) / 100.0f; float f12 = (rand() % 1000) / 100.0f; float f16 = (rand() % 1000) / 100.0f; float f20 = (rand() % 1000) / 100.0f;
 
-	// Initialization
+// Initialization
 
 	float1 vfoo1 = float1(f1);												eq(vfoo1, f1);
 	float2 vfoo2 = float2(f2, f3);											eq(vfoo2, f2, f3);
@@ -259,7 +291,7 @@ void RunUnitTests()
 	float2 vbar2 = vfoo2.gr;												eq(vbar2, f3, f2);
 	float3 vbar3 = vfoo3.zyx;												eq(vbar3, f6, f5, f4);
 	float4 vbar4 = vfoo4.bgra;												eq(vbar4, f9, f8, f7, f10);
-
+	
 	vbar1 = f11;															eq(vbar1, f11);
 	vbar2 = float2(f12, f13);												eq(vbar2, f12, f13);
 	vbar3 = float3(f14, f15, f16);											eq(vbar3, f14, f15, f16);
@@ -270,10 +302,10 @@ void RunUnitTests()
 	float3 vbaz3 = float3(0.1f, 0.4f, 0.8f);								eq(vbaz3, 0.1f, 0.4f, 0.8f);
 	float4 vbaz4 = float4(0.0f, 0.2f, 0.6f, 1.0f);							eq(vbaz4, 0.0f, 0.2f, 0.6f, 1.0f);
 
-	float2 vfoo_mix_2_a	= float2(vfoo1, vbar1);								eq(vfoo_mix_2_a, vfoo1, vbar1);
-	float2 vfoo_mix_2_b	= float2(vfoo2.y, vbar1);							eq(vfoo_mix_2_b, vfoo2.y, vbar1);
-	float2 vfoo_mix_2_c	= float2(vfoo1, vbar1.x);							eq(vfoo_mix_2_c, vfoo1, vbar1.x);
-	float2 vfoo_mix_2_d	= float2(vfoo1.x, vbar2.y);							eq(vfoo_mix_2_d, vfoo1.x, vbar2.y);
+	float2 vfoo_mix_2_a = float2(vfoo1, vbar1);								eq(vfoo_mix_2_a, vfoo1, vbar1);
+	float2 vfoo_mix_2_b = float2(vfoo2.y, vbar1);							eq(vfoo_mix_2_b, vfoo2.y, vbar1);
+	float2 vfoo_mix_2_c = float2(vfoo1, vbar1.x);							eq(vfoo_mix_2_c, vfoo1, vbar1.x);
+	float2 vfoo_mix_2_d = float2(vfoo1.x, vbar2.y);							eq(vfoo_mix_2_d, vfoo1.x, vbar2.y);
 
 	float2 vfoo_mix_2_f_a = float2(vfoo1, f1);								eq(vfoo_mix_2_f_a, vfoo1.x, f1);
 	float2 vfoo_mix_2_f_b = float2(f2, vbar1);								eq(vfoo_mix_2_f_b, f2, vbar1);
@@ -343,14 +375,16 @@ void RunUnitTests()
 	// Assignment and swizzle
 
 	float1 vassign1 = vfoo1.x;												eq(vassign1.x, vfoo1.x);
-	vassign1 = vfoo1.r;														eq(vassign1.x, vfoo1.x);
+	vassign1 = vfoo2.y;														eq(vassign1.x, vfoo2.y);
 	vassign1.r = vfoo1;														eq(vassign1.x, vfoo1.x);
-	vassign1.r = vfoo1.r;													eq(vassign1.x, vfoo1.x);
-
+	vassign1.r = vfoo2.y;													eq(vassign1.x, vfoo2.y);
+	vassign1.r = f1;														eq(vassign1.x, f1);
+	
 	float2 vassign2 = vfoo2.yx;												eq(vassign2, vfoo2.y, vfoo2.x);
 	vassign2 = vfoo2.yy;													eq(vassign2, vfoo2.y, vfoo2.y);
 	vassign2.rg = vfoo2;													eq(vassign2, vfoo2.x, vfoo2.y);
 	vassign2.rg = vfoo2.gr;													eq(vassign2, vfoo2.y, vfoo2.x);
+	vassign2.rg = f2;														eq(vassign2, f2, f2);
 
 	float3 vassign3 = vfoo3.yxz;											eq(vassign3, vfoo3.y, vfoo3.x, vfoo3.z);
 	vassign3 = vfoo3.yyx;													eq(vassign3, vfoo3.y, vfoo3.y, vfoo3.x);
@@ -362,7 +396,7 @@ void RunUnitTests()
 	vassign4.bgra = vfoo4;													eq(vassign4, vfoo4.b, vfoo4.g, vfoo4.r, vfoo4.a);
 	vassign4.rgba = vfoo4.grba;												eq(vassign4, vfoo4.g, vfoo4.r, vfoo4.b, vfoo4.a);
 
-	float2 vneg_swiz_2 = -vfoo2.yx;											assert(vassign2.x == (float)vfoo2.y && vassign2.y == (float)vfoo2.x);
+	float2 vneg_swiz_2 = -vfoo2.yx;											assert(vneg_swiz_2.x == -(float)vfoo2.y && vneg_swiz_2.y == -(float)vfoo2.x);
 
 	// Addition
 
@@ -372,6 +406,7 @@ void RunUnitTests()
 	float4 vadd4 = vfoo4 + vbar4;											eq(vadd4, (float)vfoo4.x + (float)vbar4.x, (float)vfoo4.y + (float)vbar4.y, (float)vfoo4.z + (float)vbar4.z, (float)vfoo4.w + (float)vbar4.w);
 
 	float1 vadd_f_1 = vfoo1 + 0.1f;											eq(vadd_f_1, (float)vfoo1.x + 0.1f);
+	float1 vadd_f_1_b = 0.1f + vfoo1;										eq(vadd_f_1, 0.1f + (float)vfoo1.x);
 	float2 vadd_f_2 = vfoo2 + 0.2f;											eq(vadd_f_2, (float)vfoo2.x + 0.2f, (float)vfoo2.y + 0.2f);
 	float3 vadd_f_3 = vfoo3 + 0.3f;											eq(vadd_f_3, (float)vfoo3.x + 0.3f, (float)vfoo3.y + 0.3f, (float)vfoo3.z + 0.3f);
 	float4 vadd_f_4 = vfoo4 + 0.4f;											eq(vadd_f_4, (float)vfoo4.x + 0.4f, (float)vfoo4.y + 0.4f, (float)vfoo4.z + 0.4f, (float)vfoo4.w + 0.4f);
@@ -534,42 +569,40 @@ void RunUnitTests()
 
 	// Comparison
 
-	float1 vgt1 = vfoo1 > vbar1;							assert(vgt1.x == (float)vfoo1.x > (float)vbar1.x);
-	float2 vgt2 = vfoo2 > vbar2;							assert(vgt2.x == (float)vfoo2.x > (float)vbar2.x && vgt2.y == (float)vfoo2.y > (float)vbar2.y);
-	float3 vgt3 = vfoo3 > vbar3;							assert(vgt3.x == (float)vfoo3.x > (float)vbar3.x && vgt3.y == (float)vfoo3.y > (float)vbar3.y && vgt3.z == (float)vfoo3.z > (float)vbar3.z);
-	float4 vgt4 = vfoo4 > vbar4;							assert(vgt4.x == (float)vfoo4.x > (float)vbar4.x && vgt4.y == (float)vfoo4.y > (float)vbar4.y && vgt4.z == (float)vfoo4.z > (float)vbar4.z && vgt4.w == (float)vfoo4.w > (float)vbar4.w);
+	float1 vgt1 = vfoo1 > vbar1;							eq(vgt1, (float)vfoo1.x > (float)vbar1.x);
+	float2 vgt2 = vfoo2 > vbar2;							eq(vgt2, (float)vfoo2.x > (float)vbar2.x, (float)vfoo2.y > (float)vbar2.y);
+	float3 vgt3 = vfoo3 > vbar3;							eq(vgt3, (float)vfoo3.x > (float)vbar3.x, (float)vfoo3.y > (float)vbar3.y, (float)vfoo3.z > (float)vbar3.z);
+	float4 vgt4 = vfoo4 > vbar4;							eq(vgt4, (float)vfoo4.x > (float)vbar4.x, (float)vfoo4.y > (float)vbar4.y, (float)vfoo4.z > (float)vbar4.z, (float)vfoo4.w > (float)vbar4.w);
 	
-	float1 vlt1 = vfoo1 < vbar1;							assert(vlt1.x == (float)vfoo1.x < (float)vbar1.x);
-	float2 vlt2 = vfoo2 < vbar2;							assert(vlt2.x == (float)vfoo2.x < (float)vbar2.x && vlt2.y == (float)vfoo2.y < (float)vbar2.y);
-	float3 vlt3 = vfoo3 < vbar3;							assert(vlt3.x == (float)vfoo3.x < (float)vbar3.x && vlt3.y == (float)vfoo3.y < (float)vbar3.y && vlt3.z == (float)vfoo3.z < (float)vbar3.z);
-	float4 vlt4 = vfoo4 < vbar4;							assert(vlt4.x == (float)vfoo4.x < (float)vbar4.x && vlt4.y == (float)vfoo4.y < (float)vbar4.y && vlt4.z == (float)vfoo4.z < (float)vbar4.z && vlt4.w == (float)vfoo4.w < (float)vbar4.w);
+	float1 vlt1 = vfoo1 < vbar1;							eq(vlt1, (float)vfoo1.x < (float)vbar1.x);
+	float2 vlt2 = vfoo2 < vbar2;							eq(vlt2, (float)vfoo2.x < (float)vbar2.x, (float)vfoo2.y < (float)vbar2.y);
+	float3 vlt3 = vfoo3 < vbar3;							eq(vlt3, (float)vfoo3.x < (float)vbar3.x, (float)vfoo3.y < (float)vbar3.y, (float)vfoo3.z < (float)vbar3.z);
+	float4 vlt4 = vfoo4 < vbar4;							eq(vlt4, (float)vfoo4.x < (float)vbar4.x, (float)vfoo4.y < (float)vbar4.y, (float)vfoo4.z < (float)vbar4.z, (float)vfoo4.w < (float)vbar4.w);
+	
+	float1 vge1 = vfoo1 >= vbar1;							eq(vge1, (float)vfoo1.x >= (float)vbar1.x);
+	float2 vge2 = vfoo2 >= vbar2;							eq(vge2, (float)vfoo2.x >= (float)vbar2.x, (float)vfoo2.y >= (float)vbar2.y);
+	float3 vge3 = vfoo3 >= vbar3;							eq(vge3, (float)vfoo3.x >= (float)vbar3.x, (float)vfoo3.y >= (float)vbar3.y, (float)vfoo3.z >= (float)vbar3.z);
+	float4 vge4 = vfoo4 >= vbar4;							eq(vge4, (float)vfoo4.x >= (float)vbar4.x, (float)vfoo4.y >= (float)vbar4.y, (float)vfoo4.z >= (float)vbar4.z, (float)vfoo4.w >= (float)vbar4.w);
+	
+	float1 vle1 = vfoo1 <= vbar1;							eq(vle1, (float)vfoo1.x <= (float)vbar1.x);
+	float2 vle2 = vfoo2 <= vbar2;							eq(vle2, (float)vfoo2.x <= (float)vbar2.x, (float)vfoo2.y <= (float)vbar2.y);
+	float3 vle3 = vfoo3 <= vbar3;							eq(vle3, (float)vfoo3.x <= (float)vbar3.x, (float)vfoo3.y <= (float)vbar3.y, (float)vfoo3.z <= (float)vbar3.z);
+	float4 vle4 = vfoo4 <= vbar4;							eq(vle4, (float)vfoo4.x <= (float)vbar4.x, (float)vfoo4.y <= (float)vbar4.y, (float)vfoo4.z <= (float)vbar4.z, (float)vfoo4.w <= (float)vbar4.w);
 
-	float1 vge1 = vfoo1 >= vbar1;							assert(vge1.x == (float)vfoo1.x >= (float)vbar1.x);
-	float2 vge2 = vfoo2 >= vbar2;							assert(vge2.x == (float)vfoo2.x >= (float)vbar2.x && vge2.y == (float)vfoo2.y >= (float)vbar2.y);
-	float3 vge3 = vfoo3 >= vbar3;							assert(vge3.x == (float)vfoo3.x >= (float)vbar3.x && vge3.y == (float)vfoo3.y >= (float)vbar3.y && vge3.z == (float)vfoo3.z >= (float)vbar3.z);
-	float4 vge4 = vfoo4 >= vbar4;							assert(vge4.x == (float)vfoo4.x >= (float)vbar4.x && vge4.y == (float)vfoo4.y >= (float)vbar4.y && vge4.z == (float)vfoo4.z >= (float)vbar4.z && vge4.w == (float)vfoo4.w >= (float)vbar4.w);
+	float1 veq1 = vfoo1 == vbar1;							eq(veq1, (float)vfoo1.x == (float)vbar1.x);
+	float2 veq2 = vfoo2 == vbar2;							eq(veq2, (float)vfoo2.x == (float)vbar2.x, (float)vfoo2.y == (float)vbar2.y);
+	float3 veq3 = vfoo3 == vbar3;							eq(veq3, (float)vfoo3.x == (float)vbar3.x, (float)vfoo3.y == (float)vbar3.y, (float)vfoo3.z == (float)vbar3.z);
+	float4 veq4 = vfoo4 == vbar4;							eq(veq4, (float)vfoo4.x == (float)vbar4.x, (float)vfoo4.y == (float)vbar4.y, (float)vfoo4.z == (float)vbar4.z, (float)vfoo4.w == (float)vbar4.w);
 
-	float1 vle1 = vfoo1 <= vbar1;							assert(vle1.x == (float)vfoo1.x <= (float)vbar1.x);
-	float2 vle2 = vfoo2 <= vbar2;							assert(vle2.x == (float)vfoo2.x <= (float)vbar2.x && vle2.y == (float)vfoo2.y <= (float)vbar2.y);
-	float3 vle3 = vfoo3 <= vbar3;							assert(vle3.x == (float)vfoo3.x <= (float)vbar3.x && vle3.y == (float)vfoo3.y <= (float)vbar3.y && vle3.z == (float)vfoo3.z <= (float)vbar3.z);
-	float4 vle4 = vfoo4 <= vbar4;							assert(vle4.x == (float)vfoo4.x <= (float)vbar4.x && vle4.y == (float)vfoo4.y <= (float)vbar4.y && vle4.z == (float)vfoo4.z <= (float)vbar4.z && vle4.w == (float)vfoo4.w <= (float)vbar4.w);
-
-	float1 veq1 = vfoo1 == vbar1;							assert(veq1.x == ((float)vfoo1.x == (float)vbar1.x));
-	float2 veq2 = vfoo2 == vbar2;							assert(veq2.x == ((float)vfoo2.x == (float)vbar2.x) && veq2.y == ((float)vfoo2.y == (float)vbar2.y));
-	float3 veq3 = vfoo3 == vbar3;							assert(veq3.x == ((float)vfoo3.x == (float)vbar3.x) && veq3.y == ((float)vfoo3.y == (float)vbar3.y) && veq3.z == ((float)vfoo3.z == (float)vbar3.z));
-	float4 veq4 = vfoo4 == vbar4;							assert(veq4.x == ((float)vfoo4.x == (float)vbar4.x) && veq4.y == ((float)vfoo4.y == (float)vbar4.y) && veq4.z == ((float)vfoo4.z == (float)vbar4.z) && veq4.w == ((float)vfoo4.w == (float)vbar4.w));
-
-	float1 vneq1 = vfoo1 != vbar1;							assert(vneq1.x == (float)vfoo1.x != (float)vbar1.x);
-	float2 vneq2 = vfoo2 != vbar2;							assert(vneq2.x == (float)vfoo2.x != (float)vbar2.x && vneq2.y == (float)vfoo2.y != (float)vbar2.y);
-	float3 vneq3 = vfoo3 != vbar3;							assert(vneq3.x == (float)vfoo3.x != (float)vbar3.x && vneq3.y == (float)vfoo3.y != (float)vbar3.y && vneq3.z == (float)vfoo3.z != (float)vbar3.z);
-	float4 vneq4 = vfoo4 != vbar4;							assert(vneq4.x == (float)vfoo4.x != (float)vbar4.x && vneq4.y == (float)vfoo4.y != (float)vbar4.y && vneq4.z == (float)vfoo4.z != (float)vbar4.z && vneq4.w == (float)vfoo4.w != (float)vbar4.w);
+	float1 vneq1 = vfoo1 != vbar1;							eq(vneq1, (float)vfoo1.x != (float)vbar1.x);
+	float2 vneq2 = vfoo2 != vbar2;							eq(vneq2, (float)vfoo2.x != (float)vbar2.x, (float)vfoo2.y != (float)vbar2.y);
+	float3 vneq3 = vfoo3 != vbar3;							eq(vneq3, (float)vfoo3.x != (float)vbar3.x, (float)vfoo3.y != (float)vbar3.y, (float)vfoo3.z != (float)vbar3.z);
+	float4 vneq4 = vfoo4 != vbar4;							eq(vneq4, (float)vfoo4.x != (float)vbar4.x, (float)vfoo4.y != (float)vbar4.y, (float)vfoo4.z != (float)vbar4.z, (float)vfoo4.w != (float)vbar4.w);
 
 	vfoo1 = -vbar1.r;										eq(vfoo1, -vbar1.r);
 	vfoo2 = -vbar2.gr;										eq(vfoo2, (float)-vbar2.g, (float)-vbar2.r);
 	vfoo3 = -vbar3.bgg;										eq(vfoo3, (float)-vbar3.b, (float)-vbar3.g, (float)-vbar3.g);
 	vfoo4 = -vbar4.rbgr;									eq(vfoo4, (float)-vbar4.r, (float)-vbar4.b, (float)-vbar4.g, (float)-vbar4.r);
-
-	using std::abs;
 
 	float1 vabs1 = abs(vfoo1);								eq(vabs1, abs((float)vfoo1.x));
 	float2 vabs2 = abs(vfoo2);								eq(vabs2, abs((float)vfoo2.x), abs((float)vfoo2.y));
@@ -601,70 +634,80 @@ void RunUnitTests()
 	//float1 tanTest1 = cos(test1);
 	//float tanTests1 = cos(-9910.1543f);
 
-	float1 test1 = -9911.72559f;
-	float1 tanTest1 = sin(test1);
-	float tanTests1 = sin(-9911.72559f);
-	
-	//float1 test2 = 1.57079637f;
-	//float1 tanTest2 = tan(test2);
-	//float tanTests2 = tan(1.57079637f);
-
-	// Max abs error [SSE : 8.6594373e-6] [NEON : ]
-	//maxErrorExhaustive(hlslpp::cos, std::cos, "cos", -10000.0f, 10000.0f);
-
-	// Max abs error [SSE : 5.60283661e-6] [NEON : ]
-	//maxErrorExhaustive(hlslpp::sin, std::sin, "sin", -10000.0f, 10000.0f);
-
-	// Max abs error [SSE : 2.38418579e-6] [NEON : ]
-	// It's hard to get a good error estimate on a big range since in all multiples of pi/2 the numerical discrepancy is huge
-	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", -1.55f, 1.55f);
-	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", 1.55f, 4.7f);
-	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", -4.7f, -1.55f);
-
-	// Max abs error [SSE : 0] [NEON : ]
-	// maxErrorExhaustive(hlslpp::sqrt, std::sqrt, "sqrt", 0.0f, FLT_MAX);
-
-	// Max abs error		[SSE : 1.88894e25] [NEON : ]
-	// Max relative error	[SSE : 7.671364e-6] [NEON : ]
-	//maxErrorExhaustive(hlslpp::exp, std::exp, "exp", -70.0f, 70.0f);
-
-	// Max abs error		[SSE : 3.022314e23] [NEON : ]
-	// Max relative error	[SSE : 3.50801372e-7] [NEON : ]
-	// The exp family of functions has a huge range and at very high numbers the precision breaks. However the relative
-	// error remains quite small
-	//maxErrorExhaustive(hlslpp::exp2, std::exp2, "exp2", -100.0f, 100.0f);
-
-	// Max abs error		[SSE : 2.28881836e-5] [NEON : ]
-	//maxErrorExhaustive(hlslpp::log, std::log, "log", 1e-36f, FLT_MAX);
-
-	// Max abs error		[SSE : 1.52587891e-5] [NEON : ]
-	//maxErrorExhaustive(hlslpp::log2, std::log2, "log2", 1e-36f, FLT_MAX);
-
-	// Max abs error		[SSE : 3.43322754e-5] [NEON : ]
-	//maxErrorExhaustive(hlslpp::log10, std::log10, "log10", 1e-36f, FLT_MAX);
-
-	// Max abs error [SSE : 0] [NEON : ]
-	//maxErrorExhaustive(hlslpp::frac, hlslpp_unit::frac, "frac", -FLT_MAX, FLT_MAX);
+//	float1 test1 = -9911.72559f;
+//	float1 tanTest1 = sin(test1);
+//	float tanTests1 = sin(-9911.72559f);
+//
+//	//float1 test2 = 1.57079637f;
+//	//float1 tanTest2 = tan(test2);
+//	//float tanTests2 = tan(1.57079637f);
+//
+//	// Max abs error [SSE : 8.6594373e-6] [NEON : ]
+//	//maxErrorExhaustive(hlslpp::cos, std::cos, "cos", -10000.0f, 10000.0f);
+//
+//	// Max abs error [SSE : 5.60283661e-6] [NEON : ]
+//	//maxErrorExhaustive(hlslpp::sin, std::sin, "sin", -10000.0f, 10000.0f);
+//
+//	// Max abs error [SSE : 2.38418579e-6] [NEON : ]
+//	// It's hard to get a good error estimate on a big range since in all multiples of pi/2 the numerical discrepancy is huge
+//	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", -1.55f, 1.55f);
+//	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", 1.55f, 4.7f);
+//	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", -4.7f, -1.55f);
+//
+//	// Max abs error [SSE : 0] [NEON : ]
+//	// maxErrorExhaustive(hlslpp::sqrt, std::sqrt, "sqrt", 0.0f, FLT_MAX);
+//
+//	// Max abs error		[SSE : 1.88894e25] [NEON : ]
+//	// Max relative error	[SSE : 7.671364e-6] [NEON : ]
+//	//maxErrorExhaustive(hlslpp::exp, std::exp, "exp", -70.0f, 70.0f);
+//
+//	// Max abs error		[SSE : 3.022314e23] [NEON : ]
+//	// Max relative error	[SSE : 3.50801372e-7] [NEON : ]
+//	// The exp family of functions has a huge range and at very high numbers the precision breaks. However the relative
+//	// error remains quite small
+//	//maxErrorExhaustive(hlslpp::exp2, std::exp2, "exp2", -100.0f, 100.0f);
+//
+//	// Max abs error		[SSE : 2.28881836e-5] [NEON : ]
+//	//maxErrorExhaustive(hlslpp::log, std::log, "log", 1e-36f, FLT_MAX);
+//
+//	// Max abs error		[SSE : 1.52587891e-5] [NEON : ]
+//	//maxErrorExhaustive(hlslpp::log2, std::log2, "log2", 1e-36f, FLT_MAX);
+//
+//	// Max abs error		[SSE : 3.43322754e-5] [NEON : ]
+//	//maxErrorExhaustive(hlslpp::log10, std::log10, "log10", 1e-36f, FLT_MAX);
+//
+//	// Max abs error [SSE : 0] [NEON : ]
+//	//maxErrorExhaustive(hlslpp::frac, hlslpp_unit::frac, "frac", -FLT_MAX, FLT_MAX);
 	
 	float1 vall1 = all(vfoo1);
-	float2 vall2 = all(vfoo2);
-	float3 vall3 = all(vfoo3);
-	float4 vall4 = all(vfoo4);
+	float1 vall2 = all(vfoo2);
+	float1 vall3 = all(vfoo3);
+	float1 vall4 = all(vfoo4);
 
 	float1 vall_swiz_1 = all(vfoo1.r);
-	float2 vall_swiz_2 = all(vfoo2.yx);
-	float3 vall_swiz_3 = all(vfoo3.bgr);
-	float4 vall_swiz_4 = all(vfoo4.wwww);
+	float1 vall_swiz_2 = all(vfoo2.yx);
+	float1 vall_swiz_3 = all(vfoo3.bgr);
+	float1 vall_swiz_4 = all(vfoo4.wwww);
 
 	float1 vany1 = any(vfoo1);
-	float2 vany2 = any(vfoo2);
-	float3 vany3 = any(vfoo3);
-	float4 vany4 = any(vfoo4);
+	float1 vany2 = any(vfoo2);
+	float1 vany3 = any(vfoo3);
+	float1 vany4 = any(vfoo4);
 
 	float1 vany_swiz_1 = any(vfoo1.r);
-	float2 vany_swiz_2 = any(vfoo2.yx);
-	float3 vany_swiz_3 = any(vfoo3.bgr);
-	float4 vany_swiz_4 = any(vfoo4.wwww);
+	float1 vany_swiz_2 = any(vfoo2.yx);
+	float1 vany_swiz_3 = any(vfoo3.bgr);
+	float1 vany_swiz_4 = any(vfoo4.wwww);
+
+	float1 vacos1 = acos(vfoo1);
+	float2 vacos2 = acos(vfoo2);
+	float3 vacos3 = acos(vfoo3);
+	float4 vacos4 = acos(vfoo4);
+
+	float1 vacos_swiz_1 = acos(vfoo1.r);
+	float2 vacos_swiz_2 = acos(vfoo2.yx);
+	float3 vacos_swiz_3 = acos(vfoo3.bgr);
+	float4 vacos_swiz_4 = acos(vfoo4.wwww);
 
 	float1 vasin1 = asin(vfoo1);
 	float2 vasin2 = asin(vfoo2);
@@ -727,9 +770,9 @@ void RunUnitTests()
 	float4 vcosh_swiz_4 = cosh(vfoo4.rrbg);
 
 	float3 vcross3			= cross(vfoo3, vbar3);
-	float3 vcross_swiz_3_a	= cross(vfoo3, vbar3.yyx);
-	float3 vcross_swiz_3_b	= cross(vfoo3.xyz, vbar3);
-	float3 vcross_swiz_3_c	= cross(vfoo3.yzx, vbar3.yyx);
+	float3 vcross_swiz_3_a = cross(vfoo3, vbar3.yyx);
+	float3 vcross_swiz_3_b = cross(vfoo3.xyz, vbar3);
+	float3 vcross_swiz_3_c = cross(vfoo3.yzx, vbar3.yyx);
 
 	float1 vdot2	= dot(vfoo2, vbar2);
 	float1 vdot2_a	= dot(vfoo2, vbar2.yx);
@@ -826,7 +869,7 @@ void RunUnitTests()
 	float1 vlength_swiz_3 = length(vfoo3.rgb);
 	float1 vlength_swiz_4 = length(vfoo4.wwxy);
 
-	// Linear Interpolation
+// Linear Interpolation
 
 	float1 vlerp1 = lerp(vfoo1, vbar1, vbaz1);
 	float2 vlerp2 = lerp(vfoo2, vbar2, vbaz2);
@@ -961,7 +1004,7 @@ void RunUnitTests()
 	float1 vrsqrt_swiz_1 = rsqrt(vfoo1.r);
 	float2 vrsqrt_swiz_2 = rsqrt(vfoo2.rg);
 	float3 vrsqrt_swiz_3 = rsqrt(vfoo3.bgr);
-	float4 vrsqrt_swiz_4 = rsqrt(vfoo4.yyxw);	
+	float4 vrsqrt_swiz_4 = rsqrt(vfoo4.yyxw);
 
 	float1 vround1 = round(vfoo1);
 	float2 vround2 = round(vfoo2);
@@ -1083,7 +1126,7 @@ void RunUnitTests()
 	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);
 	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);
 
-	// Integer
+// Integer
 
 	int32_t i1 = (rand() % 1000); int32_t i5 = (rand() % 1000); int32_t i9 = (rand() % 1000); int32_t i13 = (rand() % 1000); int32_t i17 = (rand() % 1000);
 	int32_t i2 = (rand() % 1000); int32_t i6 = (rand() % 1000); int32_t i10 = (rand() % 1000); int32_t i14 = (rand() % 1000); int32_t i18 = (rand() % 1000);
@@ -1207,7 +1250,7 @@ void RunUnitTests()
 	ivassign4.bgra = ivfoo4;										eq(ivassign4, ivfoo4.b, ivfoo4.g, ivfoo4.r, ivfoo4.a);
 	ivassign4.rgba = ivfoo4.grba;									eq(ivassign4, ivfoo4.g, ivfoo4.r, ivfoo4.b, ivfoo4.a);
 
-	int2 ivneg_swiz_2 = -ivfoo2.yx;									//assert(ivassign2.x == (int32_t)ivfoo2.y && ivassign2.y == (int32_t)ivfoo2.x);
+//	int2 ivneg_swiz_2 = -ivfoo2.yx;									//assert(ivassign2.x == (int32_t)ivfoo2.y && ivassign2.y == (int32_t)ivfoo2.x);
 
 	// Addition
 
@@ -1342,52 +1385,73 @@ void RunUnitTests()
 	int1 vint3 = vint.r + vint2;
 	vint.r = vint2.x;
 
-	float1 flala(vint);
-	float1 flala2 = vint;
+	// Cast from float to int and vicerversa
 
-	flala2 = vint;
+	float1 fcastfooi_1(ivfoo1);
+	float2 fcastfooi_2(ivfoo2);
+	float3 fcastfooi_3(ivfoo3);
+	float4 fcastfooi_4(ivfoo4);
 
-	int3 a = int3(1, 2, 3);
-	int4 b = int4(0, 1, 2, 3);
+	fcastfooi_1 = ivfoo1;
+	fcastfooi_2 = ivfoo2;
+	fcastfooi_3 = ivfoo3;
+	fcastfooi_4 = ivfoo4;
 
-	float4 bf = b;
+	float1 fcastbari_1 = ivfoo1;
+	float2 fcastbari_2 = ivfoo2;
+	float3 fcastbari_3 = ivfoo3;
+	float4 fcastbari_4 = ivfoo4;
 
-	int4 sat4i = saturate(b);
+//	int4 sat4i = saturate(b);
+//
+//	int3 c = a + b.zzw;
+//	int2 d = int2(1, 3);
+//	int2 e = d.yx + b.zz;
+//	int2 f = d.yx - b.zz;
+//	int2 g = d.yx * b.zz;
+//
+//	int2 iabs2 = abs(g);
+//
+//	float4 ficast4 = ivfoo4;
+//	float3 ficast3 = ivfoo3;
+//	float2 ficast2 = ivfoo2;
+//	float1 ficast1 = ivfoo1;
+//
+//	ficast4 = ivfoo4;
+//	ficast3 = ivfoo3;
+//	ficast2 = ivfoo2;
+//	ficast1 = ivfoo1;
+//
+//	float4 ficast_swiz_4 = ivfoo4.xxwz;
+//	float3 ficast_swiz_3 = ivfoo3.zyx;
+//	float2 ficast_swiz_2 = ivfoo2.yy;
+//	float1 ficast_swiz_1 = ivfoo1.x;
+//
+//	ficast_swiz_4 = ivfoo4.xxwz;
+//	ficast_swiz_3 = ivfoo3.zyx;
+//	ficast_swiz_2 = ivfoo2.yy;
+//	ficast_swiz_1 = ivfoo1.x;
+//
+//	int4 ifcast4 = int4(ivfoo1.xx, vfoo2);
+//
+//	// Infinities and NaNs
+//
+//	//float4 inf = -float4::one() / float4::zero(); //assert(all(inf != inf).x != 0.0f);
+//	//float4 nan = sqrt(-float4::one());
 
-	int3 c = a + b.zzw;
-	int2 d = int2(1, 3);
-	int2 e = d.yx + b.zz;
-	int2 f = d.yx - b.zz;
-	int2 g = d.yx * b.zz;
+	vfoo1 = float1(i1);														eq(vfoo1, (float)i1);
+	vfoo2 = float2(i2, i3);													eq(vfoo2, (float)i2, (float)i3);
+	vfoo3 = float3(i4, i5, i6);												eq(vfoo3, (float)f4, (float)f5, (float)f6);
+	vfoo4 = float4(i7, i8, i9, i10);										eq(vfoo4, (float)f7, (float)f8, (float)f9, (float)f10);
 
-	int2 iabs2 = abs(g);
+	vfoo1 = float1(i1);														eq(vfoo1, (float)i1);
+	vfoo2 = float2(i2, i3);													eq(vfoo2, (float)i2, (float)i3);
+	vfoo3 = float3(i4, i5, i6);												eq(vfoo3, (float)f4, (float)f5, (float)f6);
+	vfoo4 = float4(i7, i8, i9, i10);										eq(vfoo4, (float)f7, (float)f8, (float)f9, (float)f10);
 
-	float4 ficast4 = ivfoo4;
-	float3 ficast3 = ivfoo3;
-	float2 ficast2 = ivfoo2;
-	float1 ficast1 = ivfoo1;
-
-	ficast4 = ivfoo4;
-	ficast3 = ivfoo3;
-	ficast2 = ivfoo2;
-	ficast1 = ivfoo1;
-
-	float4 ficast_swiz_4 = ivfoo4.xxwz;
-	float3 ficast_swiz_3 = ivfoo3.zyx;
-	float2 ficast_swiz_2 = ivfoo2.yy;
-	float1 ficast_swiz_1 = ivfoo1.x;
-
-	ficast_swiz_4 = ivfoo4.xxwz;
-	ficast_swiz_3 = ivfoo3.zyx;
-	ficast_swiz_2 = ivfoo2.yy;
-	ficast_swiz_1 = ivfoo1.x;
-
-	int4 ifcast4 = int4(ivfoo1.xx, vfoo2);
-
-	// Infinities and NaNs
-
-	//float4 inf = -float4::one() / float4::zero(); //assert(all(inf != inf).x != 0.0f);
-	//float4 nan = sqrt(-float4::one());
+	vfoo2 = float2(i2, f3);													eq(vfoo2, (float)i2, (float)i3);
+	vfoo3 = float3(f4, i5, i6);												eq(vfoo3, (float)f4, (float)f5, (float)f6);
+	vfoo4 = float4(i7, i8, f9, f10);										eq(vfoo4, (float)f7, (float)f8, (float)f9, (float)f10);
 
 	//*********
 	// Matrices
@@ -1421,11 +1485,11 @@ void RunUnitTests()
 	float1x2 mat_bar_1x2 = float1x2(0.1f, 0.2f);
 	float1x3 mat_bar_1x3 = float1x3(0.1f, 0.2f, 0.3f);
 	float1x4 mat_bar_1x4 = float1x4(0.1f, 0.2f, 0.3f, 0.4f);
-	
+
 	float2x1 mat_bar_2x1 = float2x1(0.1f, 0.2f);
 	float3x1 mat_bar_3x1 = float3x1(0.1f, 0.2f, 0.3f);
 	float4x1 mat_bar_4x1 = float4x1(0.1f, 0.2f, 0.3f, 0.4f);
-	
+
 	float2x2 mat_bar_2x2 = float2x2(0.1f, 0.2f, 0.3f, 0.4f);
 	
 	float2x3 mat_bar_2x3 = float2x3(0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f);
@@ -1586,10 +1650,10 @@ void RunUnitTests()
 	float1x1 mat_mul_f_1x1 = mat_foo_1x1 * 2.0f;
 	float1x2 mat_mul_f_1x2 = mat_foo_1x2 * 2.0f;
 	float1x3 mat_mul_f_1x3 = mat_foo_1x3 * 2.0f;
-	float1x4 mat_mul_f_1x4 = mat_foo_1x4 * 2.0f;
+	//float1x4 mat_mul_f_1x4 = mat_foo_1x4 * 2.0f;
 	float2x1 mat_mul_f_2x1 = mat_foo_2x1 * 2.0f;
 	float3x1 mat_mul_f_3x1 = mat_foo_3x1 * 2.0f;
-	float4x1 mat_mul_f_4x1 = mat_foo_4x1 * 2.0f;
+	//float4x1 mat_mul_f_4x1 = mat_foo_4x1 * 2.0f;
 	float2x2 mat_mul_f_2x2 = mat_foo_2x2 * 2.0f;
 	float2x3 mat_mul_f_2x3 = mat_foo_2x3 * 2.0f;
 	float2x4 mat_mul_f_2x4 = mat_foo_2x4 * 2.0f;
@@ -1737,25 +1801,25 @@ void RunUnitTests()
 
 	// Matrix-vector multiplication
 
-	float1 vec_vmul_1x1_v1 = mul(mat_foo_1x1, vfoo1);
-	float1 vec_vmul_1x2_v2 = mul(mat_foo_1x2, vfoo2);
-	float1 vec_vmul_1x3_v3 = mul(mat_foo_1x3, vfoo3);
-	float1 vec_vmul_1x4_v4 = mul(mat_foo_1x4, vfoo4);
-
-	float2 vec_vmul_2x1_v1 = mul(mat_foo_2x1, vfoo1);
-	float2 vec_vmul_2x2_v2 = mul(mat_foo_2x2, vfoo2);
-	float2 vec_vmul_2x3_v3 = mul(mat_foo_2x3, vfoo3);
-	float2 vec_vmul_2x4_v4 = mul(mat_foo_2x4, vfoo4);
-
-	float3 vec_vmul_3x1_v1 = mul(mat_foo_3x1, vfoo1);
-	float3 vec_vmul_3x2_v2 = mul(mat_foo_3x2, vfoo2);
-	float3 vec_vmul_3x3_v3 = mul(mat_foo_3x3, vfoo3);
-	float3 vec_vmul_3x4_v4 = mul(mat_foo_3x4, vfoo4);
-
-	float4 vec_vmul_4x1_v1 = mul(mat_foo_4x1, vfoo1);
-	float4 vec_vmul_4x2_v2 = mul(mat_foo_4x2, vfoo2);
-	float4 vec_vmul_4x3_v3 = mul(mat_foo_4x3, vfoo3);
- 	float4 vec_vmul_4x4_v4 = mul(mat_foo_4x4, vfoo4);
+	//float1 vec_vmul_1x1_v1 = mul(mat_foo_1x1, vfoo1);
+	//float1 vec_vmul_1x2_v2 = mul(mat_foo_1x2, vfoo2);
+	//float1 vec_vmul_1x3_v3 = mul(mat_foo_1x3, vfoo3);
+	//float1 vec_vmul_1x4_v4 = mul(mat_foo_1x4, vfoo4);
+	//
+	//float2 vec_vmul_2x1_v1 = mul(mat_foo_2x1, vfoo1);
+	//float2 vec_vmul_2x2_v2 = mul(mat_foo_2x2, vfoo2);
+	//float2 vec_vmul_2x3_v3 = mul(mat_foo_2x3, vfoo3);
+	//float2 vec_vmul_2x4_v4 = mul(mat_foo_2x4, vfoo4);
+	//
+	//float3 vec_vmul_3x1_v1 = mul(mat_foo_3x1, vfoo1);
+	//float3 vec_vmul_3x2_v2 = mul(mat_foo_3x2, vfoo2);
+	//float3 vec_vmul_3x3_v3 = mul(mat_foo_3x3, vfoo3);
+	//float3 vec_vmul_3x4_v4 = mul(mat_foo_3x4, vfoo4);
+	//
+	//float4 vec_vmul_4x1_v1 = mul(mat_foo_4x1, vfoo1);
+	//float4 vec_vmul_4x2_v2 = mul(mat_foo_4x2, vfoo2);
+	//float4 vec_vmul_4x3_v3 = mul(mat_foo_4x3, vfoo3);
+ 	//float4 vec_vmul_4x4_v4 = mul(mat_foo_4x4, vfoo4);
 
 	// Matrix transposition
 
@@ -1787,6 +1851,26 @@ void RunUnitTests()
 	float2x2 mat_inv_2x2 = inverse(mat_foo_2x2);
 	float3x3 mat_inv_3x3 = inverse(mat_foo_3x3);
 	float4x4 mat_inv_4x4 = inverse(mat_foo_4x4);
+
+	// Quaternion tests
+
+	quaternion q1 = quaternion::identity();
+	quaternion q2 = quaternion(0.0f, 1.0f, 1.0f, 1.0f);
+
+	quaternion qeuler1 = euler(float3(90.0f * deg2rad, 45.0f * deg2rad, 0.0f * deg2rad));
+	quaternion qeuler2 = euler(float3(180.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
+
+	quaternion qaxisangle = axisangle(float3(0.0f, 1.0f, 0.0f), 1.57f);
+
+	quaternion slerp1 = slerp(q1, q2, 0.0f);
+	quaternion slerp2 = slerp(q1, q2, 1.0f);
+	
+	quaternion slerp3 = slerp(q1, q2, 0.5f);
+	
+	quaternion testq = quaternion(0.66519f, 0.1881441f, 0.282216f, 0.665190f);
+
+	float3x3 mat3x3FromQuat = float3x3(q1);
+	float4x4 mat4x4FromQuat = float4x4(q1);
 }
 
 void RunExperiments()
@@ -1799,12 +1883,10 @@ void RunExperiments()
 	float4 nan = float4(1.0f) / float4(0.0f);
 	float4 subtractNan = float4(1.0f) - nan;
 
-	const float deg2rad = 3.14159265f / 180.0f;
-	
 	quaternion q1 = euler(float3(90.0f * deg2rad, 45.0f * deg2rad, 0.0f * deg2rad));
 	quaternion q2 = euler(float3(180.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
 	quaternion fax = axisangle(float3(0.0f, 1.0f, 0.0f), 1.57f);
-	
+
 	quaternion slerp1 = slerp(q1, q2, 0.0f);
 	quaternion slerp2 = slerp(q1, q2, 1.0f);
 
@@ -1864,19 +1946,19 @@ void RunSpeedTests()
 
 	// Plain old struct vector
 	{
-// 		Vector4 v1(f1);
-// 		Vector4 v2(f2);
-// 		Vector4 v3(f3);
-// 		Vector4 v4(f4);
-// 
-// 		timer.Start();
-// 		for (int i = 0; i < iter; ++i)
-// 		{
-// 			v2 = sqrt((v1 * v2 + v2 * v3));
-// 			//v2 = normalize(v2);
-// 		}
-// 		double time = timer.Get();
-// 		printf("STRUCT: %f, %f, %f, %f = %f\n", v2.x, v2.y, v2.z, v2.w, time);
+		// 		Vector4 v1(f1);
+		// 		Vector4 v2(f2);
+		// 		Vector4 v3(f3);
+		// 		Vector4 v4(f4);
+		// 
+		// 		timer.Start();
+		// 		for (int i = 0; i < iter; ++i)
+		// 		{
+		// 			v2 = sqrt((v1 * v2 + v2 * v3));
+		// 			//v2 = normalize(v2);
+		// 		}
+		// 		double time = timer.Get();
+		// 		printf("STRUCT: %f, %f, %f, %f = %f\n", v2.x, v2.y, v2.z, v2.w, time);
 	}
 
 	float4 v1(f1);
@@ -1887,9 +1969,9 @@ void RunSpeedTests()
 	float3 v5(f4);
 
 	float4x4 mat_foo_4x4 = float4x4(10, 20, 1, 1,
-									78, 5, 2, 8,
-									14, 5, 5, 6,
-									8, 4, 5, 6);
+		78, 5, 2, 8,
+		14, 5, 5, 6,
+		8, 4, 5, 6);
 
 	quaternion q(f1, f2, f3, f4);
 
@@ -1900,7 +1982,7 @@ void RunSpeedTests()
 	timer.Start();
 	for (long int i = 0; i < iter; ++i)
 	{
-		dp = dot(v1, v4 * dp);
+		//dp = dot(v1, v4 * dp);
 		//v4 = v4.xxxx + v3.yyzw;
 		//Vector4 yyzw = Vector4(v3f.y, v3f.y, v3f.z, v3f.w);
 		//Vector4 xxxx = Vector4(v4f.x, v4f.x, v4f.x, v4f.x);
@@ -1909,14 +1991,18 @@ void RunSpeedTests()
 	double time = timer.Get();
 	//printf("float4: %f, %f, %f, %f = %f\n", (float)v4.x, (float)v4.y, (float)v4.z, (float)v4.w, time);
 	//printf("Vector4: %f, %f, %f, %f\n\n", (float)v4f.x, (float)v4f.y, (float)v4f.z, (float)v4f.w);
-	printf("Result: %f, Elapsed = %f\n", (float) dp.x, time);
+	printf("Result: %f, Elapsed = %f\n", (float)dp.x, time);
 }
+
+using namespace hlslpp;
 
 int main()
 {
 	RunUnitTests();
-	RunSpeedTests();
-	RunExperiments();
+	//RunSpeedTests();
+	//RunExperiments();
+
+	printf("All tests completed successfully.\n");
 
 	getchar();
 }

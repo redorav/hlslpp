@@ -78,15 +78,15 @@ using n128i = __m128i;
 #define _hlslpp_movehl_ps(x, y)					_mm_movehl_ps((x), (y))
 #define _hlslpp_movehdup_ps(x)					_mm_movehdup_ps((x))
 
-#define _hlslpp_perm_ps(x, msk)					_mm_shuffle_ps((x), (x), msk)
-#define _hlslpp_shuffle_ps(x, y, msk)			_mm_shuffle_ps((x), (y), msk)
+#define _hlslpp_perm_ps(x, mask)				_mm_shuffle_ps((x), (x), (mask))
+#define _hlslpp_shuffle_ps(x, y, mask)			_mm_shuffle_ps((x), (y), (mask))
 
 // SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
 // _mm_xor_ps((x), _mm_and_ps(msk, _mm_xor_ps((y), (x))))
 // Bit-select val1 and val2 based on the contents of the mask
-#define _hlslpp_sel_ps(x, y, msk)				_mm_blendv_ps((x), (y), (msk))
+#define _hlslpp_sel_ps(x, y, mask)				_mm_blendv_ps((x), (y), (mask))
 
-#define _hlslpp_blend_ps(x, y, msk)				_mm_blend_ps((x), (y), (msk))
+#define _hlslpp_blend_ps(x, y, mask)			_mm_blend_ps((x), (y), (mask))
 
 //--------
 // Integer
@@ -109,6 +109,15 @@ using n128i = __m128i;
 
 #define _hlslpp_abs_epi32(x)					_mm_and_si128(i4absMask, (x))
 
+#define _hlslpp_cmpeq_epi32(x, y)				_mm_cmpeq_epi32((x), (y))
+#define _hlslpp_cmpneq_epi32(x, y)				_mm_andnot_si128(_mm_cmpeq_epi32((x), (y)), i4fffMask)
+
+#define _hlslpp_cmpgt_epi32(x, y)				_mm_cmpgt_epi32((x), (y))
+#define _hlslpp_cmpge_epi32(x, y)				_mm_or_si128(_mm_cmpgt_epi32((x), (y)), _mm_cmpeq_epi32((x), (y)))
+
+#define _hlslpp_cmplt_epi32(x, y)				_mm_cmplt_epi32((x), (y))
+#define _hlslpp_cmple_epi32(x, y)				_mm_or_si128(_mm_cmplt_epi32((x), (y)), _mm_cmpeq_epi32((x), (y)))
+
 #define _hlslpp_max_epi32(x, y)					_mm_max_epi32((x), (y))
 #define _hlslpp_min_epi32(x, y)					_mm_min_epi32((x), (y))
 
@@ -119,12 +128,12 @@ using n128i = __m128i;
 #define _hlslpp_or_si128(x, y)					_mm_or_si128((x), (y))
 
 // https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epi32(x, msk)				_mm_shuffle_epi32((x), (msk))
-#define _hlslpp_shuffle_epi32(x, y, msk)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), (msk)))
+#define _hlslpp_perm_epi32(x, mask)				_mm_shuffle_epi32((x), (mask))
+#define _hlslpp_shuffle_epi32(x, y, mask)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), (mask)))
 
 // Reshuffle the mask because we use _mm_blend_epi16 as that's what's available in SSE4.1 
 // _mm_blend_epi32 was added later in AVX2
-#define _hlslpp_blend_epi32(x, y, msk)			_mm_blend_epi16((x), (y), ((msk & 1) * 3) | ((((msk >> 1) & 1) * 3) << 2) | ((((msk >> 2) & 1) * 3) << 4) | ((((msk >> 3) & 1) * 3) << 6))
+#define _hlslpp_blend_epi32(x, y, mask)			_mm_blend_epi16((x), (y), ((mask & 1) * 3) | ((((mask >> 1) & 1) * 3) << 2) | ((((mask >> 2) & 1) * 3) << 4) | ((((mask >> 3) & 1) * 3) << 6))
 
 #define _hlslpp_castps_si128(x)					_mm_castps_si128((x))
 #define _hlslpp_castsi128_ps(x)					_mm_castsi128_ps((x))
@@ -134,11 +143,6 @@ using n128i = __m128i;
 
 #define _hlslpp_slli_epi32(x, y)				_mm_slli_epi32((x), (y))
 #define _hlslpp_srli_epi32(x, y)				_mm_srli_epi32((x), (y))
-
-#define HLSLPP_SHUFFLE_MASK(X, Y, Z, W)			(((W) << 6) | ((Z) << 4) | ((Y) << 2) | (X))
-
-// Create a mask where 1 selects from x, 0 selects from y
-#define HLSLPP_BLEND_MASK(X, Y, Z, W)			(~(X | (Y << 1) | (Z << 2) | (W << 3)) & 0xf)
 
 hlslpp_inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
 {

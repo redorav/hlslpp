@@ -2,7 +2,7 @@
 // XYZW
 // -------------------------------
 
-icomponent1<0> x;
-icomponent2<0, 0> xx;
-icomponent3<0, 0, 0> xxx;
-icomponent4<0, 0, 0, 0> xxxx;
+iswizzle1<0> x;
+iswizzle2<0, 0> xx;
+iswizzle3<0, 0, 0> xxx;
+iswizzle4<0, 0, 0, 0> xxxx;

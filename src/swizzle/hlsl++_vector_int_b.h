@@ -2,120 +2,120 @@
 // RGBA
 // -------------------------------
 
-icomponent1<2> b;
+iswizzle1<2> b;
 
-icomponent2<0, 2> rb;
-icomponent2<1, 2> gb;
-icomponent2<2, 0> br;
-icomponent2<2, 1> bg;
-icomponent2<2, 2> bb;
+iswizzle2<0, 2> rb;
+iswizzle2<1, 2> gb;
+iswizzle2<2, 0> br;
+iswizzle2<2, 1> bg;
+iswizzle2<2, 2> bb;
 
-icomponent3<0, 0, 2> rrb;
-icomponent3<0, 1, 2> rgb;
-icomponent3<0, 2, 0> rbr;
-icomponent3<0, 2, 1> rbg;
-icomponent3<0, 2, 2> rbb;
+iswizzle3<0, 0, 2> rrb;
+iswizzle3<0, 1, 2> rgb;
+iswizzle3<0, 2, 0> rbr;
+iswizzle3<0, 2, 1> rbg;
+iswizzle3<0, 2, 2> rbb;
 
-icomponent3<1, 0, 2> grb;
-icomponent3<1, 1, 2> ggb;
-icomponent3<1, 2, 0> gbr;
-icomponent3<1, 2, 1> gbg;
-icomponent3<1, 2, 2> gbb;
+iswizzle3<1, 0, 2> grb;
+iswizzle3<1, 1, 2> ggb;
+iswizzle3<1, 2, 0> gbr;
+iswizzle3<1, 2, 1> gbg;
+iswizzle3<1, 2, 2> gbb;
 
-icomponent3<2, 0, 0> brr;
-icomponent3<2, 0, 1> brg;
-icomponent3<2, 0, 2> brb;
-icomponent3<2, 1, 0> bgr;
-icomponent3<2, 1, 1> bgg;
-icomponent3<2, 1, 2> bgb;
+iswizzle3<2, 0, 0> brr;
+iswizzle3<2, 0, 1> brg;
+iswizzle3<2, 0, 2> brb;
+iswizzle3<2, 1, 0> bgr;
+iswizzle3<2, 1, 1> bgg;
+iswizzle3<2, 1, 2> bgb;
 
-icomponent3<2, 2, 0> bbr;
-icomponent3<2, 2, 1> bbg;
-icomponent3<2, 2, 2> bbb;
+iswizzle3<2, 2, 0> bbr;
+iswizzle3<2, 2, 1> bbg;
+iswizzle3<2, 2, 2> bbb;
 
-icomponent4<0, 0, 0, 2> rrrb;
-icomponent4<0, 0, 1, 2> rrgb;
+iswizzle4<0, 0, 0, 2> rrrb;
+iswizzle4<0, 0, 1, 2> rrgb;
 
-icomponent4<0, 0, 2, 0> rrbr;
-icomponent4<0, 0, 2, 1> rrbg;
-icomponent4<0, 0, 2, 2> rrbb;
+iswizzle4<0, 0, 2, 0> rrbr;
+iswizzle4<0, 0, 2, 1> rrbg;
+iswizzle4<0, 0, 2, 2> rrbb;
 
-icomponent4<0, 1, 0, 2> rgrb;
-icomponent4<0, 1, 1, 2> rggb;
+iswizzle4<0, 1, 0, 2> rgrb;
+iswizzle4<0, 1, 1, 2> rggb;
 
-icomponent4<0, 1, 2, 0> rgbr;
-icomponent4<0, 1, 2, 1> rgbg;
-icomponent4<0, 1, 2, 2> rgbb;
+iswizzle4<0, 1, 2, 0> rgbr;
+iswizzle4<0, 1, 2, 1> rgbg;
+iswizzle4<0, 1, 2, 2> rgbb;
 
-icomponent4<0, 2, 0, 0> rbrr;
-icomponent4<0, 2, 0, 1> rbrg;
-icomponent4<0, 2, 0, 2> rbrb;
+iswizzle4<0, 2, 0, 0> rbrr;
+iswizzle4<0, 2, 0, 1> rbrg;
+iswizzle4<0, 2, 0, 2> rbrb;
 
-icomponent4<0, 2, 1, 0> rbgr;
-icomponent4<0, 2, 1, 1> rbgg;
-icomponent4<0, 2, 1, 2> rbgb;
+iswizzle4<0, 2, 1, 0> rbgr;
+iswizzle4<0, 2, 1, 1> rbgg;
+iswizzle4<0, 2, 1, 2> rbgb;
 
-icomponent4<0, 2, 2, 0> rbbr;
-icomponent4<0, 2, 2, 1> rbbg;
-icomponent4<0, 2, 2, 2> rbbb;
+iswizzle4<0, 2, 2, 0> rbbr;
+iswizzle4<0, 2, 2, 1> rbbg;
+iswizzle4<0, 2, 2, 2> rbbb;
 
-icomponent4<1, 0, 0, 2> grrb;
-icomponent4<1, 0, 1, 2> grgb;
-icomponent4<1, 0, 2, 0> grbr;
-icomponent4<1, 0, 2, 1> grbg;
-icomponent4<1, 0, 2, 2> grbb;
+iswizzle4<1, 0, 0, 2> grrb;
+iswizzle4<1, 0, 1, 2> grgb;
+iswizzle4<1, 0, 2, 0> grbr;
+iswizzle4<1, 0, 2, 1> grbg;
+iswizzle4<1, 0, 2, 2> grbb;
 
-icomponent4<1, 1, 0, 2> ggrb;
-icomponent4<1, 1, 1, 2> gggb;
+iswizzle4<1, 1, 0, 2> ggrb;
+iswizzle4<1, 1, 1, 2> gggb;
 
-icomponent4<1, 1, 2, 0> ggbr;
-icomponent4<1, 1, 2, 1> ggbg;
-icomponent4<1, 1, 2, 2> ggbb;
+iswizzle4<1, 1, 2, 0> ggbr;
+iswizzle4<1, 1, 2, 1> ggbg;
+iswizzle4<1, 1, 2, 2> ggbb;
 
-icomponent4<1, 2, 0, 0> gbrr;
-icomponent4<1, 2, 0, 1> gbrg;
-icomponent4<1, 2, 0, 2> gbrb;
+iswizzle4<1, 2, 0, 0> gbrr;
+iswizzle4<1, 2, 0, 1> gbrg;
+iswizzle4<1, 2, 0, 2> gbrb;
 
-icomponent4<1, 2, 1, 0> gbgr;
-icomponent4<1, 2, 1, 1> gbgg;
-icomponent4<1, 2, 1, 2> gbgb;
+iswizzle4<1, 2, 1, 0> gbgr;
+iswizzle4<1, 2, 1, 1> gbgg;
+iswizzle4<1, 2, 1, 2> gbgb;
 
-icomponent4<1, 2, 2, 0> gbbr;
-icomponent4<1, 2, 2, 1> gbbg;
-icomponent4<1, 2, 2, 2> gbbb;
+iswizzle4<1, 2, 2, 0> gbbr;
+iswizzle4<1, 2, 2, 1> gbbg;
+iswizzle4<1, 2, 2, 2> gbbb;
 
-icomponent4<2, 0, 0, 0> brrr;
-icomponent4<2, 0, 0, 1> brrg;
-icomponent4<2, 0, 0, 2> brrb;
+iswizzle4<2, 0, 0, 0> brrr;
+iswizzle4<2, 0, 0, 1> brrg;
+iswizzle4<2, 0, 0, 2> brrb;
 
-icomponent4<2, 0, 1, 0> brgr;
-icomponent4<2, 0, 1, 1> brgg;
-icomponent4<2, 0, 1, 2> brgb;
+iswizzle4<2, 0, 1, 0> brgr;
+iswizzle4<2, 0, 1, 1> brgg;
+iswizzle4<2, 0, 1, 2> brgb;
 
-icomponent4<2, 0, 2, 0> brbr;
-icomponent4<2, 0, 2, 1> brbg;
-icomponent4<2, 0, 2, 2> brbb;
+iswizzle4<2, 0, 2, 0> brbr;
+iswizzle4<2, 0, 2, 1> brbg;
+iswizzle4<2, 0, 2, 2> brbb;
 
-icomponent4<2, 1, 0, 0> bgrr;
-icomponent4<2, 1, 0, 1> bgrg;
-icomponent4<2, 1, 0, 2> bgrb;
+iswizzle4<2, 1, 0, 0> bgrr;
+iswizzle4<2, 1, 0, 1> bgrg;
+iswizzle4<2, 1, 0, 2> bgrb;
 
-icomponent4<2, 1, 1, 0> bggr;
-icomponent4<2, 1, 1, 1> bggg;
-icomponent4<2, 1, 1, 2> bggb;
+iswizzle4<2, 1, 1, 0> bggr;
+iswizzle4<2, 1, 1, 1> bggg;
+iswizzle4<2, 1, 1, 2> bggb;
 
-icomponent4<2, 1, 2, 0> bgbr;
-icomponent4<2, 1, 2, 1> bgbg;
-icomponent4<2, 1, 2, 2> bgbb;
+iswizzle4<2, 1, 2, 0> bgbr;
+iswizzle4<2, 1, 2, 1> bgbg;
+iswizzle4<2, 1, 2, 2> bgbb;
 
-icomponent4<2, 2, 0, 0> bbrr;
-icomponent4<2, 2, 0, 1> bbrg;
-icomponent4<2, 2, 0, 2> bbrb;
+iswizzle4<2, 2, 0, 0> bbrr;
+iswizzle4<2, 2, 0, 1> bbrg;
+iswizzle4<2, 2, 0, 2> bbrb;
 
-icomponent4<2, 2, 1, 0> bbgr;
-icomponent4<2, 2, 1, 1> bbgg;
-icomponent4<2, 2, 1, 2> bbgb;
+iswizzle4<2, 2, 1, 0> bbgr;
+iswizzle4<2, 2, 1, 1> bbgg;
+iswizzle4<2, 2, 1, 2> bbgb;
 
-icomponent4<2, 2, 2, 0> bbbr;
-icomponent4<2, 2, 2, 1> bbbg;
-icomponent4<2, 2, 2, 2> bbbb;
+iswizzle4<2, 2, 2, 0> bbbr;
+iswizzle4<2, 2, 2, 1> bbbg;
+iswizzle4<2, 2, 2, 2> bbbb;

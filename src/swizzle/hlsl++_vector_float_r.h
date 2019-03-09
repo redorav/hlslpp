@@ -2,7 +2,7 @@
 // RGBA
 // -------------------------------
 
-component1<0> r;
-component2<0, 0> rr;
-component3<0, 0, 0> rrr;
-component4<0, 0, 0, 0> rrrr;
+swizzle1<0> r;
+swizzle2<0, 0> rr;
+swizzle3<0, 0, 0> rrr;
+swizzle4<0, 0, 0, 0> rrrr;
