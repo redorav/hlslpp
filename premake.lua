@@ -50,7 +50,7 @@ workspace "hlsl++"
 		
 	else
 	
-		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32, PlatformARM }
+		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32, PlatformARM, PlatformARM64 }
 	
 		local llvmToolset;
 		
@@ -80,9 +80,8 @@ workspace "hlsl++"
 			architecture("arm")
 			vectorextensions ("default")
 			
-		-- Doesn't work until a future premake
-		--filter { "platforms:"..PlatformARM64 }
-			--architecture("arm64")
+		filter { "platforms:"..PlatformARM64 }
+			architecture("arm64")
 	
 	end
 	

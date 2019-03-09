@@ -1,6 +1,15 @@
 #pragma once
 
-#include <arm_neon.h>
+
+#if defined(_M_ARM64)
+
+	#include <arm64_neon.h>
+
+#else
+
+	#include <arm_neon.h>
+
+#endif
 
 // For NEON version check flags, see https://github.com/magnumripper/JohnTheRipper/issues/1998
 
@@ -128,8 +137,7 @@ hlslpp_inline float32x4_t vrsqrtq_f32(float32x4_t x)
 	return e;
 }
 
-// ARMv8 has these functions natively but we need to emulate them for ARMv7
-#if __ARM_ARCH <= 7
+#if (__ARM_ARCH <= 7)
 
 hlslpp_inline float32x4_t vsqrtq_f32(float32x4_t x)
 {
@@ -137,6 +145,11 @@ hlslpp_inline float32x4_t vsqrtq_f32(float32x4_t x)
 	float32x4_t sqrt = vmulq_f32(x, vrsqrtq_f32(x));								// Multiply by x to get x * rqsrt(x)
 	return vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32(sqrt), cmpZero));	// Select 0 if input is 0
 }
+
+#endif
+
+// ARMv8 has these functions natively but we need to emulate them for ARMv7
+#if !defined(_M_ARM64) && (__ARM_ARCH <= 7)
 
 hlslpp_inline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
 {

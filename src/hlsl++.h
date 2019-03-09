@@ -20,7 +20,7 @@
 #define HLSLPP_COMPONENT_XYZ(X, Y, Z)			((1 << X) | (1 << Y) | (1 << Z))
 #define HLSLPP_COMPONENT_XYZW(X, Y, Z, W)		((1 << X) | (1 << Y) | (1 << Z) | (1 << W))
 
-#if defined(_M_ARM) || defined(__arm__)
+#if defined(_M_ARM) || defined(__arm__) || defined(_M_ARM64)
 	#include "hlsl++_neon.h"
 #else
 	#include "hlsl++_sse.h"
