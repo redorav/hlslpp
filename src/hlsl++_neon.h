@@ -148,6 +148,11 @@ hlslpp_inline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
 
 #endif
 
+hlslpp_inline int32x4_t vdivq_s32(int32x4_t x, int32x4_t y)
+{
+	return (int32x4_t)vdivq_f32((float32x4_t)x, (float32x4_t)y);
+}
+
 hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 {
 	float32x4_t rcpx_e = vrecpeq_f32(x);					// Calculate a first estimate of the rcp
@@ -241,6 +246,7 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_add_epi32(x, y)					vaddq_s32((x), (y))
 #define _hlslpp_sub_epi32(x, y)					vsubq_s32((x), (y))
 #define _hlslpp_mul_epi32(x, y)					vmulq_s32((x), (y))
+#define _hlslpp_div_epi32(x, y)					vdivq_s32((x), (y))
 
 #define _hlslpp_neg_epi32(x)					veorq_u32((x), vmovq_n_u32(0x80000000u))
 

@@ -1489,7 +1489,7 @@ namespace hlslpp
 	
 		iswizzle1& operator = (int32_t i)
 		{
-			vec = _hlslpp_blend_ps(vec, _hlslpp_set1_epi32(i), HLSLPP_COMPONENT_X(X));
+			vec = _hlslpp_blend_epi32(vec, _hlslpp_set1_epi32(i), HLSLPP_COMPONENT_X(X));
 			return *this;
 		}
 	
@@ -1498,8 +1498,8 @@ namespace hlslpp
 		template<int A>
 		iswizzle1& operator = (const iswizzle1<A>& s) // Revise this function. Can I not do with swizzle?
 		{
-			n128 t = _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
-			vec = _hlslpp_blend_ps(vec, t, HLSLPP_COMPONENT_X(X));
+			n128 t = _hlslpp_shuffle_epi32(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
+			vec = _hlslpp_blend_epi32(vec, t, HLSLPP_COMPONENT_X(X));
 			return *this;
 		}
 	
@@ -1820,6 +1820,11 @@ namespace hlslpp
 	int2 operator * (const int2& i1, const int2& i2) { return int2(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
 	int3 operator * (const int3& i1, const int3& i2) { return int3(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
 	int4 operator * (const int4& i1, const int4& i2) { return int4(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
+
+	int1 operator / (const int1& i1, const int1& i2) { return int1(_hlslpp_div_epi32(i1.vec, i2.vec)); }
+	int2 operator / (const int2& i1, const int2& i2) { return int2(_hlslpp_div_epi32(i1.vec, i2.vec)); }
+	int3 operator / (const int3& i1, const int3& i2) { return int3(_hlslpp_div_epi32(i1.vec, i2.vec)); }
+	int4 operator / (const int4& i1, const int4& i2) { return int4(_hlslpp_div_epi32(i1.vec, i2.vec)); }
 
 	//------------------------------------------------------------------------------------------------------------------------//
 	// int1 and iswizzle1 need special overloads to disambiguate between our operators/functions and built-in float operators //

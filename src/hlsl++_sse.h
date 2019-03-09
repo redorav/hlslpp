@@ -102,6 +102,8 @@ using n128i = __m128i;
 // https://stackoverflow.com/questions/10500766/sse-multiplication-of-4-32-bit-integers
 #define _hlslpp_mul_epi32(x, y)					_mm_mullo_epi32((x), (y))
 
+#define _hlslpp_div_epi32(x, y)					_mm_div_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y))
+
 #define _hlslpp_neg_epi32(x)					_mm_xor_si128((x), i4negativeMask)
 
 #define _hlslpp_madd_epi32(x, y, z)				_mm_add_epi32(_mm_mullo_epi32((x), (y)), (z))
