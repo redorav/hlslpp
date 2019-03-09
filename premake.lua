@@ -60,12 +60,12 @@ workspace "hlsl++"
 			toolset("msc")
 			
 		filter { "platforms:"..PlatformLLVM64 }
-			toolset("msc-llvm-vs2014")
+			toolset("msc-llvm")
 			architecture("x64")
 			buildoptions { "-Wno-unused-variable -msse4.1" }
 			
 		filter { "platforms:"..PlatformLLVM32 }
-			toolset("msc-llvm-vs2014")
+			toolset("msc-llvm")
 			buildoptions { "-Wno-unused-variable -msse4.1" }
 			
 		filter { "platforms:"..PlatformARM }
