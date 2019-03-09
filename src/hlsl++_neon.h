@@ -161,6 +161,7 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 
 #define _hlslpp_set1_ps(x)						vmovq_n_f32((x))
 #define _hlslpp_set_ps(x, y, z, w)				vmov4q_n_f32((x), (y), (z), (w))
+#define _hlslpp_setzero_ps()					vmovq_n_f32(0.0f)
 
 #define _hlslpp_add_ps(x, y)					vaddq_f32((x), (y))
 #define _hlslpp_sub_ps(x, y)					vsubq_f32((x), (y))

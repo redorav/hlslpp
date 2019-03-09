@@ -1364,17 +1364,17 @@ namespace hlslpp
 	// and functions that are part of common headers such as cmath, math.h, algorithm, etc
 	//------------------------------------------------------------------------------------------------------------------------
 
-	template<typename T, enable_if_number<T> = nullptr> float1 operator + (float1 f1, T f2) { return float(f1) + float1(f2); }
-	template<typename T, enable_if_number<T> = nullptr> float1 operator + (T f1, float1 f2) { return float1(f1) + float(f2); }
+	template<typename T, enable_if_number<T> = nullptr> float1 operator + (float1 f1, T f2) { return f1 + float1(f2); }
+	template<typename T, enable_if_number<T> = nullptr> float1 operator + (T f1, float1 f2) { return float1(f1) + f2; }
 
-	template<typename T, enable_if_number<T> = nullptr> float1 operator - (float1 f1, T f2) { return float(f1) - float1(f2); }
-	template<typename T, enable_if_number<T> = nullptr> float1 operator - (T f1, float1 f2) { return float1(f1) - float(f2); }
+	template<typename T, enable_if_number<T> = nullptr> float1 operator - (float1 f1, T f2) { return f1 - float1(f2); }
+	template<typename T, enable_if_number<T> = nullptr> float1 operator - (T f1, float1 f2) { return float1(f1) - f2; }
 
-	template<typename T, enable_if_number<T> = nullptr> float1 operator * (float1 f1, T f2) { return float(f1) * float1(f2); }
-	template<typename T, enable_if_number<T> = nullptr> float1 operator * (T f1, float1 f2) { return float1(f1) * float(f2); }
+	template<typename T, enable_if_number<T> = nullptr> float1 operator * (float1 f1, T f2) { return f1 * float1(f2); }
+	template<typename T, enable_if_number<T> = nullptr> float1 operator * (T f1, float1 f2) { return float1(f1) * f2; }
 
-	template<typename T, enable_if_number<T> = nullptr> float1 operator / (float1 f1, T f2) { return float(f1) / float1(f2); }
-	template<typename T, enable_if_number<T> = nullptr> float1 operator / (T f1, float1 f2) { return float1(f1) / float(f2); }
+	template<typename T, enable_if_number<T> = nullptr> float1 operator / (float1 f1, T f2) { return f1 / float1(f2); }
+	template<typename T, enable_if_number<T> = nullptr> float1 operator / (T f1, float1 f2) { return float1(f1) / f2; }
 
 	template<int X> float1 operator + (swizzle1<X> s, float1 f) { return float1(s) + f; }
 	template<int X> float1 operator - (swizzle1<X> s, float1 f) { return float1(s) - f; }
@@ -1826,17 +1826,17 @@ namespace hlslpp
 	// and functions that are part of common headers such as cmath, math.h, algorithm, etc                                    //
 	//------------------------------------------------------------------------------------------------------------------------//
 
-	template<typename T, enable_if_number<T> = nullptr> int1 operator + (int1 i1, T i2) { return int(i1) + int1(i2); }
-	template<typename T, enable_if_number<T> = nullptr> int1 operator + (T i1, int1 i2) { return int1(i1) + int(i2); }
+	template<typename T, enable_if_number<T> = nullptr> int1 operator + (int1 i1, T i2) { return i1 + int1(i2); }
+	template<typename T, enable_if_number<T> = nullptr> int1 operator + (T i1, int1 i2) { return int1(i1) + i2; }
 
-	template<typename T, enable_if_number<T> = nullptr> int1 operator - (int1 i1, T i2) { return int(i1) - int1(i2); }
-	template<typename T, enable_if_number<T> = nullptr> int1 operator - (T i1, int1 i2) { return int1(i1) - int(i2); }
+	template<typename T, enable_if_number<T> = nullptr> int1 operator - (int1 i1, T i2) { return i1 - int1(i2); }
+	template<typename T, enable_if_number<T> = nullptr> int1 operator - (T i1, int1 i2) { return int1(i1) - i2; }
 
-	template<typename T, enable_if_number<T> = nullptr> int1 operator * (int1 i1, T i2) { return int(i1) * int1(i2); }
-	template<typename T, enable_if_number<T> = nullptr> int1 operator * (T i1, int1 i2) { return int1(i1) * int(i2); }
+	template<typename T, enable_if_number<T> = nullptr> int1 operator * (int1 i1, T i2) { return i1 * int1(i2); }
+	template<typename T, enable_if_number<T> = nullptr> int1 operator * (T i1, int1 i2) { return int1(i1) * i2; }
 
-	template<typename T, enable_if_number<T> = nullptr> int1 operator / (int1 i1, T i2) { return int(i1) / int1(i2); }
-	template<typename T, enable_if_number<T> = nullptr> int1 operator / (T i1, int1 i2) { return int1(i1) / int(i2); }
+	template<typename T, enable_if_number<T> = nullptr> int1 operator / (int1 i1, T i2) { return i1 / int1(i2); }
+	template<typename T, enable_if_number<T> = nullptr> int1 operator / (T i1, int1 i2) { return int1(i1) / i2; }
 
 	template<int X> int1 operator + (iswizzle1<X> s, int1 i) { return int1(s) + i; }
 	template<int X> int1 operator - (iswizzle1<X> s, int1 i) { return int1(s) - i; }
@@ -1962,6 +1962,8 @@ namespace hlslpp
 
 	struct float1x1
 	{
+		float1x1() : vec(_hlslpp_setzero_ps()) {}
+
 		explicit float1x1(n128 vec) : vec(vec) {}
 
 		template<typename T, enable_if_number<T> = nullptr>
@@ -1979,6 +1981,8 @@ namespace hlslpp
 
 	struct float1x2
 	{
+		float1x2() : vec(_hlslpp_setzero_ps()) {}
+
 		explicit float1x2(n128 vec) : vec(vec) {}
 
 		template<typename T, enable_if_number<T> = nullptr>
@@ -1998,6 +2002,8 @@ namespace hlslpp
 
 	struct float2x1
 	{
+		float2x1() : vec(_hlslpp_setzero_ps()) {}
+
 		explicit float2x1(n128 vec) : vec(vec) {}
 
 		template<typename T, enable_if_number<T> = nullptr>
@@ -2016,6 +2022,8 @@ namespace hlslpp
 
 	struct float1x3
 	{
+		float1x3() : vec(_hlslpp_setzero_ps()) {}
+
 		explicit float1x3(n128 vec) : vec(vec) {}
 
 		template<typename T, enable_if_number<T> = nullptr>
@@ -2034,6 +2042,8 @@ namespace hlslpp
 
 	struct float3x1
 	{
+		float3x1() : vec(_hlslpp_setzero_ps()) {}
+
 		explicit float3x1(n128 vec) : vec(vec) {}
 
 		template<typename T, enable_if_number<T> = nullptr>
@@ -2052,6 +2062,8 @@ namespace hlslpp
 
 	struct float1x4
 	{
+		float1x4() : vec(_hlslpp_setzero_ps()) {}
+
 		explicit float1x4(n128 vec) : vec(vec) {}
 
 		template<typename T, enable_if_number<T> = nullptr>
@@ -2070,6 +2082,8 @@ namespace hlslpp
 
 	struct float4x1
 	{
+		float4x1() : vec(_hlslpp_setzero_ps()) {}
+
 		explicit float4x1(n128 vec) : vec(vec) {}
 
 		template<typename T, enable_if_number<T> = nullptr>
@@ -2088,6 +2102,8 @@ namespace hlslpp
 
 	struct float2x2
 	{
+		float2x2() : vec(_hlslpp_setzero_ps()) {}
+
 		explicit float2x2(n128 vec) : vec(vec) {}
 
 		explicit float2x2(float f00, float f01,
@@ -2106,6 +2122,8 @@ namespace hlslpp
 
 	struct float2x3
 	{
+		float2x3() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
+
 		explicit float2x3(n128 vec0, n128 vec1) : vec0(vec0), vec1(vec1) {}
 
 		explicit float2x3(float f) : vec0(_hlslpp_set_ps(f, f, f, 0.0f)), vec1(_hlslpp_set_ps(f, f, f, 0.0f)) {}
@@ -2130,6 +2148,8 @@ namespace hlslpp
 
 	struct float3x2
 	{
+		float3x2() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
+
 		explicit float3x2(n128 vec0, n128 vec1) : vec0(vec0), vec1(vec1) {}
 
 		explicit float3x2(float f) : vec0(_hlslpp_set_ps(f, f, f, 0.0f)), vec1(_hlslpp_set_ps(f, f, f, 0.0f)) {}
@@ -2155,6 +2175,8 @@ namespace hlslpp
 
 	struct float2x4
 	{
+		float2x4() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
+
 		explicit float2x4(n128 vec0, n128 vec1) : vec0(vec0), vec1(vec1) {}
 
 		explicit float2x4(float f00, float f01, float f02, float f03,
@@ -2179,6 +2201,8 @@ namespace hlslpp
 
 	struct float4x2
 	{
+		float4x2() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
+
 		explicit float4x2(n128 vec0, n128 vec1) : vec0(vec0), vec1(vec1) {}
 
 		explicit float4x2(float f00, float f01,
@@ -2207,6 +2231,8 @@ namespace hlslpp
 
 	struct float3x3
 	{
+		float3x3() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()), vec2(_hlslpp_setzero_ps()) {}
+
 		explicit float3x3(const n128 vec0, const n128 vec1, const n128 vec2) : vec0(vec0), vec1(vec1), vec2(vec2) {}
 
 		explicit float3x3(float f00, float f01, float f02,
@@ -2251,6 +2277,8 @@ namespace hlslpp
 
 	struct float3x4
 	{
+		float3x4() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()), vec2(_hlslpp_setzero_ps()) {}
+
 		explicit float3x4(n128 vec0, n128 vec1, n128 vec2) : vec0(vec0), vec1(vec1), vec2(vec2) {}
 
 		explicit float3x4(float f00, float f01, float f02, float f03,
@@ -2283,6 +2311,8 @@ namespace hlslpp
 
 	struct float4x3
 	{
+		float4x3() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()), vec2(_hlslpp_setzero_ps()) {}
+
 		explicit float4x3(n128 vec0, n128 vec1, n128 vec2) : vec0(vec0), vec1(vec1), vec2(vec2) {}
 
 		explicit float4x3(float f00, float f01, float f02,
@@ -2316,6 +2346,8 @@ namespace hlslpp
 
 	struct float4x4
 	{
+		float4x4() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()), vec2(_hlslpp_setzero_ps()), vec3(_hlslpp_setzero_ps()) {}
+
 		explicit float4x4(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3) : vec0(vec0), vec1(vec1), vec2(vec2), vec3(vec3) {}
 
 

@@ -18,6 +18,7 @@ using n128i = __m128i;
 
 #define _hlslpp_set1_ps(x)						_mm_set1_ps((x))
 #define _hlslpp_set_ps(x, y, z, w)				_mm_set_ps((w), (z), (y), (x))
+#define _hlslpp_setzero_ps()					_mm_setzero_ps()
 
 #define _hlslpp_add_ps(x, y)					_mm_add_ps((x), (y))
 #define _hlslpp_sub_ps(x, y)					_mm_sub_ps((x), (y))

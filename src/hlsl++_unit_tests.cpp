@@ -275,12 +275,19 @@ void RunUnitTests()
 	float f3 = (rand() % 1000) / 100.0f; float f7 = (rand() % 1000) / 100.0f; float f11 = (rand() % 1000) / 100.0f; float f15 = (rand() % 1000) / 100.0f; float f19 = (rand() % 1000) / 100.0f;
 	float f4 = (rand() % 1000) / 100.0f; float f8 = (rand() % 1000) / 100.0f; float f12 = (rand() % 1000) / 100.0f; float f16 = (rand() % 1000) / 100.0f; float f20 = (rand() % 1000) / 100.0f;
 
-// Initialization
+	// Initialization
 
 	float1 vfoo1 = float1(f1);												eq(vfoo1, f1);
 	float2 vfoo2 = float2(f2, f3);											eq(vfoo2, f2, f3);
 	float3 vfoo3 = float3(f4, f5, f6);										eq(vfoo3, f4, f5, f6);
 	float4 vfoo4 = float4(f7, f8, f9, f10);									eq(vfoo4, f7, f8, f9, f10);
+
+	// Default constructors
+
+	float1 vfoo_dc_1;
+	float2 vfoo_dc_2;
+	float3 vfoo_dc_3;
+	float4 vfoo_dc_4;
 
 	vfoo1 = float1(f1);														eq(vfoo1, f1);
 	vfoo2 = float2(f2, f3);													eq(vfoo2, f2, f3);
@@ -1138,6 +1145,11 @@ void RunUnitTests()
 	int3 ivfoo3 = int3(i4, i5, i6);								eq(ivfoo3, i4, i5, i6);
 	int4 ivfoo4 = int4(i7, i8, i9, i10);						eq(ivfoo4, i7, i8, i9, i10);
 
+	int1 ivfoo_dc_1;
+	int2 ivfoo_dc_2;
+	int3 ivfoo_dc_3;
+	int4 ivfoo_dc_4;
+
 	ivfoo1 = int1(i1);											eq(ivfoo1, i1);
 	ivfoo2 = int2(i2, i3);										eq(ivfoo2, i2, i3);
 	ivfoo3 = int3(i4, i5, i6);									eq(ivfoo3, i4, i5, i6);
@@ -1461,25 +1473,35 @@ void RunUnitTests()
 	float1x2 mat_foo_1x2 = float1x2(1, 2);
 	float1x3 mat_foo_1x3 = float1x3(1, 2, 3);
 	float1x4 mat_foo_1x4 = float1x4(1, 2, 3, 4);
-
 	float2x1 mat_foo_2x1 = float2x1(1, 2);
 	float3x1 mat_foo_3x1 = float3x1(1, 2, 3);
 	float4x1 mat_foo_4x1 = float4x1(1, 2, 3, 4);
-
 	float2x2 mat_foo_2x2 = float2x2(1, 2, 3, 4);
-
 	float2x3 mat_foo_2x3 = float2x3(1, 2, 3, 4, 5, 6);
 	float2x4 mat_foo_2x4 = float2x4(1, 2, 3, 4, 5, 6, 7, 8);
-
 	float3x2 mat_foo_3x2 = float3x2(1, 2, 3, 4, 5, 6);
 	float4x2 mat_foo_4x2 = float4x2(1, 2, 3, 4, 5, 6, 7, 8);
-
 	float3x3 mat_foo_3x3 = float3x3(1, 2, 3, 4, 5, 6, 7, 8, 9);
-
 	float3x4 mat_foo_3x4 = float3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 	float4x3 mat_foo_4x3 = float4x3(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-
 	float4x4 mat_foo_4x4 = float4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+
+	float1x1 mat_foo_dc_1x1;
+	float1x2 mat_foo_dc_1x2;
+	float1x3 mat_foo_dc_1x3;
+	float1x4 mat_foo_dc_1x4;
+	float2x1 mat_foo_dc_2x1;
+	float3x1 mat_foo_dc_3x1;
+	float4x1 mat_foo_dc_4x1;
+	float2x2 mat_foo_dc_2x2;
+	float2x3 mat_foo_dc_2x3;
+	float2x4 mat_foo_dc_2x4;
+	float3x2 mat_foo_dc_3x2;
+	float4x2 mat_foo_dc_4x2;
+	float3x3 mat_foo_dc_3x3;
+	float3x4 mat_foo_dc_3x4;
+	float4x3 mat_foo_dc_4x3;
+	float4x4 mat_foo_dc_4x4;
 
 	float1x1 mat_bar_1x1 = float1x1(0.4f);
 	float1x2 mat_bar_1x2 = float1x2(0.1f, 0.2f);
@@ -1650,10 +1672,10 @@ void RunUnitTests()
 	float1x1 mat_mul_f_1x1 = mat_foo_1x1 * 2.0f;
 	float1x2 mat_mul_f_1x2 = mat_foo_1x2 * 2.0f;
 	float1x3 mat_mul_f_1x3 = mat_foo_1x3 * 2.0f;
-	//float1x4 mat_mul_f_1x4 = mat_foo_1x4 * 2.0f;
+	float1x4 mat_mul_f_1x4 = mat_foo_1x4 * 2.0f;
 	float2x1 mat_mul_f_2x1 = mat_foo_2x1 * 2.0f;
 	float3x1 mat_mul_f_3x1 = mat_foo_3x1 * 2.0f;
-	//float4x1 mat_mul_f_4x1 = mat_foo_4x1 * 2.0f;
+	float4x1 mat_mul_f_4x1 = mat_foo_4x1 * 2.0f;
 	float2x2 mat_mul_f_2x2 = mat_foo_2x2 * 2.0f;
 	float2x3 mat_mul_f_2x3 = mat_foo_2x3 * 2.0f;
 	float2x4 mat_mul_f_2x4 = mat_foo_2x4 * 2.0f;
