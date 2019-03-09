@@ -25,10 +25,11 @@ platform:
 matrix:
   exclude:
     - image: Visual Studio 2015
-      platform:
-        -MSVC ARM64
-        -LLVM 64
-        -LLVM 32
+      platform: MSVC ARM64
+    - image: Visual Studio 2015
+      platform: LLVM 64
+    - image: Visual Studio 2015
+      platform: LLVM 32
   
 configuration:
   - Release
