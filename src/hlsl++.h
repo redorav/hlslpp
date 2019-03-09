@@ -1498,7 +1498,7 @@ namespace hlslpp
 		template<int A>
 		iswizzle1& operator = (const iswizzle1<A>& s) // Revise this function. Can I not do with swizzle?
 		{
-			n128 t = _hlslpp_shuffle_epi32(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
+			n128i t = _hlslpp_shuffle_epi32(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
 			vec = _hlslpp_blend_epi32(vec, t, HLSLPP_COMPONENT_X(X));
 			return *this;
 		}
