@@ -86,24 +86,24 @@ namespace hlslpp_unit
 	
 	void eq(float a, bool c)
 	{
-		bool equals = (bool)a == c;
+		bool equals = (a != 0.0f ? true : false) == c;
 		assert(equals);
 	}
 	
-	void eq(float2 v, bool x, bool y)
+	void eq(const float2& v, bool x, bool y)
 	{
 		eq(v.x, x);
 		eq(v.y, y);
 	}
 	
-	void eq(float3 v, bool x, bool y, bool z)
+	void eq(const float3& v, bool x, bool y, bool z)
 	{
 		eq(v.x, x);
 		eq(v.y, y);
 		eq(v.z, z);
 	}
 	
-	void eq(float4 v, bool x, bool y, bool z, bool w)
+	void eq(const float4& v, bool x, bool y, bool z, bool w)
 	{
 		eq(v.x, x);
 		eq(v.y, y);
