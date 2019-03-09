@@ -16,19 +16,19 @@ install:
   - if %vsversion%==2017 start /B /W premake/win/premake5 --file=premake.lua vs2017
       
 platform:
-  - MSVC 64
-  - MSVC 32
-  - LLVM 64
-  - LLVM 32
-  - MSVC ARM
+  -MSVC 64
+  -MSVC 32
+  -LLVM 64
+  -LLVM 32
+  -MSVC ARM
   
 matrix:
   exclude:
     - image: Visual Studio 2015
       platform:
-        - MSVC ARM64
-        - LLVM 64
-        - LLVM 32
+        -MSVC ARM64
+        -LLVM 64
+        -LLVM 32
   
 configuration:
   - Release
