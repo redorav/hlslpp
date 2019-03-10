@@ -1,3 +1,5 @@
+require ('premake-xbox360/xbox360')
+
 Workspace = "workspace/".._ACTION
 
 -- Compilers
@@ -14,6 +16,8 @@ PlatformLinux64_Clang	= "Linux64_Clang"
 PlatformARM = "MSVC ARM"
 PlatformARM64 = "MSVC ARM64"
 
+Platform360 = "Xbox 360"
+
 -- Directories
 srcDir = "src"
 
@@ -26,7 +30,7 @@ workspace "hlsl++"
 		srcDir,
 	}
 	
-	vectorextensions ("SSE4.1")
+	vectorextensions ("sse4.1")
 		
 	if(_ACTION == "xcode4") then
 	
@@ -50,7 +54,7 @@ workspace "hlsl++"
 		
 	else
 	
-		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32, PlatformARM, PlatformARM64 }
+		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32, PlatformARM, PlatformARM64, Platform360 }
 	
 		local llvmToolset;
 		
@@ -82,7 +86,14 @@ workspace "hlsl++"
 			
 		filter { "platforms:"..PlatformARM64 }
 			architecture("arm64")
-	
+			vectorextensions ("default")
+			
+		filter { "platforms:"..Platform360 }
+			system("xbox360")
+			vectorextensions ("default")
+			defines("_XBOX")
+			
+		filter{}
 	end
 	
 	configuration "Debug"
