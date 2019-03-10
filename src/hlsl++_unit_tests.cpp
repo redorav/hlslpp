@@ -1444,17 +1444,12 @@ void RunUnitTests()
 
 	vfoo1 = float1(i1);														eq(vfoo1, (float)i1);
 	vfoo2 = float2(i2, i3);													eq(vfoo2, (float)i2, (float)i3);
-	vfoo3 = float3(i4, i5, i6);												eq(vfoo3, (float)f4, (float)f5, (float)f6);
-	vfoo4 = float4(i7, i8, i9, i10);										eq(vfoo4, (float)f7, (float)f8, (float)f9, (float)f10);
+	vfoo3 = float3(i4, i5, i6);												eq(vfoo3, (float)i4, (float)i5, (float)i6);
+	vfoo4 = float4(i7, i8, i9, i10);										eq(vfoo4, (float)i7, (float)i8, (float)i9, (float)i10);
 
-	vfoo1 = float1(i1);														eq(vfoo1, (float)i1);
-	vfoo2 = float2(i2, i3);													eq(vfoo2, (float)i2, (float)i3);
-	vfoo3 = float3(i4, i5, i6);												eq(vfoo3, (float)f4, (float)f5, (float)f6);
-	vfoo4 = float4(i7, i8, i9, i10);										eq(vfoo4, (float)f7, (float)f8, (float)f9, (float)f10);
-
-	vfoo2 = float2(i2, f3);													eq(vfoo2, (float)i2, (float)i3);
-	vfoo3 = float3(f4, i5, i6);												eq(vfoo3, (float)f4, (float)f5, (float)f6);
-	vfoo4 = float4(i7, i8, f9, f10);										eq(vfoo4, (float)f7, (float)f8, (float)f9, (float)f10);
+	vfoo2 = float2(i2, f3);													eq(vfoo2, (float)i2, (float)f3);
+	vfoo3 = float3(f4, i5, i6);												eq(vfoo3, (float)f4, (float)i5, (float)i6);
+	vfoo4 = float4(i7, i8, f9, f10);										eq(vfoo4, (float)i7, (float)i8, (float)f9, (float)f10);
 
 	//*********
 	// Matrices
