@@ -10,18 +10,13 @@ using namespace std;
 
 #include "hlsl++.h"
 
-//#if defined(_WIN32)
-//
-//#define NOMINMAX
-//#define WIN32_LEAN_AND_MEAN
-//#include <windows.h>
-//
-////#include "DirectXMath.h"
-//#endif
-//
+#if !defined(_XBOX)
+#define HLSLPP_HAS_CHRONO
+#endif
+
+#if defined(HLSLPP_HAS_CHRONO)
 #include <chrono>
-//#include <iostream>
-//
+#endif
 
 using namespace hlslpp;
 
@@ -145,8 +140,8 @@ namespace hlslpp_unit
 		return fracPart;
 	}
 
-	using Vec4Func = float4(*) (const float4&);
-	using ScalarFunc = float(*) (float);
+	typedef float4 (*Vec4Func)(const float4&);
+	typedef float (*ScalarFunc)(float);
 
 	void maxErrorExhaustive(Vec4Func vectorFunction, ScalarFunc scalarFunction, const char* funcName, float rangeStart, float rangeEnd)
 	{
@@ -237,32 +232,28 @@ namespace hlslpp_unit
 class Timer
 {
 private:
-	//LARGE_INTEGER m_startTime, m_endTime, m_elapsedMicroseconds;
-	//LARGE_INTEGER m_frequency;
+
+#if defined(HLSLPP_HAS_CHRONO)
 	std::chrono::high_resolution_clock::time_point m_startTime;
 	std::chrono::high_resolution_clock::time_point m_endTime;
+#endif
 
 public:
 	void Start()
 	{
-		//QueryPerformanceFrequency(&m_frequency);
-		//QueryPerformanceCounter(&m_startTime);
-
+#if defined(HLSLPP_HAS_CHRONO)
 		m_startTime = std::chrono::high_resolution_clock::now();
+#endif
 	}
 
 	double Get()
 	{
-		//QueryPerformanceCounter(&m_endTime);
-		//m_elapsedMicroseconds.QuadPart = m_endTime.QuadPart - m_startTime.QuadPart;
-		//m_elapsedMicroseconds.QuadPart *= 1000000;
-		//m_elapsedMicroseconds.QuadPart /= m_frequency.QuadPart;
-		//
-		//return double(m_elapsedMicroseconds.QuadPart) / 1.0e6;
-
+#if defined(HLSLPP_HAS_CHRONO)
 		m_endTime = std::chrono::high_resolution_clock::now();
-		
 		return std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count() / 1e9f;
+#else
+		return 0.0f;
+#endif
 	}
 };
 

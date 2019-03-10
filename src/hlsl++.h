@@ -8,6 +8,10 @@
 
 	#define hlslpp_inline __forceinline
 
+#else
+
+	#error No forceinline define for this platform
+
 #endif
 
 #define HLSLPP_SHUFFLE_MASK(X, Y, Z, W)			(((W) << 6) | ((Z) << 4) | ((Y) << 2) | (X))
@@ -21,9 +25,17 @@
 #define HLSLPP_COMPONENT_XYZW(X, Y, Z, W)		((1 << X) | (1 << Y) | (1 << Z) | (1 << W))
 
 #if defined(_M_ARM) || defined(__arm__) || defined(_M_ARM64)
+	
 	#include "hlsl++_neon.h"
+
+#elif defined(_XBOX)
+
+	#include "hlsl++_360.h"
+
 #else
+
 	#include "hlsl++_sse.h"
+
 #endif
 
 #include <cstdint>
@@ -548,6 +560,8 @@ namespace hlslpp
 		return _hlslpp_div_ps(_hlslpp_sub_ps(expx, exp_minusx), _hlslpp_add_ps(expx, exp_minusx));
 	}
 
+#if !defined(_hlslpp_dot4_ps)
+
 	// Inspiration for some bits from https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-float-vector-sum-on-x86
 	// Can optimize further in SSE3 via Maskmovehdup_ps instead of _hlslpp_perm_yxwx_ps, but is slower in MSVC and
 	// only marginally faster on clang
@@ -570,6 +584,10 @@ namespace hlslpp
 		return add;
 	}
 
+#endif
+
+#if !defined(_hlslpp_dot3_ps)
+
 	hlslpp_inline n128 _hlslpp_dot3_ps(n128 x, n128 y)
 	{
 		// SSE4 slower
@@ -583,6 +601,8 @@ namespace hlslpp
 		n128 result = _hlslpp_add_ss(add1, shuf2);  // Contains x+y+z, _, _, _
 		return result;
 	}
+
+#endif
 
 	hlslpp_inline n128 _hlslpp_dot2_ps(n128 x, n128 y)
 	{
@@ -667,26 +687,27 @@ namespace hlslpp
 
 	// Auxiliary templates for disambiguation with standard header functions
 
-	template<typename T>
-	using enable_if_number = typename std::enable_if<std::is_arithmetic<T>::value, void>::type*;
+	#define hlslpp_enable_if_return(T, R) typename std::enable_if<std::is_arithmetic<T>::value, R>::type
 
-	template<typename T1, typename T2>
-	using enable_if_number_2 = typename std::enable_if<
-		std::is_arithmetic<T1>::value *
-		std::is_arithmetic<T2>::value, void>::type*;
+	#define hlslpp_enable_if_number(T) typename std::enable_if<std::is_arithmetic<T>::value, void*>::type = nullptr
 
-	template<typename T1, typename T2, typename T3>
-	using enable_if_number_3 = typename std::enable_if<
-		std::is_arithmetic<T1>::value *
-		std::is_arithmetic<T2>::value *
-		std::is_arithmetic<T3>::value, void>::type*;
+	#define hlslpp_enable_if_number_2(T1, T2) \
+		typename std::enable_if< \
+		std::is_arithmetic<T1>::value * \
+		std::is_arithmetic<T2>::value, void*>::type = nullptr
 
-	template<typename T1, typename T2, typename T3, typename T4>
-	using enable_if_number_4 = typename std::enable_if<
-		std::is_arithmetic<T1>::value *
-		std::is_arithmetic<T2>::value *
-		std::is_arithmetic<T3>::value *
-		std::is_arithmetic<T4>::value, void>::type*;
+	#define hlslpp_enable_if_number_3(T1, T2, T3) \
+		typename std::enable_if< \
+		std::is_arithmetic<T1>::value * \
+		std::is_arithmetic<T2>::value * \
+		std::is_arithmetic<T3>::value, void*>::type = nullptr
+
+	#define hlslpp_enable_if_number_4(T1, T2, T3, T4) \
+		typename std::enable_if< \
+		std::is_arithmetic<T1>::value * \
+		std::is_arithmetic<T2>::value * \
+		std::is_arithmetic<T3>::value * \
+		std::is_arithmetic<T4>::value, void*>::type = nullptr
 
 	//--------------------//
 	// Float swizzle type //
@@ -908,8 +929,8 @@ namespace hlslpp
 		float1(const float1& f) : vec(f.vec) {}
 		explicit float1(n128 vec) : vec(vec) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		float1(T f) : vec(_hlslpp_set_ps(float(f), 0.0f, 0.0f, 0.0f)) {}
+		template<typename T>
+		float1(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), 0.0f, 0.0f, 0.0f)) {}
 
 		template<int X> float1(const swizzle1<X>& s) : vec(s.template swizzle<X, 0>()) {}
 
@@ -935,11 +956,11 @@ namespace hlslpp
 		explicit float2(n128 vec) : vec(vec) {}
 		explicit float2(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		float2(T f) : vec(_hlslpp_set_ps(float(f), float(f), 0.0f, 0.0f)) {}
+		template<typename T>
+		float2(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), float(f), 0.0f, 0.0f)) {}
 
-		template<typename T1, typename T2, enable_if_number_2<T1, T2> = nullptr>
-		float2(T1 f1, T2 f2) : vec(_hlslpp_set_ps(float(f1), float(f2), 0.0f, 0.0f)) {}
+		template<typename T1, typename T2>
+		float2(T1 f1, T2 f2, hlslpp_enable_if_number_2(T1, T2)) : vec(_hlslpp_set_ps(float(f1), float(f2), 0.0f, 0.0f)) {}
 
 		float2(const float1& f1, const float1& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
 		
@@ -968,11 +989,11 @@ namespace hlslpp
 
 		explicit float3(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		float3(T f) : vec(_hlslpp_set_ps(float(f), float(f), float(f), 0.0f)) {}
+		template<typename T>
+		float3(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), float(f), float(f), 0.0f)) {}
 
-		template<typename T1, typename T2, typename T3, enable_if_number_3<T1, T2, T3> = nullptr>
-		float3(T1 f1, T2 f2, T3 f3) : vec(_hlslpp_set_ps(float(f1), float(f2), float(f3), 0.0f)) {}
+		template<typename T1, typename T2, typename T3>
+		float3(T1 f1, T2 f2, T3 f3, hlslpp_enable_if_number_3(T1, T2, T3)) : vec(_hlslpp_set_ps(float(f1), float(f2), float(f3), 0.0f)) {}
 
 		float3(const float1& f1, const float1& f2, const float1& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 
@@ -1005,11 +1026,11 @@ namespace hlslpp
 
 		explicit float4(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		float4(T f) : vec(_hlslpp_set1_ps(float(f))) {}
+		template<typename T>
+		float4(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set1_ps(float(f))) {}
 
-		template<typename T1, typename T2, typename T3, typename T4, enable_if_number_4<T1, T2, T3, T4> = nullptr>
-		float4(T1 f1, T2 f2, T3 f3, T4 f4) : vec(_hlslpp_set_ps(float(f1), float(f2), float(f3), float(f4))) {}
+		template<typename T1, typename T2, typename T3, typename T4>
+		float4(T1 f1, T2 f2, T3 f3, T4 f4, hlslpp_enable_if_number_4(T1, T2, T3, T4)) : vec(_hlslpp_set_ps(float(f1), float(f2), float(f3), float(f4))) {}
 
 		float4(const float1& f1, const float1& f2, const float1& f3, const float1& f4) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_shuf_xxxx_ps(f2.vec, f4.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 		
@@ -1364,17 +1385,17 @@ namespace hlslpp
 	// and functions that are part of common headers such as cmath, math.h, algorithm, etc
 	//------------------------------------------------------------------------------------------------------------------------
 
-	template<typename T, enable_if_number<T> = nullptr> float1 operator + (const float1& f1, T f2) { return f1 + float1(f2); }
-	template<typename T, enable_if_number<T> = nullptr> float1 operator + (T f1, const float1& f2) { return float1(f1) + f2; }
+	template<typename T> hlslpp_enable_if_return(T, float1) operator + (const float1& f1, T f2) { return f1 + float1(f2); }
+	template<typename T> hlslpp_enable_if_return(T, float1) operator + (T f1, const float1& f2) { return float1(f1) + f2; }
 
-	template<typename T, enable_if_number<T> = nullptr> float1 operator - (const float1& f1, T f2) { return f1 - float1(f2); }
-	template<typename T, enable_if_number<T> = nullptr> float1 operator - (T f1, const float1& f2) { return float1(f1) - f2; }
+	template<typename T> hlslpp_enable_if_return(T, float1) operator - (const float1& f1, T f2) { return f1 - float1(f2); }
+	template<typename T> hlslpp_enable_if_return(T, float1) operator - (T f1, const float1& f2) { return float1(f1) - f2; }
 
-	template<typename T, enable_if_number<T> = nullptr> float1 operator * (const float1& f1, T f2) { return f1 * float1(f2); }
-	template<typename T, enable_if_number<T> = nullptr> float1 operator * (T f1, const float1& f2) { return float1(f1) * f2; }
+	template<typename T> hlslpp_enable_if_return(T, float1) operator * (const float1& f1, T f2) { return f1 * float1(f2); }
+	template<typename T> hlslpp_enable_if_return(T, float1) operator * (T f1, const float1& f2) { return float1(f1) * f2; }
 
-	template<typename T, enable_if_number<T> = nullptr> float1 operator / (const float1& f1, T f2) { return f1 / float1(f2); }
-	template<typename T, enable_if_number<T> = nullptr> float1 operator / (T f1, const float1& f2) { return float1(f1) / f2; }
+	template<typename T> hlslpp_enable_if_return(T, float1) operator / (const float1& f1, T f2) { return f1 / float1(f2); }
+	template<typename T> hlslpp_enable_if_return(T, float1) operator / (T f1, const float1& f2) { return float1(f1) / f2; }
 
 	template<int X> float1 operator + (const swizzle1<X>& s, const float1& f) { return float1(s) + f; }
 	template<int X> float1 operator - (const swizzle1<X>& s, const float1& f) { return float1(s) - f; }
@@ -1678,8 +1699,8 @@ namespace hlslpp
 		int1(const int1& i) : vec(i.vec) {}
 		explicit int1(n128i vec) : vec(vec) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		int1(T i) : vec(_hlslpp_set_epi32(int(i), 0, 0, 0)) {}
+		template<typename T>
+		int1(T i, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_epi32(int(i), 0, 0, 0)) {}
 
 		template<int X> int1(const iswizzle1<X>& s) : vec(s.template swizzle<X, 0>()) {}
 
@@ -1706,8 +1727,8 @@ namespace hlslpp
 
 		int2(int32_t i) : vec(_hlslpp_set_epi32(i, i, 0, 0)) {}
 
-		template<typename T1, typename T2, enable_if_number_2<T1, T2> = nullptr>
-		int2(T1 i1, T2 i2) : vec(_hlslpp_set_epi32(int(i1), int(i2), 0, 0)) {}
+		template<typename T1, typename T2>
+		int2(T1 i1, T2 i2, hlslpp_enable_if_number_2(T1, T2)) : vec(_hlslpp_set_epi32(int(i1), int(i2), 0, 0)) {}
 
 		int2(const int1& i1, const int1& i2) { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
 		
@@ -1736,8 +1757,8 @@ namespace hlslpp
 
 		int3(int32_t i) : vec(_hlslpp_set_epi32(i, i, i, 0)) {}
 
-		template<typename T1, typename T2, typename T3, enable_if_number_3<T1, T2, T3> = nullptr>
-		int3(T1 i1, T2 i2, T3 i3) : vec(_hlslpp_set_epi32(int(i1), int(i2), int(i3), 0)) {}
+		template<typename T1, typename T2, typename T3>
+		int3(T1 i1, T2 i2, T3 i3, hlslpp_enable_if_number_3(T1, T2, T3)) : vec(_hlslpp_set_epi32(int(i1), int(i2), int(i3), 0)) {}
 
 		int3(const int1& i1, const int1& i2, const int1& i3) { vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epi32(i1.vec, i3.vec), _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 
@@ -1770,8 +1791,8 @@ namespace hlslpp
 
 		int4(int32_t i) : vec(_hlslpp_set1_epi32(i)) {}
 
-		template<typename T1, typename T2, typename T3, typename T4, enable_if_number_4<T1, T2, T3, T4> = nullptr>
-		int4(T1 i1, T2 i2, T3 i3, T4 i4) : vec(_hlslpp_set_epi32(int(i1), int(i2), int(i3), int(i4))) {}
+		template<typename T1, typename T2, typename T3, typename T4>
+		int4(T1 i1, T2 i2, T3 i3, T4 i4, hlslpp_enable_if_number_4(T1, T2, T3, T4)) : vec(_hlslpp_set_epi32(int(i1), int(i2), int(i3), int(i4))) {}
 
 		int4(const int1& i1, const int1& i2, const int1& i3, const int1& i4) { vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epi32(i1.vec, i3.vec), _hlslpp_shuf_xxxx_epi32(i2.vec, i4.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 		
@@ -1831,17 +1852,17 @@ namespace hlslpp
 	// and functions that are part of common headers such as cmath, math.h, algorithm, etc                                    //
 	//------------------------------------------------------------------------------------------------------------------------//
 
-	template<typename T, enable_if_number<T> = nullptr> int1 operator + (const int1& i1, T i2) { return i1 + int1(i2); }
-	template<typename T, enable_if_number<T> = nullptr> int1 operator + (T i1, const int1& i2) { return int1(i1) + i2; }
+	template<typename T> hlslpp_enable_if_return(T, int1) operator + (const int1& i1, T i2) { return i1 + int1(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int1) operator + (T i1, const int1& i2) { return int1(i1) + i2; }
 
-	template<typename T, enable_if_number<T> = nullptr> int1 operator - (const int1& i1, T i2) { return i1 - int1(i2); }
-	template<typename T, enable_if_number<T> = nullptr> int1 operator - (T i1, const int1& i2) { return int1(i1) - i2; }
+	template<typename T> hlslpp_enable_if_return(T, int1) operator - (const int1& i1, T i2) { return i1 - int1(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int1) operator - (T i1, const int1& i2) { return int1(i1) - i2; }
 
-	template<typename T, enable_if_number<T> = nullptr> int1 operator * (const int1& i1, T i2) { return i1 * int1(i2); }
-	template<typename T, enable_if_number<T> = nullptr> int1 operator * (T i1, const int1& i2) { return int1(i1) * i2; }
+	template<typename T> hlslpp_enable_if_return(T, int1) operator * (const int1& i1, T i2) { return i1 * int1(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int1) operator * (T i1, const int1& i2) { return int1(i1) * i2; }
 
-	template<typename T, enable_if_number<T> = nullptr> int1 operator / (const int1& i1, T i2) { return i1 / int1(i2); }
-	template<typename T, enable_if_number<T> = nullptr> int1 operator / (T i1, const int1& i2) { return int1(i1) / i2; }
+	template<typename T> hlslpp_enable_if_return(T, int1) operator / (const int1& i1, T i2) { return i1 / int1(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int1) operator / (T i1, const int1& i2) { return int1(i1) / i2; }
 
 	template<int X> int1 operator + (const iswizzle1<X>& s, const int1& i) { return int1(s) + i; }
 	template<int X> int1 operator - (const iswizzle1<X>& s, const int1& i) { return int1(s) - i; }
@@ -1971,8 +1992,8 @@ namespace hlslpp
 
 		explicit float1x1(n128 vec) : vec(vec) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		explicit float1x1(T f) : vec(_hlslpp_set_ps(float(f), 0.0f, 0.0f, 0.0f)) {}
+		template<typename T>
+		explicit float1x1(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), 0.0f, 0.0f, 0.0f)) {}
 
 		float1x1(const float1& f) : vec(f.vec) {}
     
@@ -1990,8 +2011,8 @@ namespace hlslpp
 
 		explicit float1x2(n128 vec) : vec(vec) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		explicit float1x2(T f) : vec(_hlslpp_set_ps(float(f), float(f), 0.0f, 0.0f)) {}
+		template<typename T>
+		explicit float1x2(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), float(f), 0.0f, 0.0f)) {}
 
 		explicit float1x2(float f0, float f1) : vec(_hlslpp_set_ps(f0, f1, 0.0f, 0.0f)) {}
 
@@ -2011,8 +2032,8 @@ namespace hlslpp
 
 		explicit float2x1(n128 vec) : vec(vec) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		explicit float2x1(T f) : vec(_hlslpp_set_ps(float(f), float(f), 0.0f, 0.0f)) {}
+		template<typename T>
+		explicit float2x1(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), float(f), 0.0f, 0.0f)) {}
 
 		explicit float2x1(float f0, float f1) : vec(_hlslpp_set_ps(f0, f1, 0.0f, 0.0f)) {}
 
@@ -2031,8 +2052,8 @@ namespace hlslpp
 
 		explicit float1x3(n128 vec) : vec(vec) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		explicit float1x3(T f) : vec(_hlslpp_set_ps(float(f), float(f), float(f), 0.0f)) {}
+		template<typename T>
+		explicit float1x3(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), float(f), float(f), 0.0f)) {}
 
 		explicit float1x3(float f0, float f1, float f2) : vec(_hlslpp_set_ps(f0, f1, f2, 0.0f)) {}
 
@@ -2051,8 +2072,8 @@ namespace hlslpp
 
 		explicit float3x1(n128 vec) : vec(vec) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		explicit float3x1(T f) : vec(_hlslpp_set_ps(float(f), float(f), float(f), 0.0f)) {}
+		template<typename T>
+		explicit float3x1(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), float(f), float(f), 0.0f)) {}
 
 		explicit float3x1(float f0, float f1, float f2) : vec(_hlslpp_set_ps(f0, f1, f2, 0.0f)) {}
 
@@ -2071,8 +2092,8 @@ namespace hlslpp
 
 		explicit float1x4(n128 vec) : vec(vec) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		explicit float1x4(T f) : vec(_hlslpp_set1_ps(float(f))) {}
+		template<typename T>
+		explicit float1x4(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set1_ps(float(f))) {}
 
 		explicit float1x4(float f0, float f1, float f2, float f3) : vec(_hlslpp_set_ps(f0, f1, f2, f3)) {}
 
@@ -2091,8 +2112,8 @@ namespace hlslpp
 
 		explicit float4x1(n128 vec) : vec(vec) {}
 
-		template<typename T, enable_if_number<T> = nullptr>
-		explicit float4x1(T f) : vec(_hlslpp_set1_ps(float(f))) {}
+		template<typename T>
+		explicit float4x1(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set1_ps(float(f))) {}
 
 		explicit float4x1(float f0, float f1, float f2, float f3) : vec(_hlslpp_set_ps(f0, f1, f2, f3)) {}
 
@@ -3708,8 +3729,8 @@ namespace hlslpp
 		quaternion() {}
 		explicit quaternion(n128 vec) : vec(vec) {}
 
-		template<typename T1, typename T2, typename T3, typename T4, enable_if_number_4<T1, T2, T3, T4> = nullptr>
-		quaternion(T1 f1, T2 f2, T3 f3, T4 f4) : vec(_hlslpp_set_ps(float(f1), float(f2), float(f3), float(f4))) {}
+		template<typename T1, typename T2, typename T3, typename T4>
+		quaternion(T1 f1, T2 f2, T3 f3, T4 f4, hlslpp_enable_if_number_4(T1, T2, T3, T4)) : vec(_hlslpp_set_ps(float(f1), float(f2), float(f3), float(f4))) {}
 
 		quaternion(const float1& f1, const float1& f2, const float1& f3, const float1& f4) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_shuf_xxxx_ps(f2.vec, f4.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 
