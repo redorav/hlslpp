@@ -3,11 +3,11 @@
 
 # HLSL++
 
-HLSL++ is a small math library for C++ with the same syntax and features as hlsl, with support for SSE and NEON. It features swizzling and all the expected math operators and functions from the hlsl documentation. The library is aimed mainly at game developers. It's meant to ease the C++ to shader bridge by providing a common interface and syntax. It also adds some functionality that hlsl doesn't natively provide, such as convenient math functions and quaternions.
+Small single header math library for C++ with the same syntax as the hlsl shading language. It supports any SSE4.1 (x86/x64, PS4, Xbox One) and NEON (ARM, ARM64, Switch) platforms. It features swizzling and all the operators and functions from the [hlsl documentation](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reference). The library is aimed mainly at game developers as it's meant to ease the C++ to shader bridge by providing common syntax, but can be used for any application requiring portable math. It also adds some functionality that hlsl doesn't natively provide, such as convenient matrix rotation functions and quaternions.
 
 ## Example
 
-hlsl++ allows you to be as expressive with the math as you typically are when programming in the shader language. Constructs such as the following are possible.
+hlsl++ allows you to be as expressive in C++ as when programming in the shader language. Constructs such as the following are possible.
 
 ```cpp
 float4 foo4 = float4(1, 2, 3, 4);
@@ -33,14 +33,13 @@ The natvis files provided for Visual Studio debugging allow you to see both vect
 
 ## Requirements
 
-Required features for the library to compile are C++11, SSE4.1 for x86/64 and NEON for ARM. 
+The only required features are a C++ compiler supporting anonymous unions, and SSE4.1 or NEON depending on your target platform. As a curiosity it also includes an Xbox 360 implementation.
 
-* Some features of C++11 such as anonymous unions and some template extensions would make it more complicated to implement in previous versions of C++.
-* Specific SSE4.1 intrinsics such as _mm_blend_ps and _mm_round_ps make the code faster and easier to develop. Since it's aimed at game developers and most modern consoles and computers support it there are no SSE2 implementations of these functions without justification. In some cases SSE2 versions of functions, such as the dot product, can be faster than the SSE4 equivalent (_mm_dp_ps)
+* Specific SSE4.1 intrinsics such as _mm_blend_ps and _mm_round_ps make the code faster and easier to develop. Since it's aimed at game developers and most modern consoles and computers support it there are no SSE2 implementations of these functions. In some cases SSE2 versions of functions, such as the dot product, can be faster than the SSE4 equivalent (_mm_dp_ps)
 
 ## How to use
 
-Simply include hlsl++.h in your project and add an include path to the src directory. Do not include any of the other files as those get included as appropriate by the main header file. 
+Simply include hlsl++.h in your project and add an include path to the src directory.
 
 ## Features
 
