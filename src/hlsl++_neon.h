@@ -70,7 +70,7 @@ hlslpp_inline float32x4_t vshufq_f32(const float32x4_t x, const float32x4_t y, c
 }
 
 // Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
-hlslpp_inline float32x4_t vpermq_s32(const float32x4_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
+hlslpp_inline int32x4_t vpermq_s32(const int32x4_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
 {
 	static const uint32_t ControlMask[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle x, swizzle y, swizzle z, swizzle w
 
@@ -82,10 +82,10 @@ hlslpp_inline float32x4_t vpermq_s32(const float32x4_t x, const uint32_t X, cons
 	const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMask[Z]) | (((uint64_t)ControlMask[W]) << 32));
 	const uint8x8_t rH = vtbl2_u8(tbl, idxH);
 
-	return vcombine_f32(rL, rH);
+	return vcombine_s32(rL, rH);
 }
 
-hlslpp_inline float32x4_t vshufq_s32(const float32x4_t x, const float32x4_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
+hlslpp_inline int32x4_t vshufq_s32(const int32x4_t x, const int32x4_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
 {
 	static const uint32_t ControlMaskX[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0,
 	static const uint32_t ControlMaskY[4] = { 0x13121110, 0x17161514, 0x1B1A1918, 0x1F1E1D1C }; // Swizzle X1, swizzle Y1, swizzle Z1, swizzle W1
@@ -98,7 +98,7 @@ hlslpp_inline float32x4_t vshufq_s32(const float32x4_t x, const float32x4_t y, c
 	const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMaskY[X1]) | (((uint64_t)ControlMaskY[Y1]) << 32));
 	const uint8x8_t rH = vtbl4_u8(tbl, idxH);
 
-	return vcombine_f32(rL, rH);
+	return vcombine_s32(rL, rH);
 }
 
 // Source https://github.com/andrepuschmann/math-neon/blob/master/src/math_floorf.c
@@ -240,14 +240,14 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 // SSE: Duplicate odd-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst.
 #define _hlslpp_movehdup_ps(x)					vcombine_f32(vdup_lane_f32(vget_low_f32(x), 1), vdup_lane_f32(vget_high_f32(x), 1))
 
-#define _hlslpp_perm_ps(x, msk)					vpermq_f32((x), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
-#define _hlslpp_shuffle_ps(x, y, msk)			vshufq_f32((x), (y), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
+#define _hlslpp_perm_ps(x, mask)				vpermq_f32((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
+#define _hlslpp_shuffle_ps(x, y, mask)			vshufq_f32((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
 
-#define _hlslpp_sel_ps(x, y, msk)				vbslq_f32((msk), (x), (y))
+#define _hlslpp_sel_ps(x, y, mask)				vbslq_f32((mask), (x), (y))
 
 // We decompose the mask and turn it into 4 floats
 // The input mask follows the format for SSE
-#define _hlslpp_blend_ps(x, y, msk)				vbslq_f32(vmov4q_n_u32(~((msk & 1) * 0xffffffff), ~(((msk >> 1) & 1) * 0xffffffff), ~(((msk >> 2) & 1) * 0xffffffff), ~(((msk >> 3) & 1) * 0xffffffff)), (x), (y))
+#define _hlslpp_blend_ps(x, y, mask)			vbslq_f32(vmov4q_n_u32(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)), (x), (y))
 
 //--------
 // Integer
@@ -287,10 +287,10 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_and_si128(x, y)					vandq_s32((x), (y))
 #define _hlslpp_or_si128(x, y)					vorrq_s32((x), (y))
 
-#define _hlslpp_perm_epi32(x, msk)				vpermq_s32((x), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
-#define _hlslpp_shuffle_epi32(x, y, msk)		vshufq_s32((x), (y), msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3)
+#define _hlslpp_perm_epi32(x, mask)				vpermq_s32((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
+#define _hlslpp_shuffle_epi32(x, y, mask)		vshufq_s32((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
 
-#define _hlslpp_blend_epi32(x, y, msk)			vbslq_s32(vmov4q_n_u32(~((msk & 1) * 0xffffffff), ~(((msk >> 1) & 1) * 0xffffffff), ~(((msk >> 2) & 1) * 0xffffffff), ~(((msk >> 3) & 1) * 0xffffffff)), (x), (y))
+#define _hlslpp_blend_epi32(x, y, mask)			vbslq_s32(vmov4q_n_u32(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)), (x), (y))
 
 #define _hlslpp_castps_si128(x)					vreinterpretq_s32_f32((x))
 #define _hlslpp_castsi128_ps(x)					vreinterpretq_f32_s32((x))
