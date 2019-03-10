@@ -3,14 +3,13 @@
 #if defined(_MSC_VER)
 
 #include <immintrin.h>
-#include <ammintrin.h>
 
 #else
 #include <x86intrin.h>
 #endif
 
-using n128 = __m128;
-using n128i = __m128i;
+typedef __m128 n128;
+typedef __m128i n128i;
 
 //------
 // Float

@@ -13,8 +13,8 @@
 
 // For NEON version check flags, see https://github.com/magnumripper/JohnTheRipper/issues/1998
 
-using n128 = float32x4_t;
-using n128i = int32x4_t;
+typedef float32x4_t n128;
+typedef int32x4_t n128i;
 
 typedef float32x4_t vec_float4; // for iOS
 typedef uint32x4_t vec_uint4;

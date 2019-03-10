@@ -10,7 +10,7 @@ using namespace std;
 
 #include "hlsl++.h"
 
-#if !defined(_XBOX)
+#if !defined(_XBOX) && (_MSC_VER >= 1900)
 #define HLSLPP_HAS_CHRONO
 #endif
 
