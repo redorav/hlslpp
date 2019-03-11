@@ -75,6 +75,7 @@ typedef __m128i n128i;
 #define _hlslpp_or_ps(x, y)						_mm_or_ps((x), (y))
 #define _hlslpp_xor_ps(x, y)					_mm_xor_ps((x), (y))
 
+#define _hlslpp_movelh_ps(x, y)					_mm_movelh_ps((x), (y))
 #define _hlslpp_movehl_ps(x, y)					_mm_movehl_ps((x), (y))
 #define _hlslpp_movehdup_ps(x)					_mm_movehdup_ps((x))
 

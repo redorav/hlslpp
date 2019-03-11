@@ -73,7 +73,63 @@ namespace hlslpp_unit
 		eq(v.z, z, tolerance);
 		eq(v.w, w, tolerance);
 	}
+
+	void eq(const float2x2& v,
+		float m00, float m01,
+		float m10, float m11, float tolerance = 0.0f)
+	{
+		eq(v.f32[0], m00, tolerance);
+		eq(v.f32[1], m01, tolerance);
+
+		eq(v.f32[2], m10, tolerance);
+		eq(v.f32[3], m11, tolerance);
+	}
 	
+	void eq(const float3x3& v,
+		float m00, float m01, float m02,
+		float m10, float m11, float m12,
+		float m20, float m21, float m22, float tolerance = 0.0f)
+	{
+		eq(v._m00, m00, tolerance);
+		eq(v._m01, m01, tolerance);
+		eq(v._m02, m02, tolerance);
+
+		eq(v._m10, m10, tolerance);
+		eq(v._m11, m11, tolerance);
+		eq(v._m12, m12, tolerance);
+
+		eq(v._m20, m20, tolerance);
+		eq(v._m21, m21, tolerance);
+		eq(v._m22, m22, tolerance);
+	}
+
+	void eq(const float4x4& v, 
+		float m00, float m01, float m02, float m03,
+		float m10, float m11, float m12, float m13,
+		float m20, float m21, float m22, float m23,
+		float m30, float m31, float m32, float m33, float tolerance = 0.0f)
+	{
+		eq(v._m00, m00, tolerance); 
+		eq(v._m01, m01, tolerance); 
+		eq(v._m02, m02, tolerance); 
+		eq(v._m03, m03, tolerance);
+
+		eq(v._m10, m10, tolerance); 
+		eq(v._m11, m11, tolerance); 
+		eq(v._m12, m12, tolerance); 
+		eq(v._m13, m13, tolerance);
+
+		eq(v._m20, m20, tolerance); 
+		eq(v._m21, m21, tolerance); 
+		eq(v._m22, m22, tolerance); 
+		eq(v._m23, m23, tolerance);
+
+		eq(v._m30, m30, tolerance); 
+		eq(v._m31, m31, tolerance); 
+		eq(v._m32, m32, tolerance); 
+		eq(v._m33, m33, tolerance);
+	}
+
 	float div(float a, float b)
 	{
 		return a / b;
@@ -1856,9 +1912,37 @@ void RunUnitTests()
 
 	// Inverses
 
-	float2x2 mat_inv_2x2 = inverse(mat_foo_2x2);
-	float3x3 mat_inv_3x3 = inverse(mat_foo_3x3);
-	float4x4 mat_inv_4x4 = inverse(mat_foo_4x4);
+	float2x2 mat_invertible_2x2 = float2x2(1, 2, 3, 4);
+
+	float2x2 mat_inv_2x2 = inverse(mat_invertible_2x2); 
+	
+	eq(mat_inv_2x2, -2.0f, 1.0f, 1.5f, -0.5f);
+	
+	float3x3 mat_invertible_3x3 = float3x3(
+		1, 2, 3,
+		3, 4, 5,
+		6, 1, 2);
+
+	float3x3 mat_inv_3x3 = inverse(mat_invertible_3x3);
+
+	eq(mat_inv_3x3, 
+		-0.25f,  0.083333333f,  0.166666666f,
+		-2.00f,  1.333333333f, -0.333333333f,
+		 1.75f, -0.916666666f,  0.166666666f);
+
+	float4x4 mat_invertible_4x4 = float4x4(
+		5, 6, 6, 8,
+		2, 2, 2, 8,
+		6, 6, 2, 8,
+		2, 3, 6, 7);
+
+	float4x4 mat_inv_4x4 = inverse(mat_invertible_4x4);
+	
+	eq(mat_inv_4x4, 
+		-17.0f, -9.00f,  12.00f,  16.0f, 
+		 17.0f,  8.75f, -11.75f, -16.0f,
+		 -4.0f, -2.25f,   2.75f,   4.0f,
+		  1.0f,  0.75f,  -0.75f,  -1.0f);
 
 	// Quaternion tests
 
@@ -1928,7 +2012,7 @@ void RunSpeedTests()
 	float f3 = (rand() % 1000) / 100.0f;
 	float f4 = (rand() % 1000) / 100.0f;
 
-	const long int iter = 1000000000;
+	const long int iter = 100000000;
 	Timer timer;
 
 	//// DirectX XMVECTOR
@@ -1990,6 +2074,7 @@ void RunSpeedTests()
 	timer.Start();
 	for (long int i = 0; i < iter; ++i)
 	{
+		mat_foo_4x4 = inverse(mat_foo_4x4);
 		//dp = dot(v1, v4 * dp);
 		//v4 = v4.xxxx + v3.yyzw;
 		//Vector4 yyzw = Vector4(v3f.y, v3f.y, v3f.z, v3f.w);
@@ -1999,6 +2084,11 @@ void RunSpeedTests()
 	double time = timer.Get();
 	//printf("float4: %f, %f, %f, %f = %f\n", (float)v4.x, (float)v4.y, (float)v4.z, (float)v4.w, time);
 	//printf("Vector4: %f, %f, %f, %f\n\n", (float)v4f.x, (float)v4f.y, (float)v4f.z, (float)v4f.w);
+	printf("float4x4: %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f\n\n", 
+		(float)mat_foo_4x4._m00, (float)mat_foo_4x4._m01, (float)mat_foo_4x4._m02, (float)mat_foo_4x4._m03,
+		(float)mat_foo_4x4._m10, (float)mat_foo_4x4._m11, (float)mat_foo_4x4._m12, (float)mat_foo_4x4._m13,
+		(float)mat_foo_4x4._m20, (float)mat_foo_4x4._m21, (float)mat_foo_4x4._m22, (float)mat_foo_4x4._m23,
+		(float)mat_foo_4x4._m30, (float)mat_foo_4x4._m31, (float)mat_foo_4x4._m32, (float)mat_foo_4x4._m33);
 	printf("Result: %f, Elapsed = %f\n", (float)dp.x, time);
 }
 
@@ -2007,7 +2097,7 @@ using namespace hlslpp;
 int main()
 {
 	RunUnitTests();
-	//RunSpeedTests();
+	RunSpeedTests();
 	//RunExperiments();
 
 	printf("All tests completed successfully.\n");

@@ -171,6 +171,15 @@ namespace hlslpp
 	#define _hlslpp_shuf_xzxx_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskX, MaskZ, MaskX, MaskX))
 	#define _hlslpp_shuf_ywyy_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskY, MaskW, MaskY, MaskY))
 	#define _hlslpp_shuf_yyyy_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskY, MaskY, MaskY, MaskY))
+	#define _hlslpp_shuf_zyzy_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskZ, MaskY, MaskZ, MaskY))
+	#define _hlslpp_shuf_xwxw_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskX, MaskW, MaskX, MaskW))
+	#define _hlslpp_shuf_wxwx_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskW, MaskX, MaskW, MaskX))
+	#define _hlslpp_shuf_zxxz_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskZ, MaskX, MaskX, MaskZ))
+	#define _hlslpp_shuf_wyyw_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskW, MaskY, MaskY, MaskW))
+	#define _hlslpp_shuf_xzzx_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskX, MaskZ, MaskZ, MaskX))
+	#define _hlslpp_shuf_ywwy_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskY, MaskW, MaskW, MaskY))
+	#define _hlslpp_shuf_yxwz_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskY, MaskX, MaskW, MaskZ))
+	#define _hlslpp_shuf_zzxx_ps(x, y)			_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskZ, MaskZ, MaskX, MaskX))
 
 	// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
 	#define _hlslpp_sign_ps(val)				_hlslpp_and_ps(_hlslpp_or_ps(_hlslpp_and_ps((val), f4minusOne), f4_1), _hlslpp_cmpneq_ps((val), f4_0))
@@ -2560,57 +2569,56 @@ namespace hlslpp
 		o_vec2 = _hlslpp_mul_ps(tmp_transp_row_2, invDet);
 	}
 
-	inline void _hlslpp_inv_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
+	// https://gist.github.com/runestubbe/466ffdde670e6a697affe4a899bcf3a3
+	hlslpp_inline void _hlslpp_inv_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
 	{
-		// Use the Laplace expansion to calculate the adjoint in terms of 2x2 determinants and dot products.
-		// Follow https://www.geometrictools.com/Documentation/LaplaceExpansionTheorem.pdf
+		n128 r0y_r1y_r0x_r1x = _hlslpp_movelh_ps(vec1, vec0);
+		n128 r0z_r1z_r0w_r1w = _hlslpp_movelh_ps(vec2, vec3);
+		n128 r2y_r3y_r2x_r3x = _hlslpp_movehl_ps(vec0, vec1);
+		n128 r2z_r3z_r2w_r3w = _hlslpp_movehl_ps(vec3, vec2);
 
-		// mms means mul mul sub. Here we add the 2x2 determinants we need
-		n128 tmp_mms_c5_c4_c3 = _hlslpp_msub_ps(_hlslpp_perm_zyyx_ps(vec2), _hlslpp_perm_wwzx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec2), _hlslpp_perm_zyyx_ps(vec3)));
-		n128 tmp_mms_c4_c2_c0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec2), _hlslpp_perm_wwyx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_wwyx_ps(vec2), _hlslpp_perm_yxxx_ps(vec3)));
-		n128 tmp_mms_c5_c2_c1 = _hlslpp_msub_ps(_hlslpp_perm_zxxx_ps(vec2), _hlslpp_perm_wwzx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec2), _hlslpp_perm_zxxx_ps(vec3)));
-		n128 tmp_mms_c3_c1_c0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec2), _hlslpp_perm_zzyx_ps(vec3), _hlslpp_mul_ps(_hlslpp_perm_zzyx_ps(vec2), _hlslpp_perm_yxxx_ps(vec3)));
+		n128 r1y_r2y_r1x_r2x = _hlslpp_shuf_yzyz_ps(vec1, vec0);
+		n128 r1z_r2z_r1w_r2w = _hlslpp_shuf_yzyz_ps(vec2, vec3);
+		n128 r3y_r0y_r3x_r0x = _hlslpp_shuf_wxwx_ps(vec1, vec0);
+		n128 r3z_r0z_r3w_r0w = _hlslpp_shuf_wxwx_ps(vec2, vec3);
 
-		n128 tmp_mms_s5_s4_s3 = _hlslpp_msub_ps(_hlslpp_perm_zyyx_ps(vec0), _hlslpp_perm_wwzx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec0), _hlslpp_perm_zyyx_ps(vec1)));
-		n128 tmp_mms_s4_s2_s0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec0), _hlslpp_perm_wwyx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_wwyx_ps(vec0), _hlslpp_perm_yxxx_ps(vec1)));
-		n128 tmp_mms_s5_s2_s1 = _hlslpp_msub_ps(_hlslpp_perm_zxxx_ps(vec0), _hlslpp_perm_wwzx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_wwzx_ps(vec0), _hlslpp_perm_zxxx_ps(vec1)));
-		n128 tmp_mms_s3_s1_s0 = _hlslpp_msub_ps(_hlslpp_perm_yxxx_ps(vec0), _hlslpp_perm_zzyx_ps(vec1), _hlslpp_mul_ps(_hlslpp_perm_zzyx_ps(vec0), _hlslpp_perm_yxxx_ps(vec1)));
+		n128 r0_wzyx = _hlslpp_shuf_zxxz_ps(r0z_r1z_r0w_r1w, r0y_r1y_r0x_r1x);
+		n128 r1_wzyx = _hlslpp_shuf_wyyw_ps(r0z_r1z_r0w_r1w, r0y_r1y_r0x_r1x);
+		n128 r2_wzyx = _hlslpp_shuf_zxxz_ps(r2z_r3z_r2w_r3w, r2y_r3y_r2x_r3x);
+		n128 r3_wzyx = _hlslpp_shuf_wyyw_ps(r2z_r3z_r2w_r3w, r2y_r3y_r2x_r3x);
+		n128 r0_xyzw = _hlslpp_shuf_zxxz_ps(r0y_r1y_r0x_r1x, r0z_r1z_r0w_r1w);
 
-		// Dot product the determinants with the required elements from the rows
-		n128 c00 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c4_c3, _hlslpp_perm_yzwx_ps(vec1));
-		n128 c01 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c4_c3, _hlslpp_neg_ps(_hlslpp_perm_yzwx_ps(vec0)));
-		n128 c02 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s4_s3, _hlslpp_perm_yzwx_ps(vec3));
-		n128 c03 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s4_s3, _hlslpp_neg_ps(_hlslpp_perm_yzwx_ps(vec2)));
+		n128 inner12_23 = _hlslpp_sub_ps(_hlslpp_mul_ps(r1y_r2y_r1x_r2x, r2z_r3z_r2w_r3w), _hlslpp_mul_ps(r1z_r2z_r1w_r2w, r2y_r3y_r2x_r3x));
+		n128 inner02_13 = _hlslpp_sub_ps(_hlslpp_mul_ps(r0y_r1y_r0x_r1x, r2z_r3z_r2w_r3w), _hlslpp_mul_ps(r0z_r1z_r0w_r1w, r2y_r3y_r2x_r3x));
+		n128 inner30_01 = _hlslpp_sub_ps(_hlslpp_mul_ps(r3z_r0z_r3w_r0w, r0y_r1y_r0x_r1x), _hlslpp_mul_ps(r3y_r0y_r3x_r0x, r0z_r1z_r0w_r1w));
 
-		n128 c10 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c2_c1, _hlslpp_neg_ps(_hlslpp_perm_xzwx_ps(vec1)));
-		n128 c11 = _hlslpp_dot3_asa_ps(tmp_mms_c5_c2_c1, _hlslpp_perm_xzwx_ps(vec0));
-		n128 c12 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s2_s1, _hlslpp_neg_ps(_hlslpp_perm_xzwx_ps(vec3)));
-		n128 c13 = _hlslpp_dot3_asa_ps(tmp_mms_s5_s2_s1, _hlslpp_perm_xzwx_ps(vec2));
+		n128 inner12 = _hlslpp_shuf_xzzx_ps(inner12_23, inner12_23);
+		n128 inner23 = _hlslpp_shuf_ywwy_ps(inner12_23, inner12_23);
 
-		n128 c20 = _hlslpp_dot3_asa_ps(tmp_mms_c4_c2_c0, _hlslpp_perm_xyww_ps(vec1));
-		n128 c21 = _hlslpp_dot3_asa_ps(tmp_mms_c4_c2_c0, _hlslpp_neg_ps(_hlslpp_perm_xyww_ps(vec0)));
-		n128 c22 = _hlslpp_dot3_asa_ps(tmp_mms_s4_s2_s0, _hlslpp_perm_xyww_ps(vec3));
-		n128 c23 = _hlslpp_dot3_asa_ps(tmp_mms_s4_s2_s0, _hlslpp_neg_ps(_hlslpp_perm_xyww_ps(vec2)));
+		n128 inner02 = _hlslpp_shuf_xzzx_ps(inner02_13, inner02_13);
+		n128 inner13 = _hlslpp_shuf_ywwy_ps(inner02_13, inner02_13);
 
-		n128 c30 = _hlslpp_dot3_asa_ps(tmp_mms_c3_c1_c0, _hlslpp_neg_ps(vec1));
-		n128 c31 = _hlslpp_dot3_asa_ps(tmp_mms_c3_c1_c0, vec0);
-		n128 c32 = _hlslpp_dot3_asa_ps(tmp_mms_s3_s1_s0, _hlslpp_neg_ps(vec3));
-		n128 c33 = _hlslpp_dot3_asa_ps(tmp_mms_s3_s1_s0, vec2);
+		n128 minors0 = _hlslpp_add_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(r3_wzyx, inner12), _hlslpp_mul_ps(r2_wzyx, inner13)), _hlslpp_mul_ps(r1_wzyx, inner23));
 
-		// Combine the results
-		n128 tmp_row0 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c00, c02), _hlslpp_shuf_xxxx_ps(c01, c03), HLSLPP_BLEND_MASK(1, 0, 1, 0));
-		n128 tmp_row1 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c10, c12), _hlslpp_shuf_xxxx_ps(c11, c13), HLSLPP_BLEND_MASK(1, 0, 1, 0));
-		n128 tmp_row2 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c20, c22), _hlslpp_shuf_xxxx_ps(c21, c23), HLSLPP_BLEND_MASK(1, 0, 1, 0));
-		n128 tmp_row3 = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(c30, c32), _hlslpp_shuf_xxxx_ps(c31, c33), HLSLPP_BLEND_MASK(1, 0, 1, 0));
+		n128 denom = _hlslpp_mul_ps(r0_xyzw, minors0);
 
-		// Compute the determinant and divide all results by it
-		n128 det = _hlslpp_perm_xxxx_ps(_hlslpp_det_4x4_ps(vec0, vec1, vec2, vec3));
-		n128 invDet = _hlslpp_div_ps(f4_1, det);
+		denom = _hlslpp_add_ps(denom, _hlslpp_shuf_yxwz_ps(denom, denom));	// x+y		x+y			z+w			z+w
+		denom = _hlslpp_sub_ps(denom, _hlslpp_shuf_zzxx_ps(denom, denom));	// x+y-z-w  x+y-z-w		z+w-x-y		z+w-x-y
 
-		o_vec0 = _hlslpp_mul_ps(tmp_row0, invDet);
-		o_vec1 = _hlslpp_mul_ps(tmp_row1, invDet);
-		o_vec2 = _hlslpp_mul_ps(tmp_row2, invDet);
-		o_vec3 = _hlslpp_mul_ps(tmp_row3, invDet);
+		n128 rcp_denom_ppnn = _hlslpp_div_ps(f4_1, denom);
+		o_vec0 = _hlslpp_mul_ps(minors0, rcp_denom_ppnn);
+
+		n128 inner30 = _hlslpp_shuf_xzzx_ps(inner30_01, inner30_01);
+		n128 inner01 = _hlslpp_shuf_ywwy_ps(inner30_01, inner30_01);
+
+		n128 minors1 = _hlslpp_sub_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(r2_wzyx, inner30), _hlslpp_mul_ps(r0_wzyx, inner23)), _hlslpp_mul_ps(r3_wzyx, inner02));
+		o_vec1 = _hlslpp_mul_ps(minors1, rcp_denom_ppnn);
+
+		n128 minors2 = _hlslpp_sub_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(r0_wzyx, inner13), _hlslpp_mul_ps(r1_wzyx, inner30)), _hlslpp_mul_ps(r3_wzyx, inner01));
+		o_vec2 = _hlslpp_mul_ps(minors2, rcp_denom_ppnn);
+
+		n128 minors3 = _hlslpp_add_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(r1_wzyx, inner02), _hlslpp_mul_ps(r0_wzyx, inner12)), _hlslpp_mul_ps(r2_wzyx, inner01));
+		o_vec3 = _hlslpp_mul_ps(minors3, rcp_denom_ppnn);
 	}
 
 	hlslpp_inline n128 _hlslpp_trace_2x2_ps(const n128 m)
