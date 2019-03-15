@@ -188,6 +188,70 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_sllv_epi32(x, y)				__vslw((x), (y))
 #define _hlslpp_srlv_epi32(x, y)				__vsrw((x), (y))
 
+#if !defined(XM_CRMASK_CR6TRUE)
+#define XM_CRMASK_CR6TRUE  (1 << 7)
+#endif
+
+#if !defined(XM_CRMASK_CR6FALSE)
+#define XM_CRMASK_CR6FALSE (1 << 5)
+#endif
+
+hlslpp_inline bool _hlslpp_any1_ps(n128 x)
+{
+	unsigned int ctrl;
+	__vcmpeqfpR(__vpermwi(x, VPERMWI_CONST(0, 0, 0, 0)), __vzero(), &ctrl);
+	return (ctrl & XM_CRMASK_CR6TRUE) != XM_CRMASK_CR6TRUE;
+}
+
+hlslpp_inline bool _hlslpp_any2_ps(n128 x)
+{
+	unsigned int ctrl;
+	__vcmpeqfpR(__vpermwi(x, VPERMWI_CONST(0, 1, 0, 1)), __vzero(), &ctrl);
+	return (ctrl & XM_CRMASK_CR6TRUE) != XM_CRMASK_CR6TRUE;
+}
+
+hlslpp_inline bool _hlslpp_any3_ps(n128 x)
+{
+	unsigned int ctrl;
+	__vcmpeqfpR(__vpermwi(x, VPERMWI_CONST(0, 1, 2, 0)), __vzero(), &ctrl);
+	return (ctrl & XM_CRMASK_CR6TRUE) != XM_CRMASK_CR6TRUE;
+}
+
+hlslpp_inline bool _hlslpp_any4_ps(n128 x)
+{
+	unsigned int ctrl;
+	__vcmpeqfpR(x, __vzero(), &ctrl);
+	return (ctrl & XM_CRMASK_CR6TRUE) != XM_CRMASK_CR6TRUE;
+}
+
+hlslpp_inline bool _hlslpp_all1_ps(n128 x)
+{
+	unsigned int ctrl;
+	__vcmpeqfpR(__vpermwi(x, VPERMWI_CONST(0, 0, 0, 0)), __vzero(), &ctrl);
+	return (ctrl & XM_CRMASK_CR6FALSE) == XM_CRMASK_CR6FALSE;
+}
+
+hlslpp_inline bool _hlslpp_all2_ps(n128 x)
+{
+	unsigned int ctrl;
+	__vcmpeqfpR(__vpermwi(x, VPERMWI_CONST(0, 1, 2, 0)), __vzero(), &ctrl);
+	return (ctrl & XM_CRMASK_CR6FALSE) == XM_CRMASK_CR6FALSE;
+}
+
+hlslpp_inline bool _hlslpp_all3_ps(n128 x)
+{
+	unsigned int ctrl;
+	__vcmpeqfpR(__vpermwi(x, VPERMWI_CONST(0, 1, 0, 1)), __vzero(), &ctrl);
+	return (ctrl & XM_CRMASK_CR6FALSE) == XM_CRMASK_CR6FALSE;
+}
+
+hlslpp_inline bool _hlslpp_all4_ps(n128 x)
+{
+	unsigned int ctrl;
+	__vcmpeqfpR(x, __vzero(), &ctrl);
+	return (ctrl & XM_CRMASK_CR6FALSE) == XM_CRMASK_CR6FALSE;
+}
+
 //--------
 // Storing
 //--------

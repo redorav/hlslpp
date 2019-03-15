@@ -134,6 +134,12 @@ namespace hlslpp_unit
 	{
 		return a / b;
 	}
+
+	void eq(bool a, bool c)
+	{
+		bool equals = a == c;
+		assert(equals);
+	}
 	
 	void eq(float a, bool c)
 	{
@@ -732,26 +738,26 @@ void RunUnitTests()
 //
 //	// Max abs error [SSE : 0] [NEON : ]
 //	//maxErrorExhaustive(hlslpp::frac, hlslpp_unit::frac, "frac", -FLT_MAX, FLT_MAX);
-	
-	float1 vall1 = all(vfoo1);
-	float1 vall2 = all(vfoo2);
-	float1 vall3 = all(vfoo3);
-	float1 vall4 = all(vfoo4);
 
-	float1 vall_swiz_1 = all(vfoo1.r);
-	float1 vall_swiz_2 = all(vfoo2.yx);
-	float1 vall_swiz_3 = all(vfoo3.bgr);
-	float1 vall_swiz_4 = all(vfoo4.wwww);
+	bool vall1 = all(vfoo1);				eq(vall1, vfoo1.x != 0.0f);
+	bool vall2 = all(vfoo2);				eq(vall2, vfoo2.x != 0.0f && vfoo2.y != 0.0f);
+	bool vall3 = all(vfoo3);				eq(vall3, vfoo3.x != 0.0f && vfoo3.y != 0.0f && vfoo3.z != 0.0f);
+	bool vall4 = all(vfoo4);				eq(vall4, vfoo4.x != 0.0f && vfoo4.y != 0.0f && vfoo4.z != 0.0f && vfoo4.w != 0.0f);
 
-	float1 vany1 = any(vfoo1);
-	float1 vany2 = any(vfoo2);
-	float1 vany3 = any(vfoo3);
-	float1 vany4 = any(vfoo4);
+	bool vall_swiz_1 = all(vfoo1.r);		eq(vall_swiz_1, vfoo1.r != 0.0f);
+	bool vall_swiz_2 = all(vfoo2.yx);		eq(vall_swiz_2, vfoo2.y != 0.0f && vfoo2.x != 0.0f);
+	bool vall_swiz_3 = all(vfoo3.bgr);		eq(vall_swiz_3, vfoo3.b != 0.0f && vfoo3.g != 0.0f && vfoo3.r != 0.0f);
+	bool vall_swiz_4 = all(vfoo4.wwww);		eq(vall_swiz_4, vfoo4.w != 0.0f && vfoo4.w != 0.0f && vfoo4.w != 0.0f && vfoo4.w != 0.0f);
 
-	float1 vany_swiz_1 = any(vfoo1.r);
-	float1 vany_swiz_2 = any(vfoo2.yx);
-	float1 vany_swiz_3 = any(vfoo3.bgr);
-	float1 vany_swiz_4 = any(vfoo4.wwww);
+	bool vany1 = any(vfoo1);				eq(vany1, vfoo1.x != 0.0f);
+	bool vany2 = any(vfoo2);				eq(vany2, vfoo2.x != 0.0f || vfoo2.y != 0.0f);
+	bool vany3 = any(vfoo3);				eq(vany3, vfoo3.x != 0.0f || vfoo3.y != 0.0f || vfoo3.z != 0.0f);
+	bool vany4 = any(vfoo4);				eq(vany4, vfoo4.x != 0.0f || vfoo4.y != 0.0f || vfoo4.z != 0.0f || vfoo4.w != 0.0f);
+
+	bool vany_swiz_1 = any(vfoo1.r);		eq(vany_swiz_1, vfoo1.x != 0.0f);
+	bool vany_swiz_2 = any(vfoo2.yx);		eq(vany_swiz_2, vfoo2.y != 0.0f || vfoo2.x != 0.0f);
+	bool vany_swiz_3 = any(vfoo3.bgr);		eq(vany_swiz_3, vfoo3.b != 0.0f || vfoo3.g != 0.0f || vfoo3.r != 0.0f);
+	bool vany_swiz_4 = any(vfoo4.wwww);		eq(vany_swiz_4, vfoo4.w != 0.0f || vfoo4.w != 0.0f || vfoo4.w != 0.0f || vfoo4.w != 0.0f);
 
 	float1 vacos1 = acos(vfoo1);
 	float2 vacos2 = acos(vfoo2);
@@ -1323,6 +1329,11 @@ void RunUnitTests()
 	int3 ivadd_f_3 = ivfoo3 + 3;									eq(ivadd_f_3, (int32_t)ivfoo3.x + 3, (int32_t)ivfoo3.y + 3, (int32_t)ivfoo3.z + 3);
 	int4 ivadd_f_4 = ivfoo4 + 4;									eq(ivadd_f_4, (int32_t)ivfoo4.x + 4, (int32_t)ivfoo4.y + 4, (int32_t)ivfoo4.z + 4, (int32_t)ivfoo4.w + 4);
 
+	int1 ivadd_inv_f_1 = 1 + ivfoo1;								eq(ivadd_inv_f_1, (int32_t)ivfoo1.x + 1);
+	int2 ivadd_inv_f_2 = 2 + ivfoo2;								eq(ivadd_inv_f_2, (int32_t)ivfoo2.x + 2, (int32_t)ivfoo2.y + 2);
+	int3 ivadd_inv_f_3 = 3 + ivfoo3;								eq(ivadd_inv_f_3, (int32_t)ivfoo3.x + 3, (int32_t)ivfoo3.y + 3, (int32_t)ivfoo3.z + 3);
+	int4 ivadd_inv_f_4 = 4 + ivfoo4;								eq(ivadd_inv_f_4, (int32_t)ivfoo4.x + 4, (int32_t)ivfoo4.y + 4, (int32_t)ivfoo4.z + 4, (int32_t)ivfoo4.w + 4);
+
 	ivadd_f_1 += 1;													eq(ivadd_f_1, (int32_t)ivfoo1.x + 1 + 1);
 	ivadd_f_2 += 2;													eq(ivadd_f_2, (int32_t)ivfoo2.x + 2 + 2, (int32_t)ivfoo2.y + 2 + 2);
 	ivadd_f_3 += 3;													eq(ivadd_f_3, (int32_t)ivfoo3.x + 3 + 3, (int32_t)ivfoo3.y + 3 + 3, (int32_t)ivfoo3.z + 3 + 3);
@@ -1507,9 +1518,9 @@ void RunUnitTests()
 	vfoo3 = float3(f4, i5, i6);												eq(vfoo3, (float)f4, (float)i5, (float)i6);
 	vfoo4 = float4(i7, i8, f9, f10);										eq(vfoo4, (float)i7, (float)i8, (float)f9, (float)f10);
 
-	//*********
+	//---------
 	// Matrices
-	//*********
+	//---------
 
 	float1x1 mat_foo_1x1 = float1x1(1);
 	float1x2 mat_foo_1x2 = float1x2(1, 2);
@@ -1903,7 +1914,7 @@ void RunUnitTests()
 	float2x4 mat_transp_2x4 = transpose(mat_foo_4x2);
 	float3x4 mat_transp_3x4 = transpose(mat_foo_4x3);
 	float4x4 mat_transp_4x4 = transpose(mat_foo_4x4);
-
+	
 	// Determinants
 
 	float1 mat_det_2x2 = determinant(mat_foo_2x2);

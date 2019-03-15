@@ -197,6 +197,46 @@ hlslpp_inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 	return result;
 }
 
+hlslpp_inline bool _hlslpp_any1_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x1) != 0x1;
+}
+
+hlslpp_inline bool _hlslpp_any2_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x3) != 0x3;
+}
+
+hlslpp_inline bool _hlslpp_any3_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x7) != 0x7;
+}
+
+hlslpp_inline bool _hlslpp_any4_ps(n128 x)
+{
+	return _mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) != 0xf;
+}
+
+hlslpp_inline bool _hlslpp_all1_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x1) == 0;
+}
+
+hlslpp_inline bool _hlslpp_all2_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x3) == 0;
+}
+
+hlslpp_inline bool _hlslpp_all3_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x7) == 0;
+}
+
+hlslpp_inline bool _hlslpp_all4_ps(n128 x)
+{
+	return _mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) == 0;
+}
+
 //--------
 // Storing
 //--------

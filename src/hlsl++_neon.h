@@ -307,6 +307,56 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_sllv_epi32(x, y)				vshlq_s32((x), (y))
 #define _hlslpp_srlv_epi32(x, y)				vshrq_s32((x), (y))
 
+//https://stackoverflow.com/questions/15389539/fastest-way-to-test-a-128-bit-neon-register-for-a-value-of-0-using-intrinsics
+
+hlslpp_inline bool _hlslpp_any1_ps(n128 x)
+{
+	return vget_lane_u32(vget_low_u32(vreinterpretq_u32_f32(x)), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_any2_ps(n128 x)
+{
+	uint32x2_t low = vget_low_u32(vreinterpretq_u32_f32(x));
+	return vget_lane_u32(vpmax_u32(low, low), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_any3_ps(n128 x)
+{
+	uint32x4_t maskw = vsetq_lane_u32(0, vreinterpretq_u32_f32(x), 3); // set w to minimum value
+	uint32x2_t maxlohi = vorr_u32(vget_low_u32(maskw), vget_high_u32(maskw));
+	return vget_lane_u32(vpmax_u32(maxlohi, maxlohi), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_any4_ps(n128 x)
+{
+	uint32x2_t tmp = vorr_u32(vget_low_u32(vreinterpretq_u32_f32(x)), vget_high_u32(vreinterpretq_u32_f32(x)));
+	return vget_lane_u32(vpmax_u32(tmp, tmp), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_all1_ps(n128 x)
+{
+	return vget_lane_u32(vget_low_u32(vreinterpretq_u32_f32(x)), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_all2_ps(n128 x)
+{
+	uint32x2_t low = vget_low_u32(vreinterpretq_u32_f32(x));
+	return vget_lane_u32(vpmin_u32(low, low), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_all3_ps(n128 x)
+{
+	uint32x4_t maskw = vsetq_lane_u32(0xffffffff, vreinterpretq_u32_f32(x), 3); // set w to maximum value
+	uint32x2_t minlohi = vpmin_u32(vget_low_u32(maskw), vget_high_u32(maskw));
+	return vget_lane_u32(vpmin_u32(minlohi, minlohi), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_all4_ps(n128 x)
+{
+	uint32x2_t minlohi = vpmin_u32(vget_low_u32(vreinterpretq_u32_f32(x)), vget_high_u32(vreinterpretq_u32_f32(x)));
+	return vget_lane_u32(vpmin_u32(minlohi, minlohi), 0) != 0;
+}
+
 //--------
 // Storing
 //--------
