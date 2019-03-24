@@ -18,11 +18,16 @@ PlatformARM64 = "MSVC ARM64"
 
 Platform360 = "Xbox 360"
 
+PlatformAndroidARM = "Android ARM"
+
+UnitTestProject = "unit_tests"
+AndroidProject = "hlsl++_android"
+
 -- Directories
 srcDir = "src"
 
-workspace "hlsl++"
-	configurations { "Debug", "Release" }	
+workspace("hlsl++")
+	configurations { "Debug", "Release" }
 	location (Workspace)
 	
 	includedirs
@@ -31,6 +36,7 @@ workspace "hlsl++"
 	}
 	
 	vectorextensions ("sse4.1")
+	cppdialect("c++11")
 		
 	if(_ACTION == "xcode4") then
 	
@@ -54,7 +60,7 @@ workspace "hlsl++"
 		
 	else
 	
-		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32, PlatformARM, PlatformARM64, Platform360 }
+		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32, PlatformARM, PlatformARM64, PlatformAndroidARM, Platform360 }
 	
 		local llvmToolset;
 		
@@ -63,6 +69,8 @@ workspace "hlsl++"
 		else
 			llvmToolset = "msc-llvm";
 		end
+		
+		startproject(UnitTestProject)
 		
 		filter { "platforms:"..PlatformMSVC64 }
 			toolset("msc")
@@ -82,11 +90,17 @@ workspace "hlsl++"
 			
 		filter { "platforms:"..PlatformARM }
 			architecture("arm")
-			vectorextensions ("default")
+			vectorextensions ("neon")
 			
 		filter { "platforms:"..PlatformARM64 }
 			architecture("arm64")
-			vectorextensions ("default")
+			vectorextensions ("neon")
+			
+		filter { "platforms:"..PlatformAndroidARM }
+			system("android")
+			architecture("arm")
+			vectorextensions("neon")
+			buildoptions { "-Wno-unused-variable" }
 			
 		filter { "platforms:"..Platform360 }
 			system("xbox360")
@@ -108,17 +122,17 @@ workspace "hlsl++"
 		inlining("auto")
 		optimize("full")
 
-project "hlsl++"
-	kind("StaticLib")
-	language("C++")
+project ("hlsl++")
+	kind("staticlib")
+	language("c++")
 	files
 	{
 		srcDir.."/**.h",
 		srcDir.."/hlsl++.cpp"
 	}
 	
-project "unit_tests"
-	kind("ConsoleApp")
+project (UnitTestProject)
+	kind("consoleapp")
 	--links { "hlsl++" }
 	files
 	{
@@ -126,7 +140,31 @@ project "unit_tests"
 		srcDir.."/**.natvis"
 	}
 	
+	filter { "platforms:"..PlatformAndroidARM }
+		kind("sharedlib")
+		files
+		{
+			"src/android/android_native_app_glue.h",
+			"src/android/android_native_app_glue.c",
+		}
+		
+	filter{}
+	
 	includedirs
 	{
 		srcDir.."/**.h"
+	}
+
+project (AndroidProject)
+	removeplatforms("*")
+	platforms { AndroidARM }
+	kind("androidproj") -- This type of project builds the apk
+	links (UnitTestProject) -- Android needs to link to the main project which was built as a dynamic library
+	androidapplibname(UnitTestProject)
+	files
+	{
+		"src/android/AndroidManifest.xml",
+		"src/android/build.xml",
+		"src/android/project.properties",
+		"src/android/res/values/strings.xml",
 	}
