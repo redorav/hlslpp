@@ -2105,7 +2105,19 @@ void RunSpeedTests()
 
 using namespace hlslpp;
 
-int main()
+#if defined(__ANDROID__)
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+void android_main(struct android_app* app)
+
+#else
+
+int main(int argc, char* argv[])
+
+#endif
 {
 	RunUnitTests();
 	RunSpeedTests();
@@ -2115,3 +2127,9 @@ int main()
 
 	getchar();
 }
+
+#if defined(__ANDROID__)
+#if defined(__cplusplus)
+}
+#endif
+#endif
