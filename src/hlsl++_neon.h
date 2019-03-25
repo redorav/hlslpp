@@ -304,8 +304,9 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_slli_epi32(x, y)				vshlq_n_s32((x), (y))
 #define _hlslpp_srli_epi32(x, y)				vshrq_n_s32((x), (y))
 
+// From the documentation of vshlq_s32: Vector shift left: Vr[i] := Va[i] << Vb[i] (negative values shift right)
 #define _hlslpp_sllv_epi32(x, y)				vshlq_s32((x), (y))
-#define _hlslpp_srlv_epi32(x, y)				vshrq_s32((x), (y))
+#define _hlslpp_srlv_epi32(x, y)				vshlq_s32((x), _hlslpp_neg_epi32(y))
 
 //https://stackoverflow.com/questions/15389539/fastest-way-to-test-a-128-bit-neon-register-for-a-value-of-0-using-intrinsics
 

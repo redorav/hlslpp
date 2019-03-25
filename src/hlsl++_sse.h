@@ -2,14 +2,25 @@
 
 #if defined(_MSC_VER)
 
-#include <immintrin.h>
+	#include <immintrin.h>
+
+	#if !defined(__FMA__) && defined(__AVX2__)
+		#define __FMA__ 1
+	#endif
 
 #else
-#include <x86intrin.h>
+
+	#include <x86intrin.h>
+
 #endif
 
 typedef __m128 n128;
 typedef __m128i n128i;
+
+#if defined(__AVX__)
+typedef __m256 n256;
+typedef __m256i n256i;
+#endif
 
 //------
 // Float
@@ -32,13 +43,23 @@ typedef __m128i n128i;
 #define _hlslpp_rcp_ps(x)						_mm_rcp_ps((x))
 
 // The following are alternatives but have been measured to be slower
-// _mm_sub_ps(f4zero, v.xyzw);			// Slowest
-// _mm_mul_ps(f4minusOne, v.xyzw);		// Slower
+// _mm_sub_ps(f4zero, x);			// Slowest
+// _mm_mul_ps(f4minusOne, x);		// Slower
 #define _hlslpp_neg_ps(x)						_mm_xor_ps((x), f4negativeMask)
+
+#if defined(__FMA__)
+
+#define _hlslpp_madd_ps(x, y, z)				_mm_fmadd_ps((x), (y), (z))
+#define _hlslpp_msub_ps(x, y, z)				_mm_fmsub_ps((x), (y), (z))
+#define _hlslpp_subm_ps(x, y, z)				_mm_fnmadd_ps((x), (y), (z)))
+
+#else
 
 #define _hlslpp_madd_ps(x, y, z)				_mm_add_ps(_mm_mul_ps((x), (y)), (z))
 #define _hlslpp_msub_ps(x, y, z)				_mm_sub_ps(_mm_mul_ps((x), (y)), (z))
 #define _hlslpp_subm_ps(x, y, z)				_mm_sub_ps((x), _mm_mul_ps((y), (z)))
+
+#endif
 
 // Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
 #define _hlslpp_abs_ps(x)						_mm_and_ps(f4absMask, (x))
@@ -88,6 +109,83 @@ typedef __m128i n128i;
 #define _hlslpp_sel_ps(x, y, mask)				_mm_blendv_ps((x), (y), (mask))
 
 #define _hlslpp_blend_ps(x, y, mask)			_mm_blend_ps((x), (y), (mask))
+
+//---------------------
+// Float 256 (AVX/AVX2)
+//---------------------
+
+#if defined(__AVX__)
+
+#define _hlslpp256_set_n128(x, y)					_mm256_set_m128((x), (y))
+#define _hlslpp256_set1_ps(x)						_mm256_set1_ps((x))
+#define _hlslpp256_set_ps(x, y, z, w, a, b, c, d)	_mm256_set_ps((d), (c), (b), (a), (w), (z), (y), (x))
+#define _hlslpp256_setzero_ps()						_mm256_setzero_ps()
+
+#define _hlslpp256_add_ps(x, y)						_mm256_add_ps((x), (y))
+#define _hlslpp256_sub_ps(x, y)						_mm256_sub_ps((x), (y))
+#define _hlslpp256_mul_ps(x, y)						_mm256_mul_ps((x), (y))
+#define _hlslpp256_div_ps(x, y)						_mm256_div_ps((x), (y))
+
+#define _hlslpp256_rcp_ps(x)						_mm256_rcp_ps((x))
+
+// The following are alternatives but have been measured to be slower
+// _mm_sub_ps(f4zero, x);			// Slowest
+// _mm_mul_ps(f4minusOne, x);		// Slower
+#define _hlslpp256_neg_ps(x)						_mm256_xor_ps((x), f4negativeMask)
+
+#define _hlslpp256_madd_ps(x, y, z)					_mm256_add_ps(_mm256_mul_ps((x), (y)), (z))
+#define _hlslpp256_msub_ps(x, y, z)					_mm256_sub_ps(_mm256_mul_ps((x), (y)), (z))
+#define _hlslpp256_subm_ps(x, y, z)					_mm256_sub_ps((x), _mm256_mul_ps((y), (z)))
+
+// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
+#define _hlslpp256_abs_ps(x)						_mm256_and_ps(f4absMask, (x))
+
+#define _hlslpp256_sqrt_ps(x)						_mm256_sqrt_ps((x))
+#define _hlslpp256_rsqrt_ps(x)						_mm256_rsqrt_ps((x))
+
+#define _hlslpp256_cmpeq_ps(x, y)					_mm256_cmp_ps((x), (y), _CMP_EQ_OQ)
+#define _hlslpp256_cmpneq_ps(x, y)					_mm256_cmp_ps((x), (y), _CMP_NEQ_OQ)
+
+#define _hlslpp256_cmpgt_ps(x, y)					_mm256_cmp_ps((x), (y), _CMP_GT_OQ)
+#define _hlslpp256_cmpge_ps(x, y)					_mm256_cmp_ps((x), (y), _CMP_GE_OQ)
+
+#define _hlslpp256_cmplt_ps(x, y)					_mm256_cmp_ps((x), (y), _CMP_LT_OQ)
+#define _hlslpp256_cmple_ps(x, y)					_mm256_cmp_ps((x), (y), _CMP_LE_OQ)
+
+#define _hlslpp256_max_ps(x, y)						_mm256_max_ps((x), (y))
+#define _hlslpp256_min_ps(x, y)						_mm256_min_ps((x), (y))
+
+#define _hlslpp256_trunc_ps(x)						_mm256_round_ps((x), _MM_FROUND_TRUNC)
+#define _hlslpp256_floor_ps(x)						_mm256_floor_ps((x))
+#define _hlslpp256_ceil_ps(x)						_mm256_ceil_ps((x))
+
+
+// _MM_FROUND_TO_NEAREST_INT to match fxc behavior
+#define _hlslpp256_round_ps(x)						_mm256_round_ps((x), _MM_FROUND_TO_NEAREST_INT)
+
+#define _hlslpp256_frac_ps(x)						_mm256_sub_ps((x), _mm256_floor_ps(x))
+
+#define _hlslpp256_clamp_ps(x, minx, maxx)			_mm256_max_ps(_mm256_min_ps((x), (maxx)), (minx))
+#define _hlslpp256_sat_ps(x)						_mm256_max_ps(_mm256_min_ps((x), f4_1), f4_0)
+
+#define _hlslpp256_and_ps(x, y)						_mm256_and_ps((x), (y))
+#define _hlslpp256_andnot_ps(x, y)					_mm256_andnot_ps((x), (y))
+#define _hlslpp256_or_ps(x, y)						_mm256_or_ps((x), (y))
+#define _hlslpp256_xor_ps(x, y)						_mm256_xor_ps((x), (y))
+
+#define _hlslpp256_movehdup_ps(x)					_mm256_movehdup_ps((x))
+
+#define _hlslpp256_perm_ps(x, mask)					_mm256_shuffle_ps((x), (x), (mask))
+#define _hlslpp256_shuffle_ps(x, y, mask)			_mm256_shuffle_ps((x), (y), (mask))
+
+// SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
+// _mm_xor_ps((x), _mm_and_ps(mask, _mm_xor_ps((y), (x))))
+// Bit-select val1 and val2 based on the contents of the mask
+#define _hlslpp256_sel_ps(x, y, mask)				_mm256_blendv_ps((x), (y), (mask))
+
+#define _hlslpp256_blend_ps(x, y, mask)				_mm256_blend_ps((x), (y), (mask))
+
+#endif
 
 //--------
 // Integer
@@ -147,55 +245,69 @@ typedef __m128i n128i;
 #define _hlslpp_slli_epi32(x, y)				_mm_slli_epi32((x), (y))
 #define _hlslpp_srli_epi32(x, y)				_mm_srli_epi32((x), (y))
 
-hlslpp_inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
+#if defined(__AVX2__)
+
+#define _hlslpp_sllv_epi32(x, y)				_mm_sllv_epi32((x), (y))
+
+#else
+
+n128i _hlslpp_sllv_epi32(n128i x, n128i count)
 {
-	n128i sb = _hlslpp_perm_epi32((count), HLSLPP_SHUFFLE_MASK(1, 0, 0, 0));
-	n128i sc = _hlslpp_perm_epi32((count), HLSLPP_SHUFFLE_MASK(2, 0, 0, 0));
+	n128i count1 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(1, 0, 0, 0));
+	n128i count2 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(2, 0, 0, 0));
+	n128i count3 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(3, 0, 0, 0));
 
-	n128i im0 = _hlslpp_set_epi32(0xffffffff, 0, 0, 0);
+	n128i ffMask = _mm_setr_epi32(0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
 
-	n128i imask0 = _hlslpp_and_si128(count, im0);
-	n128i imask1 = _hlslpp_and_si128(sb, im0);
-	n128i imask2 = _hlslpp_and_si128(sc, im0);
-	n128i imask3 = _mm_srli_epi32(count, 96);
+	n128i imask0 = _mm_and_si128(count, ffMask);
+	n128i imask1 = _mm_and_si128(count1, ffMask);
+	n128i imask2 = _mm_and_si128(count2, ffMask);
+	n128i imask3 = _mm_and_si128(count3, ffMask);
 
-	n128i ic0 = _mm_sll_epi32(x, imask0);
-	n128i ic1 = _mm_sll_epi32(x, imask1);
-	n128i ic2 = _mm_sll_epi32(x, imask2);
-	n128i ic3 = _mm_sll_epi32(x, imask3);
+	n128i shift0 = _mm_sll_epi32(x, imask0);
+	n128i shift1 = _mm_sll_epi32(x, imask1);
+	n128i shift2 = _mm_sll_epi32(x, imask2);
+	n128i shift3 = _mm_sll_epi32(x, imask3);
 
-	n128i blend0 = _hlslpp_blend_epi32(ic0, ic1, HLSLPP_BLEND_MASK(1, 0, 0, 0));
-	n128i blend1 = _hlslpp_blend_epi32(ic2, ic3, HLSLPP_BLEND_MASK(0, 0, 1, 0));
+	n128i blend0 = _hlslpp_blend_epi32(shift0, shift1, HLSLPP_BLEND_MASK(1, 0, 0, 0));
+	n128i blend1 = _hlslpp_blend_epi32(shift2, shift3, HLSLPP_BLEND_MASK(0, 0, 1, 0));
 
-	n128i result = _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
-
-	return result;
+	return _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
 }
 
-hlslpp_inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
+#endif
+
+#if defined(__AVX2__)
+
+#define _hlslpp_srlv_epi32(x, y)				_mm_srlv_epi32((x), (y))
+
+#else
+
+n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 {
-	n128i sb = _hlslpp_perm_epi32((count), HLSLPP_SHUFFLE_MASK(1, 0, 0, 0));
-	n128i sc = _hlslpp_perm_epi32((count), HLSLPP_SHUFFLE_MASK(2, 0, 0, 0));
+	n128i count1 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(1, 0, 0, 0));
+	n128i count2 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(2, 0, 0, 0));
+	n128i count3 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(3, 0, 0, 0));
 
-	n128i im0 = _hlslpp_set_epi32(0xffffffff, 0, 0, 0);
+	n128i ffMask = _mm_setr_epi32(0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
 
-	n128i imask0 = _hlslpp_and_si128(count, im0);
-	n128i imask1 = _hlslpp_and_si128(sb, im0);
-	n128i imask2 = _hlslpp_and_si128(sc, im0);
-	n128i imask3 = _hlslpp_srli_epi32(count, 96);
+	n128i imask0 = _mm_and_si128(count, ffMask);
+	n128i imask1 = _mm_and_si128(count1, ffMask);
+	n128i imask2 = _mm_and_si128(count2, ffMask);
+	n128i imask3 = _mm_and_si128(count3, ffMask);
 
-	n128i ic0 = _mm_srl_epi32(x, imask0);
-	n128i ic1 = _mm_srl_epi32(x, imask1);
-	n128i ic2 = _mm_srl_epi32(x, imask2);
-	n128i ic3 = _mm_srl_epi32(x, imask3);
+	n128i shift0 = _mm_srl_epi32(x, imask0);
+	n128i shift1 = _mm_srl_epi32(x, imask1);
+	n128i shift2 = _mm_srl_epi32(x, imask2);
+	n128i shift3 = _mm_srl_epi32(x, imask3);
 
-	n128i blend0 = _hlslpp_blend_epi32(ic0, ic1, HLSLPP_BLEND_MASK(1, 0, 0, 0));
-	n128i blend1 = _hlslpp_blend_epi32(ic2, ic3, HLSLPP_BLEND_MASK(0, 0, 1, 0));
+	n128i blend0 = _hlslpp_blend_epi32(shift0, shift1, HLSLPP_BLEND_MASK(1, 0, 0, 0));
+	n128i blend1 = _hlslpp_blend_epi32(shift2, shift3, HLSLPP_BLEND_MASK(0, 0, 1, 0));
 
-	n128i result = _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
-
-	return result;
+	return _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
 }
+
+#endif
 
 hlslpp_inline bool _hlslpp_any1_ps(n128 x)
 {

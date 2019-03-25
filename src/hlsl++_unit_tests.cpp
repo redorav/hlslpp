@@ -194,6 +194,16 @@ namespace hlslpp_unit
 		eq(v.w, w);
 	}
 
+	int32_t shift_left(int32_t a, int32_t b)
+	{
+		return a << b;
+	}
+
+	int32_t shift_right(int32_t a, int32_t b)
+	{
+		return a >> b;
+	}
+
 	const float PI = 3.14159265358979f;
 
 	float frac(float x)
@@ -322,6 +332,9 @@ public:
 void RunUnitTests()
 {
 	using namespace hlslpp_unit;
+
+	int seed = 0;// (int)time(NULL);
+	srand(seed);
 
 	float f1 = (rand() % 1000) / 100.0f; float f5 = (rand() % 1000) / 100.0f; float f9 =  (rand() % 1000) / 100.0f; float f13 = (rand() % 1000) / 100.0f; float f17 = (rand() % 1000) / 100.0f; 
 	float f2 = (rand() % 1000) / 100.0f; float f6 = (rand() % 1000) / 100.0f; float f10 = (rand() % 1000) / 100.0f; float f14 = (rand() % 1000) / 100.0f; float f18 = (rand() % 1000) / 100.0f;
@@ -679,7 +692,7 @@ void RunUnitTests()
 	float3 vabs_swiz_3 = abs(vfoo3.bgr);					eq(vabs_swiz_3, abs((float)vfoo3.b), abs((float)vfoo3.g), abs((float)vfoo3.r));
 	float4 vabs_swiz_4 = abs(vfoo4.wwww);					eq(vabs_swiz_4, abs((float)vfoo4.a), abs((float)vfoo4.a), abs((float)vfoo4.a), abs((float)vfoo4.a));
 
-	// For transcendental functions, we loop through the valid range and calculate the maximum error.
+	// For transcendental functions, we loop through the valid range and calculate the maximum error
 
 	// Max abs error [SSE : 1.54972076e-6] [NEON : ]
 	// maxErrorExhaustive(hlslpp::acos, std::acos, "acos", -1.0f, 1.0f);
@@ -694,50 +707,50 @@ void RunUnitTests()
 	//float1 tanTest1 = cos(test1);
 	//float tanTests1 = cos(-9910.1543f);
 
-//	float1 test1 = -9911.72559f;
-//	float1 tanTest1 = sin(test1);
-//	float tanTests1 = sin(-9911.72559f);
-//
-//	//float1 test2 = 1.57079637f;
-//	//float1 tanTest2 = tan(test2);
-//	//float tanTests2 = tan(1.57079637f);
-//
-//	// Max abs error [SSE : 8.6594373e-6] [NEON : ]
-//	//maxErrorExhaustive(hlslpp::cos, std::cos, "cos", -10000.0f, 10000.0f);
-//
-//	// Max abs error [SSE : 5.60283661e-6] [NEON : ]
-//	//maxErrorExhaustive(hlslpp::sin, std::sin, "sin", -10000.0f, 10000.0f);
-//
-//	// Max abs error [SSE : 2.38418579e-6] [NEON : ]
-//	// It's hard to get a good error estimate on a big range since in all multiples of pi/2 the numerical discrepancy is huge
-//	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", -1.55f, 1.55f);
-//	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", 1.55f, 4.7f);
-//	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", -4.7f, -1.55f);
-//
-//	// Max abs error [SSE : 0] [NEON : ]
-//	// maxErrorExhaustive(hlslpp::sqrt, std::sqrt, "sqrt", 0.0f, FLT_MAX);
-//
-//	// Max abs error		[SSE : 1.88894e25] [NEON : ]
-//	// Max relative error	[SSE : 7.671364e-6] [NEON : ]
-//	//maxErrorExhaustive(hlslpp::exp, std::exp, "exp", -70.0f, 70.0f);
-//
-//	// Max abs error		[SSE : 3.022314e23] [NEON : ]
-//	// Max relative error	[SSE : 3.50801372e-7] [NEON : ]
-//	// The exp family of functions has a huge range and at very high numbers the precision breaks. However the relative
-//	// error remains quite small
-//	//maxErrorExhaustive(hlslpp::exp2, std::exp2, "exp2", -100.0f, 100.0f);
-//
-//	// Max abs error		[SSE : 2.28881836e-5] [NEON : ]
-//	//maxErrorExhaustive(hlslpp::log, std::log, "log", 1e-36f, FLT_MAX);
-//
-//	// Max abs error		[SSE : 1.52587891e-5] [NEON : ]
-//	//maxErrorExhaustive(hlslpp::log2, std::log2, "log2", 1e-36f, FLT_MAX);
-//
-//	// Max abs error		[SSE : 3.43322754e-5] [NEON : ]
-//	//maxErrorExhaustive(hlslpp::log10, std::log10, "log10", 1e-36f, FLT_MAX);
-//
-//	// Max abs error [SSE : 0] [NEON : ]
-//	//maxErrorExhaustive(hlslpp::frac, hlslpp_unit::frac, "frac", -FLT_MAX, FLT_MAX);
+	//float1 test1 = -9911.72559f;
+	//float1 tanTest1 = sin(test1);
+	//float tanTests1 = sin(-9911.72559f);
+
+	//float1 test2 = 1.57079637f;
+	//float1 tanTest2 = tan(test2);
+	//float tanTests2 = tan(1.57079637f);
+
+	// Max abs error [SSE : 8.6594373e-6] [NEON : ]
+	//maxErrorExhaustive(hlslpp::cos, std::cos, "cos", -10000.0f, 10000.0f);
+
+	// Max abs error [SSE : 5.60283661e-6] [NEON : ]
+	//maxErrorExhaustive(hlslpp::sin, std::sin, "sin", -10000.0f, 10000.0f);
+
+	// Max abs error [SSE : 2.38418579e-6] [NEON : ]
+	// It's hard to get a good error estimate on a big range since in all multiples of pi/2 the numerical discrepancy is huge
+	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", -1.55f, 1.55f);
+	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", 1.55f, 4.7f);
+	//maxErrorExhaustive(hlslpp::tan, std::tan, "tan", -4.7f, -1.55f);
+
+	// Max abs error [SSE : 0] [NEON : ]
+	// maxErrorExhaustive(hlslpp::sqrt, std::sqrt, "sqrt", 0.0f, FLT_MAX);
+
+	// Max abs error		[SSE : 1.88894e25] [NEON : ]
+	// Max relative error	[SSE : 7.671364e-6] [NEON : ]
+	//maxErrorExhaustive(hlslpp::exp, std::exp, "exp", -70.0f, 70.0f);
+
+	// Max abs error		[SSE : 3.022314e23] [NEON : ]
+	// Max relative error	[SSE : 3.50801372e-7] [NEON : ]
+	// The exp family of functions has a huge range and at very high numbers the precision breaks. However the relative
+	// error remains quite small
+	//maxErrorExhaustive(hlslpp::exp2, std::exp2, "exp2", -100.0f, 100.0f);
+
+	// Max abs error		[SSE : 2.28881836e-5] [NEON : ]
+	//maxErrorExhaustive(hlslpp::log, std::log, "log", 1e-36f, FLT_MAX);
+
+	// Max abs error		[SSE : 1.52587891e-5] [NEON : ]
+	//maxErrorExhaustive(hlslpp::log2, std::log2, "log2", 1e-36f, FLT_MAX);
+
+	// Max abs error		[SSE : 3.43322754e-5] [NEON : ]
+	//maxErrorExhaustive(hlslpp::log10, std::log10, "log10", 1e-36f, FLT_MAX);
+
+	// Max abs error [SSE : 0] [NEON : ]
+	//maxErrorExhaustive(hlslpp::frac, hlslpp_unit::frac, "frac", -FLT_MAX, FLT_MAX);
 
 	bool vall1 = all(vfoo1);				eq(vall1, vfoo1.x != 0.0f);
 	bool vall2 = all(vfoo2);				eq(vall2, vfoo2.x != 0.0f && vfoo2.y != 0.0f);
@@ -1186,7 +1199,7 @@ void RunUnitTests()
 	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);
 	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);
 
-// Integer
+	// Integer
 
 	int32_t i1 = (rand() % 1000); int32_t i5 = (rand() % 1000); int32_t i9 = (rand() % 1000); int32_t i13 = (rand() % 1000); int32_t i17 = (rand() % 1000);
 	int32_t i2 = (rand() % 1000); int32_t i6 = (rand() % 1000); int32_t i10 = (rand() % 1000); int32_t i14 = (rand() % 1000); int32_t i18 = (rand() % 1000);
@@ -1455,7 +1468,7 @@ void RunUnitTests()
 	int1 vint3 = vint.r + vint2;
 	vint.r = vint2.x;
 
-	// Cast from float to int and vicerversa
+	// Cast from float to int and viceversa
 
 	float1 fcastfooi_1(ivfoo1);
 	float2 fcastfooi_2(ivfoo2);
@@ -1471,6 +1484,31 @@ void RunUnitTests()
 	float2 fcastbari_2 = ivfoo2;
 	float3 fcastbari_3 = ivfoo3;
 	float4 fcastbari_4 = ivfoo4;
+
+	// Bit shifting
+
+	int1 ivshift_value_1 = int1(1);
+	int2 ivshift_value_2 = int2(2, 3);
+	int3 ivshift_value_3 = int3(1, 2, 4);
+	int4 ivshift_value_4 = int4(2, 6, 3, 1);
+
+	int1 ivshl_1 = ivfoo1 << ivshift_value_1; eq(ivshl_1, shift_left(ivfoo1.x, ivshift_value_1.x));
+	int2 ivshl_2 = ivfoo2 << ivshift_value_2; eq(ivshl_2, shift_left(ivfoo2.x, ivshift_value_2.x), shift_left(ivfoo2.y, ivshift_value_2.y));
+	int3 ivshl_3 = ivfoo3 << ivshift_value_3; eq(ivshl_3, shift_left(ivfoo3.x, ivshift_value_3.x), shift_left(ivfoo3.y, ivshift_value_3.y), shift_left(ivfoo3.z, ivshift_value_3.z));	
+	int4 ivshl_4 = ivfoo4 << ivshift_value_4; eq(ivshl_4, shift_left(ivfoo4.x, ivshift_value_4.x), shift_left(ivfoo4.y, ivshift_value_4.y), shift_left(ivfoo4.z, ivshift_value_4.z), shift_left(ivfoo4.w, ivshift_value_4.w));
+
+	ivshl_2 = ivfoo2 << ivshift_value_1; eq(ivshl_2, shift_left(ivfoo2.x, ivshift_value_1.x), shift_left(ivfoo2.y, ivshift_value_1.x));
+	ivshl_3 = ivfoo3 << ivshift_value_1; eq(ivshl_3, shift_left(ivfoo3.x, ivshift_value_1.x), shift_left(ivfoo3.y, ivshift_value_1.x), shift_left(ivfoo3.z, ivshift_value_1.x));
+	ivshl_4 = ivfoo4 << ivshift_value_1; eq(ivshl_4, shift_left(ivfoo4.x, ivshift_value_1.x), shift_left(ivfoo4.y, ivshift_value_1.x), shift_left(ivfoo4.z, ivshift_value_1.x), shift_left(ivfoo4.w, ivshift_value_1.x));
+
+	int1 ivshr_1 = ivfoo1 >> ivshift_value_1; eq(ivshr_1, shift_right(ivfoo1.x, ivshift_value_1.x));
+	int2 ivshr_2 = ivfoo2 >> ivshift_value_2; eq(ivshr_2, shift_right(ivfoo2.x, ivshift_value_2.x), shift_right(ivfoo2.y, ivshift_value_2.y));
+	int3 ivshr_3 = ivfoo3 >> ivshift_value_3; eq(ivshr_3, shift_right(ivfoo3.x, ivshift_value_3.x), shift_right(ivfoo3.y, ivshift_value_3.y), shift_right(ivfoo3.z, ivshift_value_3.z));
+	int4 ivshr_4 = ivfoo4 >> ivshift_value_4; eq(ivshr_4, shift_right(ivfoo4.x, ivshift_value_4.x), shift_right(ivfoo4.y, ivshift_value_4.y), shift_right(ivfoo4.z, ivshift_value_4.z), shift_right(ivfoo4.w, ivshift_value_4.w));
+
+	ivshr_2 = ivfoo2 >> ivshift_value_1; eq(ivshr_2, shift_right(ivfoo2.x, ivshift_value_1.x), shift_right(ivfoo2.y, ivshift_value_1.x));
+	ivshr_3 = ivfoo3 >> ivshift_value_1; eq(ivshr_3, shift_right(ivfoo3.x, ivshift_value_1.x), shift_right(ivfoo3.y, ivshift_value_1.x), shift_right(ivfoo3.z, ivshift_value_1.x));
+	ivshr_4 = ivfoo4 >> ivshift_value_1; eq(ivshr_4, shift_right(ivfoo4.x, ivshift_value_1.x), shift_right(ivfoo4.y, ivshift_value_1.x), shift_right(ivfoo4.z, ivshift_value_1.x), shift_right(ivfoo4.w, ivshift_value_1.x));
 
 //	int4 sat4i = saturate(b);
 //
@@ -2120,7 +2158,7 @@ int main(int argc, char* argv[])
 #endif
 {
 	RunUnitTests();
-	RunSpeedTests();
+	//RunSpeedTests();
 	//RunExperiments();
 
 	printf("All tests completed successfully.\n");
