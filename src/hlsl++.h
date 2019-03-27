@@ -649,16 +649,16 @@ namespace hlslpp
 	// else
 	//     return ior * i - (ior * dot(n, i) + sqrt(k)) * n;
 
-	hlslpp_inline n128 _hlslpp_refract_ps(n128 i, n128 n, n128 ior, n128 NdotI)
+	hlslpp_inline n128 _hlslpp_refract_ps(const n128& i, const n128& n, const n128& ior, const n128& NdotI)
 	{
-		NdotI = _hlslpp_perm_xxxx_ps(NdotI); // Propagate to all components (dot lives in x)
+		n128 NdotI4         = _hlslpp_perm_xxxx_ps(NdotI); // Propagate to all components (dot lives in x)
 
 		n128 ior2           = _hlslpp_mul_ps(ior, ior);                // ior^2
-		n128 invNdotI2      = _hlslpp_subm_ps(f4_1, NdotI, NdotI);     // 1.0 - dot(n, i)^2
+		n128 invNdotI2      = _hlslpp_subm_ps(f4_1, NdotI4, NdotI4);   // 1.0 - dot(n, i)^2
 		n128 k              = _hlslpp_subm_ps(f4_1, ior2, invNdotI2);  // k = 1.0 - ior^2 * (1.0 - dot(n, i)^2)
 
 		n128 sqrtK          = _hlslpp_sqrt_ps(k);                      // sqrt(k)
-		n128 iorNdotISqrtk  = _hlslpp_madd_ps(ior, NdotI, sqrtK);      // ior * dot(n, i) + sqrt(k)
+		n128 iorNdotISqrtk  = _hlslpp_madd_ps(ior, NdotI4, sqrtK);     // ior * dot(n, i) + sqrt(k)
 		n128 iorNdotISqrtkn = _hlslpp_mul_ps(iorNdotISqrtk, n);        // (ior * dot(n, i) + sqrt(k)) * n
 		n128 result         = _hlslpp_msub_ps(ior, i, iorNdotISqrtkn); // ior * i - (ior * dot(n, i) + sqrt(k)) * n
 
