@@ -672,20 +672,20 @@ void RunUnitTests()
 	float3 vneq3 = vfoo3 != vbar3;							eq(vneq3, (float)vfoo3.x != (float)vbar3.x, (float)vfoo3.y != (float)vbar3.y, (float)vfoo3.z != (float)vbar3.z);
 	float4 vneq4 = vfoo4 != vbar4;							eq(vneq4, (float)vfoo4.x != (float)vbar4.x, (float)vfoo4.y != (float)vbar4.y, (float)vfoo4.z != (float)vbar4.z, (float)vfoo4.w != (float)vbar4.w);
 
-	vfoo1 = -vbar1.r;										eq(vfoo1, -vbar1.r);
-	vfoo2 = -vbar2.gr;										eq(vfoo2, (float)-vbar2.g, (float)-vbar2.r);
-	vfoo3 = -vbar3.bgg;										eq(vfoo3, (float)-vbar3.b, (float)-vbar3.g, (float)-vbar3.g);
-	vfoo4 = -vbar4.rbgr;									eq(vfoo4, (float)-vbar4.r, (float)-vbar4.b, (float)-vbar4.g, (float)-vbar4.r);
+	float1 vneg_1 = -vbar1.r;								eq(vneg_1, -vbar1.r);
+	float2 vneg_2 = -vbar2.gr;								eq(vneg_2, (float)-vbar2.g, (float)-vbar2.r);
+	float3 vneg_3 = -vbar3.bgg;								eq(vneg_3, (float)-vbar3.b, (float)-vbar3.g, (float)-vbar3.g);
+	float4 vneg_4 = -vbar4.rbgr;							eq(vneg_4, (float)-vbar4.r, (float)-vbar4.b, (float)-vbar4.g, (float)-vbar4.r);
 
 	float1 vabs1 = abs(vfoo1);								eq(vabs1, abs((float)vfoo1.x));
 	float2 vabs2 = abs(vfoo2);								eq(vabs2, abs((float)vfoo2.x), abs((float)vfoo2.y));
 	float3 vabs3 = abs(vfoo3);								eq(vabs3, abs((float)vfoo3.x), abs((float)vfoo3.y), abs((float)vfoo3.z));
 	float4 vabs4 = abs(vfoo4);								eq(vabs4, abs((float)vfoo4.x), abs((float)vfoo4.y), abs((float)vfoo4.z), abs((float)vfoo4.w));
 
-	vfoo1 = abs(-vfoo1);									eq(vabs1, abs((float)-vfoo1));
-	vfoo2 = abs(-vfoo2);									eq(vabs2, abs((float)-vfoo2.x), abs((float)-vfoo2.y));
-	vfoo3 = abs(-vfoo3);									eq(vabs3, abs((float)-vfoo3.x), abs((float)-vfoo3.y), abs((float)-vfoo3.z));
-	vfoo4 = abs(-vfoo4);									eq(vabs4, abs((float)-vfoo4.x), abs((float)-vfoo4.y), abs((float)-vfoo4.z), abs((float)-vfoo4.w));
+	float1 vabsneg_1 = abs(-vfoo1);							eq(vabsneg_1, abs((float)-vfoo1));
+	float2 vabsneg_2 = abs(-vfoo2);							eq(vabsneg_2, abs((float)-vfoo2.x), abs((float)-vfoo2.y));
+	float3 vabsneg_3 = abs(-vfoo3);							eq(vabsneg_3, abs((float)-vfoo3.x), abs((float)-vfoo3.y), abs((float)-vfoo3.z));
+	float4 vabsneg_4 = abs(-vfoo4);							eq(vabsneg_4, abs((float)-vfoo4.x), abs((float)-vfoo4.y), abs((float)-vfoo4.z), abs((float)-vfoo4.w));
 
 	float1 vabs_swiz_1 = abs(vfoo1.r);						eq(vabs_swiz_1, abs((float)vfoo1.x));
 	float2 vabs_swiz_2 = abs(vfoo2.yx);						eq(vabs_swiz_2, abs((float)vfoo2.g), abs((float)vfoo2.r));
@@ -1009,10 +1009,15 @@ void RunUnitTests()
 	float3 vmax_swiz_3 = max(vfoo3.gbr, vbar3.xyy);
 	float4 vmax_swiz_4 = max(vfoo4.brga, vbar4.yxzw);
 
-	float1 vnormalize_1 = normalize(vfoo1);
-	float2 vnormalize_2 = normalize(vfoo2);
-	float3 vnormalize_3 = normalize(vfoo3);
-	float4 vnormalize_4 = normalize(vfoo4);
+	float1 vnormalize_foo_1 = normalize(vfoo1);
+	float2 vnormalize_foo_2 = normalize(vfoo2);
+	float3 vnormalize_foo_3 = normalize(vfoo3);
+	float4 vnormalize_foo_4 = normalize(vfoo4);
+
+	float1 vnormalize_bar_1 = normalize(vbar1);
+	float2 vnormalize_bar_2 = normalize(vbar2);
+	float3 vnormalize_bar_3 = normalize(vbar3);
+	float4 vnormalize_bar_4 = normalize(vbar4);
 
 	float1 vnormalize_swiz_1 = normalize(vfoo1.r);
 	float2 vnormalize_swiz_2 = normalize(vfoo2.rg);
@@ -1068,6 +1073,11 @@ void RunUnitTests()
 	float2 vreflect_swiz_2_b = reflect(vfoo2.xy, vbar2.yx);
 	float3 vreflect_swiz_3_b = reflect(vfoo3.bgr, vbar3.ggr);
 	float4 vreflect_swiz_4_b = reflect(vfoo4.xxzy, vbar4.wxyy);
+
+	float1 vrefract1 = refract(vnormalize_foo_1, vnormalize_bar_1, float1(0.1f));
+	float2 vrefract2 = refract(vnormalize_foo_2, vnormalize_bar_2, float1(-0.7f));
+	float3 vrefract3 = refract(vnormalize_foo_3, vnormalize_bar_3, float1(0.1f));
+	float4 vrefract4 = refract(vnormalize_foo_4, vnormalize_bar_4, float1(0.1f));
 
 	float1 vrsqrt1 = rsqrt(vfoo1);
 	float2 vrsqrt2 = rsqrt(vfoo2);

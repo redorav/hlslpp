@@ -251,7 +251,7 @@ typedef __m256i n256i;
 
 #else
 
-n128i _hlslpp_sllv_epi32(n128i x, n128i count)
+inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
 {
 	n128i count1 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(1, 0, 0, 0));
 	n128i count2 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(2, 0, 0, 0));
@@ -283,7 +283,7 @@ n128i _hlslpp_sllv_epi32(n128i x, n128i count)
 
 #else
 
-n128i _hlslpp_srlv_epi32(n128i x, n128i count)
+inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 {
 	n128i count1 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(1, 0, 0, 0));
 	n128i count2 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(2, 0, 0, 0));

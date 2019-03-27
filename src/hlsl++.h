@@ -301,11 +301,10 @@ namespace hlslpp
 	hlslpp_inline n128 _hlslpp_lrp_ps(n128 x, n128 y, n128 a)
 	{
 		// Slower
-		// n128 y_minus_x = Masksub_ps(y, x);
+		// n128 y_minus_x = _hlslpp_sub_ps(y, x);
 		// n128 result = _hlslpp_madd_ps(y_minus_x, a, x);
 
-		n128 one_minus_a = _hlslpp_sub_ps(f4_1, a);
-		n128 x_one_minus_a = _hlslpp_mul_ps(x, one_minus_a);
+		n128 x_one_minus_a = _hlslpp_msub_ps(x, x, a); // x * (1 - a)
 		n128 result = _hlslpp_madd_ps(y, a, x_one_minus_a);
 		return result;
 	}
@@ -619,15 +618,73 @@ namespace hlslpp
 		return result;
 	}
 
-	// Auxiliary dot3 that adds, subtracts, adds instead of adding all
-	hlslpp_inline n128 _hlslpp_dot3_asa_ps(n128 x, n128 y)
+	// https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reflect
+	// v = i - 2 * n * dot(i, n)
+
+	hlslpp_inline n128 _hlslpp_reflect1_ps(n128 i, n128 n)
 	{
-		n128 multi  = _hlslpp_mul_ps(x, y);         // Multiply components together
-		n128 shuf1  = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
-		n128 add1   = _hlslpp_sub_ps(multi, shuf1); // Contains x-y, _, _, _
-		n128 shuf2  = _hlslpp_perm_zzzz_ps(multi);  // Move z into x
-		n128 result = _hlslpp_add_ss(add1, shuf2);  // Contains x-y+z, _, _, _
-		return result;
+		return _hlslpp_sub_ps(i, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n, _hlslpp_mul_ps(i, n))));
+	}
+
+	hlslpp_inline n128 _hlslpp_reflect2_ps(n128 i, n128 n)
+	{
+		return _hlslpp_sub_ps(i, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n, _hlslpp_perm_xxxx_ps(_hlslpp_dot2_ps(i, n)))));
+	}
+
+	hlslpp_inline n128 _hlslpp_reflect3_ps(n128 i, n128 n)
+	{
+		return _hlslpp_sub_ps(i, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n, _hlslpp_perm_xxxx_ps(_hlslpp_dot3_ps(i, n)))));
+	}
+
+	hlslpp_inline n128 _hlslpp_reflect4_ps(n128 i, n128 n)
+	{
+		return _hlslpp_sub_ps(i, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n, _hlslpp_perm_xxxx_ps(_hlslpp_dot4_ps(i, n)))));
+	}
+
+	// https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/refract.xhtml
+	//
+	// k = 1.0 - ior * ior * (1.0 - dot(n, i) * dot(n, i));
+	// if (k < 0.0)
+	//     return 0.0;
+	// else
+	//     return ior * i - (ior * dot(n, i) + sqrt(k)) * n;
+
+	hlslpp_inline n128 _hlslpp_refract_ps(n128 i, n128 n, n128 ior, n128 NdotI)
+	{
+		NdotI = _hlslpp_perm_xxxx_ps(NdotI); // Propagate to all components (dot lives in x)
+
+		n128 ior2           = _hlslpp_mul_ps(ior, ior);                // ior^2
+		n128 invNdotI2      = _hlslpp_subm_ps(f4_1, NdotI, NdotI);     // 1.0 - dot(n, i)^2
+		n128 k              = _hlslpp_subm_ps(f4_1, ior2, invNdotI2);  // k = 1.0 - ior^2 * (1.0 - dot(n, i)^2)
+
+		n128 sqrtK          = _hlslpp_sqrt_ps(k);                      // sqrt(k)
+		n128 iorNdotISqrtk  = _hlslpp_madd_ps(ior, NdotI, sqrtK);      // ior * dot(n, i) + sqrt(k)
+		n128 iorNdotISqrtkn = _hlslpp_mul_ps(iorNdotISqrtk, n);        // (ior * dot(n, i) + sqrt(k)) * n
+		n128 result         = _hlslpp_msub_ps(ior, i, iorNdotISqrtkn); // ior * i - (ior * dot(n, i) + sqrt(k)) * n
+
+		n128 klt0           = _hlslpp_cmplt_ps(k, _hlslpp_setzero_ps()); // Whether k was less than 0
+
+		return _hlslpp_sel_ps(result, _hlslpp_setzero_ps(), klt0); // Select between 0 and the result 
+	}
+
+	hlslpp_inline n128 _hlslpp_refract1_ps(n128 i, n128 n, n128 ior)
+	{
+		return _hlslpp_refract_ps(i, n, ior, _hlslpp_mul_ps(i, n));
+	}
+
+	hlslpp_inline n128 _hlslpp_refract2_ps(n128 i, n128 n, n128 ior)
+	{
+		return _hlslpp_refract_ps(i, n, _hlslpp_perm_xxxx_ps(ior), _hlslpp_dot2_ps(i, n));
+	}
+
+	hlslpp_inline n128 _hlslpp_refract3_ps(n128 i, n128 n, n128 ior)
+	{
+		return _hlslpp_refract_ps(i, n, _hlslpp_perm_xxxx_ps(ior), _hlslpp_dot3_ps(i, n));
+	}
+
+	hlslpp_inline n128 _hlslpp_refract4_ps(n128 i, n128 n, n128 ior)
+	{
+		return _hlslpp_refract_ps(i, n, _hlslpp_perm_xxxx_ps(ior), _hlslpp_dot4_ps(i, n));
 	}
 
 	// Returns true if x is not +infinity or -infinity
@@ -1316,10 +1373,15 @@ namespace hlslpp
 	float3 rcp(const float3& f) { return float3(_hlslpp_rcp_ps(f.vec)); }
 	float4 rcp(const float4& f) { return float4(_hlslpp_rcp_ps(f.vec)); }
 
-	float1 reflect(const float1& i, const float1& n) { return float1(_hlslpp_sub_ps(i.vec, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n.vec, _hlslpp_perm_xxxx_ps(_hlslpp_mul_ps(i.vec, n.vec)))))); }
-	float2 reflect(const float2& i, const float2& n) { return float2(_hlslpp_sub_ps(i.vec, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n.vec, _hlslpp_perm_xxxx_ps(_hlslpp_mul_ps(i.vec, n.vec)))))); }
-	float3 reflect(const float3& i, const float3& n) { return float3(_hlslpp_sub_ps(i.vec, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n.vec, _hlslpp_perm_xxxx_ps(_hlslpp_mul_ps(i.vec, n.vec)))))); }
-	float4 reflect(const float4& i, const float4& n) { return float4(_hlslpp_sub_ps(i.vec, _hlslpp_mul_ps(f4_2, _hlslpp_mul_ps(n.vec, _hlslpp_perm_xxxx_ps(_hlslpp_mul_ps(i.vec, n.vec)))))); }
+	float1 reflect(const float1& i, const float1& n) { return float1(_hlslpp_reflect1_ps(i.vec, n.vec)); }
+	float2 reflect(const float2& i, const float2& n) { return float2(_hlslpp_reflect2_ps(i.vec, n.vec)); }
+	float3 reflect(const float3& i, const float3& n) { return float3(_hlslpp_reflect3_ps(i.vec, n.vec)); }
+	float4 reflect(const float4& i, const float4& n) { return float4(_hlslpp_reflect4_ps(i.vec, n.vec)); }
+
+	float1 refract(const float1& i, const float1& n, const float1& ior) { return float1(_hlslpp_refract1_ps(i.vec, n.vec, ior.vec)); }
+	float2 refract(const float2& i, const float2& n, const float1& ior) { return float2(_hlslpp_refract2_ps(i.vec, n.vec, ior.vec)); }
+	float3 refract(const float3& i, const float3& n, const float1& ior) { return float3(_hlslpp_refract3_ps(i.vec, n.vec, ior.vec)); }
+	float4 refract(const float4& i, const float4& n, const float1& ior) { return float4(_hlslpp_refract4_ps(i.vec, n.vec, ior.vec)); }
 
 	float1 rsqrt(const float1& f) { return float1(_hlslpp_rsqrt_ps(f.vec)); }
 	float2 rsqrt(const float2& f) { return float2(_hlslpp_rsqrt_ps(f.vec)); }
