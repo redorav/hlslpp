@@ -158,7 +158,7 @@ project (UnitTestProject)
 project (AndroidProject)
 	removeplatforms("*")
 	platforms { AndroidARM }
-	kind("androidproj") -- This type of project builds the apk
+	kind("Packaging") -- This type of project builds the apk
 	links (UnitTestProject) -- Android needs to link to the main project which was built as a dynamic library
 	androidapplibname(UnitTestProject)
 	files
