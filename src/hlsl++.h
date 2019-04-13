@@ -14,15 +14,17 @@
 
 #endif
 
-#define HLSLPP_SHUFFLE_MASK(X, Y, Z, W)			(((W) << 6) | ((Z) << 4) | ((Y) << 2) | (X))
+#define HLSLPP_SHUFFLE_MASK(X, Y, Z, W)		(((W) << 6) | ((Z) << 4) | ((Y) << 2) | (X))
+#define HLSLPP_SHUFFLE_MASK_PD(X, Y)		(((Y) << 1) | (X))
 
 // Create a mask where 1 selects from x, 0 selects from y
-#define HLSLPP_BLEND_MASK(X, Y, Z, W)			(~(X | (Y << 1) | (Z << 2) | (W << 3)) & 0xf)
+#define HLSLPP_BLEND_MASK(X, Y, Z, W)		(~((X) | ((Y) << 1) | ((Z) << 2) | ((W) << 3)) & 0xf)
+#define HLSLPP_BLEND_MASK_PD(X, Y)			(~((X) | ((Y) << 1)) & 0x3)
 
-#define HLSLPP_COMPONENT_X(X)					(1 << X)
-#define HLSLPP_COMPONENT_XY(X, Y)				((1 << X) | (1 << Y))
-#define HLSLPP_COMPONENT_XYZ(X, Y, Z)			((1 << X) | (1 << Y) | (1 << Z))
-#define HLSLPP_COMPONENT_XYZW(X, Y, Z, W)		((1 << X) | (1 << Y) | (1 << Z) | (1 << W))
+#define HLSLPP_COMPONENT_X(X)				(1 << X)
+#define HLSLPP_COMPONENT_XY(X, Y)			((1 << X) | (1 << Y))
+#define HLSLPP_COMPONENT_XYZ(X, Y, Z)		((1 << X) | (1 << Y) | (1 << Z))
+#define HLSLPP_COMPONENT_XYZW(X, Y, Z, W)	((1 << X) | (1 << Y) | (1 << Z) | (1 << W))
 
 #if defined(_M_ARM) || defined(__arm__) || defined(_M_ARM64)
 	
@@ -38,6 +40,12 @@
 
 #endif
 
+#if defined(__cpp_if_constexpr)
+#define HLSLPP_CONSTEXPR_IF(x) if constexpr(x)
+#else
+#define HLSLPP_CONSTEXPR_IF(x) if(x)
+#endif
+
 #include <cstdint>
 #include <type_traits>
 
@@ -51,14 +59,29 @@ namespace hlslpp
 		explicit BitMask(float f) : f(f) {}
 	};
 
-	const hlslpp::BitMask fffMask(0xffffffffu); // Negative NaN
-	const hlslpp::BitMask nanMask(0x7fffffffu); // Positive NaN
-	const hlslpp::BitMask infMask(0x7f800000u);
-	const hlslpp::BitMask minusinfMask(0xff800000u);
-	const hlslpp::BitMask absMask(0x7fffffffu);
-	const hlslpp::BitMask negMask(0x80000000u);
+	union BitMaskDouble
+	{
+		uint64_t i;
+		double d;
+		explicit BitMaskDouble(uint64_t i) : i(i) {}
+		explicit BitMaskDouble(double d) : d(d) {}
+	};
 
-	//----- Constants
+	const BitMask fffMask(0xffffffffu); // Negative NaN
+	const BitMask nanMask(0x7fffffffu); // Positive NaN
+	const BitMask infMask(0x7f800000u);
+	const BitMask minusinfMask(0xff800000u);
+	const BitMask absMask(0x7fffffffu);
+	const BitMask negMask(0x80000000u);
+
+	const BitMaskDouble dfffMask(0xffffffffffffffffu); // Negative NaN
+	const BitMaskDouble dAbsMask(0x7fffffffffffffffu);
+	const BitMaskDouble dNegMask(0x8000000000000000u);
+
+	//----------------
+	// Float Constants
+	//----------------
+	
 	const n128 f4_0         = _hlslpp_set1_ps(0.0f);
 	const n128 f4_1         = _hlslpp_set1_ps(1.0f);
 	const n128 f4minusOne   = _hlslpp_set1_ps(-1.0f);
@@ -70,42 +93,57 @@ namespace hlslpp
 	const n128 f4_10        = _hlslpp_set1_ps(10.0f);
 	const n128 f4_e         = _hlslpp_set1_ps(2.718281828f);
 
-	const n128 f4_pi        = _hlslpp_set1_ps(3.14159265f); // pi
+	const n128 f4_pi        = _hlslpp_set1_ps(3.14159265f);  // pi
 	const n128 f4_minusPi   = _hlslpp_set1_ps(-3.14159265f); // -pi
-	const n128 f4_invPi     = _hlslpp_set1_ps(0.31830988f); // 1 / pi
+	const n128 f4_invPi     = _hlslpp_set1_ps(0.31830988f);  // 1 / pi
 
-	const n128 f4_2pi       = _hlslpp_set1_ps(6.28318530f); //  2 * pi
+	const n128 f4_2pi       = _hlslpp_set1_ps(6.28318530f);  //  2 * pi
 	const n128 f4_minus2pi  = _hlslpp_set1_ps(-6.28318530f); // -2 * pi
-	const n128 f4_inv2pi    = _hlslpp_set1_ps(0.15915494f); // 1 / (2 * pi)
+	const n128 f4_inv2pi    = _hlslpp_set1_ps(0.15915494f);  // 1 / (2 * pi)
 
-	const n128 f4_pi2       = _hlslpp_set1_ps(1.57079632f); //  pi / 2
+	const n128 f4_pi2       = _hlslpp_set1_ps(1.57079632f);  //  pi / 2
 	const n128 f4_minusPi2  = _hlslpp_set1_ps(-1.57079632f); // -pi / 2
-	const n128 f4_invPi2    = _hlslpp_set1_ps(0.63661977f); // 2 / pi
+	const n128 f4_invPi2    = _hlslpp_set1_ps(0.63661977f);  // 2 / pi
 
-	const n128 f4_3pi2      = _hlslpp_set1_ps(4.71238898f); //  3 * pi / 2
+	const n128 f4_3pi2      = _hlslpp_set1_ps(4.71238898f);  //  3 * pi / 2
 	const n128 f4_minus3pi2 = _hlslpp_set1_ps(-4.71238898f); // -3 * pi / 2
 
-	const n128 f4_pi4       = _hlslpp_set1_ps(0.78539816f); //  pi / 4
+	const n128 f4_pi4       = _hlslpp_set1_ps(0.78539816f);  // pi / 4
 	const n128 f4_minusPi4  = _hlslpp_set1_ps(-0.78539816f); // -pi / 4
 
-	const n128 f4_NaN       = _hlslpp_set1_ps(nanMask.f);		// Quiet NaN
-	const n128 f4_inf       = _hlslpp_set1_ps(infMask.f);		// Infinity
-	const n128 f4_minusinf  = _hlslpp_set1_ps(minusinfMask.f);	// -Infinity
-	const n128 f4_fff       = _hlslpp_set1_ps(fffMask.f);		// 0xffffffff
+	const n128 f4_NaN       = _hlslpp_set1_ps(nanMask.f);      // Quiet NaN
+	const n128 f4_inf       = _hlslpp_set1_ps(infMask.f);      // Infinity
+	const n128 f4_minusinf  = _hlslpp_set1_ps(minusinfMask.f); // -Infinity
+	const n128 f4_fff       = _hlslpp_set1_ps(fffMask.f);      // 0xffffffff
 
 	const n128 f4_rad2deg   = _hlslpp_set1_ps(180.0f / 3.14159265f);
 	const n128 f4_deg2rad   = _hlslpp_set1_ps(3.14159265f / 180.f);
 
-	const n128i i4_0        = _hlslpp_set1_epi32(0);
-	const n128i i4_1        = _hlslpp_set1_epi32(1);
+	const n128 f4negativeMask = _hlslpp_set1_ps(negMask.f);
+	const n128 f4absMask      = _hlslpp_set1_ps(absMask.f);
 
-	//----- Masks
-	const n128 f4negativeMask  = _hlslpp_set1_ps(negMask.f);
-	const n128 f4absMask       = _hlslpp_set1_ps(absMask.f);
+#if defined(HLSLPP_FLOAT64)
+
+	//-----------------
+	// Double Constants
+	//-----------------
+
+	const n128d d4_1 = _hlslpp_set1_pd(1.0);
+
+	const n128d d4negativeMask = _hlslpp_set1_pd(dNegMask.d);
+	const n128d d4absMask      = _hlslpp_set1_pd(dAbsMask.d);
+
+#endif
+
+	//------------------
+	// Integer Constants
+	//------------------
+
+	const n128i i4_0           = _hlslpp_set1_epi32(0);
+	const n128i i4_1           = _hlslpp_set1_epi32(1);
 
 	const n128i i4negativeMask = _hlslpp_set1_epi32(negMask.i);
 	const n128i i4absMask      = _hlslpp_set1_epi32(absMask.i);
-
 	const n128i i4fffMask      = _hlslpp_set1_epi32(fffMask.i);
 
 	const uint32_t MaskX = 0;
@@ -193,6 +231,10 @@ namespace hlslpp
 	
 	#define _hlslpp_cmplt1_ps(val1, val2)		_hlslpp_and_ps(_hlslpp_cmplt_ps((val1), (val2)), f4_1)
 	#define _hlslpp_cmple1_ps(val1, val2)		_hlslpp_and_ps(_hlslpp_cmple_ps((val1), (val2)), f4_1)
+
+	// Double
+
+	#define _hlslpp_perm_xx_pd(x)				_hlslpp_perm_pd((x), HLSLPP_SHUFFLE_MASK(MaskX, MaskX, MaskX, MaskX))
 
 	// Integer
 
@@ -759,6 +801,8 @@ namespace hlslpp
 
 	static const int IdentityMask = ((3 << 6) | (2 << 4) | (1 << 2) | 0);
 
+	static const int IdentityMask2 = (1 << 1) | 0;
+
 	template<int X>
 	struct swizzle1
 	{
@@ -816,13 +860,7 @@ namespace hlslpp
 
 		void staticAsserts()
 		{
-			// Assert that no component is equal to each other for assignment
 			static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
-		}
-
-		static n128 blend(n128 x, n128 y)
-		{
-			return _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XY(X, Y)); // Select based on property mask
 		}
 
 		template<int E, int F, int A, int B>
@@ -854,6 +892,12 @@ namespace hlslpp
 		swizzle2& operator = (const float2& f);
 
 	private:
+
+		static n128 blend(n128 x, n128 y)
+		{
+			return _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XY(X, Y)); // Select based on property mask
+		}
+
 		union
 		{
 			n128 vec;
@@ -864,17 +908,9 @@ namespace hlslpp
 	template<int X, int Y, int Z>
 	struct swizzle3
 	{
-		// Helper
-
 		void staticAsserts()
 		{
-			// Assert that no component is equal to each other for assignment
 			static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
-		}
-
-		static n128 blend(n128 x, n128 y)
-		{
-			return _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z)); // Select based on property mask
 		}
 
 		template<int E, int F, int G, int A, int B, int C>
@@ -907,6 +943,12 @@ namespace hlslpp
 		swizzle3& operator = (const float3& f);
 
 	private:
+
+		static n128 blend(n128 x, n128 y)
+		{
+			return _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z)); // Select based on property mask
+		}
+
 		union
 		{
 			n128 vec;
@@ -917,11 +959,8 @@ namespace hlslpp
 	template<int X, int Y, int Z, int W>
 	struct swizzle4
 	{
-		// Helper
-
 		void staticAsserts()
 		{
-			// Assert that no component is equal to each other for assignment
 			static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
 		}
 
@@ -1571,6 +1610,382 @@ namespace hlslpp
 		return *this;
 	}
 
+#if defined(HLSLPP_FLOAT64)
+
+	//-------------//
+	// Double type //
+	//-------------//
+	
+	template<int X> struct dswizzle1;
+	template<int X, int Y> struct dswizzle2;
+	template<int X, int Y, int Z> struct dswizzle3;
+	template<int X, int Y, int Z, int W> struct dswizzle4;
+
+	// We need to have two versions of the swizzle because double1 and double2 have a single 2 double vector,
+	// whereas double3 and double4 have two double vectors. In order to share code we create a base class with
+	// all the functionality and then derive the actual types later.
+
+	template<int X>
+	struct dswizzle1
+	{
+		operator double() const { return f64[X]; }
+
+		template<int E, int A>
+		static n128d swizzle(n128d v)
+		{
+			const int finalMask = (((IdentityMask2 >> E) & 1) << A) | (IdentityMask2 & ~((1 << A)));
+			return _hlslpp_perm_pd(v, finalMask);
+		}
+
+		template<int E, int A>
+		n128d swizzle() const
+		{
+			return swizzle<E % 2, A % 2>(vec[X / 2]);
+		}
+
+		// Assignment
+
+		dswizzle1& operator = (double f)
+		{
+			vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], _hlslpp_set1_pd(f), HLSLPP_COMPONENT_X(X));
+			return *this;
+		}
+
+		template<int A>
+		dswizzle1& operator = (const dswizzle1<A>& s) // Revise this function. Can I not do with swizzle?
+		{
+			n128d t = _hlslpp_shuffle_pd(s.vec[A / 2], s.vec[A / 2], HLSLPP_SHUFFLE_MASK(A, A, A, A));
+			vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], t, HLSLPP_COMPONENT_X(X));
+			return *this;
+		}
+
+		//dswizzle1& operator = (const double1& f);
+
+	private:
+		union
+		{
+			n128d vec[X < 2 ? 1 : 2];
+			double f64[X < 2 ? 2 : 4];
+		};
+	};
+
+	template<int X, int Y>
+	struct dswizzle2
+	{
+		void staticAsserts()
+		{
+			static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
+		}
+	
+		template<int SrcA, int SrcB, int DstA, int DstB>
+		n128d swizzle() const
+		{
+			// Select which vector to read from and how to build the mask based on the output
+			n128d result = _hlslpp_shuffle_pd(vec[(DstA % 2) == 0 ? (SrcA / 2) : (SrcB / 2)], vec[(DstB % 2) == 0 ? (SrcA / 2) : (SrcB / 2)],
+			               HLSLPP_SHUFFLE_MASK_PD((DstA % 2) == 0 ? (SrcA % 2) : (SrcB % 2), (DstB % 2) == 0 ? (SrcA % 2) : (SrcB % 2)));
+			return result;
+		}
+	
+		// Assignment
+	
+		template<int E, int F>
+		dswizzle2& operator = (const dswizzle2<E, F>& s)
+		{
+			staticAsserts();
+
+			HLSLPP_CONSTEXPR_IF((X < 2 && Y < 2) || (X >= 2 && Y >= 2))
+			{
+				vec[(X < 2 && Y < 2) ? 0 : 1] = s.template swizzle<E, F, X, Y>();
+			}
+			else
+			{
+				// Swizzle E and F into both 0 and 1
+				n128d swizzledE = s.template swizzle<E, E, 0, 1>();
+				n128d swizzledF = s.template swizzle<F, F, 0, 1>();
+
+				// Blend with original vectors to preserve contents in remaining entries
+				vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], swizzledE, HLSLPP_BLEND_MASK_PD((X % 2) == 1, (X % 2) == 0));
+				vec[Y / 2] = _hlslpp_blend_pd(vec[Y / 2], swizzledF, HLSLPP_BLEND_MASK_PD((Y % 2) == 1, (Y % 2) == 0));
+			}
+
+			return *this;
+		}
+	
+		//swizzle2& operator = (const double2& f);
+	
+	private:
+		union
+		{
+			n128d vec[(X < 2 && Y < 2) ? 1 : 2];
+			double f64[(X < 2 && Y < 2) ? 2 : 4];
+		};
+	};
+
+	template<int X, int Y, int Z>
+	struct dswizzle3
+	{
+		void staticAsserts()
+		{
+			static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
+		}
+
+		template<int SrcA, int SrcB>
+		n128d swizzle() const
+		{
+			return _hlslpp_shuffle_pd(vec[SrcA / 2], vec[SrcB / 2], HLSLPP_SHUFFLE_MASK_PD(SrcA % 2, SrcB % 2));
+		}
+		
+		template<int SrcA, int SrcB, int SrcC>
+		void swizzle(n128d& vec0, n128d& vec1) const
+		{
+			vec0 = swizzle<SrcA, SrcB>();
+			vec1 = swizzle<SrcC, 0>();
+		}
+
+		// Assignment
+
+		template<int A, int B, int C>
+		dswizzle3& operator = (const dswizzle3<A, B, C>& s)
+		{
+			staticAsserts();
+
+			#define HLSLPP_SELECT(x) X == x ? A : (Y == x ? B : C)
+			vec[0] =                   s.template swizzle<HLSLPP_SELECT(0), HLSLPP_SELECT(1)>();
+			vec[1] = _hlslpp_blend_pd((s.template swizzle<HLSLPP_SELECT(2), 0               >()), vec[1], HLSLPP_BLEND_MASK_PD(1, 0)); // Only blend the second vector
+			#undef HLSLPP_SELECT
+			return *this;
+		}
+
+		//dswizzle3& operator = (const double3& f);
+
+	private:
+		union
+		{
+			n128d vec[2];
+			double f64[4];
+		};
+	};
+
+	template<int X, int Y, int Z, int W>
+	struct dswizzle4
+	{
+		void staticAsserts()
+		{
+			static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
+		}
+		
+		template<int SrcA, int SrcB>
+		n128d swizzle() const
+		{
+			return _hlslpp_shuffle_pd(vec[SrcA / 2], vec[SrcB / 2], HLSLPP_SHUFFLE_MASK_PD(SrcA % 2, SrcB % 2));
+		}
+
+		template<int SrcA, int SrcB, int SrcC, int SrcD>
+		void swizzle(n128d& vec0, n128d& vec1) const
+		{
+			vec0 = swizzle<SrcA, SrcB>();
+			vec1 = swizzle<SrcC, SrcD>();
+		}
+		
+		// Assignment
+		
+		template<int A, int B, int C, int D>
+		dswizzle4& operator = (const dswizzle4<A, B, C, D>& s)
+		{
+			staticAsserts();
+			#define HLSLPP_SELECT(x) X == x ? A : (Y == x ? B : (Z == x ? C : D))
+			vec[0] = s. template swizzle<HLSLPP_SELECT(0), HLSLPP_SELECT(1)>();
+			vec[1] = s. template swizzle<HLSLPP_SELECT(3), HLSLPP_SELECT(2)>();
+			#undef HLSLPP_SELECT
+			return *this;
+		}
+		
+		//swizzle4& operator = (const double4& f);
+
+	private:
+		union
+		{
+			n128d vec[2];
+			double f64[4];
+		};
+	};
+
+	struct double1
+	{
+		double1() {}
+		double1(const double1& f) : vec(f.vec) {}
+		explicit double1(n128d vec) : vec(vec) {}
+
+		template<typename T>
+		double1(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_pd(double(f), 0.0)) {}
+
+		template<int X> double1(const dswizzle1<X>& s) : vec(s.template swizzle<X, 0>()) {}
+
+		//double1(const int1& i);
+
+		operator double() const { return f64[0]; }
+
+		union
+		{
+			n128d vec;
+			double f64[2];
+			#include "swizzle/hlsl++_vector_double_x.h"
+			#include "swizzle/hlsl++_vector_double_r.h"
+		};
+	};
+
+	struct double2
+	{
+		// Constructors
+
+		double2() {}
+		double2(const double2& f) : vec(f.vec) {}
+		explicit double2(n128d vec) : vec(vec) {}
+		explicit double2(const double1& f) : vec(_hlslpp_perm_xx_pd(f.vec)) {}
+
+		template<typename T>
+		double2(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_pd(double(f), double(f))) {}
+
+		template<typename T1, typename T2>
+		double2(T1 f1, T2 f2, hlslpp_enable_if_number_2(T1, T2)) : vec(_hlslpp_set_pd(double(f1), double(f2))) {}
+
+		double2(const double1& f1, const double1& f2) { vec = _hlslpp_blend_pd(f1.vec, _hlslpp_perm_xx_pd(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
+		
+		template<int X, int Y> double2(const dswizzle2<X, Y>& s) : vec(s.template swizzle<X, Y, 0, 1>()) {}
+
+		//double2(const int2& i);
+
+		union
+		{
+			n128d vec;
+			double f64[2];
+			#include "swizzle/hlsl++_vector_double_x.h"
+			#include "swizzle/hlsl++_vector_double_y.h"
+			#include "swizzle/hlsl++_vector_double_r.h"
+			#include "swizzle/hlsl++_vector_double_g.h"
+		};
+	};
+
+	struct double3
+	{
+		// Constructors
+
+		double3() {}
+		double3(const double3& f) : vec0(f.vec0), vec1(f.vec1) {}
+		explicit double3(n128d vec0, n128d vec1) : vec0(vec0), vec1(vec1) {}
+		explicit double3(const double1& f) : vec0(_hlslpp_perm_xx_pd(f.vec)), vec1(_hlslpp_perm_xx_pd(f.vec)) {}
+
+		template<typename T>
+		double3(T f, hlslpp_enable_if_number(T)) : vec0(_hlslpp_set_pd(double(f), double(f))), vec1(_hlslpp_set_pd(double(f), 0.0)) {}
+		
+		template<typename T1, typename T2, typename T3>
+		double3(T1 f1, T2 f2, T3 f3, hlslpp_enable_if_number_3(T1, T2, T3)) : vec0(_hlslpp_set_pd(double(f1), double(f2))), vec1(_hlslpp_set_pd(double(f3), 0.0)) {}
+
+		//float3(const double1& f1, const double1& f2, const double1& f3) { vec = _hlslpp_blend_pd(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
+		//
+		//float3(const double2& f1, const double1& f2) { vec = _hlslpp_shuf_xyxx_ps(f1.vec, f2.vec); }
+		//float3(const double1& f1, const double2& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxyx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
+		
+		template<int X, int Y, int Z>
+		double3(const dswizzle3<X, Y, Z>& s)
+		{
+			s.template swizzle<X, Y, Z>(vec0, vec1);
+		}
+		
+		//float3(const int3& i);
+
+		union
+		{
+			struct
+			{
+				n128d vec0;
+				n128d vec1;
+			};
+
+			double f64[4];
+			#include "swizzle/hlsl++_vector_double_x.h"
+			#include "swizzle/hlsl++_vector_double_y.h"
+			#include "swizzle/hlsl++_vector_double_r.h"
+			#include "swizzle/hlsl++_vector_double_g.h"
+			#include "swizzle/hlsl++_vector_double_z.h"
+			#include "swizzle/hlsl++_vector_double_b.h"
+		};
+	};
+
+	struct double4
+	{
+		double4() {}
+		double4(const double4& f) : vec0(f.vec0), vec1(f.vec1) {}
+		explicit double4(n128d vec0, n128d vec1) : vec0(vec0), vec1(vec1) {}
+		explicit double4(const double1& f) : vec0(_hlslpp_perm_xx_pd(f.vec)), vec1(_hlslpp_perm_xx_pd(f.vec)) {}
+
+		template<typename T>
+		double4(T f, hlslpp_enable_if_number(T)) : vec0(_hlslpp_set1_pd(double(f))), vec1(_hlslpp_set1_pd(double(f))) {}
+
+		template<typename T1, typename T2, typename T3, typename T4>
+		double4(T1 f1, T2 f2, T3 f3, T4 f4, hlslpp_enable_if_number_4(T1, T2, T3, T4)) : vec0(_hlslpp_set_pd(double(f1), double(f2))), vec1(_hlslpp_set_pd(double(f3), double(f4))) {}
+
+		//double4(const double1& f1, const double1& f2, const double1& f3, const double1& f4) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_shuf_xxxx_ps(f2.vec, f4.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
+		//
+		//double4(const double2& f1, const double1& f2, const double1& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xyxx_ps(f1.vec, f2.vec), _hlslpp_perm_xxxx_ps(f3.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
+		//double4(const double1& f1, const double2& f2, const double1& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_perm_xxyx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
+		//double4(const double1& f1, const double1& f2, const double2& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxy_ps(f1.vec, f3.vec), _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
+		//
+		//double4(const double2& f1, const double2& f2) { vec = _hlslpp_shuf_xyxy_ps(f1.vec, f2.vec); }
+		//
+		//double4(const double1& f1, const double3& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxyz_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 0)); }
+		//double4(const double3& f1, const double1& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
+		//
+		template<int X, int Y, int Z, int W>
+		double4(const dswizzle4<X, Y, Z, W>& s)
+		{
+			s.template swizzle<X, Y, Z, W>(vec0, vec1);
+		}
+
+		//double4(const int4& i);
+
+		union
+		{
+			struct
+			{
+				n128d vec0;
+				n128d vec1;
+			};
+
+			double f64[4];
+			#include "swizzle/hlsl++_vector_double_x.h"
+			#include "swizzle/hlsl++_vector_double_y.h"
+			#include "swizzle/hlsl++_vector_double_r.h"
+			#include "swizzle/hlsl++_vector_double_g.h"
+			#include "swizzle/hlsl++_vector_double_z.h"
+			#include "swizzle/hlsl++_vector_double_w.h"
+			#include "swizzle/hlsl++_vector_double_b.h"
+			#include "swizzle/hlsl++_vector_double_a.h"
+		};
+	};
+
+	double1 operator + (const double1& f1, const double1& f2) { return double1(_hlslpp_add_pd(f1.vec, f2.vec)); }
+	double2 operator + (const double2& f1, const double2& f2) { return double2(_hlslpp_add_pd(f1.vec, f2.vec)); }
+	double3 operator + (const double3& f1, const double3& f2) { return double3(_hlslpp_add_pd(f1.vec0, f2.vec0), _hlslpp_add_pd(f1.vec1, f2.vec1)); }
+	double4 operator + (const double4& f1, const double4& f2) { return double4(_hlslpp_add_pd(f1.vec0, f2.vec0), _hlslpp_add_pd(f1.vec1, f2.vec1)); }
+
+	double1 operator - (const double1& f1, const double1& f2) { return double1(_hlslpp_sub_pd(f1.vec, f2.vec)); }
+	double2 operator - (const double2& f1, const double2& f2) { return double2(_hlslpp_sub_pd(f1.vec, f2.vec)); }
+	double3 operator - (const double3& f1, const double3& f2) { return double3(_hlslpp_sub_pd(f1.vec0, f2.vec0), _hlslpp_sub_pd(f1.vec1, f2.vec1)); }
+	double4 operator - (const double4& f1, const double4& f2) { return double4(_hlslpp_sub_pd(f1.vec0, f2.vec0), _hlslpp_sub_pd(f1.vec1, f2.vec1)); }
+
+	double1 operator * (const double1& f1, const double1& f2) { return double1(_hlslpp_mul_pd(f1.vec, f2.vec)); }
+	double2 operator * (const double2& f1, const double2& f2) { return double2(_hlslpp_mul_pd(f1.vec, f2.vec)); }
+	double3 operator * (const double3& f1, const double3& f2) { return double3(_hlslpp_mul_pd(f1.vec0, f2.vec0), _hlslpp_mul_pd(f1.vec1, f2.vec1)); }
+	double4 operator * (const double4& f1, const double4& f2) { return double4(_hlslpp_mul_pd(f1.vec0, f2.vec0), _hlslpp_mul_pd(f1.vec1, f2.vec1)); }
+
+	double1 operator / (const double1& f1, const double1& f2) { return double1(_hlslpp_div_pd(f1.vec, f2.vec)); }
+	double2 operator / (const double2& f1, const double2& f2) { return double2(_hlslpp_div_pd(f1.vec, f2.vec)); }
+	double3 operator / (const double3& f1, const double3& f2) { return double3(_hlslpp_div_pd(f1.vec0, f2.vec0), _hlslpp_div_pd(f1.vec1, f2.vec1)); }
+	double4 operator / (const double4& f1, const double4& f2) { return double4(_hlslpp_div_pd(f1.vec0, f2.vec0), _hlslpp_div_pd(f1.vec1, f2.vec1)); }
+
+#endif
+
 	//----------------------//
 	// Integer swizzle type //
 	//----------------------//
@@ -1633,7 +2048,6 @@ namespace hlslpp
 
 		void staticAsserts()
 		{
-			// Assert that no component is equal to each other for assignment
 			static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
 		}
 
@@ -1685,7 +2099,6 @@ namespace hlslpp
 
 		void staticAsserts()
 		{
-			// Assert that no component is equal to each other for assignment
 			static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
 		}
 
@@ -1738,7 +2151,6 @@ namespace hlslpp
 
 		void staticAsserts()
 		{
-			// Assert that no component is equal to each other for assignment
 			static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
 		}
 

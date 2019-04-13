@@ -14,11 +14,16 @@
 
 #endif
 
-typedef __m128 n128;
+#define HLSLPP_FLOAT64
+
+// All available in SSE/SSE2
+typedef __m128  n128;
 typedef __m128i n128i;
+typedef __m128d n128d;
 
 #if defined(__AVX__)
-typedef __m256 n256;
+typedef __m256  n256;
+typedef __m256d n256d;
 typedef __m256i n256i;
 #endif
 
@@ -109,6 +114,82 @@ typedef __m256i n256i;
 #define _hlslpp_sel_ps(x, y, mask)				_mm_blendv_ps((x), (y), (mask))
 
 #define _hlslpp_blend_ps(x, y, mask)			_mm_blend_ps((x), (y), (mask))
+
+//-------
+// Double
+//-------
+
+#define _hlslpp_set1_pd(x)						_mm_set1_pd((x))
+#define _hlslpp_set_pd(x, y)					_mm_set_pd((y), (x))
+#define _hlslpp_setzero_pd()					_mm_setzero_pd()
+
+#define _hlslpp_add_pd(x, y)					_mm_add_pd((x), (y))
+#define _hlslpp_sub_pd(x, y)					_mm_sub_pd((x), (y))
+#define _hlslpp_mul_pd(x, y)					_mm_mul_pd((x), (y))
+#define _hlslpp_div_pd(x, y)					_mm_div_pd((x), (y))
+
+#define _hlslpp_rcp_pd(x)						_mm_div_pd(d4_1, (x))
+
+#define _hlslpp_neg_pd(x)						_mm_xor_pd((x), d4negativeMask)
+
+#if defined(__FMA__)
+
+#define _hlslpp_madd_pd(x, y, z)				_mm_fmadd_pd((x), (y), (z))
+#define _hlslpp_msub_pd(x, y, z)				_mm_fmsub_pd((x), (y), (z))
+#define _hlslpp_subm_pd(x, y, z)				_mm_fnmadd_pd((x), (y), (z)))
+
+#else
+
+#define _hlslpp_madd_pd(x, y, z)				_mm_add_pd(_mm_mul_pd((x), (y)), (z))
+#define _hlslpp_msub_pd(x, y, z)				_mm_sub_pd(_mm_mul_pd((x), (y)), (z))
+#define _hlslpp_subm_pd(x, y, z)				_mm_sub_pd((x), _mm_mul_pd((y), (z)))
+
+#endif
+
+// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
+#define _hlslpp_abs_pd(x)						_mm_and_pd(d4absMask, (x))
+
+#define _hlslpp_sqrt_pd(x)						_mm_sqrt_pd((x))
+#define _hlslpp_rsqrt_pd(x)						_mm_div_pd(d4_1, _mm_sqrt_pd((x)))
+
+#define _hlslpp_cmpeq_pd(x, y)					_mm_cmpeq_pd((x), (y))
+#define _hlslpp_cmpneq_pd(x, y)					_mm_cmpneq_pd((x), (y))
+
+#define _hlslpp_cmpgt_pd(x, y)					_mm_cmpgt_pd((x), (y))
+#define _hlslpp_cmpge_pd(x, y)					_mm_cmpge_pd((x), (y))
+
+#define _hlslpp_cmplt_pd(x, y)					_mm_cmplt_pd((x), (y))
+#define _hlslpp_cmple_pd(x, y)					_mm_cmple_pd((x), (y))
+
+#define _hlslpp_max_pd(x, y)					_mm_max_pd((x), (y))
+#define _hlslpp_min_pd(x, y)					_mm_min_pd((x), (y))
+
+#define _hlslpp_trunc_pd(x)						_mm_round_pd((x), _MM_FROUND_TRUNC)
+#define _hlslpp_floor_pd(x)						_mm_floor_pd((x))
+#define _hlslpp_ceil_pd(x)						_mm_ceil_pd((x))
+
+// _MM_FROUND_TO_NEAREST_INT to match fxc behavior
+#define _hlslpp_round_pd(x)						_mm_round_pd((x), _MM_FROUND_TO_NEAREST_INT)
+
+#define _hlslpp_frac_pd(x)						_mm_sub_pd((x), _mm_floor_pd(x))
+
+#define _hlslpp_clamp_pd(x, minx, maxx)			_mm_max_pd(_mm_min_pd((x), (maxx)), (minx))
+#define _hlslpp_sat_pd(x)						_mm_max_pd(_mm_min_pd((x), d4_1), d4_0)
+
+#define _hlslpp_and_pd(x, y)					_mm_and_pd((x), (y))
+#define _hlslpp_andnot_pd(x, y)					_mm_andnot_pd((x), (y))
+#define _hlslpp_or_pd(x, y)						_mm_or_pd((x), (y))
+#define _hlslpp_xor_pd(x, y)					_mm_xor_pd((x), (y))
+
+#define _hlslpp_perm_pd(x, mask)				_mm_shuffle_pd((x), (x), (mask))
+#define _hlslpp_shuffle_pd(x, y, mask)			_mm_shuffle_pd((x), (y), (mask))
+
+// SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
+// _mm_xor_ps((x), _mm_and_ps(mask, _mm_xor_ps((y), (x))))
+// Bit-select val1 and val2 based on the contents of the mask
+#define _hlslpp_sel_pd(x, y, mask)				_mm_blendv_pd((x), (y), (mask))
+
+#define _hlslpp_blend_pd(x, y, mask)			_mm_blend_pd((x), (y), (mask))
 
 //---------------------
 // Float 256 (AVX/AVX2)

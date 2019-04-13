@@ -35,14 +35,14 @@ namespace hlslpp_unit
 
 		int32_t i;
 		float f;
-#ifdef _DEBUG
+
 		struct
 		{
 			uint32_t mantissa : 23;
 			uint32_t exponent : 8;
 			uint32_t sign : 1;
 		} parts;
-#endif
+
 	};
 
 	void eq(float a, float b, float tolerance = 0.0f)
@@ -53,8 +53,6 @@ namespace hlslpp_unit
 	
 	void eq(const float2& v, float x, float y, float tolerance = 0.0f)
 	{
-		//printf("eq(float2, float, float) (%f, %f) == (%f, %f)\n", (float)v.x, (float)v.y, x, y);
-
 		eq(v.x, x, tolerance);
 		eq(v.y, y, tolerance);
 	}
@@ -73,6 +71,37 @@ namespace hlslpp_unit
 		eq(v.z, z, tolerance);
 		eq(v.w, w, tolerance);
 	}
+
+	void eq(double a, double b, double tolerance = 0.0)
+	{
+		bool withinTolerance = abs(a - b) <= tolerance;
+		assert(withinTolerance);
+	}
+
+#if defined(HLSLPP_FLOAT64)
+
+	void eq(const double2& v, double x, double y, double tolerance = 0.0)
+	{
+		eq((double)v.x, x, tolerance);
+		eq((double)v.y, y, tolerance);
+	}
+
+	void eq(const double3& v, double x, double y, double z, double tolerance = 0.0)
+	{
+		eq((double)v.x, x, tolerance);
+		eq((double)v.y, y, tolerance);
+		eq((double)v.z, z, tolerance);
+	}
+
+	void eq(const double4& v, double x, double y, double z, double w, double tolerance = 0.0)
+	{
+		eq((double)v.x, x, tolerance);
+		eq((double)v.y, y, tolerance);
+		eq((double)v.z, z, tolerance);
+		eq((double)v.w, w, tolerance);
+	}
+
+#endif
 
 	void eq(const float2x2& v,
 		float m00, float m01,
@@ -335,6 +364,10 @@ void RunUnitTests()
 
 	int seed = 0;// (int)time(NULL);
 	srand(seed);
+
+	//------
+	// Float
+	//------
 
 	float f1 = (rand() % 1000) / 100.0f; float f5 = (rand() % 1000) / 100.0f; float f9 =  (rand() % 1000) / 100.0f; float f13 = (rand() % 1000) / 100.0f; float f17 = (rand() % 1000) / 100.0f; 
 	float f2 = (rand() % 1000) / 100.0f; float f6 = (rand() % 1000) / 100.0f; float f10 = (rand() % 1000) / 100.0f; float f14 = (rand() % 1000) / 100.0f; float f18 = (rand() % 1000) / 100.0f;
@@ -1208,6 +1241,39 @@ void RunUnitTests()
 	float2 vtrunc_swiz_2 = trunc(vfoo2.yy);
 	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);
 	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);
+
+#if defined(HLSLPP_FLOAT64)
+
+	//-------
+	// Double
+	//-------
+
+	double df1 = (rand() % 1000) / 100.0; double df5 = (rand() % 1000) / 100.0; double df9 = (rand() % 1000) / 100.0;  double df13 = (rand() % 1000) / 100.0; double df17 = (rand() % 1000) / 100.0;
+	double df2 = (rand() % 1000) / 100.0; double df6 = (rand() % 1000) / 100.0; double df10 = (rand() % 1000) / 100.0; double df14 = (rand() % 1000) / 100.0; double df18 = (rand() % 1000) / 100.0;
+	double df3 = (rand() % 1000) / 100.0; double df7 = (rand() % 1000) / 100.0; double df11 = (rand() % 1000) / 100.0; double df15 = (rand() % 1000) / 100.0; double df19 = (rand() % 1000) / 100.0;
+	double df4 = (rand() % 1000) / 100.0; double df8 = (rand() % 1000) / 100.0; double df12 = (rand() % 1000) / 100.0; double df16 = (rand() % 1000) / 100.0; double df20 = (rand() % 1000) / 100.0;
+
+	double1 dvfoo1 = double1(df1);						eq(dvfoo1, df1);
+	double2 dvfoo2 = double2(df2, df3);					eq(dvfoo2, df2, df3);
+	double3 dvfoo3 = double3(df4, df5, df6);			eq(dvfoo3, df4, df5, df6);
+	double4 dvfoo4 = double4(df7, df8, df9, df10);		eq(dvfoo4, df7, df8, df9, df10);
+
+	double1 dvfoo_dc_1;
+	double2 dvfoo_dc_2;
+	double3 dvfoo_dc_3;
+	double4 dvfoo_dc_4;
+
+	dvfoo1 = double1(df1);								eq(dvfoo1, df1);
+	dvfoo2 = double2(df2, df3);							eq(dvfoo2, df2, df3);
+	dvfoo3 = double3(df4, df5, df6);					eq(dvfoo3, df4, df5, df6);
+	dvfoo4 = double4(df7, df8, df9, df10);				eq(dvfoo4, df7, df8, df9, df10);
+
+	double1 dvbar1 = dvfoo1.x;							eq(dvbar1, df1);
+	double2 dvbar2 = dvfoo4.ww;							eq(dvbar2, df10, df10);
+	double3 dvbar3 = dvfoo3.zyx;						eq(dvbar3, df6, df5, df4);
+	double4 dvbar4 = dvfoo4.bgra;						eq(dvbar4, df9, df8, df7, df10);
+
+#endif
 
 	// Integer
 
@@ -2163,7 +2229,7 @@ void android_main(struct android_app* app)
 
 #else
 
-int main(int argc, char* argv[])
+int main(int /*argc*/, char** /*argv*/)
 
 #endif
 {
