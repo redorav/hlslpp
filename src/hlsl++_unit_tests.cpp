@@ -835,15 +835,15 @@ void RunUnitTests()
 	float3 vatan_swiz_3 = atan(vfoo3.bgr);
 	float4 vatan_swiz_4 = atan(vfoo4.wwww);
 
-	float1 vceil1 = ceil(vfoo1);
-	float2 vceil2 = ceil(vfoo2);
-	float3 vceil3 = ceil(vfoo3);
-	float4 vceil4 = ceil(vfoo4);
+	float1 vceil1 = ceil(vfoo1);							eq(vceil1, ceil((float)vfoo1.x));
+	float2 vceil2 = ceil(vfoo2);							eq(vceil2, ceil((float)vfoo2.x), ceil((float)vfoo2.y));
+	float3 vceil3 = ceil(vfoo3);							eq(vceil3, ceil((float)vfoo3.x), ceil((float)vfoo3.y), ceil((float)vfoo3.z));
+	float4 vceil4 = ceil(vfoo4);							eq(vceil4, ceil((float)vfoo4.x), ceil((float)vfoo4.y), ceil((float)vfoo4.z), ceil((float)vfoo4.w));
 
-	float1 vceil_swiz_1 = ceil(vfoo1.r);
-	float2 vceil_swiz_2 = ceil(vfoo2.xx);
-	float3 vceil_swiz_3 = ceil(vfoo3.rrg);
-	float4 vceil_swiz_4 = ceil(vfoo4.yzwx);
+	float1 vceil_swiz_1 = ceil(vfoo1.r);					eq(vceil_swiz_1, ceil((float)vfoo1.r));
+	float2 vceil_swiz_2 = ceil(vfoo2.xx);					eq(vceil_swiz_2, ceil((float)vfoo2.x), ceil((float)vfoo2.x));
+	float3 vceil_swiz_3 = ceil(vfoo3.rrg);					eq(vceil_swiz_3, ceil((float)vfoo3.r), ceil((float)vfoo3.r), ceil((float)vfoo3.g));
+	float4 vceil_swiz_4 = ceil(vfoo4.yzwx);					eq(vceil_swiz_4, ceil((float)vfoo4.y), ceil((float)vfoo4.z), ceil((float)vfoo4.w), ceil((float)vfoo4.x));
 
 	float1 vclamp1 = clamp(vfoo1, vbar1, vbaz1);
 	float2 vclamp2 = clamp(vfoo2, vbar2, vbaz2);
@@ -875,7 +875,7 @@ void RunUnitTests()
 	float3 vcosh_swiz_3 = cosh(vfoo3.rrg);
 	float4 vcosh_swiz_4 = cosh(vfoo4.rrbg);
 
-	float3 vcross3			= cross(vfoo3, vbar3);
+	float3 vcross3 = cross(vfoo3, vbar3);
 	float3 vcross_swiz_3_a = cross(vfoo3, vbar3.yyx);
 	float3 vcross_swiz_3_b = cross(vfoo3.xyz, vbar3);
 	float3 vcross_swiz_3_c = cross(vfoo3.yzx, vbar3.yyx);
@@ -895,15 +895,15 @@ void RunUnitTests()
 	float1 vdot4_b	= dot(vfoo4.rrgb, vbar4);
 	float1 vdot4_c	= dot(vfoo4.rrgg, vbar4);
 
-	float1 vfloor1 = floor(vfoo1);
-	float2 vfloor2 = floor(vfoo2);
-	float3 vfloor3 = floor(vfoo3);
-	float4 vfloor4 = floor(vfoo4);
+	float1 vfloor1 = floor(vfoo1);					eq(vfloor1, floor((float)vfoo1.x));
+	float2 vfloor2 = floor(vfoo2);					eq(vfloor2, floor((float)vfoo2.x), floor((float)vfoo2.y));
+	float3 vfloor3 = floor(vfoo3);					eq(vfloor3, floor((float)vfoo3.x), floor((float)vfoo3.y), floor((float)vfoo3.z));
+	float4 vfloor4 = floor(vfoo4);					eq(vfloor4, floor((float)vfoo4.x), floor((float)vfoo4.y), floor((float)vfoo4.z), floor((float)vfoo4.w));
 
-	float1 vfloor_swiz_1 = floor(vfoo1.r);
-	float2 vfloor_swiz_2 = floor(vfoo2.yx);
-	float3 vfloor_swiz_3 = floor(vfoo3.xxy);
-	float4 vfloor_swiz_4 = floor(vfoo4.wwxy);
+	float1 vfloor_swiz_1 = floor(vfoo1.r);			eq(vfloor_swiz_1, floor((float)vfoo1.r));
+	float2 vfloor_swiz_2 = floor(vfoo2.yx);			eq(vfloor_swiz_2, floor((float)vfoo2.y), floor((float)vfoo2.x));
+	float3 vfloor_swiz_3 = floor(vfoo3.xxy);		eq(vfloor_swiz_3, floor((float)vfoo3.x), floor((float)vfoo3.x), floor((float)vfoo3.y));
+	float4 vfloor_swiz_4 = floor(vfoo4.wwxy);		eq(vfloor_swiz_4, floor((float)vfoo4.w), floor((float)vfoo4.w), floor((float)vfoo4.x), floor((float)vfoo4.y));
 
 	float1 vfrac1 = frac(vfoo1);
 	float2 vfrac2 = frac(vfoo2);

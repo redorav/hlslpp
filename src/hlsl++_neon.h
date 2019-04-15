@@ -115,7 +115,7 @@ hlslpp_inline float32x4_t vfloorq_f32(float32x4_t x)
 hlslpp_inline float32x4_t vceilq_f32(float32x4_t x)
 {
 	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
-	float32x4_t gt = vcgtq_f32(trnc, x);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
+	float32x4_t gt = vcgtq_f32(x, trnc);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
 	uint32x4_t shr = vshrq_n_u32(vreinterpretq_u32_f32(gt), 31);	// Shift to leave a 1 or a 0
 	float32x4_t result = vaddq_f32(trnc, vcvtq_f32_u32(shr));		// Add to truncated value
 	return result;

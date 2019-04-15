@@ -101,6 +101,7 @@ workspace("hlsl++")
 			architecture("arm")
 			vectorextensions("neon")
 			buildoptions { "-Wno-unused-variable" }
+			linkoptions { "-lm" } -- Link against the standard math library
 			
 		filter { "platforms:"..Platform360 }
 			system("xbox360")
@@ -159,6 +160,7 @@ project (AndroidProject)
 	removeplatforms("*")
 	platforms { AndroidARM }
 	kind("Packaging") -- This type of project builds the apk
+	architecture("arm")
 	links (UnitTestProject) -- Android needs to link to the main project which was built as a dynamic library
 	androidapplibname(UnitTestProject)
 	files
