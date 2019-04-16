@@ -4,10 +4,33 @@
 
 	#include <immintrin.h>
 
-	#if !defined(__FMA__) && defined(__AVX2__)
+	// MSVC does not define these macros so we define them via heuristics and use them below. Other compilers
+	// define these macros because they have command line switches to enable them at compile time. Alternatively
+	// hlsl++ users can define these themselves and get access to the features.
+
+	#if defined(__AVX2__)
+
+		#if !defined(__FMA__)
 		#define __FMA__ 1
+		#endif
+
 	#endif
 
+	#if defined(__AVX__)
+	
+		#if !defined(__SSE4_1__)
+		#define __SSE4_1__ 1
+		#endif
+
+	#endif
+
+	#if defined(__SSE4_1__)
+
+		#if !defined(__SSSE3__)
+		#define __SSSE3__ 1
+		#endif
+
+	#endif
 #else
 
 	#include <x86intrin.h>
@@ -283,7 +306,11 @@ typedef __m256i n256i;
 
 #define _hlslpp_div_epi32(x, y)					_mm_castps_si128(_mm_div_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y)))
 
+#if defined(__SSSE3__)
+#define _hlslpp_neg_epi32(x)					_mm_sign_epi32((x), _mm_set1_epi32(-1))
+#else
 #define _hlslpp_neg_epi32(x)					_mm_add_epi32(_mm_xor_si128((x), i4fffMask), _mm_set1_epi32(1))
+#endif
 
 #define _hlslpp_madd_epi32(x, y, z)				_mm_add_epi32(_mm_mullo_epi32((x), (y)), (z))
 #define _hlslpp_msub_epi32(x, y, z)				_mm_sub_epi32(_mm_mullo_epi32((x), (y)), (z))
@@ -329,6 +356,7 @@ typedef __m256i n256i;
 #if defined(__AVX2__)
 
 #define _hlslpp_sllv_epi32(x, y)				_mm_sllv_epi32((x), (y))
+#define _hlslpp_srlv_epi32(x, y)				_mm_srlv_epi32((x), (y))
 
 #else
 
@@ -355,14 +383,6 @@ inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
 
 	return _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
 }
-
-#endif
-
-#if defined(__AVX2__)
-
-#define _hlslpp_srlv_epi32(x, y)				_mm_srlv_epi32((x), (y))
-
-#else
 
 inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 {
