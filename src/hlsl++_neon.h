@@ -264,7 +264,7 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_mul_epi32(x, y)					vmulq_s32((x), (y))
 #define _hlslpp_div_epi32(x, y)					vdivq_s32((x), (y))
 
-#define _hlslpp_neg_epi32(x)					veorq_u32((x), vmovq_n_u32(0x80000000u))
+#define _hlslpp_neg_epi32(x)					vaddq_s32(veorq_u32(vreinterpretq_u32_s32(x), vmovq_n_u32(0xffffffffu)), vmovq_n_u32(1))
 
 #define _hlslpp_madd_epi32(x, y, z)				vmlaq_s32((z), (x), (y))
 #define _hlslpp_msub_epi32(x, y, z)				_hlslpp_neg_epi32(vmlsq_s32((z), (x), (y))) // Negate because vmlsq_u32 does z - x * y and we want x * y - z

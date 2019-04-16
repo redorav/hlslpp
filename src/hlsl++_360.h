@@ -143,7 +143,7 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_div_epi32(x, y)					__vcfpsxws(__vmulfp(__vcsxwfp((x), 0), __vrcp(__vcsxwfp((y), 0))), 0)
 
-#define _hlslpp_neg_epi32(x)					__vxor((x), i4negativeMask)
+#define _hlslpp_neg_epi32(x)					__vaddsws(__vxor((x), i4fffMask), __vcfpsxws(__vset1(1), 0))
 
 #define _hlslpp_madd_epi32(x, y, z)				__vcfpsxws(__vmaddfp(__vcsxwfp((x), 0), __vcsxwfp((y), 0), __vcsxwfp((z), 0)), 0)
 #define _hlslpp_msub_epi32(x, y, z)				__vcfpsxws(_hlslpp_neg_ps(__vnmsubfp(__vcsxwfp((z), 0), __vcsxwfp((x), 0), __vcsxwfp((y), 0))))

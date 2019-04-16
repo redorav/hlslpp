@@ -283,7 +283,7 @@ typedef __m256i n256i;
 
 #define _hlslpp_div_epi32(x, y)					_mm_castps_si128(_mm_div_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y)))
 
-#define _hlslpp_neg_epi32(x)					_mm_xor_si128((x), i4negativeMask)
+#define _hlslpp_neg_epi32(x)					_mm_add_epi32(_mm_xor_si128((x), i4fffMask), _mm_set1_epi32(1))
 
 #define _hlslpp_madd_epi32(x, y, z)				_mm_add_epi32(_mm_mullo_epi32((x), (y)), (z))
 #define _hlslpp_msub_epi32(x, y, z)				_mm_sub_epi32(_mm_mullo_epi32((x), (y)), (z))
