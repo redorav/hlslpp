@@ -75,9 +75,11 @@ workspace("hlsl++")
 		filter { "platforms:"..PlatformMSVC64 }
 			toolset("msc")
 			architecture("x64")
+			vectorextensions("avx")
 		
 		filter { "platforms:"..PlatformMSVC32 }
 			toolset("msc")
+			vectorextensions("avx")
 			
 		filter { "platforms:"..PlatformLLVM64 }
 			toolset(llvmToolset)
