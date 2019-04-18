@@ -1242,6 +1242,18 @@ void RunUnitTests()
 	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);
 	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);
 
+	// Storage
+
+	float vstore1[1];
+	float vstore2[2];
+	float vstore3[3];
+	float vstore4[4];
+
+	store(vfoo1, vstore1);			eq(vfoo1, vstore1[0]);
+	store(vfoo2, vstore2);			eq(vfoo2, vstore2[0], vstore2[1]);
+	store(vfoo3, vstore3);			eq(vfoo3, vstore3[0], vstore3[1], vstore3[2]);
+	store(vfoo4, vstore4);			eq(vfoo4, vstore4[0], vstore4[1], vstore4[2], vstore4[3]);
+
 #if defined(HLSLPP_FLOAT64)
 
 	//-------

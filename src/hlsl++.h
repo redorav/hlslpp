@@ -1701,7 +1701,11 @@ namespace hlslpp
 		template<int SrcA, int SrcB, int DstA, int DstB>
 		n128d swizzle() const
 		{
-			return swizzle<SrcA, SrcB, DstA, DstB>(vec[0], vec[1]);
+			// Select which vector to read from and how to build the mask based on the output
+			#define HLSLPP_SELECT(Dst) ((Dst % 2) == 0 ? (SrcA < 2 ? vec[0] : vec[1]) : (SrcB < 2 ? vec[0] : vec[1]))
+			n128d result = _hlslpp_shuffle_pd(HLSLPP_SELECT(DstA), HLSLPP_SELECT(DstB), HLSLPP_SHUFFLE_MASK_PD((DstA % 2) == 0 ? (SrcA % 2) : (SrcB % 2), (DstB % 2) == 0 ? (SrcA % 2) : (SrcB % 2)));
+			#undef HLSLPP_SELECT
+			return result;
 		}
 	
 		// Assignment
