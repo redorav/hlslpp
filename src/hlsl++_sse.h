@@ -454,11 +454,41 @@ hlslpp_inline bool _hlslpp_all4_ps(n128 x)
 // Storing
 //--------
 
-#define _hlslpp_store1_ps(p, x)					_mm_store_ss((p), (x))
-#define _hlslpp_store2_ps(p, x)					_mm_store_ss((p), x); _mm_store_ss((p) + 1, _hlslpp_perm_yyyy_ps(x))
-#define _hlslpp_store3_ps(p, x)					_mm_store_ss((p), x); _mm_store_ss((p) + 1, _hlslpp_perm_yyyy_ps(x)); _mm_store_ss((p) + 2, _hlslpp_perm_zzzz_ps(x))
-#define _hlslpp_store4_ps(p, x)					_mm_storeu_ps((p), x);
+hlslpp_inline void _hlslpp_store1_ps(float* p, n128 x)
+{
+	_mm_store_ss(p, x);
+}
+
+hlslpp_inline void _hlslpp_store2_ps(float* p, n128 x)
+{
+	_mm_store_ss(p, x);
+	_mm_store_ss(p + 1, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(1, 1, 1, 1)));
+}
+
+hlslpp_inline void _hlslpp_store3_ps(float* p, n128 x)
+{
+	_mm_store_ss(p, x);
+	_mm_store_ss(p + 1, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(1, 1, 1, 1)));
+	_mm_store_ss(p + 2, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2)));
+}
+
+hlslpp_inline void _hlslpp_store4_ps(float* p, n128 x)
+{
+	_mm_storeu_ps(p, x);
+}
 
 // Store first 3, store second 3, store last 3, stomping one of the previous values but making sure it's the same
-#define _hlslpp_store3x3_ps(p, x0, x1, x2)		_mm_storeu_ps((p), x0); _mm_storeu_ps((p) + 3, x1); _mm_storeu_ps((p) + 5, _hlslpp_blend_ps(_hlslpp_perm_zzzz_ps(x1), _hlslpp_perm_wxyz_ps(x2), HLSLPP_BLEND_MASK(1, 0, 0, 0)))
-#define _hlslpp_store4x4_ps(p, x0, x1, x2, x3)	_mm_storeu_ps((p), x0); _mm_storeu_ps((p) + 4, x1); _mm_storeu_ps((p) + 8, x2); _mm_storeu_ps((p) + 12, x3)
+hlslpp_inline void _hlslpp_store3x3_ps(float* p, n128 x0, n128 x1, n128 x2)
+{
+	_mm_storeu_ps(p, x0);
+	_mm_storeu_ps(p + 3, x1);
+	_mm_storeu_ps(p + 5, _hlslpp_blend_ps(_hlslpp_perm_ps(x1, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2)), _hlslpp_perm_ps(x2, HLSLPP_SHUFFLE_MASK(3, 0, 1, 2)), HLSLPP_BLEND_MASK(1, 0, 0, 0)));
+}
+
+hlslpp_inline void _hlslpp_store4x4_ps(float* p, n128 x0, n128 x1, n128 x2, n128 x3)
+{
+	_mm_storeu_ps(p, x0);
+	_mm_storeu_ps(p + 4, x1);
+	_mm_storeu_ps(p + 8, x2);
+	_mm_storeu_ps(p + 12, x3);
+}
