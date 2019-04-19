@@ -362,10 +362,39 @@ hlslpp_inline bool _hlslpp_all4_ps(n128 x)
 // Storing
 //--------
 
-#define _hlslpp_store1_ps(p, x)					vst1q_lane_f32(p, x, 0)
-#define _hlslpp_store2_ps(p, x)					vst1_f32(p, vget_low_f32(x))
-#define _hlslpp_store3_ps(p, x)					vst1_f32(p, vget_low_f32(x)); vst1q_lane_f32(p, x, 2)
-#define _hlslpp_store4_ps(p, x)					vst1q_f32(p, x);
+hlslpp_inline void _hlslpp_store1_ps(float* p, n128 x)
+{
+	vst1q_lane_f32(p, x, 0);
+}
 
-#define _hlslpp_store3x3_ps(p, x0, x1, x2)		_hlslpp_store3_ps(p, x0); _hlslpp_store3_ps(p + 3, x1); _hlslpp_store3_ps(p + 5, x2)
-#define _hlslpp_store4x4_ps(p, x0, x1, x2, x3)	_hlslpp_store4_ps(p, x0); _hlslpp_store3_ps(p + 4, x1); _hlslpp_store3_ps(p + 8, x2); _hlslpp_store3_ps(p + 12, x2)
+hlslpp_inline void _hlslpp_store2_ps(float* p, n128 x)
+{
+	vst1_f32(p, vget_low_f32(x));
+}
+
+hlslpp_inline void _hlslpp_store3_ps(float* p, n128 x)
+{
+	vst1_f32(p, vget_low_f32(x));
+	vst1q_lane_f32(p + 2, x, 2);
+}
+
+hlslpp_inline void _hlslpp_store4_ps(float* p, n128 x)
+{
+	vst1q_f32(p, x);
+}
+
+hlslpp_inline void _hlslpp_store3x3_ps(float* p, n128 x0, n128 x1, n128 x2)
+{
+	vst1q_f32(p, x0);
+	vst1q_f32(p + 3, x1);
+	vst1_f32(p + 6, vget_low_f32(x2));
+	vst1q_lane_f32(p + 8, x2, 2);
+}
+
+hlslpp_inline void _hlslpp_store4x4_ps(float* p, n128 x0, n128 x1, n128 x2, n128 x3)
+{
+	vst1q_f32(p, x0);
+	vst1q_f32(p + 4, x1);
+	vst1q_f32(p + 8, x2);
+	vst1q_f32(p + 12, x3);
+}

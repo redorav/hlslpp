@@ -2235,6 +2235,24 @@ void RunUnitTests()
 		 -4.0f, -2.25f,   2.75f,   4.0f,
 		  1.0f,  0.75f,  -0.75f,  -1.0f);
 
+	// Storage
+
+	float mat_store_3x3[9];
+	float mat_store_4x4[16];
+
+	store(mat_foo_3x3, mat_store_3x3);
+	eq(mat_foo_3x3, 
+		mat_store_3x3[0], mat_store_3x3[1], mat_store_3x3[2], 
+		mat_store_3x3[3], mat_store_3x3[4], mat_store_3x3[5], 
+		mat_store_3x3[6], mat_store_3x3[7], mat_store_3x3[8]);
+
+	store(mat_foo_4x4, mat_store_4x4);
+	eq(mat_foo_4x4,
+		mat_store_4x4[ 0], mat_store_4x4[ 1], mat_store_4x4[ 2], mat_store_4x4[ 3],
+		mat_store_4x4[ 4], mat_store_4x4[ 5], mat_store_4x4[ 6], mat_store_4x4[ 7],
+		mat_store_4x4[ 8], mat_store_4x4[ 9], mat_store_4x4[10], mat_store_4x4[11],
+		mat_store_4x4[12], mat_store_4x4[13], mat_store_4x4[14], mat_store_4x4[15]);
+
 	// Quaternion tests
 
 	quaternion q1 = quaternion::identity();
