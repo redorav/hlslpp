@@ -619,8 +619,7 @@ namespace hlslpp
 #if !defined(_hlslpp_dot4_ps)
 
 	// Inspiration for some bits from https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-float-vector-sum-on-x86
-	// Can optimize further in SSE3 via Maskmovehdup_ps instead of _hlslpp_perm_yxwx_ps, but is slower in MSVC and
-	// only marginally faster on clang
+	// Can optimize further in SSE3 via _mm_movehdup_ps instead of _hlslpp_perm_yxwx_ps, but is slower in MSVC and marginally faster on clang
 	hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
 	{
 		// SSE3 slower
@@ -1620,6 +1619,36 @@ namespace hlslpp
 
 #if defined(HLSLPP_FLOAT64)
 
+	hlslpp_inline n128d _hlslpp_dot4_pd(n128d x0, n128d x1, n128d y0, n128d y1)
+	{
+		n128d multi0 = _hlslpp_mul_pd(x0, y0); // Multiply components
+		n128d multi1 = _hlslpp_mul_pd(x1, y1);
+
+		n128d shuf0 = _hlslpp_perm_yy_pd(multi0); // Shuffle y and w
+		n128d shuf1 = _hlslpp_perm_yy_pd(multi1);
+
+		n128d add0 = _hlslpp_add_pd(shuf0, multi0);  // Contains x+y, _
+		n128d add1 = _hlslpp_add_pd(shuf1, multi1);  // Contains z+w, _
+
+		return _hlslpp_add_pd(add0, add1);
+	}
+
+	inline n128d _hlslpp_dot3_pd(n128d x0, n128d x1, n128d y0, n128d y1)
+	{
+		n128d multi0 = _hlslpp_mul_pd(x0, y0); // Multiply components
+		n128d multi1 = _hlslpp_mul_pd(x1, y1);
+		n128d shuf0 = _hlslpp_perm_yy_pd(multi0); // Shuffle y and w
+		n128d add0 = _hlslpp_add_pd(shuf0, multi0);  // Contains x+y, _
+		return _hlslpp_add_pd(add0, multi1);
+	}
+
+	hlslpp_inline n128d _hlslpp_dot2_pd(n128d x, n128d y)
+	{
+		n128d multi = _hlslpp_mul_pd(x, y); // Multiply components
+		n128d shuf = _hlslpp_perm_yy_pd(multi); // Shuffle y
+		return _hlslpp_add_pd(multi, shuf);
+	}
+
 	//---------------------//
 	// Double swizzle type //
 	//---------------------//
@@ -2252,6 +2281,11 @@ namespace hlslpp
 	template<int X, int Y, int Z, int W> dswizzle4<X, Y, Z, W>& operator -= (dswizzle4<X, Y, Z, W>& s, const double4& f) { s = double4(s) - f; return s; }
 	template<int X, int Y, int Z, int W> dswizzle4<X, Y, Z, W>& operator *= (dswizzle4<X, Y, Z, W>& s, const double4& f) { s = double4(s) * f; return s; }
 	template<int X, int Y, int Z, int W> dswizzle4<X, Y, Z, W>& operator /= (dswizzle4<X, Y, Z, W>& s, const double4& f) { s = double4(s) / f; return s; }
+
+	double1 dot(const double1& f1, const double1& f2) { return f1 * f2; }
+	double1 dot(const double2& f1, const double2& f2) { return double1(_hlslpp_dot2_pd(f1.vec, f2.vec)); }
+	double1 dot(const double3& f1, const double3& f2) { return double1(_hlslpp_dot3_pd(f1.vec0, f1.vec1, f2.vec0, f2.vec1)); }
+	double1 dot(const double4& f1, const double4& f2) { return double1(_hlslpp_dot4_pd(f1.vec0, f1.vec1, f2.vec0, f2.vec1)); }
 
 	template<int X>
 	dswizzle1<X>& dswizzle1<X>::operator = (const double1& f)
@@ -4556,7 +4590,7 @@ namespace hlslpp
 
 	hlslpp_inline void store(const float1& v, float* f)
 	{
-		_hlslpp_store1_ps(f + 0, v.vec);
+		_hlslpp_store1_ps(f, v.vec);
 	}
 
 	hlslpp_inline void store(const float2& v, float* f)

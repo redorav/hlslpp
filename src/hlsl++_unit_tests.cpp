@@ -1429,15 +1429,15 @@ void RunUnitTests()
 	double4 dvadd_swiz_b_4 = dvfoo4.bgra + dvbar4.yxzw;						eq(dvadd_swiz_b_4, (double)dvfoo4.b + (double)dvbar4.y, (double)dvfoo4.g + (double)dvbar4.x, (double)dvfoo4.r + (double)dvbar4.z, (double)dvfoo4.a + (double)dvbar4.w);
 	double4 dvadd_swiz_c_4 = dvfoo4.bgra + dvbar4;							eq(dvadd_swiz_c_4, (double)dvfoo4.b + (double)dvbar4.x, (double)dvfoo4.g + (double)dvbar4.y, (double)dvfoo4.r + (double)dvbar4.z, (double)dvfoo4.a + (double)dvbar4.w);
 	
-	vadd_swiz_a_1 += vfoo1;
-	vadd_swiz_b_1 += vfoo1.x;
-	vadd_swiz_c_1.x += vfoo1;
-	vadd_swiz_c_1.r += vfoo1.r;
+	dvadd_swiz_a_1 += dvfoo1;
+	dvadd_swiz_b_1 += dvfoo1.x;
+	dvadd_swiz_c_1.x += dvfoo1;
+	dvadd_swiz_c_1.r += dvfoo1.r;
 	
-	vadd_swiz_a_2 += vfoo2;
-	vadd_swiz_b_2 += vfoo2.xy;
-	vadd_swiz_c_2.xy += vfoo2;
-	vadd_swiz_c_2.gr += vfoo2.rg;
+	dvadd_swiz_a_2 += dvfoo2;
+	dvadd_swiz_b_2 += dvfoo2.xy;
+	dvadd_swiz_c_2.xy += dvfoo2;
+	dvadd_swiz_c_2.gr += dvfoo2.rg;
 
 #endif
 
