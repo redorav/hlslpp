@@ -1619,7 +1619,7 @@ namespace hlslpp
 
 #if defined(HLSLPP_FLOAT64)
 
-	hlslpp_inline n128d _hlslpp_dot4_pd(n128d x0, n128d x1, n128d y0, n128d y1)
+	hlslpp_inline n128d _hlslpp_dot4_pd(const n128d& x0, const n128d& x1, const n128d& y0, const n128d& y1)
 	{
 		n128d multi0 = _hlslpp_mul_pd(x0, y0); // Multiply components
 		n128d multi1 = _hlslpp_mul_pd(x1, y1);
@@ -1633,7 +1633,7 @@ namespace hlslpp
 		return _hlslpp_add_pd(add0, add1);
 	}
 
-	inline n128d _hlslpp_dot3_pd(n128d x0, n128d x1, n128d y0, n128d y1)
+	hlslpp_inline n128d _hlslpp_dot3_pd(const n128d& x0, const n128d& x1, const n128d& y0, const n128d& y1)
 	{
 		n128d multi0 = _hlslpp_mul_pd(x0, y0); // Multiply components
 		n128d multi1 = _hlslpp_mul_pd(x1, y1);
