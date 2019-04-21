@@ -1033,7 +1033,6 @@ namespace hlslpp
 			n128 vec;
 			float f32[4];
 			#include "swizzle/hlsl++_vector_float_x.h"
-			#include "swizzle/hlsl++_vector_float_r.h"
 		};
 	};
 
@@ -1064,8 +1063,6 @@ namespace hlslpp
 			float f32[4];
 			#include "swizzle/hlsl++_vector_float_x.h"
 			#include "swizzle/hlsl++_vector_float_y.h"
-			#include "swizzle/hlsl++_vector_float_r.h"
-			#include "swizzle/hlsl++_vector_float_g.h"
 		};
 	};
 
@@ -1101,9 +1098,6 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_float_x.h"
 			#include "swizzle/hlsl++_vector_float_y.h"
 			#include "swizzle/hlsl++_vector_float_z.h"
-			#include "swizzle/hlsl++_vector_float_r.h"
-			#include "swizzle/hlsl++_vector_float_g.h"
-			#include "swizzle/hlsl++_vector_float_b.h"
 		};
 	};
 
@@ -1144,10 +1138,6 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_float_y.h"
 			#include "swizzle/hlsl++_vector_float_z.h"
 			#include "swizzle/hlsl++_vector_float_w.h"
-			#include "swizzle/hlsl++_vector_float_r.h"
-			#include "swizzle/hlsl++_vector_float_g.h"
-			#include "swizzle/hlsl++_vector_float_b.h"
-			#include "swizzle/hlsl++_vector_float_a.h"
 		};
 	};
 
@@ -1934,7 +1924,6 @@ namespace hlslpp
 			n128d vec;
 			double f64[2];
 			#include "swizzle/hlsl++_vector_double_x.h"
-			#include "swizzle/hlsl++_vector_double_r.h"
 		};
 	};
 
@@ -1965,8 +1954,6 @@ namespace hlslpp
 			double f64[2];
 			#include "swizzle/hlsl++_vector_double_x.h"
 			#include "swizzle/hlsl++_vector_double_y.h"
-			#include "swizzle/hlsl++_vector_double_r.h"
-			#include "swizzle/hlsl++_vector_double_g.h"
 		};
 	};
 
@@ -2022,10 +2009,7 @@ namespace hlslpp
 			double f64[4];
 			#include "swizzle/hlsl++_vector_double_x.h"
 			#include "swizzle/hlsl++_vector_double_y.h"
-			#include "swizzle/hlsl++_vector_double_r.h"
-			#include "swizzle/hlsl++_vector_double_g.h"
 			#include "swizzle/hlsl++_vector_double_z.h"
-			#include "swizzle/hlsl++_vector_double_b.h"
 		};
 	};
 
@@ -2104,12 +2088,8 @@ namespace hlslpp
 			double f64[4];
 			#include "swizzle/hlsl++_vector_double_x.h"
 			#include "swizzle/hlsl++_vector_double_y.h"
-			#include "swizzle/hlsl++_vector_double_r.h"
-			#include "swizzle/hlsl++_vector_double_g.h"
 			#include "swizzle/hlsl++_vector_double_z.h"
 			#include "swizzle/hlsl++_vector_double_w.h"
-			#include "swizzle/hlsl++_vector_double_b.h"
-			#include "swizzle/hlsl++_vector_double_a.h"
 		};
 	};
 
@@ -2564,7 +2544,6 @@ namespace hlslpp
 			n128i vec;
 			int32_t i32[4];
 			#include "swizzle/hlsl++_vector_int_x.h"
-			#include "swizzle/hlsl++_vector_int_r.h"
 		};
 	};
 
@@ -2593,8 +2572,6 @@ namespace hlslpp
 			int32_t i32[4];
 			#include "swizzle/hlsl++_vector_int_x.h"
 			#include "swizzle/hlsl++_vector_int_y.h"
-			#include "swizzle/hlsl++_vector_int_r.h"
-			#include "swizzle/hlsl++_vector_int_g.h"
 		};
 	};
 
@@ -2628,9 +2605,6 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_int_x.h"
 			#include "swizzle/hlsl++_vector_int_y.h"
 			#include "swizzle/hlsl++_vector_int_z.h"
-			#include "swizzle/hlsl++_vector_int_r.h"
-			#include "swizzle/hlsl++_vector_int_g.h"
-			#include "swizzle/hlsl++_vector_int_b.h"
 		};
 	};
 
@@ -2671,10 +2645,6 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_int_y.h"
 			#include "swizzle/hlsl++_vector_int_z.h"
 			#include "swizzle/hlsl++_vector_int_w.h"
-			#include "swizzle/hlsl++_vector_int_r.h"
-			#include "swizzle/hlsl++_vector_int_g.h"
-			#include "swizzle/hlsl++_vector_int_b.h"
-			#include "swizzle/hlsl++_vector_int_a.h"
 		};
 	};
 
