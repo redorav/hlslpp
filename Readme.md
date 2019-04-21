@@ -40,7 +40,7 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 
 ## How to use
 
-Simply include hlsl++.h in your project and add an include path to the src directory.
+#include hlsl++.h in your project and add an include path to the directory where it lives. hlsl++.h pulls in other headers that live in the same folder.
 
 ## Features
 

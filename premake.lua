@@ -25,6 +25,7 @@ AndroidProject = "hlsl++_android"
 
 -- Directories
 srcDir = "src"
+includeDir = "include"
 
 workspace("hlsl++")
 	configurations { "Debug", "Release" }
@@ -32,7 +33,7 @@ workspace("hlsl++")
 	
 	includedirs
 	{
-		srcDir,
+		includeDir,
 	}
 	
 	vectorextensions ("sse4.1")
@@ -130,8 +131,9 @@ project ("hlsl++")
 	language("c++")
 	files
 	{
-		srcDir.."/**.h",
-		srcDir.."/hlsl++.cpp"
+		srcDir.."/hlsl++.cpp",
+		includeDir.."/**.h",
+		includeDir.."/*.natvis"
 	}
 	
 project (UnitTestProject)
@@ -139,8 +141,7 @@ project (UnitTestProject)
 	--links { "hlsl++" }
 	files
 	{
-		srcDir.."/hlsl++_unit_tests.cpp",
-		srcDir.."/**.natvis"
+		srcDir.."/hlsl++_unit_tests.cpp"
 	}
 	
 	filter { "platforms:"..PlatformAndroidARM }
