@@ -164,6 +164,11 @@ namespace hlslpp_unit
 		return a / b;
 	}
 
+	double div(double a, double b)
+	{
+		return a / b;
+	}
+
 	void eq(bool a, bool c)
 	{
 		bool equals = a == c;
@@ -1438,6 +1443,151 @@ void RunUnitTests()
 	dvadd_swiz_b_2 += dvfoo2.xy;
 	dvadd_swiz_c_2.xy += dvfoo2;
 	dvadd_swiz_c_2.gr += dvfoo2.rg;
+
+	// Subtraction
+
+	double1 dvsub1 = dvfoo1 - dvbar1;	eq(dvsub1, (double)dvfoo1.x - (double)dvbar1.x);
+	double2 dvsub2 = dvfoo2 - dvbar2;	eq(dvsub2, (double)dvfoo2.x - (double)dvbar2.x, (double)dvfoo2.y - (double)dvbar2.y);
+	double3 dvsub3 = dvfoo3 - dvbar3;	eq(dvsub3, (double)dvfoo3.x - (double)dvbar3.x, (double)dvfoo3.y - (double)dvbar3.y, (double)dvfoo3.z - (double)dvbar3.z);
+	double4 dvsub4 = dvfoo4 - dvbar4;	eq(dvsub4, (double)dvfoo4.x - (double)dvbar4.x, (double)dvfoo4.y - (double)dvbar4.y, (double)dvfoo4.z - (double)dvbar4.z, (double)dvfoo4.w - (double)dvbar4.w);
+
+	double1 dvsub_f_1 = dvfoo1 - 0.1;	eq(dvsub_f_1, (double)dvfoo1.x - 0.1);
+	double2 dvsub_f_2 = dvfoo2 - 0.2;	eq(dvsub_f_2, (double)dvfoo2.x - 0.2, (double)dvfoo2.y - 0.2);
+	double3 dvsub_f_3 = dvfoo3 - 0.3;	eq(dvsub_f_3, (double)dvfoo3.x - 0.3, (double)dvfoo3.y - 0.3, (double)dvfoo3.z - 0.3);
+	double4 dvsub_f_4 = dvfoo4 - 0.4;	eq(dvsub_f_4, (double)dvfoo4.x - 0.4, (double)dvfoo4.y - 0.4, (double)dvfoo4.z - 0.4, (double)dvfoo4.w - 0.4);
+
+	dvsub_f_1 -= 0.1;	eq(dvsub_f_1, (double)dvfoo1.x - 0.1 - 0.1);
+	dvsub_f_2 -= 0.2;	eq(dvsub_f_2, (double)dvfoo2.x - 0.2 - 0.2, (double)dvfoo2.y - 0.2 - 0.2);
+	dvsub_f_3 -= 0.3;	eq(dvsub_f_3, (double)dvfoo3.x - 0.3 - 0.3, (double)dvfoo3.y - 0.3 - 0.3, (double)dvfoo3.z - 0.3 - 0.3);
+	dvsub_f_4 -= 0.4;	eq(dvsub_f_4, (double)dvfoo4.x - 0.4 - 0.4, (double)dvfoo4.y - 0.4 - 0.4, (double)dvfoo4.z - 0.4 - 0.4, (double)dvfoo4.w - 0.4 - 0.4);
+
+	double1 dvsub_swiz_a_1 = dvfoo1 - dvbar1.x;		eq(dvsub_swiz_a_1, (double)dvfoo1 - (double)dvbar1.x);
+	double1 dvsub_swiz_b_1 = dvfoo1.r - dvbar1.x;	eq(dvsub_swiz_b_1, (double)dvfoo1.r - (double)dvbar1.x);
+	double1 dvsub_swiz_c_1 = dvfoo1.r - dvbar1;		eq(dvsub_swiz_c_1, (double)dvfoo1.r - (double)dvbar1);
+	dvsub_swiz_c_1.r = dvfoo4.r - dvbar4.r;
+
+	double2 dvsub_swiz_a_2 = dvfoo2 - dvbar2.yx;	eq(dvsub_swiz_a_2, (double)dvfoo2.x - (double)dvbar2.y, (double)dvfoo2.y - (double)dvbar2.x);
+	double2 dvsub_swiz_b_2 = dvfoo2.gr - dvbar2.yx;	eq(dvsub_swiz_b_2, (double)dvfoo2.g - (double)dvbar2.y, (double)dvfoo2.r - (double)dvbar2.x);
+	double2 dvsub_swiz_c_2 = dvfoo2.rg - dvbar2;	eq(dvsub_swiz_c_2, (double)dvfoo2.r - (double)dvbar2.x, (double)dvfoo2.g - (double)dvbar2.y);
+	dvsub_swiz_c_2.gr = dvfoo4.rg - dvbar4.gr;
+
+	double3 dvsub_swiz_a_3 = dvfoo3 - dvbar3.yxz;		eq(dvsub_swiz_a_3, (double)dvfoo3.x - (double)dvbar3.y, (double)dvfoo3.y - (double)dvbar3.x, (double)dvfoo3.z - (double)dvbar3.z);
+	double3 dvsub_swiz_b_3 = dvfoo3.bgr - dvbar3.xyz;	eq(dvsub_swiz_b_3, (double)dvfoo3.b - (double)dvbar3.x, (double)dvfoo3.g - (double)dvbar3.y, (double)dvfoo3.r - (double)dvbar3.z);
+	double3 dvsub_swiz_c_3 = dvfoo3.bgr - dvbar3;		eq(dvsub_swiz_c_3, (double)dvfoo3.b - (double)dvbar3.x, (double)dvfoo3.g - (double)dvbar3.y, (double)dvfoo3.r - (double)dvbar3.z);
+	dvsub_swiz_c_3.bgr = dvfoo4.grb - dvbar4.gbr;
+
+	double4 dvsub_swiz_a_4 = dvfoo4 - dvbar4.yxzw;			eq(dvsub_swiz_a_4, (double)dvfoo4.x - (double)dvbar4.y, (double)dvfoo4.y - (double)dvbar4.x, (double)dvfoo4.z - (double)dvbar4.z, (double)dvfoo4.w - (double)dvbar4.w);
+	double4 dvsub_swiz_b_4 = dvfoo4.bgra - dvbar4.yxzw;		eq(dvsub_swiz_b_4, (double)dvfoo4.b - (double)dvbar4.y, (double)dvfoo4.g - (double)dvbar4.x, (double)dvfoo4.r - (double)dvbar4.z, (double)dvfoo4.a - (double)dvbar4.w);
+	double4 dvsub_swiz_c_4 = dvfoo4.bgra - dvbar4;			eq(dvsub_swiz_c_4, (double)dvfoo4.b - (double)dvbar4.x, (double)dvfoo4.g - (double)dvbar4.y, (double)dvfoo4.r - (double)dvbar4.z, (double)dvfoo4.a - (double)dvbar4.w);
+	dvsub_swiz_c_4.bgra = dvfoo4.argb - dvbar4.ggbr;
+
+	dvadd_swiz_a_1 -= dvfoo1;
+	dvadd_swiz_b_1 -= dvfoo1.x;
+	dvadd_swiz_c_1.x -= dvfoo1;
+	dvadd_swiz_c_1.r -= dvfoo1.r;
+
+	dvsub_swiz_a_2 -= dvfoo2;
+	dvsub_swiz_b_2 -= dvfoo2.xy;
+	dvsub_swiz_c_2.xy -= dvfoo2;
+	dvsub_swiz_c_2.gr -= dvfoo2.rg;
+
+	// Multiplication
+
+	double1 dvmul1 = dvfoo1 * dvbar1;	eq(dvmul1, (double)dvfoo1.x * (double)dvbar1.x);
+	double2 dvmul2 = dvfoo2 * dvbar2;	eq(dvmul2, (double)dvfoo2.x * (double)dvbar2.x, (double)dvfoo2.y * (double)dvbar2.y);
+	double3 dvmul3 = dvfoo3 * dvbar3;	eq(dvmul3, (double)dvfoo3.x * (double)dvbar3.x, (double)dvfoo3.y * (double)dvbar3.y, (double)dvfoo3.z * (double)dvbar3.z);
+	double4 dvmul4 = dvfoo4 * dvbar4;	eq(dvmul4, (double)dvfoo4.x * (double)dvbar4.x, (double)dvfoo4.y * (double)dvbar4.y, (double)dvfoo4.z * (double)dvbar4.z, (double)dvfoo4.w * (double)dvbar4.w);
+
+	double1 dvmul_f_1 = dvfoo1 * 0.1;	eq(dvmul_f_1, (double)dvfoo1.x * 0.1);
+	double2 dvmul_f_2 = dvfoo2 * 0.2;	eq(dvmul_f_2, (double)dvfoo2.x * 0.2, (double)dvfoo2.y * 0.2);
+	double3 dvmul_f_3 = dvfoo3 * 0.3;	eq(dvmul_f_3, (double)dvfoo3.x * 0.3, (double)dvfoo3.y * 0.3, (double)dvfoo3.z * 0.3);
+	double4 dvmul_f_4 = dvfoo4 * 0.4;	eq(dvmul_f_4, (double)dvfoo4.x * 0.4, (double)dvfoo4.y * 0.4, (double)dvfoo4.z * 0.4, (double)dvfoo4.w * 0.4);
+
+	dvmul_f_1 *= 0.1;	eq(dvmul_f_1, (double)dvfoo1.x * 0.1 * 0.1);
+	dvmul_f_2 *= 0.2;	eq(dvmul_f_2, (double)dvfoo2.x * 0.2 * 0.2, (double)dvfoo2.y * 0.2 * 0.2);
+	dvmul_f_3 *= 0.3;	eq(dvmul_f_3, (double)dvfoo3.x * 0.3 * 0.3, (double)dvfoo3.y * 0.3 * 0.3, (double)dvfoo3.z * 0.3 * 0.3);
+	dvmul_f_4 *= 0.4;	eq(dvmul_f_4, (double)dvfoo4.x * 0.4 * 0.4, (double)dvfoo4.y * 0.4 * 0.4, (double)dvfoo4.z * 0.4 * 0.4, (double)dvfoo4.w * 0.4 * 0.4);
+
+	double1 dvmul_swiz_a_1 = dvfoo1 * dvbar1.x;		eq(dvmul_swiz_a_1, (double)dvfoo1 * (double)dvbar1.x);
+	double1 dvmul_swiz_b_1 = dvfoo1.r * dvbar1.x;	eq(dvmul_swiz_b_1, (double)dvfoo1.r * (double)dvbar1.x);
+	double1 dvmul_swiz_c_1 = dvfoo1.r * dvbar1;		eq(dvmul_swiz_c_1, (double)dvfoo1.r * (double)dvbar1);
+
+	double2 dvmul_swiz_a_2 = dvfoo2 * dvbar2.yx;	eq(dvmul_swiz_a_2, (double)dvfoo2.x * (double)dvbar2.y, (double)dvfoo2.y * (double)dvbar2.x);
+	double2 dvmul_swiz_b_2 = dvfoo2.gr * dvbar2.yx;	eq(dvmul_swiz_b_2, (double)dvfoo2.g * (double)dvbar2.y, (double)dvfoo2.r * (double)dvbar2.x);
+	double2 dvmul_swiz_c_2 = dvfoo2.rg * dvbar2;	eq(dvmul_swiz_c_2, (double)dvfoo2.r * (double)dvbar2.x, (double)dvfoo2.g * (double)dvbar2.y);
+
+	double3 dvmul_swiz_a_3 = dvfoo3 * dvbar3.yxz;		eq(dvmul_swiz_a_3, (double)dvfoo3.x * (double)dvbar3.y, (double)dvfoo3.y * (double)dvbar3.x, (double)dvfoo3.z * (double)dvbar3.z);
+	double3 dvmul_swiz_b_3 = dvfoo3.rgb * dvbar3.xyz;	eq(dvmul_swiz_b_3, (double)dvfoo3.r * (double)dvbar3.x, (double)dvfoo3.g * (double)dvbar3.y, (double)dvfoo3.b * (double)dvbar3.z);
+	double3 dvmul_swiz_c_3 = dvfoo3.bgr * dvbar3;		eq(dvmul_swiz_c_3, (double)dvfoo3.b * (double)dvbar3.x, (double)dvfoo3.g * (double)dvbar3.y, (double)dvfoo3.r * (double)dvbar3.z);
+
+	double4 dvmul_swiz_b_4 = dvfoo4.bgra * dvbar4.yxzw;	eq(dvmul_swiz_b_4, (double)dvfoo4.b * (double)dvbar4.y, (double)dvfoo4.g * (double)dvbar4.x, (double)dvfoo4.r * (double)dvbar4.z, (double)dvfoo4.a * (double)dvbar4.w);
+	double4 dvmul_swiz_c_4 = dvfoo4.bgra * dvbar4;		eq(dvmul_swiz_c_4, (double)dvfoo4.b * (double)dvbar4.x, (double)dvfoo4.g * (double)dvbar4.y, (double)dvfoo4.r * (double)dvbar4.z, (double)dvfoo4.a * (double)dvbar4.w);
+	double4 dvmul_swiz_a_4 = dvfoo4 * dvbar4.yxzw;		eq(dvmul_swiz_a_4, (double)dvfoo4.x * (double)dvbar4.y, (double)dvfoo4.y * (double)dvbar4.x, (double)dvfoo4.z * (double)dvbar4.z, (double)dvfoo4.w * (double)dvbar4.w);
+
+	dvmul_swiz_a_2 *= dvfoo2;
+	dvmul_swiz_b_2 *= dvfoo2.xy;
+	dvmul_swiz_c_2.xy *= dvfoo2;
+	dvmul_swiz_c_2.gr *= dvfoo2.rg;
+
+	// Division
+
+	double dtolDiv = 1e-2;
+
+	double1 dvdiv1 = dvfoo1 / dvbar1;	eq(dvdiv1, div(dvfoo1.x, dvbar1.x), dtolDiv);
+	double2 dvdiv2 = dvfoo2 / dvbar2;	eq(dvdiv2, div(dvfoo2.x, dvbar2.x), div(dvfoo2.y, dvbar2.y), dtolDiv);
+	double3 dvdiv3 = dvfoo3 / dvbar3;	eq(dvdiv3, div(dvfoo3.x, dvbar3.x), div(dvfoo3.y, dvbar3.y), div(dvfoo3.z, dvbar3.z), dtolDiv);
+	double4 dvdiv4 = dvfoo4 / dvbar4;	eq(dvdiv4, div(dvfoo4.x, dvbar4.x), div(dvfoo4.y, dvbar4.y), div(dvfoo4.z, dvbar4.z), div(dvfoo4.w, dvbar4.w), dtolDiv);
+
+	double1 dvdiv_f_1 = dvfoo1 / 0.1;	eq(dvdiv_f_1, div(dvfoo1.x, 0.1), dtolDiv);
+	double2 dvdiv_f_2 = dvfoo2 / 0.2;	eq(dvdiv_f_2, div(dvfoo2.x, 0.2), div(dvfoo2.y, 0.2), dtolDiv);
+	double3 dvdiv_f_3 = dvfoo3 / 0.3;	eq(dvdiv_f_3, div(dvfoo3.x, 0.3), div(dvfoo3.y, 0.3), div(dvfoo3.z, 0.3), dtolDiv);
+	double4 dvdiv_f_4 = dvfoo4 / 0.4;	eq(dvdiv_f_4, div(dvfoo4.x, 0.4), div(dvfoo4.y, 0.4), div(dvfoo4.z, 0.4), div(dvfoo4.w, 0.4), dtolDiv);
+
+	dvdiv_f_1 /= 0.1;	eq(dvdiv_f_1, div(div(dvfoo1.x, 0.1), 0.1), dtolDiv);
+	dvdiv_f_2 /= 0.2;	eq(dvdiv_f_2, div(div(dvfoo2.x, 0.2), 0.2), div(div(dvfoo2.y, 0.2), 0.2), dtolDiv);
+	dvdiv_f_3 /= 0.3;	eq(dvdiv_f_3, div(div(dvfoo3.x, 0.3), 0.3), div(div(dvfoo3.y, 0.3), 0.3), div(div(dvfoo3.z, 0.3), 0.3), dtolDiv);
+	dvdiv_f_4 /= 0.4;	eq(dvdiv_f_4, div(div(dvfoo4.x, 0.4), 0.4), div(div(dvfoo4.y, 0.4), 0.4), div(div(dvfoo4.z, 0.4), 0.4), div(div(dvfoo4.w, 0.4), 0.4), dtolDiv);
+
+	double1 dvdiv_swiz_a_1 = dvfoo1 / dvbar1.x;		eq(dvdiv_swiz_a_1, div(dvfoo1.x, dvbar1.x), dtolDiv);
+	double1 dvdiv_swiz_b_1 = dvfoo1.r / dvbar1.x;	eq(dvdiv_swiz_b_1, div(dvfoo1.r, dvbar1.x), dtolDiv);
+	double1 dvdiv_swiz_c_1 = dvfoo1.r / dvbar1;		eq(dvdiv_swiz_c_1, div(dvfoo1.r, dvbar1), dtolDiv);
+
+	double2 dvdiv_swiz_a_2 = dvfoo2 / dvbar2.yx;	eq(dvdiv_swiz_a_2, div(dvfoo2.x, dvbar2.y), div(dvfoo2.y, dvbar2.x), dtolDiv);
+	double2 dvdiv_swiz_b_2 = dvfoo2.gr / dvbar2.yx;	eq(dvdiv_swiz_b_2, div(dvfoo2.g, dvbar2.y), div(dvfoo2.r, dvbar2.x), dtolDiv);
+	double2 dvdiv_swiz_c_2 = dvfoo2.rg / dvbar2;	eq(dvdiv_swiz_c_2, div(dvfoo2.r, dvbar2.x), div(dvfoo2.g, dvbar2.y), dtolDiv);
+
+	double3 dvdiv_swiz_a_3 = dvfoo3 / dvbar3.yxz;		eq(dvdiv_swiz_a_3, div(dvfoo3.x, dvbar3.y), div(dvfoo3.y, dvbar3.x), div(dvfoo3.z, dvbar3.z), dtolDiv);
+	double3 dvdiv_swiz_b_3 = dvfoo3.rgb / dvbar3.xyz;	eq(dvdiv_swiz_b_3, div(dvfoo3.r, dvbar3.x), div(dvfoo3.g, dvbar3.y), div(dvfoo3.b, dvbar3.z), dtolDiv);
+	double3 dvdiv_swiz_c_3 = dvfoo3.bgr / dvbar3;		eq(dvdiv_swiz_c_3, div(dvfoo3.b, dvbar3.x), div(dvfoo3.g, dvbar3.y), div(dvfoo3.r, dvbar3.z), dtolDiv);
+
+	double4 dvdiv_swiz_a_4 = dvfoo4 / dvbar4.yxzw;		eq(dvdiv_swiz_a_4, div(dvfoo4.x, dvbar4.y), div(dvfoo4.y, dvbar4.x), div(dvfoo4.z, dvbar4.z), div(dvfoo4.w, dvbar4.w), dtolDiv);
+	double4 dvdiv_swiz_b_4 = dvfoo4.bgra / dvbar4.yxzw;	eq(dvdiv_swiz_b_4, div(dvfoo4.b, dvbar4.y), div(dvfoo4.g, dvbar4.x), div(dvfoo4.r, dvbar4.z), div(dvfoo4.a, dvbar4.w), dtolDiv);
+	double4 dvdiv_swiz_c_4 = dvfoo4.bgar / dvbar4;		eq(dvdiv_swiz_c_4, div(dvfoo4.b, dvbar4.x), div(dvfoo4.g, dvbar4.y), div(dvfoo4.a, dvbar4.z), div(dvfoo4.r, dvbar4.w), dtolDiv);
+
+	dvdiv_swiz_a_2 /= dvfoo2;
+	dvdiv_swiz_b_2 /= dvfoo2.xy;
+	dvdiv_swiz_c_2.xy /= dvfoo2;
+	dvdiv_swiz_c_2.gr /= dvfoo2.rg;
+
+	bool dvall1 = all(dvfoo1);	eq(dvall1, dvfoo1.x != 0.0);
+	bool dvall2 = all(dvfoo2);	eq(dvall2, dvfoo2.x != 0.0 && dvfoo2.y != 0.0);
+	bool dvall3 = all(dvfoo3);	eq(dvall3, dvfoo3.x != 0.0 && dvfoo3.y != 0.0 && dvfoo3.z != 0.0);
+	bool dvall4 = all(dvfoo4);	eq(dvall4, dvfoo4.x != 0.0 && dvfoo4.y != 0.0 && dvfoo4.z != 0.0 && dvfoo4.w != 0.0);
+
+	bool dvall_swiz_1 = all(dvfoo1.r);		eq(dvall_swiz_1, dvfoo1.r != 0.0);
+	bool dvall_swiz_2 = all(dvfoo2.yx);		eq(dvall_swiz_2, dvfoo2.y != 0.0 && dvfoo2.x != 0.0);
+	bool dvall_swiz_3 = all(dvfoo3.bgr);	eq(dvall_swiz_3, dvfoo3.b != 0.0 && dvfoo3.g != 0.0 && dvfoo3.r != 0.0);
+	bool dvall_swiz_4 = all(dvfoo4.wwww);	eq(dvall_swiz_4, dvfoo4.w != 0.0 && dvfoo4.w != 0.0 && dvfoo4.w != 0.0 && dvfoo4.w != 0.0);
+
+	bool dvany1 = any(dvfoo1);				eq(dvany1, dvfoo1.x != 0.0);
+	bool dvany2 = any(dvfoo2);				eq(dvany2, dvfoo2.x != 0.0 || dvfoo2.y != 0.0);
+	bool dvany3 = any(dvfoo3);				eq(dvany3, dvfoo3.x != 0.0 || dvfoo3.y != 0.0 || dvfoo3.z != 0.0);
+	bool dvany4 = any(dvfoo4);				eq(dvany4, dvfoo4.x != 0.0 || dvfoo4.y != 0.0 || dvfoo4.z != 0.0 || dvfoo4.w != 0.0);
+
+	bool dvany_swiz_1 = any(dvfoo1.r);		eq(dvany_swiz_1, dvfoo1.x != 0.0);
+	bool dvany_swiz_2 = any(dvfoo2.yx);		eq(dvany_swiz_2, dvfoo2.y != 0.0 || dvfoo2.x != 0.0);
+	bool dvany_swiz_3 = any(dvfoo3.bgr);	eq(dvany_swiz_3, dvfoo3.b != 0.0 || dvfoo3.g != 0.0 || dvfoo3.r != 0.0);
+	bool dvany_swiz_4 = any(dvfoo4.wwww);	eq(dvany_swiz_4, dvfoo4.w != 0.0 || dvfoo4.w != 0.0 || dvfoo4.w != 0.0 || vfoo4.w != 0.0);
 
 #endif
 

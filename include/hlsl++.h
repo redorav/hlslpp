@@ -1676,7 +1676,7 @@ namespace hlslpp
 
 		dswizzle1& operator = (double f)
 		{
-			vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], _hlslpp_set1_pd(f), HLSLPP_COMPONENT_X(X));
+			vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], _hlslpp_set1_pd(f), HLSLPP_COMPONENT_X(X % 2));
 			return *this;
 		}
 
@@ -1684,7 +1684,7 @@ namespace hlslpp
 		dswizzle1& operator = (const dswizzle1<A>& s) // Revise this function. Can I not do with swizzle?
 		{
 			n128d t = _hlslpp_shuffle_pd(s.vec[A / 2], s.vec[A / 2], HLSLPP_SHUFFLE_MASK_PD(A, A));
-			vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], t, HLSLPP_COMPONENT_X(X));
+			vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], t, HLSLPP_COMPONENT_X(X % 2));
 			return *this;
 		}
 
@@ -2261,6 +2261,16 @@ namespace hlslpp
 	template<int X, int Y, int Z, int W> dswizzle4<X, Y, Z, W>& operator -= (dswizzle4<X, Y, Z, W>& s, const double4& f) { s = double4(s) - f; return s; }
 	template<int X, int Y, int Z, int W> dswizzle4<X, Y, Z, W>& operator *= (dswizzle4<X, Y, Z, W>& s, const double4& f) { s = double4(s) * f; return s; }
 	template<int X, int Y, int Z, int W> dswizzle4<X, Y, Z, W>& operator /= (dswizzle4<X, Y, Z, W>& s, const double4& f) { s = double4(s) / f; return s; }
+
+	hlslpp_inline bool all(const double1& f) { return _hlslpp_all1_pd(f.vec); }
+	hlslpp_inline bool all(const double2& f) { return _hlslpp_all2_pd(f.vec); }
+	hlslpp_inline bool all(const double3& f) { return _hlslpp_all3_pd(f.vec0, f.vec1); }
+	hlslpp_inline bool all(const double4& f) { return _hlslpp_all4_pd(f.vec0, f.vec1); }
+	
+	hlslpp_inline bool any(const double1& f) { return _hlslpp_any1_pd(f.vec); }
+	hlslpp_inline bool any(const double2& f) { return _hlslpp_any2_pd(f.vec); }
+	hlslpp_inline bool any(const double3& f) { return _hlslpp_any3_pd(f.vec0, f.vec1); }
+	hlslpp_inline bool any(const double4& f) { return _hlslpp_any4_pd(f.vec0, f.vec1); }
 
 	double1 dot(const double1& f1, const double1& f2) { return f1 * f2; }
 	double1 dot(const double2& f1, const double2& f2) { return double1(_hlslpp_dot2_pd(f1.vec, f2.vec)); }
@@ -3304,9 +3314,6 @@ namespace hlslpp
 	//-----------------
 	// Matrix functions
 	//-----------------
-
-	// For matrices, use SFINAE with dummy template parameters to reduce code repetition and enforce conditions to make sure templates aren't ambiguous
-	// (e.g. a template for <1, N> and a template for <M, 2>)
 
 	hlslpp_inline n128 _hlslpp_transpose_2x2_ps(n128 m)
 	{

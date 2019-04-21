@@ -138,81 +138,88 @@ typedef __m256i n256i;
 
 #define _hlslpp_blend_ps(x, y, mask)			_mm_blend_ps((x), (y), (mask))
 
-//-------
-// Double
-//-------
+hlslpp_inline bool _hlslpp_any1_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x1) != 0x1;
+}
 
-#define _hlslpp_set1_pd(x)						_mm_set1_pd((x))
-#define _hlslpp_set_pd(x, y)					_mm_set_pd((y), (x))
-#define _hlslpp_setzero_pd()					_mm_setzero_pd()
+hlslpp_inline bool _hlslpp_any2_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x3) != 0x3;
+}
 
-#define _hlslpp_add_pd(x, y)					_mm_add_pd((x), (y))
-#define _hlslpp_sub_pd(x, y)					_mm_sub_pd((x), (y))
-#define _hlslpp_mul_pd(x, y)					_mm_mul_pd((x), (y))
-#define _hlslpp_div_pd(x, y)					_mm_div_pd((x), (y))
+hlslpp_inline bool _hlslpp_any3_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x7) != 0x7;
+}
 
-#define _hlslpp_rcp_pd(x)						_mm_div_pd(d4_1, (x))
+hlslpp_inline bool _hlslpp_any4_ps(n128 x)
+{
+	return _mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) != 0xf;
+}
 
-#define _hlslpp_neg_pd(x)						_mm_xor_pd((x), d4negativeMask)
+hlslpp_inline bool _hlslpp_all1_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x1) == 0;
+}
 
-#if defined(__FMA__)
+hlslpp_inline bool _hlslpp_all2_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x3) == 0;
+}
 
-#define _hlslpp_madd_pd(x, y, z)				_mm_fmadd_pd((x), (y), (z))
-#define _hlslpp_msub_pd(x, y, z)				_mm_fmsub_pd((x), (y), (z))
-#define _hlslpp_subm_pd(x, y, z)				_mm_fnmadd_pd((x), (y), (z)))
+hlslpp_inline bool _hlslpp_all3_ps(n128 x)
+{
+	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x7) == 0;
+}
 
-#else
+hlslpp_inline bool _hlslpp_all4_ps(n128 x)
+{
+	return _mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) == 0;
+}
 
-#define _hlslpp_madd_pd(x, y, z)				_mm_add_pd(_mm_mul_pd((x), (y)), (z))
-#define _hlslpp_msub_pd(x, y, z)				_mm_sub_pd(_mm_mul_pd((x), (y)), (z))
-#define _hlslpp_subm_pd(x, y, z)				_mm_sub_pd((x), _mm_mul_pd((y), (z)))
+//-----------------
+// Float Store/Load
+//-----------------
 
-#endif
+hlslpp_inline void _hlslpp_store1_ps(float* p, n128 x)
+{
+	_mm_store_ss(p, x);
+}
 
-// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
-#define _hlslpp_abs_pd(x)						_mm_and_pd(d4absMask, (x))
+hlslpp_inline void _hlslpp_store2_ps(float* p, n128 x)
+{
+	_mm_store_ss(p, x);
+	_mm_store_ss(p + 1, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(1, 1, 1, 1)));
+}
 
-#define _hlslpp_sqrt_pd(x)						_mm_sqrt_pd((x))
-#define _hlslpp_rsqrt_pd(x)						_mm_div_pd(d4_1, _mm_sqrt_pd((x)))
+hlslpp_inline void _hlslpp_store3_ps(float* p, n128 x)
+{
+	_mm_store_ss(p, x);
+	_mm_store_ss(p + 1, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(1, 1, 1, 1)));
+	_mm_store_ss(p + 2, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2)));
+}
 
-#define _hlslpp_cmpeq_pd(x, y)					_mm_cmpeq_pd((x), (y))
-#define _hlslpp_cmpneq_pd(x, y)					_mm_cmpneq_pd((x), (y))
+hlslpp_inline void _hlslpp_store4_ps(float* p, n128 x)
+{
+	_mm_storeu_ps(p, x);
+}
 
-#define _hlslpp_cmpgt_pd(x, y)					_mm_cmpgt_pd((x), (y))
-#define _hlslpp_cmpge_pd(x, y)					_mm_cmpge_pd((x), (y))
+// Store first 3, store second 3, store last 3, stomping one of the previous values but making sure it's the same
+hlslpp_inline void _hlslpp_store3x3_ps(float* p, n128 x0, n128 x1, n128 x2)
+{
+	_mm_storeu_ps(p, x0);
+	_mm_storeu_ps(p + 3, x1);
+	_mm_storeu_ps(p + 5, _hlslpp_blend_ps(_hlslpp_perm_ps(x1, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2)), _hlslpp_perm_ps(x2, HLSLPP_SHUFFLE_MASK(3, 0, 1, 2)), HLSLPP_BLEND_MASK(1, 0, 0, 0)));
+}
 
-#define _hlslpp_cmplt_pd(x, y)					_mm_cmplt_pd((x), (y))
-#define _hlslpp_cmple_pd(x, y)					_mm_cmple_pd((x), (y))
-
-#define _hlslpp_max_pd(x, y)					_mm_max_pd((x), (y))
-#define _hlslpp_min_pd(x, y)					_mm_min_pd((x), (y))
-
-#define _hlslpp_trunc_pd(x)						_mm_round_pd((x), _MM_FROUND_TRUNC)
-#define _hlslpp_floor_pd(x)						_mm_floor_pd((x))
-#define _hlslpp_ceil_pd(x)						_mm_ceil_pd((x))
-
-// _MM_FROUND_TO_NEAREST_INT to match fxc behavior
-#define _hlslpp_round_pd(x)						_mm_round_pd((x), _MM_FROUND_TO_NEAREST_INT)
-
-#define _hlslpp_frac_pd(x)						_mm_sub_pd((x), _mm_floor_pd(x))
-
-#define _hlslpp_clamp_pd(x, minx, maxx)			_mm_max_pd(_mm_min_pd((x), (maxx)), (minx))
-#define _hlslpp_sat_pd(x)						_mm_max_pd(_mm_min_pd((x), d4_1), d4_0)
-
-#define _hlslpp_and_pd(x, y)					_mm_and_pd((x), (y))
-#define _hlslpp_andnot_pd(x, y)					_mm_andnot_pd((x), (y))
-#define _hlslpp_or_pd(x, y)						_mm_or_pd((x), (y))
-#define _hlslpp_xor_pd(x, y)					_mm_xor_pd((x), (y))
-
-#define _hlslpp_perm_pd(x, mask)				_mm_shuffle_pd((x), (x), (mask))
-#define _hlslpp_shuffle_pd(x, y, mask)			_mm_shuffle_pd((x), (y), (mask))
-
-// SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
-// _mm_xor_ps((x), _mm_and_ps(mask, _mm_xor_ps((y), (x))))
-// Bit-select val1 and val2 based on the contents of the mask
-#define _hlslpp_sel_pd(x, y, mask)				_mm_blendv_pd((x), (y), (mask))
-
-#define _hlslpp_blend_pd(x, y, mask)			_mm_blend_pd((x), (y), (mask))
+hlslpp_inline void _hlslpp_store4x4_ps(float* p, const n128& x0, const n128& x1, const n128& x2, const n128& x3)
+{
+	_mm_storeu_ps(p, x0);
+	_mm_storeu_ps(p + 4, x1);
+	_mm_storeu_ps(p + 8, x2);
+	_mm_storeu_ps(p + 12, x3);
+}
 
 //---------------------
 // Float 256 (AVX/AVX2)
@@ -410,85 +417,118 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 
 #endif
 
-hlslpp_inline bool _hlslpp_any1_ps(n128 x)
+//-------
+// Double
+//-------
+
+#define _hlslpp_set1_pd(x)						_mm_set1_pd((x))
+#define _hlslpp_set_pd(x, y)					_mm_set_pd((y), (x))
+#define _hlslpp_setzero_pd()					_mm_setzero_pd()
+
+#define _hlslpp_add_pd(x, y)					_mm_add_pd((x), (y))
+#define _hlslpp_sub_pd(x, y)					_mm_sub_pd((x), (y))
+#define _hlslpp_mul_pd(x, y)					_mm_mul_pd((x), (y))
+#define _hlslpp_div_pd(x, y)					_mm_div_pd((x), (y))
+
+#define _hlslpp_rcp_pd(x)						_mm_div_pd(d4_1, (x))
+
+#define _hlslpp_neg_pd(x)						_mm_xor_pd((x), d4negativeMask)
+
+#if defined(__FMA__)
+
+#define _hlslpp_madd_pd(x, y, z)				_mm_fmadd_pd((x), (y), (z))
+#define _hlslpp_msub_pd(x, y, z)				_mm_fmsub_pd((x), (y), (z))
+#define _hlslpp_subm_pd(x, y, z)				_mm_fnmadd_pd((x), (y), (z)))
+
+#else
+
+#define _hlslpp_madd_pd(x, y, z)				_mm_add_pd(_mm_mul_pd((x), (y)), (z))
+#define _hlslpp_msub_pd(x, y, z)				_mm_sub_pd(_mm_mul_pd((x), (y)), (z))
+#define _hlslpp_subm_pd(x, y, z)				_mm_sub_pd((x), _mm_mul_pd((y), (z)))
+
+#endif
+
+// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
+#define _hlslpp_abs_pd(x)						_mm_and_pd(d4absMask, (x))
+
+#define _hlslpp_sqrt_pd(x)						_mm_sqrt_pd((x))
+#define _hlslpp_rsqrt_pd(x)						_mm_div_pd(d4_1, _mm_sqrt_pd((x)))
+
+#define _hlslpp_cmpeq_pd(x, y)					_mm_cmpeq_pd((x), (y))
+#define _hlslpp_cmpneq_pd(x, y)					_mm_cmpneq_pd((x), (y))
+
+#define _hlslpp_cmpgt_pd(x, y)					_mm_cmpgt_pd((x), (y))
+#define _hlslpp_cmpge_pd(x, y)					_mm_cmpge_pd((x), (y))
+
+#define _hlslpp_cmplt_pd(x, y)					_mm_cmplt_pd((x), (y))
+#define _hlslpp_cmple_pd(x, y)					_mm_cmple_pd((x), (y))
+
+#define _hlslpp_max_pd(x, y)					_mm_max_pd((x), (y))
+#define _hlslpp_min_pd(x, y)					_mm_min_pd((x), (y))
+
+#define _hlslpp_trunc_pd(x)						_mm_round_pd((x), _MM_FROUND_TRUNC)
+#define _hlslpp_floor_pd(x)						_mm_floor_pd((x))
+#define _hlslpp_ceil_pd(x)						_mm_ceil_pd((x))
+
+// _MM_FROUND_TO_NEAREST_INT to match fxc behavior
+#define _hlslpp_round_pd(x)						_mm_round_pd((x), _MM_FROUND_TO_NEAREST_INT)
+
+#define _hlslpp_frac_pd(x)						_mm_sub_pd((x), _mm_floor_pd(x))
+
+#define _hlslpp_clamp_pd(x, minx, maxx)			_mm_max_pd(_mm_min_pd((x), (maxx)), (minx))
+#define _hlslpp_sat_pd(x)						_mm_max_pd(_mm_min_pd((x), d4_1), d4_0)
+
+#define _hlslpp_and_pd(x, y)					_mm_and_pd((x), (y))
+#define _hlslpp_andnot_pd(x, y)					_mm_andnot_pd((x), (y))
+#define _hlslpp_or_pd(x, y)						_mm_or_pd((x), (y))
+#define _hlslpp_xor_pd(x, y)					_mm_xor_pd((x), (y))
+
+#define _hlslpp_perm_pd(x, mask)				_mm_shuffle_pd((x), (x), (mask))
+#define _hlslpp_shuffle_pd(x, y, mask)			_mm_shuffle_pd((x), (y), (mask))
+
+// SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
+// _mm_xor_ps((x), _mm_and_ps(mask, _mm_xor_ps((y), (x))))
+// Bit-select val1 and val2 based on the contents of the mask
+#define _hlslpp_sel_pd(x, y, mask)				_mm_blendv_pd((x), (y), (mask))
+
+#define _hlslpp_blend_pd(x, y, mask)			_mm_blend_pd((x), (y), (mask))
+
+hlslpp_inline bool _hlslpp_any1_pd(n128d x)
 {
-	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x1) != 0x1;
+	return (_mm_movemask_pd(_mm_cmpeq_pd(x, _mm_setzero_pd())) & 0x1) != 0x1;
 }
 
-hlslpp_inline bool _hlslpp_any2_ps(n128 x)
+hlslpp_inline bool _hlslpp_any2_pd(n128d x)
 {
-	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x3) != 0x3;
+	return (_mm_movemask_pd(_mm_cmpeq_pd(x, _mm_setzero_pd())) & 0x3) != 0x3;
 }
 
-hlslpp_inline bool _hlslpp_any3_ps(n128 x)
+hlslpp_inline bool _hlslpp_any3_pd(n128d x0, n128d x1)
 {
-	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x7) != 0x7;
+	return ((_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) & 0x3) != 0x3) || ((_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) & 0x1) != 0x1);
 }
 
-hlslpp_inline bool _hlslpp_any4_ps(n128 x)
+hlslpp_inline bool _hlslpp_any4_pd(n128d x0, n128d x1)
 {
-	return _mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) != 0xf;
+	return (_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) != 0xf) || (_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) != 0xf);
 }
 
-hlslpp_inline bool _hlslpp_all1_ps(n128 x)
+hlslpp_inline bool _hlslpp_all1_pd(n128d x)
 {
-	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x1) == 0;
+	return (_mm_movemask_pd(_mm_cmpeq_pd(x, _mm_setzero_pd())) & 0x1) == 0;
 }
 
-hlslpp_inline bool _hlslpp_all2_ps(n128 x)
+hlslpp_inline bool _hlslpp_all2_pd(n128d x)
 {
-	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x3) == 0;
+	return (_mm_movemask_pd(_mm_cmpeq_pd(x, _mm_setzero_pd())) & 0x3) == 0;
 }
 
-hlslpp_inline bool _hlslpp_all3_ps(n128 x)
+hlslpp_inline bool _hlslpp_all3_pd(n128d x0, n128d x1)
 {
-	return (_mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) & 0x7) == 0;
+	return ((_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) & 0x3) == 0) && ((_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) & 0x1) == 0);
 }
 
-hlslpp_inline bool _hlslpp_all4_ps(n128 x)
+hlslpp_inline bool _hlslpp_all4_pd(n128d x0, n128d x1)
 {
-	return _mm_movemask_ps(_mm_cmpeq_ps(x, _mm_setzero_ps())) == 0;
-}
-
-//--------
-// Storing
-//--------
-
-hlslpp_inline void _hlslpp_store1_ps(float* p, n128 x)
-{
-	_mm_store_ss(p, x);
-}
-
-hlslpp_inline void _hlslpp_store2_ps(float* p, n128 x)
-{
-	_mm_store_ss(p, x);
-	_mm_store_ss(p + 1, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(1, 1, 1, 1)));
-}
-
-hlslpp_inline void _hlslpp_store3_ps(float* p, n128 x)
-{
-	_mm_store_ss(p, x);
-	_mm_store_ss(p + 1, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(1, 1, 1, 1)));
-	_mm_store_ss(p + 2, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2)));
-}
-
-hlslpp_inline void _hlslpp_store4_ps(float* p, n128 x)
-{
-	_mm_storeu_ps(p, x);
-}
-
-// Store first 3, store second 3, store last 3, stomping one of the previous values but making sure it's the same
-hlslpp_inline void _hlslpp_store3x3_ps(float* p, n128 x0, n128 x1, n128 x2)
-{
-	_mm_storeu_ps(p, x0);
-	_mm_storeu_ps(p + 3, x1);
-	_mm_storeu_ps(p + 5, _hlslpp_blend_ps(_hlslpp_perm_ps(x1, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2)), _hlslpp_perm_ps(x2, HLSLPP_SHUFFLE_MASK(3, 0, 1, 2)), HLSLPP_BLEND_MASK(1, 0, 0, 0)));
-}
-
-hlslpp_inline void _hlslpp_store4x4_ps(float* p, const n128& x0, const n128& x1, const n128& x2, const n128& x3)
-{
-	_mm_storeu_ps(p, x0);
-	_mm_storeu_ps(p + 4, x1);
-	_mm_storeu_ps(p + 8, x2);
-	_mm_storeu_ps(p + 12, x3);
+	return (_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) == 0) && (_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) == 0);
 }
