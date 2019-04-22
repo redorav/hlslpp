@@ -1569,6 +1569,26 @@ void RunUnitTests()
 	dvdiv_swiz_c_2.xy /= dvfoo2;
 	dvdiv_swiz_c_2.gr /= dvfoo2.rg;
 
+	double1 dvneg_1 = -dvbar1.r;	eq(dvneg_1, (double)-dvbar1.r);
+	double2 dvneg_2 = -dvbar2.gr;	eq(dvneg_2, (double)-dvbar2.g, (double)-dvbar2.r);
+	double3 dvneg_3 = -dvbar3.bgg;	eq(dvneg_3, (double)-dvbar3.b, (double)-dvbar3.g, (double)-dvbar3.g);
+	double4 dvneg_4 = -dvbar4.rbgr;	eq(dvneg_4, (double)-dvbar4.r, (double)-dvbar4.b, (double)-dvbar4.g, (double)-dvbar4.r);
+
+	double1 dvabs1 = abs(dvfoo1);	eq(dvabs1, abs((double)dvfoo1.x));
+	double2 dvabs2 = abs(dvfoo2);	eq(dvabs2, abs((double)dvfoo2.x), abs((double)dvfoo2.y));
+	double3 dvabs3 = abs(dvfoo3);	eq(dvabs3, abs((double)dvfoo3.x), abs((double)dvfoo3.y), abs((double)dvfoo3.z));
+	double4 dvabs4 = abs(dvfoo4);	eq(dvabs4, abs((double)dvfoo4.x), abs((double)dvfoo4.y), abs((double)dvfoo4.z), abs((double)dvfoo4.w));
+
+	double1 dvabsneg_1 = abs(-dvfoo1);	eq(dvabsneg_1, abs((double)-dvfoo1));
+	double2 dvabsneg_2 = abs(-dvfoo2);	eq(dvabsneg_2, abs((double)-dvfoo2.x), abs((double)-dvfoo2.y));
+	double3 dvabsneg_3 = abs(-dvfoo3);	eq(dvabsneg_3, abs((double)-dvfoo3.x), abs((double)-dvfoo3.y), abs((double)-dvfoo3.z));
+	double4 dvabsneg_4 = abs(-dvfoo4);	eq(dvabsneg_4, abs((double)-dvfoo4.x), abs((double)-dvfoo4.y), abs((double)-dvfoo4.z), abs((double)-dvfoo4.w));
+
+	double1 dvabs_swiz_1 = abs(dvfoo1.r);		eq(dvabs_swiz_1, abs((double)dvfoo1.x));
+	double2 dvabs_swiz_2 = abs(dvfoo2.yx);		eq(dvabs_swiz_2, abs((double)dvfoo2.g), abs((double)dvfoo2.r));
+	double3 dvabs_swiz_3 = abs(dvfoo3.bgr);		eq(dvabs_swiz_3, abs((double)dvfoo3.b), abs((double)dvfoo3.g), abs((double)dvfoo3.r));
+	double4 dvabs_swiz_4 = abs(dvfoo4.wwww);	eq(dvabs_swiz_4, abs((double)dvfoo4.a), abs((double)dvfoo4.a), abs((double)dvfoo4.a), abs((double)dvfoo4.a));
+
 	bool dvall1 = all(dvfoo1);	eq(dvall1, dvfoo1.x != 0.0);
 	bool dvall2 = all(dvfoo2);	eq(dvall2, dvfoo2.x != 0.0 && dvfoo2.y != 0.0);
 	bool dvall3 = all(dvfoo3);	eq(dvall3, dvfoo3.x != 0.0 && dvfoo3.y != 0.0 && dvfoo3.z != 0.0);
