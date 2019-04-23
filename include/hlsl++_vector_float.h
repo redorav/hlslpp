@@ -91,7 +91,7 @@ namespace hlslpp
 		return _hlslpp_mul_ps(_hlslpp_log2_ps(x), invlog_2_e);
 	}
 
-	hlslpp_inline n128 _hlslpp_lrp_ps(n128 x, n128 y, n128 a)
+	hlslpp_inline n128 _hlslpp_lerp_ps(n128 x, n128 y, n128 a)
 	{
 		// Slower
 		// n128 y_minus_x = _hlslpp_sub_ps(y, x);
@@ -1094,10 +1094,10 @@ namespace hlslpp
 	hlslpp_inline float1 length(const float3& f) { return float1(_hlslpp_sqrt_ps(_hlslpp_dot3_ps(f.vec, f.vec))); }
 	hlslpp_inline float1 length(const float4& f) { return float1(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(f.vec, f.vec))); }
 
-	hlslpp_inline float1 lerp(const float1& f1, const float1& f2, const float1& a) { return float1(_hlslpp_lrp_ps(f1.vec, f2.vec, a.vec)); }
-	hlslpp_inline float2 lerp(const float2& f1, const float2& f2, const float2& a) { return float2(_hlslpp_lrp_ps(f1.vec, f2.vec, a.vec)); }
-	hlslpp_inline float3 lerp(const float3& f1, const float3& f2, const float3& a) { return float3(_hlslpp_lrp_ps(f1.vec, f2.vec, a.vec)); }
-	hlslpp_inline float4 lerp(const float4& f1, const float4& f2, const float4& a) { return float4(_hlslpp_lrp_ps(f1.vec, f2.vec, a.vec)); }
+	hlslpp_inline float1 lerp(const float1& f1, const float1& f2, const float1& a) { return float1(_hlslpp_lerp_ps(f1.vec, f2.vec, a.vec)); }
+	hlslpp_inline float2 lerp(const float2& f1, const float2& f2, const float2& a) { return float2(_hlslpp_lerp_ps(f1.vec, f2.vec, a.vec)); }
+	hlslpp_inline float3 lerp(const float3& f1, const float3& f2, const float3& a) { return float3(_hlslpp_lerp_ps(f1.vec, f2.vec, a.vec)); }
+	hlslpp_inline float4 lerp(const float4& f1, const float4& f2, const float4& a) { return float4(_hlslpp_lerp_ps(f1.vec, f2.vec, a.vec)); }
 
 	hlslpp_inline float1 log(const float1& f) { return float1(_hlslpp_log_ps(f.vec)); }
 	hlslpp_inline float2 log(const float2& f) { return float2(_hlslpp_log_ps(f.vec)); }

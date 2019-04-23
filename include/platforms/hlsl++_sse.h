@@ -430,9 +430,9 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 #define _hlslpp_mul_pd(x, y)					_mm_mul_pd((x), (y))
 #define _hlslpp_div_pd(x, y)					_mm_div_pd((x), (y))
 
-#define _hlslpp_rcp_pd(x)						_mm_div_pd(d4_1, (x))
+#define _hlslpp_rcp_pd(x)						_mm_div_pd(d2_1, (x))
 
-#define _hlslpp_neg_pd(x)						_mm_xor_pd((x), d4negativeMask)
+#define _hlslpp_neg_pd(x)						_mm_xor_pd((x), d2negativeMask)
 
 #if defined(__FMA__)
 
@@ -449,10 +449,10 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 #endif
 
 // Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
-#define _hlslpp_abs_pd(x)						_mm_and_pd(d4absMask, (x))
+#define _hlslpp_abs_pd(x)						_mm_and_pd(d2absMask, (x))
 
 #define _hlslpp_sqrt_pd(x)						_mm_sqrt_pd((x))
-#define _hlslpp_rsqrt_pd(x)						_mm_div_pd(d4_1, _mm_sqrt_pd((x)))
+#define _hlslpp_rsqrt_pd(x)						_mm_div_pd(d2_1, _mm_sqrt_pd((x)))
 
 #define _hlslpp_cmpeq_pd(x, y)					_mm_cmpeq_pd((x), (y))
 #define _hlslpp_cmpneq_pd(x, y)					_mm_cmpneq_pd((x), (y))
@@ -476,7 +476,7 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 #define _hlslpp_frac_pd(x)						_mm_sub_pd((x), _mm_floor_pd(x))
 
 #define _hlslpp_clamp_pd(x, minx, maxx)			_mm_max_pd(_mm_min_pd((x), (maxx)), (minx))
-#define _hlslpp_sat_pd(x)						_mm_max_pd(_mm_min_pd((x), d4_1), d4_0)
+#define _hlslpp_sat_pd(x)						_mm_max_pd(_mm_min_pd((x), d2_1), _mm_setzero_pd())
 
 #define _hlslpp_and_pd(x, y)					_mm_and_pd((x), (y))
 #define _hlslpp_andnot_pd(x, y)					_mm_andnot_pd((x), (y))

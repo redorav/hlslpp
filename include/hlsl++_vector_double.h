@@ -22,10 +22,14 @@ namespace hlslpp
 	// Constants
 	//----------
 
-	const n128d d4_1 = _hlslpp_set1_pd(1.0);
+	const n128d d2_1            = _hlslpp_set1_pd(1.0);
+	const n128d d2minusOne      = _hlslpp_set1_pd(-1.0);
 
-	const n128d d4negativeMask = _hlslpp_set1_pd(dNegMask.d);
-	const n128d d4absMask      = _hlslpp_set1_pd(dAbsMask.d);
+	const n128d d2negativeMask  = _hlslpp_set1_pd(dNegMask.d);
+	const n128d d2absMask       = _hlslpp_set1_pd(dAbsMask.d);
+
+	const n128d d2_rad2deg      = _hlslpp_set1_pd(180.0 / 3.141592653589793238462643383279502884);
+	const n128d d2_deg2rad      = _hlslpp_set1_pd(3.141592653589793238462643383279502884 / 180.0);
 
 	#define _hlslpp_perm_xx_pd(x)				_hlslpp_perm_pd((x), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskX))
 	#define _hlslpp_perm_xy_pd(x)				_hlslpp_perm_pd((x), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskY))
@@ -36,6 +40,31 @@ namespace hlslpp
 	#define _hlslpp_shuf_xy_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskY))
 	#define _hlslpp_shuf_yx_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskY, MaskX))
 	#define _hlslpp_shuf_yy_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskY, MaskY))
+
+	#define _hlslpp_cmpneq1_pd(val1, val2)		_hlslpp_and_pd(_hlslpp_cmpneq_pd((val1), (val2)), d2_1)
+	#define _hlslpp_cmpeq1_pd(val1, val2)		_hlslpp_and_pd(_hlslpp_cmpeq_pd((val1), (val2)), d2_1)
+	
+	#define _hlslpp_cmpgt1_pd(val1, val2)		_hlslpp_and_pd(_hlslpp_cmpgt_pd((val1), (val2)), d2_1)
+	#define _hlslpp_cmpge1_pd(val1, val2)		_hlslpp_and_pd(_hlslpp_cmpge_pd((val1), (val2)), d2_1)
+	
+	#define _hlslpp_cmplt1_pd(val1, val2)		_hlslpp_and_pd(_hlslpp_cmplt_pd((val1), (val2)), d2_1)
+	#define _hlslpp_cmple1_pd(val1, val2)		_hlslpp_and_pd(_hlslpp_cmple_pd((val1), (val2)), d2_1)
+
+	hlslpp_inline n128d _hlslpp_dot2_pd(n128d x, n128d y)
+	{
+		n128d multi = _hlslpp_mul_pd(x, y); // Multiply components
+		n128d shuf = _hlslpp_perm_yy_pd(multi); // Shuffle y
+		return _hlslpp_add_pd(multi, shuf);
+	}
+
+	hlslpp_inline n128d _hlslpp_dot3_pd(const n128d& x0, const n128d& x1, const n128d& y0, const n128d& y1)
+	{
+		n128d multi0 = _hlslpp_mul_pd(x0, y0); // Multiply components
+		n128d multi1 = _hlslpp_mul_pd(x1, y1);
+		n128d shuf0 = _hlslpp_perm_yy_pd(multi0); // Shuffle y and w
+		n128d add0 = _hlslpp_add_pd(shuf0, multi0);  // Contains x+y, _
+		return _hlslpp_add_pd(add0, multi1);
+	}
 
 	hlslpp_inline n128d _hlslpp_dot4_pd(const n128d& x0, const n128d& x1, const n128d& y0, const n128d& y1)
 	{
@@ -51,20 +80,25 @@ namespace hlslpp
 		return _hlslpp_add_pd(add0, add1);
 	}
 
-	hlslpp_inline n128d _hlslpp_dot3_pd(const n128d& x0, const n128d& x1, const n128d& y0, const n128d& y1)
+	hlslpp_inline n128d _hlslpp_lerp_pd(n128d x, n128d y, n128d a)
 	{
-		n128d multi0 = _hlslpp_mul_pd(x0, y0); // Multiply components
-		n128d multi1 = _hlslpp_mul_pd(x1, y1);
-		n128d shuf0 = _hlslpp_perm_yy_pd(multi0); // Shuffle y and w
-		n128d add0 = _hlslpp_add_pd(shuf0, multi0);  // Contains x+y, _
-		return _hlslpp_add_pd(add0, multi1);
+		n128d x_one_minus_a = _hlslpp_msub_pd(x, x, a); // x * (1 - a)
+		n128d result = _hlslpp_madd_pd(y, a, x_one_minus_a);
+		return result;
 	}
 
-	hlslpp_inline n128d _hlslpp_dot2_pd(n128d x, n128d y)
+	// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
+	hlslpp_inline n128d _hlslpp_sign_pd(n128d x)
 	{
-		n128d multi = _hlslpp_mul_pd(x, y); // Multiply components
-		n128d shuf = _hlslpp_perm_yy_pd(multi); // Shuffle y
-		return _hlslpp_add_pd(multi, shuf);
+		return _hlslpp_and_pd(_hlslpp_or_pd(_hlslpp_and_pd(x, d2minusOne), d2_1), _hlslpp_cmpneq_pd(x, _hlslpp_setzero_pd()));
+	}
+
+	// Hlsl, glsl and Cg behavior is to swap the operands.
+	// http://http.developer.nvidia.com/Cg/step.html
+	// https://www.opengl.org/sdk/docs/man/html/step.xhtml
+	hlslpp_inline n128d _hlslpp_step_pd(n128d x, n128d y)
+	{
+		return _hlslpp_cmpge1_pd(x, y);
 	}
 
 	template<int X>
@@ -691,10 +725,119 @@ namespace hlslpp
 	hlslpp_inline bool any(const double3& f) { return _hlslpp_any3_pd(f.vec0, f.vec1); }
 	hlslpp_inline bool any(const double4& f) { return _hlslpp_any4_pd(f.vec0, f.vec1); }
 
-	double1 dot(const double1& f1, const double1& f2) { return f1 * f2; }
-	double1 dot(const double2& f1, const double2& f2) { return double1(_hlslpp_dot2_pd(f1.vec, f2.vec)); }
-	double1 dot(const double3& f1, const double3& f2) { return double1(_hlslpp_dot3_pd(f1.vec0, f1.vec1, f2.vec0, f2.vec1)); }
-	double1 dot(const double4& f1, const double4& f2) { return double1(_hlslpp_dot4_pd(f1.vec0, f1.vec1, f2.vec0, f2.vec1)); }
+	hlslpp_inline double1 ceil(const double1& f) { return double1(_hlslpp_ceil_pd(f.vec)); }
+	hlslpp_inline double2 ceil(const double2& f) { return double2(_hlslpp_ceil_pd(f.vec)); }
+	hlslpp_inline double3 ceil(const double3& f) { return double3(_hlslpp_ceil_pd(f.vec0), _hlslpp_ceil_pd(f.vec1)); }
+	hlslpp_inline double4 ceil(const double4& f) { return double4(_hlslpp_ceil_pd(f.vec0), _hlslpp_ceil_pd(f.vec1)); }
+
+	hlslpp_inline double1 clamp(const double1& f, const double1& minf, const double1& maxf) { return double1(_hlslpp_clamp_pd(f.vec, minf.vec, maxf.vec)); }
+	hlslpp_inline double2 clamp(const double2& f, const double2& minf, const double2& maxf) { return double2(_hlslpp_clamp_pd(f.vec, minf.vec, maxf.vec)); }
+
+	hlslpp_inline double3 clamp(const double3& f, const double3& minf, const double3& maxf)
+	{
+		return double3(_hlslpp_clamp_pd(f.vec0, minf.vec0, maxf.vec0), _hlslpp_clamp_pd(f.vec1, minf.vec1, maxf.vec1));
+	}
+
+	hlslpp_inline double4 clamp(const double4& f, const double4& minf, const double4& maxf)
+	{
+		return double4(_hlslpp_clamp_pd(f.vec0, minf.vec0, maxf.vec0), _hlslpp_clamp_pd(f.vec1, minf.vec1, maxf.vec1));
+	}
+
+	hlslpp_inline double1 degrees(const double1& f) { return double1(_hlslpp_mul_pd(f.vec, d2_rad2deg)); }
+	hlslpp_inline double2 degrees(const double2& f) { return double2(_hlslpp_mul_pd(f.vec, d2_rad2deg)); }
+	hlslpp_inline double3 degrees(const double3& f) { return double3(_hlslpp_mul_pd(f.vec0, d2_rad2deg), _hlslpp_mul_pd(f.vec1, d2_rad2deg)); }
+	hlslpp_inline double4 degrees(const double4& f) { return double4(_hlslpp_mul_pd(f.vec0, d2_rad2deg), _hlslpp_mul_pd(f.vec1, d2_rad2deg)); }
+
+	hlslpp_inline double1 dot(const double1& f1, const double1& f2) { return f1 * f2; }
+	hlslpp_inline double1 dot(const double2& f1, const double2& f2) { return double1(_hlslpp_dot2_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double1 dot(const double3& f1, const double3& f2) { return double1(_hlslpp_dot3_pd(f1.vec0, f1.vec1, f2.vec0, f2.vec1)); }
+	hlslpp_inline double1 dot(const double4& f1, const double4& f2) { return double1(_hlslpp_dot4_pd(f1.vec0, f1.vec1, f2.vec0, f2.vec1)); }
+
+	hlslpp_inline double1 floor(const double1& f) { return double1(_hlslpp_floor_pd(f.vec)); }
+	hlslpp_inline double2 floor(const double2& f) { return double2(_hlslpp_floor_pd(f.vec)); }
+	hlslpp_inline double3 floor(const double3& f) { return double3(_hlslpp_floor_pd(f.vec0), _hlslpp_floor_pd(f.vec1)); }
+	hlslpp_inline double4 floor(const double4& f) { return double4(_hlslpp_floor_pd(f.vec0), _hlslpp_floor_pd(f.vec1)); }
+
+	// A note on negative numbers. Contrary to intuition, frac(-0.75) != 0.75,
+	// but is actually frac(-0.75) == 0.25 This is because hlsl defines frac
+	// as frac(x) = x - floor(x)
+	hlslpp_inline double1 frac(const double1& f) { return double1(_hlslpp_frac_pd(f.vec)); }
+	hlslpp_inline double2 frac(const double2& f) { return double2(_hlslpp_frac_pd(f.vec)); }
+	hlslpp_inline double3 frac(const double3& f) { return double3(_hlslpp_frac_pd(f.vec0), _hlslpp_frac_pd(f.vec1)); }
+	hlslpp_inline double4 frac(const double4& f) { return double4(_hlslpp_frac_pd(f.vec0), _hlslpp_frac_pd(f.vec1)); }
+
+	hlslpp_inline double1 length(const double1& f) { return f; }
+	hlslpp_inline double1 length(const double2& f) { return double1(_hlslpp_sqrt_pd(_hlslpp_dot2_pd(f.vec, f.vec))); }
+	hlslpp_inline double1 length(const double3& f) { return double1(_hlslpp_sqrt_pd(_hlslpp_dot3_pd(f.vec0, f.vec1, f.vec0, f.vec1))); }
+	hlslpp_inline double1 length(const double4& f) { return double1(_hlslpp_sqrt_pd(_hlslpp_dot4_pd(f.vec0, f.vec1, f.vec0, f.vec1))); }
+
+	hlslpp_inline double1 lerp(const double1& f1, const double1& f2, const double1& a) { return double1(_hlslpp_lerp_pd(f1.vec, f2.vec, a.vec)); }
+	hlslpp_inline double2 lerp(const double2& f1, const double2& f2, const double2& a) { return double2(_hlslpp_lerp_pd(f1.vec, f2.vec, a.vec)); }
+
+	hlslpp_inline double3 lerp(const double3& f1, const double3& f2, const double3& a)
+	{
+		return double3(_hlslpp_lerp_pd(f1.vec0, f2.vec0, a.vec0), _hlslpp_lerp_pd(f1.vec1, f2.vec1, a.vec1));
+	}
+
+	hlslpp_inline double4 lerp(const double4& f1, const double4& f2, const double4& a)
+	{
+		return double4(_hlslpp_lerp_pd(f1.vec0, f2.vec0, a.vec0), _hlslpp_lerp_pd(f1.vec1, f2.vec1, a.vec1));
+	}
+
+	hlslpp_inline double1 min(const double1& f1, const double1& f2) { return double1(_hlslpp_min_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double2 min(const double2& f1, const double2& f2) { return double2(_hlslpp_min_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double3 min(const double3& f1, const double3& f2) { return double3(_hlslpp_min_pd(f1.vec0, f2.vec0), _hlslpp_min_pd(f1.vec1, f2.vec1)); }
+	hlslpp_inline double4 min(const double4& f1, const double4& f2) { return double4(_hlslpp_min_pd(f1.vec0, f2.vec0), _hlslpp_min_pd(f1.vec1, f2.vec1)); }
+
+	hlslpp_inline double1 max(const double1& f1, const double1& f2) { return double1(_hlslpp_max_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double2 max(const double2& f1, const double2& f2) { return double2(_hlslpp_max_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double3 max(const double3& f1, const double3& f2) { return double3(_hlslpp_max_pd(f1.vec0, f2.vec0), _hlslpp_max_pd(f1.vec1, f2.vec1)); }
+	hlslpp_inline double4 max(const double4& f1, const double4& f2) { return double4(_hlslpp_max_pd(f1.vec0, f2.vec0), _hlslpp_max_pd(f1.vec1, f2.vec1)); }
+
+	hlslpp_inline double1 radians(const double1& f) { return double1(_hlslpp_mul_pd(f.vec, d2_deg2rad)); }
+	hlslpp_inline double2 radians(const double2& f) { return double2(_hlslpp_mul_pd(f.vec, d2_deg2rad)); }
+	hlslpp_inline double3 radians(const double3& f) { return double3(_hlslpp_mul_pd(f.vec0, d2_deg2rad), _hlslpp_mul_pd(f.vec1, d2_deg2rad)); }
+	hlslpp_inline double4 radians(const double4& f) { return double4(_hlslpp_mul_pd(f.vec0, d2_deg2rad), _hlslpp_mul_pd(f.vec1, d2_deg2rad)); }
+
+	hlslpp_inline double1 rcp(const double1& f) { return double1(_hlslpp_rcp_pd(f.vec)); }
+	hlslpp_inline double2 rcp(const double2& f) { return double2(_hlslpp_rcp_pd(f.vec)); }
+	hlslpp_inline double3 rcp(const double3& f) { return double3(_hlslpp_rcp_pd(f.vec0), _hlslpp_rcp_pd(f.vec1)); }
+	hlslpp_inline double4 rcp(const double4& f) { return double4(_hlslpp_rcp_pd(f.vec0), _hlslpp_rcp_pd(f.vec1)); }
+
+	hlslpp_inline double1 rsqrt(const double1& f) { return double1(_hlslpp_rsqrt_pd(f.vec)); }
+	hlslpp_inline double2 rsqrt(const double2& f) { return double2(_hlslpp_rsqrt_pd(f.vec)); }
+	hlslpp_inline double3 rsqrt(const double3& f) { return double3(_hlslpp_rsqrt_pd(f.vec0), _hlslpp_rsqrt_pd(f.vec1)); }
+	hlslpp_inline double4 rsqrt(const double4& f) { return double4(_hlslpp_rsqrt_pd(f.vec0), _hlslpp_rsqrt_pd(f.vec1)); }
+
+	hlslpp_inline double1 round(const double1& f) { return double1(_hlslpp_round_pd(f.vec)); }
+	hlslpp_inline double2 round(const double2& f) { return double2(_hlslpp_round_pd(f.vec)); }
+	hlslpp_inline double3 round(const double3& f) { return double3(_hlslpp_round_pd(f.vec0), _hlslpp_round_pd(f.vec1)); }
+	hlslpp_inline double4 round(const double4& f) { return double4(_hlslpp_round_pd(f.vec0), _hlslpp_round_pd(f.vec1)); }
+
+	hlslpp_inline double1 saturate(const double1& f) { return double1(_hlslpp_sat_pd(f.vec)); }
+	hlslpp_inline double2 saturate(const double2& f) { return double2(_hlslpp_sat_pd(f.vec)); }
+	hlslpp_inline double3 saturate(const double3& f) { return double3(_hlslpp_sat_pd(f.vec0), _hlslpp_sat_pd(f.vec1)); }
+	hlslpp_inline double4 saturate(const double4& f) { return double4(_hlslpp_sat_pd(f.vec0), _hlslpp_sat_pd(f.vec1)); }
+
+	hlslpp_inline double1 sign(const double1& f) { return double1(_hlslpp_sign_pd(f.vec)); }
+	hlslpp_inline double2 sign(const double2& f) { return double2(_hlslpp_sign_pd(f.vec)); }
+	hlslpp_inline double3 sign(const double3& f) { return double3(_hlslpp_sign_pd(f.vec0), _hlslpp_sign_pd(f.vec1)); }
+	hlslpp_inline double4 sign(const double4& f) { return double4(_hlslpp_sign_pd(f.vec0), _hlslpp_sign_pd(f.vec1)); }
+
+	hlslpp_inline double1 sqrt(const double1& f) { return double1(_hlslpp_sqrt_pd(f.vec)); }
+	hlslpp_inline double2 sqrt(const double2& f) { return double2(_hlslpp_sqrt_pd(f.vec)); }
+	hlslpp_inline double3 sqrt(const double3& f) { return double3(_hlslpp_sqrt_pd(f.vec0), _hlslpp_sqrt_pd(f.vec1)); }
+	hlslpp_inline double4 sqrt(const double4& f) { return double4(_hlslpp_sqrt_pd(f.vec0), _hlslpp_sqrt_pd(f.vec1)); }
+
+	hlslpp_inline double1 step(const double1& f1, const double1& f2) { return double1(_hlslpp_step_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double2 step(const double2& f1, const double2& f2) { return double2(_hlslpp_step_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double3 step(const double3& f1, const double3& f2) { return double3(_hlslpp_step_pd(f1.vec0, f2.vec0), _hlslpp_step_pd(f1.vec1, f2.vec1)); }
+	hlslpp_inline double4 step(const double4& f1, const double4& f2) { return double4(_hlslpp_step_pd(f1.vec0, f2.vec0), _hlslpp_step_pd(f1.vec1, f2.vec1)); }
+	
+	hlslpp_inline double1 trunc(const double1& f) { return double1(_hlslpp_trunc_pd(f.vec)); }
+	hlslpp_inline double2 trunc(const double2& f) { return double2(_hlslpp_trunc_pd(f.vec)); }
+	hlslpp_inline double3 trunc(const double3& f) { return double3(_hlslpp_trunc_pd(f.vec0), _hlslpp_trunc_pd(f.vec1)); }
+	hlslpp_inline double4 trunc(const double4& f) { return double4(_hlslpp_trunc_pd(f.vec0), _hlslpp_trunc_pd(f.vec1)); }
 
 	template<int X> hlslpp_inline double1 abs(const dswizzle1<X>& s) { return abs(double1(s)); }
 
