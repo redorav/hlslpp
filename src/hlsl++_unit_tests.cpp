@@ -980,8 +980,6 @@ void RunUnitTests()
 	float1 vlength_swiz_3 = length(vfoo3.rgb);
 	float1 vlength_swiz_4 = length(vfoo4.wwxy);
 
-// Linear Interpolation
-
 	float1 vlerp1 = lerp(vfoo1, vbar1, vbaz1);
 	float2 vlerp2 = lerp(vfoo2, vbar2, vbaz2);
 	float3 vlerp3 = lerp(vfoo3, vbar3, vbaz3);

@@ -1,0 +1,525 @@
+//----------------//
+// Integer Vector //
+//----------------//
+
+namespace hlslpp
+{	
+	template<int X>
+	struct iswizzle1
+	{
+		template<int A> friend struct iswizzle1;
+	
+		// Cast
+	
+		operator int32_t() const { return i32[X]; }
+	
+		// Helper
+	
+		template<int E, int A>
+		static n128i swizzle(n128i v)
+		{
+			const int finalMask = (((IdentityMask >> 2 * E) & 3) << 2 * A) | (IdentityMask & ~((3 << 2 * A)));
+			return _hlslpp_perm_epi32(v, finalMask);
+		}
+	
+		template<int E, int A>
+		n128i swizzle() const
+		{
+			return swizzle<E, A>(vec);
+		}
+	
+		iswizzle1& operator = (int32_t i)
+		{
+			vec = _hlslpp_blend_epi32(vec, _hlslpp_set1_epi32(i), HLSLPP_COMPONENT_X(X));
+			return *this;
+		}
+	
+		// Assignment
+	
+		template<int A>
+		iswizzle1& operator = (const iswizzle1<A>& s) // Revise this function. Can I not do with swizzle?
+		{
+			n128i t = _hlslpp_shuffle_epi32(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
+			vec = _hlslpp_blend_epi32(vec, t, HLSLPP_COMPONENT_X(X));
+			return *this;
+		}
+	
+		iswizzle1& operator = (const int1& i);
+	
+	private:
+		union
+		{
+			n128i vec;
+			int32_t i32[4];
+		};
+	};
+
+
+	template<int X, int Y>
+	struct iswizzle2
+	{
+		// Helper
+
+		void staticAsserts()
+		{
+			static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
+		}
+
+		static n128i blend(n128i x, n128i y)
+		{
+			return _hlslpp_blend_epi32(x, y, HLSLPP_COMPONENT_XY(X, Y)); // Select based on property mask
+		}
+
+		template<int E, int F, int A, int B>
+		static n128i swizzle(n128i v)
+		{
+			const int finalMask =
+				(((IdentityMask >> 2 * E) & 3) << 2 * A) |
+				(((IdentityMask >> 2 * F) & 3) << 2 * B) |
+				(IdentityMask & ~((3 << 2 * A) | (3 << 2 * B)));
+			return _hlslpp_perm_epi32(v, finalMask);
+		}
+
+		template<int E, int F, int A, int B>
+		n128i swizzle() const
+		{
+			return swizzle<E, F, A, B>(vec);
+		}
+
+		// Assignment
+
+		template<int A, int B>
+		iswizzle2& operator = (const iswizzle2<A, B>& s)
+		{
+			staticAsserts();
+			vec = blend(vec, s.template swizzle<A, B, X, Y>());
+			return *this;
+		}
+
+		iswizzle2& operator = (const int2& i);
+
+	private:
+		union
+		{
+			n128i vec;
+			int32_t i32[4];
+		};
+	};
+
+	template<int X, int Y, int Z>
+	struct iswizzle3
+	{
+		// Helper
+
+		void staticAsserts()
+		{
+			static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
+		}
+
+		static n128i blend(n128i x, n128i y)
+		{
+			return _hlslpp_blend_epi32(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z)); // Select based on property mask
+		}
+
+		template<int E, int F, int G, int A, int B, int C>
+		static n128i swizzle(n128i v)
+		{
+			const int finalMask =
+				(((IdentityMask >> 2 * E) & 3) << 2 * A) |
+				(((IdentityMask >> 2 * F) & 3) << 2 * B) |
+				(((IdentityMask >> 2 * G) & 3) << 2 * C) |
+				(IdentityMask & ~((3 << 2 * A) | (3 << 2 * B) | (3 << 2 * C)));
+			return _hlslpp_perm_epi32(v, finalMask);
+		}
+
+		template<int E, int F, int G, int A, int B, int C>
+		n128i swizzle() const
+		{
+			return swizzle<E, F, G, A, B, C>(vec);
+		}
+
+		// Assignment
+
+		template<int A, int B, int C>
+		iswizzle3& operator = (const iswizzle3<A, B, C>& s)
+		{
+			staticAsserts();
+			vec = blend(vec, s.template swizzle<A, B, C, X, Y, Z>());
+			return *this;
+		}
+
+		iswizzle3& operator = (const int3& i);
+
+	private:
+		union
+		{
+			n128i vec;
+			int32_t i32[4];
+		};
+	};
+
+	template<int X, int Y, int Z, int W>
+	struct iswizzle4
+	{
+		// Helper
+
+		void staticAsserts()
+		{
+			static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
+		}
+
+		template<int E, int F, int G, int H, int A, int B, int C, int D>
+		static n128i swizzle(n128i v)
+		{
+			const int finalMask =
+				(((IdentityMask >> 2 * E) & 3) << (2 * A)) |
+				(((IdentityMask >> 2 * F) & 3) << (2 * B)) |
+				(((IdentityMask >> 2 * G) & 3) << (2 * C)) |
+				(((IdentityMask >> 2 * H) & 3) << (2 * D));
+
+			return _hlslpp_perm_epi32(v, finalMask);
+		}
+
+		template<int E, int F, int G, int H, int A, int B, int C, int D>
+		n128i swizzle() const
+		{
+			return swizzle<E, F, G, H, A, B, C, D>(vec);
+		}
+
+		// Assignment
+
+		template<int A, int B, int C, int D>
+		iswizzle4& operator = (const iswizzle4<A, B, C, D>& s)
+		{
+			staticAsserts();
+			vec = s.template swizzle<A, B, C, D, X, Y, Z, W>();
+			return *this;
+		}
+
+		iswizzle4& operator = (const int4& i);
+
+	private:
+		union
+		{
+			n128i vec;
+			float i32[4];
+		};
+	};
+
+	struct int1
+	{
+		int1() {}
+		int1(const int1& i) : vec(i.vec) {}
+		explicit int1(n128i vec) : vec(vec) {}
+
+		template<typename T>
+		int1(T i, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_epi32(int(i), 0, 0, 0)) {}
+
+		template<int X> int1(const iswizzle1<X>& s) : vec(s.template swizzle<X, 0>()) {}
+
+		operator int32_t() const { return i32[0]; }
+
+		union
+		{
+			n128i vec;
+			int32_t i32[4];
+			#include "swizzle/hlsl++_vector_int_x.h"
+		};
+	};
+
+	
+	struct int2
+	{
+		// Constructors
+
+		int2() {}
+		int2(const int2& i) : vec(i.vec) {}
+		explicit int2(n128i vec) : vec(vec) {}
+		explicit int2(const int1& i) : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}
+
+		int2(int32_t i) : vec(_hlslpp_set_epi32(i, i, 0, 0)) {}
+
+		template<typename T1, typename T2>
+		int2(T1 i1, T2 i2, hlslpp_enable_if_number_2(T1, T2)) : vec(_hlslpp_set_epi32(int(i1), int(i2), 0, 0)) {}
+
+		int2(const int1& i1, const int1& i2) { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
+		
+		template<int X, int Y> int2(const iswizzle2<X, Y>& s) : vec(s.template swizzle<X, Y, 0, 1>()) {}
+
+		union
+		{
+			n128i vec;
+			int32_t i32[4];
+			#include "swizzle/hlsl++_vector_int_x.h"
+			#include "swizzle/hlsl++_vector_int_y.h"
+		};
+	};
+
+	struct int3
+	{
+		// Constructors
+
+		int3() {}
+		int3(const int3& i) : vec(i.vec) {}
+		explicit int3(n128i vec) : vec(vec) {}
+
+		explicit int3(const int1& i) : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}
+
+		int3(int32_t i) : vec(_hlslpp_set_epi32(i, i, i, 0)) {}
+
+		template<typename T1, typename T2, typename T3>
+		int3(T1 i1, T2 i2, T3 i3, hlslpp_enable_if_number_3(T1, T2, T3)) : vec(_hlslpp_set_epi32(int(i1), int(i2), int(i3), 0)) {}
+
+		int3(const int1& i1, const int1& i2, const int1& i3) { vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epi32(i1.vec, i3.vec), _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
+
+		int3(const int2& i1, const int1& i2) { vec = _hlslpp_shuf_xyxx_epi32(i1.vec, i2.vec); }
+		int3(const int1& i1, const int2& i2) { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxyx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
+
+		template<int X, int Y, int Z>
+		int3(const iswizzle3<X, Y, Z>& s) : vec(s.template swizzle<X, Y, Z, 0, 1, 2>()) {}
+
+		union
+		{
+			n128i vec;
+			int32_t i32[4];
+			#include "swizzle/hlsl++_vector_int_x.h"
+			#include "swizzle/hlsl++_vector_int_y.h"
+			#include "swizzle/hlsl++_vector_int_z.h"
+		};
+	};
+
+	struct int4
+	{
+		int4() {}
+		int4(const int4& i) : vec(i.vec) {}
+		explicit int4(n128i vec) : vec(vec) {}
+
+		explicit int4(const int1& i) : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}
+
+		int4(int32_t i) : vec(_hlslpp_set1_epi32(i)) {}
+
+		template<typename T1, typename T2, typename T3, typename T4>
+		int4(T1 i1, T2 i2, T3 i3, T4 i4, hlslpp_enable_if_number_4(T1, T2, T3, T4)) : vec(_hlslpp_set_epi32(int(i1), int(i2), int(i3), int(i4))) {}
+
+		int4(const int1& i1, const int1& i2, const int1& i3, const int1& i4) { vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epi32(i1.vec, i3.vec), _hlslpp_shuf_xxxx_epi32(i2.vec, i4.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
+		
+		int4(const int2& i1, const int1& i2, const int1& i3) { vec = _hlslpp_blend_epi32(_hlslpp_shuf_xyxx_epi32(i1.vec, i2.vec), _hlslpp_perm_xxxx_epi32(i3.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
+		int4(const int1& i1, const int2& i2, const int1& i3) { vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epi32(i1.vec, i3.vec), _hlslpp_perm_xxyx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
+		int4(const int1& i1, const int1& i2, const int2& i3) { vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxy_epi32(i1.vec, i3.vec), _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
+
+		int4(const int2& i1, const int2& f2) { vec = _hlslpp_shuf_xyxy_epi32(i1.vec, f2.vec); }
+
+		int4(const int1& i1, const int3& i2) { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxyz_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 0)); }
+		int4(const int3& i1, const int1& i2) { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
+
+		template<int X, int Y, int Z, int W>
+		int4(const iswizzle4<X, Y, Z, W>& s) : vec(s.template swizzle<X, Y, Z, W, 0, 1, 2, 3>()) {}
+
+		int4& operator = (const int4& i) { vec = i.vec; return *this; }
+
+		union
+		{
+			n128i vec;
+			int32_t i32[4];
+			#include "swizzle/hlsl++_vector_int_x.h"
+			#include "swizzle/hlsl++_vector_int_y.h"
+			#include "swizzle/hlsl++_vector_int_z.h"
+			#include "swizzle/hlsl++_vector_int_w.h"
+		};
+	};
+
+	// Operators
+
+	int1 operator + (const int1& i1, const int1& i2) { return int1(_hlslpp_add_epi32(i1.vec, i2.vec)); }
+	int2 operator + (const int2& i1, const int2& i2) { return int2(_hlslpp_add_epi32(i1.vec, i2.vec)); }
+	int3 operator + (const int3& i1, const int3& i2) { return int3(_hlslpp_add_epi32(i1.vec, i2.vec)); }
+	int4 operator + (const int4& i1, const int4& i2) { return int4(_hlslpp_add_epi32(i1.vec, i2.vec)); }
+
+	int1 operator - (const int1& i1, const int1& i2) { return int1(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
+	int2 operator - (const int2& i1, const int2& i2) { return int2(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
+	int3 operator - (const int3& i1, const int3& i2) { return int3(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
+	int4 operator - (const int4& i1, const int4& i2) { return int4(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
+
+	int1 operator * (const int1& i1, const int1& i2) { return int1(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
+	int2 operator * (const int2& i1, const int2& i2) { return int2(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
+	int3 operator * (const int3& i1, const int3& i2) { return int3(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
+	int4 operator * (const int4& i1, const int4& i2) { return int4(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
+
+	int1 operator / (const int1& i1, const int1& i2) { return int1(_hlslpp_div_epi32(i1.vec, i2.vec)); }
+	int2 operator / (const int2& i1, const int2& i2) { return int2(_hlslpp_div_epi32(i1.vec, i2.vec)); }
+	int3 operator / (const int3& i1, const int3& i2) { return int3(_hlslpp_div_epi32(i1.vec, i2.vec)); }
+	int4 operator / (const int4& i1, const int4& i2) { return int4(_hlslpp_div_epi32(i1.vec, i2.vec)); }
+
+	int1 operator >> (const int1& i1, const int1& i2) { return int1(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
+	int2 operator >> (const int2& i1, const int2& i2) { return int2(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
+	int3 operator >> (const int3& i1, const int3& i2) { return int3(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
+	int4 operator >> (const int4& i1, const int4& i2) { return int4(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
+
+	int1 operator << (const int1& i1, const int1& i2) { return int1(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
+	int2 operator << (const int2& i1, const int2& i2) { return int2(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
+	int3 operator << (const int3& i1, const int3& i2) { return int3(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
+	int4 operator << (const int4& i1, const int4& i2) { return int4(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
+
+	int2 operator >> (const int2& i1, const int1& i2) { return int2(_hlslpp_srlv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	int3 operator >> (const int3& i1, const int1& i2) { return int3(_hlslpp_srlv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	int4 operator >> (const int4& i1, const int1& i2) { return int4(_hlslpp_srlv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+
+	int2 operator << (const int2& i1, const int1& i2) { return int2(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	int3 operator << (const int3& i1, const int1& i2) { return int3(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	int4 operator << (const int4& i1, const int1& i2) { return int4(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+
+	//------------------------------------------------------------------------------------------------------------------------//
+	// int1 and iswizzle1 need special overloads to disambiguate between our operators/functions and built-in float operators //
+	// and functions that are part of common headers such as cmath, math.h, algorithm, etc                                    //
+	//------------------------------------------------------------------------------------------------------------------------//
+
+	template<typename T> hlslpp_enable_if_return(T, int1) operator + (const int1& i1, T i2) { return i1 + int1(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int2) operator + (const int2& i1, T i2) { return i1 + int2(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int3) operator + (const int3& i1, T i2) { return i1 + int3(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int4) operator + (const int4& i1, T i2) { return i1 + int4(i2); }
+
+	template<typename T> hlslpp_enable_if_return(T, int1) operator + (T i1, const int1& i2) { return int1(i1) + i2; }
+	template<typename T> hlslpp_enable_if_return(T, int2) operator + (T i1, const int2& i2) { return int2(i1) + i2; }
+	template<typename T> hlslpp_enable_if_return(T, int3) operator + (T i1, const int3& i2) { return int3(i1) + i2; }
+	template<typename T> hlslpp_enable_if_return(T, int4) operator + (T i1, const int4& i2) { return int4(i1) + i2; }
+
+	template<typename T> hlslpp_enable_if_return(T, int1) operator - (const int1& i1, T i2) { return i1 - int1(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int2) operator - (const int2& i1, T i2) { return i1 - int2(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int3) operator - (const int3& i1, T i2) { return i1 - int3(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int4) operator - (const int4& i1, T i2) { return i1 - int4(i2); }
+
+	template<typename T> hlslpp_enable_if_return(T, int1) operator - (T i1, const int1& i2) { return int1(i1) - i2; }
+	template<typename T> hlslpp_enable_if_return(T, int2) operator - (T i1, const int2& i2) { return int2(i1) - i2; }
+	template<typename T> hlslpp_enable_if_return(T, int3) operator - (T i1, const int3& i2) { return int3(i1) - i2; }
+	template<typename T> hlslpp_enable_if_return(T, int4) operator - (T i1, const int4& i2) { return int4(i1) - i2; }
+
+	template<typename T> hlslpp_enable_if_return(T, int1) operator * (const int1& i1, T i2) { return i1 * int1(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int2) operator * (const int2& i1, T i2) { return i1 * int2(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int3) operator * (const int3& i1, T i2) { return i1 * int3(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int4) operator * (const int4& i1, T i2) { return i1 * int4(i2); }
+
+	template<typename T> hlslpp_enable_if_return(T, int1) operator * (T i1, const int1& i2) { return int1(i1) * i2; }
+	template<typename T> hlslpp_enable_if_return(T, int2) operator * (T i1, const int2& i2) { return int2(i1) * i2; }
+	template<typename T> hlslpp_enable_if_return(T, int3) operator * (T i1, const int3& i2) { return int3(i1) * i2; }
+	template<typename T> hlslpp_enable_if_return(T, int4) operator * (T i1, const int4& i2) { return int4(i1) * i2; }
+
+	template<typename T> hlslpp_enable_if_return(T, int1) operator / (const int1& i1, T i2) { return i1 / int1(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int2) operator / (const int2& i1, T i2) { return i1 / int2(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int3) operator / (const int3& i1, T i2) { return i1 / int3(i2); }
+	template<typename T> hlslpp_enable_if_return(T, int4) operator / (const int4& i1, T i2) { return i1 / int4(i2); }
+
+	template<typename T> hlslpp_enable_if_return(T, int1) operator / (T i1, const int1& i2) { return int1(i1) / i2; }
+	template<typename T> hlslpp_enable_if_return(T, int2) operator / (T i1, const int2& i2) { return int2(i1) / i2; }
+	template<typename T> hlslpp_enable_if_return(T, int3) operator / (T i1, const int3& i2) { return int3(i1) / i2; }
+	template<typename T> hlslpp_enable_if_return(T, int4) operator / (T i1, const int4& i2) { return int4(i1) / i2; }
+
+	template<int X> int1 operator + (const iswizzle1<X>& s, const int1& i) { return int1(s) + i; }
+	template<int X> int1 operator - (const iswizzle1<X>& s, const int1& i) { return int1(s) - i; }
+	template<int X> int1 operator * (const iswizzle1<X>& s, const int1& i) { return int1(s) * i; }
+	template<int X> int1 operator / (const iswizzle1<X>& s, const int1& i) { return int1(s) / i; }
+
+	int1 operator - (const int1& i) { return int1(_hlslpp_neg_epi32(i.vec)); }
+	int2 operator - (const int2& i) { return int2(_hlslpp_neg_epi32(i.vec)); }
+	int3 operator - (const int3& i) { return int3(_hlslpp_neg_epi32(i.vec)); }
+	int4 operator - (const int4& i) { return int4(_hlslpp_neg_epi32(i.vec)); }
+
+	int1& operator += (int1& i1, const int1& i2) { i1 = i1 + i2; return i1; }
+	int2& operator += (int2& i1, const int2& i2) { i1 = i1 + i2; return i1; }
+	int3& operator += (int3& i1, const int3& i2) { i1 = i1 + i2; return i1; }
+	int4& operator += (int4& i1, const int4& i2) { i1 = i1 + i2; return i1; }
+
+	template<int X>	iswizzle1<X>& operator += (iswizzle1<X>& s, const int1& i) { s = int1(s) + i; return s; }
+	template<int X>	iswizzle1<X>& operator -= (iswizzle1<X>& s, const int1& i) { s = int1(s) - i; return s; }
+	template<int X>	iswizzle1<X>& operator *= (iswizzle1<X>& s, const int1& i) { s = int1(s) * i; return s; }
+	template<int X>	iswizzle1<X>& operator /= (iswizzle1<X>& s, const int1& i) { s = int1(s) / i; return s; }
+
+	template<int X, int Y> iswizzle2<X, Y>& operator += (iswizzle2<X, Y>& s, const int2& i) { s = int2(s) + i; return s; }
+	template<int X, int Y> iswizzle2<X, Y>& operator -= (iswizzle2<X, Y>& s, const int2& i) { s = int2(s) - i; return s; }
+	template<int X, int Y> iswizzle2<X, Y>& operator *= (iswizzle2<X, Y>& s, const int2& i) { s = int2(s) * i; return s; }
+	template<int X, int Y> iswizzle2<X, Y>& operator /= (iswizzle2<X, Y>& s, const int2& i) { s = int2(s) / i; return s; }
+
+	template<int X, int Y, int Z> iswizzle3<X, Y, Z>& operator += (iswizzle3<X, Y, Z>& s, const int3& i) { s = int3(s) + i; return s; }
+	template<int X, int Y, int Z> iswizzle3<X, Y, Z>& operator -= (iswizzle3<X, Y, Z>& s, const int3& i) { s = int3(s) - i; return s; }
+	template<int X, int Y, int Z> iswizzle3<X, Y, Z>& operator *= (iswizzle3<X, Y, Z>& s, const int3& i) { s = int3(s) * i; return s; }
+	template<int X, int Y, int Z> iswizzle3<X, Y, Z>& operator /= (iswizzle3<X, Y, Z>& s, const int3& i) { s = int3(s) / i; return s; }
+
+	template<int X, int Y, int Z, int W> iswizzle4<X, Y, Z, W>& operator += (iswizzle4<X, Y, Z, W>& s, const int4& i) { s = int4(s) + i; return s; }
+	template<int X, int Y, int Z, int W> iswizzle4<X, Y, Z, W>& operator -= (iswizzle4<X, Y, Z, W>& s, const int4& i) { s = int4(s) - i; return s; }
+	template<int X, int Y, int Z, int W> iswizzle4<X, Y, Z, W>& operator *= (iswizzle4<X, Y, Z, W>& s, const int4& i) { s = int4(s) * i; return s; }
+	template<int X, int Y, int Z, int W> iswizzle4<X, Y, Z, W>& operator /= (iswizzle4<X, Y, Z, W>& s, const int4& i) { s = int4(s) / i; return s; }
+
+	int1& operator -= (int1& i1, const int1& i2) { i1 = i1 - i2; return i1; }
+	int2& operator -= (int2& i1, const int2& i2) { i1 = i1 - i2; return i1; }
+	int3& operator -= (int3& i1, const int3& i2) { i1 = i1 - i2; return i1; }
+	int4& operator -= (int4& i1, const int4& i2) { i1 = i1 - i2; return i1; }
+
+	int1& operator *= (int1& i1, const int1& i2) { i1 = i1 * i2; return i1; }
+	int2& operator *= (int2& i1, const int2& i2) { i1 = i1 * i2; return i1; }
+	int3& operator *= (int3& i1, const int3& i2) { i1 = i1 * i2; return i1; }
+	int4& operator *= (int4& i1, const int4& i2) { i1 = i1 * i2; return i1; }
+
+	int1 operator == (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
+	int2 operator == (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
+	int3 operator == (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
+	int4 operator == (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
+
+	int1 operator != (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
+	int2 operator != (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
+	int3 operator != (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
+	int4 operator != (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
+
+	int1 operator > (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
+	int2 operator > (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
+	int3 operator > (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
+	int4 operator > (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
+
+	int1 operator >= (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
+	int2 operator >= (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
+	int3 operator >= (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
+	int4 operator >= (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
+
+	int1 operator < (const int1& i1, const int1& i2) { return int1(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
+	int2 operator < (const int2& i1, const int2& i2) { return int2(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
+	int3 operator < (const int3& i1, const int3& i2) { return int3(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
+	int4 operator < (const int4& i1, const int4& i2) { return int4(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
+
+	int1 operator <= (const int1& i1, const int1& i2) { return int1(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
+	int2 operator <= (const int2& i1, const int2& i2) { return int2(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
+	int3 operator <= (const int3& i1, const int3& i2) { return int3(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
+	int4 operator <= (const int4& i1, const int4& i2) { return int4(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
+
+	int1 abs(const int1& i) { return int1(_hlslpp_abs_epi32(i.vec)); }
+	int2 abs(const int2& i) { return int2(_hlslpp_abs_epi32(i.vec)); }
+	int3 abs(const int3& i) { return int3(_hlslpp_abs_epi32(i.vec)); }
+	int4 abs(const int4& i) { return int4(_hlslpp_abs_epi32(i.vec)); }
+
+	template<int X>
+	iswizzle1<X>& iswizzle1<X>::operator = (const int1& i)
+	{
+		vec = _hlslpp_blend_epi32(vec, i.vec, HLSLPP_COMPONENT_X(X)); return *this;
+	}
+
+	template<int X, int Y>
+	iswizzle2<X, Y>& iswizzle2<X, Y>::operator = (const int2& i)
+	{
+		staticAsserts();
+		vec = blend(vec, swizzle<0, 1, X, Y>(i.vec));
+		return *this;
+	}
+
+	template<int X, int Y, int Z>
+	iswizzle3<X, Y, Z>& iswizzle3<X, Y, Z>::operator = (const int3& i)
+	{
+		staticAsserts();
+		vec = blend(vec, swizzle<0, 1, 2, X, Y, Z>(i.vec));
+		return *this;
+	}
+
+	template<int X, int Y, int Z, int W>
+	iswizzle4<X, Y, Z, W>& iswizzle4<X, Y, Z, W>::operator = (const int4& i)
+	{
+		staticAsserts();
+		vec = swizzle<0, 1, 2, 3, X, Y, Z, W>(i.vec);
+		return *this;
+	}
+}
