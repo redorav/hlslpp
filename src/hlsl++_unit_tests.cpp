@@ -1612,7 +1612,7 @@ void RunUnitTests()
 	double3 dvfloor3 = floor(dvfoo3);				eq(dvfloor3, floor((double)dvfoo3.x), floor((double)dvfoo3.y), floor((double)dvfoo3.z));
 	double4 dvfloor4 = floor(dvfoo4);				eq(dvfloor4, floor((double)dvfoo4.x), floor((double)dvfoo4.y), floor((double)dvfoo4.z), floor((double)dvfoo4.w));
 
-	//double1 dvfloor_swiz_1 = floor(dvfoo1.r);		eq(dvfloor_swiz_1, floor((double)dvfoo1.r));
+	double1 dvfloor_swiz_1 = floor(dvfoo1.r);		eq(dvfloor_swiz_1, floor((double)dvfoo1.r));
 	double2 dvfloor_swiz_2 = floor(dvfoo2.yx);		eq(dvfloor_swiz_2, floor((double)dvfoo2.y), floor((double)dvfoo2.x));
 	double3 dvfloor_swiz_3 = floor(dvfoo3.xxy);		eq(dvfloor_swiz_3, floor((double)dvfoo3.x), floor((double)dvfoo3.x), floor((double)dvfoo3.y));
 	double4 dvfloor_swiz_4 = floor(dvfoo4.wwxy);	eq(dvfloor_swiz_4, floor((double)dvfoo4.w), floor((double)dvfoo4.w), floor((double)dvfoo4.x), floor((double)dvfoo4.y));
