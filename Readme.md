@@ -4,7 +4,7 @@
 
 # HLSL++
 
-Small single header math library for C++ with the same syntax as the hlsl shading language. It supports any SSE4.1 (x86/x64, PS4, Xbox One) and NEON (ARM, ARM64, Switch) platforms. It features swizzling and all the operators and functions from the [hlsl documentation](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reference). The library is aimed mainly at game developers as it's meant to ease the C++ to shader bridge by providing common syntax, but can be used for any application requiring portable math. It also adds some functionality that hlsl doesn't natively provide, such as convenient matrix rotation functions and quaternions.
+Small header-only math library for C++ with the same syntax as the hlsl shading language. It supports any SSE4.1 (x86/x64, PS4, Xbox One) and NEON (ARM, ARM64, Switch) platforms. It features swizzling and all the operators and functions from the [hlsl documentation](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reference). The library is aimed mainly at game developers as it's meant to ease the C++ to shader bridge by providing common syntax, but can be used for any application requiring portable math. It also adds some functionality that hlsl doesn't natively provide, such as convenient matrix rotation functions and quaternions.
 
 ## Example
 
@@ -44,12 +44,13 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 
 ## Features
 
-* float1, float2, float3, float4 types
-* int1, int2, int3, int4 types
-* floatNxM types
-* quaternion type
+* float1, float2, float3, float4
+* int1, int2, int3, int4
+* double1, double2, double3, double4
+* floatNxM
+* quaternion
 * Conversion construction and assignment, e.g. float4(float2, float2) and int4(float2, int2)
-* Efficient swizzling for all the floatN types
+* Efficient swizzling for all vector types
 * Basic operators +, *, -, / for all vector and matrix types
 * Per-component comparison operators ==, !=, >, <, >=, <= (no ternary operator as overloading is disallowed in C++)
 * hlsl vector functions: abs, acos, all, any, asin, atan, ceil, clamp, cos, cosh, cross, degrees, dot, floor, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, max, min, normalize, pow, radians, reflect, round, rsqrt, saturate, sign, sin, sinh, smoothstep, sqrt, step, trunc, tan, tanh
