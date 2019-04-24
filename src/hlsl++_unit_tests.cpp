@@ -1607,6 +1607,16 @@ void RunUnitTests()
 	bool dvany_swiz_3 = any(dvfoo3.bgr);	eq(dvany_swiz_3, dvfoo3.b != 0.0 || dvfoo3.g != 0.0 || dvfoo3.r != 0.0);
 	bool dvany_swiz_4 = any(dvfoo4.wwww);	eq(dvany_swiz_4, dvfoo4.w != 0.0 || dvfoo4.w != 0.0 || dvfoo4.w != 0.0 || vfoo4.w != 0.0);
 
+	double1 dvfloor1 = floor(dvfoo1);				eq(dvfloor1, floor((double)dvfoo1.x));
+	double2 dvfloor2 = floor(dvfoo2);				eq(dvfloor2, floor((double)dvfoo2.x), floor((double)dvfoo2.y));
+	double3 dvfloor3 = floor(dvfoo3);				eq(dvfloor3, floor((double)dvfoo3.x), floor((double)dvfoo3.y), floor((double)dvfoo3.z));
+	double4 dvfloor4 = floor(dvfoo4);				eq(dvfloor4, floor((double)dvfoo4.x), floor((double)dvfoo4.y), floor((double)dvfoo4.z), floor((double)dvfoo4.w));
+
+	//double1 dvfloor_swiz_1 = floor(dvfoo1.r);		eq(dvfloor_swiz_1, floor((double)dvfoo1.r));
+	double2 dvfloor_swiz_2 = floor(dvfoo2.yx);		eq(dvfloor_swiz_2, floor((double)dvfoo2.y), floor((double)dvfoo2.x));
+	double3 dvfloor_swiz_3 = floor(dvfoo3.xxy);		eq(dvfloor_swiz_3, floor((double)dvfoo3.x), floor((double)dvfoo3.x), floor((double)dvfoo3.y));
+	double4 dvfloor_swiz_4 = floor(dvfoo4.wwxy);	eq(dvfloor_swiz_4, floor((double)dvfoo4.w), floor((double)dvfoo4.w), floor((double)dvfoo4.x), floor((double)dvfoo4.y));
+
 #endif
 
 	// Integer
