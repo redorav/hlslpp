@@ -841,6 +841,7 @@ namespace hlslpp
 
 	template<int X> hlslpp_inline double1 abs(const dswizzle1<X>& s) { return abs(double1(s)); }
 
+	template<int X> hlslpp_inline double1 ceil(const dswizzle1<X>& s) { return ceil(double1(s)); }
 	template<int X> hlslpp_inline double1 floor(const dswizzle1<X>& s) { return floor(double1(s)); }
 
 	template<int X>

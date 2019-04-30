@@ -1607,6 +1607,16 @@ void RunUnitTests()
 	bool dvany_swiz_3 = any(dvfoo3.bgr);	eq(dvany_swiz_3, dvfoo3.b != 0.0 || dvfoo3.g != 0.0 || dvfoo3.r != 0.0);
 	bool dvany_swiz_4 = any(dvfoo4.wwww);	eq(dvany_swiz_4, dvfoo4.w != 0.0 || dvfoo4.w != 0.0 || dvfoo4.w != 0.0 || vfoo4.w != 0.0);
 
+	double1 dvceil1 = ceil(dvfoo1);					eq(dvceil1, ceil((double)dvfoo1.x));
+	double2 dvceil2 = ceil(dvfoo2);					eq(dvceil2, ceil((double)dvfoo2.x), ceil((double)dvfoo2.y));
+	double3 dvceil3 = ceil(dvfoo3);					eq(dvceil3, ceil((double)dvfoo3.x), ceil((double)dvfoo3.y), ceil((double)dvfoo3.z));
+	double4 dvceil4 = ceil(dvfoo4);					eq(dvceil4, ceil((double)dvfoo4.x), ceil((double)dvfoo4.y), ceil((double)dvfoo4.z), ceil((double)dvfoo4.w));
+
+	double1 dvceil_swiz_1 = ceil(dvfoo1.r);			eq(dvceil_swiz_1, ceil((double)dvfoo1.r));
+	double2 dvceil_swiz_2 = ceil(dvfoo2.xx);		eq(dvceil_swiz_2, ceil((double)dvfoo2.x), ceil((double)dvfoo2.x));
+	double3 dvceil_swiz_3 = ceil(dvfoo3.rrg);		eq(dvceil_swiz_3, ceil((double)dvfoo3.r), ceil((double)dvfoo3.r), ceil((double)dvfoo3.g));
+	double4 dvceil_swiz_4 = ceil(dvfoo4.yzwx);		eq(dvceil_swiz_4, ceil((double)dvfoo4.y), ceil((double)dvfoo4.z), ceil((double)dvfoo4.w), ceil((double)dvfoo4.x));
+
 	double1 dvfloor1 = floor(dvfoo1);				eq(dvfloor1, floor((double)dvfoo1.x));
 	double2 dvfloor2 = floor(dvfoo2);				eq(dvfloor2, floor((double)dvfoo2.x), floor((double)dvfoo2.y));
 	double3 dvfloor3 = floor(dvfoo3);				eq(dvfloor3, floor((double)dvfoo3.x), floor((double)dvfoo3.y), floor((double)dvfoo3.z));
