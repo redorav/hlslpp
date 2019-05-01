@@ -53,7 +53,7 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 * Efficient swizzling for all vector types
 * Basic operators +, *, -, / for all vector and matrix types
 * Per-component comparison operators ==, !=, >, <, >=, <= (no ternary operator as overloading is disallowed in C++)
-* hlsl vector functions: abs, acos, all, any, asin, atan, ceil, clamp, cos, cosh, cross, degrees, dot, floor, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, max, min, normalize, pow, radians, reflect, round, rsqrt, saturate, sign, sin, sinh, smoothstep, sqrt, step, trunc, tan, tanh
+* hlsl vector functions: abs, acos, all, any, asin, atan, ceil, clamp, cos, cosh, cross, degrees, dot, floor, fmod, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, max, min, normalize, pow, radians, reflect, round, rsqrt, saturate, sign, sin, sinh, smoothstep, sqrt, step, trunc, tan, tanh
 * Additional matrix functions: determinant, transpose, inverse (not in hlsl but very useful)
 * Matrix multiplication for all NxM matrix combinations
 * Native visualizers for Visual Studio (.natvis files) which correctly parse with both MSVC and Clang in Windows
