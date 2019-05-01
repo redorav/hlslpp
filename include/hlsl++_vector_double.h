@@ -80,6 +80,17 @@ namespace hlslpp
 		return _hlslpp_add_pd(add0, add1);
 	}
 
+	// See http://http.developer.nvidia.com/Cg/fmod.html for reference
+	// This implementation does not follow the reference
+	// float2 c = frac(abs(a/b))*abs(b);
+	// return (a < 0) ? -c : c;    // if ( a < 0 ) c = 0-c
+	hlslpp_inline n128d _hlslpp_fmod_pd(n128d x, n128d y)
+	{
+		n128d div = _hlslpp_div_pd(x, y);
+		n128d trnc = _hlslpp_sub_pd(div, _hlslpp_trunc_pd(div));
+		return _hlslpp_mul_pd(trnc, y);
+	}
+
 	hlslpp_inline n128d _hlslpp_lerp_pd(n128d x, n128d y, n128d a)
 	{
 		n128d x_one_minus_a = _hlslpp_msub_pd(x, x, a); // x * (1 - a)
@@ -757,6 +768,11 @@ namespace hlslpp
 	hlslpp_inline double2 floor(const double2& f) { return double2(_hlslpp_floor_pd(f.vec)); }
 	hlslpp_inline double3 floor(const double3& f) { return double3(_hlslpp_floor_pd(f.vec0), _hlslpp_floor_pd(f.vec1)); }
 	hlslpp_inline double4 floor(const double4& f) { return double4(_hlslpp_floor_pd(f.vec0), _hlslpp_floor_pd(f.vec1)); }
+
+	hlslpp_inline double1 fmod(const double1& f1, const double1& f2) { return double1(_hlslpp_fmod_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double2 fmod(const double2& f1, const double2& f2) { return double2(_hlslpp_fmod_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double3 fmod(const double3& f1, const double3& f2) { return double3(_hlslpp_fmod_pd(f1.vec0, f2.vec0), _hlslpp_fmod_pd(f1.vec1, f2.vec1)); }
+	hlslpp_inline double4 fmod(const double4& f1, const double4& f2) { return double4(_hlslpp_fmod_pd(f1.vec0, f2.vec0), _hlslpp_fmod_pd(f1.vec1, f2.vec1)); }
 
 	// A note on negative numbers. Contrary to intuition, frac(-0.75) != 0.75,
 	// but is actually frac(-0.75) == 0.25 This is because hlsl defines frac

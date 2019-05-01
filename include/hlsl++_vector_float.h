@@ -4,14 +4,67 @@
 
 namespace hlslpp
 {
-	// Hlsl, glsl and Cg behavior is to swap the operands.
-	// http://http.developer.nvidia.com/Cg/step.html
-	// https://www.opengl.org/sdk/docs/man/html/step.xhtml
-	hlslpp_inline n128 _hlslpp_step_ps(n128 x, n128 y)
+	// Cross product for 3-component vectors
+	// http://threadlocalmutex.com/?p=8
+	// Measured to be marginally faster than the 4-shuffle
+	hlslpp_inline n128 _hlslpp_cross_ps(n128 x, n128 y)
 	{
-		return _hlslpp_cmpge1_ps(x, y);
+		n128 yzx_0 = _hlslpp_perm_yzxx_ps(x);
+		n128 yzx_1 = _hlslpp_perm_yzxx_ps(y);
+		return _hlslpp_perm_yzxx_ps(_hlslpp_msub_ps(x, yzx_1, _hlslpp_mul_ps(yzx_0, y)));
 	}
 	
+	hlslpp_inline n128 _hlslpp_dot2_ps(n128 x, n128 y)
+	{
+		n128 multi = _hlslpp_mul_ps(x, y);         // Multiply components together
+		n128 shuf1 = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
+		n128 result = _hlslpp_add_ss(shuf1, multi); // Contains x+y, _, _, _
+		return result;
+	}
+
+#if !defined(_hlslpp_dot3_ps)
+
+	hlslpp_inline n128 _hlslpp_dot3_ps(n128 x, n128 y)
+	{
+		// SSE4 slower
+		// n128 result = _hlslpp_dp_ps(v1.xyzw, v2.xyzw, 0x7f);
+
+		// SSE2
+		n128 multi = _hlslpp_mul_ps(x, y);         // Multiply components together
+		n128 shuf1 = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
+		n128 add1 = _hlslpp_add_ps(shuf1, multi); // Contains x+y, _, _, _
+		n128 shuf2 = _hlslpp_perm_zzzz_ps(multi);  // Move z into x
+		n128 result = _hlslpp_add_ss(add1, shuf2);  // Contains x+y+z, _, _, _
+		return result;
+	}
+
+#endif
+
+#if !defined(_hlslpp_dot4_ps)
+
+	// Inspiration for some bits from https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-float-vector-sum-on-x86
+	// Can optimize further in SSE3 via _mm_movehdup_ps instead of _hlslpp_perm_yxwx_ps, but is slower in MSVC and marginally faster on clang
+	hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
+	{
+		// SSE3 slower
+		// n128 m      = _hlslpp_mul_ps(x, y);    // Multiply components together
+		// n128 h1     = _hlslpp_hadd_ps(m, m);   // Add once
+		// n128 result = _hlslpp_hadd_ps(h1, h1); // Add twice
+
+		// SSE4 slower
+		// n128 result = _hlslpp_dp_ps(x, y, 0xff);
+
+		// SSE2
+		n128 multi = _hlslpp_mul_ps(x, y);         // Multiply components
+		n128 shuf = _hlslpp_perm_yxwx_ps(multi);  // Move y into x, and w into z (ignore the rest)
+		n128 add = _hlslpp_add_ps(shuf, multi);  // Contains x+y, _, z+w, _
+		shuf = _hlslpp_movehl_ps(shuf, add); // Move (z + w) into x
+		add = _hlslpp_add_ss(add, shuf);    // Contains x+y+z+w, _, _, _
+		return add;
+	}
+
+#endif
+
 	// See http://http.developer.nvidia.com/Cg/fmod.html for reference
 	// This implementation does not follow the reference
 	// float2 c = frac(abs(a/b))*abs(b);
@@ -23,14 +76,33 @@ namespace hlslpp
 		return _hlslpp_mul_ps(trnc, y);
 	}
 
-	// Cross product for 3-component vectors
-	// http://threadlocalmutex.com/?p=8
-	// Measured to be marginally faster than the 4-shuffle
-	hlslpp_inline n128 _hlslpp_cross_ps(n128 x, n128 y)
+	// Returns true if x is not +infinity or -infinity
+	hlslpp_inline n128 _hlslpp_isfinite_ps(n128 x)
 	{
-		n128 yzx_0 = _hlslpp_perm_yzxx_ps(x);
-		n128 yzx_1 = _hlslpp_perm_yzxx_ps(y);
-		return _hlslpp_perm_yzxx_ps(_hlslpp_msub_ps(x, yzx_1, _hlslpp_mul_ps(yzx_0, y)));
+		return _hlslpp_and_ps(_hlslpp_and_ps(_hlslpp_cmpneq_ps(x, f4_inf), _hlslpp_cmpneq_ps(x, f4_minusinf)), _hlslpp_cmpeq_ps(x, x));
+	}
+
+	// Returns true if x is +infinity or -infinity
+	hlslpp_inline n128 _hlslpp_isinf_ps(n128 x)
+	{
+		return _hlslpp_or_ps(_hlslpp_cmpeq_ps(x, f4_inf), _hlslpp_cmpeq_ps(x, f4_minusinf));
+	}
+
+	// Returns true if x is nan
+	hlslpp_inline n128 _hlslpp_isnan_ps(n128 x)
+	{
+		return _hlslpp_cmpneq_ps(x, x);
+	}
+
+	hlslpp_inline n128 _hlslpp_lerp_ps(n128 x, n128 y, n128 a)
+	{
+		// Slower
+		// n128 y_minus_x = _hlslpp_sub_ps(y, x);
+		// n128 result = _hlslpp_madd_ps(y_minus_x, a, x);
+
+		n128 x_one_minus_a = _hlslpp_msub_ps(x, x, a); // x * (1 - a)
+		n128 result = _hlslpp_madd_ps(y, a, x_one_minus_a);
+		return result;
 	}
 
 	// See http://jrfonseca.blogspot.co.uk/2008/09/fast-sse2-pow-tables-or-polynomials.html for derivation
@@ -91,29 +163,6 @@ namespace hlslpp
 		return _hlslpp_mul_ps(_hlslpp_log2_ps(x), invlog_2_e);
 	}
 
-	hlslpp_inline n128 _hlslpp_lerp_ps(n128 x, n128 y, n128 a)
-	{
-		// Slower
-		// n128 y_minus_x = _hlslpp_sub_ps(y, x);
-		// n128 result = _hlslpp_madd_ps(y_minus_x, a, x);
-
-		n128 x_one_minus_a = _hlslpp_msub_ps(x, x, a); // x * (1 - a)
-		n128 result = _hlslpp_madd_ps(y, a, x_one_minus_a);
-		return result;
-	}
-
-	// https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/smoothstep.xhtml
-	// x = (x - edge0) / (edge1 - edge0);
-	// 0,           x <= 0
-	// 3x^2 - 2x^3, 0 < x < 1
-	// 1,           x >= 1
-	hlslpp_inline n128 _hlslpp_smoothstep_ps(n128 edge0, n128 edge1, n128 x)
-	{
-		x = _hlslpp_sat_ps(_hlslpp_div_ps(_hlslpp_sub_ps(x, edge0), _hlslpp_sub_ps(edge1, edge0))); // x = saturate((x - edge0) / (edge1 - edge0))
-		n128 result = _hlslpp_mul_ps(_hlslpp_mul_ps(x, x), _hlslpp_sub_ps(f4_3, _hlslpp_add_ps(x, x))); // result = x^2(3 - 2x)
-		return result;
-	}
-
 	// See http://jrfonseca.blogspot.co.uk/2008/09/fast-sse2-pow-tables-or-polynomials.html for derivation
 	inline n128 _hlslpp_exp2_ps(n128 x)
 	{
@@ -158,6 +207,26 @@ namespace hlslpp
 	{
 		static const n128 log_2_e = _hlslpp_log2_ps(f4_e);
 		return _hlslpp_exp2_ps(_hlslpp_mul_ps(x, log_2_e));
+	}
+
+	// https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/smoothstep.xhtml
+	// x = (x - edge0) / (edge1 - edge0);
+	// 0,           x <= 0
+	// 3x^2 - 2x^3, 0 < x < 1
+	// 1,           x >= 1
+	hlslpp_inline n128 _hlslpp_smoothstep_ps(n128 edge0, n128 edge1, n128 x)
+	{
+		x = _hlslpp_sat_ps(_hlslpp_div_ps(_hlslpp_sub_ps(x, edge0), _hlslpp_sub_ps(edge1, edge0))); // x = saturate((x - edge0) / (edge1 - edge0))
+		n128 result = _hlslpp_mul_ps(_hlslpp_mul_ps(x, x), _hlslpp_sub_ps(f4_3, _hlslpp_add_ps(x, x))); // result = x^2(3 - 2x)
+		return result;
+	}
+
+	// Hlsl, glsl and Cg behavior is to swap the operands.
+	// http://http.developer.nvidia.com/Cg/step.html
+	// https://www.opengl.org/sdk/docs/man/html/step.xhtml
+	hlslpp_inline n128 _hlslpp_step_ps(n128 x, n128 y)
+	{
+		return _hlslpp_cmpge1_ps(x, y);
 	}
 
 	// Uses a minimax polynomial fitted to the [-pi/2, pi/2] range
@@ -359,57 +428,6 @@ namespace hlslpp
 		return _hlslpp_div_ps(_hlslpp_sub_ps(expx, exp_minusx), _hlslpp_add_ps(expx, exp_minusx));
 	}
 
-#if !defined(_hlslpp_dot4_ps)
-
-	// Inspiration for some bits from https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-float-vector-sum-on-x86
-	// Can optimize further in SSE3 via _mm_movehdup_ps instead of _hlslpp_perm_yxwx_ps, but is slower in MSVC and marginally faster on clang
-	hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
-	{
-		// SSE3 slower
-		// n128 m      = _hlslpp_mul_ps(x, y);    // Multiply components together
-		// n128 h1     = _hlslpp_hadd_ps(m, m);   // Add once
-		// n128 result = _hlslpp_hadd_ps(h1, h1); // Add twice
-
-		// SSE4 slower
-		// n128 result = _hlslpp_dp_ps(x, y, 0xff);
-
-		// SSE2
-		n128 multi = _hlslpp_mul_ps(x, y);         // Multiply components
-		n128 shuf = _hlslpp_perm_yxwx_ps(multi);  // Move y into x, and w into z (ignore the rest)
-		n128 add = _hlslpp_add_ps(shuf, multi);  // Contains x+y, _, z+w, _
-		shuf = _hlslpp_movehl_ps(shuf, add); // Move (z + w) into x
-		add = _hlslpp_add_ss(add, shuf);    // Contains x+y+z+w, _, _, _
-		return add;
-	}
-
-#endif
-
-#if !defined(_hlslpp_dot3_ps)
-
-	hlslpp_inline n128 _hlslpp_dot3_ps(n128 x, n128 y)
-	{
-		// SSE4 slower
-		// n128 result = _hlslpp_dp_ps(v1.xyzw, v2.xyzw, 0x7f);
-
-		// SSE2
-		n128 multi = _hlslpp_mul_ps(x, y);         // Multiply components together
-		n128 shuf1 = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
-		n128 add1 = _hlslpp_add_ps(shuf1, multi); // Contains x+y, _, _, _
-		n128 shuf2 = _hlslpp_perm_zzzz_ps(multi);  // Move z into x
-		n128 result = _hlslpp_add_ss(add1, shuf2);  // Contains x+y+z, _, _, _
-		return result;
-	}
-
-#endif
-
-	hlslpp_inline n128 _hlslpp_dot2_ps(n128 x, n128 y)
-	{
-		n128 multi = _hlslpp_mul_ps(x, y);         // Multiply components together
-		n128 shuf1 = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
-		n128 result = _hlslpp_add_ss(shuf1, multi); // Contains x+y, _, _, _
-		return result;
-	}
-
 	// https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reflect
 	// v = i - 2 * n * dot(i, n)
 
@@ -477,24 +495,6 @@ namespace hlslpp
 	hlslpp_inline n128 _hlslpp_refract4_ps(n128 i, n128 n, n128 ior)
 	{
 		return _hlslpp_refract_ps(i, n, _hlslpp_perm_xxxx_ps(ior), _hlslpp_dot4_ps(i, n));
-	}
-
-	// Returns true if x is not +infinity or -infinity
-	hlslpp_inline n128 _hlslpp_isfinite_ps(n128 x)
-	{
-		return _hlslpp_and_ps(_hlslpp_and_ps(_hlslpp_cmpneq_ps(x, f4_inf), _hlslpp_cmpneq_ps(x, f4_minusinf)), _hlslpp_cmpeq_ps(x, x));
-	}
-
-	// Returns true if x is +infinity or -infinity
-	hlslpp_inline n128 _hlslpp_isinf_ps(n128 x)
-	{
-		return _hlslpp_or_ps(_hlslpp_cmpeq_ps(x, f4_inf), _hlslpp_cmpeq_ps(x, f4_minusinf));
-	}
-
-	// Returns true if x is nan
-	hlslpp_inline n128 _hlslpp_isnan_ps(n128 x)
-	{
-		return _hlslpp_cmpneq_ps(x, x);
 	}
 
 	template<int X>
@@ -1065,6 +1065,11 @@ namespace hlslpp
 	hlslpp_inline float2 floor(const float2& f) { return float2(_hlslpp_floor_ps(f.vec)); }
 	hlslpp_inline float3 floor(const float3& f) { return float3(_hlslpp_floor_ps(f.vec)); }
 	hlslpp_inline float4 floor(const float4& f) { return float4(_hlslpp_floor_ps(f.vec)); }
+
+	hlslpp_inline float1 fmod(const float1& f1, const float1& f2) { return float1(_hlslpp_fmod_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float2 fmod(const float2& f1, const float2& f2) { return float2(_hlslpp_fmod_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3 fmod(const float3& f1, const float3& f2) { return float3(_hlslpp_fmod_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float4 fmod(const float4& f1, const float4& f2) { return float4(_hlslpp_fmod_ps(f1.vec, f2.vec)); }
 
 	// A note on negative numbers. Contrary to intuition, frac(-0.75) != 0.75,
 	// but is actually frac(-0.75) == 0.25 This is because hlsl defines frac

@@ -910,6 +910,11 @@ void RunUnitTests()
 	float3 vfloor_swiz_3 = floor(vfoo3.xxy);		eq(vfloor_swiz_3, floor((float)vfoo3.x), floor((float)vfoo3.x), floor((float)vfoo3.y));
 	float4 vfloor_swiz_4 = floor(vfoo4.wwxy);		eq(vfloor_swiz_4, floor((float)vfoo4.w), floor((float)vfoo4.w), floor((float)vfoo4.x), floor((float)vfoo4.y));
 
+	float1 vfmod1 = fmod(vfoo1, vbar1);
+	float2 vfmod2 = fmod(vfoo2, vbar2);
+	float3 vfmod3 = fmod(vfoo3, vbar3);
+	float4 vfmod4 = fmod(vfoo4, vbar4);
+
 	float1 vfrac1 = frac(vfoo1);
 	float2 vfrac2 = frac(vfoo2);
 	float3 vfrac3 = frac(vfoo3);
@@ -1626,6 +1631,11 @@ void RunUnitTests()
 	double2 dvfloor_swiz_2 = floor(dvfoo2.yx);		eq(dvfloor_swiz_2, floor((double)dvfoo2.y), floor((double)dvfoo2.x));
 	double3 dvfloor_swiz_3 = floor(dvfoo3.xxy);		eq(dvfloor_swiz_3, floor((double)dvfoo3.x), floor((double)dvfoo3.x), floor((double)dvfoo3.y));
 	double4 dvfloor_swiz_4 = floor(dvfoo4.wwxy);	eq(dvfloor_swiz_4, floor((double)dvfoo4.w), floor((double)dvfoo4.w), floor((double)dvfoo4.x), floor((double)dvfoo4.y));
+
+	double1 dvfmod1 = fmod(dvfoo1, dvbar1);
+	double2 dvfmod2 = fmod(dvfoo2, dvbar2);
+	double3 dvfmod3 = fmod(dvfoo3, dvbar3);
+	double4 dvfmod4 = fmod(dvfoo4, dvbar4);
 
 #endif
 
