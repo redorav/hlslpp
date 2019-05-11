@@ -1,9 +1,24 @@
 #pragma once
 
+#if defined(_M_ARM64) || defined(__aarch64__)
+
+	#define HLSLPP_ARM64
+
+#endif
 
 #if defined(_M_ARM64)
 
+	// The Microsoft ARM64 header is named differently
 	#include <arm64_neon.h>
+
+	// The Microsoft ARM64 headers don't define these
+	#if !defined(vmaxvq_u32)
+	#define vmaxvq_u32 neon_umaxvq32
+	#endif
+
+	#if !defined(vminvq_u32)
+	#define vminvq_u32 neon_uminvq32
+	#endif
 
 #else
 
@@ -324,14 +339,22 @@ hlslpp_inline bool _hlslpp_any2_ps(n128 x)
 hlslpp_inline bool _hlslpp_any3_ps(n128 x)
 {
 	uint32x4_t maskw = vsetq_lane_u32(0, vreinterpretq_u32_f32(x), 3); // set w to minimum value
+#if defined(HLSLPP_ARM64)
+	return vmaxvq_u32(maskw) != 0;
+#else
 	uint32x2_t maxlohi = vorr_u32(vget_low_u32(maskw), vget_high_u32(maskw));
 	return vget_lane_u32(vpmax_u32(maxlohi, maxlohi), 0) != 0;
+#endif
 }
 
 hlslpp_inline bool _hlslpp_any4_ps(n128 x)
 {
+#if defined(HLSLPP_ARM64)
+	return vmaxvq_u32(vreinterpretq_u32_f32(x)) != 0;
+#else
 	uint32x2_t tmp = vorr_u32(vget_low_u32(vreinterpretq_u32_f32(x)), vget_high_u32(vreinterpretq_u32_f32(x)));
 	return vget_lane_u32(vpmax_u32(tmp, tmp), 0) != 0;
+#endif
 }
 
 hlslpp_inline bool _hlslpp_all1_ps(n128 x)
@@ -348,14 +371,22 @@ hlslpp_inline bool _hlslpp_all2_ps(n128 x)
 hlslpp_inline bool _hlslpp_all3_ps(n128 x)
 {
 	uint32x4_t maskw = vsetq_lane_u32(0xffffffff, vreinterpretq_u32_f32(x), 3); // set w to maximum value
+#if defined(HLSLPP_ARM64)
+	return vminvq_u32(maskw) != 0;
+#else
 	uint32x2_t minlohi = vpmin_u32(vget_low_u32(maskw), vget_high_u32(maskw));
 	return vget_lane_u32(vpmin_u32(minlohi, minlohi), 0) != 0;
+#endif
 }
 
 hlslpp_inline bool _hlslpp_all4_ps(n128 x)
 {
+#if defined(HLSLPP_ARM64)
+	return vminvq_u32(vreinterpretq_u32_f32(x)) != 0;
+#else
 	uint32x2_t minlohi = vpmin_u32(vget_low_u32(vreinterpretq_u32_f32(x)), vget_high_u32(vreinterpretq_u32_f32(x)));
 	return vget_lane_u32(vpmin_u32(minlohi, minlohi), 0) != 0;
+#endif
 }
 
 //--------
