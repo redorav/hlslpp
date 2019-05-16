@@ -31,9 +31,6 @@
 typedef float32x4_t n128;
 typedef int32x4_t n128i;
 
-typedef float32x4_t vec_float4; // for iOS
-typedef uint32x4_t vec_uint4;
-
 hlslpp_inline float32x4_t vmov4q_n_f32(const float x, const float y, const float z, const float w)
 {
 	const float values[4] = { x, y, z, w };

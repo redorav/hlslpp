@@ -906,6 +906,27 @@ namespace hlslpp
 		swizzle<0, 1, 2, 3, X, Y, Z, W>(f.vec0, f.vec1, vec[0], vec[1]);
 		return *this;
 	}
+
+
+	hlslpp_inline void store(const double1& v, double* f)
+	{
+		_hlslpp_store1_pd(f, v.vec);
+	}
+
+	hlslpp_inline void store(const double2& v, double* f)
+	{
+		_hlslpp_store2_pd(f, v.vec);
+	}
+
+	hlslpp_inline void store(const double3& v, double* f)
+	{
+		_hlslpp_store3_pd(f, v.vec0, v.vec1);
+	}
+
+	hlslpp_inline void store(const double4& v, double* f)
+	{
+		_hlslpp_store4_pd(f, v.vec0, v.vec1);
+	}
 }
 
 #endif

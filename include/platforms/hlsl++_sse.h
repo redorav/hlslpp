@@ -532,3 +532,29 @@ hlslpp_inline bool _hlslpp_all4_pd(n128d x0, n128d x1)
 {
 	return (_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) == 0) && (_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) == 0);
 }
+
+//------------------
+// Double Store/Load
+//------------------
+
+hlslpp_inline void _hlslpp_store1_pd(double* p, n128d x)
+{
+	_mm_storel_pd(p, x);
+}
+
+hlslpp_inline void _hlslpp_store2_pd(double* p, n128d x)
+{
+	_mm_storeu_pd(p, x);
+}
+
+hlslpp_inline void _hlslpp_store3_pd(double* p, n128d x0, n128d x1)
+{
+	_mm_storeu_pd(p, x0);
+	_mm_storel_pd(p + 2, x1);
+}
+
+hlslpp_inline void _hlslpp_store4_pd(double* p, n128d x0, n128d x1)
+{
+	_mm_storeu_pd(p, x0);
+	_mm_storeu_pd(p + 2, x1);
+}

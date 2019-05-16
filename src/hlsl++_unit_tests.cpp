@@ -1637,6 +1637,18 @@ void RunUnitTests()
 	double3 dvfmod3 = fmod(dvfoo3, dvbar3);
 	double4 dvfmod4 = fmod(dvfoo4, dvbar4);
 
+	// Storage
+
+	double dvstore1[1];
+	double dvstore2[2];
+	double dvstore3[3];
+	double dvstore4[4];
+
+	store(dvfoo1, dvstore1); eq(dvfoo1, dvstore1[0]);
+	store(dvfoo2, dvstore2); eq(dvfoo2, dvstore2[0], dvstore2[1]);
+	store(dvfoo3, dvstore3); eq(dvfoo3, dvstore3[0], dvstore3[1], dvstore3[2]);
+	store(dvfoo4, dvstore4); eq(dvfoo4, dvstore4[0], dvstore4[1], dvstore4[2], dvstore4[3]);
+
 #endif
 
 	// Integer
