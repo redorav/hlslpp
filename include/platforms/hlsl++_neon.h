@@ -113,34 +113,6 @@ hlslpp_inline int32x4_t vshufq_s32(const int32x4_t x, const int32x4_t y, const u
 	return vcombine_s32(rL, rH);
 }
 
-// Source https://github.com/andrepuschmann/math-neon/blob/master/src/math_floorf.c
-hlslpp_inline float32x4_t vfloorq_f32(float32x4_t x)
-{
-	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
-	float32x4_t gt = vcgtq_f32(trnc, x);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
-	uint32x4_t shr = vshrq_n_u32(vreinterpretq_u32_f32(gt), 31);	// Shift to leave a 1 or a 0
-	float32x4_t result = vsubq_f32(trnc, vcvtq_f32_u32(shr));		// Subtract from truncated value
-	return result;
-}
-
-// Source https://github.com/andrepuschmann/math-neon/blob/master/src/math_ceilf.c
-hlslpp_inline float32x4_t vceilq_f32(float32x4_t x)
-{
-	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
-	float32x4_t gt = vcgtq_f32(x, trnc);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
-	uint32x4_t shr = vshrq_n_u32(vreinterpretq_u32_f32(gt), 31);	// Shift to leave a 1 or a 0
-	float32x4_t result = vaddq_f32(trnc, vcvtq_f32_u32(shr));		// Add to truncated value
-	return result;
-}
-
-hlslpp_inline float32x4_t vroundq_f32(float32x4_t x)
-{
-	float32x4_t add = vaddq_f32(x, vmovq_n_f32(0.5f));				// Add 0.5
-	float32x4_t frc_add = vsubq_f32(add, vfloorq_f32(add));			// Get the fractional part
-	float32x4_t result = vsubq_f32(add, frc_add);					// Subtract from result
-	return result;
-}
-
 hlslpp_inline float32x4_t vrsqrtq_f32(float32x4_t x)
 {
 	float32x4_t e = vrsqrteq_f32(x);								// Calculate a first estimate of the rsqrt
@@ -150,6 +122,40 @@ hlslpp_inline float32x4_t vrsqrtq_f32(float32x4_t x)
 }
 
 #if (__ARM_ARCH <= 7)
+
+#if !defined(vrndmq_f32)
+// Source https://github.com/andrepuschmann/math-neon/blob/master/src/math_floorf.c
+hlslpp_inline float32x4_t vrndmq_f32(float32x4_t x)
+{
+	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
+	float32x4_t gt = vcgtq_f32(trnc, x);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
+	uint32x4_t shr = vshrq_n_u32(vreinterpretq_u32_f32(gt), 31);	// Shift to leave a 1 or a 0
+	float32x4_t result = vsubq_f32(trnc, vcvtq_f32_u32(shr));		// Subtract from truncated value
+	return result;
+}
+#endif
+
+#if !defined(vrndpq_f32)
+// Source https://github.com/andrepuschmann/math-neon/blob/master/src/math_ceilf.c
+hlslpp_inline float32x4_t vrndpq_f32(float32x4_t x)
+{
+	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
+	float32x4_t gt = vcgtq_f32(x, trnc);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
+	uint32x4_t shr = vshrq_n_u32(vreinterpretq_u32_f32(gt), 31);	// Shift to leave a 1 or a 0
+	float32x4_t result = vaddq_f32(trnc, vcvtq_f32_u32(shr));		// Add to truncated value
+	return result;
+}
+#endif
+
+#if !defined(vrndq_f32)
+hlslpp_inline float32x4_t vrndq_f32(float32x4_t x)
+{
+	float32x4_t add = vaddq_f32(x, vmovq_n_f32(0.5f));				// Add 0.5
+	float32x4_t frc_add = vsubq_f32(add, vrndmq_f32(add));			// Get the fractional part
+	float32x4_t result = vsubq_f32(add, frc_add);					// Subtract from result
+	return result;
+}
+#endif
 
 hlslpp_inline float32x4_t vsqrtq_f32(float32x4_t x)
 {
@@ -231,11 +237,11 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_min_ps(x, y)					vminq_f32((x), (y))
 
 #define _hlslpp_trunc_ps(x)						vcvtq_f32_s32(vcvtq_s32_f32(x))
-#define _hlslpp_floor_ps(x)						vfloorq_f32((x))
-#define _hlslpp_ceil_ps(x)						vceilq_f32((x))
-#define _hlslpp_round_ps(x)						vroundq_f32((x))
+#define _hlslpp_floor_ps(x)						vrndmq_f32((x))
+#define _hlslpp_ceil_ps(x)						vrndpq_f32((x))
+#define _hlslpp_round_ps(x)						vrndq_f32((x))
 
-#define _hlslpp_frac_ps(x)						vsubq_f32((x), vfloorq_f32(x))
+#define _hlslpp_frac_ps(x)						vsubq_f32((x), vrndmq_f32(x))
 
 #define _hlslpp_clamp_ps(x, minx, maxx)			vmaxq_f32(vminq_f32((x), (maxx)), (minx))
 #define _hlslpp_sat_ps(x)						vmaxq_f32(vminq_f32((x), f4_1), f4_0)
