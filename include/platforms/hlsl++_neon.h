@@ -264,11 +264,11 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_perm_ps(x, mask)				vpermq_f32((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
 #define _hlslpp_shuffle_ps(x, y, mask)			vshufq_f32((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
 
-#define _hlslpp_sel_ps(x, y, mask)				vbslq_f32((mask), (x), (y))
+#define _hlslpp_sel_ps(x, y, mask)				vbslq_f32((mask), (y), (x))
 
 // We decompose the mask and turn it into 4 floats
 // The input mask follows the format for SSE
-#define _hlslpp_blend_ps(x, y, mask)			vbslq_f32(vmov4q_n_u32(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)), (x), (y))
+#define _hlslpp_blend_ps(x, y, mask)			vbslq_f32(vmov4q_n_u32((mask & 1) * 0xffffffff, ((mask >> 1) & 1) * 0xffffffff, ((mask >> 2) & 1) * 0xffffffff, ((mask >> 3) & 1) * 0xffffffff), (y), (x))
 
 //--------
 // Integer
