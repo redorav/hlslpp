@@ -932,6 +932,18 @@ namespace hlslpp
 	template<typename T> hlslpp_enable_if_return(T, float3) operator / (T f1, const float3& f2) { return float3(f1) / f2; }
 	template<typename T> hlslpp_enable_if_return(T, float4) operator / (T f1, const float4& f2) { return float4(f1) / f2; }
 
+	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator + (const swizzle1<X>& f1, T f2) { return float1(f1) + float1(f2); }
+	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator + (T f1, const swizzle1<X>& f2) { return float1(f1) + float1(f2); }
+
+	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator - (const swizzle1<X>& f1, T f2) { return float1(f1) - float1(f2); }
+	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator - (T f1, const swizzle1<X>& f2) { return float1(f1) - float1(f2); }
+
+	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator * (const swizzle1<X>& f1, T f2) { return float1(f1) * float1(f2); }
+	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator * (T f1, const swizzle1<X>& f2) { return float1(f1) * float1(f2); }
+
+	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator / (const swizzle1<X>& f1, T f2) { return float1(f1) / float1(f2); }
+	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator / (T f1, const swizzle1<X>& f2) { return float1(f1) / float1(f2); }
+
 	template<int X> float1 operator + (const swizzle1<X>& s, const float1& f) { return float1(s) + f; }
 	template<int X> float1 operator - (const swizzle1<X>& s, const float1& f) { return float1(s) - f; }
 	template<int X> float1 operator * (const swizzle1<X>& s, const float1& f) { return float1(s) * f; }
