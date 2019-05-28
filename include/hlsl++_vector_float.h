@@ -1237,7 +1237,7 @@ namespace hlslpp
 	//--------------------------------------------------------------------------------------------------------------------------
 
 	template<typename T> hlslpp_enable_if_return(T, float1) fmod(const float1& f1, T f2) { return fmod(f1, float1(f2)); }
-	template<typename T> hlslpp_enable_if_return(T, float1) fmod(T f1, const float1& f2) { return fmod(float1(f1), f); }
+	template<typename T> hlslpp_enable_if_return(T, float1) fmod(T f1, const float1& f2) { return fmod(float1(f1), f2); }
 
 	template<int X, int Y> float1 max(const swizzle1<X>& s, const swizzle1<Y>& f) { return max(float1(s), float1(f)); }
 	template<int X> float1 max(const swizzle1<X>& s, const swizzle1<X>& f) { return max(float1(s), float1(f)); }
