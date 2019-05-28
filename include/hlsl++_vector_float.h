@@ -1146,10 +1146,10 @@ namespace hlslpp
 	hlslpp_inline float3 normalize(const float3& f) { return float3(_hlslpp_div_ps(f.vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot3_ps(f.vec, f.vec))))); }
 	hlslpp_inline float4 normalize(const float4& f) { return float4(_hlslpp_div_ps(f.vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(f.vec, f.vec))))); }
 
-	hlslpp_inline float1 pow(const float1& f1, const float1& f2) { return float1(_hlslpp_exp2_ps(_hlslpp_mul_ps(f1.vec, _hlslpp_log2_ps(f2.vec)))); }
-	hlslpp_inline float2 pow(const float2& f1, const float2& f2) { return float2(_hlslpp_exp2_ps(_hlslpp_mul_ps(f1.vec, _hlslpp_log2_ps(f2.vec)))); }
-	hlslpp_inline float3 pow(const float3& f1, const float3& f2) { return float3(_hlslpp_exp2_ps(_hlslpp_mul_ps(f1.vec, _hlslpp_log2_ps(f2.vec)))); }
-	hlslpp_inline float4 pow(const float4& f1, const float4& f2) { return float4(_hlslpp_exp2_ps(_hlslpp_mul_ps(f1.vec, _hlslpp_log2_ps(f2.vec)))); }
+	hlslpp_inline float1 pow(const float1& f1, const float1& f2) { return float1(_hlslpp_exp2_ps(_hlslpp_mul_ps(f2.vec, _hlslpp_log2_ps(f1.vec)))); }
+	hlslpp_inline float2 pow(const float2& f1, const float2& f2) { return float2(_hlslpp_exp2_ps(_hlslpp_mul_ps(f2.vec, _hlslpp_log2_ps(f1.vec)))); }
+	hlslpp_inline float3 pow(const float3& f1, const float3& f2) { return float3(_hlslpp_exp2_ps(_hlslpp_mul_ps(f2.vec, _hlslpp_log2_ps(f1.vec)))); }
+	hlslpp_inline float4 pow(const float4& f1, const float4& f2) { return float4(_hlslpp_exp2_ps(_hlslpp_mul_ps(f2.vec, _hlslpp_log2_ps(f1.vec)))); }
 
 	hlslpp_inline float1 radians(const float1& f) { return float1(_hlslpp_mul_ps(f.vec, f4_deg2rad)); }
 	hlslpp_inline float2 radians(const float2& f) { return float2(_hlslpp_mul_ps(f.vec, f4_deg2rad)); }
@@ -1231,12 +1231,22 @@ namespace hlslpp
 	hlslpp_inline float3 trunc(const float3& f) { return float3(_hlslpp_trunc_ps(f.vec)); }
 	hlslpp_inline float4 trunc(const float4& f) { return float4(_hlslpp_trunc_ps(f.vec)); }
 
+	//--------------------------------------------------------------------------------------------------------------------------
+	// Function disambiguation. This typically happens when pulling in math.h, <cmath> or <algorithm>, where functions now live
+	// in the global namespace. Due to implicit conversions, we need to clarify to the compiler which functions it needs to use.
+	//--------------------------------------------------------------------------------------------------------------------------
+
+	template<typename T> hlslpp_enable_if_return(T, float1) fmod(const float1& f1, T f2) { return fmod(f1, float1(f2)); }
+	template<typename T> hlslpp_enable_if_return(T, float1) fmod(T f1, const float1& f2) { return fmod(float1(f1), f); }
+
 	template<int X, int Y> float1 max(const swizzle1<X>& s, const swizzle1<Y>& f) { return max(float1(s), float1(f)); }
 	template<int X> float1 max(const swizzle1<X>& s, const swizzle1<X>& f) { return max(float1(s), float1(f)); }
 
 	template<int X, int Y> float1 min(const swizzle1<X>& s, const swizzle1<Y>& f) { return min(float1(s), float1(f)); }
 	template<int X> float1 min(const swizzle1<X>& s, const swizzle1<X>& f) { return min(float1(s), float1(f)); }
 
+	template<typename T> hlslpp_enable_if_return(T, float1) pow(const float1& f1, T f2) { return pow(f1, float1(f2)); }
+	template<typename T> hlslpp_enable_if_return(T, float1) pow(T f1, const float1& f2) { return pow(float1(f1), f2); }
 	template<int X, int Y> float1 pow(const swizzle1<X>& s, const swizzle1<Y>& f) { return pow(float1(s), float1(f)); }
 
 	template<int X> hlslpp_inline float1 abs(const swizzle1<X>& s) { return abs(float1(s)); }
