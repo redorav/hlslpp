@@ -504,40 +504,40 @@ namespace hlslpp
 
 		// Cast
 
-		operator float() const { return f32[X]; }
+		hlslpp_inline operator float() const { return f32[X]; }
 
 		// Helper
 
 		template<int E, int A>
-		static n128 swizzle(n128 v)
+		static hlslpp_inline n128 swizzle(n128 v)
 		{
 			const int finalMask = (((IdentityMask >> 2 * E) & 3) << 2 * A) | (IdentityMask & ~((3 << 2 * A)));
 			return _hlslpp_perm_ps(v, finalMask);
 		}
 
 		template<int E, int A>
-		n128 swizzle() const
+		hlslpp_inline n128 swizzle() const
 		{
 			return swizzle<E, A>(vec);
 		}
 
 		// Assignment
 
-		swizzle1& operator = (float f)
+		hlslpp_inline swizzle1& operator = (float f)
 		{
 			vec = _hlslpp_blend_ps(vec, _hlslpp_set1_ps(f), HLSLPP_COMPONENT_X(X));
 			return *this;
 		}
 
 		template<int A>
-		swizzle1& operator = (const swizzle1<A>& s) // Revise this function. Can I not do with swizzle?
+		hlslpp_inline swizzle1& operator = (const swizzle1<A>& s) // Revise this function. Can I not do with swizzle?
 		{
 			n128 t = _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
 			vec = _hlslpp_blend_ps(vec, t, HLSLPP_COMPONENT_X(X));
 			return *this;
 		}
 
-		swizzle1& operator = (const float1& f);
+		hlslpp_inline swizzle1& operator = (const float1& f);
 
 	private:
 		union
@@ -558,7 +558,7 @@ namespace hlslpp
 		}
 
 		template<int E, int F, int A, int B>
-		static n128 swizzle(n128 v)
+		static hlslpp_inline n128 swizzle(n128 v)
 		{
 			const int finalMask =
 				(((IdentityMask >> 2 * E) & 3) << 2 * A) |
@@ -568,7 +568,7 @@ namespace hlslpp
 		}
 
 		template<int E, int F, int A, int B>
-		n128 swizzle() const
+		hlslpp_inline n128 swizzle() const
 		{
 			return swizzle<E, F, A, B>(vec);
 		}
@@ -576,18 +576,18 @@ namespace hlslpp
 		// Assignment
 
 		template<int A, int B>
-		swizzle2& operator = (const swizzle2<A, B>& s)
+		hlslpp_inline swizzle2& operator = (const swizzle2<A, B>& s)
 		{
 			staticAsserts();
 			vec = blend(vec, s.template swizzle<A, B, X, Y>());
 			return *this;
 		}
 
-		swizzle2& operator = (const float2& f);
+		hlslpp_inline swizzle2& operator = (const float2& f);
 
 	private:
 
-		static n128 blend(n128 x, n128 y)
+		static hlslpp_inline n128 blend(n128 x, n128 y)
 		{
 			return _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XY(X, Y)); // Select based on property mask
 		}
@@ -608,7 +608,7 @@ namespace hlslpp
 		}
 
 		template<int E, int F, int G, int A, int B, int C>
-		static n128 swizzle(n128 v)
+		static hlslpp_inline n128 swizzle(n128 v)
 		{
 			const int finalMask =
 				(((IdentityMask >> 2 * E) & 3) << 2 * A) |
@@ -619,7 +619,7 @@ namespace hlslpp
 		}
 
 		template<int E, int F, int G, int A, int B, int C>
-		n128 swizzle() const
+		hlslpp_inline n128 swizzle() const
 		{
 			return swizzle<E, F, G, A, B, C>(vec);
 		}
@@ -627,18 +627,18 @@ namespace hlslpp
 		// Assignment
 
 		template<int A, int B, int C>
-		swizzle3& operator = (const swizzle3<A, B, C>& s)
+		hlslpp_inline swizzle3& operator = (const swizzle3<A, B, C>& s)
 		{
 			staticAsserts();
 			vec = blend(vec, s.template swizzle<A, B, C, X, Y, Z>());
 			return *this;
 		}
 
-		swizzle3& operator = (const float3& f);
+		hlslpp_inline swizzle3& operator = (const float3& f);
 
 	private:
 
-		static n128 blend(n128 x, n128 y)
+		static hlslpp_inline n128 blend(n128 x, n128 y)
 		{
 			return _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z)); // Select based on property mask
 		}
@@ -659,7 +659,7 @@ namespace hlslpp
 		}
 
 		template<int E, int F, int G, int H, int A, int B, int C, int D>
-		static n128 swizzle(n128 v)
+		static hlslpp_inline n128 swizzle(n128 v)
 		{
 			const int finalMask =
 				(((IdentityMask >> 2 * E) & 3) << (2 * A)) |
@@ -671,7 +671,7 @@ namespace hlslpp
 		}
 
 		template<int E, int F, int G, int H, int A, int B, int C, int D>
-		n128 swizzle() const
+		hlslpp_inline n128 swizzle() const
 		{
 			return swizzle<E, F, G, H, A, B, C, D>(vec);
 		}
@@ -679,14 +679,14 @@ namespace hlslpp
 		// Assignment
 
 		template<int A, int B, int C, int D>
-		swizzle4& operator = (const swizzle4<A, B, C, D>& s)
+		hlslpp_inline swizzle4& operator = (const swizzle4<A, B, C, D>& s)
 		{
 			staticAsserts();
 			vec = s.template swizzle<A, B, C, D, X, Y, Z, W>();
 			return *this;
 		}
 
-		swizzle4& operator = (const float4& f);
+		hlslpp_inline swizzle4& operator = (const float4& f);
 
 	private:
 		union
@@ -698,18 +698,18 @@ namespace hlslpp
 
 	struct float1
 	{
-		float1() {}
-		float1(const float1& f) : vec(f.vec) {}
-		explicit float1(n128 vec) : vec(vec) {}
+		hlslpp_inline float1() {}
+		hlslpp_inline float1(const float1& f) : vec(f.vec) {}
+		explicit hlslpp_inline float1(n128 vec) : vec(vec) {}
 
 		template<typename T>
-		float1(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), 0.0f, 0.0f, 0.0f)) {}
+		hlslpp_inline float1(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), 0.0f, 0.0f, 0.0f)) {}
 
-		template<int X> float1(const swizzle1<X>& s) : vec(s.template swizzle<X, 0>()) {}
+		template<int X> hlslpp_inline float1(const swizzle1<X>& s) : vec(s.template swizzle<X, 0>()) {}
 
-		float1(const int1& i);
+		hlslpp_inline float1(const int1& i);
 
-		operator float() const { return f32[0]; }
+		hlslpp_inline operator float() const { return f32[0]; }
 
 		union
 		{
@@ -723,22 +723,22 @@ namespace hlslpp
 	{
 		// Constructors
 
-		float2() {}
-		float2(const float2& f) : vec(f.vec) {}
-		explicit float2(n128 vec) : vec(vec) {}
-		explicit float2(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
+		hlslpp_inline float2() {}
+		hlslpp_inline float2(const float2& f) : vec(f.vec) {}
+		explicit hlslpp_inline float2(n128 vec) : vec(vec) {}
+		explicit hlslpp_inline float2(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 
 		template<typename T>
-		float2(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), float(f), 0.0f, 0.0f)) {}
+		hlslpp_inline float2(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), float(f), 0.0f, 0.0f)) {}
 
 		template<typename T1, typename T2>
-		float2(T1 f1, T2 f2, hlslpp_enable_if_number_2(T1, T2)) : vec(_hlslpp_set_ps(float(f1), float(f2), 0.0f, 0.0f)) {}
+		hlslpp_inline float2(T1 f1, T2 f2, hlslpp_enable_if_number_2(T1, T2)) : vec(_hlslpp_set_ps(float(f1), float(f2), 0.0f, 0.0f)) {}
 
-		float2(const float1& f1, const float1& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
+		hlslpp_inline float2(const float1& f1, const float1& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
 
-		template<int X, int Y> float2(const swizzle2<X, Y>& s) : vec(s.template swizzle<X, Y, 0, 1>()) {}
+		template<int X, int Y> hlslpp_inline float2(const swizzle2<X, Y>& s) : vec(s.template swizzle<X, Y, 0, 1>()) {}
 
-		float2(const int2& i);
+		hlslpp_inline float2(const int2& i);
 
 		union
 		{
@@ -753,26 +753,26 @@ namespace hlslpp
 	{
 		// Constructors
 
-		float3() {}
-		float3(const float3& f) : vec(f.vec) {}
-		explicit float3(n128 vec) : vec(vec) {}
-		explicit float3(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
+		hlslpp_inline float3() {}
+		hlslpp_inline float3(const float3& f) : vec(f.vec) {}
+		explicit hlslpp_inline float3(n128 vec) : vec(vec) {}
+		explicit hlslpp_inline float3(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 
 		template<typename T>
-		float3(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), float(f), float(f), 0.0f)) {}
+		hlslpp_inline float3(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_ps(float(f), float(f), float(f), 0.0f)) {}
 
 		template<typename T1, typename T2, typename T3>
-		float3(T1 f1, T2 f2, T3 f3, hlslpp_enable_if_number_3(T1, T2, T3)) : vec(_hlslpp_set_ps(float(f1), float(f2), float(f3), 0.0f)) {}
+		hlslpp_inline float3(T1 f1, T2 f2, T3 f3, hlslpp_enable_if_number_3(T1, T2, T3)) : vec(_hlslpp_set_ps(float(f1), float(f2), float(f3), 0.0f)) {}
 
-		float3(const float1& f1, const float1& f2, const float1& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
+		hlslpp_inline float3(const float1& f1, const float1& f2, const float1& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 
-		float3(const float2& f1, const float1& f2) { vec = _hlslpp_shuf_xyxx_ps(f1.vec, f2.vec); }
-		float3(const float1& f1, const float2& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxyx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
+		hlslpp_inline float3(const float2& f1, const float1& f2) { vec = _hlslpp_shuf_xyxx_ps(f1.vec, f2.vec); }
+		hlslpp_inline float3(const float1& f1, const float2& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxyx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
 
 		template<int X, int Y, int Z>
-		float3(const swizzle3<X, Y, Z>& s) : vec(s.template swizzle<X, Y, Z, 0, 1, 2>()) {}
+		hlslpp_inline float3(const swizzle3<X, Y, Z>& s) : vec(s.template swizzle<X, Y, Z, 0, 1, 2>()) {}
 
-		float3(const int3& i);
+		hlslpp_inline float3(const int3& i);
 
 		union
 		{
@@ -786,32 +786,32 @@ namespace hlslpp
 
 	struct float4
 	{
-		float4() {}
-		float4(const float4& f) : vec(f.vec) {}
-		explicit float4(n128 vec) : vec(vec) {}
-		explicit float4(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
+		hlslpp_inline float4() {}
+		hlslpp_inline float4(const float4& f) : vec(f.vec) {}
+		explicit hlslpp_inline float4(n128 vec) : vec(vec) {}
+		explicit hlslpp_inline float4(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 
 		template<typename T>
 		float4(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp_set1_ps(float(f))) {}
 
 		template<typename T1, typename T2, typename T3, typename T4>
-		float4(T1 f1, T2 f2, T3 f3, T4 f4, hlslpp_enable_if_number_4(T1, T2, T3, T4)) : vec(_hlslpp_set_ps(float(f1), float(f2), float(f3), float(f4))) {}
+		hlslpp_inline float4(T1 f1, T2 f2, T3 f3, T4 f4, hlslpp_enable_if_number_4(T1, T2, T3, T4)) : vec(_hlslpp_set_ps(float(f1), float(f2), float(f3), float(f4))) {}
 
-		float4(const float1& f1, const float1& f2, const float1& f3, const float1& f4) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_shuf_xxxx_ps(f2.vec, f4.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
+		hlslpp_inline float4(const float1& f1, const float1& f2, const float1& f3, const float1& f4) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_shuf_xxxx_ps(f2.vec, f4.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 
-		float4(const float2& f1, const float1& f2, const float1& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xyxx_ps(f1.vec, f2.vec), _hlslpp_perm_xxxx_ps(f3.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
-		float4(const float1& f1, const float2& f2, const float1& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_perm_xxyx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
-		float4(const float1& f1, const float1& f2, const float2& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxy_ps(f1.vec, f3.vec), _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
+		hlslpp_inline float4(const float2& f1, const float1& f2, const float1& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xyxx_ps(f1.vec, f2.vec), _hlslpp_perm_xxxx_ps(f3.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
+		hlslpp_inline float4(const float1& f1, const float2& f2, const float1& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_perm_xxyx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
+		hlslpp_inline float4(const float1& f1, const float1& f2, const float2& f3) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxy_ps(f1.vec, f3.vec), _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
 
-		float4(const float2& f1, const float2& f2) { vec = _hlslpp_shuf_xyxy_ps(f1.vec, f2.vec); }
+		hlslpp_inline float4(const float2& f1, const float2& f2) { vec = _hlslpp_shuf_xyxy_ps(f1.vec, f2.vec); }
 
-		float4(const float1& f1, const float3& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxyz_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 0)); }
-		float4(const float3& f1, const float1& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
+		hlslpp_inline float4(const float1& f1, const float3& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxyz_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 0)); }
+		hlslpp_inline float4(const float3& f1, const float1& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
 
 		template<int X, int Y, int Z, int W>
-		float4(const swizzle4<X, Y, Z, W>& s) : vec(s.template swizzle<X, Y, Z, W, 0, 1, 2, 3>()) {}
+		hlslpp_inline float4(const swizzle4<X, Y, Z, W>& s) : vec(s.template swizzle<X, Y, Z, W, 0, 1, 2, 3>()) {}
 
-		float4(const int4& i);
+		hlslpp_inline float4(const int4& i);
 
 		union
 		{
@@ -826,180 +826,180 @@ namespace hlslpp
 
 	// Operators
 
-	float1 operator + (const float1& f1, const float1& f2) { return float1(_hlslpp_add_ps(f1.vec, f2.vec)); }
-	float2 operator + (const float2& f1, const float2& f2) { return float2(_hlslpp_add_ps(f1.vec, f2.vec)); }
-	float3 operator + (const float3& f1, const float3& f2) { return float3(_hlslpp_add_ps(f1.vec, f2.vec)); }
-	float4 operator + (const float4& f1, const float4& f2) { return float4(_hlslpp_add_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float1 operator + (const float1& f1, const float1& f2) { return float1(_hlslpp_add_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float2 operator + (const float2& f1, const float2& f2) { return float2(_hlslpp_add_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3 operator + (const float3& f1, const float3& f2) { return float3(_hlslpp_add_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float4 operator + (const float4& f1, const float4& f2) { return float4(_hlslpp_add_ps(f1.vec, f2.vec)); }
 
-	float2 operator + (const float2& f1, const float1& f2) { return float2(_hlslpp_add_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
-	float3 operator + (const float3& f1, const float1& f2) { return float3(_hlslpp_add_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
-	float4 operator + (const float4& f1, const float1& f2) { return float4(_hlslpp_add_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float2 operator + (const float2& f1, const float1& f2) { return float2(_hlslpp_add_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float3 operator + (const float3& f1, const float1& f2) { return float3(_hlslpp_add_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float4 operator + (const float4& f1, const float1& f2) { return float4(_hlslpp_add_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 
-	float1 operator - (const float1& f1, const float1& f2) { return float1(_hlslpp_sub_ps(f1.vec, f2.vec)); }
-	float2 operator - (const float2& f1, const float2& f2) { return float2(_hlslpp_sub_ps(f1.vec, f2.vec)); }
-	float3 operator - (const float3& f1, const float3& f2) { return float3(_hlslpp_sub_ps(f1.vec, f2.vec)); }
-	float4 operator - (const float4& f1, const float4& f2) { return float4(_hlslpp_sub_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float1 operator - (const float1& f1, const float1& f2) { return float1(_hlslpp_sub_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float2 operator - (const float2& f1, const float2& f2) { return float2(_hlslpp_sub_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3 operator - (const float3& f1, const float3& f2) { return float3(_hlslpp_sub_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float4 operator - (const float4& f1, const float4& f2) { return float4(_hlslpp_sub_ps(f1.vec, f2.vec)); }
 
-	float2 operator - (const float2& f1, const float1& f2) { return float2(_hlslpp_sub_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
-	float3 operator - (const float3& f1, const float1& f2) { return float3(_hlslpp_sub_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
-	float4 operator - (const float4& f1, const float1& f2) { return float4(_hlslpp_sub_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float2 operator - (const float2& f1, const float1& f2) { return float2(_hlslpp_sub_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float3 operator - (const float3& f1, const float1& f2) { return float3(_hlslpp_sub_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float4 operator - (const float4& f1, const float1& f2) { return float4(_hlslpp_sub_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 
-	float1 operator * (const float1& f1, const float1& f2) { return float1(_hlslpp_mul_ps(f1.vec, f2.vec)); }
-	float2 operator * (const float2& f1, const float2& f2) { return float2(_hlslpp_mul_ps(f1.vec, f2.vec)); }
-	float3 operator * (const float3& f1, const float3& f2) { return float3(_hlslpp_mul_ps(f1.vec, f2.vec)); }
-	float4 operator * (const float4& f1, const float4& f2) { return float4(_hlslpp_mul_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float1 operator * (const float1& f1, const float1& f2) { return float1(_hlslpp_mul_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float2 operator * (const float2& f1, const float2& f2) { return float2(_hlslpp_mul_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3 operator * (const float3& f1, const float3& f2) { return float3(_hlslpp_mul_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float4 operator * (const float4& f1, const float4& f2) { return float4(_hlslpp_mul_ps(f1.vec, f2.vec)); }
 
-	float2 operator * (const float2& f1, const float1& f2) { return float2(_hlslpp_mul_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
-	float3 operator * (const float3& f1, const float1& f2) { return float3(_hlslpp_mul_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
-	float4 operator * (const float4& f1, const float1& f2) { return float4(_hlslpp_mul_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float2 operator * (const float2& f1, const float1& f2) { return float2(_hlslpp_mul_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float3 operator * (const float3& f1, const float1& f2) { return float3(_hlslpp_mul_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float4 operator * (const float4& f1, const float1& f2) { return float4(_hlslpp_mul_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 
-	float1 operator / (const float1& f1, const float1& f2) { return float1(_hlslpp_div_ps(f1.vec, f2.vec)); }
-	float2 operator / (const float2& f1, const float2& f2) { return float2(_hlslpp_div_ps(f1.vec, f2.vec)); }
-	float3 operator / (const float3& f1, const float3& f2) { return float3(_hlslpp_div_ps(f1.vec, f2.vec)); }
-	float4 operator / (const float4& f1, const float4& f2) { return float4(_hlslpp_div_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float1 operator / (const float1& f1, const float1& f2) { return float1(_hlslpp_div_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float2 operator / (const float2& f1, const float2& f2) { return float2(_hlslpp_div_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3 operator / (const float3& f1, const float3& f2) { return float3(_hlslpp_div_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float4 operator / (const float4& f1, const float4& f2) { return float4(_hlslpp_div_ps(f1.vec, f2.vec)); }
 
-	float2 operator / (const float2& f1, const float1& f2) { return float2(_hlslpp_div_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
-	float3 operator / (const float3& f1, const float1& f2) { return float3(_hlslpp_div_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
-	float4 operator / (const float4& f1, const float1& f2) { return float4(_hlslpp_div_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float2 operator / (const float2& f1, const float1& f2) { return float2(_hlslpp_div_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float3 operator / (const float3& f1, const float1& f2) { return float3(_hlslpp_div_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
+	hlslpp_inline float4 operator / (const float4& f1, const float1& f2) { return float4(_hlslpp_div_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 
-	float1 operator - (const float1& f) { return float1(_hlslpp_neg_ps(f.vec)); }
-	float2 operator - (const float2& f) { return float2(_hlslpp_neg_ps(f.vec)); }
-	float3 operator - (const float3& f) { return float3(_hlslpp_neg_ps(f.vec)); }
-	float4 operator - (const float4& f) { return float4(_hlslpp_neg_ps(f.vec)); }
+	hlslpp_inline float1 operator - (const float1& f) { return float1(_hlslpp_neg_ps(f.vec)); }
+	hlslpp_inline float2 operator - (const float2& f) { return float2(_hlslpp_neg_ps(f.vec)); }
+	hlslpp_inline float3 operator - (const float3& f) { return float3(_hlslpp_neg_ps(f.vec)); }
+	hlslpp_inline float4 operator - (const float4& f) { return float4(_hlslpp_neg_ps(f.vec)); }
 
-	float1& operator += (float1& f1, const float1& f2) { f1 = f1 + f2; return f1; }
-	float2& operator += (float2& f1, const float2& f2) { f1 = f1 + f2; return f1; }
-	float3& operator += (float3& f1, const float3& f2) { f1 = f1 + f2; return f1; }
-	float4& operator += (float4& f1, const float4& f2) { f1 = f1 + f2; return f1; }
+	hlslpp_inline float1& operator += (float1& f1, const float1& f2) { f1 = f1 + f2; return f1; }
+	hlslpp_inline float2& operator += (float2& f1, const float2& f2) { f1 = f1 + f2; return f1; }
+	hlslpp_inline float3& operator += (float3& f1, const float3& f2) { f1 = f1 + f2; return f1; }
+	hlslpp_inline float4& operator += (float4& f1, const float4& f2) { f1 = f1 + f2; return f1; }
 
-	float1& operator -= (float1& f1, const float1& f2) { f1 = f1 - f2; return f1; }
-	float2& operator -= (float2& f1, const float2& f2) { f1 = f1 - f2; return f1; }
-	float3& operator -= (float3& f1, const float3& f2) { f1 = f1 - f2; return f1; }
-	float4& operator -= (float4& f1, const float4& f2) { f1 = f1 - f2; return f1; }
+	hlslpp_inline float1& operator -= (float1& f1, const float1& f2) { f1 = f1 - f2; return f1; }
+	hlslpp_inline float2& operator -= (float2& f1, const float2& f2) { f1 = f1 - f2; return f1; }
+	hlslpp_inline float3& operator -= (float3& f1, const float3& f2) { f1 = f1 - f2; return f1; }
+	hlslpp_inline float4& operator -= (float4& f1, const float4& f2) { f1 = f1 - f2; return f1; }
 
-	float1& operator *= (float1& f1, const float1& f2) { f1 = f1 * f2; return f1; }
-	float2& operator *= (float2& f1, const float2& f2) { f1 = f1 * f2; return f1; }
-	float3& operator *= (float3& f1, const float3& f2) { f1 = f1 * f2; return f1; }
-	float4& operator *= (float4& f1, const float4& f2) { f1 = f1 * f2; return f1; }
+	hlslpp_inline float1& operator *= (float1& f1, const float1& f2) { f1 = f1 * f2; return f1; }
+	hlslpp_inline float2& operator *= (float2& f1, const float2& f2) { f1 = f1 * f2; return f1; }
+	hlslpp_inline float3& operator *= (float3& f1, const float3& f2) { f1 = f1 * f2; return f1; }
+	hlslpp_inline float4& operator *= (float4& f1, const float4& f2) { f1 = f1 * f2; return f1; }
 
-	float1& operator /= (float1& f1, const float1& f2) { f1 = f1 / f2; return f1; }
-	float2& operator /= (float2& f1, const float2& f2) { f1 = f1 / f2; return f1; }
-	float3& operator /= (float3& f1, const float3& f2) { f1 = f1 / f2; return f1; }
-	float4& operator /= (float4& f1, const float4& f2) { f1 = f1 / f2; return f1; }
+	hlslpp_inline float1& operator /= (float1& f1, const float1& f2) { f1 = f1 / f2; return f1; }
+	hlslpp_inline float2& operator /= (float2& f1, const float2& f2) { f1 = f1 / f2; return f1; }
+	hlslpp_inline float3& operator /= (float3& f1, const float3& f2) { f1 = f1 / f2; return f1; }
+	hlslpp_inline float4& operator /= (float4& f1, const float4& f2) { f1 = f1 / f2; return f1; }
 
 	//------------------------------------------------------------------------------------------------------------------------
 	// float1 and swizzle1 need special overloads to disambiguate between our operators/functions and built-in float operators
 	// and functions that are part of common headers such as cmath, math.h, algorithm, etc
 	//------------------------------------------------------------------------------------------------------------------------
 
-	template<typename T> hlslpp_enable_if_return(T, float1) operator + (const float1& f1, T f2) { return f1 + float1(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float2) operator + (const float2& f1, T f2) { return f1 + float2(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float3) operator + (const float3& f1, T f2) { return f1 + float3(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float4) operator + (const float4& f1, T f2) { return f1 + float4(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator + (const float1& f1, T f2) { return f1 + float1(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) operator + (const float2& f1, T f2) { return f1 + float2(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) operator + (const float3& f1, T f2) { return f1 + float3(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) operator + (const float4& f1, T f2) { return f1 + float4(f2); }
 
-	template<typename T> hlslpp_enable_if_return(T, float1) operator + (T f1, const float1& f2) { return float1(f1) + f2; }
-	template<typename T> hlslpp_enable_if_return(T, float2) operator + (T f1, const float2& f2) { return float2(f1) + f2; }
-	template<typename T> hlslpp_enable_if_return(T, float3) operator + (T f1, const float3& f2) { return float3(f1) + f2; }
-	template<typename T> hlslpp_enable_if_return(T, float4) operator + (T f1, const float4& f2) { return float4(f1) + f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator + (T f1, const float1& f2) { return float1(f1) + f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) operator + (T f1, const float2& f2) { return float2(f1) + f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) operator + (T f1, const float3& f2) { return float3(f1) + f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) operator + (T f1, const float4& f2) { return float4(f1) + f2; }
 
-	template<typename T> hlslpp_enable_if_return(T, float1) operator - (const float1& f1, T f2) { return f1 - float1(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float2) operator - (const float2& f1, T f2) { return f1 - float2(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float3) operator - (const float3& f1, T f2) { return f1 - float3(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float4) operator - (const float4& f1, T f2) { return f1 - float4(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator - (const float1& f1, T f2) { return f1 - float1(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) operator - (const float2& f1, T f2) { return f1 - float2(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) operator - (const float3& f1, T f2) { return f1 - float3(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) operator - (const float4& f1, T f2) { return f1 - float4(f2); }
 
-	template<typename T> hlslpp_enable_if_return(T, float1) operator - (T f1, const float1& f2) { return float1(f1) - f2; }
-	template<typename T> hlslpp_enable_if_return(T, float2) operator - (T f1, const float2& f2) { return float2(f1) - f2; }
-	template<typename T> hlslpp_enable_if_return(T, float3) operator - (T f1, const float3& f2) { return float3(f1) - f2; }
-	template<typename T> hlslpp_enable_if_return(T, float4) operator - (T f1, const float4& f2) { return float4(f1) - f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator - (T f1, const float1& f2) { return float1(f1) - f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) operator - (T f1, const float2& f2) { return float2(f1) - f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) operator - (T f1, const float3& f2) { return float3(f1) - f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) operator - (T f1, const float4& f2) { return float4(f1) - f2; }
 
-	template<typename T> hlslpp_enable_if_return(T, float1) operator * (const float1& f1, T f2) { return f1 * float1(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float2) operator * (const float2& f1, T f2) { return f1 * float2(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float3) operator * (const float3& f1, T f2) { return f1 * float3(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float4) operator * (const float4& f1, T f2) { return f1 * float4(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator * (const float1& f1, T f2) { return f1 * float1(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) operator * (const float2& f1, T f2) { return f1 * float2(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) operator * (const float3& f1, T f2) { return f1 * float3(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) operator * (const float4& f1, T f2) { return f1 * float4(f2); }
 
-	template<typename T> hlslpp_enable_if_return(T, float1) operator * (T f1, const float1& f2) { return float1(f1) * f2; }
-	template<typename T> hlslpp_enable_if_return(T, float2) operator * (T f1, const float2& f2) { return float2(f1) * f2; }
-	template<typename T> hlslpp_enable_if_return(T, float3) operator * (T f1, const float3& f2) { return float3(f1) * f2; }
-	template<typename T> hlslpp_enable_if_return(T, float4) operator * (T f1, const float4& f2) { return float4(f1) * f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator * (T f1, const float1& f2) { return float1(f1) * f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) operator * (T f1, const float2& f2) { return float2(f1) * f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) operator * (T f1, const float3& f2) { return float3(f1) * f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) operator * (T f1, const float4& f2) { return float4(f1) * f2; }
 
-	template<typename T> hlslpp_enable_if_return(T, float1) operator / (const float1& f1, T f2) { return f1 / float1(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float2) operator / (const float2& f1, T f2) { return f1 / float2(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float3) operator / (const float3& f1, T f2) { return f1 / float3(f2); }
-	template<typename T> hlslpp_enable_if_return(T, float4) operator / (const float4& f1, T f2) { return f1 / float4(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator / (const float1& f1, T f2) { return f1 / float1(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) operator / (const float2& f1, T f2) { return f1 / float2(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) operator / (const float3& f1, T f2) { return f1 / float3(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) operator / (const float4& f1, T f2) { return f1 / float4(f2); }
 
-	template<typename T> hlslpp_enable_if_return(T, float1) operator / (T f1, const float1& f2) { return float1(f1) / f2; }
-	template<typename T> hlslpp_enable_if_return(T, float2) operator / (T f1, const float2& f2) { return float2(f1) / f2; }
-	template<typename T> hlslpp_enable_if_return(T, float3) operator / (T f1, const float3& f2) { return float3(f1) / f2; }
-	template<typename T> hlslpp_enable_if_return(T, float4) operator / (T f1, const float4& f2) { return float4(f1) / f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator / (T f1, const float1& f2) { return float1(f1) / f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) operator / (T f1, const float2& f2) { return float2(f1) / f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) operator / (T f1, const float3& f2) { return float3(f1) / f2; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) operator / (T f1, const float4& f2) { return float4(f1) / f2; }
 
-	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator + (const swizzle1<X>& f1, T f2) { return float1(f1) + float1(f2); }
-	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator + (T f1, const swizzle1<X>& f2) { return float1(f1) + float1(f2); }
+	template<int X, typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator + (const swizzle1<X>& f1, T f2) { return float1(f1) + float1(f2); }
+	template<int X, typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator + (T f1, const swizzle1<X>& f2) { return float1(f1) + float1(f2); }
 
-	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator - (const swizzle1<X>& f1, T f2) { return float1(f1) - float1(f2); }
-	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator - (T f1, const swizzle1<X>& f2) { return float1(f1) - float1(f2); }
+	template<int X, typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator - (const swizzle1<X>& f1, T f2) { return float1(f1) - float1(f2); }
+	template<int X, typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator - (T f1, const swizzle1<X>& f2) { return float1(f1) - float1(f2); }
 
-	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator * (const swizzle1<X>& f1, T f2) { return float1(f1) * float1(f2); }
-	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator * (T f1, const swizzle1<X>& f2) { return float1(f1) * float1(f2); }
+	template<int X, typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator * (const swizzle1<X>& f1, T f2) { return float1(f1) * float1(f2); }
+	template<int X, typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator * (T f1, const swizzle1<X>& f2) { return float1(f1) * float1(f2); }
 
-	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator / (const swizzle1<X>& f1, T f2) { return float1(f1) / float1(f2); }
-	template<int X, typename T> hlslpp_enable_if_return(T, float1) operator / (T f1, const swizzle1<X>& f2) { return float1(f1) / float1(f2); }
+	template<int X, typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator / (const swizzle1<X>& f1, T f2) { return float1(f1) / float1(f2); }
+	template<int X, typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator / (T f1, const swizzle1<X>& f2) { return float1(f1) / float1(f2); }
 
-	template<int X> float1 operator + (const swizzle1<X>& s, const float1& f) { return float1(s) + f; }
-	template<int X> float1 operator - (const swizzle1<X>& s, const float1& f) { return float1(s) - f; }
-	template<int X> float1 operator * (const swizzle1<X>& s, const float1& f) { return float1(s) * f; }
-	template<int X> float1 operator / (const swizzle1<X>& s, const float1& f) { return float1(s) / f; }
+	template<int X> hlslpp_inline float1 operator + (const swizzle1<X>& s, const float1& f) { return float1(s) + f; }
+	template<int X> hlslpp_inline float1 operator - (const swizzle1<X>& s, const float1& f) { return float1(s) - f; }
+	template<int X> hlslpp_inline float1 operator * (const swizzle1<X>& s, const float1& f) { return float1(s) * f; }
+	template<int X> hlslpp_inline float1 operator / (const swizzle1<X>& s, const float1& f) { return float1(s) / f; }
 
-	template<int X> float1 operator - (const swizzle1<X>& s) { return -float1(s); }
+	template<int X> hlslpp_inline float1 operator - (const swizzle1<X>& s) { return -float1(s); }
 
-	template<int X>	swizzle1<X>& operator += (swizzle1<X>& s, const float1& f) { s = float1(s) + f; return s; }
-	template<int X>	swizzle1<X>& operator -= (swizzle1<X>& s, const float1& f) { s = float1(s) - f; return s; }
-	template<int X>	swizzle1<X>& operator *= (swizzle1<X>& s, const float1& f) { s = float1(s) * f; return s; }
-	template<int X>	swizzle1<X>& operator /= (swizzle1<X>& s, const float1& f) { s = float1(s) / f; return s; }
+	template<int X>	hlslpp_inline swizzle1<X>& operator += (swizzle1<X>& s, const float1& f) { s = float1(s) + f; return s; }
+	template<int X>	hlslpp_inline swizzle1<X>& operator -= (swizzle1<X>& s, const float1& f) { s = float1(s) - f; return s; }
+	template<int X>	hlslpp_inline swizzle1<X>& operator *= (swizzle1<X>& s, const float1& f) { s = float1(s) * f; return s; }
+	template<int X>	hlslpp_inline swizzle1<X>& operator /= (swizzle1<X>& s, const float1& f) { s = float1(s) / f; return s; }
 
-	template<int X, int Y> swizzle2<X, Y>& operator += (swizzle2<X, Y>& s, const float2& f) { s = float2(s) + f; return s; }
-	template<int X, int Y> swizzle2<X, Y>& operator -= (swizzle2<X, Y>& s, const float2& f) { s = float2(s) - f; return s; }
-	template<int X, int Y> swizzle2<X, Y>& operator *= (swizzle2<X, Y>& s, const float2& f) { s = float2(s) * f; return s; }
-	template<int X, int Y> swizzle2<X, Y>& operator /= (swizzle2<X, Y>& s, const float2& f) { s = float2(s) / f; return s; }
+	template<int X, int Y> hlslpp_inline swizzle2<X, Y>& operator += (swizzle2<X, Y>& s, const float2& f) { s = float2(s) + f; return s; }
+	template<int X, int Y> hlslpp_inline swizzle2<X, Y>& operator -= (swizzle2<X, Y>& s, const float2& f) { s = float2(s) - f; return s; }
+	template<int X, int Y> hlslpp_inline swizzle2<X, Y>& operator *= (swizzle2<X, Y>& s, const float2& f) { s = float2(s) * f; return s; }
+	template<int X, int Y> hlslpp_inline swizzle2<X, Y>& operator /= (swizzle2<X, Y>& s, const float2& f) { s = float2(s) / f; return s; }
 
-	template<int X, int Y, int Z> swizzle3<X, Y, Z>& operator += (swizzle3<X, Y, Z>& s, const float3& f) { s = float3(s) + f; return s; }
-	template<int X, int Y, int Z> swizzle3<X, Y, Z>& operator -= (swizzle3<X, Y, Z>& s, const float3& f) { s = float3(s) - f; return s; }
-	template<int X, int Y, int Z> swizzle3<X, Y, Z>& operator *= (swizzle3<X, Y, Z>& s, const float3& f) { s = float3(s) * f; return s; }
-	template<int X, int Y, int Z> swizzle3<X, Y, Z>& operator /= (swizzle3<X, Y, Z>& s, const float3& f) { s = float3(s) / f; return s; }
+	template<int X, int Y, int Z> hlslpp_inline swizzle3<X, Y, Z>& operator += (swizzle3<X, Y, Z>& s, const float3& f) { s = float3(s) + f; return s; }
+	template<int X, int Y, int Z> hlslpp_inline swizzle3<X, Y, Z>& operator -= (swizzle3<X, Y, Z>& s, const float3& f) { s = float3(s) - f; return s; }
+	template<int X, int Y, int Z> hlslpp_inline swizzle3<X, Y, Z>& operator *= (swizzle3<X, Y, Z>& s, const float3& f) { s = float3(s) * f; return s; }
+	template<int X, int Y, int Z> hlslpp_inline swizzle3<X, Y, Z>& operator /= (swizzle3<X, Y, Z>& s, const float3& f) { s = float3(s) / f; return s; }
 
-	template<int X, int Y, int Z, int W> swizzle4<X, Y, Z, W>& operator += (swizzle4<X, Y, Z, W>& s, const float4& f) { s = float4(s) + f; return s; }
-	template<int X, int Y, int Z, int W> swizzle4<X, Y, Z, W>& operator -= (swizzle4<X, Y, Z, W>& s, const float4& f) { s = float4(s) - f; return s; }
-	template<int X, int Y, int Z, int W> swizzle4<X, Y, Z, W>& operator *= (swizzle4<X, Y, Z, W>& s, const float4& f) { s = float4(s) * f; return s; }
-	template<int X, int Y, int Z, int W> swizzle4<X, Y, Z, W>& operator /= (swizzle4<X, Y, Z, W>& s, const float4& f) { s = float4(s) / f; return s; }
+	template<int X, int Y, int Z, int W> hlslpp_inline swizzle4<X, Y, Z, W>& operator += (swizzle4<X, Y, Z, W>& s, const float4& f) { s = float4(s) + f; return s; }
+	template<int X, int Y, int Z, int W> hlslpp_inline swizzle4<X, Y, Z, W>& operator -= (swizzle4<X, Y, Z, W>& s, const float4& f) { s = float4(s) - f; return s; }
+	template<int X, int Y, int Z, int W> hlslpp_inline swizzle4<X, Y, Z, W>& operator *= (swizzle4<X, Y, Z, W>& s, const float4& f) { s = float4(s) * f; return s; }
+	template<int X, int Y, int Z, int W> hlslpp_inline swizzle4<X, Y, Z, W>& operator /= (swizzle4<X, Y, Z, W>& s, const float4& f) { s = float4(s) / f; return s; }
 
-	float1 operator == (const float1& f1, const float1& f2) { return float1(_hlslpp_cmpeq1_ps(f1.vec, f2.vec)); }
-	float2 operator == (const float2& f1, const float2& f2) { return float2(_hlslpp_cmpeq1_ps(f1.vec, f2.vec)); }
-	float3 operator == (const float3& f1, const float3& f2) { return float3(_hlslpp_cmpeq1_ps(f1.vec, f2.vec)); }
-	float4 operator == (const float4& f1, const float4& f2) { return float4(_hlslpp_cmpeq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float1 operator == (const float1& f1, const float1& f2) { return float1(_hlslpp_cmpeq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float2 operator == (const float2& f1, const float2& f2) { return float2(_hlslpp_cmpeq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3 operator == (const float3& f1, const float3& f2) { return float3(_hlslpp_cmpeq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float4 operator == (const float4& f1, const float4& f2) { return float4(_hlslpp_cmpeq1_ps(f1.vec, f2.vec)); }
 
-	float1 operator != (const float1& f1, const float1& f2) { return float1(_hlslpp_cmpneq1_ps(f1.vec, f2.vec)); }
-	float2 operator != (const float2& f1, const float2& f2) { return float2(_hlslpp_cmpneq1_ps(f1.vec, f2.vec)); }
-	float3 operator != (const float3& f1, const float3& f2) { return float3(_hlslpp_cmpneq1_ps(f1.vec, f2.vec)); }
-	float4 operator != (const float4& f1, const float4& f2) { return float4(_hlslpp_cmpneq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float1 operator != (const float1& f1, const float1& f2) { return float1(_hlslpp_cmpneq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float2 operator != (const float2& f1, const float2& f2) { return float2(_hlslpp_cmpneq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3 operator != (const float3& f1, const float3& f2) { return float3(_hlslpp_cmpneq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float4 operator != (const float4& f1, const float4& f2) { return float4(_hlslpp_cmpneq1_ps(f1.vec, f2.vec)); }
 
-	float1 operator > (const float1& f1, const float1& f2) { return float1(_hlslpp_cmpgt1_ps(f1.vec, f2.vec)); }
-	float2 operator > (const float2& f1, const float2& f2) { return float2(_hlslpp_cmpgt1_ps(f1.vec, f2.vec)); }
-	float3 operator > (const float3& f1, const float3& f2) { return float3(_hlslpp_cmpgt1_ps(f1.vec, f2.vec)); }
-	float4 operator > (const float4& f1, const float4& f2) { return float4(_hlslpp_cmpgt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float1 operator > (const float1& f1, const float1& f2) { return float1(_hlslpp_cmpgt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float2 operator > (const float2& f1, const float2& f2) { return float2(_hlslpp_cmpgt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3 operator > (const float3& f1, const float3& f2) { return float3(_hlslpp_cmpgt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float4 operator > (const float4& f1, const float4& f2) { return float4(_hlslpp_cmpgt1_ps(f1.vec, f2.vec)); }
 
-	float1 operator >= (const float1& f1, const float1& f2) { return float1(_hlslpp_cmpge1_ps(f1.vec, f2.vec)); }
-	float2 operator >= (const float2& f1, const float2& f2) { return float2(_hlslpp_cmpge1_ps(f1.vec, f2.vec)); }
-	float3 operator >= (const float3& f1, const float3& f2) { return float3(_hlslpp_cmpge1_ps(f1.vec, f2.vec)); }
-	float4 operator >= (const float4& f1, const float4& f2) { return float4(_hlslpp_cmpge1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float1 operator >= (const float1& f1, const float1& f2) { return float1(_hlslpp_cmpge1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float2 operator >= (const float2& f1, const float2& f2) { return float2(_hlslpp_cmpge1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3 operator >= (const float3& f1, const float3& f2) { return float3(_hlslpp_cmpge1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float4 operator >= (const float4& f1, const float4& f2) { return float4(_hlslpp_cmpge1_ps(f1.vec, f2.vec)); }
 
-	float1 operator < (const float1& f1, const float1& f2) { return float1(_hlslpp_cmplt1_ps(f1.vec, f2.vec)); }
-	float2 operator < (const float2& f1, const float2& f2) { return float2(_hlslpp_cmplt1_ps(f1.vec, f2.vec)); }
-	float3 operator < (const float3& f1, const float3& f2) { return float3(_hlslpp_cmplt1_ps(f1.vec, f2.vec)); }
-	float4 operator < (const float4& f1, const float4& f2) { return float4(_hlslpp_cmplt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float1 operator < (const float1& f1, const float1& f2) { return float1(_hlslpp_cmplt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float2 operator < (const float2& f1, const float2& f2) { return float2(_hlslpp_cmplt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3 operator < (const float3& f1, const float3& f2) { return float3(_hlslpp_cmplt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float4 operator < (const float4& f1, const float4& f2) { return float4(_hlslpp_cmplt1_ps(f1.vec, f2.vec)); }
 
-	float1 operator <= (const float1& f1, const float1& f2) { return float1(_hlslpp_cmple1_ps(f1.vec, f2.vec)); }
-	float2 operator <= (const float2& f1, const float2& f2) { return float2(_hlslpp_cmple1_ps(f1.vec, f2.vec)); }
-	float3 operator <= (const float3& f1, const float3& f2) { return float3(_hlslpp_cmple1_ps(f1.vec, f2.vec)); }
-	float4 operator <= (const float4& f1, const float4& f2) { return float4(_hlslpp_cmple1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float1 operator <= (const float1& f1, const float1& f2) { return float1(_hlslpp_cmple1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float2 operator <= (const float2& f1, const float2& f2) { return float2(_hlslpp_cmple1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3 operator <= (const float3& f1, const float3& f2) { return float3(_hlslpp_cmple1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float4 operator <= (const float4& f1, const float4& f2) { return float4(_hlslpp_cmple1_ps(f1.vec, f2.vec)); }
 
 	hlslpp_inline float1 abs(const float1& f) { return float1(_hlslpp_abs_ps(f.vec)); }
 	hlslpp_inline float2 abs(const float2& f) { return float2(_hlslpp_abs_ps(f.vec)); }
@@ -1236,18 +1236,18 @@ namespace hlslpp
 	// in the global namespace. Due to implicit conversions, we need to clarify to the compiler which functions it needs to use.
 	//--------------------------------------------------------------------------------------------------------------------------
 
-	template<typename T> hlslpp_enable_if_return(T, float1) fmod(const float1& f1, T f2) { return fmod(f1, float1(f2)); }
-	template<typename T> hlslpp_enable_if_return(T, float1) fmod(T f1, const float1& f2) { return fmod(float1(f1), f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) fmod(const float1& f1, T f2) { return fmod(f1, float1(f2)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) fmod(T f1, const float1& f2) { return fmod(float1(f1), f2); }
 
-	template<int X, int Y> float1 max(const swizzle1<X>& s, const swizzle1<Y>& f) { return max(float1(s), float1(f)); }
-	template<int X> float1 max(const swizzle1<X>& s, const swizzle1<X>& f) { return max(float1(s), float1(f)); }
+	template<int X, int Y> hlslpp_inline float1 max(const swizzle1<X>& s, const swizzle1<Y>& f) { return max(float1(s), float1(f)); }
+	template<int X> hlslpp_inline float1 max(const swizzle1<X>& s, const swizzle1<X>& f) { return max(float1(s), float1(f)); }
 
-	template<int X, int Y> float1 min(const swizzle1<X>& s, const swizzle1<Y>& f) { return min(float1(s), float1(f)); }
-	template<int X> float1 min(const swizzle1<X>& s, const swizzle1<X>& f) { return min(float1(s), float1(f)); }
+	template<int X, int Y> hlslpp_inline float1 min(const swizzle1<X>& s, const swizzle1<Y>& f) { return min(float1(s), float1(f)); }
+	template<int X> hlslpp_inline float1 min(const swizzle1<X>& s, const swizzle1<X>& f) { return min(float1(s), float1(f)); }
 
-	template<typename T> hlslpp_enable_if_return(T, float1) pow(const float1& f1, T f2) { return pow(f1, float1(f2)); }
-	template<typename T> hlslpp_enable_if_return(T, float1) pow(T f1, const float1& f2) { return pow(float1(f1), f2); }
-	template<int X, int Y> float1 pow(const swizzle1<X>& s, const swizzle1<Y>& f) { return pow(float1(s), float1(f)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) pow(const float1& f1, T f2) { return pow(f1, float1(f2)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) pow(T f1, const float1& f2) { return pow(float1(f1), f2); }
+	template<int X, int Y> hlslpp_inline float1 pow(const swizzle1<X>& s, const swizzle1<Y>& f) { return pow(float1(s), float1(f)); }
 
 	template<int X> hlslpp_inline float1 abs(const swizzle1<X>& s) { return abs(float1(s)); }
 	template<int X> hlslpp_inline float1 acos(const swizzle1<X>& s) { return acos(float1(s)); }
