@@ -1290,7 +1290,7 @@ namespace hlslpp
 	template<int X>
 	swizzle1<X>& swizzle1<X>::operator = (const float1& f)
 	{
-		vec = _hlslpp_blend_ps(vec, f.vec, HLSLPP_COMPONENT_X(X)); return *this;
+		vec = _hlslpp_blend_ps(vec, (swizzle<0, X>(f.vec)), HLSLPP_COMPONENT_X(X)); return *this;
 	}
 
 	template<int X, int Y>
