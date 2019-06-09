@@ -76,6 +76,12 @@ namespace hlslpp
 		return _hlslpp_mul_ps(trnc, y);
 	}
 
+	hlslpp_inline void _hlslpp_modf_ps(n128 x, n128& intPart, n128& fracPart)
+	{
+		intPart = _hlslpp_trunc_ps(x);
+		fracPart = _hlslpp_sub_ps(x, intPart);
+	}
+
 	// Returns true if x is not +infinity or -infinity
 	hlslpp_inline n128 _hlslpp_isfinite_ps(n128 x)
 	{
@@ -1140,6 +1146,38 @@ namespace hlslpp
 	hlslpp_inline float2 max(const float2& f1, const float2& f2) { return float2(_hlslpp_max_ps(f1.vec, f2.vec)); }
 	hlslpp_inline float3 max(const float3& f1, const float3& f2) { return float3(_hlslpp_max_ps(f1.vec, f2.vec)); }
 	hlslpp_inline float4 max(const float4& f1, const float4& f2) { return float4(_hlslpp_max_ps(f1.vec, f2.vec)); }
+
+	hlslpp_inline float1 modf(const float1& f1, float1& integerPart)
+	{
+		n128 signedFrac, signedInteger;
+		_hlslpp_modf_ps(f1.vec, signedInteger, signedFrac);
+		integerPart = float1(signedInteger);
+		return float1(signedFrac);
+	}
+
+	hlslpp_inline float2 modf(const float2& f1, float2& integerPart)
+	{
+		n128 signedFrac, signedInteger;
+		_hlslpp_modf_ps(f1.vec, signedInteger, signedFrac);
+		integerPart = float2(signedInteger);
+		return float2(signedFrac);
+	}
+
+	hlslpp_inline float3 modf(const float3& f1, float3& integerPart)
+	{ 
+		n128 signedFrac, signedInteger;
+		_hlslpp_modf_ps(f1.vec, signedInteger, signedFrac);
+		integerPart = float3(signedInteger);
+		return float3(signedFrac);
+	}
+
+	hlslpp_inline float4 modf(const float4& f1, float4& integerPart)
+	{
+		n128 signedFrac, signedInteger;
+		_hlslpp_modf_ps(f1.vec, signedInteger, signedFrac);
+		integerPart = float4(signedInteger);
+		return float4(signedFrac);
+	}
 
 	hlslpp_inline float1 normalize(const float1&/* f*/) { return float1(1.0f); }
 	hlslpp_inline float2 normalize(const float2& f) { return float2(_hlslpp_div_ps(f.vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot2_ps(f.vec, f.vec))))); }
