@@ -91,6 +91,12 @@ namespace hlslpp
 		return _hlslpp_mul_pd(trnc, y);
 	}
 
+	hlslpp_inline void _hlslpp_modf_pd(n128d x, n128d& intPart, n128d& fracPart)
+	{
+		intPart = _hlslpp_trunc_pd(x);
+		fracPart = _hlslpp_sub_pd(x, intPart);
+	}
+
 	hlslpp_inline n128d _hlslpp_lerp_pd(n128d x, n128d y, n128d a)
 	{
 		n128d x_one_minus_a = _hlslpp_msub_pd(x, x, a); // x * (1 - a)
@@ -815,6 +821,40 @@ namespace hlslpp
 	hlslpp_inline double2 max(const double2& f1, const double2& f2) { return double2(_hlslpp_max_pd(f1.vec, f2.vec)); }
 	hlslpp_inline double3 max(const double3& f1, const double3& f2) { return double3(_hlslpp_max_pd(f1.vec0, f2.vec0), _hlslpp_max_pd(f1.vec1, f2.vec1)); }
 	hlslpp_inline double4 max(const double4& f1, const double4& f2) { return double4(_hlslpp_max_pd(f1.vec0, f2.vec0), _hlslpp_max_pd(f1.vec1, f2.vec1)); }
+
+	hlslpp_inline double1 modf(const double1& f1, double1& integerPart)
+	{
+		n128d signedFrac, signedInteger;
+		_hlslpp_modf_pd(f1.vec, signedInteger, signedFrac);
+		integerPart = double1(signedInteger);
+		return double1(signedFrac);
+	}
+
+	hlslpp_inline double2 modf(const double2& f1, double2& integerPart)
+	{
+		n128d signedFrac, signedInteger;
+		_hlslpp_modf_pd(f1.vec, signedInteger, signedFrac);
+		integerPart = double2(signedInteger);
+		return double2(signedFrac);
+	}
+
+	hlslpp_inline double3 modf(const double3& f1, double3& integerPart)
+	{
+		n128d signedFrac0, signedInteger0, signedFrac1, signedInteger1;
+		_hlslpp_modf_pd(f1.vec0, signedInteger0, signedFrac0);
+		_hlslpp_modf_pd(f1.vec1, signedInteger1, signedFrac1);
+		integerPart = double3(signedInteger0, signedInteger1);
+		return double3(signedFrac0, signedFrac1);
+	}
+
+	hlslpp_inline double4 modf(const double4& f1, double4& integerPart)
+	{
+		n128d signedFrac0, signedInteger0, signedFrac1, signedInteger1;
+		_hlslpp_modf_pd(f1.vec0, signedInteger0, signedFrac0);
+		_hlslpp_modf_pd(f1.vec1, signedInteger1, signedFrac1);
+		integerPart = double4(signedInteger0, signedInteger1);
+		return double4(signedFrac0, signedFrac1);
+	}
 
 	hlslpp_inline double1 radians(const double1& f) { return double1(_hlslpp_mul_pd(f.vec, d2_deg2rad)); }
 	hlslpp_inline double2 radians(const double2& f) { return double2(_hlslpp_mul_pd(f.vec, d2_deg2rad)); }
