@@ -31,6 +31,11 @@ workspace("hlsl++")
 	configurations { "Debug", "Release" }
 	location (Workspace)
 	
+	flags
+	{
+		"multiprocessorcompile", -- /MP
+	}
+	
 	includedirs
 	{
 		includeDir,
@@ -131,7 +136,6 @@ project ("hlsl++")
 	language("c++")
 	files
 	{
-		srcDir.."/hlsl++.cpp",
 		includeDir.."/**.h",
 		includeDir.."/*.natvis"
 	}
@@ -141,7 +145,8 @@ project (UnitTestProject)
 	--links { "hlsl++" }
 	files
 	{
-		srcDir.."/hlsl++_unit_tests.cpp"
+		srcDir.."/*.cpp",
+		srcDir.."/*.h",
 	}
 	
 	filter { "platforms:"..PlatformAndroidARM }
