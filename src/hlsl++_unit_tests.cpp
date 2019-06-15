@@ -3,14 +3,6 @@
 // Hacky but needs FLOAT64
 #include "hlsl++_unit_tests.h"
 
-#if !defined(_XBOX) && (_MSC_VER >= 1900)
-#define HLSLPP_HAS_CHRONO
-#endif
-
-#if defined(HLSLPP_HAS_CHRONO)
-#include <chrono>
-#endif
-
 const float deg2rad = 3.14159265f / 180.0f;
 
 namespace hlslpp_unit
@@ -293,34 +285,6 @@ namespace hlslpp_unit
 	}
 
 }
-
-class Timer
-{
-private:
-
-#if defined(HLSLPP_HAS_CHRONO)
-	std::chrono::high_resolution_clock::time_point m_startTime;
-	std::chrono::high_resolution_clock::time_point m_endTime;
-#endif
-
-public:
-	void Start()
-	{
-#if defined(HLSLPP_HAS_CHRONO)
-		m_startTime = std::chrono::high_resolution_clock::now();
-#endif
-	}
-
-	double Get()
-	{
-#if defined(HLSLPP_HAS_CHRONO)
-		m_endTime = std::chrono::high_resolution_clock::now();
-		return std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count() / 1e9f;
-#else
-		return 0.0f;
-#endif
-	}
-};
 
 void RunUnitTestsMatrixFloat();
 

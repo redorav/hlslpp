@@ -9,6 +9,14 @@
 #include <algorithm>
 #include <cassert>
 
+#if !defined(_XBOX) && (_MSC_VER >= 1900)
+#define HLSLPP_HAS_CHRONO
+#endif
+
+#if defined(HLSLPP_HAS_CHRONO)
+#include <chrono>
+#endif
+
 // Force hlslpp and std to live in the same namespace to account for name clashes and ambiguities
 using namespace std;
 using namespace hlslpp;
@@ -57,7 +65,34 @@ namespace hlslpp_unit
 			uint32_t exponent : 8;
 			uint32_t sign : 1;
 		} parts;
+	};
 
+	class Timer
+	{
+		private:
+
+		#if defined(HLSLPP_HAS_CHRONO)
+		std::chrono::high_resolution_clock::time_point m_startTime;
+		std::chrono::high_resolution_clock::time_point m_endTime;
+		#endif
+
+		public:
+		void Start()
+		{
+			#if defined(HLSLPP_HAS_CHRONO)
+			m_startTime = std::chrono::high_resolution_clock::now();
+			#endif
+		}
+
+		double Get()
+		{
+			#if defined(HLSLPP_HAS_CHRONO)
+			m_endTime = std::chrono::high_resolution_clock::now();
+			return std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count() / 1e9f;
+			#else
+			return 0.0f;
+			#endif
+		}
 	};
 
 	void eq(float a, float b, float tolerance = 0.0f);
