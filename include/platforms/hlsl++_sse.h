@@ -79,7 +79,7 @@ typedef __m256i n256i;
 
 #define _hlslpp_madd_ps(x, y, z)				_mm_fmadd_ps((x), (y), (z))
 #define _hlslpp_msub_ps(x, y, z)				_mm_fmsub_ps((x), (y), (z))
-#define _hlslpp_subm_ps(x, y, z)				_mm_fnmadd_ps((x), (y), (z)))
+#define _hlslpp_subm_ps(x, y, z)				_mm_fnmadd_ps((x), (y), (z))
 
 #else
 
