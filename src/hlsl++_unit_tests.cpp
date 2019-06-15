@@ -402,21 +402,6 @@ void RunExperiments()
 	//printf("%f %f %f %f\n", q3.x, q3.y, q3.z, q3.w);
 }
 
-// Temporary until we properly do it multiplatform
-#if defined(_MSC_VER) && defined(_WIN64)
-extern "C" unsigned __int64 __rdtsc();
-#pragma intrinsic(__rdtsc)
-inline uint64_t ClockCycleCount()
-{
-	return __rdtsc();
-}
-#else
-inline uint64_t ClockCycleCount()
-{
-	return 0;
-}
-#endif
-
 void RunSpeedTests()
 {
 	using namespace hlslpp_unit;
