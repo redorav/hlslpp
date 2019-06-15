@@ -129,4 +129,44 @@ namespace hlslpp_unit
 	typedef float(*ScalarFunc)(float);
 
 	void maxErrorExhaustive(Vec4Func vectorFunction, ScalarFunc scalarFunction, const char* funcName, float rangeStart, float rangeEnd);
+
+	template<typename T>
+	struct TimingStats
+	{
+		uint64_t totalCycles;
+		double cyclesPerLoop;
+		double totalTime;
+		double timePerLoop;
+
+		T result;
+	};
+
+	template<typename T, uint32_t iterations, typename Fn>
+	TimingStats<T> benchmark(const char* functionName, Fn fn)
+	{
+		TimingStats<T> stats;
+		Timer timer;
+		uint64_t startCycles = ClockCycleCount();
+
+		T result;
+		timer.Start();
+
+		for (uint32_t i = 0; i < iterations; ++i)
+		{
+			result = fn();
+		}
+
+		double elapsedTime = timer.Get();
+		uint64_t endCycles = ClockCycleCount();
+
+		stats.totalCycles = endCycles - startCycles;
+		stats.result = result;
+		stats.cyclesPerLoop = (double)stats.totalCycles / (double)iterations;
+		stats.totalTime = elapsedTime;
+		stats.timePerLoop = (double)stats.totalTime / (double)iterations;
+
+		printf("%10s: Cycles: %10.6f, Elapsed: %3.6f\n", functionName, stats.cyclesPerLoop, stats.totalTime);
+
+		return stats;
+	}
 }

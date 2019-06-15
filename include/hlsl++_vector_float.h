@@ -364,7 +364,7 @@ namespace hlslpp
 		result = _hlslpp_madd_ps(x, result, asinacos_c2);
 		result = _hlslpp_madd_ps(x, result, asinacos_c1);
 		result = _hlslpp_madd_ps(x, result, asinacos_c0);
-		result = _hlslpp_sub_ps(f4_pi2, _hlslpp_mul_ps(result, sqrt1minusx));
+		result = _hlslpp_subm_ps(f4_pi2, result, sqrt1minusx); // pi/2 - result * sqrt(1 - x)
 
 		result = _hlslpp_sel_ps(result, _hlslpp_neg_ps(result), ltZero);	// Select the [0, 1] or [-1, 0] result
 

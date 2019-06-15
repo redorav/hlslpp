@@ -455,63 +455,98 @@ inline uint64_t ClockCycleCount()
 
 void RunSpeedTests()
 {
+	using namespace hlslpp_unit;
+
 	float f1 = (rand() % 1000) / 100.0f;
 	float f2 = (rand() % 1000) / 100.0f;
 	float f3 = (rand() % 1000) / 100.0f;
 	float f4 = (rand() % 1000) / 100.0f;
 
-	float4 v1(f1);
-	float4 v2(2.1f);
-	float4 v3(f3);
-	float4 v4(f4);
+	float3 v3_1(f1);
+	float3 v3_2(f2);
+	float3 v3_3(f3);
+	float3 v3_4(f4);
 
-	float3 v5(f4);
+	float4 v4_1(f1);
+	float4 v4_2(f2);
+	float4 v4_3(f3);
+	float4 v4_4(f4);
+
+	bool b1 = false;
+
+	quaternion q1 = quaternion(f1, f2, f3, f4);
+	quaternion q2 = quaternion(f4, f1, f3, f2);
 
 	float4x4 mat_foo_4x4 = float4x4(10, 20, 1, 1,
 		78, 5, 2, 8,
 		14, 5, 5, 6,
 		8, 4, 5, 6);
 
-	float1 dp = 1.0f;
+	float1 t1_1 = f1;
+	float1 t1_2 = f2;
+	float1 t1_3 = f3;
 
-	float1 verify = dot(v3, v4);
+	const long int iter = 100000000;
 
-	quaternion q1 = quaternion(f1, f2, f3, f4);
-	quaternion q2 = quaternion(f4, f1, f3, f2);
-
-	const long int iter = 1000000000;
-	Timer timer;
-
-	timer.Start();
-
-	uint64_t clockStart = ClockCycleCount();
-
-	for (long int i = 0; i < iter; ++i)
-	{
-		q1 = slerp(q1, q2, verify);// *v5;
-		//mat_foo1_4x4 = inverse(mat_foo_4x4);
-		//dp = dot(v1, v4 * dp);
-		//v4 = v4.xxxx + v3.yyzw;
-		//Vector4 yyzw = Vector4(v3f.y, v3f.y, v3f.z, v3f.w);
-		//Vector4 xxxx = Vector4(v4f.x, v4f.x, v4f.x, v4f.x);
-		//v4f = xxxx + yyzw;
-	}
-	double time = timer.Get();
-
-	uint64_t clockEnd = ClockCycleCount();
-
-	uint64_t totalCycles = clockEnd - clockStart;
-
-	double cyclesPerOperation = totalCycles / (double)iter;
-
-	printf("float4: %f, %f, %f, %f = %f\n", (float)q1.x, (float)q1.y, (float)q1.z, (float)q1.w, time);
+	//printf("float4: %f, %f, %f, %f = %f\n", (float)v4.x, (float)v4.y, (float)v4.z, (float)v4.w, time);
 	//printf("Vector4: %f, %f, %f, %f\n\n", (float)v4f.x, (float)v4f.y, (float)v4f.z, (float)v4f.w);
 	//printf("float4x4: %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f\n\n", 
 	//	(float)mat_foo_4x4._m00, (float)mat_foo_4x4._m01, (float)mat_foo_4x4._m02, (float)mat_foo_4x4._m03,
 	//	(float)mat_foo_4x4._m10, (float)mat_foo_4x4._m11, (float)mat_foo_4x4._m12, (float)mat_foo_4x4._m13,
 	//	(float)mat_foo_4x4._m20, (float)mat_foo_4x4._m21, (float)mat_foo_4x4._m22, (float)mat_foo_4x4._m23,
 	//	(float)mat_foo_4x4._m30, (float)mat_foo_4x4._m31, (float)mat_foo_4x4._m32, (float)mat_foo_4x4._m33);
-	printf("Result: %f, Cycles/Loop: %f, Elapsed: %f\n", (float)dp.x, cyclesPerOperation, time);
+	//printf("Result: %f, Cycles/Loop: %f, Elapsed: %f\n", (float)dp.x, cyclesPerOperation, time);
+
+	benchmark<float4, iter>("abs", [&]() { v4_1 = abs(v4_1); return v4_1; });
+	benchmark<float4, iter>("acos", [&]() { v4_1 = acos(v4_1); return v4_1; });
+	benchmark<float4, iter>("all", [&]() { v4_1 = all(v4_1); return v4_1; });
+	benchmark<float4, iter>("any", [&]() { v4_1 = any(v4_1); return v4_1; });
+	benchmark<float4, iter>("asin", [&]() { v4_1 = asin(v4_1); return v4_1; });
+	benchmark<float4, iter>("atan", [&]() { v4_1 = atan(v4_1); return v4_1; });
+	benchmark<float4, iter>("ceil", [&]() { v4_1 = ceil(v4_1); return v4_1; });
+	benchmark<float4, iter>("clamp", [&]() { v4_1 = clamp(v4_1, v4_2, v4_3); return v4_1; });
+	benchmark<float4, iter>("cos", [&]() { v4_1 = cos(v4_1); return v4_1; });
+	benchmark<float4, iter>("cosh", [&]() { v4_1 = cosh(v4_1); return v4_1; });
+	benchmark<float3, iter>("cross", [&]() { v3_1 = cross(v3_1, v3_2); return v3_1; });
+	benchmark<float4, iter>("degrees", [&]() { v4_1 = degrees(v4_1); return v4_1; });
+	benchmark<float4, iter>("dot", [&]() { v4_1 = dot(v4_1, v4_2).xxxx; return v4_1; });
+	benchmark<float4, iter>("floor", [&]() { v4_1 = floor(v4_1); return v4_1; });
+	benchmark<float4, iter>("fmod", [&]() { v4_1 = fmod(v4_1, v4_2); return v4_1; });
+	benchmark<float4, iter>("frac", [&]() { v4_1 = frac(v4_1); return v4_1; });
+	benchmark<float4, iter>("exp", [&]() { v4_1 = exp(v4_1); return v4_1; });
+	benchmark<float4, iter>("exp2", [&]() { v4_1 = exp2(v4_1); return v4_1; });
+	benchmark<float4, iter>("isfinite", [&]() { v4_1 = isfinite(v4_1); return v4_1; });
+	benchmark<float4, iter>("isinf", [&]() { v4_1 = isinf(v4_1); return v4_1; });
+	benchmark<float4, iter>("isnan", [&]() { v4_1 = isnan(v4_1); return v4_1; });
+	benchmark<float4, iter>("length", [&]() { v4_1 = length(v4_1).xxxx; return v4_1; });
+	benchmark<float4, iter>("lerp", [&]() { v4_1 = lerp(v4_1, v4_2, v4_3); return v4_1; });
+	benchmark<float4, iter>("log", [&]() { v4_1 = log(v4_1); return v4_1; });
+	benchmark<float4, iter>("log2", [&]() { v4_1 = log2(v4_1); return v4_1; });
+	benchmark<float4, iter>("log10", [&]() { v4_1 = log10(v4_1); return v4_1; });
+	benchmark<float4, iter>("max", [&]() { v4_1 = max(v4_1, v4_2); return v4_1; });
+	benchmark<float4, iter>("min", [&]() { v4_1 = min(v4_1, v4_2); return v4_1; });
+	benchmark<float4, iter>("normalize", [&]() { v4_1 = normalize(v4_1); return v4_1; });
+	benchmark<float4, iter>("pow", [&]() { v4_1 = pow(v4_1, v4_2); return v4_1; });
+	benchmark<float4, iter>("radians", [&]() { v4_1 = radians(v4_1); return v4_1; });
+	benchmark<float4, iter>("reflect", [&]() { v4_1 = reflect(v4_1, v4_2); return v4_1; });
+	benchmark<float4, iter>("refract", [&]() { v4_1 = refract(v4_1, v4_2, t1_1); return v4_1; });
+	benchmark<float4, iter>("round", [&]() { v4_1 = round(v4_1); return v4_1; });
+	benchmark<float4, iter>("rsqrt", [&]() { v4_1 = rsqrt(v4_1); return v4_1; });
+	benchmark<float4, iter>("saturate", [&]() { v4_1 = saturate(v4_1); return v4_1; });
+	benchmark<float4, iter>("sign", [&]() { v4_1 = sign(v4_1); return v4_1; });
+	benchmark<float4, iter>("sin", [&]() { v4_1 = sin(v4_1); return v4_1; });
+	benchmark<float4, iter>("sinh", [&]() { v4_1 = sinh(v4_1); return v4_1; });
+	benchmark<float4, iter>("smoothstep", [&]() { v4_1 = smoothstep(v4_1, v4_2, v4_3); return v4_1; });
+	benchmark<float4, iter>("sqrt", [&]() { v4_1 = sqrt(v4_1); return v4_1; });
+	benchmark<float4, iter>("step", [&]() { v4_1 = step(v4_1, v4_2); return v4_1; });
+	benchmark<float4, iter>("trunc", [&]() { v4_1 = trunc(v4_1); return v4_1; });
+	benchmark<float4, iter>("tan", [&]() { v4_1 = tan(v4_1); return v4_1; });
+	benchmark<float4, iter>("tanh", [&]() { v4_1 = tan(v4_1); return v4_1; });
+
+	benchmark<quaternion, iter>("axisangle", [&]() { q1 = axisangle(q1.xyz, t1_1); return q1; });
+	benchmark<quaternion, iter>("euler", [&]() { q1 = euler(q1.xyz); return q1; });
+	benchmark<quaternion, iter>("conjugate", [&]() { q1 = conjugate(q1); return q1; });
+	benchmark<quaternion, iter>("slerp", [&]() { q1 = slerp(q1, q2, t1_1); return q1; });
 }
 
 using namespace hlslpp;
@@ -530,9 +565,9 @@ int main(int /*argc*/, char** /*argv*/)
 
 #endif
 {
-	//RunUnitTests();
-	//RunExperiments();
-	//RunSpeedTests();
+	RunUnitTests();
+	RunExperiments();
+	RunSpeedTests();
 
 	printf("All tests completed successfully.\n");
 
