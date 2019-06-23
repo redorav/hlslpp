@@ -128,7 +128,12 @@ typedef __m256i n256i;
 #define _hlslpp_movehl_ps(x, y)					_mm_movehl_ps((x), (y))
 #define _hlslpp_movehdup_ps(x)					_mm_movehdup_ps((x))
 
+#if defined(__AVX__)
+#define _hlslpp_perm_ps(x, mask)				_mm_permute_ps((x), (mask))
+#else
 #define _hlslpp_perm_ps(x, mask)				_mm_shuffle_ps((x), (x), (mask))
+#endif
+
 #define _hlslpp_shuffle_ps(x, y, mask)			_mm_shuffle_ps((x), (y), (mask))
 
 // SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
@@ -347,9 +352,16 @@ hlslpp_inline void _hlslpp_store4x4_ps(float* p, const n128& x0, const n128& x1,
 #define _hlslpp_perm_epi32(x, mask)				_mm_shuffle_epi32((x), (mask))
 #define _hlslpp_shuffle_epi32(x, y, mask)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), (mask)))
 
+#if defined(__AVX2__)
+
+#define _hlslpp_blend_epi32(x, y, mask)			_mm_blend_epi32((x), (y), mask)
+
+#else
+
 // Reshuffle the mask because we use _mm_blend_epi16 as that's what's available in SSE4.1 
-// _mm_blend_epi32 was added later in AVX2
 #define _hlslpp_blend_epi32(x, y, mask)			_mm_blend_epi16((x), (y), ((mask & 1) * 3) | ((((mask >> 1) & 1) * 3) << 2) | ((((mask >> 2) & 1) * 3) << 4) | ((((mask >> 3) & 1) * 3) << 6))
+
+#endif
 
 #define _hlslpp_castps_si128(x)					_mm_castps_si128((x))
 #define _hlslpp_castsi128_ps(x)					_mm_castsi128_ps((x))

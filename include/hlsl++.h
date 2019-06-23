@@ -26,17 +26,45 @@
 #define HLSLPP_COMPONENT_XYZ(X, Y, Z)		((1 << X) | (1 << Y) | (1 << Z))
 #define HLSLPP_COMPONENT_XYZW(X, Y, Z, W)	((1 << X) | (1 << Y) | (1 << Z) | (1 << W))
 
-#if defined(_M_ARM) || defined(__arm__) || defined(_M_ARM64) || defined(__aarch64__)
-	
-	#include "platforms/hlsl++_neon.h"
+// We try to auto detect any vector libraries available to the system.
+// If we don't find any, fall back to scalar.
 
-#elif defined(_XBOX)
+#if !defined(HLSLPP_ARM) && (defined(_M_ARM) || defined(__arm__) || defined(_M_ARM64) || defined(__aarch64__))
 
-	#include "platforms/hlsl++_360.h"
+	#define HLSLPP_ARM
 
-#else
+#elif !defined(HLSLPP_360) && defined(_XBOX)
+
+	#define HLSLPP_360
+
+#elif !defined(HLSLP_SSE) && (defined(__SSE__) || (_M_IX86_FP > 0) || defined(_M_AMD64) || defined(_M_X64))
+
+	#define HLSLP_SSE
+
+#elif !defined(HLSLPP_SCALAR)
+
+	#define HLSLPP_SCALAR
+
+#endif
+
+// Despite the process above, we can still force the library to behave as scalar by defining the
+// implementation we want.
+
+#if defined(HLSLPP_SCALAR)
+
+	#include "platforms/hlsl++_scalar.h"
+
+#elif defined(HLSLP_SSE)
 
 	#include "platforms/hlsl++_sse.h"
+
+#elif defined(HLSLPP_ARM)
+
+	#include "platforms/hlsl++_neon.h"
+
+#elif defined(HLSLPP_360)
+
+	#include "platforms/hlsl++_360.h"
 
 #endif
 

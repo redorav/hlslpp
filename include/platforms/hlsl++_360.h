@@ -124,7 +124,11 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_blend_ps(x, y, mask)			__vsel((x), (y), __vset(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)))
 
+#define HLSLPP_DOT3_IMPLEMENTATION
+
 #define _hlslpp_dot3_ps(x, y)					__vmsum3fp((x), (y))
+
+#define HLSLPP_DOT4_IMPLEMENTATION
 
 #define _hlslpp_dot4_ps(x, y)					__vmsum4fp((x), (y))
 

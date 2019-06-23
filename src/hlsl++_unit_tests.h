@@ -215,7 +215,7 @@ namespace hlslpp_unit
 		stats.totalTime = elapsedTime;
 		stats.timePerLoop = (double)stats.totalTime / (double)iterations;
 
-		printf("%10s: Cycles: %10.6f, Elapsed: %3.6f\n", functionName, stats.cyclesPerLoop, stats.totalTime);
+		printf("%12s: Cycles: %10.6f Elapsed: %3.6f\n", functionName, stats.cyclesPerLoop, stats.totalTime);
 
 		return stats;
 	}

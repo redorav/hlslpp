@@ -22,7 +22,7 @@ namespace hlslpp
 		return result;
 	}
 
-#if !defined(_hlslpp_dot3_ps)
+#if !defined(HLSLPP_DOT3_IMPLEMENTATION)
 
 	hlslpp_inline n128 _hlslpp_dot3_ps(n128 x, n128 y)
 	{
@@ -40,7 +40,7 @@ namespace hlslpp
 
 #endif
 
-#if !defined(_hlslpp_dot4_ps)
+#if !defined(HLSLPP_DOT4_IMPLEMENTATION)
 
 	// Inspiration for some bits from https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-float-vector-sum-on-x86
 	// Can optimize further in SSE3 via _mm_movehdup_ps instead of _hlslpp_perm_yxwx_ps, but is slower in MSVC and marginally faster on clang
@@ -235,6 +235,8 @@ namespace hlslpp
 		return _hlslpp_cmpge1_ps(x, y);
 	}
 
+#if !defined(HLSLPP_SIN_IMPLEMENTATION)
+
 	// Uses a minimax polynomial fitted to the [-pi/2, pi/2] range
 	inline n128 _hlslpp_sin_ps(n128 x)
 	{
@@ -266,10 +268,18 @@ namespace hlslpp
 		return result;
 	}
 
+#endif
+
+#if !defined(HLSLPP_COS_IMPLEMENTATION)
+
 	hlslpp_inline n128 _hlslpp_cos_ps(n128 x)
 	{
 		return _hlslpp_sin_ps(_hlslpp_sub_ps(f4_pi2, x));
 	}
+
+#endif
+
+#if !defined(HLSLPP_TAN_IMPLEMENTATION)
 
 	// Uses a minimax polynomial fitted to the [-pi/4, pi/4] range
 	inline n128 _hlslpp_tan_ps(n128 x)
@@ -307,6 +317,10 @@ namespace hlslpp
 		return result;
 	}
 
+#endif
+
+#if !defined(HLSLPP_ACOS_IMPLEMENTATION)
+
 	// Max error vs. std::acos
 	// SSE : 1.54972076e-6
 	inline n128 _hlslpp_acos_ps(n128 x)
@@ -341,6 +355,10 @@ namespace hlslpp
 		return result;
 	}
 
+#endif
+
+#if !defined(HLSLPP_ASIN_IMPLEMENTATION)
+
 	// Max error vs. std::asin
 	// SSE : 1.5348196e-6
 	inline n128 _hlslpp_asin_ps(n128 x)
@@ -373,6 +391,10 @@ namespace hlslpp
 
 		return result;
 	}
+
+#endif
+
+#if !defined(HLSLPP_ATAN_IMPLEMENTATION)
 
 	// Max error vs. std::atan
 	// SSE : 2.74181366e-6
@@ -410,6 +432,10 @@ namespace hlslpp
 		return result;
 	}
 
+#endif
+
+#if !defined(HLSLPP_SINH_IMPLEMENTATION)
+
 	// sinh(x) = (exp(x) - exp(-x)) / 2.0
 	hlslpp_inline n128 _hlslpp_sinh_ps(n128 x)
 	{
@@ -417,6 +443,10 @@ namespace hlslpp
 		n128 exp_minusx = _hlslpp_rcp_ps(expx);
 		return _hlslpp_mul_ps(_hlslpp_sub_ps(expx, exp_minusx), f4_05);
 	}
+
+#endif
+
+#if !defined(HLSLPP_COSH_IMPLEMENTATION)
 
 	// cosh(x) = (exp(x) + exp(-x)) / 2.0
 	hlslpp_inline n128 _hlslpp_cosh_ps(n128 x)
@@ -426,6 +456,10 @@ namespace hlslpp
 		return _hlslpp_mul_ps(_hlslpp_add_ps(expx, exp_minusx), f4_05);
 	}
 
+#endif
+
+#if !defined(HLSLPP_TANH_IMPLEMENTATION)
+
 	// tanh(x) = (exp(x) - exp(-x)) / (exp(x) + exp(-x))
 	hlslpp_inline n128 _hlslpp_tanh_ps(n128 x)
 	{
@@ -433,6 +467,8 @@ namespace hlslpp
 		n128 exp_minusx = _hlslpp_rcp_ps(expx);
 		return _hlslpp_div_ps(_hlslpp_sub_ps(expx, exp_minusx), _hlslpp_add_ps(expx, exp_minusx));
 	}
+
+#endif
 
 	// https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reflect
 	// v = i - 2 * n * dot(i, n)

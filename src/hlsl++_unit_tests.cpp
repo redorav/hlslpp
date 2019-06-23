@@ -296,6 +296,8 @@ void RunUnitTestsVectorDouble();
 
 void RunUnitTests()
 {
+	printf("1) Unit tests started\n");
+
 	using namespace hlslpp_unit;
 
 	int seed = 0;// (int)time(NULL);
@@ -328,10 +330,14 @@ void RunUnitTests()
 
 	float3x3 mat3x3FromQuat = float3x3(q1);
 	float4x4 mat4x4FromQuat = float4x4(q1);
+
+	printf("Unit tests completed successfully\n");
 }
 
 void RunExperiments()
 {
+	printf("2) Experiment tests started\n");
+
 	float f1 = (rand() % 1000) / 100.0f;
 	float f2 = (rand() % 1000) / 100.0f;
 	float f3 = (rand() % 1000) / 100.0f;
@@ -400,10 +406,14 @@ void RunExperiments()
 	//float2 p = (float2) q1.xyzw;
 
 	//printf("%f %f %f %f\n", q3.x, q3.y, q3.z, q3.w);
+
+	printf("Experiment tests completed\n");
 }
 
 void RunSpeedTests()
 {
+	printf("3) Performance tests started\n");
+
 	using namespace hlslpp_unit;
 
 	float f1 = (rand() % 1000) / 100.0f;
@@ -446,6 +456,10 @@ void RunSpeedTests()
 	//	(float)mat_foo_4x4._m30, (float)mat_foo_4x4._m31, (float)mat_foo_4x4._m32, (float)mat_foo_4x4._m33);
 	//printf("Result: %f, Cycles/Loop: %f, Elapsed: %f\n", (float)dp.x, cyclesPerOperation, time);
 
+	benchmark<float4, iter>("wzyx", [&]() { v4_1 = v4_1.wzyx; return v4_1; });
+
+	benchmark<float4, iter>(">", [&]() { v4_1 = v4_1 > v4_2; return v4_1; });
+
 	benchmark<float4, iter>("abs", [&]() { v4_1 = abs(v4_1); return v4_1; });
 	benchmark<float4, iter>("acos", [&]() { v4_1 = acos(v4_1); return v4_1; });
 	benchmark<float4, iter>("all", [&]() { v4_1 = all(v4_1); return v4_1; });
@@ -477,6 +491,7 @@ void RunSpeedTests()
 	benchmark<float4, iter>("normalize", [&]() { v4_1 = normalize(v4_1); return v4_1; });
 	benchmark<float4, iter>("pow", [&]() { v4_1 = pow(v4_1, v4_2); return v4_1; });
 	benchmark<float4, iter>("radians", [&]() { v4_1 = radians(v4_1); return v4_1; });
+	benchmark<float4, iter>("rcp", [&]() { v4_1 = rcp(v4_1); return v4_1; });
 	benchmark<float4, iter>("reflect", [&]() { v4_1 = reflect(v4_1, v4_2); return v4_1; });
 	benchmark<float4, iter>("refract", [&]() { v4_1 = refract(v4_1, v4_2, t1_1); return v4_1; });
 	benchmark<float4, iter>("round", [&]() { v4_1 = round(v4_1); return v4_1; });
@@ -492,10 +507,17 @@ void RunSpeedTests()
 	benchmark<float4, iter>("tan", [&]() { v4_1 = tan(v4_1); return v4_1; });
 	benchmark<float4, iter>("tanh", [&]() { v4_1 = tan(v4_1); return v4_1; });
 
+	benchmark<float4, iter>("add", [&]() { v4_1 = v4_1 + v4_2; return v4_1; });
+	benchmark<float4, iter>("sub", [&]() { v4_1 = v4_1 - v4_2; return v4_1; });
+	benchmark<float4, iter>("mul", [&]() { v4_1 = v4_1 * v4_2; return v4_1; });
+	benchmark<float4, iter>("div", [&]() { v4_1 = v4_1 / v4_2; return v4_1; });
+	
 	benchmark<quaternion, iter>("axisangle", [&]() { q1 = axisangle(q1.xyz, t1_1); return q1; });
 	benchmark<quaternion, iter>("euler", [&]() { q1 = euler(q1.xyz); return q1; });
 	benchmark<quaternion, iter>("conjugate", [&]() { q1 = conjugate(q1); return q1; });
 	benchmark<quaternion, iter>("slerp", [&]() { q1 = slerp(q1, q2, t1_1); return q1; });
+
+	printf("Performance tests completed\n");
 }
 
 using namespace hlslpp;
@@ -517,8 +539,6 @@ int main(int /*argc*/, char** /*argv*/)
 	RunUnitTests();
 	RunExperiments();
 	RunSpeedTests();
-
-	printf("All tests completed successfully.\n");
 
 	getchar();
 }
