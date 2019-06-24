@@ -40,10 +40,15 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 
 ## How to use
 
-#include hlsl++.h in your project and add an include path to the directory where it lives. hlsl++.h pulls in other headers that live in the same folder.
+```cpp
+#include "hlsl++.h"
+```
+
+Remember to also add an include path to the directory where it lives. hlsl++.h pulls in other headers that live in the same folder. To force scalar version of the library, define HLSLPP_SCALAR.
 
 ## Features
 
+* SSE/AVX/AVX2, NEON, Xbox360, and scalar versions
 * float1, float2, float3, float4
 * int1, int2, int3, int4
 * double1, double2, double3, double4
