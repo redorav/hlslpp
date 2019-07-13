@@ -175,6 +175,8 @@ namespace hlslpp_unit
 
 	float frac(float x);
 
+	float lerpf(float x, float y, float a);
+
 	typedef float4(*Vec4Func)(const float4&);
 	typedef float(*ScalarFunc)(float);
 

@@ -622,20 +622,20 @@ void RunUnitTestsVectorFloat()
 	float1 vlength_swiz_3 = length(vfoo3.rgb);
 	float1 vlength_swiz_4 = length(vfoo4.wwxy);
 
-	float1 vlerp1 = lerp(vfoo1, vbar1, vbaz1);
-	float2 vlerp2 = lerp(vfoo2, vbar2, vbaz2);
-	float3 vlerp3 = lerp(vfoo3, vbar3, vbaz3);
-	float4 vlerp4 = lerp(vfoo4, vbar4, vbaz4);
+	float1 vlerp1 = lerp(vfoo1, vbar1, vbaz1);					eq(vlerp1, lerpf(vfoo1.r, vbar1.r, vbaz1.r));
+	float2 vlerp2 = lerp(vfoo2, vbar2, vbaz2);					eq(vlerp2, lerpf(vfoo2.r, vbar2.r, vbaz2.r), lerpf(vfoo2.g, vbar2.g, vbaz2.g));
+	float3 vlerp3 = lerp(vfoo3, vbar3, vbaz3);					eq(vlerp3, lerpf(vfoo3.r, vbar3.r, vbaz3.r), lerpf(vfoo3.g, vbar3.g, vbaz3.g), lerpf(vfoo3.b, vbar3.b, vbaz3.b));
+	float4 vlerp4 = lerp(vfoo4, vbar4, vbaz4);					eq(vlerp4, lerpf(vfoo4.r, vbar4.r, vbaz4.r), lerpf(vfoo4.g, vbar4.g, vbaz4.g), lerpf(vfoo4.b, vbar4.b, vbaz4.b), lerpf(vfoo4.a, vbar4.a, vbaz4.a));
 
-	float1 vlerpf_1 = lerp(vfoo1, vbar1, 0.3f);
-	float2 vlerpf_2 = lerp(vfoo2, vbar2, 0.3f);
-	float3 vlerpf_3 = lerp(vfoo3, vbar3, 0.5f);
-	float4 vlerpf_4 = lerp(vfoo4, vbar4, 0.7f);
+	float1 vlerpf_1 = lerp(vfoo1, vbar1, 0.3f);					eq(vlerpf_1, lerpf(vfoo1.r, vbar1.r, 0.3f));
+	float2 vlerpf_2 = lerp(vfoo2, vbar2, 0.3f);					eq(vlerpf_2, lerpf(vfoo2.r, vbar2.r, 0.3f), lerpf(vfoo2.g, vbar2.g, 0.3f));
+	float3 vlerpf_3 = lerp(vfoo3, vbar3, 0.5f);					eq(vlerpf_3, lerpf(vfoo3.r, vbar3.r, 0.5f), lerpf(vfoo3.g, vbar3.g, 0.5f), lerpf(vfoo3.b, vbar3.b, 0.5f));
+	float4 vlerpf_4 = lerp(vfoo4, vbar4, 0.7f);					eq(vlerpf_4, lerpf(vfoo4.r, vbar4.r, 0.7f), lerpf(vfoo4.g, vbar4.g, 0.7f), lerpf(vfoo4.b, vbar4.b, 0.7f), lerpf(vfoo4.a, vbar4.a, 0.7f));
 
-	float1 vlerp_swiz_1 = lerp(vfoo1, vbar1, vbaz1.r);
-	float2 vlerp_swiz_2 = lerp(vfoo2, vbar2, vbaz2.rg);
-	float3 vlerp_swiz_3 = lerp(vfoo3, vbar3, vbaz3.bgr);
-	float4 vlerp_swiz_4 = lerp(vfoo4, vbar4, vbaz4.rgba);
+	float1 vlerp_swiz_1 = lerp(vfoo1, vbar1, vbaz1.r);			eq(vlerp_swiz_1, lerpf(vfoo1.r, vbar1.r, vbaz1.r));
+	float2 vlerp_swiz_2 = lerp(vfoo2, vbar2, vbaz2.rg);			eq(vlerp_swiz_2, lerpf(vfoo2.r, vbar2.r, vbaz2.r), lerpf(vfoo2.g, vbar2.g, vbaz2.g));
+	float3 vlerp_swiz_3 = lerp(vfoo3, vbar3, vbaz3.bgr);		eq(vlerp_swiz_3, lerpf(vfoo3.r, vbar3.r, vbaz3.b), lerpf(vfoo3.g, vbar3.g, vbaz3.g), lerpf(vfoo3.b, vbar3.b, vbaz3.r));
+	float4 vlerp_swiz_4 = lerp(vfoo4, vbar4, vbaz4.rgba);		eq(vlerp_swiz_4, lerpf(vfoo4.r, vbar4.r, vbaz4.r), lerpf(vfoo4.g, vbar4.g, vbaz4.g), lerpf(vfoo4.b, vbar4.b, vbaz4.b), lerpf(vfoo4.a, vbar4.a, vbaz4.a));
 
 	float1 vlog1 = log(vfoo1);
 	float2 vlog2 = log(vfoo2);

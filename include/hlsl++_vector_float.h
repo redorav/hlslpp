@@ -100,14 +100,11 @@ namespace hlslpp
 		return _hlslpp_cmpneq_ps(x, x);
 	}
 
+	// Follows fxc in order of operations (a * (y - x) + x)
 	hlslpp_inline n128 _hlslpp_lerp_ps(n128 x, n128 y, n128 a)
 	{
-		// Slower
-		// n128 y_minus_x = _hlslpp_sub_ps(y, x);
-		// n128 result = _hlslpp_madd_ps(y_minus_x, a, x);
-
-		n128 x_one_minus_a = _hlslpp_msub_ps(x, x, a); // x * (1 - a)
-		n128 result = _hlslpp_madd_ps(y, a, x_one_minus_a);
+		n128 y_minus_x = _hlslpp_sub_ps(y, x);
+		n128 result = _hlslpp_madd_ps(a, y_minus_x, x);
 		return result;
 	}
 

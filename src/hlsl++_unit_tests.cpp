@@ -199,6 +199,11 @@ namespace hlslpp_unit
 		return fracPart;
 	}
 
+	float lerpf(float x, float y, float a)
+	{
+		return x + (y - x) * a;
+	}
+
 	void maxErrorExhaustive(Vec4Func vectorFunction, ScalarFunc scalarFunction, const char* funcName, float rangeStart, float rangeEnd)
 	{
 		struct ErrorInfo
