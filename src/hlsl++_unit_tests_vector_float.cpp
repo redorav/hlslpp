@@ -898,4 +898,16 @@ void RunUnitTestsVectorFloat()
 	store(vfoo2, vstore2);			eq(vfoo2, vstore2[0], vstore2[1]);
 	store(vfoo3, vstore3);			eq(vfoo3, vstore3[0], vstore3[1], vstore3[2]);
 	store(vfoo4, vstore4);			eq(vfoo4, vstore4[0], vstore4[1], vstore4[2], vstore4[3]);
+
+	// Loading
+
+	float vload1[1] = { f10 };
+	float vload2[2] = { f11, f12 };
+	float vload3[3] = { f13, f14, f15 };
+	float vload4[4] = { f16, f17, f18, f19 };
+
+	load(vfoo1, vload1);			eq(vfoo1, vload1[0]);
+	load(vfoo2, vload2);			eq(vfoo2, vload2[0], vload2[1]);
+	load(vfoo3, vload3);			eq(vfoo3, vload3[0], vload3[1], vload3[2]);
+	load(vfoo4, vload4);			eq(vfoo4, vload4[0], vload4[1], vload4[2], vload4[3]);
 }

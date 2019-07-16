@@ -226,6 +226,42 @@ hlslpp_inline void _hlslpp_store4x4_ps(float* p, const n128& x0, const n128& x1,
 	_mm_storeu_ps(p + 12, x3);
 }
 
+hlslpp_inline void _hlslpp_load1_ps(float* p, n128& x)
+{
+	x = _mm_load_ss(p);
+}
+
+// http://fastcpp.blogspot.com/2011/03/loading-3d-vector-into-sse-register.html
+hlslpp_inline void _hlslpp_load2_ps(float* p, n128& x)
+{
+	x = _mm_castsi128_ps(_mm_loadl_epi64(reinterpret_cast<__m128i*>(p)));
+}
+
+hlslpp_inline void _hlslpp_load3_ps(float* p, n128& x)
+{
+	x = _mm_movelh_ps(_mm_castsi128_ps(_mm_loadl_epi64(reinterpret_cast<__m128i*>(p))), _mm_load_ss(p + 2));
+}
+
+hlslpp_inline void _hlslpp_load4_ps(float* p, n128& x)
+{
+	x = _mm_loadu_ps(p);
+}
+
+hlslpp_inline void _hlslpp_load3x3_ps(float* p, n128& x0, n128& x1, n128& x2)
+{
+	x0 = _mm_loadu_ps(p);
+	x1 = _mm_loadu_ps(p + 3);
+	x2 = _mm_loadu_ps(p + 6);
+}
+
+hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n128& x3)
+{
+	x0 = _mm_loadu_ps(p);
+	x1 = _mm_loadu_ps(p + 4);
+	x2 = _mm_loadu_ps(p + 8);
+	x3 = _mm_loadu_ps(p + 12);
+}
+
 //---------------------
 // Float 256 (AVX/AVX2)
 //---------------------

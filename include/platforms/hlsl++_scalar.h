@@ -547,3 +547,24 @@ hlslpp_inline void _hlslpp_store4x4_ps(float* p, const vector_float4& v1, const 
 	p[ 8] = v3.x; p[ 9] = v3.y; p[10] = v3.z; p[11] = v3.w;
 	p[12] = v4.x; p[13] = v4.y; p[14] = v4.z; p[15] = v4.w;
 }
+
+
+hlslpp_inline void _hlslpp_load1_ps(float* p, n128& v) { v.x = p[0]; }
+hlslpp_inline void _hlslpp_load2_ps(float* p, n128& v) { v.x = p[0]; v.y = p[1]; }
+hlslpp_inline void _hlslpp_load3_ps(float* p, n128& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; }
+hlslpp_inline void _hlslpp_load4_ps(float* p, n128& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; v.w = p[3]; }
+
+hlslpp_inline void _hlslpp_load3x3_ps(float* p, n128& v1, n128& v2, n128& v3)
+{
+	v1.x = p[0]; v1.y = p[1]; v1.z = p[2];
+	v2.x = p[3]; v2.y = p[4]; v2.z = p[5];
+	v3.x = p[6]; v3.y = p[7]; v3.z = p[8];
+}
+
+hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& v1, n128& v2, n128& v3, n128& v4)
+{
+	v1.x = p[0];  v1.y = p[1];  v1.z = p[2];  v1.w = p[3];
+	v2.x = p[4];  v2.y = p[5];  v2.z = p[6];  v2.w = p[7];
+	v3.x = p[8];  v3.y = p[9];  v3.z = p[10]; v3.w = p[11];
+	v4.x = p[12]; v4.y = p[13]; v4.z = p[14]; v4.w = p[15];
+}

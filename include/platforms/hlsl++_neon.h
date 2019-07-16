@@ -432,3 +432,41 @@ hlslpp_inline void _hlslpp_store4x4_ps(float* p, n128 x0, n128 x1, n128 x2, n128
 	vst1q_f32(p + 8, x2);
 	vst1q_f32(p + 12, x3);
 }
+
+hlslpp_inline void _hlslpp_load1_ps(float* p, n128& x)
+{
+	x = vld1q_lane_f32(p, x, 0);
+}
+
+hlslpp_inline void _hlslpp_load2_ps(float* p, n128& x)
+{
+	float32x2_t t = vld1_f32(p); // Load the two values
+	x = vcombine_f32(t, t); // Replicate in the other two to create a float32x4_t
+}
+
+hlslpp_inline void _hlslpp_load3_ps(float* p, n128& x)
+{
+	float32x2_t t = vld1_f32(p); // Load the two values
+	x = vcombine_f32(t, t); // Replicate in the other two to create a float32x4_t
+	x = vld1q_lane_f32(p + 2, x, 2);
+}
+
+hlslpp_inline void _hlslpp_load4_ps(float* p, n128& x)
+{
+	x = vld1q_f32(p);
+}
+
+hlslpp_inline void _hlslpp_load3x3_ps(float* p, n128& x0, n128& x1, n128& x2)
+{
+	x0 = vld1q_f32(p);
+	x1 = vld1q_f32(p + 3);
+	x2 = vld1q_f32(p + 6);
+}
+
+hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n128& x3)
+{
+	x0 = vld1q_f32(p);
+	x1 = vld1q_f32(p + 4);
+	x2 = vld1q_f32(p + 8);
+	x3 = vld1q_f32(p + 12);
+}

@@ -1407,4 +1407,24 @@ namespace hlslpp
 	{
 		_hlslpp_store4_ps(f, v.vec);
 	}
+
+	hlslpp_inline void load(float1& v, float* f)
+	{
+		_hlslpp_load1_ps(f, v.vec);
+	}
+
+	hlslpp_inline void load(float2& v, float* f)
+	{
+		_hlslpp_load2_ps(f, v.vec);
+	}
+
+	hlslpp_inline void load(float3& v, float* f)
+	{
+		_hlslpp_load3_ps(f, v.vec);
+	}
+
+	hlslpp_inline void load(float4& v, float* f)
+	{
+		_hlslpp_load4_ps(f, v.vec);
+	}
 }
