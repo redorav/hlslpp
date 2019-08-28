@@ -113,8 +113,8 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_or_ps(x, y)						__vor((x), (y))
 #define _hlslpp_xor_ps(x, y)					__vxor((x), (y))
 
-#define _hlslpp_movelh_ps(x, y)					__vperm((x), (y), __vset(0, 1, 0, 1)
-#define _hlslpp_movehl_ps(x, y)					__vperm((y), (x), __vset(2, 3, 2, 3)
+#define _hlslpp_movelh_ps(x, y)					__vperm((x), (y), __vset(0, 1, 0, 1))
+#define _hlslpp_movehl_ps(x, y)					__vperm((y), (x), __vset(2, 3, 2, 3))
 #define _hlslpp_movehdup_ps(x)					__vpermwi((x), VPERMWI_CONST(1, 1, 3, 3))
 
 #define _hlslpp_perm_ps(x, mask)				__vpermwi((x), mask)

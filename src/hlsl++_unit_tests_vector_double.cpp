@@ -344,7 +344,7 @@ void RunUnitTestsVectorDouble()
 	bool dvall_swiz_1 = all(dvfoo1.r);		eq(dvall_swiz_1, dvfoo1.r != 0.0);
 	bool dvall_swiz_2 = all(dvfoo2.yx);		eq(dvall_swiz_2, dvfoo2.y != 0.0 && dvfoo2.x != 0.0);
 	bool dvall_swiz_3 = all(dvfoo3.bgr);	eq(dvall_swiz_3, dvfoo3.b != 0.0 && dvfoo3.g != 0.0 && dvfoo3.r != 0.0);
-	bool dvall_swiz_4 = all(dvfoo4.wwww);	eq(dvall_swiz_4, dvfoo4.w != 0.0 && dvfoo4.w != 0.0 && dvfoo4.w != 0.0 && dvfoo4.w != 0.0);
+	bool dvall_swiz_4 = all(dvfoo4.wwww);	eq(dvall_swiz_4, dvfoo4.w != 0.0);
 
 	bool dvany1 = any(dvfoo1);				eq(dvany1, dvfoo1.x != 0.0);
 	bool dvany2 = any(dvfoo2);				eq(dvany2, dvfoo2.x != 0.0 || dvfoo2.y != 0.0);
@@ -354,7 +354,7 @@ void RunUnitTestsVectorDouble()
 	bool dvany_swiz_1 = any(dvfoo1.r);		eq(dvany_swiz_1, dvfoo1.x != 0.0);
 	bool dvany_swiz_2 = any(dvfoo2.yx);		eq(dvany_swiz_2, dvfoo2.y != 0.0 || dvfoo2.x != 0.0);
 	bool dvany_swiz_3 = any(dvfoo3.bgr);	eq(dvany_swiz_3, dvfoo3.b != 0.0 || dvfoo3.g != 0.0 || dvfoo3.r != 0.0);
-	bool dvany_swiz_4 = any(dvfoo4.wwww);	eq(dvany_swiz_4, dvfoo4.w != 0.0 || dvfoo4.w != 0.0 || dvfoo4.w != 0.0 || dvfoo4.w != 0.0);
+	bool dvany_swiz_4 = any(dvfoo4.wwww);	eq(dvany_swiz_4, dvfoo4.w != 0.0);
 
 	double1 dvceil1 = ceil(dvfoo1);					eq(dvceil1, ceil((double)dvfoo1.x));
 	double2 dvceil2 = ceil(dvfoo2);					eq(dvceil2, ceil((double)dvfoo2.x), ceil((double)dvfoo2.y));

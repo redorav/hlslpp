@@ -434,7 +434,7 @@ void RunUnitTestsVectorFloat()
 	bool vall_swiz_1 = all(vfoo1.r);		eq(vall_swiz_1, vfoo1.r != 0.0f);
 	bool vall_swiz_2 = all(vfoo2.yx);		eq(vall_swiz_2, vfoo2.y != 0.0f && vfoo2.x != 0.0f);
 	bool vall_swiz_3 = all(vfoo3.bgr);		eq(vall_swiz_3, vfoo3.b != 0.0f && vfoo3.g != 0.0f && vfoo3.r != 0.0f);
-	bool vall_swiz_4 = all(vfoo4.wwww);		eq(vall_swiz_4, vfoo4.w != 0.0f && vfoo4.w != 0.0f && vfoo4.w != 0.0f && vfoo4.w != 0.0f);
+	bool vall_swiz_4 = all(vfoo4.wwww);		eq(vall_swiz_4, vfoo4.w != 0.0f);
 
 	bool vany1 = any(vfoo1);				eq(vany1, vfoo1.x != 0.0f);
 	bool vany2 = any(vfoo2);				eq(vany2, vfoo2.x != 0.0f || vfoo2.y != 0.0f);
@@ -444,7 +444,7 @@ void RunUnitTestsVectorFloat()
 	bool vany_swiz_1 = any(vfoo1.r);		eq(vany_swiz_1, vfoo1.x != 0.0f);
 	bool vany_swiz_2 = any(vfoo2.yx);		eq(vany_swiz_2, vfoo2.y != 0.0f || vfoo2.x != 0.0f);
 	bool vany_swiz_3 = any(vfoo3.bgr);		eq(vany_swiz_3, vfoo3.b != 0.0f || vfoo3.g != 0.0f || vfoo3.r != 0.0f);
-	bool vany_swiz_4 = any(vfoo4.wwww);		eq(vany_swiz_4, vfoo4.w != 0.0f || vfoo4.w != 0.0f || vfoo4.w != 0.0f || vfoo4.w != 0.0f);
+	bool vany_swiz_4 = any(vfoo4.wwww);		eq(vany_swiz_4, vfoo4.w != 0.0f);
 
 	float1 vacos1 = acos(vfoo1);
 	float2 vacos2 = acos(vfoo2);
