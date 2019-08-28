@@ -1927,15 +1927,16 @@ namespace hlslpp
 
 #else
 
+		// From the Intel Intrinsics Guide _MM_TRANSPOSE4_PS
 		n128 shuf_tmp_0 = _hlslpp_unpacklo_ps(m.vec0, m.vec1);
-		n128 shuf_tmp_1 = _hlslpp_unpacklo_ps(m.vec0, m.vec1);
-		n128 shuf_tmp_2 = _hlslpp_unpackhi_ps(m.vec2, m.vec3);
+		n128 shuf_tmp_1 = _hlslpp_unpackhi_ps(m.vec0, m.vec1);
+		n128 shuf_tmp_2 = _hlslpp_unpacklo_ps(m.vec2, m.vec3);
 		n128 shuf_tmp_3 = _hlslpp_unpackhi_ps(m.vec2, m.vec3);
 
 		n128 vec0 = _hlslpp_movelh_ps(shuf_tmp_0, shuf_tmp_2);
-		n128 vec1 = _hlslpp_movehl_ps(shuf_tmp_0, shuf_tmp_2);
+		n128 vec1 = _hlslpp_movehl_ps(shuf_tmp_2, shuf_tmp_0);
 		n128 vec2 = _hlslpp_movelh_ps(shuf_tmp_1, shuf_tmp_3);
-		n128 vec3 = _hlslpp_movehl_ps(shuf_tmp_1, shuf_tmp_3);
+		n128 vec3 = _hlslpp_movehl_ps(shuf_tmp_3, shuf_tmp_1);
 
 		return float4x4(vec0, vec1, vec2, vec3);
 
