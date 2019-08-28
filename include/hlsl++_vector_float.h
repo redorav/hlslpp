@@ -30,37 +30,12 @@ namespace hlslpp
 		// n128 result = _hlslpp_dp_ps(v1.xyzw, v2.xyzw, 0x7f);
 
 		// SSE2
-		n128 multi = _hlslpp_mul_ps(x, y);         // Multiply components together
-		n128 shuf1 = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
-		n128 add1 = _hlslpp_add_ps(shuf1, multi); // Contains x+y, _, _, _
-		n128 shuf2 = _hlslpp_perm_zzzz_ps(multi);  // Move z into x
+		n128 multi  = _hlslpp_mul_ps(x, y);         // Multiply components together
+		n128 shuf1  = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
+		n128 add1   = _hlslpp_add_ps(shuf1, multi); // Contains x+y, _, _, _
+		n128 shuf2  = _hlslpp_perm_zzzz_ps(multi);  // Move z into x
 		n128 result = _hlslpp_add_ss(add1, shuf2);  // Contains x+y+z, _, _, _
 		return result;
-	}
-
-#endif
-
-#if !defined(HLSLPP_DOT4_IMPLEMENTATION)
-
-	// Inspiration for some bits from https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-float-vector-sum-on-x86
-	// Can optimize further in SSE3 via _mm_movehdup_ps instead of _hlslpp_perm_yxwx_ps, but is slower in MSVC and marginally faster on clang
-	hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
-	{
-		// SSE3 slower
-		// n128 m      = _hlslpp_mul_ps(x, y);    // Multiply components together
-		// n128 h1     = _hlslpp_hadd_ps(m, m);   // Add once
-		// n128 result = _hlslpp_hadd_ps(h1, h1); // Add twice
-
-		// SSE4 slower
-		// n128 result = _hlslpp_dp_ps(x, y, 0xff);
-
-		// SSE2
-		n128 multi = _hlslpp_mul_ps(x, y);         // Multiply components
-		n128 shuf = _hlslpp_perm_yxwx_ps(multi);  // Move y into x, and w into z (ignore the rest)
-		n128 add = _hlslpp_add_ps(shuf, multi);  // Contains x+y, _, z+w, _
-		shuf = _hlslpp_movehl_ps(shuf, add); // Move (z + w) into x
-		add = _hlslpp_add_ss(add, shuf);    // Contains x+y+z+w, _, _, _
-		return add;
 	}
 
 #endif

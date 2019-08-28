@@ -1,6 +1,5 @@
 #include "hlsl++.h"
 
-// Hacky but needs FLOAT64
 #include "hlsl++_unit_tests.h"
 
 const float deg2rad = 3.14159265f / 180.0f;
@@ -357,10 +356,10 @@ void RunUnitTestsVectorInt()
 	//	//float4 inf = -float4::one() / float4::zero(); //assert(all(inf != inf).x != 0.0f);
 	//	//float4 nan = sqrt(-float4::one());
 
-	float f1 = (rand() % 1000) / 100.0f; float f5 = (rand() % 1000) / 100.0f; float f9 = (rand() % 1000) / 100.0f; float f13 = (rand() % 1000) / 100.0f; float f17 = (rand() % 1000) / 100.0f;
-	float f2 = (rand() % 1000) / 100.0f; float f6 = (rand() % 1000) / 100.0f; float f10 = (rand() % 1000) / 100.0f; float f14 = (rand() % 1000) / 100.0f; float f18 = (rand() % 1000) / 100.0f;
-	float f3 = (rand() % 1000) / 100.0f; float f7 = (rand() % 1000) / 100.0f; float f11 = (rand() % 1000) / 100.0f; float f15 = (rand() % 1000) / 100.0f; float f19 = (rand() % 1000) / 100.0f;
-	float f4 = (rand() % 1000) / 100.0f; float f8 = (rand() % 1000) / 100.0f; float f12 = (rand() % 1000) / 100.0f; float f16 = (rand() % 1000) / 100.0f; float f20 = (rand() % 1000) / 100.0f;
+	float f1 = (rand() % 1000) / 100.0f; float f5 = (rand() % 1000) / 100.0f; float f9 = (rand() % 1000) / 100.0f; //float f13 = (rand() % 1000) / 100.0f; float f17 = (rand() % 1000) / 100.0f;
+	float f2 = (rand() % 1000) / 100.0f; float f6 = (rand() % 1000) / 100.0f; float f10 = (rand() % 1000) / 100.0f; //float f14 = (rand() % 1000) / 100.0f; float f18 = (rand() % 1000) / 100.0f;
+	float f3 = (rand() % 1000) / 100.0f; float f7 = (rand() % 1000) / 100.0f; //float f11 = (rand() % 1000) / 100.0f; float f15 = (rand() % 1000) / 100.0f; float f19 = (rand() % 1000) / 100.0f;
+	float f4 = (rand() % 1000) / 100.0f; float f8 = (rand() % 1000) / 100.0f; //float f12 = (rand() % 1000) / 100.0f; float f16 = (rand() % 1000) / 100.0f; float f20 = (rand() % 1000) / 100.0f;
 
 	// Initialization
 

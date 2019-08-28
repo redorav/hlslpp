@@ -77,53 +77,6 @@ namespace hlslpp_unit
 
 #endif
 
-	void eq(const float2x2& v, float m00, float m01, float m10, float m11, float tolerance /*= 0.0f*/)
-	{
-		eq(v.f32[0], m00, tolerance);
-		eq(v.f32[1], m01, tolerance);
-
-		eq(v.f32[2], m10, tolerance);
-		eq(v.f32[3], m11, tolerance);
-	}
-
-	void eq(const float3x3& v, float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22, float tolerance /*= 0.0f*/)
-	{
-		eq(v._m00, m00, tolerance);
-		eq(v._m01, m01, tolerance);
-		eq(v._m02, m02, tolerance);
-
-		eq(v._m10, m10, tolerance);
-		eq(v._m11, m11, tolerance);
-		eq(v._m12, m12, tolerance);
-
-		eq(v._m20, m20, tolerance);
-		eq(v._m21, m21, tolerance);
-		eq(v._m22, m22, tolerance);
-	}
-
-	void eq(const float4x4& v, float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33, float tolerance /*= 0.0f*/)
-	{
-		eq(v._m00, m00, tolerance);
-		eq(v._m01, m01, tolerance);
-		eq(v._m02, m02, tolerance);
-		eq(v._m03, m03, tolerance);
-
-		eq(v._m10, m10, tolerance);
-		eq(v._m11, m11, tolerance);
-		eq(v._m12, m12, tolerance);
-		eq(v._m13, m13, tolerance);
-
-		eq(v._m20, m20, tolerance);
-		eq(v._m21, m21, tolerance);
-		eq(v._m22, m22, tolerance);
-		eq(v._m23, m23, tolerance);
-
-		eq(v._m30, m30, tolerance);
-		eq(v._m31, m31, tolerance);
-		eq(v._m32, m32, tolerance);
-		eq(v._m33, m33, tolerance);
-	}
-
 	void eq(float a, bool c)
 	{
 		bool equals = (a != 0.0f ? true : false) == c;
@@ -181,6 +134,140 @@ namespace hlslpp_unit
 	{
 		bool equals = a == c;
 		assert(equals);
+	}
+
+
+	void eq(const float1x1& m, float m00, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32[0], m00, tolerance);
+	}
+
+	void eq(const float1x2& m, float m00, float m01, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32[0], m00, tolerance);
+		eq(m.f32[1], m01, tolerance);
+	}
+
+	void eq(const float1x3& m, float m00, float m01, float m02, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32[0], m00, tolerance);
+		eq(m.f32[1], m01, tolerance);
+		eq(m.f32[2], m02, tolerance);
+	}
+	
+	void eq(const float1x4& m, float m00, float m01, float m02, float m03, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32[0], m00, tolerance);
+		eq(m.f32[1], m01, tolerance);
+		eq(m.f32[2], m02, tolerance);
+		eq(m.f32[3], m03, tolerance);
+	}
+
+	void eq(const float2x1& m, float m00, float m01, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32[0], m00, tolerance);
+		eq(m.f32[1], m01, tolerance);
+	}
+
+	void eq(const float2x2& m, float m00, float m01, float m10, float m11, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32[0], m00, tolerance);
+		eq(m.f32[1], m01, tolerance);
+
+		eq(m.f32[2], m10, tolerance);
+		eq(m.f32[3], m11, tolerance);
+	}
+
+	void eq(const float2x3& m, float m00, float m01, float m02, float m10, float m11, float m12, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32_0[0], m00, tolerance);
+		eq(m.f32_0[1], m01, tolerance);
+		eq(m.f32_0[2], m02, tolerance);
+
+		eq(m.f32_1[0], m10, tolerance);
+		eq(m.f32_1[1], m11, tolerance);
+		eq(m.f32_1[2], m12, tolerance);
+	}
+
+	void eq(const float2x4& m, float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32_0[0], m00, tolerance);
+		eq(m.f32_0[1], m01, tolerance);
+		eq(m.f32_0[2], m02, tolerance);
+		eq(m.f32_0[3], m03, tolerance);
+
+		eq(m.f32_1[0], m10, tolerance);
+		eq(m.f32_1[1], m11, tolerance);
+		eq(m.f32_1[2], m12, tolerance);
+		eq(m.f32_1[3], m13, tolerance);
+	}
+
+	void eq(const float3x1& m, float m00, float m01, float m02, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32[0], m00, tolerance);
+		eq(m.f32[1], m01, tolerance);
+		eq(m.f32[2], m02, tolerance);
+	}
+
+	void eq(const float3x2& m, float m00, float m01, float m10, float m11, float m20, float m21, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32_0[0], m00, tolerance); eq(m.f32_1[0], m01, tolerance);
+		eq(m.f32_0[1], m10, tolerance); eq(m.f32_1[1], m11, tolerance);
+		eq(m.f32_0[2], m20, tolerance); eq(m.f32_1[2], m21, tolerance);
+	}
+
+	void eq(const float3x3& m, float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22, float tolerance /*= 0.0f*/)
+	{
+		eq(m._m00, m00, tolerance); eq(m._m01, m01, tolerance); eq(m._m02, m02, tolerance);
+		eq(m._m10, m10, tolerance); eq(m._m11, m11, tolerance); eq(m._m12, m12, tolerance);
+		eq(m._m20, m20, tolerance); eq(m._m21, m21, tolerance); eq(m._m22, m22, tolerance);
+	}
+
+	void eq(const float3x4& m, float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32_0[0], m00, tolerance); eq(m.f32_0[1], m01, tolerance); eq(m.f32_0[2], m02, tolerance); eq(m.f32_0[3], m03, tolerance);
+		eq(m.f32_1[0], m10, tolerance); eq(m.f32_1[1], m11, tolerance); eq(m.f32_1[2], m12, tolerance); eq(m.f32_1[3], m13, tolerance);
+		eq(m.f32_2[0], m20, tolerance); eq(m.f32_2[1], m21, tolerance); eq(m.f32_2[2], m22, tolerance); eq(m.f32_2[3], m23, tolerance);
+	}
+
+	void eq(const float4x1& m, float m00, float m01, float m02, float m03, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32[0], m00, tolerance);
+		eq(m.f32[1], m01, tolerance);
+		eq(m.f32[2], m02, tolerance);
+		eq(m.f32[3], m03, tolerance);
+	}
+
+	void eq(const float4x2& m, 
+		float m00, float m01, 
+		float m10, float m11,
+		float m20, float m21,
+		float m30, float m31, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32_0[0], m00, tolerance); eq(m.f32_1[0], m01, tolerance);
+		eq(m.f32_0[1], m10, tolerance); eq(m.f32_1[1], m11, tolerance);
+		eq(m.f32_0[2], m20, tolerance); eq(m.f32_1[2], m21, tolerance);
+		eq(m.f32_0[3], m30, tolerance); eq(m.f32_1[3], m31, tolerance);
+	}
+
+	void eq(const float4x3& m,
+		float m00, float m01, float m02, 
+		float m10, float m11, float m12, 
+		float m20, float m21, float m22,
+		float m30, float m31, float m32, float tolerance /*= 0.0f*/)
+	{
+		eq(m.f32_0[0], m00, tolerance); eq(m.f32_1[0], m01, tolerance); eq(m.f32_2[0], m02, tolerance);
+		eq(m.f32_0[1], m10, tolerance); eq(m.f32_1[1], m11, tolerance); eq(m.f32_2[1], m12, tolerance);
+		eq(m.f32_0[2], m20, tolerance); eq(m.f32_1[2], m21, tolerance); eq(m.f32_2[2], m22, tolerance);
+		eq(m.f32_0[3], m30, tolerance); eq(m.f32_1[3], m31, tolerance); eq(m.f32_2[3], m32, tolerance);
+	}
+
+	void eq(const float4x4& m, float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33, float tolerance /*= 0.0f*/)
+	{
+		eq(m._m00, m00, tolerance); eq(m._m01, m01, tolerance); eq(m._m02, m02, tolerance); eq(m._m03, m03, tolerance);
+		eq(m._m10, m10, tolerance); eq(m._m11, m11, tolerance); eq(m._m12, m12, tolerance); eq(m._m13, m13, tolerance);
+		eq(m._m20, m20, tolerance); eq(m._m21, m21, tolerance); eq(m._m22, m22, tolerance); eq(m._m23, m23, tolerance);
+		eq(m._m30, m30, tolerance); eq(m._m31, m31, tolerance); eq(m._m32, m32, tolerance); eq(m._m33, m33, tolerance);
 	}
 
 	int32_t shift_left(int32_t a, int32_t b)
@@ -291,59 +378,55 @@ namespace hlslpp_unit
 
 }
 
-void RunUnitTestsMatrixFloat();
-
-void RunUnitTestsVectorFloat();
-
-void RunUnitTestsVectorInt();
-
-void RunUnitTestsVectorDouble();
-
-void RunUnitTests()
-{
-	printf("1) Unit tests started\n");
-
-	using namespace hlslpp_unit;
-
-	int seed = 0;// (int)time(NULL);
-	srand(seed);
-
-	RunUnitTestsVectorFloat();
-
-	RunUnitTestsVectorInt();
-
-	RunUnitTestsVectorDouble();
-
-	RunUnitTestsMatrixFloat();
-
-	// Quaternion tests
-
-	quaternion q1 = quaternion::identity();
-	quaternion q2 = quaternion(0.0f, 1.0f, 1.0f, 1.0f);
-
-	quaternion qeuler1 = euler(float3(90.0f * deg2rad, 45.0f * deg2rad, 0.0f * deg2rad));
-	quaternion qeuler2 = euler(float3(180.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
-
-	quaternion qaxisangle = axisangle(float3(0.0f, 1.0f, 0.0f), 1.57f);
-
-	quaternion slerp1 = slerp(q1, q2, 0.0f);
-	quaternion slerp2 = slerp(q1, q2, 1.0f);
-	
-	quaternion slerp3 = slerp(q1, q2, 0.5f);
-	
-	quaternion testq = quaternion(0.66519f, 0.1881441f, 0.282216f, 0.665190f);
-
-	float3x3 mat3x3FromQuat = float3x3(q1);
-	float4x4 mat4x4FromQuat = float4x4(q1);
-
-	printf("Unit tests completed successfully\n");
-}
-
 void RunExperiments()
 {
-	printf("2) Experiment tests started\n");
+	printf("1) Experiments started\n");
 
-	float f1 = (rand() % 1000) / 100.0f;
+	float4x4 m1 = float4x4(
+		1, 2, 3, 4, 
+		5, 6, 7, 8, 
+		9, 10, 11, 12, 
+		13, 14, 15, 16);
+
+	float4x4 m2 = float4x4(
+		17, 18, 19, 20, 
+		21, 22, 23, 24, 
+		25, 26, 27, 28, 
+		29, 30, 31, 32);
+
+	float4x4 m3 = float4x4(
+		3.01799f, 3.27862f, 1.23535f, 3.32619f,
+		0.56666f, 0.00888f, 0.42457f, 6.82070f,
+		2.56136f, 3.06511f, 3.61529f, 4.85567f,
+		4.81689f, 7.60904f, 7.15124f, 2.06395f
+	);
+
+	float4x4 m4x4_mul = mul(m1, m2);
+
+	float3x4 m3x4_1 = float3x4(
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 10, 11, 12
+	);
+
+	float3x4 m3x4_2 = mul(m3x4_1, m2);
+
+	float4x1 m4x1_1 = float4x1(
+		5, 6, 7, 8
+	);
+
+	float4x1 m4x1_2 = mul(m2, m4x1_1);
+
+	float4x2 m4x2_1 = float4x2(
+		5, 6, 7, 8,
+		21, 22, 23, 24
+	);
+
+	float4x2 m4x2_2 = mul(m2, m4x2_1);
+
+	float1 d = determinant(m3);
+
+	float f1 = (rand() % 1000) / 100.0f; 
 	float f2 = (rand() % 1000) / 100.0f;
 	float f3 = (rand() % 1000) / 100.0f;
 	float f4 = (rand() % 1000) / 100.0f;
@@ -412,19 +495,89 @@ void RunExperiments()
 
 	//printf("%f %f %f %f\n", q3.x, q3.y, q3.z, q3.w);
 
-	printf("Experiment tests completed\n");
+	printf("Experiments completed\n\n");
 }
 
-void RunSpeedTests()
+void RunUnitTestsMatrixFloat();
+
+void RunUnitTestsVectorFloat();
+
+void RunUnitTestsVectorInt();
+
+void RunUnitTestsVectorDouble();
+
+void RunUnitTests()
+{
+	printf("2) Unit tests started\n");
+
+	using namespace hlslpp_unit;
+
+	int seed = 0;// (int)time(NULL);
+	srand(seed);
+
+	RunUnitTestsVectorFloat();
+
+	RunUnitTestsVectorInt();
+
+	RunUnitTestsVectorDouble();
+
+	RunUnitTestsMatrixFloat();
+
+	// Quaternion tests
+
+	quaternion q1 = quaternion::identity();
+	quaternion q2 = quaternion(0.0f, 1.0f, 1.0f, 1.0f);
+
+	quaternion qeuler1 = euler(float3(90.0f * deg2rad, 45.0f * deg2rad, 0.0f * deg2rad));
+	quaternion qeuler2 = euler(float3(180.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
+
+	quaternion qaxisangle = axisangle(float3(0.0f, 1.0f, 0.0f), 1.57f);
+
+	quaternion slerp1 = slerp(q1, q2, 0.0f);
+	quaternion slerp2 = slerp(q1, q2, 1.0f);
+	
+	quaternion slerp3 = slerp(q1, q2, 0.5f);
+	
+	quaternion testq = quaternion(0.66519f, 0.1881441f, 0.282216f, 0.665190f);
+
+	float3x3 mat3x3FromQuat = float3x3(q1);
+	float4x4 mat4x4FromQuat = float4x4(q1);
+
+	printf("Unit tests completed\n\n");
+}
+
+void RunPerformanceTests()
 {
 	printf("3) Performance tests started\n");
 
 	using namespace hlslpp_unit;
 
-	float f1 = (rand() % 1000) / 100.0f;
-	float f2 = (rand() % 1000) / 100.0f;
-	float f3 = (rand() % 1000) / 100.0f;
-	float f4 = (rand() % 1000) / 100.0f;
+	float f1  = (rand() % 1000) / 100.0f;
+	float f2  = (rand() % 1000) / 100.0f;
+	float f3  = (rand() % 1000) / 100.0f;
+	float f4  = (rand() % 1000) / 100.0f;
+	float f5  = (rand() % 1000) / 100.0f;
+	float f6  = (rand() % 1000) / 100.0f;
+	float f7  = (rand() % 1000) / 100.0f;
+	float f8  = (rand() % 1000) / 100.0f;
+	float f9  = (rand() % 1000) / 100.0f;
+	float f10 = (rand() % 1000) / 100.0f;
+	float f11 = (rand() % 1000) / 100.0f;
+	float f12 = (rand() % 1000) / 100.0f;
+	float f13 = (rand() % 1000) / 100.0f;
+	float f14 = (rand() % 1000) / 100.0f;
+	float f15 = (rand() % 1000) / 100.0f;
+	float f16 = (rand() % 1000) / 100.0f;
+
+	float1 v1_1(f1);
+	float1 v1_2(f2);
+	float1 v1_3(f3);
+	float1 v1_4(f4);
+
+	float2 v2_1(f1);
+	float2 v2_2(f2);
+	float2 v2_3(f3);
+	float2 v2_4(f4);
 
 	float3 v3_1(f1);
 	float3 v3_2(f2);
@@ -435,6 +588,20 @@ void RunSpeedTests()
 	float4 v4_2(f2);
 	float4 v4_3(f3);
 	float4 v4_4(f4);
+
+	float3x4 m3x4_1;
+
+	float4x4 m4x4_1(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16);
+	float4x4 m4x4_2(f2);
+
+	const float2x4 m2x4_1 = float2x4(1, 2, 3, 4, 5, 6, 7, 8);
+	const float4x4 m2 = float4x4(
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 10, 11, 12,
+		13, 14, 15, 16);
+
+	const float2x4 m3 = mul(m2x4_1, m2);
 
 	bool b1 = false;
 
@@ -460,6 +627,17 @@ void RunSpeedTests()
 	//	(float)mat_foo_4x4._m20, (float)mat_foo_4x4._m21, (float)mat_foo_4x4._m22, (float)mat_foo_4x4._m23,
 	//	(float)mat_foo_4x4._m30, (float)mat_foo_4x4._m31, (float)mat_foo_4x4._m32, (float)mat_foo_4x4._m33);
 	//printf("Result: %f, Cycles/Loop: %f, Elapsed: %f\n", (float)dp.x, cyclesPerOperation, time);
+
+	benchmark<float4x4, iter>("m4x4 add", [&]() -> float4x4 { m4x4_1 = m4x4_1 + m4x4_2; return m4x4_1; });
+	benchmark<float4x4, iter>("m4x4 div", [&]() -> float4x4 { m4x4_1 = mul(m4x4_1, m4x4_2); return m4x4_1; });
+	benchmark<float1, iter>("m4x4 det", [&]() -> float1 { v1_1 = determinant(m4x4_1); m4x4_1 = m4x4_1 + v1_1; return v1_1; });
+	benchmark<float4x4, iter>("m4x4 inverse", [&]() -> float4x4 { m4x4_1 = inverse(m4x4_1); return m4x4_1; });
+	benchmark<float4x4, iter>("m4x4 transp", [&]() -> float4x4 { m4x4_1 = transpose(m4x4_1); return m4x4_1; });
+	benchmark<float3x4, iter>("mul(m3x4, m4x4)", [&]() -> float3x4 { m3x4_1 = mul(m3x4_1, m4x4_1); return m3x4_1; });
+	benchmark<float4x4, iter>("mul(m4x4, m4x4)", [&]() -> float4x4 { m4x4_1 = mul(m4x4_1, m4x4_2); return m4x4_1; });
+	//benchmark<float4x4, iter>("f4x1 x f1x4", [&]() -> float4x4 { m4x4_1 = transpose(m4x4_1); return m4x4_1; });
+	benchmark<float1, iter>("m4x4 trace", [&]() -> float1 { v1_1 = trace(m4x4_1) + v1_1; return v1_1; });
+	benchmark<float4x4, iter>("m4x4 quaternion", [&]() -> float4x4 { m4x4_1 = float4x4(q1); return m4x4_1; });
 
 	benchmark<float4, iter>("wzyx", [&]() -> float4 { v4_1 = v4_1.wzyx; return v4_1; });
 
@@ -522,7 +700,7 @@ void RunSpeedTests()
 	benchmark<quaternion, iter>("conjugate", [&]() -> quaternion { q1 = conjugate(q1); return q1; });
 	benchmark<quaternion, iter>("slerp", [&]() -> quaternion { q1 = slerp(q1, q2, t1_1); return q1; });
 
-	printf("Performance tests completed\n");
+	printf("Performance tests completed\n\n");
 }
 
 using namespace hlslpp;
@@ -541,9 +719,9 @@ int main(int /*argc*/, char** /*argv*/)
 
 #endif
 {
-	RunUnitTests();
 	RunExperiments();
-	RunSpeedTests();
+	RunUnitTests();
+	RunPerformanceTests();
 
 	getchar();
 }

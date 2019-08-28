@@ -251,6 +251,16 @@ hlslpp_inline vector_float4 shuf4(const vector_float4& v1, const vector_float4& 
 #define _hlslpp_perm_ps(x, msk)					perm4<msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3>((x))
 #define _hlslpp_shuffle_ps(x, y, msk)			shuf4<msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3>((x), (y))
 
+hlslpp_inline vector_float4 _hlslpp_unpacklo_ps(const vector_float4& v1, const vector_float4& v2)
+{
+	return vector_float4(v1.x, v2.x, v1.y, v2.y);
+}
+
+hlslpp_inline vector_float4 _hlslpp_unpackhi_ps(const vector_float4& v1, const vector_float4& v2)
+{
+	return vector_float4(v1.z, v2.z, v1.w, v2.w);
+}
+
 hlslpp_inline vector_float4 select4(const vector_float4& v1, const vector_float4& v2, const vector_float4& msk)
 {
 	return vector_float4(msk.x == 0.0f ? v1.x : v2.x, 
@@ -259,8 +269,6 @@ hlslpp_inline vector_float4 select4(const vector_float4& v1, const vector_float4
 						 msk.w == 0.0f ? v1.w : v2.w);
 }
 
-// SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
-// _mm_xor_ps((x), _mm_and_ps(msk, _mm_xor_ps((y), (x))))
 // Bit-select val1 and val2 based on the contents of the mask
 #define _hlslpp_sel_ps(x, y, msk)				select4((x), (y), (msk))
 
@@ -272,6 +280,13 @@ hlslpp_inline vector_float4 blend4(const vector_float4& v1, const vector_float4&
 
 #define _hlslpp_blend_ps(x, y, msk)				blend4<msk & 1, (msk >> 1) & 1, (msk >> 2) & 1, (msk >> 3) & 1>((x), (y))
 
+hlslpp_inline vector_float4 _hlslpp_dot4_ps(const vector_float4& v1, const vector_float4& v2)
+{
+	// The odd way this is written (using two floats) is faster than having a single chain of A + B + C + D
+	float f1 = (v1.x * v2.x) + (v1.y * v2.y);
+	float f2 = (v1.z * v2.z) + (v1.w * v2.w);
+	return vector_float4(f1 + f2, 0.0f, 0.0f, 0.0f);
+}
 
 hlslpp_inline bool _hlslpp_any1_ps(const vector_float4& v)
 {

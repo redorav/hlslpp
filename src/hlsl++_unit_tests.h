@@ -130,20 +130,67 @@ namespace hlslpp_unit
 
 #endif
 
-	void eq(const float2x2& v,
+	void eq(const float1x1& m, float m00, float tolerance = 0.0f);
+
+	void eq(const float1x2& m, float m00, float m01, float tolerance = 0.0f);
+
+	void eq(const float1x3& m, float m00, float m01, float m02, float tolerance = 0.0f);
+
+	void eq(const float1x4& m, float m00, float m01, float m02, float m03, float tolerance = 0.0f);
+
+	void eq(const float2x1& m, float m00, float m01, float tolerance = 0.0f);
+
+	void eq(const float2x2& m,
 		float m00, float m01,
 		float m10, float m11, float tolerance = 0.0f);
 
-	void eq(const float3x3& v,
+	void eq(const float2x3& m,
+		float m00, float m01, float m02,
+		float m10, float m11, float m12, float tolerance = 0.0f);
+
+	void eq(const float2x4& m,
+		float m00, float m01, float m02, float m03,
+		float m10, float m11, float m12, float m13, float tolerance = 0.0f);
+
+	void eq(const float3x1& m, float m00, float m01, float m02, float tolerance = 0.0f);
+
+	void eq(const float3x2& m, 
+		float m00, float m01, 
+		float m10, float m11,
+		float m20, float m21, float tolerance = 0.0f);
+
+	void eq(const float3x3& m,
 		float m00, float m01, float m02,
 		float m10, float m11, float m12,
 		float m20, float m21, float m22, float tolerance = 0.0f);
 
-	void eq(const float4x4& v,
+	void eq(const float3x4& m,
+		float m00, float m01, float m02, float m03,
+		float m10, float m11, float m12, float m13,
+		float m20, float m21, float m22, float m23, 
+		float tolerance = 0.0f);
+
+	void eq(const float4x1& m, float m00, float m01, float m02, float m03, float tolerance = 0.0f);
+
+	void eq(const float4x2& m, 
+		float m00, float m01,
+		float m10, float m11,
+		float m20, float m21,
+		float m30, float m31, float tolerance = 0.0f);
+
+	void eq(const float4x3& m,
+		float m00, float m01, float m02,
+		float m10, float m11, float m12,
+		float m20, float m21, float m22,
+		float m30, float m31, float m32, 
+		float tolerance = 0.0f);
+
+	void eq(const float4x4& m,
 		float m00, float m01, float m02, float m03,
 		float m10, float m11, float m12, float m13,
 		float m20, float m21, float m22, float m23,
-		float m30, float m31, float m32, float m33, float tolerance = 0.0f);
+		float m30, float m31, float m32, float m33,
+		float tolerance = 0.0f);
 
 	float div(float a, float b);
 
@@ -217,7 +264,7 @@ namespace hlslpp_unit
 		stats.totalTime = elapsedTime;
 		stats.timePerLoop = (double)stats.totalTime / (double)iterations;
 
-		printf("%12s: Cycles: %10.6f Elapsed: %3.6f\n", functionName, stats.cyclesPerLoop, stats.totalTime);
+		printf("%20s: Cycles: %10.6f Elapsed: %3.6f\n", functionName, stats.cyclesPerLoop, stats.totalTime);
 
 		return stats;
 	}

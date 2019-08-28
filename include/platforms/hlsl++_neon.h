@@ -264,11 +264,23 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_perm_ps(x, mask)				vpermq_f32((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
 #define _hlslpp_shuffle_ps(x, y, mask)			vshufq_f32((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
 
+#define _hlslpp_unpacklo_ps(x, y)				vzipq_f32(x, y).val[0]
+#define _hlslpp_unpackhi_ps(x, y)				vzipq_f32(x, y).val[1]
+
 #define _hlslpp_sel_ps(x, y, mask)				vbslq_f32((mask), (y), (x))
 
 // We decompose the mask and turn it into 4 floats
 // The input mask follows the format for SSE
 #define _hlslpp_blend_ps(x, y, mask)			vbslq_f32(vmov4q_n_u32((mask & 1) * 0xffffffff, ((mask >> 1) & 1) * 0xffffffff, ((mask >> 2) & 1) * 0xffffffff, ((mask >> 3) & 1) * 0xffffffff), (y), (x))
+
+// https://gist.github.com/rikusalminen/3040241
+hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
+{
+	n128 prod = vmulq_f32(x, y);
+	n128 sum1 = vaddq_f32(prod, vrev64q_f32(prod));
+	n128 result = vaddq_f32(sum1, vcombine_f32(vget_high_f32(sum1), vget_low_f32(sum1)));
+	return result;
+}
 
 //--------
 // Integer

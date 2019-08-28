@@ -70,6 +70,12 @@ namespace hlslpp
 	const n128i i4absMask      = _hlslpp_set1_epi32(absMask.i);
 	const n128i i4fffMask      = _hlslpp_set1_epi32(fffMask.i);
 
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+
+	const n256 f8_1 = _hlslpp256_set1_ps(1.0f);
+
+#endif
+
 	static const int IdentityMask  = ((3 << 6) | (2 << 4) | (1 << 2) | 0);
 	static const int IdentityMask2 = (1 << 1) | 0;
 
@@ -77,6 +83,11 @@ namespace hlslpp
 	const uint32_t MaskY = 1;
 	const uint32_t MaskZ = 2;
 	const uint32_t MaskW = 3;
+
+	const uint32_t MaskA = 4;
+	const uint32_t MaskB = 5;
+	const uint32_t MaskC = 6;
+	const uint32_t MaskD = 7;
 
 	// Auxiliary templates for disambiguation with standard header functions
 
@@ -120,6 +131,7 @@ namespace hlslpp
 	#define _hlslpp_perm_yzxx_ps(x)		_hlslpp_perm_ps((x), HLSLPP_SHUFFLE_MASK(MaskY, MaskZ, MaskX, MaskX))
 	#define _hlslpp_perm_yzxw_ps(x)		_hlslpp_perm_ps((x), HLSLPP_SHUFFLE_MASK(MaskY, MaskZ, MaskX, MaskW))
 	#define _hlslpp_perm_yzwx_ps(x)		_hlslpp_perm_ps((x), HLSLPP_SHUFFLE_MASK(MaskY, MaskZ, MaskW, MaskX))
+	#define _hlslpp_perm_ywxz_ps(x)		_hlslpp_perm_ps((x), HLSLPP_SHUFFLE_MASK(MaskY, MaskW, MaskX, MaskZ))
 	#define _hlslpp_perm_zxxx_ps(x)		_hlslpp_perm_ps((x), HLSLPP_SHUFFLE_MASK(MaskZ, MaskX, MaskX, MaskX))
 	#define _hlslpp_perm_zxyw_ps(x)		_hlslpp_perm_ps((x), HLSLPP_SHUFFLE_MASK(MaskZ, MaskX, MaskY, MaskW))
 	#define _hlslpp_perm_zyyx_ps(x)		_hlslpp_perm_ps((x), HLSLPP_SHUFFLE_MASK(MaskZ, MaskY, MaskY, MaskX))
@@ -168,7 +180,33 @@ namespace hlslpp
 	#define _hlslpp_shuf_ywwy_ps(x, y)	_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskY, MaskW, MaskW, MaskY))
 	#define _hlslpp_shuf_yxwz_ps(x, y)	_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskY, MaskX, MaskW, MaskZ))
 	#define _hlslpp_shuf_zzxx_ps(x, y)	_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskZ, MaskZ, MaskX, MaskX))
+	#define _hlslpp_shuf_zwxx_ps(x, y)	_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskZ, MaskW, MaskX, MaskX))
 	
+	#define _hlslpp256_perm_xxxx_xxxx_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX)
+	#define _hlslpp256_perm_xxxx_yyyy_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskX, MaskX, MaskX, MaskY, MaskY, MaskY, MaskY)
+	#define _hlslpp256_perm_xxxx_aaaa_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskX, MaskX, MaskX, MaskA, MaskA, MaskA, MaskA)
+	#define _hlslpp256_perm_xxxx_bbbb_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskX, MaskX, MaskX, MaskB, MaskB, MaskB, MaskB)
+	#define _hlslpp256_perm_xzxy_badc_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskZ, MaskX, MaskY, MaskB, MaskA, MaskD, MaskC)
+	#define _hlslpp256_perm_xzzx_acca_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskZ, MaskZ, MaskX, MaskA, MaskC, MaskC, MaskA)
+	#define _hlslpp256_perm_xzzx_bddb_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskZ, MaskZ, MaskX, MaskB, MaskD, MaskD, MaskB)
+	#define _hlslpp256_perm_yxwz_acab_ps(x) _hlslpp256_perm_ps(x, MaskY, MaskX, MaskW, MaskZ, MaskA, MaskC, MaskA, MaskB)
+	#define _hlslpp256_perm_yyyy_bbbb_ps(x) _hlslpp256_perm_ps(x, MaskY, MaskY, MaskY, MaskY, MaskB, MaskB, MaskB, MaskB)
+	#define _hlslpp256_perm_yyyy_aaaa_ps(x) _hlslpp256_perm_ps(x, MaskY, MaskY, MaskY, MaskY, MaskA, MaskA, MaskA, MaskA)
+	#define _hlslpp256_perm_ywwy_bddb_ps(x) _hlslpp256_perm_ps(x, MaskY, MaskW, MaskW, MaskY, MaskB, MaskD, MaskD, MaskB)
+	#define _hlslpp256_perm_ywwy_acca_ps(x) _hlslpp256_perm_ps(x, MaskY, MaskW, MaskW, MaskY, MaskA, MaskC, MaskC, MaskA)
+	#define _hlslpp256_perm_ywwz_cbaa_ps(x) _hlslpp256_perm_ps(x, MaskY, MaskW, MaskW, MaskZ, MaskC, MaskB, MaskA, MaskA)
+	#define _hlslpp256_perm_zyyx_ddcd_ps(x) _hlslpp256_perm_ps(x, MaskZ, MaskY, MaskY, MaskX, MaskD, MaskD, MaskC, MaskD)
+	#define _hlslpp256_perm_zzzz_wwww_ps(x) _hlslpp256_perm_ps(x, MaskZ, MaskZ, MaskZ, MaskZ, MaskW, MaskW, MaskW, MaskW)
+	#define _hlslpp256_perm_zzzz_cccc_ps(x) _hlslpp256_perm_ps(x, MaskZ, MaskZ, MaskZ, MaskZ, MaskC, MaskC, MaskC, MaskC)
+	#define _hlslpp256_perm_zzzz_dddd_ps(x) _hlslpp256_perm_ps(x, MaskZ, MaskZ, MaskZ, MaskZ, MaskD, MaskD, MaskD, MaskD)
+	#define _hlslpp256_perm_zwxx_cdaa_ps(x) _hlslpp256_perm_ps(x, MaskZ, MaskW, MaskX, MaskX, MaskC, MaskD, MaskA, MaskA)
+	#define _hlslpp256_perm_wzyw_aacb_ps(x) _hlslpp256_perm_ps(x, MaskW, MaskZ, MaskY, MaskW, MaskA, MaskA, MaskC, MaskB)
+	#define _hlslpp256_perm_wwzw_cbba_ps(x) _hlslpp256_perm_ps(x, MaskW, MaskW, MaskZ, MaskW, MaskC, MaskB, MaskB, MaskA)
+	#define _hlslpp256_perm_wwww_cccc_ps(x) _hlslpp256_perm_ps(x, MaskW, MaskW, MaskW, MaskW, MaskC, MaskC, MaskC, MaskC)
+	#define _hlslpp256_perm_wwww_dddd_ps(x) _hlslpp256_perm_ps(x, MaskW, MaskW, MaskW, MaskW, MaskD, MaskD, MaskD, MaskD)
+
+	#define _hlslpp256_perm_aaaa_xxxx_ps(x) _hlslpp256_perm_ps(x, MaskA, MaskA, MaskA, MaskA, MaskX, MaskX, MaskX, MaskX)
+
 	// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
 	#define _hlslpp_sign_ps(val)				_hlslpp_and_ps(_hlslpp_or_ps(_hlslpp_and_ps((val), f4minusOne), f4_1), _hlslpp_cmpneq_ps((val), f4_0))
 	

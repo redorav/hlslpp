@@ -10,7 +10,7 @@
 
 #else
 
-	#error No forceinline define for this platform
+	#error No forceinline define for this compiler
 
 #endif
 
@@ -25,6 +25,12 @@
 #define HLSLPP_COMPONENT_XY(X, Y)			((1 << X) | (1 << Y))
 #define HLSLPP_COMPONENT_XYZ(X, Y, Z)		((1 << X) | (1 << Y) | (1 << Z))
 #define HLSLPP_COMPONENT_XYZW(X, Y, Z, W)	((1 << X) | (1 << Y) | (1 << Z) | (1 << W))
+
+#if defined(__cpp_if_constexpr)
+#define HLSLPP_CONSTEXPR_IF(x) if constexpr(x)
+#else
+#define HLSLPP_CONSTEXPR_IF(x) if(x)
+#endif
 
 // We try to auto detect any vector libraries available to the system.
 // If we don't find any, fall back to scalar.
@@ -66,12 +72,6 @@
 
 	#include "platforms/hlsl++_360.h"
 
-#endif
-
-#if defined(__cpp_if_constexpr)
-#define HLSLPP_CONSTEXPR_IF(x) if constexpr(x)
-#else
-#define HLSLPP_CONSTEXPR_IF(x) if(x)
 #endif
 
 #include <cstdint>

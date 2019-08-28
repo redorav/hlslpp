@@ -22,6 +22,8 @@
 		#define __SSE4_1__ 1
 		#endif
 
+		#define HLSLPP_SIMD_REGISTER_FLOAT8
+
 	#endif
 
 	#if defined(__SSE4_1__)
@@ -136,12 +138,41 @@ typedef __m256i n256i;
 
 #define _hlslpp_shuffle_ps(x, y, mask)			_mm_shuffle_ps((x), (y), (mask))
 
+#define _hlslpp_unpacklo_ps(x, y)				_mm_unpacklo_ps((x), (y))
+#define _hlslpp_unpackhi_ps(x, y)				_mm_unpackhi_ps((x), (y))
+
 // SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
 // _mm_xor_ps((x), _mm_and_ps(mask, _mm_xor_ps((y), (x))))
 // Bit-select val1 and val2 based on the contents of the mask
 #define _hlslpp_sel_ps(x, y, mask)				_mm_blendv_ps((x), (y), (mask))
 
 #define _hlslpp_blend_ps(x, y, mask)			_mm_blend_ps((x), (y), (mask))
+
+// Inspiration for some bits from https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-float-vector-sum-on-x86
+hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
+{
+	#if defined(__SSE4_1__)
+	
+		n128 result = _mm_dp_ps(x, y, 0xff);
+	
+	//#elif defined(__SSSE3__) // Slower
+	
+		//n128 m      = _mm_mul_ps(x, y);    // Multiply components together
+		//n128 h1     = _mm_hadd_ps(m, m);   // Add once
+		//n128 result = _mm_hadd_ps(h1, h1); // Add twice
+	
+	#else
+	
+		n128 multi  = _mm_mul_ps(x, y);         // Multiply components
+		n128 shuf   = _hlslpp_perm_ps(multi, HLSLPP_SHUFFLE_MASK(1, 0, 3, 0));  // Move y into x, and w into z (ignore the rest)
+		n128 add    = _mm_add_ps(shuf, multi);  // Contains x+y, _, z+w, _
+		shuf        = _mm_movehl_ps(shuf, add); // Move (z + w) into x
+		n128 result = _mm_add_ss(add, shuf);    // Contains x+y+z+w, _, _, _
+	
+	#endif
+
+	return result;
+}
 
 hlslpp_inline bool _hlslpp_any1_ps(n128 x)
 {
@@ -262,16 +293,18 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 	x3 = _mm_loadu_ps(p + 12);
 }
 
-//---------------------
-// Float 256 (AVX/AVX2)
-//---------------------
+//----------
+// Float 256
+//----------
 
 #if defined(__AVX__)
 
-#define _hlslpp256_set_n128(x, y)					_mm256_set_m128((x), (y))
 #define _hlslpp256_set1_ps(x)						_mm256_set1_ps((x))
+
 #define _hlslpp256_set_ps(x, y, z, w, a, b, c, d)	_mm256_set_ps((d), (c), (b), (a), (w), (z), (y), (x))
 #define _hlslpp256_setzero_ps()						_mm256_setzero_ps()
+
+#define _hlslpp256_set128_ps(lo, hi)				_mm256_set_m128(hi, lo)
 
 #define _hlslpp256_add_ps(x, y)						_mm256_add_ps((x), (y))
 #define _hlslpp256_sub_ps(x, y)						_mm256_sub_ps((x), (y))
@@ -285,9 +318,19 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 // _mm_mul_ps(f4minusOne, x);		// Slower
 #define _hlslpp256_neg_ps(x)						_mm256_xor_ps((x), f4negativeMask)
 
+#if defined(__FMA__)
+
+#define _hlslpp256_madd_ps(x, y, z)					_mm256_fmadd_ps((x), (y), (z))
+#define _hlslpp256_msub_ps(x, y, z)					_mm256_fmsub_ps((x), (y), (z))
+#define _hlslpp256_subm_ps(x, y, z)					_mm256_fnmadd_ps((x), (y), (z))
+
+#else
+
 #define _hlslpp256_madd_ps(x, y, z)					_mm256_add_ps(_mm256_mul_ps((x), (y)), (z))
 #define _hlslpp256_msub_ps(x, y, z)					_mm256_sub_ps(_mm256_mul_ps((x), (y)), (z))
 #define _hlslpp256_subm_ps(x, y, z)					_mm256_sub_ps((x), _mm256_mul_ps((y), (z)))
+
+#endif
 
 // Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
 #define _hlslpp256_abs_ps(x)						_mm256_and_ps(f4absMask, (x))
@@ -327,8 +370,59 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 
 #define _hlslpp256_movehdup_ps(x)					_mm256_movehdup_ps((x))
 
-#define _hlslpp256_perm_ps(x, mask)					_mm256_shuffle_ps((x), (x), (mask))
-#define _hlslpp256_shuffle_ps(x, y, mask)			_mm256_shuffle_ps((x), (y), (mask))
+
+template<int X, int Y, int Z, int W, int A, int B, int C, int D>
+hlslpp_inline n256 permute(n256 x)
+{
+	// We need to statically assert for now until the permutes can cover more cases
+	static_assert
+		(
+			X >= 0 && X < 8 && Y >= 0 && Y < 8 && Z >= 0 && Z < 8 && W >= 0 && W < 8 &&
+			A >= 0 && A < 8 && B >= 0 && B < 8 && C >= 0 && C < 8 && D >= 0 && D < 8,
+			"Invalid value for permute indices!");
+
+	// Covers all the cases where XYZW belong to the first vector, and ABCD cover the second vector
+	HLSLPP_CONSTEXPR_IF(X < 4 && Y < 4 && Z < 4 && W < 4 && A >= 4 && B >= 4 && C >= 4 && D >= 4)
+	{
+		return _mm256_permutevar_ps(x, _mm256_setr_epi32(X, Y, Z, W, A, B, C, D));
+	}
+	else HLSLPP_CONSTEXPR_IF(A < 4 && B < 4 && C < 4 && D < 4 && X >= 4 && Y >= 4 && Z >= 4 && W >= 4)
+	{
+	n256 swap = _mm256_permute2f128_ps(x, x, 0x3); // 0b00110000
+	return _mm256_permutevar_ps(swap, _mm256_setr_epi32(X, Y, Z, W, A, B, C, D));
+	}
+	else
+	{
+	return _mm256_setzero_ps();
+	}
+}
+
+template<>
+hlslpp_inline n256 permute<0, 0, 0, 0, 0, 0, 0, 0>(n256 x)
+{
+	n256 t = _mm256_permute2f128_ps(x, x, 0);
+	return _mm256_permute_ps(t, HLSLPP_SHUFFLE_MASK(0, 0, 0, 0));
+}
+
+template<>
+hlslpp_inline n256 permute<0, 1, 2, 3, 4, 5, 6, 7>(n256 x)
+{
+	return x;
+}
+
+#define _hlslpp256_perm_ps(x, m0, m1, m2, m3, m4, m5, m6, m7)	permute<m0, m1, m2, m3, m4, m5, m6, m7>(x)
+//#define _hlslpp256_shuffle_ps(x, y, mask)			_mm256_shuffle_ps((x), (y), (mask))
+
+#define _hlslpp256_unpacklo_ps(x, y)				_mm256_unpacklo_ps(x, y)
+#define _hlslpp256_unpackhi_ps(x, y)				_mm256_unpackhi_ps(x, y)
+
+#define _hlslpp256_low_low_ps(x, y)					_mm256_permute2f128_ps((x), (y), 0x20)
+#define _hlslpp256_low_high_ps(x, y)				_mm256_permute2f128_ps((x), (y), 0x30)
+#define _hlslpp256_high_low_ps(x, y)				_mm256_permute2f128_ps((x), (y), 0x21)
+#define _hlslpp256_high_high_ps(x, y)				_mm256_permute2f128_ps((x), (y), 0x31)
+
+#define _hlslpp256_low_ps(x)						_mm256_castps256_ps128((x))
+#define _hlslpp256_high_ps(x)						_mm256_extractf128_ps((x), 1)
 
 // SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
 // _mm_xor_ps((x), _mm_and_ps(mask, _mm_xor_ps((y), (x))))
@@ -336,6 +430,22 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp256_sel_ps(x, y, mask)				_mm256_blendv_ps((x), (y), (mask))
 
 #define _hlslpp256_blend_ps(x, y, mask)				_mm256_blend_ps((x), (y), (mask))
+
+#define _hlslpp256_hadd_ps(x, y)					_mm256_hadd_ps((x), (y))
+
+#define _hlslpp256_dot4_ps(x, y)					_mm256_dp_ps(x, y, 0xff)
+
+hlslpp_inline void _hlslpp256_store4x4_ps(float* p, const n256& x0, const n256& x1)
+{
+	_mm256_storeu_ps(p, x0);
+	_mm256_storeu_ps(p + 8, x1);
+}
+
+hlslpp_inline void _hlslpp256_load4x4_ps(float* p, n256& x0, n256& x1)
+{
+	x0 = _mm256_loadu_ps(p);
+	x1 = _mm256_loadu_ps(p + 8);
+}
 
 #endif
 
@@ -462,6 +572,19 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 
 	return _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
 }
+
+#endif
+
+//------------
+// Integer 256
+//------------
+
+#if defined(__AVX__)
+
+#define _hlslpp256_set_epi32(x, y, z, w, a, b, c, d)	_mm256_set_epi32(d, c, b, a, w, z, y, x)
+
+#define _hlslpp256_castps_si256(x)						_mm256_castps_si256((x))
+#define _hlslpp256_castsi256_ps(x)						_mm256_castsi256_ps((x))
 
 #endif
 

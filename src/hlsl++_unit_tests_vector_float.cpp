@@ -1,6 +1,5 @@
 #include "hlsl++.h"
 
-// Hacky but needs FLOAT64
 #include "hlsl++_unit_tests.h"
 
 void RunUnitTestsVectorFloat()
