@@ -3,6 +3,7 @@
 #if defined(_M_ARM64) || defined(__aarch64__)
 
 	#define HLSLPP_ARM64
+	#define HLSLPP_FLOAT64
 
 #endif
 
@@ -12,13 +13,73 @@
 	#include <arm64_neon.h>
 
 	// The Microsoft ARM64 headers don't define these
-	#if !defined(vmaxvq_u32)
-	#define vmaxvq_u32 neon_umaxvq32
-	#endif
+#if !defined(vmaxvq_u32)
+	#define vmaxvq_u32(x) neon_umaxvq32(x)
+#endif
 
-	#if !defined(vminvq_u32)
-	#define vminvq_u32 neon_uminvq32
-	#endif
+#if !defined(vminvq_u32)
+	#define vminvq_u32(x) neon_uminvq32(x)
+#endif
+
+#if !defined(vmovq_n_f64)
+	#define vmovq_n_f64(x) neon_dupqrf64(x)
+#endif
+
+#if !defined(vld1q_f64)
+	#define vld1q_f64(x) neon_ld1m_q64((__int64*)x)
+#endif
+
+#if !defined(vrecpeq_f64)
+	#define vrecpeq_f64(x) neon_frecpeq64(x)
+#endif
+
+#if !defined(vmlaq_f64)
+	#define vmlaq_f64(x, y, z) neon_fmlaq64(x, y, z)
+#endif
+
+#if !defined(vsubq_f64)
+	#define vsubq_f64(x, y) neon_fsubq64(x, y)
+#endif
+
+#if !defined(vmulq_f64)
+	#define vmulq_f64(x, y) neon_fmulq64(x, y)
+#endif
+
+#if !defined(vcvtq_f64_s64)
+	#define vcvtq_f64_s64(x) neon_scvtfq64(x)
+#endif
+
+#if !defined(vmlsq_f64)
+	#define vmlsq_f64(x, y, z) neon_fmlsq64(x, y, z)
+#endif
+
+#if !defined(vcgeq_f64)
+	#define vcgeq_f64(x, y) neon_fcmgeq64(x, y)
+#endif
+
+#if !defined(vabsq_f64)
+	#define vabsq_f64(x) neon_fabsq64(x)
+#endif
+	
+#if !defined(vrndpq_f64)
+	#define vrndpq_f64(x) neon_frintp_q64(x)
+#endif
+	
+#if !defined(vminq_f64)
+	#define vminq_f64(x, y) neon_fminq64(x, y)
+#endif
+	
+#if !defined(vmaxq_f64)
+	#define vmaxq_f64(x, y) neon_fmaxq64(x, y)
+#endif
+	
+#if !defined(vrndmq_f64)
+	#define vrndmq_f64(x) neon_frintm_q64(x)
+#endif
+
+#if !defined(vsqrtq_f64)
+	#define vsqrtq_f64(x) neon_fsqrtq64(x)
+#endif
 
 #else
 
@@ -30,6 +91,12 @@
 
 typedef float32x4_t n128;
 typedef int32x4_t n128i;
+
+#if defined(HLSLPP_ARM64)
+
+typedef float64x2_t n128d;
+
+#endif
 
 hlslpp_inline float32x4_t vmov4q_n_f32(const float x, const float y, const float z, const float w)
 {
@@ -282,61 +349,6 @@ hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
 	return result;
 }
 
-//--------
-// Integer
-//--------
-
-#define _hlslpp_set1_epi32(x)					vmovq_n_s32((x))
-#define _hlslpp_set_epi32(x, y, z, w)			vmov4q_n_s32((x), (y), (z), (w))
-
-#define _hlslpp_add_epi32(x, y)					vaddq_s32((x), (y))
-#define _hlslpp_sub_epi32(x, y)					vsubq_s32((x), (y))
-#define _hlslpp_mul_epi32(x, y)					vmulq_s32((x), (y))
-#define _hlslpp_div_epi32(x, y)					vdivq_s32((x), (y))
-
-#define _hlslpp_neg_epi32(x)					vaddq_s32(veorq_u32(vreinterpretq_u32_s32(x), vmovq_n_u32(0xffffffffu)), vmovq_n_u32(1))
-
-#define _hlslpp_madd_epi32(x, y, z)				vmlaq_s32((z), (x), (y))
-#define _hlslpp_msub_epi32(x, y, z)				_hlslpp_neg_epi32(vmlsq_s32((z), (x), (y))) // Negate because vmlsq_u32 does z - x * y and we want x * y - z
-#define _hlslpp_subm_epi32(x, y, z)				vmlsq_s32((z), (x), (y))
-
-#define _hlslpp_abs_epi32(x)					vabsq_s32((x))
-
-#define _hlslpp_cmpeq_epi32(x, y)				vceqq_u32((x), (y))
-#define _hlslpp_cmpneq_epi32(x, y)				veorq_u32(vceqq_u32((x), (y)), vmovq_n_u32(0xffffffffu))
-
-#define _hlslpp_cmpgt_epi32(x, y)				vcgtq_u32((x), (y))
-#define _hlslpp_cmpge_epi32(x, y)				vcgeq_u32((x), (y))
-
-#define _hlslpp_cmplt_epi32(x, y)				vcltq_u32((x), (y))
-#define _hlslpp_cmple_epi32(x, y)				vcleq_u32((x), (y))
-
-#define _hlslpp_max_epi32(x, y)					vmaxq_s32((x), (y))
-#define _hlslpp_min_epi32(x, y)					vminq_s32((x), (y))
-
-#define _hlslpp_clamp_epi32(x, minx, maxx)		vmaxq_s32(vminq_s32((x), (maxx)), (minx))
-#define _hlslpp_sat_epi32(x)					vmaxq_s32(vminq_s32((x), i4_1), i4_0)
-
-#define _hlslpp_and_si128(x, y)					vandq_s32((x), (y))
-#define _hlslpp_or_si128(x, y)					vorrq_s32((x), (y))
-
-#define _hlslpp_perm_epi32(x, mask)				vpermq_s32((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
-#define _hlslpp_shuffle_epi32(x, y, mask)		vshufq_s32((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
-
-#define _hlslpp_blend_epi32(x, y, mask)			vbslq_s32(vmov4q_n_u32(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)), (x), (y))
-
-#define _hlslpp_castps_si128(x)					vreinterpretq_s32_f32((x))
-#define _hlslpp_castsi128_ps(x)					vreinterpretq_f32_s32((x))
-
-#define _hlslpp_cvtps_epi32(x)					vcvtq_s32_f32((x))
-#define _hlslpp_cvtepi32_ps(x)					vcvtq_f32_s32((x))
-
-#define _hlslpp_slli_epi32(x, y)				vshlq_n_s32((x), (y))
-#define _hlslpp_srli_epi32(x, y)				vshrq_n_s32((x), (y))
-
-// From the documentation of vshlq_s32: Vector shift left: Vr[i] := Va[i] << Vb[i] (negative values shift right)
-#define _hlslpp_sllv_epi32(x, y)				vshlq_s32((x), (y))
-#define _hlslpp_srlv_epi32(x, y)				vshlq_s32((x), _hlslpp_neg_epi32(y))
 
 //https://stackoverflow.com/questions/15389539/fastest-way-to-test-a-128-bit-neon-register-for-a-value-of-0-using-intrinsics
 
@@ -482,3 +494,265 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 	x2 = vld1q_f32(p + 8);
 	x3 = vld1q_f32(p + 12);
 }
+
+//--------
+// Integer
+//--------
+
+#define _hlslpp_set1_epi32(x)					vmovq_n_s32((x))
+#define _hlslpp_set_epi32(x, y, z, w)			vmov4q_n_s32((x), (y), (z), (w))
+
+#define _hlslpp_add_epi32(x, y)					vaddq_s32((x), (y))
+#define _hlslpp_sub_epi32(x, y)					vsubq_s32((x), (y))
+#define _hlslpp_mul_epi32(x, y)					vmulq_s32((x), (y))
+#define _hlslpp_div_epi32(x, y)					vdivq_s32((x), (y))
+
+#define _hlslpp_neg_epi32(x)					vaddq_s32(veorq_u32(vreinterpretq_u32_s32(x), vmovq_n_u32(0xffffffffu)), vmovq_n_u32(1))
+
+#define _hlslpp_madd_epi32(x, y, z)				vmlaq_s32((z), (x), (y))
+#define _hlslpp_msub_epi32(x, y, z)				_hlslpp_neg_epi32(vmlsq_s32((z), (x), (y))) // Negate because vmlsq_u32 does z - x * y and we want x * y - z
+#define _hlslpp_subm_epi32(x, y, z)				vmlsq_s32((z), (x), (y))
+
+#define _hlslpp_abs_epi32(x)					vabsq_s32((x))
+
+#define _hlslpp_cmpeq_epi32(x, y)				vceqq_u32((x), (y))
+#define _hlslpp_cmpneq_epi32(x, y)				veorq_u32(vceqq_u32((x), (y)), vmovq_n_u32(0xffffffffu))
+
+#define _hlslpp_cmpgt_epi32(x, y)				vcgtq_u32((x), (y))
+#define _hlslpp_cmpge_epi32(x, y)				vcgeq_u32((x), (y))
+
+#define _hlslpp_cmplt_epi32(x, y)				vcltq_u32((x), (y))
+#define _hlslpp_cmple_epi32(x, y)				vcleq_u32((x), (y))
+
+#define _hlslpp_max_epi32(x, y)					vmaxq_s32((x), (y))
+#define _hlslpp_min_epi32(x, y)					vminq_s32((x), (y))
+
+#define _hlslpp_clamp_epi32(x, minx, maxx)		vmaxq_s32(vminq_s32((x), (maxx)), (minx))
+#define _hlslpp_sat_epi32(x)					vmaxq_s32(vminq_s32((x), i4_1), i4_0)
+
+#define _hlslpp_and_si128(x, y)					vandq_s32((x), (y))
+#define _hlslpp_or_si128(x, y)					vorrq_s32((x), (y))
+
+#define _hlslpp_perm_epi32(x, mask)				vpermq_s32((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
+#define _hlslpp_shuffle_epi32(x, y, mask)		vshufq_s32((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
+
+#define _hlslpp_blend_epi32(x, y, mask)			vbslq_s32(vmov4q_n_u32(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)), (x), (y))
+
+#define _hlslpp_castps_si128(x)					vreinterpretq_s32_f32((x))
+#define _hlslpp_castsi128_ps(x)					vreinterpretq_f32_s32((x))
+
+#define _hlslpp_cvtps_epi32(x)					vcvtq_s32_f32((x))
+#define _hlslpp_cvtepi32_ps(x)					vcvtq_f32_s32((x))
+
+#define _hlslpp_slli_epi32(x, y)				vshlq_n_s32((x), (y))
+#define _hlslpp_srli_epi32(x, y)				vshrq_n_s32((x), (y))
+
+// From the documentation of vshlq_s32: Vector shift left: Vr[i] := Va[i] << Vb[i] (negative values shift right)
+#define _hlslpp_sllv_epi32(x, y)				vshlq_s32((x), (y))
+#define _hlslpp_srlv_epi32(x, y)				vshlq_s32((x), _hlslpp_neg_epi32(y))
+
+#if defined(HLSLPP_FLOAT64)
+
+//-------
+// Double
+//-------
+
+hlslpp_inline float64x2_t vmov2q_n_f64(const double x, const double y)
+{
+	const double values[2] = { x, y };
+	return vld1q_f64(values);
+}
+
+hlslpp_inline int32x4_t vmov2q_n_s64(const int64_t x, const int64_t y, const int64_t z, const int64_t w)
+{
+	const int64_t values[2] = { x, y };
+	return vld1q_s64(values);
+}
+
+hlslpp_inline uint32x4_t vmov2q_n_u64(const uint64_t x, const uint64_t y, const uint64_t z, const uint64_t w)
+{
+	const uint64_t values[2] = { x, y };
+	return vld1q_u64(values);
+}
+
+// Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
+hlslpp_inline float64x2_t vpermq_f64(const float64x2_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
+{
+	//static const uint32_t ControlMask[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle x, swizzle y, swizzle z, swizzle w
+	//
+	//uint8x8x2_t tbl = { { vget_low_f32(x), vget_high_f32(x) } }; // Get floats
+	//
+	//const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMask[X]) | (((uint64_t)ControlMask[Y]) << 32));
+	//const uint8x8_t rL = vtbl2_u8(tbl, idxL);
+	//
+	//const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMask[Z]) | (((uint64_t)ControlMask[W]) << 32));
+	//const uint8x8_t rH = vtbl2_u8(tbl, idxH);
+
+	return vmovq_n_f64(0.0);// vcombine_f32(rL, rH);
+}
+
+hlslpp_inline float64x2_t vshufq_f64(const float64x2_t x, const float64x2_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
+{
+	//static const uint32_t ControlMaskX[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0,
+	//static const uint32_t ControlMaskY[4] = { 0x13121110, 0x17161514, 0x1B1A1918, 0x1F1E1D1C }; // Swizzle X1, swizzle Y1, swizzle Z1, swizzle W1
+	//
+	//uint8x8x4_t tbl = { { vget_low_f32(x), vget_high_f32(x), vget_low_f32(y), vget_high_f32(y) } };
+	//
+	//const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMaskX[X0]) | (((uint64_t)ControlMaskX[Y0]) << 32));
+	//const uint8x8_t rL = vtbl4_u8(tbl, idxL);
+	//
+	//const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMaskY[X1]) | (((uint64_t)ControlMaskY[Y1]) << 32));
+	//const uint8x8_t rH = vtbl4_u8(tbl, idxH);
+	return vmovq_n_f64(0.0);// vcombine_f32(rL, rH);
+}
+
+hlslpp_inline float64x2_t vrcpq_f64(float64x2_t x)
+{
+	//float64x2_t rcpx_e = vrecpeq_f64(x);					// Calculate a first estimate of the rcp
+	//rcpx_e = vmulq_f64(rcpx_e, vrecpsq_f64(x, rcpx_e));		// Refine
+	//return vmulq_f64(rcpx_e, vrecpsq_f64(x, rcpx_e));		// Refine
+	return vmovq_n_f64(0.0);
+}
+
+hlslpp_inline float64x2_t vrsqrtq_f64(float64x2_t x)
+{
+	//float32x4_t e = vrsqrteq_f32(x);								// Calculate a first estimate of the rsqrt
+	//e = vmulq_f32(e, vrsqrtsq_f32(vmulq_f32(e, x), e));				// First Newton-Raphson iteration
+	//e = vmulq_f32(e, vrsqrtsq_f32(vmulq_f32(e, x), e));				// Second Newton-Raphson iteration
+	//return e;
+	return vmovq_n_f64(0.0);
+}
+
+
+#define _hlslpp_set1_pd(x)						vmovq_n_f64(x)
+#define _hlslpp_set_pd(x, y)					vmov2q_n_f64((x), (y))
+#define _hlslpp_setzero_pd()					vmovq_n_f64(0.0)
+
+#define _hlslpp_add_pd(x, y)					vaddq_f64((x), (y))
+#define _hlslpp_sub_pd(x, y)					vsubq_f64((x), (y))
+#define _hlslpp_mul_pd(x, y)					vmulq_f64((x), (y))
+#define _hlslpp_div_pd(x, y)					vdivq_f64(x, y)
+
+#define _hlslpp_rcp_pd(x)						vrcpq_f64(x)
+
+#define _hlslpp_neg_pd(x)						veorq_u64(vreinterpretq_u32_f32(x), d2negativeMask)
+
+#define _hlslpp_madd_pd(x, y, z)				vmlaq_f64((z), (x), (y))
+#define _hlslpp_msub_pd(x, y, z)				_hlslpp_neg_pd(vmlsq_f64((z), (x), (y))) // Negate because vmlsq_f32 does z - x * y and we want x * y - z
+#define _hlslpp_subm_pd(x, y, z)				vmlsq_f64((z), (x), (y))
+
+// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
+#define _hlslpp_abs_pd(x)						vabsq_f64(x)
+
+#define _hlslpp_sqrt_pd(x)						vsqrtq_f64(x)
+#define _hlslpp_rsqrt_pd(x)						vrsqrtq_f64(x)
+
+#define _hlslpp_cmpeq_pd(x, y)					vceqq_f64((x), (y))
+#define _hlslpp_cmpneq_pd(x, y)					veorq_u64(vreinterpretq_u64_f64(vceqq_f64((x), (y))), vmovq_n_u64(0xffffffffffffffffu))
+
+#define _hlslpp_cmpgt_pd(x, y)					vcgtq_f64((x), (y))
+#define _hlslpp_cmpge_pd(x, y)					vcgeq_f64((x), (y))
+
+#define _hlslpp_cmplt_pd(x, y)					vcltq_f64((x), (y))
+#define _hlslpp_cmple_pd(x, y)					vcleq_f64((x), (y))
+
+#define _hlslpp_max_pd(x, y)					vmaxq_f64((x), (y))
+#define _hlslpp_min_pd(x, y)					vminq_f64((x), (y))
+
+#define _hlslpp_trunc_pd(x)						vcvtq_f64_s64(vcvtq_s64_f64(x))
+#define _hlslpp_floor_pd(x)						vrndmq_f64((x))
+#define _hlslpp_ceil_pd(x)						vrndpq_f64((x))
+#define _hlslpp_round_pd(x)						vrndq_f64((x))
+
+#define _hlslpp_frac_pd(x)						vsubq_f64((x), vrndmq_f64(x))
+
+#define _hlslpp_clamp_pd(x, minx, maxx)			vmaxq_f64(vminq_f64((x), (maxx)), (minx))
+#define _hlslpp_sat_pd(x)						vmaxq_f64(vminq_f64((x), f4_1), f4_0)
+
+#define _hlslpp_and_pd(x, y)					vreinterpretq_f64_u64(vandq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
+#define _hlslpp_andnot_pd(x, y)					vreinterpretq_f64_u64(vbicq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
+#define _hlslpp_or_pd(x, y)						vreinterpretq_f64_u64(vorrq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
+#define _hlslpp_xor_pd(x, y)					vreinterpretq_f64_u64(veorq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
+
+#define _hlslpp_perm_pd(x, mask)				vpermq_f64((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
+#define _hlslpp_shuffle_pd(x, y, mask)			vshufq_f64((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
+
+// Bit-select x and y based on the contents of the mask
+#define _hlslpp_sel_pd(x, y, mask)				vbslq_f64((mask), (y), (x))
+
+#define _hlslpp_blend_pd(x, y, mask)			vbslq_f64(vmov2q_n_u64((mask & 1) * 0xffffffff, ((mask >> 1) & 1) * 0xffffffff, ((mask >> 2) & 1) * 0xffffffff, ((mask >> 3) & 1) * 0xffffffff), (y), (x))
+
+hlslpp_inline bool _hlslpp_any1_pd(n128d x)
+{
+	return vget_lane_u64(vget_low_u64(vreinterpretq_u64_f64(x)), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_any2_pd(n128d x)
+{
+	uint32x2_t low = vget_low_u64(vreinterpretq_u64_f64(x));
+	return vget_lane_u64(vpmax_u32(low, low), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_any3_pd(n128d x0, n128d x1)
+{
+	return true;
+	//return ((_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) & 0x3) != 0x3) || ((_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) & 0x1) != 0x1);
+}
+
+hlslpp_inline bool _hlslpp_any4_pd(n128d x0, n128d x1)
+{
+	return true;
+	//return (_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) != 0xf) || (_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) != 0xf);
+}
+
+hlslpp_inline bool _hlslpp_all1_pd(n128d x)
+{
+	return true;
+	//return (_mm_movemask_pd(_mm_cmpeq_pd(x, _mm_setzero_pd())) & 0x1) == 0;
+}
+
+hlslpp_inline bool _hlslpp_all2_pd(n128d x)
+{
+	return true;
+	//return (_mm_movemask_pd(_mm_cmpeq_pd(x, _mm_setzero_pd())) & 0x3) == 0;
+}
+
+hlslpp_inline bool _hlslpp_all3_pd(n128d x0, n128d x1)
+{
+	return true;
+	//return ((_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) & 0x3) == 0) && ((_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) & 0x1) == 0);
+}
+
+hlslpp_inline bool _hlslpp_all4_pd(n128d x0, n128d x1)
+{
+	return true;
+	//return (_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) == 0) && (_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) == 0);
+}
+
+//------------------
+// Double Store/Load
+//------------------
+
+hlslpp_inline void _hlslpp_store1_pd(double* p, n128d x)
+{
+	//_mm_storel_pd(p, x);
+}
+
+hlslpp_inline void _hlslpp_store2_pd(double* p, n128d x)
+{
+	//_mm_storeu_pd(p, x);
+}
+
+hlslpp_inline void _hlslpp_store3_pd(double* p, n128d x0, n128d x1)
+{
+	//_mm_storeu_pd(p, x0);
+	//_mm_storel_pd(p + 2, x1);
+}
+
+hlslpp_inline void _hlslpp_store4_pd(double* p, n128d x0, n128d x1)
+{
+	//_mm_storeu_pd(p, x0);
+	//_mm_storeu_pd(p + 2, x1);
+}
+
+#endif
