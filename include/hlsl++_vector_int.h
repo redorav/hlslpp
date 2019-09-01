@@ -5,7 +5,7 @@
 namespace hlslpp
 {	
 	template<int X>
-	struct iswizzle1
+	struct hlslpp_nodiscard iswizzle1
 	{
 		template<int A> friend struct iswizzle1;
 	
@@ -56,7 +56,7 @@ namespace hlslpp
 
 
 	template<int X, int Y>
-	struct iswizzle2
+	struct hlslpp_nodiscard iswizzle2
 	{
 		// Helper
 
@@ -107,7 +107,7 @@ namespace hlslpp
 	};
 
 	template<int X, int Y, int Z>
-	struct iswizzle3
+	struct hlslpp_nodiscard iswizzle3
 	{
 		// Helper
 
@@ -159,7 +159,7 @@ namespace hlslpp
 	};
 
 	template<int X, int Y, int Z, int W>
-	struct iswizzle4
+	struct hlslpp_nodiscard iswizzle4
 	{
 		// Helper
 
@@ -206,7 +206,7 @@ namespace hlslpp
 		};
 	};
 
-	struct int1
+	struct hlslpp_nodiscard int1
 	{
 		hlslpp_inline int1() {}
 		hlslpp_inline int1(const int1& i) : vec(i.vec) {}
@@ -228,7 +228,7 @@ namespace hlslpp
 	};
 
 	
-	struct int2
+	struct hlslpp_nodiscard int2
 	{
 		// Constructors
 
@@ -255,7 +255,7 @@ namespace hlslpp
 		};
 	};
 
-	struct int3
+	struct hlslpp_nodiscard int3
 	{
 		// Constructors
 
@@ -288,7 +288,7 @@ namespace hlslpp
 		};
 	};
 
-	struct int4
+	struct hlslpp_nodiscard int4
 	{
 		hlslpp_inline int4() {}
 		hlslpp_inline int4(const int4& i) : vec(i.vec) {}

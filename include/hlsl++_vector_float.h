@@ -512,7 +512,7 @@ namespace hlslpp
 	}
 
 	template<int X>
-	struct swizzle1
+	struct hlslpp_nodiscard	swizzle1
 	{
 		template<int A> friend struct swizzle1;
 
@@ -562,7 +562,7 @@ namespace hlslpp
 	};
 
 	template<int X, int Y>
-	struct swizzle2
+	struct hlslpp_nodiscard	swizzle2
 	{
 		// Helper
 
@@ -614,7 +614,7 @@ namespace hlslpp
 	};
 
 	template<int X, int Y, int Z>
-	struct swizzle3
+	struct hlslpp_nodiscard	swizzle3
 	{
 		void staticAsserts()
 		{
@@ -665,7 +665,7 @@ namespace hlslpp
 	};
 
 	template<int X, int Y, int Z, int W>
-	struct swizzle4
+	struct hlslpp_nodiscard swizzle4
 	{
 		void staticAsserts()
 		{
@@ -710,7 +710,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float1
+	struct hlslpp_nodiscard float1
 	{
 		hlslpp_inline float1() {}
 		hlslpp_inline float1(const float1& f) : vec(f.vec) {}
@@ -733,7 +733,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float2
+	struct hlslpp_nodiscard	float2
 	{
 		// Constructors
 
@@ -763,7 +763,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float3
+	struct hlslpp_nodiscard	float3
 	{
 		// Constructors
 
@@ -798,7 +798,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float4
+	struct hlslpp_nodiscard	float4
 	{
 		hlslpp_inline float4() {}
 		hlslpp_inline float4(const float4& f) : vec(f.vec) {}

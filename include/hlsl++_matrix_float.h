@@ -4,7 +4,7 @@
 
 namespace hlslpp
 {
-	struct float1x1
+	struct hlslpp_nodiscard float1x1
 	{
 		hlslpp_inline float1x1() : vec(_hlslpp_setzero_ps()) {}
 
@@ -23,7 +23,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float1x2
+	struct hlslpp_nodiscard float1x2
 	{
 		hlslpp_inline float1x2() : vec(_hlslpp_setzero_ps()) {}
 
@@ -44,7 +44,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float2x1
+	struct hlslpp_nodiscard float2x1
 	{
 		hlslpp_inline float2x1() : vec(_hlslpp_setzero_ps()) {}
 
@@ -64,7 +64,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float1x3
+	struct hlslpp_nodiscard float1x3
 	{
 		float1x3() : vec(_hlslpp_setzero_ps()) {}
 
@@ -84,7 +84,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float3x1
+	struct hlslpp_nodiscard float3x1
 	{
 		hlslpp_inline float3x1() : vec(_hlslpp_setzero_ps()) {}
 
@@ -104,7 +104,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float1x4
+	struct hlslpp_nodiscard float1x4
 	{
 		hlslpp_inline float1x4() : vec(_hlslpp_setzero_ps()) {}
 
@@ -124,7 +124,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float4x1
+	struct hlslpp_nodiscard float4x1
 	{
 		hlslpp_inline float4x1() : vec(_hlslpp_setzero_ps()) {}
 
@@ -144,7 +144,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float2x2
+	struct hlslpp_nodiscard float2x2
 	{
 		hlslpp_inline float2x2() : vec(_hlslpp_setzero_ps()) {}
 
@@ -164,7 +164,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float2x3
+	struct hlslpp_nodiscard float2x3
 	{
 		hlslpp_inline float2x3() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
 
@@ -190,7 +190,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float3x2
+	struct hlslpp_nodiscard float3x2
 	{
 		hlslpp_inline float3x2() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
 
@@ -217,7 +217,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float2x4
+	struct hlslpp_nodiscard float2x4
 	{
 		hlslpp_inline float2x4() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
 
@@ -244,7 +244,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float4x2
+	struct hlslpp_nodiscard float4x2
 	{
 		hlslpp_inline float4x2() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
 
@@ -275,7 +275,7 @@ namespace hlslpp
 
 	struct quaternion;
 
-	struct float3x3
+	struct hlslpp_nodiscard float3x3
 	{
 		hlslpp_inline float3x3() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()), vec2(_hlslpp_setzero_ps()) {}
 
@@ -321,7 +321,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float3x4
+	struct hlslpp_nodiscard float3x4
 	{
 		hlslpp_inline float3x4() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()), vec2(_hlslpp_setzero_ps()) {}
 
@@ -355,7 +355,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float4x3
+	struct hlslpp_nodiscard float4x3
 	{
 		hlslpp_inline float4x3() : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()), vec2(_hlslpp_setzero_ps()) {}
 
@@ -390,7 +390,7 @@ namespace hlslpp
 		};
 	};
 
-	struct float4x4
+	struct hlslpp_nodiscard float4x4
 	{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 

@@ -14,9 +14,9 @@ namespace hlslpp
 		explicit BitMaskDouble(double d) : d(d) {}
 	};
 
-	const BitMaskDouble dfffMask(0xffffffffffffffffu); // Negative NaN
-	const BitMaskDouble dAbsMask(0x7fffffffffffffffu);
-	const BitMaskDouble dNegMask(0x8000000000000000u);
+	const BitMaskDouble dfffMask((uint64_t)0xffffffffffffffffu); // Negative NaN
+	const BitMaskDouble dAbsMask((uint64_t)0x7fffffffffffffffu);
+	const BitMaskDouble dNegMask((uint64_t)0x8000000000000000u);
 
 	//----------
 	// Constants
@@ -119,7 +119,7 @@ namespace hlslpp
 	}
 
 	template<int X>
-	struct dswizzle1
+	struct hlslpp_nodiscard dswizzle1
 	{
 		template<int A> friend struct dswizzle1;
 
@@ -165,7 +165,7 @@ namespace hlslpp
 	};
 
 	template<int X, int Y>
-	struct dswizzle2
+	struct hlslpp_nodiscard dswizzle2
 	{
 		void staticAsserts()
 		{
@@ -228,7 +228,7 @@ namespace hlslpp
 	};
 
 	template<int X, int Y, int Z>
-	struct dswizzle3
+	struct hlslpp_nodiscard dswizzle3
 	{
 		void staticAsserts()
 		{
@@ -309,7 +309,7 @@ namespace hlslpp
 	};
 
 	template<int X, int Y, int Z, int W>
-	struct dswizzle4
+	struct hlslpp_nodiscard dswizzle4
 	{
 		void staticAsserts()
 		{
@@ -369,7 +369,7 @@ namespace hlslpp
 	// Double type //
 	//-------------//
 
-	struct double1
+	struct hlslpp_nodiscard double1
 	{
 		hlslpp_inline double1() {}
 		hlslpp_inline double1(const double1& f) : vec(f.vec) {}
@@ -392,7 +392,7 @@ namespace hlslpp
 		};
 	};
 
-	struct double2
+	struct hlslpp_nodiscard double2
 	{
 		// Constructors
 
@@ -422,7 +422,7 @@ namespace hlslpp
 		};
 	};
 
-	struct double3
+	struct hlslpp_nodiscard double3
 	{
 		// Constructors
 
@@ -481,7 +481,7 @@ namespace hlslpp
 		};
 	};
 
-	struct double4
+	struct hlslpp_nodiscard double4
 	{
 		hlslpp_inline double4() {}
 		hlslpp_inline double4(const double4& f) : vec0(f.vec0), vec1(f.vec1) {}

@@ -14,6 +14,16 @@
 
 #endif
 
+#if __cplusplus >= 201702L || _MSVC_LANG >= 201702L
+
+	#define hlslpp_nodiscard [[nodiscard]]
+
+#else
+
+	#define hlslpp_nodiscard
+
+#endif
+
 #define HLSLPP_SHUFFLE_MASK(X, Y, Z, W)		(((W) << 6) | ((Z) << 4) | ((Y) << 2) | (X))
 #define HLSLPP_SHUFFLE_MASK_PD(X, Y)		(((Y) << 1) | (X))
 

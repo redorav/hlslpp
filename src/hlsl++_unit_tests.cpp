@@ -470,8 +470,8 @@ void RunExperiments()
 
 	float3 lorry(1, 2, 3);
 
-	float3 perry;
-	perry.x *= 0.5f;
+	//float3 perry;
+	//perry.x *= 0.5f;
 
 	float3 intTexCoord = float3(1, 2, 3);
 
@@ -481,7 +481,7 @@ void RunExperiments()
 
 	//pato.zw += pato.yx;
 
-	pato.z = 1.0f / pato.z;
+	//pato.z = 1.0f / pato.z;
 
 	float1 integerPart, fracPart;
 

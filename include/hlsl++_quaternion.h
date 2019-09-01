@@ -4,7 +4,7 @@
 
 namespace hlslpp
 {
-	struct quaternion
+	struct hlslpp_nodiscard quaternion
 	{
 		quaternion() {}
 		explicit quaternion(n128 vec) : vec(vec) {}
