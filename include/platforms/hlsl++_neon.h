@@ -81,6 +81,38 @@
 	#define vsqrtq_f64(x) neon_fsqrtq64(x)
 #endif
 
+#if !defined(vrecpsq_f64)
+	#define vrecpsq_f64(x, y) neon_frecpsq64(x, y)
+#endif
+
+#if !defined(vrsqrteq_f64)
+	#define vrsqrteq_f64(x) neon_frsqrteq64(x)
+#endif
+
+#if !defined(vrsqrtsq_f64)
+	#define vrsqrtsq_f64(x, y) neon_frsqrtsq64(x, y)
+#endif
+
+#if !defined(vst1q_lane_f64)
+	#define vst1q_lane_f64(x, y, z) neon_st1s_q32((__int32*)x, y, z)
+#endif
+
+#if !defined(vst1q_f64)
+	#define vst1q_f64(x, y) neon_st1m_q32((__int32*)x, y)
+#endif
+
+#if !defined(vld1q_lane_f64)
+	#define vld1q_lane_f64(x, y, z) neon_ld1s_q32((__int32*)x, y, z)
+#endif
+
+#if !defined(vmaxvq_f64)
+	#define vmaxvq_f64 neon_fmaxps64
+#endif
+
+#if !defined(vminvq_f64)
+	#define vminvq_f64 neon_fminps64
+#endif
+
 #else
 
 	#include <arm_neon.h>
@@ -349,7 +381,6 @@ hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
 	return result;
 }
 
-
 //https://stackoverflow.com/questions/15389539/fastest-way-to-test-a-128-bit-neon-register-for-a-value-of-0-using-intrinsics
 
 hlslpp_inline bool _hlslpp_any1_ps(n128 x)
@@ -563,64 +594,57 @@ hlslpp_inline float64x2_t vmov2q_n_f64(const double x, const double y)
 	return vld1q_f64(values);
 }
 
-hlslpp_inline int32x4_t vmov2q_n_s64(const int64_t x, const int64_t y, const int64_t z, const int64_t w)
+hlslpp_inline int64x2_t vmov2q_n_s64(const int64_t x, const int64_t y)
 {
 	const int64_t values[2] = { x, y };
 	return vld1q_s64(values);
 }
 
-hlslpp_inline uint32x4_t vmov2q_n_u64(const uint64_t x, const uint64_t y, const uint64_t z, const uint64_t w)
+hlslpp_inline uint64x2_t vmov2q_n_u64(const uint64_t x, const uint64_t y)
 {
 	const uint64_t values[2] = { x, y };
 	return vld1q_u64(values);
 }
 
-// Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
-hlslpp_inline float64x2_t vpermq_f64(const float64x2_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
-{
-	//static const uint32_t ControlMask[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle x, swizzle y, swizzle z, swizzle w
-	//
-	//uint8x8x2_t tbl = { { vget_low_f32(x), vget_high_f32(x) } }; // Get floats
-	//
-	//const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMask[X]) | (((uint64_t)ControlMask[Y]) << 32));
-	//const uint8x8_t rL = vtbl2_u8(tbl, idxL);
-	//
-	//const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMask[Z]) | (((uint64_t)ControlMask[W]) << 32));
-	//const uint8x8_t rH = vtbl2_u8(tbl, idxH);
+template<int X, int Y>
+hlslpp_inline float64x2_t permute(const float64x2_t x);
 
-	return vmovq_n_f64(0.0);// vcombine_f32(rL, rH);
-}
+template<> hlslpp_inline float64x2_t permute<0, 0>(const float64x2_t x) { return vcombine_f64(vget_low_f64(x), vget_low_f64(x)); }
 
-hlslpp_inline float64x2_t vshufq_f64(const float64x2_t x, const float64x2_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
-{
-	//static const uint32_t ControlMaskX[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0,
-	//static const uint32_t ControlMaskY[4] = { 0x13121110, 0x17161514, 0x1B1A1918, 0x1F1E1D1C }; // Swizzle X1, swizzle Y1, swizzle Z1, swizzle W1
-	//
-	//uint8x8x4_t tbl = { { vget_low_f32(x), vget_high_f32(x), vget_low_f32(y), vget_high_f32(y) } };
-	//
-	//const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMaskX[X0]) | (((uint64_t)ControlMaskX[Y0]) << 32));
-	//const uint8x8_t rL = vtbl4_u8(tbl, idxL);
-	//
-	//const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMaskY[X1]) | (((uint64_t)ControlMaskY[Y1]) << 32));
-	//const uint8x8_t rH = vtbl4_u8(tbl, idxH);
-	return vmovq_n_f64(0.0);// vcombine_f32(rL, rH);
-}
+template<> hlslpp_inline float64x2_t permute<0, 1>(const float64x2_t x) { return x; }
+
+template<> hlslpp_inline float64x2_t permute<1, 0>(const float64x2_t x) { return vcombine_f64(vget_high_f64(x), vget_low_f64(x)); }
+
+template<> hlslpp_inline float64x2_t permute<1, 1>(const float64x2_t x) { return vcombine_f64(vget_high_f64(x), vget_high_f64(x)); }
+
+#define vpermq_f64(x, X, Y) permute<X, Y>(x)
+
+template<int X, int Y>
+hlslpp_inline float64x2_t shuffle(const float64x2_t x, const float64x2_t y);
+
+template<> hlslpp_inline float64x2_t shuffle<0, 0>(const float64x2_t x, const float64x2_t y) { return vcombine_f64(vget_low_f64(x), vget_low_f64(y)); }
+
+template<> hlslpp_inline float64x2_t shuffle<0, 1>(const float64x2_t x, const float64x2_t y) { return vcombine_f64(vget_low_f64(x), vget_high_f64(y)); }
+
+template<> hlslpp_inline float64x2_t shuffle<1, 0>(const float64x2_t x, const float64x2_t y) { return vcombine_f64(vget_high_f64(x), vget_low_f64(y)); }
+
+template<> hlslpp_inline float64x2_t shuffle<1, 1>(const float64x2_t x, const float64x2_t y) { return vcombine_f64(vget_high_f64(x), vget_high_f64(y)); }
+
+#define vshufq_f64(x, y, X, Y) shuffle<X, Y>(x, y)
 
 hlslpp_inline float64x2_t vrcpq_f64(float64x2_t x)
 {
-	//float64x2_t rcpx_e = vrecpeq_f64(x);					// Calculate a first estimate of the rcp
-	//rcpx_e = vmulq_f64(rcpx_e, vrecpsq_f64(x, rcpx_e));		// Refine
-	//return vmulq_f64(rcpx_e, vrecpsq_f64(x, rcpx_e));		// Refine
-	return vmovq_n_f64(0.0);
+	float64x2_t rcpx_e = vrecpeq_f64(x);					// Calculate a first estimate of the rcp
+	rcpx_e = vmulq_f64(rcpx_e, vrecpsq_f64(x, rcpx_e));		// Refine
+	return vmulq_f64(rcpx_e, vrecpsq_f64(x, rcpx_e));		// Refine
 }
 
 hlslpp_inline float64x2_t vrsqrtq_f64(float64x2_t x)
 {
-	//float32x4_t e = vrsqrteq_f32(x);								// Calculate a first estimate of the rsqrt
-	//e = vmulq_f32(e, vrsqrtsq_f32(vmulq_f32(e, x), e));				// First Newton-Raphson iteration
-	//e = vmulq_f32(e, vrsqrtsq_f32(vmulq_f32(e, x), e));				// Second Newton-Raphson iteration
-	//return e;
-	return vmovq_n_f64(0.0);
+	float64x2_t e = vrsqrteq_f64(x);								// Calculate a first estimate of the rsqrt
+	e = vmulq_f64(e, vrsqrtsq_f64(vmulq_f64(e, x), e));				// First Newton-Raphson iteration
+	e = vmulq_f64(e, vrsqrtsq_f64(vmulq_f64(e, x), e));				// Second Newton-Raphson iteration
+	return e;
 }
 
 
@@ -641,7 +665,6 @@ hlslpp_inline float64x2_t vrsqrtq_f64(float64x2_t x)
 #define _hlslpp_msub_pd(x, y, z)				_hlslpp_neg_pd(vmlsq_f64((z), (x), (y))) // Negate because vmlsq_f32 does z - x * y and we want x * y - z
 #define _hlslpp_subm_pd(x, y, z)				vmlsq_f64((z), (x), (y))
 
-// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
 #define _hlslpp_abs_pd(x)						vabsq_f64(x)
 
 #define _hlslpp_sqrt_pd(x)						vsqrtq_f64(x)
@@ -674,13 +697,13 @@ hlslpp_inline float64x2_t vrsqrtq_f64(float64x2_t x)
 #define _hlslpp_or_pd(x, y)						vreinterpretq_f64_u64(vorrq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
 #define _hlslpp_xor_pd(x, y)					vreinterpretq_f64_u64(veorq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
 
-#define _hlslpp_perm_pd(x, mask)				vpermq_f64((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
-#define _hlslpp_shuffle_pd(x, y, mask)			vshufq_f64((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
+#define _hlslpp_perm_pd(x, mask)				vpermq_f64((x), mask & 1, (mask >> 1) & 1)
+#define _hlslpp_shuffle_pd(x, y, mask)			vshufq_f64((x), (y), mask & 1, (mask >> 1) & 1)
 
 // Bit-select x and y based on the contents of the mask
 #define _hlslpp_sel_pd(x, y, mask)				vbslq_f64((mask), (y), (x))
 
-#define _hlslpp_blend_pd(x, y, mask)			vbslq_f64(vmov2q_n_u64((mask & 1) * 0xffffffff, ((mask >> 1) & 1) * 0xffffffff, ((mask >> 2) & 1) * 0xffffffff, ((mask >> 3) & 1) * 0xffffffff), (y), (x))
+#define _hlslpp_blend_pd(x, y, mask)			vbslq_f64(vmov2q_n_u64((mask & 1) * 0xffffffffffffffff, ((mask >> 1) & 1) * 0xffffffffffffffff), (y), (x))
 
 hlslpp_inline bool _hlslpp_any1_pd(n128d x)
 {
@@ -689,44 +712,37 @@ hlslpp_inline bool _hlslpp_any1_pd(n128d x)
 
 hlslpp_inline bool _hlslpp_any2_pd(n128d x)
 {
-	uint32x2_t low = vget_low_u64(vreinterpretq_u64_f64(x));
-	return vget_lane_u64(vpmax_u32(low, low), 0) != 0;
+	return vmaxvq_f64(vabsq_f64(x)) != 0;
 }
 
 hlslpp_inline bool _hlslpp_any3_pd(n128d x0, n128d x1)
 {
-	return true;
-	//return ((_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) & 0x3) != 0x3) || ((_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) & 0x1) != 0x1);
+	return vmaxvq_f64(vabsq_f64(x0)) != 0 || vget_lane_u64(vget_low_u64(vreinterpretq_u64_f64(x1)), 0) != 0;
 }
 
 hlslpp_inline bool _hlslpp_any4_pd(n128d x0, n128d x1)
 {
-	return true;
-	//return (_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) != 0xf) || (_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) != 0xf);
+	return vmaxvq_f64(vabsq_f64(x0)) != 0 || vmaxvq_f64(vabsq_f64(x1)) != 0;;
 }
 
 hlslpp_inline bool _hlslpp_all1_pd(n128d x)
 {
-	return true;
-	//return (_mm_movemask_pd(_mm_cmpeq_pd(x, _mm_setzero_pd())) & 0x1) == 0;
+	return vget_lane_u64(vget_low_u64(vreinterpretq_u64_f64(x)), 0) != 0;
 }
 
 hlslpp_inline bool _hlslpp_all2_pd(n128d x)
 {
-	return true;
-	//return (_mm_movemask_pd(_mm_cmpeq_pd(x, _mm_setzero_pd())) & 0x3) == 0;
+	return vminvq_f64(vabsq_f64(x)) != 0;
 }
 
 hlslpp_inline bool _hlslpp_all3_pd(n128d x0, n128d x1)
 {
-	return true;
-	//return ((_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) & 0x3) == 0) && ((_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) & 0x1) == 0);
+	return vminvq_f64(vabsq_f64(x0)) != 0 && vget_lane_u64(vget_low_u64(vreinterpretq_u64_f64(x1)), 0) != 0;
 }
 
 hlslpp_inline bool _hlslpp_all4_pd(n128d x0, n128d x1)
 {
-	return true;
-	//return (_mm_movemask_pd(_mm_cmpeq_pd(x0, _mm_setzero_pd())) == 0) && (_mm_movemask_pd(_mm_cmpeq_pd(x1, _mm_setzero_pd())) == 0);
+	return vminvq_f64(vabsq_f64(x0)) != 0 && vminvq_f64(vabsq_f64(x1)) != 0;
 }
 
 //------------------
@@ -735,24 +751,46 @@ hlslpp_inline bool _hlslpp_all4_pd(n128d x0, n128d x1)
 
 hlslpp_inline void _hlslpp_store1_pd(double* p, n128d x)
 {
-	//_mm_storel_pd(p, x);
+	vst1q_lane_f64(p, x, 0);
 }
 
 hlslpp_inline void _hlslpp_store2_pd(double* p, n128d x)
 {
-	//_mm_storeu_pd(p, x);
+	vst1q_f64(p, x);
 }
 
 hlslpp_inline void _hlslpp_store3_pd(double* p, n128d x0, n128d x1)
 {
-	//_mm_storeu_pd(p, x0);
-	//_mm_storel_pd(p + 2, x1);
+	vst1q_f64(p, x0);
+	vst1q_lane_f64(p + 2, x1, 0);
 }
 
 hlslpp_inline void _hlslpp_store4_pd(double* p, n128d x0, n128d x1)
 {
-	//_mm_storeu_pd(p, x0);
-	//_mm_storeu_pd(p + 2, x1);
+	vst1q_f64(p, x0);
+	vst1q_f64(p + 2, x1);
+}
+
+hlslpp_inline void _hlslpp_load1_pd(double* p, n128d& x)
+{
+	x = vld1q_lane_f64(p, x, 0);
+}
+
+hlslpp_inline void _hlslpp_load2_pd(double* p, n128d& x)
+{
+	x = vld1q_f64(p);
+}
+
+hlslpp_inline void _hlslpp_load3_pd(double* p, n128d& x0, n128d& x1)
+{
+	x0 = vld1q_f64(p);
+	x1 = vld1q_lane_f64(p + 2, x1, 0);
+}
+
+hlslpp_inline void _hlslpp_load4_pd(double* p, n128d& x0, n128d& x1)
+{
+	x0 = vld1q_f64(p);
+	x1 = vld1q_f64(p + 2);
 }
 
 #endif

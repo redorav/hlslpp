@@ -1,4 +1,5 @@
 require ('premake-xbox360/xbox360')
+require ("vstudio")
 
 Workspace = "workspace/".._ACTION
 
@@ -19,6 +20,7 @@ PlatformARM64 = "MSVC ARM64"
 Platform360 = "Xbox 360"
 
 PlatformAndroidARM = "Android ARM"
+PlatformAndroidARM64 = "Android ARM64"
 
 UnitTestProject = "unit_tests"
 AndroidProject = "hlsl++_android"
@@ -26,6 +28,14 @@ AndroidProject = "hlsl++_android"
 -- Directories
 srcDir = "src"
 includeDir = "include"
+
+premake.override(premake.vstudio.vc2010.elements, "clCompile", function(oldfn, cfg)
+  local calls = oldfn(cfg)
+  table.insert(calls, function(cfg)
+    premake.vstudio.vc2010.element("SupportJustMyCode", nil, "false")
+  end)
+  return calls
+end)
 
 workspace("hlsl++")
 	configurations { "Debug", "Release" }
@@ -66,7 +76,7 @@ workspace("hlsl++")
 		
 	else
 	
-		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32, PlatformARM, PlatformARM64, PlatformAndroidARM, Platform360 }
+		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32, PlatformARM, PlatformARM64, PlatformAndroidARM, PlatformAndroidARM64, Platform360 }
 	
 		local llvmToolset;
 		
@@ -111,6 +121,13 @@ workspace("hlsl++")
 			buildoptions { "-Wno-unused-variable" }
 			linkoptions { "-lm" } -- Link against the standard math library
 			
+		filter { "platforms:"..PlatformAndroidARM64 }
+			system("android")
+			architecture("arm64")
+			vectorextensions("neon")
+			buildoptions { "-Wno-unused-variable" }
+			linkoptions { "-lm" } -- Link against the standard math library
+			
 		filter { "platforms:"..Platform360 }
 			system("xbox360")
 			vectorextensions ("default")
@@ -119,9 +136,11 @@ workspace("hlsl++")
 		filter{}
 	end
 	
+	--defines { "HLSLPP_SCALAR" }
+	
 	configuration "Debug"
 		defines { "DEBUG" }
-		symbols "on"
+		symbols "full"
 		inlining("auto") -- hlslpp relies on inlining for speed, big gains in debug builds without losing legibility
 		optimize("debug")
 		
@@ -129,7 +148,7 @@ workspace("hlsl++")
 		defines { "NDEBUG" }
 		optimize "on"
 		inlining("auto")
-		optimize("full")
+		optimize("speed")
 
 project ("hlsl++")
 	kind("staticlib")
@@ -149,7 +168,7 @@ project (UnitTestProject)
 		srcDir.."/*.h",
 	}
 	
-	filter { "platforms:"..PlatformAndroidARM }
+	filter { "platforms:"..PlatformAndroidARM.." or ".. PlatformAndroidARM64}
 		kind("sharedlib")
 		files
 		{
@@ -166,9 +185,8 @@ project (UnitTestProject)
 
 project (AndroidProject)
 	removeplatforms("*")
-	platforms { AndroidARM }
+	platforms { PlatformAndroidARM, PlatformAndroidARM64 }
 	kind("Packaging") -- This type of project builds the apk
-	architecture("arm")
 	links (UnitTestProject) -- Android needs to link to the main project which was built as a dynamic library
 	androidapplibname(UnitTestProject)
 	files

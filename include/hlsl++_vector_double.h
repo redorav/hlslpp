@@ -186,7 +186,7 @@ namespace hlslpp
 		hlslpp_inline n128d swizzle() const
 		{
 			// Select which vector to read from and how to build the mask based on the output
-			#define HLSLPP_SELECT(Dst) ((Dst % 2) == 0 ? (SrcA < 2 ? vec[0] : vec[1]) : (SrcB < 2 ? vec[0] : vec[1]))
+			#define HLSLPP_SELECT(Dst) (Dst % 2) == 0 ? vec[(SrcA < 2) ? 0 : 1] : vec[(SrcB < 2) ? 0 : 1]
 			n128d result = _hlslpp_shuffle_pd(HLSLPP_SELECT(DstA), HLSLPP_SELECT(DstB), HLSLPP_SHUFFLE_MASK_PD((DstA % 2) == 0 ? (SrcA % 2) : (SrcB % 2), (DstB % 2) == 0 ? (SrcA % 2) : (SrcB % 2)));
 			#undef HLSLPP_SELECT
 			return result;
@@ -407,7 +407,7 @@ namespace hlslpp
 		template<typename T1, typename T2>
 		hlslpp_inline double2(T1 f1, T2 f2, hlslpp_enable_if_number_2(T1, T2)) : vec(_hlslpp_set_pd(double(f1), double(f2))) {}
 
-		hlslpp_inline double2(const double1& f1, const double1& f2) { vec = _hlslpp_blend_pd(f1.vec, _hlslpp_perm_xx_pd(f2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
+		hlslpp_inline double2(const double1& f1, const double1& f2) { vec = _hlslpp_blend_pd(f1.vec, _hlslpp_perm_xx_pd(f2.vec), HLSLPP_BLEND_MASK_PD(1, 0)); }
 		
 		template<int X, int Y> hlslpp_inline double2(const dswizzle2<X, Y>& s) : vec(s.template swizzle<X, Y, 0, 1>()) {}
 
@@ -901,10 +901,16 @@ namespace hlslpp
 	hlslpp_inline double3 trunc(const double3& f) { return double3(_hlslpp_trunc_pd(f.vec0), _hlslpp_trunc_pd(f.vec1)); }
 	hlslpp_inline double4 trunc(const double4& f) { return double4(_hlslpp_trunc_pd(f.vec0), _hlslpp_trunc_pd(f.vec1)); }
 
+	//--------------------------------------------------------------------------------------------------------------------------
+	// Function disambiguation. This typically happens when pulling in math.h, <cmath> or <algorithm>, where functions now live
+	// in the global namespace. Due to implicit conversions, we need to clarify to the compiler which functions it needs to use.
+	//--------------------------------------------------------------------------------------------------------------------------
+
 	template<int X> hlslpp_inline double1 abs(const dswizzle1<X>& s) { return abs(double1(s)); }
 
 	template<int X> hlslpp_inline double1 ceil(const dswizzle1<X>& s) { return ceil(double1(s)); }
 	template<int X> hlslpp_inline double1 floor(const dswizzle1<X>& s) { return floor(double1(s)); }
+	template<int X> hlslpp_inline double1 sqrt(const dswizzle1<X>& s) { return sqrt(double1(s)); }
 
 	template<int X>
 	dswizzle1<X>& dswizzle1<X>::operator = (const double1& f)
@@ -953,7 +959,6 @@ namespace hlslpp
 		return *this;
 	}
 
-
 	hlslpp_inline void store(const double1& v, double* f)
 	{
 		_hlslpp_store1_pd(f, v.vec);
@@ -972,6 +977,26 @@ namespace hlslpp
 	hlslpp_inline void store(const double4& v, double* f)
 	{
 		_hlslpp_store4_pd(f, v.vec0, v.vec1);
+	}
+
+	hlslpp_inline void load(double1& v, double* f)
+	{
+		_hlslpp_load1_pd(f, v.vec);
+	}
+
+	hlslpp_inline void load(double2& v, double* f)
+	{
+		_hlslpp_load2_pd(f, v.vec);
+	}
+
+	hlslpp_inline void load(double3& v, double* f)
+	{
+		_hlslpp_load3_pd(f, v.vec0, v.vec1);
+	}
+
+	hlslpp_inline void load(double4& v, double* f)
+	{
+		_hlslpp_load4_pd(f, v.vec0, v.vec1);
 	}
 }
 

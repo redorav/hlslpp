@@ -381,6 +381,16 @@ void RunUnitTestsVectorDouble()
 	double3 dvfmod3 = fmod(dvfoo3, dvbar3);
 	double4 dvfmod4 = fmod(dvfoo4, dvbar4);
 
+	double1 dvsqrt1 = sqrt(dvfoo1);
+	double2 dvsqrt2 = sqrt(dvfoo2);
+	double3 dvsqrt3 = sqrt(dvfoo3);
+	double4 dvsqrt4 = sqrt(dvfoo4);
+
+	double1 dvsqrt_swiz_1 = sqrt(dvfoo1.r);
+	double2 dvsqrt_swiz_2 = sqrt(dvfoo2.rr);
+	double3 dvsqrt_swiz_3 = sqrt(dvfoo3.yyy);
+	double4 dvsqrt_swiz_4 = sqrt(dvfoo4.wwwx);
+
 	// Storage
 
 	double dvstore1[1];
@@ -392,6 +402,18 @@ void RunUnitTestsVectorDouble()
 	store(dvfoo2, dvstore2); eq(dvfoo2, dvstore2[0], dvstore2[1]);
 	store(dvfoo3, dvstore3); eq(dvfoo3, dvstore3[0], dvstore3[1], dvstore3[2]);
 	store(dvfoo4, dvstore4); eq(dvfoo4, dvstore4[0], dvstore4[1], dvstore4[2], dvstore4[3]);
+
+	// Loading
+
+	double dvload1[1] = { df10 };
+	double dvload2[2] = { df11, df12 };
+	double dvload3[3] = { df13, df14, df15 };
+	double dvload4[4] = { df16, df17, df18, df19 };
+
+	load(dvfoo1, dvload1); eq(dvfoo1, dvload1[0]);
+	load(dvfoo2, dvload2); eq(dvfoo2, dvload2[0], dvload2[1]);
+	load(dvfoo3, dvload3); eq(dvfoo3, dvload3[0], dvload3[1], dvload3[2]);
+	load(dvfoo4, dvload4); eq(dvfoo4, dvload4[0], dvload4[1], dvload4[2], dvload4[3]);
 
 #endif
 }
