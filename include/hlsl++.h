@@ -4,17 +4,26 @@
 
 	#define hlslpp_inline inline __attribute__((always_inline))
 
+	#define HLSLPP_WARNING_ANONYMOUS_UNION_OFF
+	#define HLSLPP_WARNING_ANONYMOUS_UNION_ON
+
 #elif defined(_MSC_VER)
 
 	#define hlslpp_inline __forceinline
 
+	#define HLSLPP_WARNING_ANONYMOUS_UNION_OFF \
+	__pragma(warning(push)) \
+	__pragma(warning(disable : 4201))
+
+	#define HLSLPP_WARNING_ANONYMOUS_UNION_ON __pragma(warning(pop))
+
 #else
 
-	#error No forceinline define for this compiler
+	#error Unrecognized compiler
 
 #endif
 
-#if __cplusplus >= 201702L || _MSVC_LANG >= 201702L
+#if (__cplusplus >= 201702L) || (_MSVC_LANG >= 201702L)
 
 	#define hlslpp_nodiscard [[nodiscard]]
 
