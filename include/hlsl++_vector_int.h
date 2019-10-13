@@ -493,6 +493,21 @@ namespace hlslpp
 	hlslpp_inline int3 abs(const int3& i) { return int3(_hlslpp_abs_epi32(i.vec)); }
 	hlslpp_inline int4 abs(const int4& i) { return int4(_hlslpp_abs_epi32(i.vec)); }
 
+	hlslpp_inline int1 min(const int1& i1, const int1& i2) { return int1(_hlslpp_min_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline int2 min(const int2& i1, const int2& i2) { return int2(_hlslpp_min_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline int3 min(const int3& i1, const int3& i2) { return int3(_hlslpp_min_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline int4 min(const int4& i1, const int4& i2) { return int4(_hlslpp_min_epi32(i1.vec, i2.vec)); }
+
+	hlslpp_inline int1 mad(const int1& i1, const int1& i2, const int1& i3) { return int1(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
+	hlslpp_inline int2 mad(const int2& i1, const int2& i2, const int2& i3) { return int2(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
+	hlslpp_inline int3 mad(const int3& i1, const int3& i2, const int3& i3) { return int3(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
+	hlslpp_inline int4 mad(const int4& i1, const int4& i2, const int4& i3) { return int4(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
+
+	hlslpp_inline int1 max(const int1& i1, const int1& i2) { return int1(_hlslpp_max_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline int2 max(const int2& i1, const int2& i2) { return int2(_hlslpp_max_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline int3 max(const int3& i1, const int3& i2) { return int3(_hlslpp_max_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline int4 max(const int4& i1, const int4& i2) { return int4(_hlslpp_max_epi32(i1.vec, i2.vec)); }
+
 	template<int X>
 	iswizzle1<X>& iswizzle1<X>::operator = (const int1& i)
 	{

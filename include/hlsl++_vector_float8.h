@@ -607,6 +607,8 @@ namespace hlslpp
 
 	hlslpp_inline float8 min(const float8& f1, const float8& f2) { return float8(_hlslpp256_min_ps(f1.vec, f2.vec)); }
 
+	hlslpp_inline float8 mad(const float8& f1, const float8& f2, const float8& f3) { return float8(_hlslpp256_madd_ps(f1.vec, f2.vec, f3.vec)); }
+
 	hlslpp_inline float8 max(const float8& f1, const float8& f2) { return float8(_hlslpp256_max_ps(f1.vec, f2.vec)); }
 
 	hlslpp_inline float8 modf(const float8& f1, float8& integerPart)

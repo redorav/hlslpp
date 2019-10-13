@@ -1150,6 +1150,11 @@ namespace hlslpp
 	hlslpp_inline float3 min(const float3& f1, const float3& f2) { return float3(_hlslpp_min_ps(f1.vec, f2.vec)); }
 	hlslpp_inline float4 min(const float4& f1, const float4& f2) { return float4(_hlslpp_min_ps(f1.vec, f2.vec)); }
 
+	hlslpp_inline float1 mad(const float1& f1, const float1& f2, const float1& f3) { return float1(_hlslpp_madd_ps(f1.vec, f2.vec, f3.vec)); }
+	hlslpp_inline float2 mad(const float2& f1, const float2& f2, const float2& f3) { return float2(_hlslpp_madd_ps(f1.vec, f2.vec, f3.vec)); }
+	hlslpp_inline float3 mad(const float3& f1, const float3& f2, const float3& f3) { return float3(_hlslpp_madd_ps(f1.vec, f2.vec, f3.vec)); }
+	hlslpp_inline float4 mad(const float4& f1, const float4& f2, const float4& f3) { return float4(_hlslpp_madd_ps(f1.vec, f2.vec, f3.vec)); }
+
 	hlslpp_inline float1 max(const float1& f1, const float1& f2) { return float1(_hlslpp_max_ps(f1.vec, f2.vec)); }
 	hlslpp_inline float2 max(const float2& f1, const float2& f2) { return float2(_hlslpp_max_ps(f1.vec, f2.vec)); }
 	hlslpp_inline float3 max(const float3& f1, const float3& f2) { return float3(_hlslpp_max_ps(f1.vec, f2.vec)); }
