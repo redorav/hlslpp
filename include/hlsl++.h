@@ -101,6 +101,8 @@
 
 #include "hlsl++_vector_float.h"
 
+#include "hlsl++_vector_float8.h"
+
 #include "hlsl++_matrix_float.h"
 
 #include "hlsl++_vector_int.h"

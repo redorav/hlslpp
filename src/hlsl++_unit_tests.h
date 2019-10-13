@@ -118,9 +118,15 @@ namespace hlslpp_unit
 
 	void eq(const float4& v, float x, float y, float z, float w, float tolerance = 0.0f);
 
+#if defined(HLSLPP_FLOAT8)
+
+	void eq(const float8& v, float x, float y, float z, float w, float a, float b, float c, float d, float tolerance = 0.0f);
+
+#endif
+
 	void eq(double a, double b, double tolerance = 0.0);
 
-#if defined(HLSLPP_FLOAT64)
+#if defined(HLSLPP_DOUBLE)
 
 	void eq(const double2& v, double x, double y, double tolerance = 0.0);
 

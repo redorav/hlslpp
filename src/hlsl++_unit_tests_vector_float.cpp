@@ -10,10 +10,40 @@ void RunUnitTestsVectorFloat()
 	// Float
 	//------
 
-	float f1 = (rand() % 1000) / 100.0f; float f5 = (rand() % 1000) / 100.0f; float f9 = (rand() % 1000) / 100.0f; float f13 = (rand() % 1000) / 100.0f; float f17 = (rand() % 1000) / 100.0f;
-	float f2 = (rand() % 1000) / 100.0f; float f6 = (rand() % 1000) / 100.0f; float f10 = (rand() % 1000) / 100.0f; float f14 = (rand() % 1000) / 100.0f; float f18 = (rand() % 1000) / 100.0f;
-	float f3 = (rand() % 1000) / 100.0f; float f7 = (rand() % 1000) / 100.0f; float f11 = (rand() % 1000) / 100.0f; float f15 = (rand() % 1000) / 100.0f; float f19 = (rand() % 1000) / 100.0f;
-	float f4 = (rand() % 1000) / 100.0f; float f8 = (rand() % 1000) / 100.0f; float f12 = (rand() % 1000) / 100.0f; float f16 = (rand() % 1000) / 100.0f; float f20 = (rand() % 1000) / 100.0f;
+	float f1 = (rand() % 1000) / 100.0f;
+	float f2 = (rand() % 1000) / 100.0f;
+	float f3 = (rand() % 1000) / 100.0f;
+	float f4 = (rand() % 1000) / 100.0f;
+
+	float f5 = (rand() % 1000) / 100.0f;
+	float f6 = (rand() % 1000) / 100.0f;
+	float f7 = (rand() % 1000) / 100.0f;
+	float f8 = (rand() % 1000) / 100.0f;
+
+	float f9 = (rand() % 1000) / 100.0f;
+	float f10 = (rand() % 1000) / 100.0f;
+	float f11 = (rand() % 1000) / 100.0f;
+	float f12 = (rand() % 1000) / 100.0f;
+
+	float f13 = (rand() % 1000) / 100.0f;
+	float f14 = (rand() % 1000) / 100.0f;
+	float f15 = (rand() % 1000) / 100.0f;
+	float f16 = (rand() % 1000) / 100.0f;
+
+	float f17 = (rand() % 1000) / 100.0f;
+	float f18 = (rand() % 1000) / 100.0f;
+	float f19 = (rand() % 1000) / 100.0f;
+	float f20 = (rand() % 1000) / 100.0f;
+
+	float f21 = (rand() % 1000) / 100.0f;
+	float f22 = (rand() % 1000) / 100.0f;
+	float f23 = (rand() % 1000) / 100.0f;
+	float f24 = (rand() % 1000) / 100.0f;
+
+	float f25 = (rand() % 1000) / 100.0f;
+	float f26 = (rand() % 1000) / 100.0f;
+	float f27 = (rand() % 1000) / 100.0f;
+	float f28 = (rand() % 1000) / 100.0f;
 
 	// Initialization
 
@@ -909,4 +939,197 @@ void RunUnitTestsVectorFloat()
 	load(vfoo2, vload2);			eq(vfoo2, vload2[0], vload2[1]);
 	load(vfoo3, vload3);			eq(vfoo3, vload3[0], vload3[1], vload3[2]);
 	load(vfoo4, vload4);			eq(vfoo4, vload4[0], vload4[1], vload4[2], vload4[3]);
+
+#if defined(HLSLPP_FLOAT8)
+
+	//-------
+	// Float8
+	//-------
+
+	float8 vfoo8 = float8(f11, f12, f13, f14, f15, f16, f17, f18);	eq(vfoo8, f11, f12, f13, f14, f15, f16, f17, f18);
+
+	float8 vfoo_dc_8;
+
+	vfoo8 = float8(f11, f12, f13, f14, f15, f16, f17, f18);	eq(vfoo8, f11, f12, f13, f14, f15, f16, f17, f18);
+
+	//float8 vbar8 = vfoo8.bgra;												eq(vbar8, f9, f8, f7, f10);
+
+	float8 vbar8 = float8(f19, f20, f21, f22, f23, f24, f25, f26);	eq(vbar8, f19, f20, f21, f22, f23, f24, f25, f26);
+
+	float8 vbaz8 = float8(0.0f, 0.2f, 0.6f, 1.0f, 1.2f, 1.4f, 1.6f, 1.8f);	eq(vbaz8, 0.0f, 0.2f, 0.6f, 1.0f, 1.2f, 1.4f, 1.6f, 1.8f);
+
+	//float8 vfoo_mix_8_a = float8(vbaz1, vbaz2.x, vbaz3.x, 0.5f);			eq(vfoo_mix_4_a, vbaz1.x, vbaz2.x, vbaz3.x, 0.5f);
+	//float8 vfoo_mix_8_b = float8(vbaz1, vbaz3);								eq(vfoo_mix_4_b, vbaz1.x, vbaz3.x, vbaz3.y, vbaz3.z);
+	//float8 vfoo_mix_8_c = float8(vbaz3, vbaz1);								eq(vfoo_mix_4_c, vbaz3.x, vbaz3.y, vbaz3.z, vbaz1.x);
+	//float8 vfoo_mix_8_d = float8(vbaz2, vbar2);								eq(vfoo_mix_4_d, vbaz2.x, vbaz2.y, vbar2.x, vbar2.y);
+	//float8 vfoo_mix_8_e = float8(vbaz2, vbar1, vbaz1);						eq(vfoo_mix_4_e, vbaz2.x, vbaz2.y, vbar1.x, vbaz1.x);
+	//float8 vfoo_mix_8_f = float8(vbar1, vbaz2, vbaz1);						eq(vfoo_mix_4_f, vbar1.x, vbaz2.x, vbaz2.y, vbaz1.x);
+	//float8 vfoo_mix_8_g = float8(vbar1, vbaz1, vbaz2);						eq(vfoo_mix_4_g, vbar1.x, vbaz1.x, vbaz2.x, vbaz2.y);
+
+	//float8 vfoo_mix_4_f_a = float8(f1, vfoo1, vbar1, vbaz1);				eq(vfoo_mix_4_f_a, f1, vfoo1, vbar1, vbaz1);
+	//float8 vfoo_mix_4_f_b = float8(f2, f3, vbar1, vbaz1);					eq(vfoo_mix_4_f_b, f2, f3, vbar1, vbaz1);
+	//float8 vfoo_mix_4_f_c = float8(f4, f5, f6, vbaz1);						eq(vfoo_mix_4_f_c, f4, f5, f6, vbaz1);
+	//
+	//float8 vfoo_mix_4_f_d = float8(f1, vfoo1.x, vbar2.y, vbaz3.z);			eq(vfoo_mix_4_f_d, f1, vfoo1, vbar2.y, vbaz3.z);
+	//float8 vfoo_mix_4_f_e = float8(f2, f3, vbar2.y, vbaz3.z);				eq(vfoo_mix_4_f_e, f2, f3, vbar2.y, vbaz3.z);
+	//float8 vfoo_mix_4_f_f = float8(f4, f5, f6, vbaz3.z);					eq(vfoo_mix_4_f_f, f4, f5, f6, vbaz3.z);
+	//
+	//float8 vfoo_mix_4_f_g = float8(f1, vfoo1, vbar2.y, vbaz3.z);			eq(vfoo_mix_4_f_g, f1, vfoo1, vbar2.y, vbaz3.z);
+	//float8 vfoo_mix_4_f_h = float8(f2, vfoo1, vbar1, vbaz3.z);				eq(vfoo_mix_4_f_h, f2, vfoo1, vbar1, vbaz3.z);
+	//float8 vfoo_mix_4_f_i = float8(f3, vfoo1.x, vbar1, vbaz3.z);			eq(vfoo_mix_4_f_i, f3, vfoo1.x, vbar1, vbaz3.z);
+	//float8 vfoo_mix_4_f_j = float8(f4, vfoo1.x, vbar2.y, vbaz1);			eq(vfoo_mix_4_f_j, f4, vfoo1.x, vbar2.y, vbaz1);
+	//
+	//float8 vfoo_mix_4_f_k = float8(f1, f2, vbar1, vbaz3.z);					eq(vfoo_mix_4_f_k, f1, f2, vbar1, vbaz3.z);
+	//float8 vfoo_mix_4_f_l = float8(f3, f4, vbar2.y, vbaz1);					eq(vfoo_mix_4_f_l, f3, f4, vbar2.y, vbaz1);
+
+	// Addition
+
+	float8 vadd8 = vfoo8 + vbar8;
+	//eq(vadd8,
+	//	(float)vfoo8.x + (float)vbar8.x, (float)vfoo8.y + (float)vbar8.y, (float)vfoo8.z + (float)vbar8.z, (float)vfoo8.w + (float)vbar8.w,	
+	//	(float)vfoo8.x + (float)vbar8.x, (float)vfoo8.y + (float)vbar8.y, (float)vfoo8.z + (float)vbar8.z, (float)vfoo8.w + (float)vbar8.w);
+
+	float8 vadd_f_8 = vfoo8 + 0.4f;											//eq(vadd_f_4, (float)vfoo8.x + 0.4f, (float)vfoo8.y + 0.4f, (float)vfoo8.z + 0.4f, (float)vfoo8.w + 0.4f);
+
+	vadd_f_8 += 0.4f;														//eq(vadd_f_4, (float)vfoo8.x + 0.4f + 0.4f, (float)vfoo8.y + 0.4f + 0.4f, (float)vfoo8.z + 0.4f + 0.4f, (float)vfoo8.w + 0.4f + 0.4f);
+	
+	// Subtraction
+
+	float8 vsub8 = vfoo8 - vbar8;											//eq(vsub4, (float)vfoo8.x - (float)vbar8.x, (float)vfoo8.y - (float)vbar8.y, (float)vfoo8.z - (float)vbar8.z, (float)vfoo8.w - (float)vbar8.w);
+
+	float8 vsub_f_8 = vfoo8 - 0.4f;											//eq(vsub_f_4, (float)vfoo8.x - 0.4f, (float)vfoo8.y - 0.4f, (float)vfoo8.z - 0.4f, (float)vfoo8.w - 0.4f);
+
+	vsub_f_8 -= 0.4f;														//eq(vsub_f_4, (float)vfoo8.x - 0.4f - 0.4f, (float)vfoo8.y - 0.4f - 0.4f, (float)vfoo8.z - 0.4f - 0.4f, (float)vfoo8.w - 0.4f - 0.4f);
+
+	// Multiplication
+
+	float8 vmul8 = vfoo8 * vbar8;						//eq(vmul4, (float)vfoo8.x * (float)vbar8.x, (float)vfoo8.y * (float)vbar8.y, (float)vfoo8.z * (float)vbar8.z, (float)vfoo8.w * (float)vbar8.w);
+
+	float8 vmul_f_8 = vfoo8 * 0.4f;						//eq(vmul_f_4, (float)vfoo8.x * 0.4f, (float)vfoo8.y * 0.4f, (float)vfoo8.z * 0.4f, (float)vfoo8.w * 0.4f);
+
+	vmul_f_8 *= 0.4f;									//eq(vmul_f_4, (float)vfoo8.x * 0.4f * 0.4f, (float)vfoo8.y * 0.4f * 0.4f, (float)vfoo8.z * 0.4f * 0.4f, (float)vfoo8.w * 0.4f * 0.4f);
+	
+	// Division
+
+	float8 vdiv8 = vfoo8 / vbar8;						//eq(vdiv4, div(vfoo8.x, vbar8.x), div(vfoo8.y, vbar8.y), div(vfoo8.z, vbar8.z), div(vfoo8.w, vbar8.w), tolDiv);
+
+	float8 vdiv_f_8 = vfoo8 / 0.4f;						//eq(vdiv_f_4, div(vfoo8.x, 0.4f), div(vfoo8.y, 0.4f), div(vfoo8.z, 0.4f), div(vfoo8.w, 0.4f), tolDiv);
+
+	vdiv_f_8 /= 0.4f;									//eq(vdiv_f_4, div(div(vfoo8.x, 0.4f), 0.4f), div(div(vfoo8.y, 0.4f), 0.4f), div(div(vfoo8.z, 0.4f), 0.4f), div(div(vfoo8.w, 0.4f), 0.4f), tolDiv);
+	
+	// Comparison
+
+	float8 vgt8 = vfoo8 > vbar8;							//eq(vgt4, (float)vfoo8.x > (float)vbar8.x, (float)vfoo8.y > (float)vbar8.y, (float)vfoo8.z > (float)vbar8.z, (float)vfoo8.w > (float)vbar8.w);
+
+	float8 vlt8 = vfoo8 < vbar8;							//eq(vlt4, (float)vfoo8.x < (float)vbar8.x, (float)vfoo8.y < (float)vbar8.y, (float)vfoo8.z < (float)vbar8.z, (float)vfoo8.w < (float)vbar8.w);
+
+	float8 vge8 = vfoo8 >= vbar8;							//eq(vge4, (float)vfoo8.x >= (float)vbar8.x, (float)vfoo8.y >= (float)vbar8.y, (float)vfoo8.z >= (float)vbar8.z, (float)vfoo8.w >= (float)vbar8.w);
+
+	float8 vle8 = vfoo8 <= vbar8;							//eq(vle4, (float)vfoo8.x <= (float)vbar8.x, (float)vfoo8.y <= (float)vbar8.y, (float)vfoo8.z <= (float)vbar8.z, (float)vfoo8.w <= (float)vbar8.w);
+
+	float8 veq8 = vfoo8 == vbar8;							//eq(veq4, (float)vfoo8.x == (float)vbar8.x, (float)vfoo8.y == (float)vbar8.y, (float)vfoo8.z == (float)vbar8.z, (float)vfoo8.w == (float)vbar8.w);
+
+	float8 vneq8 = vfoo8 != vbar8;							//eq(vneq4, (float)vfoo8.x != (float)vbar8.x, (float)vfoo8.y != (float)vbar8.y, (float)vfoo8.z != (float)vbar8.z, (float)vfoo8.w != (float)vbar8.w);
+
+	float8 vabs8 = abs(vfoo8);								//eq(vabs4, abs((float)vfoo8.x), abs((float)vfoo8.y), abs((float)vfoo8.z), abs((float)vfoo8.w));
+
+	float8 vabsneg_8 = abs(-vfoo8);							//eq(vabsneg_4, abs((float)-vfoo8.x), abs((float)-vfoo8.y), abs((float)-vfoo8.z), abs((float)-vfoo8.w));
+
+	bool vall8 = all(vfoo8);				//eq(vall4, vfoo8.x != 0.0f && vfoo8.y != 0.0f && vfoo8.z != 0.0f && vfoo8.w != 0.0f);
+
+	bool vany8 = any(vfoo8);				//eq(vany4, vfoo8.x != 0.0f || vfoo8.y != 0.0f || vfoo8.z != 0.0f || vfoo8.w != 0.0f);
+
+	float8 vacos8 = acos(vfoo8);
+
+	float8 vasin8 = asin(vfoo8);
+
+	float8 vatan8 = atan(vfoo8);
+
+	float8 vceil8 = ceil(vfoo8);							//eq(vceil4, ceil((float)vfoo8.x), ceil((float)vfoo8.y), ceil((float)vfoo8.z), ceil((float)vfoo8.w));
+
+	float8 vclamp8 = clamp(vfoo8, vbar8, vbaz8);
+
+	float8 vcos8 = cos(vfoo8);
+
+	float8 vcosh8 = cosh(vfoo8);
+
+	float1 vdot8 = dot(vfoo8, vbar8);
+
+	float8 vfloor8 = floor(vfoo8);					//eq(vfloor4, floor((float)vfoo8.x), floor((float)vfoo8.y), floor((float)vfoo8.z), floor((float)vfoo8.w));
+	
+	float8 vfmod8 = fmod(vfoo8, vbar8);
+
+	float8 vfrac8 = frac(vfoo8);
+
+	float8 vexp8 = exp(vfoo8);
+
+	float8 vexp2_8 = exp2(vfoo8);
+
+	float8 visfinite_8 = isfinite(vfoo8);
+
+	float8 visinf_8 = isinf(vfoo8);
+
+	float8 visnan_8 = isnan(vfoo8);
+
+	float1 vlength_8 = length(vfoo8);
+
+	float8 vlerp8 = lerp(vfoo8, vbar8, vbaz8);					//eq(vlerp4, lerpf(vfoo8.r, vbar8.r, vbaz8.r), lerpf(vfoo8.g, vbar8.g, vbaz8.g), lerpf(vfoo8.b, vbar8.b, vbaz8.b), lerpf(vfoo8.a, vbar8.a, vbaz8.a));
+
+	float8 vlerpf_8 = lerp(vfoo8, vbar8, 0.7f);					//eq(vlerpf_4, lerpf(vfoo8.r, vbar8.r, 0.7f), lerpf(vfoo8.g, vbar8.g, 0.7f), lerpf(vfoo8.b, vbar8.b, 0.7f), lerpf(vfoo8.a, vbar8.a, 0.7f));
+
+	float8 vlog8 = log(vfoo8);
+
+	float8 vlog2_8 = log2(vfoo8);
+
+	float8 vlog10_8 = log10(vfoo8);
+
+	float8 vmin_8 = min(vfoo8, vbar8);
+
+	float8 vmax_8 = max(vfoo8, vbar8);
+
+	float8 vnormalize_foo_8 = normalize(vfoo8);
+
+	float8 vnormalize_bar_8 = normalize(vbar8);
+
+	float8 vpow_8 = pow(vfoo8, vbar8);
+
+	float8 vradians8 = radians(vfoo8);
+
+	float8 vreflect8 = reflect(vfoo8, vbar8);
+
+	float8 vrefract8 = refract(vnormalize_foo_8, vnormalize_bar_8, float1(0.1f));
+
+	float8 vrsqrt8 = rsqrt(vfoo8);
+
+	float8 vround8 = round(vfoo8);
+
+	float8 vsaturate8 = saturate(vfoo8);
+
+	float8 vsign8 = sign(vfoo8);
+
+	float8 vsin8 = sin(vfoo8);
+
+	float8 vsinh8 = sinh(vfoo8);
+
+	float8 vsmoothstep_8 = smoothstep(vfoo8, vfoo8 + 3.0f, vbar8);
+
+	float8 vsqrt8 = sqrt(vfoo8);
+
+	float8 vstep8 = step(vfoo8, vbar8);
+
+	float8 vtan8 = tan(vfoo8);
+
+	float8 vtanh8 = tanh(vfoo8);
+
+	float8 vtrunc8 = trunc(vfoo8);
+
+	// Storage
+	float vstore8[8];
+	store(vfoo8, vstore8);			eq(vfoo8, vstore8[0], vstore8[1], vstore8[2], vstore8[3], vstore8[4], vstore8[5], vstore8[6], vstore8[7]);
+
+	// Loading
+	float vload8[8] = { f16, f17, f18, f19, f20, f21, f22, f23 };
+	load(vfoo8, vload8);			eq(vfoo8, vload8[0], vload8[1], vload8[2], vload8[3], vload8[4], vload8[5], vload8[6], vload8[7]);
+
+#endif
 }

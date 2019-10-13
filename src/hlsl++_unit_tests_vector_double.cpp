@@ -6,7 +6,7 @@ void RunUnitTestsVectorDouble()
 {
 	using namespace hlslpp_unit;
 
-#if defined(HLSLPP_FLOAT64)
+#if defined(HLSLPP_DOUBLE)
 
 	//-------
 	// Double

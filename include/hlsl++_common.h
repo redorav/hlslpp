@@ -72,7 +72,45 @@ namespace hlslpp
 
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
-	const n256 f8_1 = _hlslpp256_set1_ps(1.0f);
+	const n256 f8_0           = _hlslpp256_set1_ps(0.0f);
+	const n256 f8_1           = _hlslpp256_set1_ps(1.0f);
+	const n256 f8minusOne     = _hlslpp256_set1_ps(-1.0f);
+	const n256 f8_05          = _hlslpp256_set1_ps(0.5f);
+	const n256 f8_minus05     = _hlslpp256_set1_ps(-0.5f);
+	const n256 f8_2           = _hlslpp256_set1_ps(2.0f);
+	const n256 f8_minus2      = _hlslpp256_set1_ps(-2.0f);
+	const n256 f8_3           = _hlslpp256_set1_ps(3.0f);
+	const n256 f8_10          = _hlslpp256_set1_ps(10.0f);
+	const n256 f8_e           = _hlslpp256_set1_ps(2.718281828f);
+
+	const n256 f8_pi          = _hlslpp256_set1_ps(3.14159265f);  // pi
+	const n256 f8_minusPi     = _hlslpp256_set1_ps(-3.14159265f); // -pi
+	const n256 f8_invPi       = _hlslpp256_set1_ps(0.31830988f);  // 1 / pi
+
+	const n256 f8_2pi         = _hlslpp256_set1_ps(6.28318530f);  //  2 * pi
+	const n256 f8_minus2pi    = _hlslpp256_set1_ps(-6.28318530f); // -2 * pi
+	const n256 f8_inv2pi      = _hlslpp256_set1_ps(0.15915494f);  // 1 / (2 * pi)
+
+	const n256 f8_pi2         = _hlslpp256_set1_ps(1.57079632f);  //  pi / 2
+	const n256 f8_minusPi2    = _hlslpp256_set1_ps(-1.57079632f); // -pi / 2
+	const n256 f8_invPi2      = _hlslpp256_set1_ps(0.63661977f);  // 2 / pi
+
+	const n256 f8_3pi2        = _hlslpp256_set1_ps(4.71238898f);  //  3 * pi / 2
+	const n256 f8_minus3pi2   = _hlslpp256_set1_ps(-4.71238898f); // -3 * pi / 2
+
+	const n256 f8_pi4         = _hlslpp256_set1_ps(0.78539816f);  // pi / 4
+	const n256 f8_minusPi4    = _hlslpp256_set1_ps(-0.78539816f); // -pi / 4
+
+	const n256 f8_NaN         = _hlslpp256_set1_ps(nanMask.f);      // Quiet NaN
+	const n256 f8_inf         = _hlslpp256_set1_ps(infMask.f);      // Infinity
+	const n256 f8_minusinf    = _hlslpp256_set1_ps(minusinfMask.f); // -Infinity
+	const n256 f8_fff         = _hlslpp256_set1_ps(fffMask.f);      // 0xffffffff
+
+	const n256 f8_rad2deg     = _hlslpp256_set1_ps(180.0f / 3.14159265f);
+	const n256 f8_deg2rad     = _hlslpp256_set1_ps(3.14159265f / 180.f);
+
+	const n256 f8negativeMask = _hlslpp256_set1_ps(negMask.f);
+	const n256 f8absMask      = _hlslpp256_set1_ps(absMask.f);
 
 #endif
 
@@ -112,6 +150,17 @@ namespace hlslpp
 			std::is_arithmetic<T2>::value * \
 			std::is_arithmetic<T3>::value * \
 			std::is_arithmetic<T4>::value, void*>::type = nullptr
+
+	#define hlslpp_enable_if_number_8(T1, T2, T3, T4, T5, T6, T7, T8) \
+			typename std::enable_if< \
+			std::is_arithmetic<T1>::value * \
+			std::is_arithmetic<T2>::value * \
+			std::is_arithmetic<T3>::value * \
+			std::is_arithmetic<T4>::value * \
+			std::is_arithmetic<T5>::value * \
+			std::is_arithmetic<T6>::value * \
+			std::is_arithmetic<T7>::value * \
+			std::is_arithmetic<T8>::value, void*>::type = nullptr
 
 	// Helper intrinsics
 
@@ -236,6 +285,17 @@ namespace hlslpp
 	
 	#define _hlslpp_cmplt1_epi32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmplt_epi32((val1), (val2)), i4_1)
 	#define _hlslpp_cmple1_epi32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmple_epi32((val1), (val2)), i4_1)
+
+	#define _hlslpp256_sign_ps(val)				_hlslpp256_and_ps(_hlslpp256_or_ps(_hlslpp256_and_ps((val), f8minusOne), f8_1), _hlslpp256_cmpneq_ps((val), f8_0))
+
+	#define _hlslpp256_cmpneq1_ps(val1, val2)	_hlslpp256_and_ps(_hlslpp256_cmpneq_ps((val1), (val2)), f8_1)
+	#define _hlslpp256_cmpeq1_ps(val1, val2)	_hlslpp256_and_ps(_hlslpp256_cmpeq_ps((val1), (val2)), f8_1)
+
+	#define _hlslpp256_cmpgt1_ps(val1, val2)	_hlslpp256_and_ps(_hlslpp256_cmpgt_ps((val1), (val2)), f8_1)
+	#define _hlslpp256_cmpge1_ps(val1, val2)	_hlslpp256_and_ps(_hlslpp256_cmpge_ps((val1), (val2)), f8_1)
+
+	#define _hlslpp256_cmplt1_ps(val1, val2)	_hlslpp256_and_ps(_hlslpp256_cmplt_ps((val1), (val2)), f8_1)
+	#define _hlslpp256_cmple1_ps(val1, val2)	_hlslpp256_and_ps(_hlslpp256_cmple_ps((val1), (val2)), f8_1)
 
 	// Forward declarations
 

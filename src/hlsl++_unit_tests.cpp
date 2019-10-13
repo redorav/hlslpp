@@ -46,13 +46,30 @@ namespace hlslpp_unit
 		eq(v.w, w, tolerance);
 	}
 
+#if defined(HLSLPP_FLOAT8)
+
+	void eq(const float8& v, float x, float y, float z, float w, float a, float b, float c, float d, float tolerance /*= 0.0f*/)
+	{
+		eq(v.f32[0], x, tolerance);
+		eq(v.f32[1], y, tolerance);
+		eq(v.f32[2], z, tolerance);
+		eq(v.f32[3], w, tolerance);
+
+		eq(v.f32[4], a, tolerance);
+		eq(v.f32[5], b, tolerance);
+		eq(v.f32[6], c, tolerance);
+		eq(v.f32[7], d, tolerance);
+	}
+
+#endif
+
 	void eq(double a, double b, double tolerance /*= 0.0*/)
 	{
 		bool withinTolerance = abs(a - b) <= tolerance;
 		assert(withinTolerance);
 	}
 
-#if defined(HLSLPP_FLOAT64)
+#if defined(HLSLPP_DOUBLE)
 
 	void eq(const double2& v, double x, double y, double tolerance /*= 0.0*/)
 	{

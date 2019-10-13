@@ -39,7 +39,7 @@
 
 #endif
 
-#define HLSLPP_FLOAT64
+#define HLSLPP_DOUBLE
 
 // All available in SSE/SSE2
 typedef __m128  n128;
@@ -47,9 +47,13 @@ typedef __m128i n128i;
 typedef __m128d n128d;
 
 #if defined(__AVX__)
+
+#define HLSLPP_FLOAT8
+
 typedef __m256  n256;
 typedef __m256d n256d;
 typedef __m256i n256i;
+
 #endif
 
 //------
@@ -316,7 +320,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 // The following are alternatives but have been measured to be slower
 // _mm_sub_ps(f4zero, x);			// Slowest
 // _mm_mul_ps(f4minusOne, x);		// Slower
-#define _hlslpp256_neg_ps(x)						_mm256_xor_ps((x), f4negativeMask)
+#define _hlslpp256_neg_ps(x)						_mm256_xor_ps((x), f8negativeMask)
 
 #if defined(__FMA__)
 
@@ -333,7 +337,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #endif
 
 // Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
-#define _hlslpp256_abs_ps(x)						_mm256_and_ps(f4absMask, (x))
+#define _hlslpp256_abs_ps(x)						_mm256_and_ps(f8absMask, (x))
 
 #define _hlslpp256_sqrt_ps(x)						_mm256_sqrt_ps((x))
 #define _hlslpp256_rsqrt_ps(x)						_mm256_rsqrt_ps((x))
@@ -361,7 +365,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp256_frac_ps(x)						_mm256_sub_ps((x), _mm256_floor_ps(x))
 
 #define _hlslpp256_clamp_ps(x, minx, maxx)			_mm256_max_ps(_mm256_min_ps((x), (maxx)), (minx))
-#define _hlslpp256_sat_ps(x)						_mm256_max_ps(_mm256_min_ps((x), f4_1), f4_0)
+#define _hlslpp256_sat_ps(x)						_mm256_max_ps(_mm256_min_ps((x), f8_1), f8_0)
 
 #define _hlslpp256_and_ps(x, y)						_mm256_and_ps((x), (y))
 #define _hlslpp256_andnot_ps(x, y)					_mm256_andnot_ps((x), (y))
@@ -388,12 +392,12 @@ hlslpp_inline n256 permute(n256 x)
 	}
 	else HLSLPP_CONSTEXPR_IF(A < 4 && B < 4 && C < 4 && D < 4 && X >= 4 && Y >= 4 && Z >= 4 && W >= 4)
 	{
-	n256 swap = _mm256_permute2f128_ps(x, x, 0x3); // 0b00110000
-	return _mm256_permutevar_ps(swap, _mm256_setr_epi32(X, Y, Z, W, A, B, C, D));
+		n256 swap = _mm256_permute2f128_ps(x, x, 0x3); // 0b00110000
+		return _mm256_permutevar_ps(swap, _mm256_setr_epi32(X, Y, Z, W, A, B, C, D));
 	}
 	else
 	{
-	return _mm256_setzero_ps();
+		return _mm256_setzero_ps();
 	}
 }
 
@@ -434,6 +438,33 @@ hlslpp_inline n256 permute<0, 1, 2, 3, 4, 5, 6, 7>(n256 x)
 #define _hlslpp256_hadd_ps(x, y)					_mm256_hadd_ps((x), (y))
 
 #define _hlslpp256_dot4_ps(x, y)					_mm256_dp_ps(x, y, 0xff)
+
+hlslpp_inline n256 _hlslpp256_dot8_ps(n256 x, n256 y)
+{
+	n256 dot4 = _mm256_dp_ps(x, y, 0xff);
+	n256 reversedot4 = _mm256_permute2f128_ps(dot4, dot4, 0x3);
+	return _mm256_add_ps(dot4, reversedot4);
+}
+
+hlslpp_inline bool _hlslpp256_any8_ps(n256 x)
+{
+	return _mm256_movemask_ps(_mm256_cmp_ps(x, _mm256_setzero_ps(), _CMP_EQ_OQ)) != 0xf;
+}
+
+hlslpp_inline bool _hlslpp256_all8_ps(n256 x)
+{
+	return _mm256_movemask_ps(_mm256_cmp_ps(x, _mm256_setzero_ps(), _CMP_EQ_OQ)) == 0;
+}
+
+hlslpp_inline void _hlslpp256_store8_ps(float* p, const n256& x)
+{
+	_mm256_storeu_ps(p, x);
+}
+
+hlslpp_inline void _hlslpp256_load8_ps(float* p, n256& x)
+{
+	x = _mm256_loadu_ps(p);
+}
 
 hlslpp_inline void _hlslpp256_store4x4_ps(float* p, const n256& x0, const n256& x1)
 {
@@ -581,10 +612,55 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 
 #if defined(__AVX__)
 
+#define _hlslpp256_set1_epi32(x)						_mm256_set1_epi32((x))
 #define _hlslpp256_set_epi32(x, y, z, w, a, b, c, d)	_mm256_set_epi32(d, c, b, a, w, z, y, x)
+
+#define _hlslpp256_add_epi32(x, y)						_mm256_add_epi32((x), (y))
+#define _hlslpp256_sub_epi32(x, y)						_mm256_sub_epi32((x), (y))
+
+#define _hlslpp256_mul_epi32(x, y)						_mm256_mullo_epi32((x), (y))
+#define _hlslpp256_div_epi32(x, y)						_mm256_castps_si256(_mm256_div_ps(_mm256_castsi256_ps(x), _mm256_castsi256_ps(y)))
+
+#define _hlslpp256_neg_epi32(x)							_mm256_sign_epi32((x), _mm256_set1_epi32(-1))
+
+#define _hlslpp256_madd_epi32(x, y, z)					_mm256_add_epi32(_mm256_mullo_epi32((x), (y)), (z))
+#define _hlslpp256_msub_epi32(x, y, z)					_mm256_sub_epi32(_mm256_mullo_epi32((x), (y)), (z))
+#define _hlslpp256_subm_epi32(x, y, z)					_mm256_sub_epi32((x), _mm256_mullo_epi32((y), (z)))
+
+#define _hlslpp256_abs_epi32(x)							_mm256_and_si256(i8absMask, (x))
+
+#define _hlslpp256_cmpeq_epi32(x, y)					_mm256_cmpeq_epi32((x), (y))
+#define _hlslpp256_cmpneq_epi32(x, y)					_mm256_andnot_si256(_mm256_cmpeq_epi32((x), (y)), i8fffMask)
+
+#define _hlslpp256_cmpgt_epi32(x, y)					_mm256_cmpgt_epi32((x), (y))
+#define _hlslpp256_cmpge_epi32(x, y)					_mm256_or_si256(_mm256_cmpgt_epi32((x), (y)), _mm256_cmpeq_epi32((x), (y)))
+
+#define _hlslpp256_cmplt_epi32(x, y)					_mm256_cmplt_epi32((x), (y))
+#define _hlslpp256_cmple_epi32(x, y)					_mm256_or_si256(_mm256_cmplt_epi32((x), (y)), _mm256_cmpeq_epi32((x), (y)))
+
+#define _hlslpp256_max_epi32(x, y)						_mm256_max_epi32((x), (y))
+#define _hlslpp256_min_epi32(x, y)						_mm256_min_epi32((x), (y))
+
+#define _hlslpp256_clamp_epi32(x, minx, maxx)			_mm256_max_epi32(_mm256_min_epi32((x), (maxx)), (minx))
+#define _hlslpp256_sat_epi32(x)							_mm256_max_epi32(_mm256_min_epi32((x), i4_1), i4_0)
+
+#define _hlslpp256_and_si128(x, y)						_mm256_and_si256((x), (y))
+#define _hlslpp256_or_si128(x, y)						_mm256_or_si256((x), (y))
+
+// https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
+//#define _hlslpp256_perm_epi32(x, mask)				_mm_shuffle_epi32((x), (mask))
+//#define _hlslpp256_shuffle_epi32(x, y, mask)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), (mask)))
+
+#define _hlslpp256_blend_epi32(x, y, mask)				_mm256_blend_epi32((x), (y), mask)
 
 #define _hlslpp256_castps_si256(x)						_mm256_castps_si256((x))
 #define _hlslpp256_castsi256_ps(x)						_mm256_castsi256_ps((x))
+
+#define _hlslpp256_cvtepi32_ps(x)						_mm256_cvtepi32_ps((x))
+#define _hlslpp256_cvtps_epi32(x)						_mm256_cvtps_epi32((x))
+
+#define _hlslpp256_slli_epi32(x, y)						_mm256_slli_epi32((x), (y))
+#define _hlslpp256_srli_epi32(x, y)						_mm256_srli_epi32((x), (y))
 
 #endif
 

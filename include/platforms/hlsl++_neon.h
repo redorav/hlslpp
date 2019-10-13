@@ -3,7 +3,7 @@
 #if defined(_M_ARM64) || defined(__aarch64__)
 
 	#define HLSLPP_ARM64
-	#define HLSLPP_FLOAT64
+	#define HLSLPP_DOUBLE
 
 #endif
 
@@ -582,7 +582,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_sllv_epi32(x, y)				vshlq_s32((x), (y))
 #define _hlslpp_srlv_epi32(x, y)				vshlq_s32((x), _hlslpp_neg_epi32(y))
 
-#if defined(HLSLPP_FLOAT64)
+#if defined(HLSLPP_DOUBLE)
 
 //-------
 // Double

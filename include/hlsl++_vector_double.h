@@ -2,7 +2,7 @@
 // Double Vector //
 //---------------//
 
-#if defined(HLSLPP_FLOAT64)
+#if defined(HLSLPP_DOUBLE)
 
 namespace hlslpp
 {
