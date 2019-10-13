@@ -1242,6 +1242,11 @@ namespace hlslpp
 	hlslpp_inline float3 sin(const float3& f) { return float3(_hlslpp_sin_ps(f.vec)); }
 	hlslpp_inline float4 sin(const float4& f) { return float4(_hlslpp_sin_ps(f.vec)); }
 
+	hlslpp_inline void sincos(const float1& f, float1& s, float1& c) { s = float1(_hlslpp_sin_ps(f.vec)); c = float1(_hlslpp_cos_ps(f.vec)); }
+	hlslpp_inline void sincos(const float2& f, float2& s, float2& c) { s = float2(_hlslpp_sin_ps(f.vec)); c = float2(_hlslpp_cos_ps(f.vec)); }
+	hlslpp_inline void sincos(const float3& f, float3& s, float3& c) { s = float3(_hlslpp_sin_ps(f.vec)); c = float3(_hlslpp_cos_ps(f.vec)); }
+	hlslpp_inline void sincos(const float4& f, float4& s, float4& c) { s = float4(_hlslpp_sin_ps(f.vec)); c = float4(_hlslpp_cos_ps(f.vec)); }
+
 	hlslpp_inline float1 sinh(const float1& f) { return float1(_hlslpp_sinh_ps(f.vec)); }
 	hlslpp_inline float2 sinh(const float2& f) { return float2(_hlslpp_sinh_ps(f.vec)); }
 	hlslpp_inline float3 sinh(const float3& f) { return float3(_hlslpp_sinh_ps(f.vec)); }

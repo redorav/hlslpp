@@ -639,6 +639,8 @@ namespace hlslpp
 
 	hlslpp_inline float8 sin(const float8& f) { return float8(_hlslpp256_sin_ps(f.vec)); }
 
+	hlslpp_inline void sincos(const float8& f, float8& s, float8& c) { s = float8(_hlslpp256_sin_ps(f.vec)); c = float8(_hlslpp256_cos_ps(f.vec)); }
+
 	hlslpp_inline float8 sinh(const float8& f) { return float8(_hlslpp256_sinh_ps(f.vec)); }
 
 	hlslpp_inline float8 smoothstep(const float8& f1, const float8& f2, const float8& a) { return float8(_hlslpp256_smoothstep_ps(f1.vec, f2.vec, a.vec)); }
