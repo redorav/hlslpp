@@ -1586,6 +1586,15 @@ namespace hlslpp
 #endif
 	}
 
+	hlslpp_inline float2 mul(const float2x2& m1, const float2& m2) { return float2(_hlslpp_mul_2x2_2x1_ps(m1.vec, m2.vec)); }
+	hlslpp_inline float2 mul(const float2& m1, const float2x2& m2) { return float2(_hlslpp_mul_1x2_2x1_ps(m1.vec, m2.vec)); }
+
+	hlslpp_inline float3 mul(const float3& m1, const float3x3& m2) { return float3(_hlslpp_mul_1x3_3xM_ps(m1.vec, m2.vec0, m2.vec1, m2.vec2)); }
+	hlslpp_inline float3 mul(const float3x3& m1, const float3& m2) { return float3(_hlslpp_mul_3x3_3x1_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec)); }
+
+	hlslpp_inline float4 mul(const float4& v1, const float4x4& m2) { return float4(mul(float1x4(v1.vec), m2).vec); }
+	hlslpp_inline float4 mul(const float4x4& m1, const float4& v1) { return float4(mul(m1, float4x1(v1.vec)).vec); }
+
 	hlslpp_inline float1x1 operator + (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_add_ps(m1.vec, m2.vec)); }
 	hlslpp_inline float1x2 operator + (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_add_ps(m1.vec, m2.vec)); }
 	hlslpp_inline float1x3 operator + (const float1x3& m1, const float1x3& m2) { return float1x3(_hlslpp_add_ps(m1.vec, m2.vec)); }

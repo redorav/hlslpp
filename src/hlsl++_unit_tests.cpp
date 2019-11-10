@@ -652,6 +652,10 @@ void RunPerformanceTests()
 	benchmark<float4x4, iter>("m4x4 transp", [&]() -> float4x4 { m4x4_1 = transpose(m4x4_1); return m4x4_1; });
 	benchmark<float3x4, iter>("mul(m3x4, m4x4)", [&]() -> float3x4 { m3x4_1 = mul(m3x4_1, m4x4_1); return m3x4_1; });
 	benchmark<float4x4, iter>("mul(m4x4, m4x4)", [&]() -> float4x4 { m4x4_1 = mul(m4x4_1, m4x4_2); return m4x4_1; });
+
+	benchmark<float4, iter>("mul(m4x4, m4x1)", [&]() -> float4 { v4_1 = mul(m4x4_1, v4_1); return v4_1; });
+	benchmark<float4, iter>("mul(m1x4, m4x4)", [&]() -> float4 { v4_1 = mul(v4_1, m4x4_1); return v4_1; });
+
 	//benchmark<float4x4, iter>("f4x1 x f1x4", [&]() -> float4x4 { m4x4_1 = transpose(m4x4_1); return m4x4_1; });
 	benchmark<float1, iter>("m4x4 trace", [&]() -> float1 { v1_1 = trace(m4x4_1) + v1_1; return v1_1; });
 	benchmark<float4x4, iter>("m4x4 quaternion", [&]() -> float4x4 { m4x4_1 = float4x4(q1); return m4x4_1; });
