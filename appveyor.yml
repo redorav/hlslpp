@@ -12,8 +12,10 @@ environment:
       vsversion: 2017
 
 install:
-  - if %vsversion%==2015 start /B /W premake/win/premake5 --file=premake.lua vs2015
-  - if %vsversion%==2017 start /B /W premake/win/premake5 --file=premake.lua vs2017
+  - if %vsversion%==2015
+    start /B /W premake/win/premake5 --file=premake.lua vs2015
+  - if %vsversion%==2017
+    start /B /W premake/win/premake5 --file=premake.lua vs2017
       
 platform:
   - MSVC 64
