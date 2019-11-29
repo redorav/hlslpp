@@ -14,7 +14,7 @@ before_install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 
 install:
-  - ./premake-core/bin/release/premake5 --file=premake.lua gmake
+  - ./premake-core/bin/release/premake5 --file=premake.lua gmake2
   - cd workspace/gmake
 
 script: make

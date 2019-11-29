@@ -26,7 +26,7 @@ UnitTestProject = "unit_tests"
 AndroidProject = "hlsl++_android"
 
 isMacBuild = _ACTION == "xcode4"
-isLinuxBuild = _ACTION == "gmake"
+isLinuxBuild = _ACTION == "gmake2"
 isWindowsBuild = not isMacBuild and not isLinuxBuild
 
 -- Directories

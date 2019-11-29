@@ -1,1 +1,1 @@
-./premake/linux/premake5 --file=premake.lua gmake
+./premake/linux/premake5 --file=premake.lua gmake2
