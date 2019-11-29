@@ -25,6 +25,10 @@ PlatformAndroidARM64 = "Android ARM64"
 UnitTestProject = "unit_tests"
 AndroidProject = "hlsl++_android"
 
+isMacBuild = _ACTION == "xcode4"
+isLinuxBuild = _ACTION == "gmake"
+isWindowsBuild = not isMacBuild and not isLinuxBuild
+
 -- Directories
 srcDir = "src"
 includeDir = "include"
@@ -54,7 +58,7 @@ workspace("hlsl++")
 	vectorextensions ("sse4.1")
 	cppdialect("c++11")
 		
-	if(_ACTION == "xcode4") then
+	if(isMacBuild) then
 	
 		platforms { PlatformOSX64 }
 		toolset("clang")
@@ -62,7 +66,7 @@ workspace("hlsl++")
 		buildoptions { "-std=c++11 -msse4.1 -Wno-unused-variable" }
 		linkoptions { "-stdlib=libc++" }
 		
-	elseif(_ACTION == "gmake") then
+	elseif(isLinuxBuild) then
 	
 		platforms { PlatformLinux64_GCC, PlatformLinux64_Clang }
 		architecture("x64")
@@ -183,6 +187,8 @@ project (UnitTestProject)
 		srcDir.."/**.h"
 	}
 
+if (isWindowsBuild) then
+
 project (AndroidProject)
 	removeplatforms("*")
 	platforms { PlatformAndroidARM, PlatformAndroidARM64 }
@@ -196,3 +202,4 @@ project (AndroidProject)
 		"src/android/project.properties",
 		"src/android/res/values/strings.xml",
 	}
+end
