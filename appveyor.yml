@@ -44,8 +44,8 @@ install:
          start /B /W premake/win/premake5 --file=premake.lua vs2015
   - cmd: if %vsversion%==2017
          start /B /W premake/win/premake5 --file=premake.lua vs2017
-  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE=Ubuntu ]]; then ./premake/linux/premake5 --file=premake.lua gmake2; fi;
-  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE=macOS ]]; then ./premake/osx/premake5 --file=premake.lua xcode4; fi;
+  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = Ubuntu ]]; then ./premake/linux/premake5 --file=premake.lua gmake2; fi;
+  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = macOS ]]; then ./premake/osx/premake5 --file=premake.lua xcode4; fi;
 
 build_script:
   - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE=Ubuntu ]]; then ./workspace/gmake2/make all config=debug_linux64_gcc;
