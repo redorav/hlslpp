@@ -205,6 +205,12 @@ hlslpp_inline vector_float4 _hlslpp_andnot_ps(const vector_float4& v1, const vec
 	return vector_float4(*(const float*)(&ix), *(const float*)(&iy), *(const float*)(&iz), *(const float*)(&iw));
 }
 
+hlslpp_inline vector_float4 _hlslpp_not_ps(const vector_float4& v1)
+{
+	uint32_t ix = !v1.ix; uint32_t iy = !v1.iy; uint32_t iz = !v1.iz; uint32_t iw = !v1.iw;
+	return vector_float4(*(const float*)(&ix), *(const float*)(&iy), *(const float*)(&iz), *(const float*)(&iw));
+}
+
 hlslpp_inline vector_float4 _hlslpp_or_ps(const vector_float4& v1, const vector_float4& v2)
 {
 	uint32_t ix = v1.ix | v2.ix; uint32_t iy = v1.iy | v2.iy;
@@ -463,7 +469,13 @@ hlslpp_inline vector_int4 _hlslpp_sat_epi32(const vector_int4& v1)
 
 hlslpp_inline vector_int4 _hlslpp_and_si128(const vector_int4& v1, const vector_int4& v2) { return vector_int4(v1.x & v2.x, v1.y & v2.y, v1.z & v2.z, v1.w & v2.w); }
 
+hlslpp_inline vector_int4 _hlslpp_andnot_si128(const vector_int4& v1, const vector_int4& v2) { return vector_int4(!v1.x & v2.x, !v1.y & v2.y, !v1.z & v2.z, !v1.w & v2.w); }
+
+hlslpp_inline vector_int4 _hlslpp_not_si128(const vector_int4& v1) { return vector_int4(!v1.x, !v1.y, !v1.z, !v1.w); }
+
 hlslpp_inline vector_int4 _hlslpp_or_si128(const vector_int4& v1, const vector_int4& v2) { return vector_int4(v1.x | v2.x, v1.y | v2.y, v1.z | v2.z, v1.w | v2.w); }
+
+hlslpp_inline vector_int4 _hlslpp_xor_si128(const vector_int4& v1, const vector_int4& v2) { return vector_int4(v1.x ^ v2.x, v1.y ^ v2.y, v1.z ^ v2.z, v1.w ^ v2.w); }
 
 template<int A, int B, int C, int D>
 hlslpp_inline vector_int4 perm4(const vector_int4& v)

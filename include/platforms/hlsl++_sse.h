@@ -127,6 +127,7 @@ typedef __m256i n256i;
 
 #define _hlslpp_and_ps(x, y)					_mm_and_ps((x), (y))
 #define _hlslpp_andnot_ps(x, y)					_mm_andnot_ps((x), (y))
+#define _hlslpp_not_ps(x, y)					_mm_andnot_ps((x), f4_fff)
 #define _hlslpp_or_ps(x, y)						_mm_or_ps((x), (y))
 #define _hlslpp_xor_ps(x, y)					_mm_xor_ps((x), (y))
 
@@ -369,6 +370,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 
 #define _hlslpp256_and_ps(x, y)						_mm256_and_ps((x), (y))
 #define _hlslpp256_andnot_ps(x, y)					_mm256_andnot_ps((x), (y))
+#define _hlslpp256_not_ps(x, y)						_mm256_andnot_ps((x), f8_fff)
 #define _hlslpp256_or_ps(x, y)						_mm256_or_ps((x), (y))
 #define _hlslpp256_xor_ps(x, y)						_mm256_xor_ps((x), (y))
 
@@ -523,7 +525,10 @@ hlslpp_inline void _hlslpp256_load4x4_ps(float* p, n256& x0, n256& x1)
 #define _hlslpp_sat_epi32(x)					_mm_max_epi32(_mm_min_epi32((x), i4_1), i4_0)
 
 #define _hlslpp_and_si128(x, y)					_mm_and_si128((x), (y))
+#define _hlslpp_andnot_si128(x, y)				_mm_andnot_si128((x), (y))
+#define _hlslpp_not_si128(x)					_mm_andnot_si128((x), i4fffMask)
 #define _hlslpp_or_si128(x, y)					_mm_or_si128((x), (y))
+#define _hlslpp_xor_si128(x, y)					_mm_xor_si128((x), (y))
 
 // https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
 #define _hlslpp_perm_epi32(x, mask)				_mm_shuffle_epi32((x), (mask))
@@ -727,6 +732,7 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 
 #define _hlslpp_and_pd(x, y)					_mm_and_pd((x), (y))
 #define _hlslpp_andnot_pd(x, y)					_mm_andnot_pd((x), (y))
+#define _hlslpp_not_pd(x)						_mm_andnot_pd((x), d2_fff)
 #define _hlslpp_or_pd(x, y)						_mm_or_pd((x), (y))
 #define _hlslpp_xor_pd(x, y)					_mm_xor_pd((x), (y))
 

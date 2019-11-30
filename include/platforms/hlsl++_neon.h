@@ -347,7 +347,8 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 
 // http://codesuppository.blogspot.co.uk/2015/02/sse2neonh-porting-guide-and-header-file.html
 #define _hlslpp_and_ps(x, y)					vreinterpretq_f32_u32(vandq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
-#define _hlslpp_andnot_ps(x, y)					vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
+#define _hlslpp_andnot_ps(x, y)					vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32((y)), vreinterpretq_u32_f32((x))))
+#define _hlslpp_not_ps(x)						vreinterpretq_f32_u32(vmvnq_u32(vreinterpretq_u32_f32((x))))
 #define _hlslpp_or_ps(x, y)						vreinterpretq_f32_u32(vorrq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
 #define _hlslpp_xor_ps(x, y)					vreinterpretq_f32_u32(veorq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
 
@@ -562,7 +563,10 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_sat_epi32(x)					vmaxq_s32(vminq_s32((x), i4_1), i4_0)
 
 #define _hlslpp_and_si128(x, y)					vandq_s32((x), (y))
+#define _hlslpp_andnot_si128(x, y)				vandq_s32((y), (x))
+#define _hlslpp_not_si128(x)					vmvnq_u32((x))
 #define _hlslpp_or_si128(x, y)					vorrq_s32((x), (y))
+#define _hlslpp_xor_si128(x, y)					veorq_s32((x), (y))
 
 #define _hlslpp_perm_epi32(x, mask)				vpermq_s32((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
 #define _hlslpp_shuffle_epi32(x, y, mask)		vshufq_s32((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
@@ -693,7 +697,8 @@ hlslpp_inline float64x2_t vrsqrtq_f64(float64x2_t x)
 #define _hlslpp_sat_pd(x)						vmaxq_f64(vminq_f64((x), f4_1), f4_0)
 
 #define _hlslpp_and_pd(x, y)					vreinterpretq_f64_u64(vandq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
-#define _hlslpp_andnot_pd(x, y)					vreinterpretq_f64_u64(vbicq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
+#define _hlslpp_andnot_pd(x, y)					vreinterpretq_f64_u64(vbicq_u64(vreinterpretq_u64_f64((y)), vreinterpretq_u64_f64((x))))
+#define _hlslpp_not_pd(x, y)					vreinterpretq_f64_u64(vmvnq_u64(vreinterpretq_u64_f64((y)), vreinterpretq_u64_f64((x))))
 #define _hlslpp_or_pd(x, y)						vreinterpretq_f64_u64(vorrq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
 #define _hlslpp_xor_pd(x, y)					vreinterpretq_f64_u64(veorq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
 

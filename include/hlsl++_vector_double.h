@@ -15,6 +15,9 @@ namespace hlslpp
 	};
 
 	const BitMaskDouble dfffMask((uint64_t)0xffffffffffffffffu); // Negative NaN
+	const BitMaskDouble dNanMask((uint64_t)0x7fffffffffffffffu); // Positive NaN
+	const BitMaskDouble dInfMask((uint64_t)0x7f80000000000000u);
+	const BitMaskDouble dMinusinfMask((uint64_t)0xff80000000000000u);
 	const BitMaskDouble dAbsMask((uint64_t)0x7fffffffffffffffu);
 	const BitMaskDouble dNegMask((uint64_t)0x8000000000000000u);
 
@@ -24,6 +27,11 @@ namespace hlslpp
 
 	const n128d d2_1            = _hlslpp_set1_pd(1.0);
 	const n128d d2minusOne      = _hlslpp_set1_pd(-1.0);
+
+	const n128d d2_NaN          = _hlslpp_set1_pd(dNanMask.d);      // Quiet NaN
+	const n128d d2_inf          = _hlslpp_set1_pd(dInfMask.d);      // Infinity
+	const n128d d2_minusinf     = _hlslpp_set1_pd(dMinusinfMask.d); // -Infinity
+	const n128d d2_fff          = _hlslpp_set1_pd(dfffMask.d);      // 0xffffffff
 
 	const n128d d2negativeMask  = _hlslpp_set1_pd(dNegMask.d);
 	const n128d d2absMask       = _hlslpp_set1_pd(dAbsMask.d);

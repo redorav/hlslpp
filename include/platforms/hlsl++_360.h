@@ -110,6 +110,7 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_and_ps(x, y)					__vand((x), (y))
 #define _hlslpp_andnot_ps(x, y)					__vandc((y), (x))
+#define _hlslpp_not_ps(x)						__vandc(f4_fff, (x))
 #define _hlslpp_or_ps(x, y)						__vor((x), (y))
 #define _hlslpp_xor_ps(x, y)					__vxor((x), (y))
 
@@ -175,7 +176,10 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_sat_epi32(x)					__vmaxsw(__vminsw((x), i4_1), i4_0)
 
 #define _hlslpp_and_si128(x, y)					__vand((x), (y))
+#define _hlslpp_andnot_si128(x, y)				__vandc((y), (x))
+#define _hlslpp_not_si128(x)					__vandc(i4fffMask, (x))
 #define _hlslpp_or_si128(x, y)					__vor((x), (y))
+#define _hlslpp_xor_si128(x, y)					__vxor((x), (y))
 
 #define _hlslpp_perm_epi32(x, mask)				__vpermwi((x), mask)
 #define _hlslpp_shuffle_epi32(x, y, mask)		__vperm((x), (y), __vset(mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3))
