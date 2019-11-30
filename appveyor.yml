@@ -16,6 +16,8 @@ environment:
       configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: macOS
       build: off
+      platform: OSX64 Clang
+      configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       vsversion: 2015
       platform: MSVC 32
@@ -61,6 +63,10 @@ build_script:
   - sh: if [[ $platform = "Linux64 Clang" ]]; then 
         pushd workspace/gmake2;
         make all config=release_linux64_clang;
+        popd; fi;
+  - sh: if [[ $platform = "OSX64 Clang" ]]; then 
+        pushd workspace/xcode4;
+        xcodebuild build -project unit_tests.xcodeproj;
         popd; fi;
 
 #matrix:
