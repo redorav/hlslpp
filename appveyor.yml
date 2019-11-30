@@ -8,6 +8,12 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       build: off
+      platform: Linux64 GGC
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+      build: off
+      platform: Linux64 Clang
+      configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: macOS
       build: off
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
@@ -48,11 +54,11 @@ install:
   - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = macOS ]]; then ./premake/osx/premake5 --file=premake.lua xcode4; fi;
 
 build_script:
-  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = Ubuntu ]]; then 
+  - sh: if [[ $platform = "Linux64 GGC" ]]; then 
         pushd workspace/gmake2; 
-        make all config=debug_linux64_gcc; 
         make all config=release_linux64_gcc;
-        make all config=debug_linux64_clang;
+  - sh: if [[ $platform = "Linux64 Clang" ]]; then 
+        pushd workspace/gmake2; 
         make all config=release_linux64_clang;
         popd; fi;
 
