@@ -6,6 +6,8 @@ skip_branch_with_pr: true
 
 environment:
   matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       vsversion: 2015
       platform: MSVC 32
@@ -34,8 +36,6 @@ environment:
       vsversion: 2017
       platform: MSVC ARM
       configuration: Release
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
-    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
 
 install:
   - cmd: if %vsversion%==2015
