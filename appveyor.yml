@@ -7,7 +7,9 @@ skip_branch_with_pr: true
 environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+      build: off
     - APPVEYOR_BUILD_WORKER_IMAGE: macOS
+      build: off
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       vsversion: 2015
       platform: MSVC 32
@@ -43,7 +45,14 @@ install:
   - cmd: if %vsversion%==2017
          start /B /W premake/win/premake5 --file=premake.lua vs2017
   - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE=Ubuntu ]]; then ./premake/linux/premake5 --file=premake.lua gmake2; fi;
-  
+  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE=macOS ]]; then ./premake/osx/premake5 --file=premake.lua xcode4; fi;
+
+build_script:
+  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE=Ubuntu ]]; then ./workspace/gmake2/make all config=debug_linux64_gcc;
+  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE=Ubuntu ]]; then ./workspace/gmake2/make all config=release_linux64_gcc;
+  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE=Ubuntu ]]; then ./workspace/gmake2/make all config=debug_linux64_clang;
+  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE=Ubuntu ]]; then ./workspace/gmake2/make all config=release_linux64_clang;
+
 #matrix:
 #  exclude:
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
