@@ -55,10 +55,11 @@ install:
 
 build_script:
   - sh: if [[ $platform = "Linux64 GGC" ]]; then 
-        pushd workspace/gmake2; 
+        pushd workspace/gmake2;
         make all config=release_linux64_gcc;
+        popd; fi;
   - sh: if [[ $platform = "Linux64 Clang" ]]; then 
-        pushd workspace/gmake2; 
+        pushd workspace/gmake2;
         make all config=release_linux64_clang;
         popd; fi;
 

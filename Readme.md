@@ -1,6 +1,5 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/18dgjfa958f4xqkm/branch/master?svg=true)](https://ci.appveyor.com/project/redorav/hlslpp)
-[![Travis CI](https://travis-ci.org/redorav/hlslpp.svg?branch=master)](https://travis-ci.org/redorav/hlslpp)
 
 # HLSL++
 
