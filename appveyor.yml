@@ -8,26 +8,43 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       vsversion: 2015
+      platform: MSVC 32
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      vsversion: 2015
+      platform: MSVC 64
+      configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       vsversion: 2017
+      platform: MSVC 32
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      vsversion: 2017
+      platform: MSVC 64
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      vsversion: 2017
+      platform: LLVM 32
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      vsversion: 2017
+      platform: LLVM 64
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      vsversion: 2017
+      platform: MSVC ARM
+      configuration: Release
 
 install:
   - if %vsversion%==2015
     start /B /W premake/win/premake5 --file=premake.lua vs2015
   - if %vsversion%==2017
     start /B /W premake/win/premake5 --file=premake.lua vs2017
-      
-platform:
-  - MSVC 64
-  - MSVC 32
-  - LLVM 64
-  - LLVM 32
-  - MSVC ARM
   
-matrix:
-  exclude:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      platform: MSVC ARM64, LLVM 64, LLVM 32
+#matrix:
+#  exclude:
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#      platform: MSVC ARM64
   
 configuration:
   - Release
