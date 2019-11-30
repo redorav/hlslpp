@@ -48,10 +48,13 @@ install:
   - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = macOS ]]; then ./premake/osx/premake5 --file=premake.lua xcode4; fi;
 
 build_script:
-  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = Ubuntu ]]; then pushd workspace/gmake2; make all config=debug_linux64_gcc; popd; fi;
-  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = Ubuntu ]]; then pushd workspace/gmake2; make all config=release_linux64_gcc; popd; fi;
-  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = Ubuntu ]]; then pushd workspace/gmake2; make all config=debug_linux64_clang; popd; fi;
-  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = Ubuntu ]]; then pushd workspace/gmake2; make all config=release_linux64_clang; popd; fi;
+  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = Ubuntu ]]; then 
+        pushd workspace/gmake2; 
+        make all config=debug_linux64_gcc; 
+        make all config=release_linux64_gcc;
+        make all config=debug_linux64_clang;
+        make all config=release_linux64_clang;
+        popd; fi;
 
 #matrix:
 #  exclude:
