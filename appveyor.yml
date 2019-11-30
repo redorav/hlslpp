@@ -34,17 +34,18 @@ environment:
       vsversion: 2017
       platform: MSVC ARM
       configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
 
 install:
   - if %vsversion%==2015
     start /B /W premake/win/premake5 --file=premake.lua vs2015
   - if %vsversion%==2017
     start /B /W premake/win/premake5 --file=premake.lua vs2017
+  - if %APPVEYOR_BUILD_WORKER_IMAGE%==Ubuntu
+    ./premake/linux/premake5 --file=premake.lua gmake2
   
 #matrix:
 #  exclude:
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #      platform: MSVC ARM64
-  
-configuration:
-  - Release
