@@ -350,6 +350,58 @@ namespace hlslpp
 	hlslpp_inline int3 operator / (const int3& i1, const int3& i2) { return int3(_hlslpp_div_epi32(i1.vec, i2.vec)); }
 	hlslpp_inline int4 operator / (const int4& i1, const int4& i2) { return int4(_hlslpp_div_epi32(i1.vec, i2.vec)); }
 
+	// Pre-increment
+
+	hlslpp_inline int1& operator ++ (int1& i) { i = i + int1(i4_1); return i; }
+	hlslpp_inline int2& operator ++ (int2& i) { i = i + int2(i4_1); return i; }
+	hlslpp_inline int3& operator ++ (int3& i) { i = i + int3(i4_1); return i; }
+	hlslpp_inline int4& operator ++ (int4& i) { i = i + int4(i4_1); return i; }
+
+	template<int X> hlslpp_inline iswizzle1<X>& operator ++ (iswizzle1<X>& i) { i = i + int1(i4_1); return i; }
+	template<int X, int Y> hlslpp_inline iswizzle2<X, Y>& operator ++ (iswizzle2<X, Y>& i) { i = i + int2(i4_1); return i; }
+	template<int X, int Y, int Z> hlslpp_inline iswizzle3<X, Y, Z>& operator ++ (iswizzle3<X, Y, Z>& i) { i = i + int3(i4_1); return i; }
+	template<int X, int Y, int Z, int W> hlslpp_inline iswizzle4<X, Y, Z, W>& operator ++ (iswizzle4<X, Y, Z, W>& i) { i = i + int4(i4_1); return i; }
+
+	hlslpp_inline int1& operator -- (int1& i) { i = i - int1(i4_1); return i; }
+	hlslpp_inline int2& operator -- (int2& i) { i = i - int2(i4_1); return i; }
+	hlslpp_inline int3& operator -- (int3& i) { i = i - int3(i4_1); return i; }
+	hlslpp_inline int4& operator -- (int4& i) { i = i - int4(i4_1); return i; }
+
+	template<int X> hlslpp_inline iswizzle1<X>& operator -- (iswizzle1<X>& i) { i = i - int1(i4_1); return i; }
+	template<int X, int Y> hlslpp_inline iswizzle2<X, Y>& operator -- (iswizzle2<X, Y>& i) { i = i - int2(i4_1); return i; }
+	template<int X, int Y, int Z> hlslpp_inline iswizzle3<X, Y, Z>& operator -- (iswizzle3<X, Y, Z>& i) { i = i - int3(i4_1); return i; }
+	template<int X, int Y, int Z, int W> hlslpp_inline iswizzle4<X, Y, Z, W>& operator -- (iswizzle4<X, Y, Z, W>& i) { i = i - int4(i4_1); return i; }
+
+	// Post-increment
+
+	hlslpp_inline int1 operator ++ (int1& i, int) { int1 tmp = i; i = i + int1(i4_1); return tmp; }
+	hlslpp_inline int2 operator ++ (int2& i, int) { int2 tmp = i; i = i + int2(i4_1); return tmp; }
+	hlslpp_inline int3 operator ++ (int3& i, int) { int3 tmp = i; i = i + int3(i4_1); return tmp; }
+	hlslpp_inline int4 operator ++ (int4& i, int) { int4 tmp = i; i = i + int4(i4_1); return tmp; }
+
+	template<int X>
+	hlslpp_inline iswizzle1<X> operator ++ (iswizzle1<X>& i, int) { iswizzle1<X> tmp = i; i = i + int1(i4_1); return tmp; }
+	template<int X, int Y>
+	hlslpp_inline iswizzle2<X, Y> operator ++ (iswizzle2<X, Y>& i, int) { iswizzle2<X, Y> tmp = i; i = i + int2(i4_1); return tmp; }
+	template<int X, int Y, int Z>
+	hlslpp_inline iswizzle3<X, Y, Z> operator ++ (iswizzle3<X, Y, Z>& i, int) { iswizzle3<X, Y, Z> tmp = i; i = i + int3(i4_1); return tmp; }
+	template<int X, int Y, int Z, int W>
+	hlslpp_inline iswizzle4<X, Y, Z, W> operator ++ (iswizzle4<X, Y, Z, W>& i, int) { iswizzle4<X, Y, Z, W> tmp = i; i = i + int4(i4_1); return tmp; }
+
+	hlslpp_inline int1 operator -- (int1& i, int) { int1 tmp = i; i = i - int1(i4_1); return tmp; }
+	hlslpp_inline int2 operator -- (int2& i, int) { int2 tmp = i; i = i - int2(i4_1); return tmp; }
+	hlslpp_inline int3 operator -- (int3& i, int) { int3 tmp = i; i = i - int3(i4_1); return tmp; }
+	hlslpp_inline int4 operator -- (int4& i, int) { int4 tmp = i; i = i - int4(i4_1); return tmp; }
+
+	template<int X>
+	hlslpp_inline iswizzle1<X> operator -- (iswizzle1<X>& i, int) { iswizzle1<X> tmp = i; i = i - int1(i4_1); return tmp; }
+	template<int X, int Y>
+	hlslpp_inline iswizzle2<X, Y> operator -- (iswizzle2<X, Y>& i, int) { iswizzle2<X, Y> tmp = i; i = i - int2(i4_1); return tmp; }
+	template<int X, int Y, int Z>
+	hlslpp_inline iswizzle3<X, Y, Z> operator -- (iswizzle3<X, Y, Z>& i, int) { iswizzle3<X, Y, Z> tmp = i; i = i - int3(i4_1); return tmp; }
+	template<int X, int Y, int Z, int W>
+	hlslpp_inline iswizzle4<X, Y, Z, W> operator -- (iswizzle4<X, Y, Z, W>& i, int) { iswizzle4<X, Y, Z, W> tmp = i; i = i - int4(i4_1); return tmp; }
+
 	//------------------------------------------------------------------------------------------------------------------------//
 	// int1 and iswizzle1 need special overloads to disambiguate between our operators/functions and built-in float operators //
 	// and functions that are part of common headers such as cmath, math.h, algorithm, etc                                    //

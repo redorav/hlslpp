@@ -667,6 +667,58 @@ namespace hlslpp
 	hlslpp_inline double3& operator /= (double3& f1, const double3& f2) { f1 = f1 / f2; return f1; }
 	hlslpp_inline double4& operator /= (double4& f1, const double4& f2) { f1 = f1 / f2; return f1; }
 
+	// Pre-increment
+
+	hlslpp_inline double1& operator ++ (double1& f) { f = f + double1(d2_1); return f; }
+	hlslpp_inline double2& operator ++ (double2& f) { f = f + double2(d2_1); return f; }
+	hlslpp_inline double3& operator ++ (double3& f) { f = f + double3(d2_1, d2_1); return f; }
+	hlslpp_inline double4& operator ++ (double4& f) { f = f + double4(d2_1, d2_1); return f; }
+
+	template<int X> hlslpp_inline dswizzle1<X>& operator ++ (dswizzle1<X>& f) { f = f + double1(d2_1); return f; }
+	template<int X, int Y> hlslpp_inline dswizzle2<X, Y>& operator ++ (dswizzle2<X, Y>& f) { f = f + double2(d2_1); return f; }
+	template<int X, int Y, int Z> hlslpp_inline dswizzle3<X, Y, Z>& operator ++ (dswizzle3<X, Y, Z>& f) { f = f + double3(d2_1, d2_1); return f; }
+	template<int X, int Y, int Z, int W> hlslpp_inline dswizzle4<X, Y, Z, W>& operator ++ (dswizzle4<X, Y, Z, W>& f) { f = f + double4(d2_1, d2_1); return f; }
+
+	hlslpp_inline double1& operator -- (double1& f) { f = f - double1(d2_1); return f; }
+	hlslpp_inline double2& operator -- (double2& f) { f = f - double2(d2_1); return f; }
+	hlslpp_inline double3& operator -- (double3& f) { f = f - double3(d2_1, d2_1); return f; }
+	hlslpp_inline double4& operator -- (double4& f) { f = f - double4(d2_1, d2_1); return f; }
+
+	template<int X> hlslpp_inline dswizzle1<X>& operator -- (dswizzle1<X>& f) { f = f - double1(d2_1); return f; }
+	template<int X, int Y> hlslpp_inline dswizzle2<X, Y>& operator -- (dswizzle2<X, Y>& f) { f = f - double2(d2_1); return f; }
+	template<int X, int Y, int Z> hlslpp_inline dswizzle3<X, Y, Z>& operator -- (dswizzle3<X, Y, Z>& f) { f = f - double3(d2_1, d2_1); return f; }
+	template<int X, int Y, int Z, int W> hlslpp_inline dswizzle4<X, Y, Z, W>& operator -- (dswizzle4<X, Y, Z, W>& f) { f = f - double4(d2_1, d2_1); return f; }
+
+	// Post-increment
+
+	hlslpp_inline double1 operator ++ (double1& f, int) { double1 tmp = f; f = f + double1(d2_1); return tmp; }
+	hlslpp_inline double2 operator ++ (double2& f, int) { double2 tmp = f; f = f + double2(d2_1); return tmp; }
+	hlslpp_inline double3 operator ++ (double3& f, int) { double3 tmp = f; f = f + double3(d2_1, d2_1); return tmp; }
+	hlslpp_inline double4 operator ++ (double4& f, int) { double4 tmp = f; f = f + double4(d2_1, d2_1); return tmp; }
+
+	template<int X>
+	hlslpp_inline dswizzle1<X> operator ++ (dswizzle1<X>& f, int) { dswizzle1<X> tmp = f; f = f + double1(d2_1); return tmp; }
+	template<int X, int Y>
+	hlslpp_inline dswizzle2<X, Y> operator ++ (dswizzle2<X, Y>& f, int) { dswizzle2<X, Y> tmp = f; f = f + double2(d2_1); return tmp; }
+	template<int X, int Y, int Z>
+	hlslpp_inline dswizzle3<X, Y, Z> operator ++ (dswizzle3<X, Y, Z>& f, int) { dswizzle3<X, Y, Z> tmp = f; f = f + double3(d2_1, d2_1); return tmp; }
+	template<int X, int Y, int Z, int W>
+	hlslpp_inline dswizzle4<X, Y, Z, W> operator ++ (dswizzle4<X, Y, Z, W>& f, int) { dswizzle4<X, Y, Z, W> tmp = f; f = f + double4(d2_1, d2_1); return tmp; }
+
+	hlslpp_inline double1 operator -- (double1& f, int) { double1 tmp = f; f = f - double1(d2_1); return tmp; }
+	hlslpp_inline double2 operator -- (double2& f, int) { double2 tmp = f; f = f - double2(d2_1); return tmp; }
+	hlslpp_inline double3 operator -- (double3& f, int) { double3 tmp = f; f = f - double3(d2_1, d2_1); return tmp; }
+	hlslpp_inline double4 operator -- (double4& f, int) { double4 tmp = f; f = f - double4(d2_1, d2_1); return tmp; }
+
+	template<int X>
+	hlslpp_inline dswizzle1<X> operator -- (dswizzle1<X>& f, int) { dswizzle1<X> tmp = f; f = f - double1(d2_1); return tmp; }
+	template<int X, int Y>
+	hlslpp_inline dswizzle2<X, Y> operator -- (dswizzle2<X, Y>& f, int) { dswizzle2<X, Y> tmp = f; f = f - double2(d2_1); return tmp; }
+	template<int X, int Y, int Z>
+	hlslpp_inline dswizzle3<X, Y, Z> operator -- (dswizzle3<X, Y, Z>& f, int) { dswizzle3<X, Y, Z> tmp = f; f = f - double3(d2_1, d2_1); return tmp; }
+	template<int X, int Y, int Z, int W>
+	hlslpp_inline dswizzle4<X, Y, Z, W> operator -- (dswizzle4<X, Y, Z, W>& f, int) { dswizzle4<X, Y, Z, W> tmp = f; f = f - double4(d2_1, d2_1); return tmp; }
+
 	//--------------------------------------------------------------------------------------------------------------------
 	// double1 and dswizzle1 need special overloads to disambiguate between our operators/functions and built-in operators
 	// and functions that are part of common headers such as cmath, math.h, algorithm, etc

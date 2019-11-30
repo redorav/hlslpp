@@ -522,6 +522,17 @@ namespace hlslpp
 
 	hlslpp_inline float8& operator /= (float8& f1, const float8& f2) { f1 = f1 / f2; return f1; }
 
+
+	// Pre-increment
+
+	hlslpp_inline float8& operator ++ (float8& f) { f = f + float8(f8_1); return f; }
+	hlslpp_inline float8& operator -- (float8& f) { f = f - float8(f8_1); return f; }
+
+	// Post-increment
+
+	hlslpp_inline float8 operator ++ (float8& f, int) { float8 tmp = f; f = f + float8(f8_1); return tmp; }
+	hlslpp_inline float8 operator -- (float8& f, int) { float8 tmp = f; f = f - float8(f8_1); return tmp; }
+
 	//------------------------------------------------------------------------------------------------------------------------
 	// float1 and swizzle1 need special overloads to disambiguate between our operators/functions and built-in float operators
 	// and functions that are part of common headers such as cmath, math.h, algorithm, etc
