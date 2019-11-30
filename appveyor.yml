@@ -45,7 +45,7 @@ install:
   - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE=Ubuntu ]];
         then
         ./premake/linux/premake5 --file=premake.lua gmake2
-        fi
+        fi;
   
 #matrix:
 #  exclude:
