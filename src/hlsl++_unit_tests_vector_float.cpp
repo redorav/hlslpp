@@ -911,15 +911,15 @@ void RunUnitTestsVectorFloat()
 	float3 vtanh_swiz_3 = tanh(vfoo3.zzz);
 	float4 vtanh_swiz_4 = tanh(vfoo4.wwzw);
 
-	float1 vtrunc1 = trunc(vfoo1);				eq(vtrunc1, trunc((float)vfoo1.x));
-	float2 vtrunc2 = trunc(vfoo2);				eq(vtrunc2, trunc((float)vfoo2.x), trunc((float)vfoo2.y));
-	float3 vtrunc3 = trunc(vfoo3);				eq(vtrunc3, trunc((float)vfoo3.x), trunc((float)vfoo3.y), trunc((float)vfoo3.z));
-	float4 vtrunc4 = trunc(vfoo4);				eq(vtrunc4, trunc((float)vfoo4.x), trunc((float)vfoo4.y), trunc((float)vfoo4.z), trunc((float)vfoo4.w));
+	float1 vtrunc1 = trunc(vfoo1);				eq(vtrunc1, truncf((float)vfoo1.x));
+	float2 vtrunc2 = trunc(vfoo2);				eq(vtrunc2, truncf((float)vfoo2.x), truncf((float)vfoo2.y));
+	float3 vtrunc3 = trunc(vfoo3);				eq(vtrunc3, truncf((float)vfoo3.x), truncf((float)vfoo3.y), truncf((float)vfoo3.z));
+	float4 vtrunc4 = trunc(vfoo4);				eq(vtrunc4, truncf((float)vfoo4.x), truncf((float)vfoo4.y), truncf((float)vfoo4.z), truncf((float)vfoo4.w));
 
-	float1 vtrunc_swiz_1 = trunc(vfoo1.r);		eq(vtrunc_swiz_1, trunc((float)vfoo1.r));
-	float2 vtrunc_swiz_2 = trunc(vfoo2.yy);		eq(vtrunc_swiz_2, trunc((float)vfoo2.y), trunc((float)vfoo2.y));
-	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);	eq(vtrunc_swiz_3, trunc((float)vfoo3.z), trunc((float)vfoo3.z), trunc((float)vfoo3.z));
-	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);	eq(vtrunc_swiz_4, trunc((float)vfoo4.w), trunc((float)vfoo4.w), trunc((float)vfoo4.z), trunc((float)vfoo4.w));
+	float1 vtrunc_swiz_1 = trunc(vfoo1.r);		eq(vtrunc_swiz_1, truncf((float)vfoo1.r));
+	float2 vtrunc_swiz_2 = trunc(vfoo2.yy);		eq(vtrunc_swiz_2, truncf((float)vfoo2.y), truncf((float)vfoo2.y));
+	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);	eq(vtrunc_swiz_3, truncf((float)vfoo3.z), truncf((float)vfoo3.z), truncf((float)vfoo3.z));
+	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);	eq(vtrunc_swiz_4, truncf((float)vfoo4.w), truncf((float)vfoo4.w), truncf((float)vfoo4.z), truncf((float)vfoo4.w));
 
 	vtrunc_swiz_3.zxy--;
 
