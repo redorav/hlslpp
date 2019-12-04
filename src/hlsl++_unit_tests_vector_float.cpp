@@ -2,6 +2,11 @@
 
 #include "hlsl++_unit_tests.h"
 
+float GetRandomFloat()
+{
+	return (rand() % 1000) / 100.0f - 5.0f;
+}
+
 void RunUnitTestsVectorFloat()
 {
 	using namespace hlslpp_unit;
@@ -10,40 +15,40 @@ void RunUnitTestsVectorFloat()
 	// Float
 	//------
 
-	float f1 = (rand() % 1000) / 100.0f;
-	float f2 = (rand() % 1000) / 100.0f;
-	float f3 = (rand() % 1000) / 100.0f;
-	float f4 = (rand() % 1000) / 100.0f;
+	float f1 = GetRandomFloat();
+	float f2 = GetRandomFloat();
+	float f3 = GetRandomFloat();
+	float f4 = GetRandomFloat();
 
-	float f5 = (rand() % 1000) / 100.0f;
-	float f6 = (rand() % 1000) / 100.0f;
-	float f7 = (rand() % 1000) / 100.0f;
-	float f8 = (rand() % 1000) / 100.0f;
+	float f5 = GetRandomFloat();
+	float f6 = GetRandomFloat();
+	float f7 = GetRandomFloat();
+	float f8 = GetRandomFloat();
 
-	float f9 = (rand() % 1000) / 100.0f;
-	float f10 = (rand() % 1000) / 100.0f;
-	float f11 = (rand() % 1000) / 100.0f;
-	float f12 = (rand() % 1000) / 100.0f;
+	float f9 = GetRandomFloat();
+	float f10 = GetRandomFloat();
+	float f11 = GetRandomFloat();
+	float f12 = GetRandomFloat();
 
-	float f13 = (rand() % 1000) / 100.0f;
-	float f14 = (rand() % 1000) / 100.0f;
-	float f15 = (rand() % 1000) / 100.0f;
-	float f16 = (rand() % 1000) / 100.0f;
+	float f13 = GetRandomFloat();
+	float f14 = GetRandomFloat();
+	float f15 = GetRandomFloat();
+	float f16 = GetRandomFloat();
 
-	float f17 = (rand() % 1000) / 100.0f;
-	float f18 = (rand() % 1000) / 100.0f;
-	float f19 = (rand() % 1000) / 100.0f;
-	float f20 = (rand() % 1000) / 100.0f;
+	float f17 = GetRandomFloat();
+	float f18 = GetRandomFloat();
+	float f19 = GetRandomFloat();
+	float f20 = GetRandomFloat();
 
-	float f21 = (rand() % 1000) / 100.0f;
-	float f22 = (rand() % 1000) / 100.0f;
-	float f23 = (rand() % 1000) / 100.0f;
-	float f24 = (rand() % 1000) / 100.0f;
+	float f21 = GetRandomFloat();
+	float f22 = GetRandomFloat();
+	float f23 = GetRandomFloat();
+	float f24 = GetRandomFloat();
 
-	float f25 = (rand() % 1000) / 100.0f;
-	float f26 = (rand() % 1000) / 100.0f;
-	float f27 = (rand() % 1000) / 100.0f;
-	float f28 = (rand() % 1000) / 100.0f;
+	float f25 = GetRandomFloat();
+	float f26 = GetRandomFloat();
+	float f27 = GetRandomFloat();
+	float f28 = GetRandomFloat();
 
 	// Initialization
 
@@ -906,15 +911,19 @@ void RunUnitTestsVectorFloat()
 	float3 vtanh_swiz_3 = tanh(vfoo3.zzz);
 	float4 vtanh_swiz_4 = tanh(vfoo4.wwzw);
 
-	float1 vtrunc1 = trunc(vfoo1);
-	float2 vtrunc2 = trunc(vfoo2);
-	float3 vtrunc3 = trunc(vfoo3);
-	float4 vtrunc4 = trunc(vfoo4);
+	float1 vtrunc1 = trunc(vfoo1);				eq(vtrunc1, trunc((float)vfoo1.x));
+	float2 vtrunc2 = trunc(vfoo2);				eq(vtrunc2, trunc((float)vfoo2.x), trunc((float)vfoo2.y));
+	float3 vtrunc3 = trunc(vfoo3);				eq(vtrunc3, trunc((float)vfoo3.x), trunc((float)vfoo3.y), trunc((float)vfoo3.z));
+	float4 vtrunc4 = trunc(vfoo4);				eq(vtrunc4, trunc((float)vfoo4.x), trunc((float)vfoo4.y), trunc((float)vfoo4.z), trunc((float)vfoo4.w));
 
-	float1 vtrunc_swiz_1 = trunc(vfoo1.r);
-	float2 vtrunc_swiz_2 = trunc(vfoo2.yy);
-	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);
-	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);
+	float1 vtrunc_swiz_1 = trunc(vfoo1.r);		eq(vtrunc_swiz_1, trunc((float)vfoo1.r));
+	float2 vtrunc_swiz_2 = trunc(vfoo2.yy);		eq(vtrunc_swiz_2, trunc((float)vfoo2.y), trunc((float)vfoo2.y));
+	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);	eq(vtrunc_swiz_3, trunc((float)vfoo3.z), trunc((float)vfoo3.z), trunc((float)vfoo3.z));
+	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);	eq(vtrunc_swiz_4, trunc((float)vfoo4.w), trunc((float)vfoo4.w), trunc((float)vfoo4.z), trunc((float)vfoo4.w));
+
+	vtrunc_swiz_3.zxy--;
+
+	vtrunc_swiz_4++;
 
 	// Storage
 

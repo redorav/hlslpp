@@ -707,7 +707,7 @@ namespace hlslpp
 		n128 dpx = _hlslpp_dot4_ps(m1_vec, m2_vec0);
 		n128 dpy = _hlslpp_dot4_ps(m1_vec, m2_vec1);
 		n128 dpz = _hlslpp_dot4_ps(m1_vec, m2_vec2);
-		n128 result = _hlslpp_blend_ps(dpy, _hlslpp_shuf_xxxx_ps(dpx, dpz), HLSLPP_BLEND_MASK(0, 1, 0, 1));
+		n128 result = _hlslpp_blend_ps(dpx, _hlslpp_shuf_xxxx_ps(dpy, dpz), HLSLPP_BLEND_MASK(1, 0, 0, 0));
 		return result;
 	}
 
@@ -828,12 +828,12 @@ namespace hlslpp
 		n128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
 		n128 dpy0 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
 		n128 dpz0 = _hlslpp_dot4_ps(m1_vec0, m2_vec2);
-		o_vec0 = _hlslpp_blend_ps(dpy0, _hlslpp_shuf_xxxx_ps(dpx0, dpz0), HLSLPP_BLEND_MASK(0, 1, 0, 1));
+		o_vec0 = _hlslpp_blend_ps(dpx0, _hlslpp_shuf_xxxx_ps(dpy0, dpz0), HLSLPP_BLEND_MASK(1, 0, 0, 0));
 
 		n128 dpx1 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
 		n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
 		n128 dpz1 = _hlslpp_dot4_ps(m1_vec1, m2_vec2);
-		o_vec1 = _hlslpp_blend_ps(dpy1, _hlslpp_shuf_xxxx_ps(dpx1, dpz1), HLSLPP_BLEND_MASK(0, 1, 0, 1));
+		o_vec1 = _hlslpp_blend_ps(dpx1, _hlslpp_shuf_xxxx_ps(dpy1, dpz1), HLSLPP_BLEND_MASK(1, 0, 0, 0));
 	}
 
 	inline n128 _hlslpp_mul_3x3_3x1_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec)
@@ -899,7 +899,7 @@ namespace hlslpp
 		n128 dpx = _hlslpp_dot4_ps(m1_vec0, m2_vec);
 		n128 dpy = _hlslpp_dot4_ps(m1_vec1, m2_vec);
 		n128 dpz = _hlslpp_dot4_ps(m1_vec2, m2_vec);
-		n128 result = _hlslpp_blend_ps(dpy, _hlslpp_shuf_xxxx_ps(dpx, dpz), HLSLPP_BLEND_MASK(0, 1, 0, 1));
+		n128 result = _hlslpp_blend_ps(dpx, _hlslpp_shuf_xxxx_ps(dpy, dpz), HLSLPP_BLEND_MASK(1, 0, 0, 0));
 		return result;
 	}
 
@@ -908,12 +908,12 @@ namespace hlslpp
 		n128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
 		n128 dpy0 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
 		n128 dpz0 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
-		o_vec0 = _hlslpp_blend_ps(dpy0, _hlslpp_shuf_xxxx_ps(dpx0, dpz0), HLSLPP_BLEND_MASK(0, 1, 0, 1));
+		o_vec0 = _hlslpp_blend_ps(dpx0, _hlslpp_shuf_xxxx_ps(dpy0, dpz0), HLSLPP_BLEND_MASK(1, 0, 0, 0));
 
 		n128 dpx1 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
 		n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
 		n128 dpz1 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
-		o_vec1 = _hlslpp_blend_ps(dpy1, _hlslpp_shuf_xxxx_ps(dpx1, dpz1), HLSLPP_BLEND_MASK(0, 1, 0, 1));
+		o_vec1 = _hlslpp_blend_ps(dpx1, _hlslpp_shuf_xxxx_ps(dpy1, dpz1), HLSLPP_BLEND_MASK(1, 0, 0, 0));
 	}
 
 	inline void _hlslpp_mul_3x4_4x3_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec0, const n128& m2_vec1, const n128& m2_vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
@@ -921,17 +921,17 @@ namespace hlslpp
 		n128 dpx0 = _hlslpp_dot4_ps(m1_vec0, m2_vec0);
 		n128 dpy0 = _hlslpp_dot4_ps(m1_vec0, m2_vec1);
 		n128 dpz0 = _hlslpp_dot4_ps(m1_vec0, m2_vec2);
-		o_vec0 = _hlslpp_blend_ps(dpy0, _hlslpp_shuf_xxxx_ps(dpx0, dpz0), HLSLPP_BLEND_MASK(0, 1, 0, 1));
+		o_vec0 = _hlslpp_blend_ps(dpx0, _hlslpp_shuf_xxxx_ps(dpy0, dpz0), HLSLPP_BLEND_MASK(1, 0, 0, 0));
 
 		n128 dpx1 = _hlslpp_dot4_ps(m1_vec1, m2_vec0);
 		n128 dpy1 = _hlslpp_dot4_ps(m1_vec1, m2_vec1);
 		n128 dpz1 = _hlslpp_dot4_ps(m1_vec1, m2_vec2);
-		o_vec1 = _hlslpp_blend_ps(dpy1, _hlslpp_shuf_xxxx_ps(dpx1, dpz1), HLSLPP_BLEND_MASK(0, 1, 0, 1));
+		o_vec1 = _hlslpp_blend_ps(dpx1, _hlslpp_shuf_xxxx_ps(dpy1, dpz1), HLSLPP_BLEND_MASK(1, 0, 0, 0));
 
 		n128 dpx2 = _hlslpp_dot4_ps(m1_vec2, m2_vec0);
 		n128 dpy2 = _hlslpp_dot4_ps(m1_vec2, m2_vec1);
 		n128 dpz2 = _hlslpp_dot4_ps(m1_vec2, m2_vec2);
-		o_vec2 = _hlslpp_blend_ps(dpy2, _hlslpp_shuf_xxxx_ps(dpx2, dpz2), HLSLPP_BLEND_MASK(0, 1, 0, 1));
+		o_vec2 = _hlslpp_blend_ps(dpx2, _hlslpp_shuf_xxxx_ps(dpy2, dpz2), HLSLPP_BLEND_MASK(1, 0, 0, 0));
 	}
 
 	inline n128 _hlslpp_mul_4x3_3x1_ps(const n128& m1_vec0, const n128& m1_vec1, const n128& m1_vec2, const n128& m2_vec)
@@ -1286,7 +1286,6 @@ namespace hlslpp
 
 	hlslpp_inline float3x1 mul(const float3x4& m1, const float4x1& m2)
 	{
-
 		return float3x1(_hlslpp_mul_3x4_4x1_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec));
 	}
 

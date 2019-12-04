@@ -98,6 +98,10 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_max_ps(x, y)					__vmaxfp((x), (y))
 #define _hlslpp_min_ps(x, y)					__vminfp((x), (y))
 
+#define _hlslpp_sel_ps(x, y, mask)				__vsel((x), (y), (mask))
+
+#define _hlslpp_blend_ps(x, y, mask)			__vsel((x), (y), __vset(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)))
+
 #define _hlslpp_trunc_ps(x)						__vrfiz((x))
 #define _hlslpp_floor_ps(x)						__vrfim((x))
 #define _hlslpp_ceil_ps(x)						__vrfip((x))
@@ -123,10 +127,6 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_unpacklo_ps(x, y)				__vmrghw((x), (y))
 #define _hlslpp_unpackhi_ps(x, y)				__vmrglw((x), (y))
-
-#define _hlslpp_sel_ps(x, y, mask)				__vsel((x), (y), (mask))
-
-#define _hlslpp_blend_ps(x, y, mask)			__vsel((x), (y), __vset(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)))
 
 #define HLSLPP_DOT3_IMPLEMENTATION
 

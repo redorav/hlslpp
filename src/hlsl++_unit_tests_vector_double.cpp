@@ -2,6 +2,11 @@
 
 #include "hlsl++_unit_tests.h"
 
+double GetRandomDouble()
+{
+	return (rand() % 1000) / 100.0 - 5.0;
+}
+
 void RunUnitTestsVectorDouble()
 {
 	using namespace hlslpp_unit;
@@ -12,10 +17,10 @@ void RunUnitTestsVectorDouble()
 	// Double
 	//-------
 
-	double df1 = (rand() % 1000) / 100.0; double df5 = (rand() % 1000) / 100.0; double df9 = (rand() % 1000) / 100.0;  double df13 = (rand() % 1000) / 100.0; double df17 = (rand() % 1000) / 100.0;
-	double df2 = (rand() % 1000) / 100.0; double df6 = (rand() % 1000) / 100.0; double df10 = (rand() % 1000) / 100.0; double df14 = (rand() % 1000) / 100.0; double df18 = (rand() % 1000) / 100.0;
-	double df3 = (rand() % 1000) / 100.0; double df7 = (rand() % 1000) / 100.0; double df11 = (rand() % 1000) / 100.0; double df15 = (rand() % 1000) / 100.0; double df19 = (rand() % 1000) / 100.0;
-	double df4 = (rand() % 1000) / 100.0; double df8 = (rand() % 1000) / 100.0; double df12 = (rand() % 1000) / 100.0; double df16 = (rand() % 1000) / 100.0; double df20 = (rand() % 1000) / 100.0;
+	double df1 = GetRandomDouble(); double df5 = GetRandomDouble(); double df9 = GetRandomDouble();  double df13 = GetRandomDouble(); double df17 = GetRandomDouble();
+	double df2 = GetRandomDouble(); double df6 = GetRandomDouble(); double df10 = GetRandomDouble(); double df14 = GetRandomDouble(); double df18 = GetRandomDouble();
+	double df3 = GetRandomDouble(); double df7 = GetRandomDouble(); double df11 = GetRandomDouble(); double df15 = GetRandomDouble(); double df19 = GetRandomDouble();
+	double df4 = GetRandomDouble(); double df8 = GetRandomDouble(); double df12 = GetRandomDouble(); double df16 = GetRandomDouble(); double df20 = GetRandomDouble();
 
 	double1 dvfoo1 = double1(df1);						eq(dvfoo1, df1);
 	double2 dvfoo2 = double2(df2, df3);					eq(dvfoo2, df2, df3);

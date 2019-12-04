@@ -138,6 +138,25 @@ hlslpp_inline vector_float4 _hlslpp_min_ps(const vector_float4& v1, const vector
 	return vector_float4(v1.x < v2.x ? v1.x : v2.x, v1.y < v2.y ? v1.y : v2.y, v1.z < v2.z ? v1.z : v2.z, v1.w < v2.w ? v1.w : v2.w);
 }
 
+hlslpp_inline vector_float4 select4(const vector_float4& v1, const vector_float4& v2, const vector_float4& msk)
+{
+	return vector_float4(msk.x == 0.0f ? v1.x : v2.x,
+		msk.y == 0.0f ? v1.y : v2.y,
+		msk.z == 0.0f ? v1.z : v2.z,
+		msk.w == 0.0f ? v1.w : v2.w);
+}
+
+// Bit-select val1 and val2 based on the contents of the mask
+#define _hlslpp_sel_ps(x, y, msk)				select4((x), (y), (msk))
+
+template<int A, int B, int C, int D>
+hlslpp_inline vector_float4 blend4(const vector_float4& v1, const vector_float4& v2)
+{
+	return vector_float4(A == 1 ? v2.m[0] : v1.m[0], B == 1 ? v2.m[1] : v1.m[1], C == 1 ? v2.m[2] : v1.m[2], D == 1 ? v2.m[3] : v1.m[3]);
+}
+
+#define _hlslpp_blend_ps(x, y, msk)				blend4<msk & 1, (msk >> 1) & 1, (msk >> 2) & 1, (msk >> 3) & 1>((x), (y))
+
 hlslpp_inline vector_float4 _hlslpp_trunc_ps(const vector_float4& v)
 {
 	return vector_float4(std::trunc(v.x), std::trunc(v.y), std::trunc(v.z), std::trunc(v.w));
@@ -266,25 +285,6 @@ hlslpp_inline vector_float4 _hlslpp_unpackhi_ps(const vector_float4& v1, const v
 {
 	return vector_float4(v1.z, v2.z, v1.w, v2.w);
 }
-
-hlslpp_inline vector_float4 select4(const vector_float4& v1, const vector_float4& v2, const vector_float4& msk)
-{
-	return vector_float4(msk.x == 0.0f ? v1.x : v2.x, 
-						 msk.y == 0.0f ? v1.y : v2.y, 
-						 msk.z == 0.0f ? v1.z : v2.z, 
-						 msk.w == 0.0f ? v1.w : v2.w);
-}
-
-// Bit-select val1 and val2 based on the contents of the mask
-#define _hlslpp_sel_ps(x, y, msk)				select4((x), (y), (msk))
-
-template<int A, int B, int C, int D>
-hlslpp_inline vector_float4 blend4(const vector_float4& v1, const vector_float4& v2)
-{
-	return vector_float4(A == 1 ? v2.m[0] : v1.m[0], B == 1 ? v2.m[1] : v1.m[1], C == 1 ? v2.m[2] : v1.m[2], D == 1 ? v2.m[3] : v1.m[3]);
-}
-
-#define _hlslpp_blend_ps(x, y, msk)				blend4<msk & 1, (msk >> 1) & 1, (msk >> 2) & 1, (msk >> 3) & 1>((x), (y))
 
 hlslpp_inline vector_float4 _hlslpp_dot4_ps(const vector_float4& v1, const vector_float4& v2)
 {
