@@ -1868,6 +1868,78 @@ namespace hlslpp
 #endif
 	}
 
+	// Pre-increment
+
+	hlslpp_inline float1x1& operator ++ (float1x1& f) { f = f + float1x1(1.0f); return f; }
+	hlslpp_inline float1x2& operator ++ (float1x2& f) { f = f + float1x2(1.0f); return f; }
+	hlslpp_inline float1x3& operator ++ (float1x3& f) { f = f + float1x3(1.0f); return f; }
+	hlslpp_inline float1x4& operator ++ (float1x4& f) { f = f + float1x4(1.0f); return f; }
+	hlslpp_inline float2x1& operator ++ (float2x1& f) { f = f + float2x1(1.0f); return f; }
+	hlslpp_inline float3x1& operator ++ (float3x1& f) { f = f + float3x1(1.0f); return f; }
+	hlslpp_inline float4x1& operator ++ (float4x1& f) { f = f + float4x1(1.0f); return f; }
+	hlslpp_inline float2x2& operator ++ (float2x2& f) { f = f + float2x2(1.0f); return f; }
+	hlslpp_inline float2x3& operator ++ (float2x3& f) { f = f + float2x3(1.0f); return f; }
+	hlslpp_inline float3x2& operator ++ (float3x2& f) { f = f + float3x2(1.0f); return f; }
+	hlslpp_inline float2x4& operator ++ (float2x4& f) { f = f + float2x4(1.0f); return f; }
+	hlslpp_inline float4x2& operator ++ (float4x2& f) { f = f + float4x2(1.0f); return f; }
+	hlslpp_inline float3x3& operator ++ (float3x3& f) { f = f + float3x3(1.0f); return f; }
+	hlslpp_inline float3x4& operator ++ (float3x4& f) { f = f + float3x4(1.0f); return f; }
+	hlslpp_inline float4x3& operator ++ (float4x3& f) { f = f + float4x3(1.0f); return f; }
+	hlslpp_inline float4x4& operator ++ (float4x4& f) { f = f + float4x4(1.0f); return f; }
+
+	hlslpp_inline float1x1& operator -- (float1x1& f) { f = f - float1x1(1.0f); return f; }
+	hlslpp_inline float1x2& operator -- (float1x2& f) { f = f - float1x2(1.0f); return f; }
+	hlslpp_inline float1x3& operator -- (float1x3& f) { f = f - float1x3(1.0f); return f; }
+	hlslpp_inline float1x4& operator -- (float1x4& f) { f = f - float1x4(1.0f); return f; }
+	hlslpp_inline float2x1& operator -- (float2x1& f) { f = f - float2x1(1.0f); return f; }
+	hlslpp_inline float3x1& operator -- (float3x1& f) { f = f - float3x1(1.0f); return f; }
+	hlslpp_inline float4x1& operator -- (float4x1& f) { f = f - float4x1(1.0f); return f; }
+	hlslpp_inline float2x2& operator -- (float2x2& f) { f = f - float2x2(1.0f); return f; }
+	hlslpp_inline float2x3& operator -- (float2x3& f) { f = f - float2x3(1.0f); return f; }
+	hlslpp_inline float3x2& operator -- (float3x2& f) { f = f - float3x2(1.0f); return f; }
+	hlslpp_inline float2x4& operator -- (float2x4& f) { f = f - float2x4(1.0f); return f; }
+	hlslpp_inline float4x2& operator -- (float4x2& f) { f = f - float4x2(1.0f); return f; }
+	hlslpp_inline float3x3& operator -- (float3x3& f) { f = f - float3x3(1.0f); return f; }
+	hlslpp_inline float3x4& operator -- (float3x4& f) { f = f - float3x4(1.0f); return f; }
+	hlslpp_inline float4x3& operator -- (float4x3& f) { f = f - float4x3(1.0f); return f; }
+	hlslpp_inline float4x4& operator -- (float4x4& f) { f = f - float4x4(1.0f); return f; }
+
+	// Post-increment
+
+	hlslpp_inline float1x1 operator ++ (float1x1& f, int) { float1x1 tmp = f; f = f + float1x1(1.0f); return tmp; }
+	hlslpp_inline float1x2 operator ++ (float1x2& f, int) { float1x2 tmp = f; f = f + float1x2(1.0f); return tmp; }
+	hlslpp_inline float1x3 operator ++ (float1x3& f, int) { float1x3 tmp = f; f = f + float1x3(1.0f); return tmp; }
+	hlslpp_inline float1x4 operator ++ (float1x4& f, int) { float1x4 tmp = f; f = f + float1x4(1.0f); return tmp; }
+	hlslpp_inline float2x1 operator ++ (float2x1& f, int) { float2x1 tmp = f; f = f + float2x1(1.0f); return tmp; }
+	hlslpp_inline float3x1 operator ++ (float3x1& f, int) { float3x1 tmp = f; f = f + float3x1(1.0f); return tmp; }
+	hlslpp_inline float4x1 operator ++ (float4x1& f, int) { float4x1 tmp = f; f = f + float4x1(1.0f); return tmp; }
+	hlslpp_inline float2x2 operator ++ (float2x2& f, int) { float2x2 tmp = f; f = f + float2x2(1.0f); return tmp; }
+	hlslpp_inline float2x3 operator ++ (float2x3& f, int) { float2x3 tmp = f; f = f + float2x3(1.0f); return tmp; }
+	hlslpp_inline float3x2 operator ++ (float3x2& f, int) { float3x2 tmp = f; f = f + float3x2(1.0f); return tmp; }
+	hlslpp_inline float2x4 operator ++ (float2x4& f, int) { float2x4 tmp = f; f = f + float2x4(1.0f); return tmp; }
+	hlslpp_inline float4x2 operator ++ (float4x2& f, int) { float4x2 tmp = f; f = f + float4x2(1.0f); return tmp; }
+	hlslpp_inline float3x3 operator ++ (float3x3& f, int) { float3x3 tmp = f; f = f + float3x3(1.0f); return tmp; }
+	hlslpp_inline float3x4 operator ++ (float3x4& f, int) { float3x4 tmp = f; f = f + float3x4(1.0f); return tmp; }
+	hlslpp_inline float4x3 operator ++ (float4x3& f, int) { float4x3 tmp = f; f = f + float4x3(1.0f); return tmp; }
+	hlslpp_inline float4x4 operator ++ (float4x4& f, int) { float4x4 tmp = f; f = f + float4x4(1.0f); return tmp; }
+
+	hlslpp_inline float1x1 operator -- (float1x1& f, int) { float1x1 tmp = f; f = f - float1x1(1.0f); return tmp; }
+	hlslpp_inline float1x2 operator -- (float1x2& f, int) { float1x2 tmp = f; f = f - float1x2(1.0f); return tmp; }
+	hlslpp_inline float1x3 operator -- (float1x3& f, int) { float1x3 tmp = f; f = f - float1x3(1.0f); return tmp; }
+	hlslpp_inline float1x4 operator -- (float1x4& f, int) { float1x4 tmp = f; f = f - float1x4(1.0f); return tmp; }
+	hlslpp_inline float2x1 operator -- (float2x1& f, int) { float2x1 tmp = f; f = f - float2x1(1.0f); return tmp; }
+	hlslpp_inline float3x1 operator -- (float3x1& f, int) { float3x1 tmp = f; f = f - float3x1(1.0f); return tmp; }
+	hlslpp_inline float4x1 operator -- (float4x1& f, int) { float4x1 tmp = f; f = f - float4x1(1.0f); return tmp; }
+	hlslpp_inline float2x2 operator -- (float2x2& f, int) { float2x2 tmp = f; f = f - float2x2(1.0f); return tmp; }
+	hlslpp_inline float2x3 operator -- (float2x3& f, int) { float2x3 tmp = f; f = f - float2x3(1.0f); return tmp; }
+	hlslpp_inline float3x2 operator -- (float3x2& f, int) { float3x2 tmp = f; f = f - float3x2(1.0f); return tmp; }
+	hlslpp_inline float2x4 operator -- (float2x4& f, int) { float2x4 tmp = f; f = f - float2x4(1.0f); return tmp; }
+	hlslpp_inline float4x2 operator -- (float4x2& f, int) { float4x2 tmp = f; f = f - float4x2(1.0f); return tmp; }
+	hlslpp_inline float3x3 operator -- (float3x3& f, int) { float3x3 tmp = f; f = f - float3x3(1.0f); return tmp; }
+	hlslpp_inline float3x4 operator -- (float3x4& f, int) { float3x4 tmp = f; f = f - float3x4(1.0f); return tmp; }
+	hlslpp_inline float4x3 operator -- (float4x3& f, int) { float4x3 tmp = f; f = f - float4x3(1.0f); return tmp; }
+	hlslpp_inline float4x4 operator -- (float4x4& f, int) { float4x4 tmp = f; f = f - float4x4(1.0f); return tmp; }
+
 	hlslpp_inline float1 trace(const float2x2& m)
 	{
 		return float1(_hlslpp_trace_2x2_ps(m.vec));
