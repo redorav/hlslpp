@@ -3,7 +3,84 @@
 //----------------//
 
 namespace hlslpp
-{	
+{
+	const n128i i4_0x55555555 = _hlslpp_set1_epi32(0x55555555);
+	const n128i i4_0x33333333 = _hlslpp_set1_epi32(0x33333333);
+	const n128i i4_0x0f0f0f0f = _hlslpp_set1_epi32(0x0f0f0f0f);
+	const n128i i4_0x01010101 = _hlslpp_set1_epi32(0x01010101);
+	const n128i i4_0x0000003f = _hlslpp_set1_epi32(0x0000003f);
+	const n128i i4_0xaaaaaaaa = _hlslpp_set1_epi32(0xaaaaaaaa);
+	const n128i i4_0xcccccccc = _hlslpp_set1_epi32(0xcccccccc);
+	const n128i i4_0xf0f0f0f0 = _hlslpp_set1_epi32(0xf0f0f0f0);
+	const n128i i4_0x00ff00ff = _hlslpp_set1_epi32(0x00ff00ff);
+	const n128i i4_0xff00ff00 = _hlslpp_set1_epi32(0xff00ff00);
+	const n128i i4_0x0000ffff = _hlslpp_set1_epi32(0x0000ffff);
+	const n128i i4_0xffff0000 = _hlslpp_set1_epi32(0xffff0000);
+
+	// https://stackoverflow.com/questions/109023/how-to-count-the-number-of-set-bits-in-a-32-bit-integer
+	hlslpp_inline n128i _hlslpp_countbits_epi32(n128i i)
+	{
+		i = _hlslpp_sub_epi32(i, _hlslpp_and_si128(_hlslpp_srli_epi32(i, 1), i4_0x55555555));
+		i = _hlslpp_add_epi32(_hlslpp_and_si128(i, i4_0x33333333), _hlslpp_and_si128(_hlslpp_srli_epi32(i, 2), i4_0x33333333));
+		i = _hlslpp_srli_epi32(_hlslpp_mul_epi32(_hlslpp_and_si128(_hlslpp_add_epi32(i, _hlslpp_srli_epi32(i, 4)), i4_0x0f0f0f0f), i4_0x01010101), 24);
+		return i;
+	}
+
+	// https://stackoverflow.com/questions/10439242/count-leading-zeroes-in-an-int32
+	hlslpp_inline n128i _hlslpp_firstbithigh_epi32(const n128i i)
+	{
+		n128i r = i;
+
+		// Populate right side with 1s
+		r = _hlslpp_or_si128(r, _hlslpp_srli_epi32(r,  1)); // x |= x >> 1
+		r = _hlslpp_or_si128(r, _hlslpp_srli_epi32(r,  2)); // x |= x >> 2
+		r = _hlslpp_or_si128(r, _hlslpp_srli_epi32(r,  4)); // x |= x >> 4
+		r = _hlslpp_or_si128(r, _hlslpp_srli_epi32(r,  8)); // x |= x >> 8
+		r = _hlslpp_or_si128(r, _hlslpp_srli_epi32(r, 16)); // x |= x >> 16
+		
+		// Count 1s
+		r = _hlslpp_countbits_epi32(r);
+
+		// Subtract number of 1s from 32 (maximum number of 1s)
+		r = _hlslpp_sub_epi32(_hlslpp_set1_epi32(32), _hlslpp_and_si128(r, i4_0x0000003f));
+
+		// Set a -1 (which is incidentally all 1s) if the input is 0. This matches hlsl behavior
+		return _hlslpp_or_si128(r, _hlslpp_cmpeq_epi32(i, _hlslpp_setzero_epi32()));
+	}
+
+	// Apply the inverse logic as with the leading zeroes, to count trailing zeroes
+	hlslpp_inline n128i _hlslpp_firstbitlow_epi32(n128i i)
+	{
+		n128i r = i;
+		
+		// Populate left side with 1s
+		r = _hlslpp_or_si128(r, _hlslpp_slli_epi32(r,  1)); // x |= x << 1
+		r = _hlslpp_or_si128(r, _hlslpp_slli_epi32(r,  2)); // x |= x << 2
+		r = _hlslpp_or_si128(r, _hlslpp_slli_epi32(r,  4)); // x |= x << 4
+		r = _hlslpp_or_si128(r, _hlslpp_slli_epi32(r,  8)); // x |= x << 8
+		r = _hlslpp_or_si128(r, _hlslpp_slli_epi32(r, 16)); // x |= x << 16
+
+		// Count 1s (using same method as countbits)
+		r = _hlslpp_countbits_epi32(r);
+
+		// Subtract number of 1s from 32 (maximum number of 1s)
+		r = _hlslpp_sub_epi32(_hlslpp_set1_epi32(32), _hlslpp_and_si128(r, i4_0x0000003f));
+
+		// Set a -1 (which is incidentally all 1s) if the input is 0. This matches hlsl behavior
+		return _hlslpp_or_si128(r, _hlslpp_cmpeq_epi32(i, _hlslpp_setzero_epi32()));
+	}
+
+	// https://stackoverflow.com/questions/21619397/reverse-all-bits-in-an-int-and-return-the-int
+	hlslpp_inline n128i _hlslpp_reversebits_epi32(n128i i)
+	{
+		i = _hlslpp_or_si128(_hlslpp_slli_epi32(_hlslpp_and_si128(i, i4_0x55555555), 1), _hlslpp_srli_epi32(_hlslpp_and_si128(i, i4_0xaaaaaaaa), 1));
+		i = _hlslpp_or_si128(_hlslpp_slli_epi32(_hlslpp_and_si128(i, i4_0x33333333), 2), _hlslpp_srli_epi32(_hlslpp_and_si128(i, i4_0xcccccccc), 2));
+		i = _hlslpp_or_si128(_hlslpp_slli_epi32(_hlslpp_and_si128(i, i4_0x0f0f0f0f), 4), _hlslpp_srli_epi32(_hlslpp_and_si128(i, i4_0xf0f0f0f0), 4));
+		i = _hlslpp_or_si128(_hlslpp_slli_epi32(_hlslpp_and_si128(i, i4_0x00ff00ff), 8), _hlslpp_srli_epi32(_hlslpp_and_si128(i, i4_0xff00ff00), 8));
+		i = _hlslpp_or_si128(_hlslpp_slli_epi32(_hlslpp_and_si128(i, i4_0x0000ffff), 16), _hlslpp_srli_epi32(_hlslpp_and_si128(i, i4_0xffff0000), 16));
+		return i;
+	}
+
 	template<int X>
 	struct hlslpp_nodiscard iswizzle1
 	{
@@ -202,7 +279,7 @@ namespace hlslpp
 		union
 		{
 			n128i vec;
-			float i32[4];
+			int32_t i32[4];
 		};
 	};
 
@@ -604,6 +681,21 @@ namespace hlslpp
 	hlslpp_inline int3 abs(const int3& i) { return int3(_hlslpp_abs_epi32(i.vec)); }
 	hlslpp_inline int4 abs(const int4& i) { return int4(_hlslpp_abs_epi32(i.vec)); }
 
+	hlslpp_inline int1 countbits(const int1& i) { return int1(_hlslpp_countbits_epi32(i.vec)); }
+	hlslpp_inline int2 countbits(const int2& i) { return int2(_hlslpp_countbits_epi32(i.vec)); }
+	hlslpp_inline int3 countbits(const int3& i) { return int3(_hlslpp_countbits_epi32(i.vec)); }
+	hlslpp_inline int4 countbits(const int4& i) { return int4(_hlslpp_countbits_epi32(i.vec)); }
+
+	hlslpp_inline int1 firstbithigh(const int1& i) { return int1(_hlslpp_firstbithigh_epi32(i.vec)); }
+	hlslpp_inline int2 firstbithigh(const int2& i) { return int2(_hlslpp_firstbithigh_epi32(i.vec)); }
+	hlslpp_inline int3 firstbithigh(const int3& i) { return int3(_hlslpp_firstbithigh_epi32(i.vec)); }
+	hlslpp_inline int4 firstbithigh(const int4& i) { return int4(_hlslpp_firstbithigh_epi32(i.vec)); }
+
+	hlslpp_inline int1 firstbitlow(const int1& i) { return int1(_hlslpp_firstbitlow_epi32(i.vec)); }
+	hlslpp_inline int2 firstbitlow(const int2& i) { return int2(_hlslpp_firstbitlow_epi32(i.vec)); }
+	hlslpp_inline int3 firstbitlow(const int3& i) { return int3(_hlslpp_firstbitlow_epi32(i.vec)); }
+	hlslpp_inline int4 firstbitlow(const int4& i) { return int4(_hlslpp_firstbitlow_epi32(i.vec)); }
+
 	hlslpp_inline int1 min(const int1& i1, const int1& i2) { return int1(_hlslpp_min_epi32(i1.vec, i2.vec)); }
 	hlslpp_inline int2 min(const int2& i1, const int2& i2) { return int2(_hlslpp_min_epi32(i1.vec, i2.vec)); }
 	hlslpp_inline int3 min(const int3& i1, const int3& i2) { return int3(_hlslpp_min_epi32(i1.vec, i2.vec)); }
@@ -618,6 +710,11 @@ namespace hlslpp
 	hlslpp_inline int2 max(const int2& i1, const int2& i2) { return int2(_hlslpp_max_epi32(i1.vec, i2.vec)); }
 	hlslpp_inline int3 max(const int3& i1, const int3& i2) { return int3(_hlslpp_max_epi32(i1.vec, i2.vec)); }
 	hlslpp_inline int4 max(const int4& i1, const int4& i2) { return int4(_hlslpp_max_epi32(i1.vec, i2.vec)); }
+
+	hlslpp_inline int1 reversebits(const int1& i) { return int1(_hlslpp_reversebits_epi32(i.vec)); }
+	hlslpp_inline int2 reversebits(const int2& i) { return int2(_hlslpp_reversebits_epi32(i.vec)); }
+	hlslpp_inline int3 reversebits(const int3& i) { return int3(_hlslpp_reversebits_epi32(i.vec)); }
+	hlslpp_inline int4 reversebits(const int4& i) { return int4(_hlslpp_reversebits_epi32(i.vec)); }
 
 	template<int X>
 	iswizzle1<X>& iswizzle1<X>::operator = (const int1& i)

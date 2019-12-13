@@ -536,6 +536,7 @@ hlslpp_inline void _hlslpp256_load4x4_ps(float* p, n256& x0, n256& x1)
 
 #define _hlslpp_set1_epi32(x)					_mm_set1_epi32((x))
 #define _hlslpp_set_epi32(x, y, z, w)			_mm_set_epi32((w), (z), (y), (x))
+#define _hlslpp_setzero_epi32()					_mm_setzero_si128()
 
 #define _hlslpp_add_epi32(x, y)					_mm_add_epi32((x), (y))
 #define _hlslpp_sub_epi32(x, y)					_mm_sub_epi32((x), (y))

@@ -405,6 +405,8 @@ hlslpp_inline vector_int4 _hlslpp_set1_epi32(int32_t x) { return vector_int4(x);
 
 hlslpp_inline vector_int4 _hlslpp_set_epi32(int32_t x, int32_t y, int32_t z, int32_t w) { return vector_int4(x, y, z, w); }
 
+hlslpp_inline vector_int4 _hlslpp_setzero_epi32() { return vector_int4(0, 0, 0, 0); }
+
 hlslpp_inline vector_int4 _hlslpp_add_epi32(const vector_int4& v1, const vector_int4& v2) { return vector_int4(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w); }
 
 hlslpp_inline vector_int4 _hlslpp_sub_epi32(const vector_int4& v1, const vector_int4& v2) { return vector_int4(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z, v1.w - v2.w); }

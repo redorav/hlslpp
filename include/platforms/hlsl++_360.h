@@ -142,6 +142,7 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_set1_epi32(x)					__vcfpsxws(__vset1(float(x)), 0)
 #define _hlslpp_set_epi32(x, y, z, w)			__vcfpsxws(__vset(float(x), float(y), float(z), float(w)), 0)
+#define _hlslpp_setzero_epi32()					__vzero()
 
 #define _hlslpp_add_epi32(x, y)					__vaddsws((x), (y))
 #define _hlslpp_sub_epi32(x, y)					__vsubsws((x), (y))

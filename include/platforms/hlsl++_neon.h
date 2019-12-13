@@ -533,6 +533,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 
 #define _hlslpp_set1_epi32(x)					vmovq_n_s32((x))
 #define _hlslpp_set_epi32(x, y, z, w)			vmov4q_n_s32((x), (y), (z), (w))
+#define _hlslpp_setzero_epi32()					vmovq_n_s32(0)
 
 #define _hlslpp_add_epi32(x, y)					vaddq_s32((x), (y))
 #define _hlslpp_sub_epi32(x, y)					vsubq_s32((x), (y))
