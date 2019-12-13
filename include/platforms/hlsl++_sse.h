@@ -149,19 +149,19 @@ hlslpp_inline n128 _hlslpp_blend_ps(n128 x, n128 y, int mask)
 
 hlslpp_inline n128 _hlslpp_floor_ps(n128 x)
 {
-	n128  trnc   = _mm_cvtepi32_ps(_mm_cvttps_epi32(x));					// Truncate
-	n128  gt     = _mm_cmpgt_ps(trnc, x);									// Check if truncation was greater or smaller (i.e. was negative or positive number)
-	n128i shr    = _mm_srl_epi32(_mm_castps_si128(gt), _mm_set_epi32(0, 0, 0, 31));	// Shift right to leave a 1 or a 0
-	n128  result = _mm_sub_ps(trnc, _mm_cvtepi32_ps(shr));					// Subtract from truncated value
+	n128  trnc   = _mm_cvtepi32_ps(_mm_cvttps_epi32(x));	 // Truncate
+	n128  gt     = _mm_cmpgt_ps(trnc, x);					 // Check if truncation was greater or smaller (i.e. was negative or positive number)
+	n128i shr    = _mm_srli_epi32(_mm_castps_si128(gt), 31); // Shift right to leave a 1 or a 0
+	n128  result = _mm_sub_ps(trnc, _mm_cvtepi32_ps(shr));	 // Subtract from truncated value
 	return result;
 }
 
 hlslpp_inline n128 _hlslpp_ceil_ps(n128 x)
 {
-	n128  trnc   = _mm_cvtepi32_ps(_mm_cvttps_epi32(x));					// Truncate
-	n128  gt     = _mm_cmpgt_ps(x, trnc);									// Check if truncation was greater or smaller (i.e. was negative or positive number)
-	n128i shr    = _mm_srl_epi32(_mm_castps_si128(gt), _mm_set_epi32(0, 0, 0, 31));	// Shift right to leave a 1 or a 0
-	n128  result = _mm_add_ps(trnc, _mm_cvtepi32_ps(shr));					// Subtract from truncated value
+	n128  trnc   = _mm_cvtepi32_ps(_mm_cvttps_epi32(x));	 // Truncate
+	n128  gt     = _mm_cmpgt_ps(x, trnc);					 // Check if truncation was greater or smaller (i.e. was negative or positive number)
+	n128i shr    = _mm_srli_epi32(_mm_castps_si128(gt), 31); // Shift right to leave a 1 or a 0
+	n128  result = _mm_add_ps(trnc, _mm_cvtepi32_ps(shr));	 // Subtract from truncated value
 	return result;
 }
 
