@@ -414,27 +414,26 @@ namespace hlslpp
 			n256 vec0;
 			float f32_0[8];
 
-			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_OFF
-			(
-				struct
+			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
+			struct
+			{
+				union 
 				{
-					union 
-					{
-						#include "swizzle/hlsl++_matrix_row0_1.h"
-						#include "swizzle/hlsl++_matrix_row0_2.h"
-						#include "swizzle/hlsl++_matrix_row0_3.h"
-						#include "swizzle/hlsl++_matrix_row0_4.h"
-					};
-			
-					union
-					{
-						#include "swizzle/hlsl++_matrix_row1_1.h"
-						#include "swizzle/hlsl++_matrix_row1_2.h"
-						#include "swizzle/hlsl++_matrix_row1_3.h"
-						#include "swizzle/hlsl++_matrix_row1_4.h"
-					};
+					#include "swizzle/hlsl++_matrix_row0_1.h"
+					#include "swizzle/hlsl++_matrix_row0_2.h"
+					#include "swizzle/hlsl++_matrix_row0_3.h"
+					#include "swizzle/hlsl++_matrix_row0_4.h"
 				};
-			)
+			
+				union
+				{
+					#include "swizzle/hlsl++_matrix_row1_1.h"
+					#include "swizzle/hlsl++_matrix_row1_2.h"
+					#include "swizzle/hlsl++_matrix_row1_3.h"
+					#include "swizzle/hlsl++_matrix_row1_4.h"
+				};
+			};
+			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 		};
 
 		union
@@ -442,27 +441,26 @@ namespace hlslpp
 			n256 vec1;
 			float f32_1[8];
 
-			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_OFF
-			(
-				struct
+			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
+			struct
+			{
+				union
 				{
-					union
-					{
-						#include "swizzle/hlsl++_matrix_row2_1.h"
-						#include "swizzle/hlsl++_matrix_row2_2.h"
-						#include "swizzle/hlsl++_matrix_row2_3.h"
-						#include "swizzle/hlsl++_matrix_row2_4.h"
-					};
-
-					union
-					{
-						#include "swizzle/hlsl++_matrix_row3_1.h"
-						#include "swizzle/hlsl++_matrix_row3_2.h"
-						#include "swizzle/hlsl++_matrix_row3_3.h"
-						#include "swizzle/hlsl++_matrix_row3_4.h"
-					};
+					#include "swizzle/hlsl++_matrix_row2_1.h"
+					#include "swizzle/hlsl++_matrix_row2_2.h"
+					#include "swizzle/hlsl++_matrix_row2_3.h"
+					#include "swizzle/hlsl++_matrix_row2_4.h"
 				};
-			)
+
+				union
+				{
+					#include "swizzle/hlsl++_matrix_row3_1.h"
+					#include "swizzle/hlsl++_matrix_row3_2.h"
+					#include "swizzle/hlsl++_matrix_row3_3.h"
+					#include "swizzle/hlsl++_matrix_row3_4.h"
+				};
+			};
+			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 		};
 
 #else

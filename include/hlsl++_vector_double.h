@@ -473,14 +473,13 @@ namespace hlslpp
 
 		union
 		{
-			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_OFF
-			(
-				struct
-				{
-					n128d vec0;
-					n128d vec1;
-				};
-			)
+			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
+			struct
+			{
+				n128d vec0;
+				n128d vec1;
+			};
+			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 
 			double f64[4];
 			#include "swizzle/hlsl++_vector_double_x.h"
@@ -554,14 +553,13 @@ namespace hlslpp
 
 		union
 		{
-			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_OFF
-			(
-				struct
-				{
-					n128d vec0;
-					n128d vec1;
-				};
-			)
+			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
+			struct
+			{
+				n128d vec0;
+				n128d vec1;
+			};
+			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 
 			n128d vec[2];
 			double f64[4];
