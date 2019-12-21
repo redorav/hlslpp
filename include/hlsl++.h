@@ -46,9 +46,28 @@
 #define HLSLPP_COMPONENT_XYZW(X, Y, Z, W)	((1 << X) | (1 << Y) | (1 << Z) | (1 << W))
 
 #if defined(__cpp_if_constexpr)
-#define HLSLPP_CONSTEXPR_IF(x) if constexpr(x)
+
+	#define HLSLPP_CONSTEXPR_IF(x) if constexpr(x)
+
 #else
-#define HLSLPP_CONSTEXPR_IF(x) if(x)
+
+	#if defined(_MSC_VER)
+		
+		// warning C4127: conditional expression is constant
+		// Disable because we always use these in a template context
+		// Builds that don't support constexpr optimize them away
+		#define HLSLPP_CONSTEXPR_IF(x) \
+		__pragma(warning(push)) \
+		__pragma(warning(disable : 4127)) \
+		if(x) \
+		__pragma(warning(pop))
+
+	#else
+
+		#define HLSLPP_CONSTEXPR_IF(x) if(x)
+
+	#endif
+
 #endif
 
 // We try to auto detect any vector libraries available to the system.
