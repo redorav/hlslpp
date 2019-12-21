@@ -22,8 +22,6 @@
 		#define __SSE4_1__ 1
 		#endif
 
-		#define HLSLPP_SIMD_REGISTER_FLOAT8
-
 	#endif
 
 	#if defined(__SSE4_1__)
@@ -49,6 +47,7 @@ typedef __m128d n128d;
 #if defined(__AVX__)
 
 #define HLSLPP_FLOAT8
+#define HLSLPP_SIMD_REGISTER_FLOAT8
 
 typedef __m256  n256;
 typedef __m256d n256d;
