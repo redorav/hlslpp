@@ -4,18 +4,17 @@
 
 	#define hlslpp_inline inline __attribute__((always_inline))
 
-	#define HLSLPP_WARNING_ANONYMOUS_UNION_OFF
-	#define HLSLPP_WARNING_ANONYMOUS_UNION_ON
+	#define HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_OFF(code) code
 
 #elif defined(_MSC_VER)
 
 	#define hlslpp_inline __forceinline
 
-	#define HLSLPP_WARNING_ANONYMOUS_UNION_OFF \
+	#define HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_OFF(code) \
 	__pragma(warning(push)) \
-	__pragma(warning(disable : 4201))
-
-	#define HLSLPP_WARNING_ANONYMOUS_UNION_ON __pragma(warning(pop))
+	__pragma(warning(disable : 4201)) \
+	code \
+	__pragma(warning(pop))
 
 #else
 

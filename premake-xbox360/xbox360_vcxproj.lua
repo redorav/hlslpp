@@ -39,9 +39,26 @@
 	
 	end)
 	
+--
+-- Extend generateDebugInformation
+--
+	
+	premake.override(vc2010, "generateDebugInformation", function(oldfn, cfg)
+	
+		if cfg.system == premake.XBOX360 then
+			if cfg.symbols == "Off" then
+				vc2010.element("GenerateDebugInformation", nil, "false")
+			elseif cfg.symbols ~= "Default" then
+				vc2010.element("GenerateDebugInformation", nil, "true")
+			end
+		else
+			return oldfn(cfg)
+		end
+	
+	end)
 	
 --
--- Extend configurationProperties.
+-- Extend configurationProperties
 --
 
 	premake.override(vc2010.elements, "configurationProperties", function(oldfn, cfg)
@@ -317,7 +334,8 @@
 	
 		if cfg.system == premake.XBOX360 then		
 		
-			if (cfg.symbols == p.ON) or (cfg.symbols == "FastLink") then
+			if (cfg.symbols ~= p.OFF) and (cfg.symbols ~= p.DEFAULT) then
+			
 				if cfg.debugformat == "c7" then
 					value = "OldStyle"
 				else
@@ -325,15 +343,7 @@
 				end
 
 				vc2010.element("DebugInformationFormat", nil, value)
-			elseif cfg.symbols == p.OFF then
-				-- leave field blank for vs2013 and older to workaround bug
-				if _ACTION < "vs2015" then
-					value = ""
-				else
-					value = "None"
-				end
-
-				vc2010.element("DebugInformationFormat", nil, value)
+				
 			end
 			
 		else
