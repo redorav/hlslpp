@@ -315,7 +315,7 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_neg_ps(x)						veorq_u32(vreinterpretq_u32_f32((x)), vmovq_n_u32(0x80000000u))
 
 #define _hlslpp_madd_ps(x, y, z)				vmlaq_f32((z), (x), (y))
-#define _hlslpp_msub_ps(x, y, z)				_hlslpp_neg_ps(vmlsq_f32((z), (x), (y))) // Negate because vmlsq_f32 does z - x * y and we want x * y - z
+#define _hlslpp_msub_ps(x, y, z)				_hlslpp_neg_ps(vmlsq_f32((z), (x), (y))) // Negate because vmlsq_f32 does -(x * y - z) and we want x * y - z
 #define _hlslpp_subm_ps(x, y, z)				vmlsq_f32((z), (x), (y))
 
 #define _hlslpp_abs_ps(x)						vabsq_f32((x))

@@ -82,15 +82,15 @@ typedef __m256i n256i;
 
 #if defined(__FMA__)
 
-#define _hlslpp_madd_ps(x, y, z)				_mm_fmadd_ps((x), (y), (z))
-#define _hlslpp_msub_ps(x, y, z)				_mm_fmsub_ps((x), (y), (z))
-#define _hlslpp_subm_ps(x, y, z)				_mm_fnmadd_ps((x), (y), (z))
+#define _hlslpp_madd_ps(x, y, z)				_mm_fmadd_ps((x), (y), (z)) // x * y + z
+#define _hlslpp_msub_ps(x, y, z)				_mm_fmsub_ps((x), (y), (z)) // x * y - z
+#define _hlslpp_subm_ps(x, y, z)				_mm_fnmadd_ps((y), (z), (x)) // x - y * z
 
 #else
 
-#define _hlslpp_madd_ps(x, y, z)				_mm_add_ps(_mm_mul_ps((x), (y)), (z))
-#define _hlslpp_msub_ps(x, y, z)				_mm_sub_ps(_mm_mul_ps((x), (y)), (z))
-#define _hlslpp_subm_ps(x, y, z)				_mm_sub_ps((x), _mm_mul_ps((y), (z)))
+#define _hlslpp_madd_ps(x, y, z)				_mm_add_ps(_mm_mul_ps((x), (y)), (z)) // x * y + z
+#define _hlslpp_msub_ps(x, y, z)				_mm_sub_ps(_mm_mul_ps((x), (y)), (z)) // x * y - z
+#define _hlslpp_subm_ps(x, y, z)				_mm_sub_ps((x), _mm_mul_ps((y), (z))) // x - y * z
 
 #endif
 

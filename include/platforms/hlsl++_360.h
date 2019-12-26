@@ -76,9 +76,9 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_neg_ps(x)						__vxor((x), __vset1(negMask.f))
 
-#define _hlslpp_madd_ps(x, y, z)				__vmaddfp((x), (y), (z))
-#define _hlslpp_msub_ps(x, y, z)				_hlslpp_neg_ps(__vnmsubfp((z), (x), (y))) // Negate because __vnmsubfp does z - x * y and we want x * y - z
-#define _hlslpp_subm_ps(x, y, z)				__vnmsubfp((z), (x), (y))
+#define _hlslpp_madd_ps(x, y, z)				__vmaddfp((x), (y), (z)) // x * y + z
+#define _hlslpp_msub_ps(x, y, z)				_hlslpp_neg_ps(__vnmsubfp((x), (y), (z))) // Negate because __vnmsubfp does -(x * y - z)
+#define _hlslpp_subm_ps(x, y, z)				__vnmsubfp((y), (z), (x)) // x - y * z
 
 #define _hlslpp_abs_ps(x)						__vand(f4absMask, (x))
 
