@@ -1,8 +1,10 @@
 #pragma once
 
-#if defined(_MSC_VER)
+#if defined(__clang__) || defined(__GNUG__)
 
-	#include <immintrin.h>
+	#include <x86intrin.h>
+
+#elif defined(_MSC_VER)
 
 	// MSVC does not define these macros so we define them via heuristics and use them below. Other compilers
 	// define these macros because they have command line switches to enable them at compile time. Alternatively
@@ -31,9 +33,8 @@
 		#endif
 
 	#endif
-#else
 
-	#include <x86intrin.h>
+	#include <immintrin.h>
 
 #endif
 
