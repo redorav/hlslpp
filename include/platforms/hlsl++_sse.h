@@ -113,7 +113,6 @@ typedef __m256i n256i;
 #define _hlslpp_min_ps(x, y)					_mm_min_ps((x), (y))
 
 // SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
-// _mm_xor_ps((x), _mm_and_ps(mask, _mm_xor_ps((y), (x))))
 // Bit-select val1 and val2 based on the contents of the mask
 #if defined(__SSE4_1__)
 
@@ -627,6 +626,18 @@ hlslpp_inline n128i _hlslpp_min_epi32(n128i x, n128i y)
 #define _hlslpp_perm_epi32(x, mask)				_mm_shuffle_epi32((x), (mask))
 #define _hlslpp_shuffle_epi32(x, y, mask)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), (mask)))
 
+// SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
+// Bit-select val1 and val2 based on the contents of the mask
+#if defined(__SSE4_1__)
+
+#define _hlslpp_sel_epi32(x, y, mask)			_mm_blendv_epi8((x), (y), (mask))
+
+#else
+
+#define _hlslpp_sel_epi32(x, y, mask)			_mm_xor_si128((x), _mm_and_si128(mask, _mm_xor_si128((y), (x))))
+
+#endif
+
 #if defined(__AVX2__)
 
 #define _hlslpp_blend_epi32(x, y, mask)			_mm_blend_epi32((x), (y), mask)
@@ -720,11 +731,49 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 
 #define _hlslpp256_set1_epi32(x)						_mm256_set1_epi32((x))
 #define _hlslpp256_set_epi32(x, y, z, w, a, b, c, d)	_mm256_set_epi32(d, c, b, a, w, z, y, x)
+#define _hlslpp256_setzero_si256()						_mm256_setzero_si256()
+#define _hlslpp256_set128_epi32(lo, hi)					_mm256_set_m128i(hi, lo)
+
+#define _hlslpp256_low_epi32(x)							_mm256_castsi256_si128((x))
+#define _hlslpp256_high_epi32(x)						_mm256_extractf128_si256((x), 1)
+
+#if defined(__AVX2__)
 
 #define _hlslpp256_add_epi32(x, y)						_mm256_add_epi32((x), (y))
 #define _hlslpp256_sub_epi32(x, y)						_mm256_sub_epi32((x), (y))
-
 #define _hlslpp256_mul_epi32(x, y)						_mm256_mullo_epi32((x), (y))
+
+#else
+
+hlslpp_inline n256i _hlslpp256_add_epi32(n256i x, n256i y)
+{
+	return _hlslpp256_set128_epi32
+	(
+		_mm_add_epi32(_hlslpp256_low_epi32(x), _hlslpp256_low_epi32(y)),
+		_mm_add_epi32(_hlslpp256_high_epi32(x), _hlslpp256_high_epi32(y))
+	);
+}
+
+hlslpp_inline n256i _hlslpp256_sub_epi32(n256i x, n256i y)
+{
+	return _hlslpp256_set128_epi32
+	(
+		_mm_sub_epi32(_hlslpp256_low_epi32(x), _hlslpp256_low_epi32(y)),
+		_mm_sub_epi32(_hlslpp256_high_epi32(x), _hlslpp256_high_epi32(y))
+	);
+}
+
+hlslpp_inline n256i _hlslpp256_mul_epi32(n256i x, n256i y)
+{
+	return _hlslpp256_set128_epi32
+	(
+		_mm_mul_epi32(_hlslpp256_low_epi32(x), _hlslpp256_low_epi32(y)),
+		_mm_mul_epi32(_hlslpp256_high_epi32(x), _hlslpp256_high_epi32(y))
+	);
+}
+
+#endif
+
 #define _hlslpp256_div_epi32(x, y)						_mm256_castps_si256(_mm256_div_ps(_mm256_castsi256_ps(x), _mm256_castsi256_ps(y)))
 
 #define _hlslpp256_neg_epi32(x)							_mm256_sign_epi32((x), _mm256_set1_epi32(-1))
@@ -750,8 +799,32 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 #define _hlslpp256_clamp_epi32(x, minx, maxx)			_mm256_max_epi32(_mm256_min_epi32((x), (maxx)), (minx))
 #define _hlslpp256_sat_epi32(x)							_mm256_max_epi32(_mm256_min_epi32((x), i4_1), i4_0)
 
+#if defined(__AVX2__)
+
 #define _hlslpp256_and_si128(x, y)						_mm256_and_si256((x), (y))
 #define _hlslpp256_or_si128(x, y)						_mm256_or_si256((x), (y))
+
+#else
+
+hlslpp_inline n256i _hlslpp256_and_si128(n256i x, n256i y)
+{
+	return _hlslpp256_set128_epi32
+	(
+		_mm_and_si128(_hlslpp256_low_epi32(x), _hlslpp256_low_epi32(y)),
+		_mm_and_si128(_hlslpp256_high_epi32(x), _hlslpp256_high_epi32(y))
+	);
+}
+
+hlslpp_inline n256i _hlslpp256_or_si128(n256i x, n256i y)
+{
+	return _hlslpp256_set128_epi32
+	(
+		_mm_or_si128(_hlslpp256_low_epi32(x), _hlslpp256_low_epi32(y)),
+		_mm_or_si128(_hlslpp256_high_epi32(x), _hlslpp256_high_epi32(y))
+	);
+}
+
+#endif
 
 // https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
 //#define _hlslpp256_perm_epi32(x, mask)				_mm_shuffle_epi32((x), (mask))
@@ -765,8 +838,17 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 #define _hlslpp256_cvtepi32_ps(x)						_mm256_cvtepi32_ps((x))
 #define _hlslpp256_cvtps_epi32(x)						_mm256_cvtps_epi32((x))
 
+#if defined(__AVX2__)
+
 #define _hlslpp256_slli_epi32(x, y)						_mm256_slli_epi32((x), (y))
 #define _hlslpp256_srli_epi32(x, y)						_mm256_srli_epi32((x), (y))
+
+#else
+
+#define _hlslpp256_slli_epi32(x, y) _hlslpp256_set128_epi32(_mm_slli_si128(_hlslpp256_low_epi32(x), y),	_mm_slli_si128(_hlslpp256_high_epi32(x), y))
+#define _hlslpp256_srli_epi32(x, y) _hlslpp256_set128_epi32(_mm_srli_si128(_hlslpp256_low_epi32(x), y),	_mm_srli_si128(_hlslpp256_high_epi32(x), y))
+
+#endif
 
 #endif
 
