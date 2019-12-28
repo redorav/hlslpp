@@ -512,6 +512,14 @@ namespace hlslpp
 		return float8(_hlslpp256_div_ps(f1.vec, _hlslpp256_set128_ps(perm_xxxx, perm_xxxx)));
 	}
 
+	hlslpp_inline float8 operator % (const float8& f1, const float8& f2) { return float8(_hlslpp256_fmod_ps(f1.vec, f2.vec)); }
+
+	hlslpp_inline float8 operator % (const float8& f1, const float1& f2)
+	{
+		n128 perm_xxxx = _hlslpp_perm_xxxx_ps(f2.vec);
+		return float8(_hlslpp256_fmod_ps(f1.vec, _hlslpp256_set128_ps(perm_xxxx, perm_xxxx)));
+	}
+
 	hlslpp_inline float8 operator - (const float8& f) { return float8(_hlslpp256_neg_ps(f.vec)); }
 
 	hlslpp_inline float8& operator += (float8& f1, const float8& f2) { f1 = f1 + f2; return f1; }
@@ -521,6 +529,8 @@ namespace hlslpp
 	hlslpp_inline float8& operator *= (float8& f1, const float8& f2) { f1 = f1 * f2; return f1; }
 
 	hlslpp_inline float8& operator /= (float8& f1, const float8& f2) { f1 = f1 / f2; return f1; }
+
+	hlslpp_inline float8& operator %= (float8& f1, const float8& f2) { f1 = f1 % f2; return f1; }
 
 
 	// Pre-increment
@@ -553,6 +563,10 @@ namespace hlslpp
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float8) operator / (const float8& f1, T f2) { return f1 / float8(f2); }
 
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float8) operator / (T f1, const float8& f2) { return float8(f1) / f2; }
+
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float8) operator % (const float8& f1, T f2) { return f1 % float8(f2); }
+
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float8) operator % (T f1, const float8& f2) { return float8(f1) % f2; }
 
 	hlslpp_inline float8 operator == (const float8& f1, const float8& f2) { return float8(_hlslpp256_cmpeq1_ps(f1.vec, f2.vec)); }
 	
