@@ -4,23 +4,29 @@ require ("vstudio")
 Workspace = "workspace/".._ACTION
 
 -- Compilers
-PlatformMSVC64	= "MSVC 64"
-PlatformMSVC32	= "MSVC 32"
-PlatformLLVM64	= "LLVM 64"
-PlatformLLVM32	= "LLVM 32"
 
-PlatformOSX64	= "OSX 64"
+-- x86/x64
+PlatformMSVC64AVX		= "MSVC 64 AVX"
+PlatformMSVC64SSE41		= "MSVC 64 SSE 4.1"
+PlatformMSVC64SSE2		= "MSVC 64 SSE 2"
+PlatformMSVC32			= "MSVC 32 SSE 2"
 
+PlatformLLVM64AVX		= "LLVM 64 AVX"
+PlatformLLVM64SSE41		= "LLVM 64 SSE 4.1"
+PlatformLLVM64SSE2		= "LLVM 64 SSE 2"
+PlatformLLVM32			= "LLVM 32 SSE 2"
+
+PlatformOSX64			= "OSX 64"
 PlatformLinux64_GCC		= "Linux64_GCC"
 PlatformLinux64_Clang	= "Linux64_Clang"
 
-PlatformARM = "MSVC ARM"
-PlatformARM64 = "MSVC ARM64"
+-- NEON
+PlatformARM 			= "MSVC ARM"
+PlatformARM64 			= "MSVC ARM64"
+PlatformAndroidARM 		= "Android ARM"
+PlatformAndroidARM64 	= "Android ARM64"
 
-Platform360 = "Xbox 360"
-
-PlatformAndroidARM = "Android ARM"
-PlatformAndroidARM64 = "Android ARM64"
+Platform360 			= "Xbox 360"
 
 UnitTestProject = "unit_tests"
 AndroidProject = "hlsl++_android"
@@ -80,7 +86,24 @@ workspace("hlsl++")
 		
 	else
 	
-		platforms { PlatformMSVC64, PlatformMSVC32, PlatformLLVM64, PlatformLLVM32, PlatformARM, PlatformARM64, PlatformAndroidARM, PlatformAndroidARM64, Platform360 }
+		platforms
+		{
+			PlatformMSVC64AVX,
+			PlatformMSVC64SSE41,
+			PlatformMSVC64SSE2,
+			PlatformMSVC32, 
+			
+			PlatformLLVM64AVX,
+			PlatformLLVM64SSE41,
+			PlatformLLVM64SSE2,
+			PlatformLLVM32, 
+			
+			PlatformARM, 
+			PlatformARM64, 
+			PlatformAndroidARM, 
+			PlatformAndroidARM64, 
+			Platform360
+		}
 	
 		local llvmToolset;
 		
@@ -92,19 +115,43 @@ workspace("hlsl++")
 		
 		startproject(UnitTestProject)
 		
-		filter { "platforms:"..PlatformMSVC64 }
+		filter { "platforms:"..PlatformMSVC64AVX }
 			toolset("msc")
 			architecture("x64")
 			vectorextensions("avx")
 		
+		filter { "platforms:"..PlatformMSVC64SSE41 }
+			toolset("msc")
+			architecture("x64")
+			vectorextensions("sse4.1")
+			defines { "__SSE4_1__" }
+			
+		filter { "platforms:"..PlatformMSVC64SSE2 }
+			toolset("msc")
+			architecture("x64")
+			vectorextensions("sse2")
+		
 		filter { "platforms:"..PlatformMSVC32 }
 			toolset("msc")
-			vectorextensions("avx")
+			vectorextensions("sse2")
 			
-		filter { "platforms:"..PlatformLLVM64 }
+		filter { "platforms:"..PlatformLLVM64AVX }
 			toolset(llvmToolset)
 			architecture("x64")
+			vectorextensions("avx")
+			buildoptions { "-Wno-unused-variable -mavx" }
+			
+		filter { "platforms:"..PlatformLLVM64SSE41 }
+			toolset(llvmToolset)
+			architecture("x64")
+			vectorextensions("sse4.1")
+			defines { "__SSE4_1__" }
 			buildoptions { "-Wno-unused-variable -msse4.1" }
+			
+		filter { "platforms:"..PlatformLLVM64SSE2 }
+			toolset(llvmToolset)
+			architecture("x64")
+			vectorextensions("sse2")
 			
 		filter { "platforms:"..PlatformLLVM32 }
 			toolset(llvmToolset)

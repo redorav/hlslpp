@@ -25,14 +25,22 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       vsversion: 2015
       platform: MSVC 64
-      configuration: Release
+      configuration: Release      
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       vsversion: 2017
       platform: MSVC 32
       configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       vsversion: 2017
-      platform: MSVC 64
+      platform: MSVC 64 SSE 2
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      vsversion: 2017
+      platform: MSVC 64 SSE 4.1
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      vsversion: 2017
+      platform: MSVC 64 AVX
       configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       vsversion: 2017
@@ -40,7 +48,15 @@ environment:
       configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       vsversion: 2017
-      platform: LLVM 64
+      platform: LLVM 64 SSE 2
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      vsversion: 2017
+      platform: LLVM 64 SSE 4.1
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      vsversion: 2017
+      platform: LLVM 64 AVX
       configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       vsversion: 2017
