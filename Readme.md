@@ -3,7 +3,7 @@
 
 # HLSL++
 
-Small header-only math library for C++ with the same syntax as the hlsl shading language. It supports any SSE4.1 (x86/x64, PS4, Xbox One) and NEON (ARM, ARM64, Switch) platforms. It features swizzling and all the operators and functions from the [hlsl documentation](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reference). The library is aimed mainly at game developers as it's meant to ease the C++ to shader bridge by providing common syntax, but can be used for any application requiring portable math. It also adds some functionality that hlsl doesn't natively provide, such as convenient matrix rotation functions and quaternions.
+Small header-only math library for C++ with the same syntax as the hlsl shading language. It supports any SSE (x86/x64, PS4, Xbox One) and NEON (ARM, ARM64, Switch) platforms. It features swizzling and all the operators and functions from the [hlsl documentation](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reference). The library is aimed mainly at game developers as it's meant to ease the C++ to shader bridge by providing common syntax, but can be used for any application requiring fast, portable math. It also adds some functionality that hlsl doesn't natively provide, such as convenient matrix functions, quaternions and extended vectors such as float8 (8-component float) that take advantage of wide SSE registers.
 
 ## Example
 
@@ -23,6 +23,11 @@ float4 myTransformedVector = mul(fooMatrix4x4, baz4);
 int2 ifoo2 = int2(1, 2);
 int4 ifoo4 = int4(1, 2, 3, 4) + ifoo2.xyxy;
 float4 fooCast4 = ifoo4.wwyx;
+
+float8 foo8 = float8(1, 2, 3, 4, 5, 6, 7, 8);
+float8 bar8 = float8(1, 2, 3, 4, 5, 6, 7, 8);
+float8 add8 = foo8 + bar8;
+
 ```
 
 The natvis files provided for Visual Studio debugging allow you to see both vectors and the result of the swizzling in the debugging window in a programmer-friendly way.
@@ -33,9 +38,7 @@ The natvis files provided for Visual Studio debugging allow you to see both vect
 
 ## Requirements
 
-The only required features are a C++ compiler supporting anonymous unions, and SSE4.1 or NEON depending on your target platform. As a curiosity it also includes an Xbox 360 implementation.
-
-* Specific SSE4.1 intrinsics such as _mm_blend_ps and _mm_round_ps make the code faster and easier to develop. Since it's aimed at game developers and most modern consoles and computers support it there are no SSE2 implementations of these functions. In some cases SSE2 versions of functions, such as the dot product, can be faster than the SSE4 equivalent (_mm_dp_ps)
+The only required features are a C++ compiler supporting anonymous unions, and SSE or NEON depending on your target platform. If your target platform does not have SIMD support, it can also fall back to a scalar implementation. As a curiosity it also includes an Xbox 360 implementation.
 
 ## How to use
 
@@ -43,7 +46,7 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 #include "hlsl++.h"
 ```
 
-Remember to also add an include path to the directory where it lives. hlsl++.h pulls in other headers that live in the same folder. To force scalar version of the library, define HLSLPP_SCALAR.
+Remember to also add an include path to "hlslpp/include". hlsl++.h pulls in other headers that live in the same folder. To force the scalar version of the library, define HLSLPP_SCALAR.
 
 ## Features
 
