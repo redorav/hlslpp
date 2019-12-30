@@ -372,15 +372,15 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 
 #if defined(__FMA__)
 
-#define _hlslpp256_madd_ps(x, y, z)					_mm256_fmadd_ps((x), (y), (z))
-#define _hlslpp256_msub_ps(x, y, z)					_mm256_fmsub_ps((x), (y), (z))
-#define _hlslpp256_subm_ps(x, y, z)					_mm256_fnmadd_ps((x), (y), (z))
+#define _hlslpp256_madd_ps(x, y, z)					_mm256_fmadd_ps((x), (y), (z)) // x * y + z
+#define _hlslpp256_msub_ps(x, y, z)					_mm256_fmsub_ps((x), (y), (z)) // x * y - z
+#define _hlslpp256_subm_ps(x, y, z)					_mm256_fnmadd_ps((y), (z), (x)) // x - y * z
 
 #else
 
-#define _hlslpp256_madd_ps(x, y, z)					_mm256_add_ps(_mm256_mul_ps((x), (y)), (z))
-#define _hlslpp256_msub_ps(x, y, z)					_mm256_sub_ps(_mm256_mul_ps((x), (y)), (z))
-#define _hlslpp256_subm_ps(x, y, z)					_mm256_sub_ps((x), _mm256_mul_ps((y), (z)))
+#define _hlslpp256_madd_ps(x, y, z)					_mm256_add_ps(_mm256_mul_ps((x), (y)), (z)) // x * y + z
+#define _hlslpp256_msub_ps(x, y, z)					_mm256_sub_ps(_mm256_mul_ps((x), (y)), (z)) // x * y - z
+#define _hlslpp256_subm_ps(x, y, z)					_mm256_sub_ps((x), _mm256_mul_ps((y), (z))) // x - y * z
 
 #endif
 
@@ -423,9 +423,8 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 
 #define _hlslpp256_movehdup_ps(x)					_mm256_movehdup_ps((x))
 
-
 template<int X, int Y, int Z, int W, int A, int B, int C, int D>
-hlslpp_inline n256 permute(n256 x)
+hlslpp_inline n256 permute_float(n256 x)
 {
 	// We need to statically assert for now until the permutes can cover more cases
 	static_assert
@@ -451,19 +450,19 @@ hlslpp_inline n256 permute(n256 x)
 }
 
 template<>
-hlslpp_inline n256 permute<0, 0, 0, 0, 0, 0, 0, 0>(n256 x)
+hlslpp_inline n256 permute_float<0, 0, 0, 0, 0, 0, 0, 0>(n256 x)
 {
 	n256 t = _mm256_permute2f128_ps(x, x, 0);
 	return _mm256_permute_ps(t, HLSLPP_SHUFFLE_MASK(0, 0, 0, 0));
 }
 
 template<>
-hlslpp_inline n256 permute<0, 1, 2, 3, 4, 5, 6, 7>(n256 x)
+hlslpp_inline n256 permute_float<0, 1, 2, 3, 4, 5, 6, 7>(n256 x)
 {
 	return x;
 }
 
-#define _hlslpp256_perm_ps(x, m0, m1, m2, m3, m4, m5, m6, m7)	permute<m0, m1, m2, m3, m4, m5, m6, m7>(x)
+#define _hlslpp256_perm_ps(x, X, Y, Z, W, A, B, C, D)	permute_float<X, Y, Z, W, A, B, C, D>(x)
 //#define _hlslpp256_shuffle_ps(x, y, mask)			_mm256_shuffle_ps((x), (y), (mask))
 
 #define _hlslpp256_unpacklo_ps(x, y)				_mm256_unpacklo_ps(x, y)
@@ -872,15 +871,15 @@ hlslpp_inline n256i _hlslpp256_or_si128(n256i x, n256i y)
 
 #if defined(__FMA__)
 
-#define _hlslpp_madd_pd(x, y, z)				_mm_fmadd_pd((x), (y), (z))
-#define _hlslpp_msub_pd(x, y, z)				_mm_fmsub_pd((x), (y), (z))
-#define _hlslpp_subm_pd(x, y, z)				_mm_fnmadd_pd((x), (y), (z)))
+#define _hlslpp_madd_pd(x, y, z)				_mm_fmadd_pd((x), (y), (z)) // x * y + z
+#define _hlslpp_msub_pd(x, y, z)				_mm_fmsub_pd((x), (y), (z)) // x * y - z
+#define _hlslpp_subm_pd(x, y, z)				_mm_fnmadd_pd((y), (z), (x))) // x - y * z
 
 #else
 
-#define _hlslpp_madd_pd(x, y, z)				_mm_add_pd(_mm_mul_pd((x), (y)), (z))
-#define _hlslpp_msub_pd(x, y, z)				_mm_sub_pd(_mm_mul_pd((x), (y)), (z))
-#define _hlslpp_subm_pd(x, y, z)				_mm_sub_pd((x), _mm_mul_pd((y), (z)))
+#define _hlslpp_madd_pd(x, y, z)				_mm_add_pd(_mm_mul_pd((x), (y)), (z)) // x * y + z
+#define _hlslpp_msub_pd(x, y, z)				_mm_sub_pd(_mm_mul_pd((x), (y)), (z)) // x * y - z
+#define _hlslpp_subm_pd(x, y, z)				_mm_sub_pd((x), _mm_mul_pd((y), (z))) // x - y * z
 
 #endif
 
@@ -901,7 +900,6 @@ hlslpp_inline n256i _hlslpp256_or_si128(n256i x, n256i y)
 
 #define _hlslpp_max_pd(x, y)					_mm_max_pd((x), (y))
 #define _hlslpp_min_pd(x, y)					_mm_min_pd((x), (y))
-
 
 #if defined(__SSE4_1__)
 
@@ -1096,3 +1094,181 @@ hlslpp_inline void _hlslpp_load4_pd(double* p, n128d& x0, n128d& x1)
 	x0 = _mm_load_pd(p);
 	x1 = _mm_load_pd(p + 2);
 }
+
+//-----------
+// Double 256
+//-----------
+
+#if defined(__AVX__)
+
+#define _hlslpp256_set1_pd(x)					_mm256_set1_pd((x))
+#define _hlslpp256_set_pd(x, y, z, w)			_mm256_set_pd((w), (z), (y), (x))
+#define _hlslpp256_setzero_pd()					_mm256_setzero_pd()
+#define _hlslpp256_set128_pd(lo, hi)			_mm256_set_m128d(hi, lo)
+
+#define _hlslpp256_add_pd(x, y)					_mm256_add_pd((x), (y))
+#define _hlslpp256_sub_pd(x, y)					_mm256_sub_pd((x), (y))
+#define _hlslpp256_mul_pd(x, y)					_mm256_mul_pd((x), (y))
+#define _hlslpp256_div_pd(x, y)					_mm256_div_pd((x), (y))
+
+#define _hlslpp256_rcp_pd(x)					_mm256_div_pd(d4_1, (x))
+
+#define _hlslpp256_neg_pd(x)					_mm256_xor_pd((x), d4negativeMask)
+
+#if defined(__FMA__)
+
+#define _hlslpp256_madd_pd(x, y, z)				_mm256_fmadd_pd((x), (y), (z)) // x * y + z
+#define _hlslpp256_msub_pd(x, y, z)				_mm256_fmsub_pd((x), (y), (z)) // x * y - z
+#define _hlslpp256_subm_pd(x, y, z)				_mm256_fnmadd_pd((y), (z), (x))) // x - y * z
+
+#else
+
+#define _hlslpp256_madd_pd(x, y, z)				_mm256_add_pd(_mm256_mul_pd((x), (y)), (z)) // x * y + z
+#define _hlslpp256_msub_pd(x, y, z)				_mm256_sub_pd(_mm256_mul_pd((x), (y)), (z)) // x * y - z
+#define _hlslpp256_subm_pd(x, y, z)				_mm256_sub_pd((x), _mm256_mul_pd((y), (z))) // x - y * z
+
+#endif
+
+// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
+#define _hlslpp256_abs_pd(x)					_mm256_and_pd(d4absMask, (x))
+
+#define _hlslpp256_sqrt_pd(x)					_mm256_sqrt_pd((x))
+#define _hlslpp256_rsqrt_pd(x)					_mm256_div_pd(d4_1, _mm256_sqrt_pd((x)))
+
+#define _hlslpp256_cmpeq_pd(x, y)				_mm256_cmp_pd((x), (y), _CMP_EQ_OQ)
+#define _hlslpp256_cmpneq_pd(x, y)				_mm256_cmp_pd((x), (y), _CMP_NEQ_OQ)
+
+#define _hlslpp256_cmpgt_pd(x, y)				_mm256_cmp_pd((x), (y), _CMP_GT_OQ)
+#define _hlslpp256_cmpge_pd(x, y)				_mm256_cmp_pd((x), (y), _CMP_GE_OQ)
+
+#define _hlslpp256_cmplt_pd(x, y)				_mm256_cmp_pd((x), (y), _CMP_LT_OQ)
+#define _hlslpp256_cmple_pd(x, y)				_mm256_cmp_pd((x), (y), _CMP_LE_OQ)
+
+#define _hlslpp256_max_pd(x, y)					_mm256_max_pd((x), (y))
+#define _hlslpp256_min_pd(x, y)					_mm256_min_pd((x), (y))
+
+#define _hlslpp256_low_pd(x)					_mm256_castpd256_pd128((x))
+#define _hlslpp256_high_pd(x)					_mm256_extractf128_pd((x), 1)
+
+// Bit-select val1 and val2 based on the contents of the mask
+#define _hlslpp256_sel_pd(x, y, mask)			_mm256_blendv_pd((x), (y), (mask))
+
+#define _hlslpp256_blend_pd(x, y, mask)			_mm256_blend_pd((x), (y), (mask))
+
+#define _hlslpp256_trunc_pd(x)					_mm256_round_pd((x), _MM_FROUND_TRUNC)
+#define _hlslpp256_floor_pd(x)					_mm256_floor_pd((x))
+#define _hlslpp256_ceil_pd(x)					_mm256_ceil_pd((x))
+
+// _MM_FROUND_TO_NEAREST_INT to match fxc behavior
+#define _hlslpp256_round_pd(x)					_mm256_round_pd((x), _MM_FROUND_TO_NEAREST_INT)
+
+#define _hlslpp256_frac_pd(x)					_mm256_sub_pd((x), _hlslpp256_floor_pd(x))
+
+#define _hlslpp256_clamp_pd(x, minx, maxx)		_mm256_max_pd(_mm256_min_pd((x), (maxx)), (minx))
+#define _hlslpp256_sat_pd(x)					_mm256_max_pd(_mm256_min_pd((x), d4_1), _mm256_setzero_pd())
+
+#define _hlslpp256_and_pd(x, y)					_mm256_and_pd((x), (y))
+#define _hlslpp256_andnot_pd(x, y)				_mm256_andnot_pd((x), (y))
+#define _hlslpp256_not_pd(x)					_mm256_andnot_pd((x), d4_fff)
+#define _hlslpp256_or_pd(x, y)					_mm256_or_pd((x), (y))
+#define _hlslpp256_xor_pd(x, y)					_mm256_xor_pd((x), (y))
+
+// Uses constant indices to decide the most efficient implementation. Unfortunately for non-AVX2 code,
+// it's the best we can do with the tools provided. It means some shuffles are more expensive than others.
+template<int X, int Y, int Z, int W>
+hlslpp_inline n256d permute_double(n256d x)
+{	
+	// Covers cases like XYZZ, XXZW, YXWZ, etc
+	HLSLPP_CONSTEXPR_IF(X < 2 && Y < 2 && Z >= 2 && W >= 2)
+	{
+		return _mm256_permute_pd(x, (X == 0 ? 0 : 1) | ((Y == 0 ? 0 : 1) << 1) | ((Z == 2 ? 0 : 1) << 2) | ((W == 2 ? 0 : 1) << 3));
+	}
+#if defined(__AVX2__)
+	else
+	{
+		// This one is faster in all cases except for the simple permute that doesn't do cross-lane
+		return _mm256_permute4x64_pd((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W));
+	}
+#else
+
+	// Covers cases like ZWYY, WZXY, WWYX
+	else HLSLPP_CONSTEXPR_IF(X >= 2 && Y >= 2 && Z < 2 && W < 2)
+	{
+		n256d swap = _mm256_permute2f128_pd(x, x, 0x3); // Reverse components 0b00110000
+		return _mm256_permute_pd(swap, (X == 2 ? 0 : 1) | ((Y == 2 ? 0 : 1) << 1) | ((Z == 0 ? 0 : 1) << 2) | ((W == 0 ? 0 : 1) << 3));
+	}
+	// Covers XXXX, YYYY, ZZZZ, WWWW
+	else HLSLPP_CONSTEXPR_IF(X == Y && X == Z && X == W)
+	{
+		n256d shuf = _mm256_permute2f128_pd(x, x, (X == 0 || X == 1) ? 0x0 : 0x11); // Select the same component for both
+		return _mm256_permute_pd(shuf, ((X % 2) << 3) | ((X % 2) << 2) | ((X % 2) << 1) | (X % 2));
+	}
+	// Covers the generic case, but is more inefficient
+	else
+	{
+		n256d shuf0 = _mm256_permute2f128_pd(x, x, (X >= 2 ? 0x01 : 0x0) | (Z >= 2 ? 0x10 : 0x0));
+		n256d splat0 = _mm256_permute_pd(shuf0, ((Z % 2) << 3) | ((Z % 2) << 2) | ((X % 2) << 1) | (X % 2));
+
+		n256d shuf1 = _mm256_permute2f128_pd(x, x, (Y >= 2 ? 0x01 : 0x0) | (W >= 2 ? 0x10 : 0x0));
+		n256d splat1 = _mm256_permute_pd(shuf1, ((W % 2) << 3) | ((W % 2) << 2) | ((Y % 2) << 1) | (Y % 2));
+
+		return _mm256_blend_pd(splat0, splat1, HLSLPP_BLEND_MASK(1, 0, 1, 0));
+	}
+
+#endif
+}
+
+template<>
+hlslpp_inline n256d permute_double<0, 1, 2, 3>(n256d x)
+{
+	return x;
+}
+
+#define _hlslpp256_perm_pd(x, X, Y, Z, W)	permute_double<X, Y, Z, W>(x)
+//#define _hlslpp256_shuffle_pd(x, y, mask)		_mm256_shuffle_pd((x), (y), (mask))
+
+hlslpp_inline bool _hlslpp256_any3_pd(n256d x)
+{
+	return ((_mm256_movemask_pd(_hlslpp256_cmpeq_pd(x, _mm256_setzero_pd())) & 0x7) != 0x7);
+}
+
+hlslpp_inline bool _hlslpp256_any4_pd(n256d x)
+{
+	return (_mm256_movemask_pd(_hlslpp256_cmpeq_pd(x, _mm256_setzero_pd())) != 0xf);
+}
+
+hlslpp_inline bool _hlslpp256_all3_pd(n256d x)
+{
+	return ((_mm256_movemask_pd(_hlslpp256_cmpeq_pd(x, _mm256_setzero_pd())) & 0x7) == 0);
+}
+
+hlslpp_inline bool _hlslpp256_all4_pd(n256d x)
+{
+	return (_mm256_movemask_pd(_hlslpp256_cmpeq_pd(x, _mm256_setzero_pd())) == 0);
+}
+
+hlslpp_inline void _hlslpp256_store3_pd(double* p, n256d x)
+{
+	double temp[4];
+	_mm256_storeu_pd(temp, x);
+	p[0] = temp[0];
+	p[1] = temp[1];
+	p[2] = temp[2];
+}
+
+hlslpp_inline void _hlslpp256_store4_pd(double* p, n256d x)
+{
+	_mm256_storeu_pd(p, x);
+}
+
+hlslpp_inline void _hlslpp256_load3_pd(double* p, n256d& x)
+{
+	x = _mm256_load_pd(p);
+}
+
+hlslpp_inline void _hlslpp256_load4_pd(double* p, n256d& x)
+{
+	x = _mm256_loadu_pd(p);
+}
+
+#endif

@@ -386,6 +386,21 @@ void RunUnitTestsVectorDouble()
 	double3 dvfmod3 = fmod(dvfoo3, dvbar3);
 	double4 dvfmod4 = fmod(dvfoo4, dvbar4);
 
+	double1 dvdot2 = dot(dvfoo2, dvbar2);
+	double1 dvdot2_a = dot(dvfoo2, dvbar2.yx);
+	double1 dvdot2_b = dot(dvfoo2.rg, dvbar2);
+	double1 dvdot2_c = dot(dvfoo2.gr, dvbar2.yx); 
+
+	double1 dvdot3 = dot(dvfoo3, dvbar3);
+	double1 dvdot3_a = dot(dvfoo3, dvbar3.bgr);
+	double1 dvdot3_b = dot(dvfoo3.rrg, dvbar3);
+	double1 dvdot3_c = dot(dvfoo3.rrg, dvbar3);
+
+	double1 dvdot4 = dot(dvfoo4, dvbar4);
+	double1 dvdot4_a = dot(dvfoo4, dvbar4.bgra);
+	double1 dvdot4_b = dot(dvfoo4.rrgb, dvbar4);
+	double1 dvdot4_c = dot(dvfoo4.rrgg, dvbar4);
+
 	double1 dvsqrt1 = sqrt(dvfoo1);
 	double2 dvsqrt2 = sqrt(dvfoo2);
 	double3 dvsqrt3 = sqrt(dvfoo3);
