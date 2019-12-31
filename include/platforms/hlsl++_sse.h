@@ -1249,11 +1249,8 @@ hlslpp_inline bool _hlslpp256_all4_pd(n256d x)
 
 hlslpp_inline void _hlslpp256_store3_pd(double* p, n256d x)
 {
-	double temp[4];
-	_mm256_storeu_pd(temp, x);
-	p[0] = temp[0];
-	p[1] = temp[1];
-	p[2] = temp[2];
+	_mm_storeu_pd(p, _hlslpp256_low_pd(x)); // Store bottom two
+	_mm_store_sd(p + 2, _hlslpp256_high_pd(x));
 }
 
 hlslpp_inline void _hlslpp256_store4_pd(double* p, n256d x)
@@ -1263,7 +1260,7 @@ hlslpp_inline void _hlslpp256_store4_pd(double* p, n256d x)
 
 hlslpp_inline void _hlslpp256_load3_pd(double* p, n256d& x)
 {
-	x = _mm256_load_pd(p);
+	x = _mm256_loadu_pd(p);
 }
 
 hlslpp_inline void _hlslpp256_load4_pd(double* p, n256d& x)
