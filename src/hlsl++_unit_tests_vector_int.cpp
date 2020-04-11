@@ -363,17 +363,22 @@ void RunUnitTestsVectorInt()
 
 	// Initialization
 
-	float1 vfoo1 = float1(f1);												eq(vfoo1, f1);
-	float2 vfoo2 = float2(f2, f3);											eq(vfoo2, f2, f3);
-	float3 vfoo3 = float3(f4, f5, f6);										eq(vfoo3, f4, f5, f6);
-	float4 vfoo4 = float4(f7, f8, f9, f10);									eq(vfoo4, f7, f8, f9, f10);
+	float1 vfoo1 = float1(f1);					eq(vfoo1, f1);
+	float2 vfoo2 = float2(f2, f3);				eq(vfoo2, f2, f3);
+	float3 vfoo3 = float3(f4, f5, f6);			eq(vfoo3, f4, f5, f6);
+	float4 vfoo4 = float4(f7, f8, f9, f10);		eq(vfoo4, f7, f8, f9, f10);
 
-	vfoo1 = float1(i1);														eq(vfoo1, (float)i1);
-	vfoo2 = float2(i2, i3);													eq(vfoo2, (float)i2, (float)i3);
-	vfoo3 = float3(i4, i5, i6);												eq(vfoo3, (float)i4, (float)i5, (float)i6);
-	vfoo4 = float4(i7, i8, i9, i10);										eq(vfoo4, (float)i7, (float)i8, (float)i9, (float)i10);
+	vfoo1 = float1(i1);							eq(vfoo1, (float)i1);
+	vfoo2 = float2(i2, i3);						eq(vfoo2, (float)i2, (float)i3);
+	vfoo3 = float3(i4, i5, i6);					eq(vfoo3, (float)i4, (float)i5, (float)i6);
+	vfoo4 = float4(i7, i8, i9, i10);			eq(vfoo4, (float)i7, (float)i8, (float)i9, (float)i10);
 
-	vfoo2 = float2(i2, f3);													eq(vfoo2, (float)i2, (float)f3);
-	vfoo3 = float3(f4, i5, i6);												eq(vfoo3, (float)f4, (float)i5, (float)i6);
-	vfoo4 = float4(i7, i8, f9, f10);										eq(vfoo4, (float)i7, (float)i8, (float)f9, (float)f10);
+	vfoo2 = float2(i2, f3);						eq(vfoo2, (float)i2, (float)f3);
+	vfoo3 = float3(f4, i5, i6);					eq(vfoo3, (float)f4, (float)i5, (float)i6);
+	vfoo4 = float4(i7, i8, f9, f10);			eq(vfoo4, (float)i7, (float)i8, (float)f9, (float)f10);
+
+	vfoo1 = float1(ivfoo1);						eq(vfoo1, (float)ivfoo1.x);
+	vfoo2 = float2(ivfoo2);						eq(vfoo2, (float)ivfoo2.x, (float)ivfoo2.y);
+	vfoo3 = float3(ivfoo3);						eq(vfoo3, (float)ivfoo3.x, (float)ivfoo3.y, (float)ivfoo3.z);
+	vfoo4 = float4(ivfoo4);						eq(vfoo4, (float)ivfoo4.x, (float)ivfoo4.y, (float)ivfoo4.z, (float)ivfoo4.w);
 }
