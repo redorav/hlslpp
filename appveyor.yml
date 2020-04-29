@@ -62,6 +62,10 @@ environment:
       vsversion: 2017
       platform: MSVC ARM
       configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      vsversion: 2017
+      platform: MSVC 64 Scalar
+      configuration: Release
 
 install:
   - cmd: if %vsversion%==2015
