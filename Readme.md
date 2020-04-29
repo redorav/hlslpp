@@ -53,6 +53,7 @@ Remember to also add an include path to "hlslpp/include". hlsl++.h pulls in othe
 * SSE/AVX/AVX2, NEON, Xbox360, and scalar versions
 * float1, float2, float3, float4, float8
 * int1, int2, int3, int4
+* uint1, uint2, uint3, uint4
 * double1, double2, double3, double4
 * floatNxM
 * quaternion
