@@ -91,6 +91,14 @@
 
 #endif
 
+#include <cstdint>
+
+#include <cstdio>
+
+#include <type_traits>
+
+#include "hlsl++_bitmask.h"
+
 // Despite the process above, we can still force the library to behave as scalar by defining the
 // implementation we want.
 
@@ -111,10 +119,6 @@
 	#include "platforms/hlsl++_360.h"
 
 #endif
-
-#include <cstdint>
-
-#include <type_traits>
 
 #include "hlsl++_common.h"
 
