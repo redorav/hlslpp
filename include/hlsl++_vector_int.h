@@ -290,7 +290,7 @@ namespace hlslpp
 		explicit hlslpp_inline int1(n128i vec) : vec(vec) {}
 
 		template<typename T>
-		hlslpp_inline int1(T i, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_epi32(int(i), 0, 0, 0)) {}
+		hlslpp_inline int1(T i, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_epi32((int)i, 0, 0, 0)) {}
 
 		template<int X> hlslpp_inline int1(const iswizzle1<X>& s) : vec(s.template swizzle<X, 0>()) {}
 
@@ -317,7 +317,7 @@ namespace hlslpp
 		hlslpp_inline int2(int32_t i) : vec(_hlslpp_set_epi32(i, i, 0, 0)) {}
 
 		template<typename T1, typename T2>
-		hlslpp_inline int2(T1 i1, T2 i2, hlslpp_enable_if_number_2(T1, T2)) : vec(_hlslpp_set_epi32(int(i1), int(i2), 0, 0)) {}
+		hlslpp_inline int2(T1 i1, T2 i2, hlslpp_enable_if_number_2(T1, T2)) : vec(_hlslpp_set_epi32((int)i1, (int)i2, 0, 0)) {}
 
 		hlslpp_inline int2(const int1& i1, const int1& i2) { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
 		
@@ -345,7 +345,7 @@ namespace hlslpp
 		hlslpp_inline int3(int32_t i) : vec(_hlslpp_set_epi32(i, i, i, 0)) {}
 
 		template<typename T1, typename T2, typename T3>
-		hlslpp_inline int3(T1 i1, T2 i2, T3 i3, hlslpp_enable_if_number_3(T1, T2, T3)) : vec(_hlslpp_set_epi32(int(i1), int(i2), int(i3), 0)) {}
+		hlslpp_inline int3(T1 i1, T2 i2, T3 i3, hlslpp_enable_if_number_3(T1, T2, T3)) : vec(_hlslpp_set_epi32((int)i1, (int)i2, (int)i3, 0)) {}
 
 		hlslpp_inline int3(const int1& i1, const int1& i2, const int1& i3) { vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epi32(i1.vec, i3.vec), _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 
@@ -376,7 +376,7 @@ namespace hlslpp
 		hlslpp_inline int4(int32_t i) : vec(_hlslpp_set1_epi32(i)) {}
 
 		template<typename T1, typename T2, typename T3, typename T4>
-		hlslpp_inline int4(T1 i1, T2 i2, T3 i3, T4 i4, hlslpp_enable_if_number_4(T1, T2, T3, T4)) : vec(_hlslpp_set_epi32(int(i1), int(i2), int(i3), int(i4))) {}
+		hlslpp_inline int4(T1 i1, T2 i2, T3 i3, T4 i4, hlslpp_enable_if_number_4(T1, T2, T3, T4)) : vec(_hlslpp_set_epi32((int)i1, (int)i2, (int)i3, (int)i4)) {}
 
 		hlslpp_inline int4(const int1& i1, const int1& i2, const int1& i3, const int1& i4) { vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epi32(i1.vec, i3.vec), _hlslpp_shuf_xxxx_epi32(i2.vec, i4.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 		

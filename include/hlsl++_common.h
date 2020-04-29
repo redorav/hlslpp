@@ -69,6 +69,10 @@ namespace hlslpp
 	const n128i i4negativeMask = _hlslpp_set1_epi32(negMask.i);
 	const n128i i4absMask      = _hlslpp_set1_epi32(absMask.i);
 	const n128i i4fffMask      = _hlslpp_set1_epi32(fffMask.i);
+	const n128i i4negMask      = _hlslpp_set1_epi32(negMask.i);
+
+	const n128u u4_0           = _hlslpp_set1_epu32(0);
+	const n128u u4_1           = _hlslpp_set1_epu32(1);
 
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
@@ -308,6 +312,11 @@ namespace hlslpp
 	struct int2;
 	struct int3;
 	struct int4;
+
+	struct uint1;
+	struct uint2;
+	struct uint3;
+	struct uint4;
 
 	struct float1x1;
 

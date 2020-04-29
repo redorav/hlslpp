@@ -126,6 +126,8 @@
 
 #include "hlsl++_vector_int.h"
 
+#include "hlsl++_vector_uint.h"
+
 #include "hlsl++_vector_double.h"
 
 #include "hlsl++_quaternion.h"

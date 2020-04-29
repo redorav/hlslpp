@@ -8,6 +8,14 @@ namespace hlslpp
 
 	float4::float4(const int4& i) : vec(_hlslpp_cvtepi32_ps(i.vec)) {}
 
+	float1::float1(const uint1& i) : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
+
+	float2::float2(const uint2& i) : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
+
+	float3::float3(const uint3& i) : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
+
+	float4::float4(const uint4& i) : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
+
 	hlslpp_inline float3x3::float3x3(const quaternion& q)
 	{
 		_hlslpp_quat_to_3x3_ps(q.vec, vec0, vec1, vec2);

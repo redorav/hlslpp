@@ -123,6 +123,7 @@
 
 typedef float32x4_t n128;
 typedef int32x4_t n128i;
+typedef uint32x4_t n128u;
 
 #if defined(HLSLPP_ARM64)
 
@@ -281,6 +282,11 @@ hlslpp_inline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
 hlslpp_inline int32x4_t vdivq_s32(int32x4_t x, int32x4_t y)
 {
 	return (int32x4_t)vdivq_f32((float32x4_t)x, (float32x4_t)y);
+}
+
+hlslpp_inline uint32x4_t vdivq_u32(uint32x4_t x, uint32x4_t y)
+{
+	return (uint32x4_t)vdivq_f32((float32x4_t)x, (float32x4_t)y);
 }
 
 hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
@@ -548,14 +554,14 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 
 #define _hlslpp_abs_epi32(x)					vabsq_s32((x))
 
-#define _hlslpp_cmpeq_epi32(x, y)				vceqq_u32((x), (y))
-#define _hlslpp_cmpneq_epi32(x, y)				veorq_u32(vceqq_u32((x), (y)), vmovq_n_u32(0xffffffffu))
+#define _hlslpp_cmpeq_epi32(x, y)				vceqq_s32((x), (y))
+#define _hlslpp_cmpneq_epi32(x, y)				veorq_s32(vceqq_s32((x), (y)), vmovq_n_u32(0xffffffffu))
 
-#define _hlslpp_cmpgt_epi32(x, y)				vcgtq_u32((x), (y))
-#define _hlslpp_cmpge_epi32(x, y)				vcgeq_u32((x), (y))
+#define _hlslpp_cmpgt_epi32(x, y)				vcgtq_s32((x), (y))
+#define _hlslpp_cmpge_epi32(x, y)				vcgeq_s32((x), (y))
 
-#define _hlslpp_cmplt_epi32(x, y)				vcltq_u32((x), (y))
-#define _hlslpp_cmple_epi32(x, y)				vcleq_u32((x), (y))
+#define _hlslpp_cmplt_epi32(x, y)				vcltq_s32((x), (y))
+#define _hlslpp_cmple_epi32(x, y)				vcleq_s32((x), (y))
 
 #define _hlslpp_max_epi32(x, y)					vmaxq_s32((x), (y))
 #define _hlslpp_min_epi32(x, y)					vminq_s32((x), (y))
@@ -565,7 +571,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 
 #define _hlslpp_and_si128(x, y)					vandq_s32((x), (y))
 #define _hlslpp_andnot_si128(x, y)				vandq_s32((y), (x))
-#define _hlslpp_not_si128(x)					vmvnq_u32((x))
+#define _hlslpp_not_si128(x)					vmvnq_s32((x))
 #define _hlslpp_or_si128(x, y)					vorrq_s32((x), (y))
 #define _hlslpp_xor_si128(x, y)					veorq_s32((x), (y))
 
@@ -586,6 +592,48 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 // From the documentation of vshlq_s32: Vector shift left: Vr[i] := Va[i] << Vb[i] (negative values shift right)
 #define _hlslpp_sllv_epi32(x, y)				vshlq_s32((x), (y))
 #define _hlslpp_srlv_epi32(x, y)				vshlq_s32((x), _hlslpp_neg_epi32(y))
+
+//-----------------
+// Unsigned Integer
+//-----------------
+
+#define _hlslpp_set1_epu32(x)					vmovq_n_u32((x))
+#define _hlslpp_set_epu32(x, y, z, w)			vmov4q_n_u32((x), (y), (z), (w))
+#define _hlslpp_setzero_epu32()					vmovq_n_u32(0)
+
+#define _hlslpp_add_epu32(x, y)					vaddq_u32((x), (y))
+#define _hlslpp_sub_epu32(x, y)					vsubq_u32((x), (y))
+#define _hlslpp_mul_epu32(x, y)					vmulq_u32((x), (y))
+#define _hlslpp_div_epu32(x, y)					vdivq_u32((x), (y))
+
+#define _hlslpp_madd_epu32(x, y, z)				vmlaq_u32((z), (x), (y))
+#define _hlslpp_msub_epu32(x, y, z)				_hlslpp_neg_epi32(vmlsq_u32((z), (x), (y))) // Negate because vmlsq_u32 does z - x * y and we want x * y - z
+#define _hlslpp_subm_epu32(x, y, z)				vmlsq_u32((z), (x), (y))
+
+#define _hlslpp_cmpeq_epu32(x, y)				vceqq_u32((x), (y))
+#define _hlslpp_cmpneq_epu32(x, y)				veorq_u32(vceqq_u32((x), (y)), vmovq_n_u32(0xffffffffu))
+
+#define _hlslpp_cmpgt_epu32(x, y)				vcgtq_u32((x), (y))
+#define _hlslpp_cmpge_epu32(x, y)				vcgeq_u32((x), (y))
+
+#define _hlslpp_cmplt_epu32(x, y)				vcltq_u32((x), (y))
+#define _hlslpp_cmple_epu32(x, y)				vcleq_u32((x), (y))
+
+#define _hlslpp_max_epu32(x, y)					vmaxq_u32((x), (y))
+#define _hlslpp_min_epu32(x, y)					vminq_u32((x), (y))
+
+#define _hlslpp_clamp_epu32(x, minx, maxx)		vmaxq_u32(vminq_u32((x), (maxx)), (minx))
+#define _hlslpp_sat_epu32(x)					vmaxq_u32(vminq_u32((x), i4_1), i4_0)
+
+#define _hlslpp_cvtps_epu32(x)					vcvtq_u32_f32((x))
+#define _hlslpp_cvtepu32_ps(x)					vcvtq_f32_u32((x))
+
+#define _hlslpp_slli_epu32(x, y)				vshlq_n_u32((x), (y))
+#define _hlslpp_srli_epu32(x, y)				vshrq_n_u32((x), (y))
+
+// From the documentation of vshlq_s32: Vector shift left: Vr[i] := Va[i] << Vb[i] (negative values shift right)
+#define _hlslpp_sllv_epu32(x, y)				vshlq_u32((x), (y))
+#define _hlslpp_srlv_epu32(x, y)				vshlq_u32((x), _hlslpp_neg_epi32(y))
 
 #if defined(HLSLPP_DOUBLE)
 

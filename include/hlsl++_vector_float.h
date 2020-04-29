@@ -723,6 +723,8 @@ namespace hlslpp
 
 		hlslpp_inline float1(const int1& i);
 
+		hlslpp_inline float1(const uint1& i);
+
 		hlslpp_inline operator float() const { return f32[0]; }
 
 		union
@@ -753,6 +755,8 @@ namespace hlslpp
 		template<int X, int Y> hlslpp_inline float2(const swizzle2<X, Y>& s) : vec(s.template swizzle<X, Y, 0, 1>()) {}
 
 		hlslpp_inline float2(const int2& i);
+
+		hlslpp_inline float2(const uint2& i);
 
 		union
 		{
@@ -787,6 +791,8 @@ namespace hlslpp
 		hlslpp_inline float3(const swizzle3<X, Y, Z>& s) : vec(s.template swizzle<X, Y, Z, 0, 1, 2>()) {}
 
 		hlslpp_inline float3(const int3& i);
+
+		hlslpp_inline float3(const uint3& i);
 
 		union
 		{
@@ -826,6 +832,8 @@ namespace hlslpp
 		hlslpp_inline float4(const swizzle4<X, Y, Z, W>& s) : vec(s.template swizzle<X, Y, Z, W, 0, 1, 2, 3>()) {}
 
 		hlslpp_inline float4(const int4& i);
+
+		hlslpp_inline float4(const uint4& i);
 
 		union
 		{

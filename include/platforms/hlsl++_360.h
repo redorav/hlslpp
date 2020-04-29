@@ -4,6 +4,7 @@
 
 typedef __vector4 n128;
 typedef __vector4 n128i; // Xbox 360 has a __vector4i type but it's not actually backed by hardware
+typedef __vector4 n128u;
 
 //----------
 // Functions
@@ -199,6 +200,49 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_sllv_epi32(x, y)				__vslw((x), (y))
 #define _hlslpp_srlv_epi32(x, y)				__vsrw((x), (y))
+
+//-----------------
+// Unsigned Integer
+//-----------------
+
+#define _hlslpp_set1_epu32(x)					__vcfpuxws(__vset1(float(x)), 0)
+#define _hlslpp_set_epu32(x, y, z, w)			__vcfpuxws(__vset(float(x), float(y), float(z), float(w)), 0)
+#define _hlslpp_setzero_epu32()					__vzero()
+
+#define _hlslpp_add_epu32(x, y)					__vadduws((x), (y))
+#define _hlslpp_sub_epu32(x, y)					__vsubuws((x), (y))
+
+#define _hlslpp_mul_epu32(x, y)					__vcfpuxws(__vmulfp(__vcuxwfp((x), 0), __vcuxwfp((y), 0)), 0)
+
+#define _hlslpp_div_epu32(x, y)					__vcfpuxws(__vmulfp(__vcuxwfp((x), 0), __vrcp(__vcuxwfp((y), 0))), 0)
+
+#define _hlslpp_madd_epu32(x, y, z)				__vcfpuxws(__vmaddfp(__vcuxwfp((x), 0), __vcuxwfp((y), 0), __vcuxwfp((z), 0)), 0)
+#define _hlslpp_msub_epu32(x, y, z)				__vcfpuxws(_hlslpp_neg_ps(__vnmsubfp(__vcuxwfp((z), 0), __vcuxwfp((x), 0), __vcuxwfp((y), 0))))
+#define _hlslpp_subm_epu32(x, y, z)				__vcfpuxws(__vnmsubfp(__vcuxwfp((z), 0), __vcuxwfp((x), 0), __vcuxwfp((y), 0)))
+
+#define _hlslpp_cmpeq_epu32(x, y)				__vcmpequw((x), (y))
+#define _hlslpp_cmpneq_epu32(x, y)				__vxor(__vcmpequw((x), (y)), __vset1(fffMask.f))
+
+#define _hlslpp_cmpgt_epu32(x, y)				__vcmpgtuw((x), (y))
+#define _hlslpp_cmpge_epu32(x, y)				__vor(__vcmpgtuw((x), (y)), __vcmpequw((x), (y)))
+
+#define _hlslpp_cmplt_epu32(x, y)				__vcmpgtuw((y), (x))
+#define _hlslpp_cmple_epu32(x, y)				__vor(__vcmpgtuw((y), (x)), __vcmpequw((x), (y)))
+
+#define _hlslpp_max_epu32(x, y)					__vmaxuw((x), (y))
+#define _hlslpp_min_epu32(x, y)					__vminuw((x), (y))
+
+#define _hlslpp_clamp_epu32(x, minx, maxx)		__vmaxuw(__vminuw((x), (maxx)), (minx))
+#define _hlslpp_sat_epu32(x)					__vmaxuw(__vminuw((x), i4_1), i4_0)
+
+#define _hlslpp_cvtps_epu32(x)					__vcfpuxws((x), 0)
+#define _hlslpp_cvtepu32_ps(x)					__vcuxwfp((x), 0)
+
+#define _hlslpp_slli_epu32(x, y)				_hlslpp_slli_epi32((x), (y))
+#define _hlslpp_srli_epu32(x, y)				_hlslpp_srli_epi32((x), (y))
+
+#define _hlslpp_sllv_epu32(x, y)				_hlslpp_sllv_epi32((x), (y))
+#define _hlslpp_srlv_epu32(x, y)				_hlslpp_srlv_epi32((x), (y))
 
 #if !defined(XM_CRMASK_CR6TRUE)
 #define XM_CRMASK_CR6TRUE  (1 << 7)

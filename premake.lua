@@ -9,12 +9,13 @@ Workspace = "workspace/".._ACTION
 PlatformMSVC64AVX		= "MSVC 64 AVX"
 PlatformMSVC64SSE41		= "MSVC 64 SSE 4.1"
 PlatformMSVC64SSE2		= "MSVC 64 SSE 2"
-PlatformMSVC32			= "MSVC 32 SSE 2"
+PlatformMSVC64Scalar	= "MSVC 64 Scalar"
+PlatformMSVC32SSE2		= "MSVC 32 SSE 2"
 
 PlatformLLVM64AVX		= "LLVM 64 AVX"
 PlatformLLVM64SSE41		= "LLVM 64 SSE 4.1"
 PlatformLLVM64SSE2		= "LLVM 64 SSE 2"
-PlatformLLVM32			= "LLVM 32 SSE 2"
+PlatformLLVM32SSE2		= "LLVM 32 SSE 2"
 
 PlatformOSX64			= "OSX 64"
 PlatformLinux64_GCC		= "Linux64_GCC"
@@ -91,12 +92,13 @@ workspace("hlsl++")
 			PlatformMSVC64AVX,
 			PlatformMSVC64SSE41,
 			PlatformMSVC64SSE2,
-			PlatformMSVC32, 
+			PlatformMSVC64Scalar,
+			PlatformMSVC32SSE2, 
 			
 			PlatformLLVM64AVX,
 			PlatformLLVM64SSE41,
 			PlatformLLVM64SSE2,
-			PlatformLLVM32, 
+			PlatformLLVM32SSE2, 
 			
 			PlatformARM, 
 			PlatformARM64, 
@@ -130,8 +132,12 @@ workspace("hlsl++")
 			toolset("msc")
 			architecture("x64")
 			vectorextensions("sse2")
+			
+		filter { "platforms:"..PlatformMSVC64Scalar }
+			toolset("msc")
+			defines { "HLSLPP_SCALAR" }
 		
-		filter { "platforms:"..PlatformMSVC32 }
+		filter { "platforms:"..PlatformMSVC32SSE2 }
 			toolset("msc")
 			vectorextensions("sse2")
 			
@@ -153,9 +159,9 @@ workspace("hlsl++")
 			architecture("x64")
 			vectorextensions("sse2")
 			
-		filter { "platforms:"..PlatformLLVM32 }
+		filter { "platforms:"..PlatformLLVM32SSE2 }
 			toolset(llvmToolset)
-			buildoptions { "-Wno-unused-variable -msse4.1" }
+			buildoptions { "-Wno-unused-variable" }
 			
 		filter { "platforms:"..PlatformARM }
 			architecture("arm")

@@ -43,6 +43,7 @@
 // All available in SSE/SSE2
 typedef __m128  n128;
 typedef __m128i n128i;
+typedef __m128i n128u;
 typedef __m128d n128d;
 
 #if defined(__AVX__)
@@ -555,7 +556,7 @@ hlslpp_inline n128i _hlslpp_mul_epi32(n128i x, n128i y)
 
 #endif
 
-#define _hlslpp_div_epi32(x, y)					_mm_castps_si128(_mm_div_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y)))
+#define _hlslpp_div_epi32(x, y)					_mm_cvtps_epi32(_mm_div_ps(_mm_cvtepi32_ps(x), _mm_cvtepi32_ps(y)))
 
 #if defined(__SSSE3__)
 #define _hlslpp_neg_epi32(x)					_mm_sign_epi32((x), _mm_set1_epi32(-1))
@@ -845,12 +846,93 @@ hlslpp_inline n256i _hlslpp256_or_si128(n256i x, n256i y)
 
 #else
 
-#define _hlslpp256_slli_epi32(x, y) _hlslpp256_set128_epi32(_mm_slli_si128(_hlslpp256_low_epi32(x), y),	_mm_slli_si128(_hlslpp256_high_epi32(x), y))
-#define _hlslpp256_srli_epi32(x, y) _hlslpp256_set128_epi32(_mm_srli_si128(_hlslpp256_low_epi32(x), y),	_mm_srli_si128(_hlslpp256_high_epi32(x), y))
+#define _hlslpp256_slli_epi32(x, y)						_hlslpp256_set128_epi32(_mm_slli_si128(_hlslpp256_low_epi32(x), y),	_mm_slli_si128(_hlslpp256_high_epi32(x), y))
+#define _hlslpp256_srli_epi32(x, y)						_hlslpp256_set128_epi32(_mm_srli_si128(_hlslpp256_low_epi32(x), y),	_mm_srli_si128(_hlslpp256_high_epi32(x), y))
 
 #endif
 
 #endif
+
+//-----------------
+// Unsigned Integer
+//-----------------
+
+#define _hlslpp_set1_epu32(x)					_hlslpp_set1_epi32((x))
+#define _hlslpp_set_epu32(x, y, z, w)			_hlslpp_set_epi32((w), (z), (y), (x))
+#define _hlslpp_setzero_epu32()					_hlslpp_setzero_epi32()
+
+#define _hlslpp_add_epu32(x, y)					_hlslpp_add_epi32((x), (y))
+#define _hlslpp_sub_epu32(x, y)					_hlslpp_sub_epi32((x), (y))
+
+#define _hlslpp_mul_epu32(x, y)					_hlslpp_mul_epi32((x), (y))
+
+#define _hlslpp_div_epu32(x, y)					_hlslpp_div_epi32((x), (y))
+
+#define _hlslpp_madd_epu32(x, y, z)				_hlslpp_madd_epi32(x, y, z)
+#define _hlslpp_msub_epu32(x, y, z)				_hlslpp_msub_epi32(x, y, z)
+#define _hlslpp_subm_epu32(x, y, z)				_hlslpp_subm_epi32(x, y, z)
+
+#define _hlslpp_cmpeq_epu32(x, y)				_hlslpp_cmpeq_epi32((x), (y))
+#define _hlslpp_cmpneq_epu32(x, y)				_hlslpp_cmpneq_epi32((x), (y))
+
+hlslpp_inline n128u _hlslpp_cmpgt_epu32(n128u x, n128u y)
+{
+	return _mm_xor_si128(_mm_cmpgt_epi32(_mm_xor_si128(x, _mm_set1_epi32(0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32(0xf0000000))), _mm_set1_epi32(0xf0000000));
+}
+
+hlslpp_inline n128i _hlslpp_cmpge_epu32(n128i x, n128i y)
+{
+	n128i xor_x = _mm_xor_si128(x, _mm_set1_epi32(0xf0000000));
+	n128i xor_y = _mm_xor_si128(y, _mm_set1_epi32(0xf0000000));
+
+	return _mm_xor_si128(_mm_or_si128(_mm_cmpgt_epi32(xor_x, xor_y), _mm_cmpeq_epi32(xor_x, xor_y)), _mm_set1_epi32(0xf0000000));
+}
+
+hlslpp_inline n128u _hlslpp_cmplt_epu32(n128u x, n128u y)
+{
+	return _mm_xor_si128(_mm_cmplt_epi32(_mm_xor_si128(x, _mm_set1_epi32(0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32(0xf0000000))), _mm_set1_epi32(0xf0000000));
+}
+
+hlslpp_inline n128i _hlslpp_cmple_epu32(n128i x, n128i y)
+{
+	n128i xor_x = _mm_xor_si128(x, _mm_set1_epi32(0xf0000000));
+	n128i xor_y = _mm_xor_si128(y, _mm_set1_epi32(0xf0000000));
+
+	return _mm_xor_si128(_mm_or_si128(_mm_cmplt_epi32(xor_x, xor_y), _mm_cmpeq_epi32(xor_x, xor_y)), _mm_set1_epi32(0xf0000000));
+}
+
+#if defined(__SSE4_1__)
+
+#define _hlslpp_max_epu32(x, y)					_mm_max_epu32((x), (y))
+#define _hlslpp_min_epu32(x, y)					_mm_min_epu32((x), (y))
+
+#else
+
+// https://stackoverflow.com/questions/41610655/sse2-intrinsics-find-max-of-two-unsigned-short-vectors
+
+hlslpp_inline n128i _hlslpp_max_epu32(n128u x, n128u y)
+{
+	return _mm_xor_si128(_hlslpp_max_epi32(_mm_xor_si128(x, _mm_set1_epi32(0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32(0xf0000000))), _mm_set1_epi32(0xf0000000));
+}
+
+hlslpp_inline n128i _hlslpp_min_epu32(n128u x, n128u y)
+{
+	return _mm_xor_si128(_hlslpp_min_epi32(_mm_xor_si128(x, _mm_set1_epi32(0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32(0xf0000000))), _mm_set1_epi32(0xf0000000));
+}
+
+#endif
+
+#define _hlslpp_clamp_epu32(x, minx, maxx)		_hlslpp_max_epu32(_hlslpp_min_epu32((x), (maxx)), (minx))
+#define _hlslpp_sat_epu32(x)					_hlslpp_max_epu32(_hlslpp_min_epu32((x), i4_1), i4_0)
+
+#define _hlslpp_cvtps_epu32(x)					_hlslpp_cvtps_epi32((x))
+#define _hlslpp_cvtepu32_ps(x)					_hlslpp_cvtepi32_ps((x))
+
+#define _hlslpp_slli_epu32(x, y)				_hlslpp_slli_epi32((x), (y))
+#define _hlslpp_srli_epu32(x, y)				_hlslpp_srli_epi32((x), (y))
+
+#define _hlslpp_sllv_epu32(x, y)				_hlslpp_sllv_epi32((x), (y))
+#define _hlslpp_srlv_epu32(x, y)				_hlslpp_srlv_epi32((x), (y))
 
 //-------
 // Double
@@ -964,21 +1046,21 @@ hlslpp_inline n128d _hlslpp_trunc_pd(n128d x)
 
 hlslpp_inline n128d _hlslpp_floor_pd(n128d x)
 {
-	n128d  trnc     = _hlslpp_trunc_pd(x);											// Truncate
-	n128d  gt       = _mm_cmpgt_pd(trnc, x);										// Check if truncation was greater or smaller (i.e. was negative or positive number)
+	n128d trnc      = _hlslpp_trunc_pd(x);											// Truncate
+	n128d gt        = _mm_cmpgt_pd(trnc, x);										// Check if truncation was greater or smaller (i.e. was negative or positive number)
 	n128i shr       = _mm_srl_epi64(_mm_castpd_si128(gt), _mm_set_epi64x(0, 63));	// Shift to leave a 1 or a 0
 	n128i shrAdjust = _mm_shuffle_epi32(shr, HLSLPP_SHUFFLE_MASK(0, 2, 3, 3));		// Shuffle to be able to convert shifted 1 to double
-	n128d  result   = _mm_sub_pd(trnc, _mm_cvtepi32_pd(shrAdjust));					// Subtract from truncated value
+	n128d result    = _mm_sub_pd(trnc, _mm_cvtepi32_pd(shrAdjust));					// Subtract from truncated value
 	return result;
 }
 
 hlslpp_inline n128d _hlslpp_ceil_pd(n128d x)
 {
-	n128d  trnc     = _hlslpp_trunc_pd(x);											// Truncate
-	n128d  gt       = _mm_cmpgt_pd(x, trnc);										// Check if truncation was greater or smaller (i.e. was negative or positive number)
+	n128d trnc      = _hlslpp_trunc_pd(x);											// Truncate
+	n128d gt        = _mm_cmpgt_pd(x, trnc);										// Check if truncation was greater or smaller (i.e. was negative or positive number)
 	n128i shr       = _mm_srl_epi64(_mm_castpd_si128(gt), _mm_set_epi64x(0, 63));	// Shift to leave a 1 or a 0
 	n128i shrAdjust = _mm_shuffle_epi32(shr, HLSLPP_SHUFFLE_MASK(0, 2, 3, 3));		// Shuffle to be able to convert shifted 1 to double
-	n128d  result   = _mm_add_pd(trnc, _mm_cvtepi32_pd(shrAdjust));					// Add to truncated value
+	n128d result    = _mm_add_pd(trnc, _mm_cvtepi32_pd(shrAdjust));					// Add to truncated value
 	return result;
 }
 

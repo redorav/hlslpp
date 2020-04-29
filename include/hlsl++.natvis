@@ -1205,4 +1205,20 @@
 	<Type Name="hlslpp::iswizzle4&lt;2, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {i32[2]}, {i32[3]}, {i32[3]}, {i32[3]} }}</DisplayString></Type>
 	<Type Name="hlslpp::iswizzle4&lt;3, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {i32[3]}, {i32[3]}, {i32[3]}, {i32[3]} }}</DisplayString></Type>
 
+  <Type Name="hlslpp::uint1;">
+    <DisplayString Optional="true">uint1 {{ {u32[0]} }}</DisplayString>
+  </Type>
+
+  <Type Name="hlslpp::uint2;">
+    <DisplayString Optional="true">uint2 {{ {u32[0]}, {u32[1]} }}</DisplayString>
+  </Type>
+
+  <Type Name="hlslpp::uint3;">
+    <DisplayString Optional="true">uint3 {{ {u32[0]}, {u32[1]}, {u32[2]} }}</DisplayString>
+  </Type>
+
+  <Type Name="hlslpp::uint4;">
+    <DisplayString Optional="true">uint4 {{ {u32[0]}, {u32[1]}, {u32[2]}, {u32[3]} }}</DisplayString>
+  </Type>
+
 </AutoVisualizer>
