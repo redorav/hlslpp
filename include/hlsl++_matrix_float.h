@@ -155,6 +155,8 @@ namespace hlslpp
 
 		explicit hlslpp_inline float2x2(float f) : vec(_hlslpp_set1_ps(f)) {}
 
+		hlslpp_inline float2x2(const float2& f1, const float2& f2) : vec(_hlslpp_shuf_xyxy_ps(f1.vec, f2.vec)) {}
+
 		hlslpp_inline float2x2(const float2x2& m) : vec(m.vec) {}
 
 		union
@@ -291,6 +293,8 @@ namespace hlslpp
 
 		hlslpp_inline float3x3(const float3x3& m) : vec0(m.vec0), vec1(m.vec1), vec2(m.vec2) {}
 
+		hlslpp_inline float3x3(const float3& f1, const float3& f2, const float3& f3) : vec0(f1.vec), vec1(f2.vec), vec2(f3.vec) {}
+
 		static const float3x3& identity() { static const float3x3 iden = float3x3(1, 0, 0, 0, 1, 0, 0, 0, 1); return iden; }
 
 		union
@@ -407,6 +411,9 @@ namespace hlslpp
 
 		explicit hlslpp_inline float4x4(float f) : vec0(_hlslpp256_set1_ps(f)), vec1(_hlslpp256_set1_ps(f)) {}
 
+		hlslpp_inline float4x4(const float4& f1, const float4& f2, const float4& f3, const float4& f4) 
+			: vec0(_hlslpp256_set128_ps(f1.vec, f2.vec)), vec1(_hlslpp256_set128_ps(f3.vec, f4.vec)) {}
+
 		hlslpp_inline float4x4(const float4x4& m) : vec0(m.vec0), vec1(m.vec1) {}
 
 		union
@@ -477,6 +484,8 @@ namespace hlslpp
 			: vec0(_hlslpp_set_ps(f00, f01, f02, f03)), vec1(_hlslpp_set_ps(f10, f11, f12, f13)), vec2(_hlslpp_set_ps(f20, f21, f22, f23)), vec3(_hlslpp_set_ps(f30, f31, f32, f33)) {}
 
 		explicit hlslpp_inline float4x4(float f) : vec0(_hlslpp_set1_ps(f)), vec1(_hlslpp_set1_ps(f)), vec2(_hlslpp_set1_ps(f)), vec3(_hlslpp_set1_ps(f)) {}
+
+		hlslpp_inline float4x4(const float4& f1, const float4& f2, const float4& f3, const float4& f4) : vec0(f1.vec), vec1(f2.vec), vec2(f3.vec), vec3(f4.vec) {}
 
 		hlslpp_inline float4x4(const float4x4& m) : vec0(m.vec0), vec1(m.vec1), vec2(m.vec2), vec3(m.vec3) {}
 
