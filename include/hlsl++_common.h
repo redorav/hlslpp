@@ -309,6 +309,26 @@ namespace hlslpp
 	struct double2;
 	struct double3;
 	struct double4;
+	
+	struct float1x1;
+	struct float1x2;
+	struct float1x3;
+	struct float1x4;
+
+	struct float2x1;
+	struct float2x2;
+	struct float2x3;
+	struct float2x4;
+
+	struct float3x1;
+	struct float3x2;
+	struct float3x3;
+	struct float3x4;
+
+	struct float4x1;
+	struct float4x2;
+	struct float4x3;
+	struct float4x4;
 
 	// Aliases to conform to latest hlsl names
 	// https://github.com/microsoft/DirectXShaderCompiler/wiki/16-Bit-Scalar-Types
