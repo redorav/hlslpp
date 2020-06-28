@@ -303,8 +303,6 @@ namespace hlslpp
 	struct uint3;
 	struct uint4;
 
-	struct float1x1;
-
 	struct double1;
 	struct double2;
 	struct double3;
