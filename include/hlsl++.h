@@ -93,8 +93,6 @@
 
 #include <cstdint>
 
-#include <cstdio>
-
 #include <type_traits>
 
 #include "hlsl++_bitmask.h"
