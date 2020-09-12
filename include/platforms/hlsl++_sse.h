@@ -724,6 +724,46 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 
 #endif
 
+hlslpp_inline bool _hlslpp_any1_epi32(n128i x)
+{
+	return (_mm_movemask_epi8(_mm_cmpeq_epi32(x, _mm_setzero_si128())) & 0xf) != 0xf;
+}
+
+hlslpp_inline bool _hlslpp_any2_epi32(n128i x)
+{
+	return (_mm_movemask_epi8(_mm_cmpeq_epi32(x, _mm_setzero_si128())) & 0xff) != 0xff;
+}
+
+hlslpp_inline bool _hlslpp_any3_epi32(n128i x)
+{
+	return (_mm_movemask_epi8(_mm_cmpeq_epi32(x, _mm_setzero_si128())) & 0xfff) != 0xfff;
+}
+
+hlslpp_inline bool _hlslpp_any4_epi32(n128i x)
+{
+	return (_mm_movemask_epi8(_mm_cmpeq_epi32(x, _mm_setzero_si128())) & 0xffff) != 0xffff;
+}
+
+hlslpp_inline bool _hlslpp_all1_epi32(n128i x)
+{
+	return (_mm_movemask_epi8(_mm_cmpeq_epi32(x, _mm_setzero_si128())) & 0xf) == 0;
+}
+
+hlslpp_inline bool _hlslpp_all2_epi32(n128i x)
+{
+	return (_mm_movemask_epi8(_mm_cmpeq_epi32(x, _mm_setzero_si128())) & 0xff) == 0;
+}
+
+hlslpp_inline bool _hlslpp_all3_epi32(n128i x)
+{
+	return (_mm_movemask_epi8(_mm_cmpeq_epi32(x, _mm_setzero_si128())) & 0xfff) == 0;
+}
+
+hlslpp_inline bool _hlslpp_all4_epi32(n128i x)
+{
+	return (_mm_movemask_epi8(_mm_cmpeq_epi32(x, _mm_setzero_si128())) & 0xffff) == 0;
+}
+
 //------------
 // Integer 256
 //------------
@@ -933,6 +973,16 @@ hlslpp_inline n128i _hlslpp_min_epu32(n128u x, n128u y)
 
 #define _hlslpp_sllv_epu32(x, y)				_hlslpp_sllv_epi32((x), (y))
 #define _hlslpp_srlv_epu32(x, y)				_hlslpp_srlv_epi32((x), (y))
+
+#define _hlslpp_any1_epu32(x)					_hlslpp_any1_epi32(x)
+#define _hlslpp_any2_epu32(x)					_hlslpp_any2_epi32(x)
+#define _hlslpp_any3_epu32(x)					_hlslpp_any3_epi32(x)
+#define _hlslpp_any4_epu32(x)					_hlslpp_any4_epi32(x)
+
+#define _hlslpp_all1_epu32(x)					_hlslpp_all1_epi32(x)
+#define _hlslpp_all2_epu32(x)					_hlslpp_all2_epi32(x)
+#define _hlslpp_all3_epu32(x)					_hlslpp_all3_epi32(x)
+#define _hlslpp_all4_epu32(x)					_hlslpp_all4_epi32(x)
 
 //-------
 // Double

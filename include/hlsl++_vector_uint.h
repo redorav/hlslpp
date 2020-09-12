@@ -681,6 +681,16 @@ namespace hlslpp
 	hlslpp_inline uint3& operator ^= (uint3& i1, const uint3& i2) { i1 = i1 ^ i2; return i1; }
 	hlslpp_inline uint4& operator ^= (uint4& i1, const uint4& i2) { i1 = i1 ^ i2; return i1; }
 
+	hlslpp_inline bool all(const uint1& f) { return _hlslpp_all1_epu32(f.vec); }
+	hlslpp_inline bool all(const uint2& f) { return _hlslpp_all2_epu32(f.vec); }
+	hlslpp_inline bool all(const uint3& f) { return _hlslpp_all3_epu32(f.vec); }
+	hlslpp_inline bool all(const uint4& f) { return _hlslpp_all4_epu32(f.vec); }
+
+	hlslpp_inline bool any(const uint1& f) { return _hlslpp_any1_epu32(f.vec); }
+	hlslpp_inline bool any(const uint2& f) { return _hlslpp_any2_epu32(f.vec); }
+	hlslpp_inline bool any(const uint3& f) { return _hlslpp_any3_epu32(f.vec); }
+	hlslpp_inline bool any(const uint4& f) { return _hlslpp_any4_epu32(f.vec); }
+
 	hlslpp_inline uint1 countbits(const uint1& i) { return uint1(_hlslpp_countbits_epu32(i.vec)); }
 	hlslpp_inline uint2 countbits(const uint2& i) { return uint2(_hlslpp_countbits_epu32(i.vec)); }
 	hlslpp_inline uint3 countbits(const uint3& i) { return uint3(_hlslpp_countbits_epu32(i.vec)); }

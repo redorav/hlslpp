@@ -390,69 +390,15 @@ hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
 
 //https://stackoverflow.com/questions/15389539/fastest-way-to-test-a-128-bit-neon-register-for-a-value-of-0-using-intrinsics
 
-hlslpp_inline bool _hlslpp_any1_ps(n128 x)
-{
-	return vget_lane_u32(vget_low_u32(vreinterpretq_u32_f32(x)), 0) != 0;
-}
+#define _hlslpp_any1_ps(x)						_hlslpp_any1_epi32(vreinterpretq_u32_f32(x))
+#define _hlslpp_any2_ps(x)						_hlslpp_any2_epi32(vreinterpretq_u32_f32(x))
+#define _hlslpp_any3_ps(x)						_hlslpp_any3_epi32(vreinterpretq_u32_f32(x))
+#define _hlslpp_any4_ps(x)						_hlslpp_any4_epi32(vreinterpretq_u32_f32(x))
 
-hlslpp_inline bool _hlslpp_any2_ps(n128 x)
-{
-	uint32x2_t low = vget_low_u32(vreinterpretq_u32_f32(x));
-	return vget_lane_u32(vpmax_u32(low, low), 0) != 0;
-}
-
-hlslpp_inline bool _hlslpp_any3_ps(n128 x)
-{
-	uint32x4_t maskw = vsetq_lane_u32(0, vreinterpretq_u32_f32(x), 3); // set w to minimum value
-#if defined(HLSLPP_ARM64)
-	return vmaxvq_u32(maskw) != 0;
-#else
-	uint32x2_t maxlohi = vorr_u32(vget_low_u32(maskw), vget_high_u32(maskw));
-	return vget_lane_u32(vpmax_u32(maxlohi, maxlohi), 0) != 0;
-#endif
-}
-
-hlslpp_inline bool _hlslpp_any4_ps(n128 x)
-{
-#if defined(HLSLPP_ARM64)
-	return vmaxvq_u32(vreinterpretq_u32_f32(x)) != 0;
-#else
-	uint32x2_t tmp = vorr_u32(vget_low_u32(vreinterpretq_u32_f32(x)), vget_high_u32(vreinterpretq_u32_f32(x)));
-	return vget_lane_u32(vpmax_u32(tmp, tmp), 0) != 0;
-#endif
-}
-
-hlslpp_inline bool _hlslpp_all1_ps(n128 x)
-{
-	return vget_lane_u32(vget_low_u32(vreinterpretq_u32_f32(x)), 0) != 0;
-}
-
-hlslpp_inline bool _hlslpp_all2_ps(n128 x)
-{
-	uint32x2_t low = vget_low_u32(vreinterpretq_u32_f32(x));
-	return vget_lane_u32(vpmin_u32(low, low), 0) != 0;
-}
-
-hlslpp_inline bool _hlslpp_all3_ps(n128 x)
-{
-	uint32x4_t maskw = vsetq_lane_u32(0xffffffff, vreinterpretq_u32_f32(x), 3); // set w to maximum value
-#if defined(HLSLPP_ARM64)
-	return vminvq_u32(maskw) != 0;
-#else
-	uint32x2_t minlohi = vpmin_u32(vget_low_u32(maskw), vget_high_u32(maskw));
-	return vget_lane_u32(vpmin_u32(minlohi, minlohi), 0) != 0;
-#endif
-}
-
-hlslpp_inline bool _hlslpp_all4_ps(n128 x)
-{
-#if defined(HLSLPP_ARM64)
-	return vminvq_u32(vreinterpretq_u32_f32(x)) != 0;
-#else
-	uint32x2_t minlohi = vpmin_u32(vget_low_u32(vreinterpretq_u32_f32(x)), vget_high_u32(vreinterpretq_u32_f32(x)));
-	return vget_lane_u32(vpmin_u32(minlohi, minlohi), 0) != 0;
-#endif
-}
+#define _hlslpp_all1_ps(x)						_hlslpp_all1_epi32(vreinterpretq_u32_f32(x))
+#define _hlslpp_all2_ps(x)						_hlslpp_all2_epi32(vreinterpretq_u32_f32(x))
+#define _hlslpp_all3_ps(x)						_hlslpp_all3_epi32(vreinterpretq_u32_f32(x))
+#define _hlslpp_all4_ps(x)						_hlslpp_all4_epi32(vreinterpretq_u32_f32(x))
 
 //--------
 // Storing
@@ -593,6 +539,70 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_sllv_epi32(x, y)				vshlq_s32((x), (y))
 #define _hlslpp_srlv_epi32(x, y)				vshlq_s32((x), _hlslpp_neg_epi32(y))
 
+hlslpp_inline bool _hlslpp_any1_epi32(n128i x)
+{
+	return vget_lane_u32(vget_low_u32(x), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_any2_epi32(n128i x)
+{
+	uint32x2_t low = vget_low_u32(x);
+	return vget_lane_u32(vpmax_u32(low, low), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_any3_epi32(n128i x)
+{
+	uint32x4_t maskw = vsetq_lane_u32(0, x, 3); // set w to minimum value
+#if defined(HLSLPP_ARM64)
+	return vmaxvq_u32(maskw) != 0;
+#else
+	uint32x2_t maxlohi = vorr_u32(vget_low_u32(maskw), vget_high_u32(maskw));
+	return vget_lane_u32(vpmax_u32(maxlohi, maxlohi), 0) != 0;
+#endif
+}
+
+hlslpp_inline bool _hlslpp_any4_epi32(n128i x)
+{
+#if defined(HLSLPP_ARM64)
+	return vmaxvq_u32(x) != 0;
+#else
+	uint32x2_t tmp = vorr_u32(vget_low_u32(x), vget_high_u32(x));
+	return vget_lane_u32(vpmax_u32(tmp, tmp), 0) != 0;
+#endif
+}
+
+hlslpp_inline bool _hlslpp_all1_epi32(n128i x)
+{
+	return vget_lane_u32(vget_low_u32(x), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_all2_epi32(n128i x)
+{
+	uint32x2_t low = vget_low_u32(x);
+	return vget_lane_u32(vpmin_u32(low, low), 0) != 0;
+}
+
+hlslpp_inline bool _hlslpp_all3_epi32(n128i x)
+{
+	uint32x4_t maskw = vsetq_lane_u32(0xffffffff, x, 3); // set w to maximum value
+#if defined(HLSLPP_ARM64)
+	return vminvq_u32(maskw) != 0;
+#else
+	uint32x2_t minlohi = vpmin_u32(vget_low_u32(maskw), vget_high_u32(maskw));
+	return vget_lane_u32(vpmin_u32(minlohi, minlohi), 0) != 0;
+#endif
+}
+
+hlslpp_inline bool _hlslpp_all4_epi32(n128i x)
+{
+#if defined(HLSLPP_ARM64)
+	return vminvq_u32(x) != 0;
+#else
+	uint32x2_t minlohi = vpmin_u32(vget_low_u32(x), vget_high_u32(x));
+	return vget_lane_u32(vpmin_u32(minlohi, minlohi), 0) != 0;
+#endif
+}
+
 //-----------------
 // Unsigned Integer
 //-----------------
@@ -634,6 +644,16 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 // From the documentation of vshlq_s32: Vector shift left: Vr[i] := Va[i] << Vb[i] (negative values shift right)
 #define _hlslpp_sllv_epu32(x, y)				vshlq_u32((x), (y))
 #define _hlslpp_srlv_epu32(x, y)				vshlq_u32((x), _hlslpp_neg_epi32(y))
+
+#define _hlslpp_any1_epu32(x)					_hlslpp_any1_epi32(x)
+#define _hlslpp_any2_epu32(x)					_hlslpp_any2_epi32(x)
+#define _hlslpp_any3_epu32(x)					_hlslpp_any3_epi32(x)
+#define _hlslpp_any4_epu32(x)					_hlslpp_any4_epi32(x)
+
+#define _hlslpp_all1_epu32(x)					_hlslpp_all1_epi32(x)
+#define _hlslpp_all2_epu32(x)					_hlslpp_all2_epi32(x)
+#define _hlslpp_all3_epu32(x)					_hlslpp_all3_epi32(x)
+#define _hlslpp_all4_epu32(x)					_hlslpp_all4_epi32(x)
 
 #if defined(HLSLPP_DOUBLE)
 

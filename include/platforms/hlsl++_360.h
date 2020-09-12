@@ -201,6 +201,16 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_sllv_epi32(x, y)				__vslw((x), (y))
 #define _hlslpp_srlv_epi32(x, y)				__vsrw((x), (y))
 
+#define _hlslpp_any1_epi32(x)					_hlslpp_any1_ps(x)
+#define _hlslpp_any2_epi32(x)					_hlslpp_any2_ps(x)
+#define _hlslpp_any3_epi32(x)					_hlslpp_any3_ps(x)
+#define _hlslpp_any4_epi32(x)					_hlslpp_any4_ps(x)
+
+#define _hlslpp_all1_epi32(x)					_hlslpp_all1_ps(x)
+#define _hlslpp_all2_epi32(x)					_hlslpp_all2_ps(x)
+#define _hlslpp_all3_epi32(x)					_hlslpp_all3_ps(x)
+#define _hlslpp_all4_epi32(x)					_hlslpp_all4_ps(x)
+
 //-----------------
 // Unsigned Integer
 //-----------------
@@ -243,6 +253,16 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_sllv_epu32(x, y)				_hlslpp_sllv_epi32((x), (y))
 #define _hlslpp_srlv_epu32(x, y)				_hlslpp_srlv_epi32((x), (y))
+
+#define _hlslpp_any1_epu32(x)					_hlslpp_any1_epi32(x)
+#define _hlslpp_any2_epu32(x)					_hlslpp_any2_epi32(x)
+#define _hlslpp_any3_epu32(x)					_hlslpp_any3_epi32(x)
+#define _hlslpp_any4_epu32(x)					_hlslpp_any4_epi32(x)
+
+#define _hlslpp_all1_epu32(x)					_hlslpp_all1_epi32(x)
+#define _hlslpp_all2_epu32(x)					_hlslpp_all2_epi32(x)
+#define _hlslpp_all3_epu32(x)					_hlslpp_all3_epi32(x)
+#define _hlslpp_all4_epu32(x)					_hlslpp_all4_epi32(x)
 
 #if !defined(XM_CRMASK_CR6TRUE)
 #define XM_CRMASK_CR6TRUE  (1 << 7)

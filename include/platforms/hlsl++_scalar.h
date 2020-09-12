@@ -588,6 +588,16 @@ namespace hlslpp
 		return vector_int4(v1.x >> v2.x, v1.y >> v2.y, v1.z >> v2.z, v1.w >> v2.w);
 	}
 
+	hlslpp_inline bool _hlslpp_any1_epi32(const vector_int4& v) { return v.x != 0; }
+	hlslpp_inline bool _hlslpp_any2_epi32(const vector_int4& v) { return v.x != 0 || v.y != 0; }
+	hlslpp_inline bool _hlslpp_any3_epi32(const vector_int4& v) { return v.x != 0 || v.y != 0 || v.z != 0; }
+	hlslpp_inline bool _hlslpp_any4_epi32(const vector_int4& v) { return v.x != 0 || v.y != 0 || v.z != 0 || v.w != 0; }
+
+	hlslpp_inline bool _hlslpp_all1_epi32(const vector_int4& v) { return v.x != 0; }
+	hlslpp_inline bool _hlslpp_all2_epi32(const vector_int4& v) { return v.x != 0 && v.y != 0; }
+	hlslpp_inline bool _hlslpp_all3_epi32(const vector_int4& v) { return v.x != 0 && v.y != 0 && v.z != 0; }
+	hlslpp_inline bool _hlslpp_all4_epi32(const vector_int4& v) { return v.x != 0 && v.y != 0 && v.z != 0 && v.w != 0; }
+
 	//-----------------
 	// Unsigned Integer
 	//-----------------
@@ -782,6 +792,16 @@ namespace hlslpp
 		return vector_uint4(v1.x >> v2.x, v1.y >> v2.y, v1.z >> v2.z, v1.w >> v2.w);
 	}
 
+	hlslpp_inline bool _hlslpp_any1_epu32(const vector_uint4& v) { return v.x != 0; }
+	hlslpp_inline bool _hlslpp_any2_epu32(const vector_uint4& v) { return v.x != 0 || v.y != 0; }
+	hlslpp_inline bool _hlslpp_any3_epu32(const vector_uint4& v) { return v.x != 0 || v.y != 0 || v.z != 0; }
+	hlslpp_inline bool _hlslpp_any4_epu32(const vector_uint4& v) { return v.x != 0 || v.y != 0 || v.z != 0 || v.w != 0; }
+
+	hlslpp_inline bool _hlslpp_all1_epu32(const vector_uint4& v) { return v.x != 0; }
+	hlslpp_inline bool _hlslpp_all2_epu32(const vector_uint4& v) { return v.x != 0 && v.y != 0; }
+	hlslpp_inline bool _hlslpp_all3_epu32(const vector_uint4& v) { return v.x != 0 && v.y != 0 && v.z != 0; }
+	hlslpp_inline bool _hlslpp_all4_epu32(const vector_uint4& v) { return v.x != 0 && v.y != 0 && v.z != 0 && v.w != 0; }
+
 	//--------
 	// Storing
 	//--------
@@ -805,7 +825,6 @@ namespace hlslpp
 		p[8] = v3.x; p[9] = v3.y; p[10] = v3.z; p[11] = v3.w;
 		p[12] = v4.x; p[13] = v4.y; p[14] = v4.z; p[15] = v4.w;
 	}
-
 
 	hlslpp_inline void _hlslpp_load1_ps(float* p, n128& v) { v.x = p[0]; }
 	hlslpp_inline void _hlslpp_load2_ps(float* p, n128& v) { v.x = p[0]; v.y = p[1]; }

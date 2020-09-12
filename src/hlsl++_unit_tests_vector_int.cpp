@@ -319,6 +319,26 @@ void RunUnitTestsVectorInt()
 	ivshr_3 = ivfoo3 >> ivshift_value_1; eq(ivshr_3, shift_right(ivfoo3.x, ivshift_value_1.x), shift_right(ivfoo3.y, ivshift_value_1.x), shift_right(ivfoo3.z, ivshift_value_1.x));
 	ivshr_4 = ivfoo4 >> ivshift_value_1; eq(ivshr_4, shift_right(ivfoo4.x, ivshift_value_1.x), shift_right(ivfoo4.y, ivshift_value_1.x), shift_right(ivfoo4.z, ivshift_value_1.x), shift_right(ivfoo4.w, ivshift_value_1.x));
 
+	bool ivall1 = all(ivfoo1);				eq(ivall1, ivfoo1.x != 0);
+	bool ivall2 = all(ivfoo2);				eq(ivall2, ivfoo2.x != 0 && ivfoo2.y != 0);
+	bool ivall3 = all(ivfoo3);				eq(ivall3, ivfoo3.x != 0 && ivfoo3.y != 0 && ivfoo3.z != 0);
+	bool ivall4 = all(ivfoo4);				eq(ivall4, ivfoo4.x != 0 && ivfoo4.y != 0 && ivfoo4.z != 0 && ivfoo4.w != 0);
+
+	bool ivall_swiz_1 = all(ivfoo1.r);		eq(ivall_swiz_1, ivfoo1.r != 0);
+	bool ivall_swiz_2 = all(ivfoo2.yx);		eq(ivall_swiz_2, ivfoo2.y != 0 && ivfoo2.x != 0);
+	bool ivall_swiz_3 = all(ivfoo3.bgr);	eq(ivall_swiz_3, ivfoo3.b != 0 && ivfoo3.g != 0 && ivfoo3.r != 0);
+	bool ivall_swiz_4 = all(ivfoo4.wwww);	eq(ivall_swiz_4, ivfoo4.w != 0);
+
+	bool ivany1 = any(ivfoo1);				eq(ivany1, ivfoo1.x != 0);
+	bool ivany2 = any(ivfoo2);				eq(ivany2, ivfoo2.x != 0 || ivfoo2.y != 0);
+	bool ivany3 = any(ivfoo3);				eq(ivany3, ivfoo3.x != 0 || ivfoo3.y != 0 || ivfoo3.z != 0);
+	bool ivany4 = any(ivfoo4);				eq(ivany4, ivfoo4.x != 0 || ivfoo4.y != 0 || ivfoo4.z != 0 || ivfoo4.w != 0);
+
+	bool ivany_swiz_1 = any(ivfoo1.r);		eq(ivany_swiz_1, ivfoo1.x != 0);
+	bool ivany_swiz_2 = any(ivfoo2.yx);		eq(ivany_swiz_2, ivfoo2.y != 0 || ivfoo2.x != 0);
+	bool ivany_swiz_3 = any(ivfoo3.bgr);	eq(ivany_swiz_3, ivfoo3.b != 0 || ivfoo3.g != 0 || ivfoo3.r != 0);
+	bool ivany_swiz_4 = any(ivfoo4.wwww);	eq(ivany_swiz_4, ivfoo4.w != 0);
+
 	//	int4 sat4i = saturate(b);
 	//
 	//	int3 c = a + b.zzw;
