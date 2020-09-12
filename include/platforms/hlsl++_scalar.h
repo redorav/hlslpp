@@ -457,33 +457,33 @@ namespace hlslpp
     hlslpp_inline vector_int4 _hlslpp_cmpeq_epi32(const vector_int4& x, const vector_int4& y)
 	{
 		return vector_int4(x.x == y.x ? 1 : 0,
-                            x.y == y.y ? 1 : 0, 
-                            x.z == y.z ? 1 : 0, 
-                            x.w == y.w ? 1 : 0);
+                           x.y == y.y ? 1 : 0, 
+                           x.z == y.z ? 1 : 0, 
+                           x.w == y.w ? 1 : 0);
 	}
 
 	hlslpp_inline vector_int4 _hlslpp_cmpneq_epi32(const vector_int4& x, const vector_int4& y)
 	{
 		return vector_int4(x.x != y.x ? 1 : 0,
-                            x.y != y.y ? 1 : 0, 
-                            x.z != y.z ? 1 : 0, 
-                            x.w != y.w ? 1 : 0);
+                           x.y != y.y ? 1 : 0, 
+                           x.z != y.z ? 1 : 0, 
+                           x.w != y.w ? 1 : 0);
 	}
 
 	hlslpp_inline vector_int4 _hlslpp_cmpgt_epi32(const vector_int4& x, const vector_int4& y)
 	{
 		return vector_int4(x.x > y.x ? 1 : 0,
-                            x.y > y.y ? 1 : 0, 
-                            x.z > y.z ? 1 : 0, 
-                            x.w > y.w ? 1 : 0);
+                           x.y > y.y ? 1 : 0, 
+                           x.z > y.z ? 1 : 0, 
+                           x.w > y.w ? 1 : 0);
 	}
 
 	hlslpp_inline vector_int4 _hlslpp_cmpge_epi32(const vector_int4& x, const vector_int4& y)
 	{
 		return vector_int4(x.x >= y.x ? 1 : 0,
-                            x.y >= y.y ? 1 : 0, 
-                            x.z >= y.z ? 1 : 0, 
-                            x.w >= y.w ? 1 : 0);
+                           x.y >= y.y ? 1 : 0, 
+                           x.z >= y.z ? 1 : 0, 
+                           x.w >= y.w ? 1 : 0);
 	}
 
 	hlslpp_inline vector_int4 _hlslpp_cmplt_epi32(const vector_int4& x, const vector_int4& y)
