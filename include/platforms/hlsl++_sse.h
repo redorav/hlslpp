@@ -858,7 +858,7 @@ hlslpp_inline n256i _hlslpp256_or_si128(n256i x, n256i y)
 //-----------------
 
 #define _hlslpp_set1_epu32(x)					_hlslpp_set1_epi32((x))
-#define _hlslpp_set_epu32(x, y, z, w)			_hlslpp_set_epi32((w), (z), (y), (x))
+#define _hlslpp_set_epu32(x, y, z, w)			_hlslpp_set_epi32((x), (y), (z), (w))
 #define _hlslpp_setzero_epu32()					_hlslpp_setzero_epi32()
 
 #define _hlslpp_add_epu32(x, y)					_hlslpp_add_epi32((x), (y))
@@ -874,6 +874,9 @@ hlslpp_inline n256i _hlslpp256_or_si128(n256i x, n256i y)
 
 #define _hlslpp_cmpeq_epu32(x, y)				_hlslpp_cmpeq_epi32((x), (y))
 #define _hlslpp_cmpneq_epu32(x, y)				_hlslpp_cmpneq_epi32((x), (y))
+
+#define _hlslpp_cmpeq1_epu32(x, y)              _hlslpp_cmpeq1_epi32((x), (y))
+#define _hlslpp_cmpneq1_epu32(x, y)             _hlslpp_cmpneq1_epi32((x), (y))
 
 hlslpp_inline n128u _hlslpp_cmpgt_epu32(n128u x, n128u y)
 {

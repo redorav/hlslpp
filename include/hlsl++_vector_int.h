@@ -569,6 +569,16 @@ namespace hlslpp
 	hlslpp_inline int3& operator *= (int3& i1, const int3& i2) { i1 = i1 * i2; return i1; }
 	hlslpp_inline int4& operator *= (int4& i1, const int4& i2) { i1 = i1 * i2; return i1; }
 
+    hlslpp_inline bool any(const int1& i) { return 0 != i.x; }
+    hlslpp_inline bool any(const int2& i) { return 0 != i.x || 0 != i.y; }
+    hlslpp_inline bool any(const int3& i) { return 0 != i.x || 0 != i.y || 0 != i.z; }
+    hlslpp_inline bool any(const int4& i) { return 0 != i.x || 0 != i.y || 0 != i.z || 0 != i.w; }
+
+    hlslpp_inline bool all(const int1& i) { return 0 != i.x; }
+    hlslpp_inline bool all(const int2& i) { return 0 != i.x && 0 != i.y; }
+    hlslpp_inline bool all(const int3& i) { return 0 != i.x && 0 != i.y && 0 != i.z; }
+    hlslpp_inline bool all(const int4& i) { return 0 != i.x && 0 != i.y && 0 != i.z && 0 != i.w; }
+
 	hlslpp_inline int1 operator == (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
 	hlslpp_inline int2 operator == (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
 	hlslpp_inline int3 operator == (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
