@@ -76,14 +76,34 @@ namespace hlslpp
 		return result;
 	}
 
-	// Assume axis is a 3-component vector and angle is contained in the x component of angle
+	// Assume axis is a 3-component vector and angle is contained in all components of angle
 	// Also assume that the axis is normalized
 	hlslpp_inline n128 _hlslpp_quat_axis_angle_ps(const n128 axis, const n128 angle)
 	{
-		n128 angle05 = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(angle), f4_05);
-		n128 sin	= _hlslpp_mul_ps(_hlslpp_sin_ps(angle05), axis);
-		n128 cos	= _hlslpp_cos_ps(angle05);
-		n128 result = _hlslpp_blend_ps(sin, cos, HLSLPP_BLEND_MASK(1, 1, 1, 0));
+		n128 angle05 = _hlslpp_mul_ps(angle, f4_05);
+		n128 sin     = _hlslpp_mul_ps(_hlslpp_sin_ps(angle05), axis);
+		n128 cos     = _hlslpp_cos_ps(angle05);
+		n128 result  = _hlslpp_blend_ps(sin, cos, HLSLPP_BLEND_MASK(1, 1, 1, 0));
+		return result;
+	}
+
+	// Make the same assumptions as the previous function. This function exists because often
+	// it's very cheap to obtain the cosine via a dot product and work with that directly as
+	// obtaining the angle would require a costly acos
+	hlslpp_inline n128 _hlslpp_quat_axis_cosangle_ps(const n128 axis, const n128 cosangle)
+	{
+		// We'll use the identities
+		//
+		//                 |  1 + cos(2 * theta)  |
+		// cosTheta = sqrt | -------------------- |
+		//                 |           2          |
+		//
+		// cos^2(x) + sin^2(x) = 1
+
+		n128 cosangle05 = _hlslpp_sqrt_ps(_hlslpp_madd_ps(f4_05, cosangle, f4_05));
+		n128 sinangle05 = _hlslpp_sqrt_ps(_hlslpp_subm_ps(f4_1, cosangle05, cosangle05));
+		n128 sinAxis = _hlslpp_mul_ps(sinangle05, axis);
+		n128 result = _hlslpp_blend_ps(sinAxis, cosangle05, HLSLPP_BLEND_MASK(1, 1, 1, 0));
 		return result;
 	}
 
@@ -213,7 +233,8 @@ namespace hlslpp
 	hlslpp_inline quaternion	abs(const quaternion& q) { return quaternion(_hlslpp_abs_ps(q.vec)); }
 	//hlslpp_inline float4		all(const quaternion& q) { return float4(_hlslpp_all1_ps(q.vec)); }
 	//hlslpp_inline float4		any(const quaternion& q) { return float4(_hlslpp_any1_ps(q.vec)); }
-	hlslpp_inline quaternion	axisangle(const float3& axis, const float1& angle) { return quaternion(_hlslpp_quat_axis_angle_ps(axis.vec, angle.vec)); }
+	hlslpp_inline quaternion	axisangle(const float3& axis, const float1& angle) { return quaternion(_hlslpp_quat_axis_angle_ps(axis.vec, _hlslpp_perm_xxxx_ps(angle.vec))); }
+	hlslpp_inline quaternion	axiscosangle(const float3& axis, const float1& cosangle) { return quaternion(_hlslpp_quat_axis_cosangle_ps(axis.vec, _hlslpp_perm_xxxx_ps(cosangle.vec))); }
 	hlslpp_inline quaternion	conjugate(const quaternion& q) { return quaternion(_hlslpp_quat_conjugate_ps(q.vec)); }
 	//clamp TODO
 	hlslpp_inline float1		dot(const quaternion& q0, const quaternion& q1) { return float1(_hlslpp_dot4_ps(q0.vec, q1.vec)); }

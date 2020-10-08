@@ -6,7 +6,7 @@ namespace hlslpp
 
 	const n128 f4_0           = _hlslpp_set1_ps(0.0f);
 	const n128 f4_1           = _hlslpp_set1_ps(1.0f);
-	const n128 f4minusOne     = _hlslpp_set1_ps(-1.0f);
+	const n128 f4_minus1      = _hlslpp_set1_ps(-1.0f);
 	const n128 f4_05          = _hlslpp_set1_ps(0.5f);
 	const n128 f4_minus05     = _hlslpp_set1_ps(-0.5f);
 	const n128 f4_2           = _hlslpp_set1_ps(2.0f);
@@ -246,7 +246,7 @@ namespace hlslpp
 	#define _hlslpp256_perm_aaaa_xxxx_ps(x) _hlslpp256_perm_ps(x, MaskA, MaskA, MaskA, MaskA, MaskX, MaskX, MaskX, MaskX)
 
 	// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
-	#define _hlslpp_sign_ps(val)				_hlslpp_and_ps(_hlslpp_or_ps(_hlslpp_and_ps((val), f4minusOne), f4_1), _hlslpp_cmpneq_ps((val), f4_0))
+	#define _hlslpp_sign_ps(val)				_hlslpp_and_ps(_hlslpp_or_ps(_hlslpp_and_ps((val), f4_minus1), f4_1), _hlslpp_cmpneq_ps((val), f4_0))
 	
 	#define _hlslpp_cmpneq1_ps(val1, val2)		_hlslpp_and_ps(_hlslpp_cmpneq_ps((val1), (val2)), f4_1)
 	#define _hlslpp_cmpeq1_ps(val1, val2)		_hlslpp_and_ps(_hlslpp_cmpeq_ps((val1), (val2)), f4_1)

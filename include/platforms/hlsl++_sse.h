@@ -78,8 +78,8 @@ typedef __m256i n256i;
 #define _hlslpp_rcp_ps(x)						_mm_rcp_ps((x))
 
 // The following are alternatives but have been measured to be slower
-// _mm_sub_ps(f4zero, x);			// Slowest
-// _mm_mul_ps(f4minusOne, x);		// Slower
+// _mm_sub_ps(f4_0, x);			// Slowest
+// _mm_mul_ps(f4_minus1, x);	// Slower
 #define _hlslpp_neg_ps(x)						_mm_xor_ps((x), f4negativeMask)
 
 #if defined(__FMA__)
