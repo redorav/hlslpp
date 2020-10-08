@@ -31,6 +31,7 @@ namespace hlslpp
 		union
 		{
 			n128 vec;
+			float f32[4];
 			#include "swizzle/hlsl++_vector_float_x.h"
 			#include "swizzle/hlsl++_vector_float_y.h"
 			#include "swizzle/hlsl++_vector_float_z.h"
