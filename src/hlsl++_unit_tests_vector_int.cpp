@@ -294,6 +294,18 @@ void RunUnitTestsVectorInt()
 	float3 fcastbari_3 = ivfoo3;
 	float4 fcastbari_4 = ivfoo4;
 
+    // reinterpret cast
+    float fval[4] = { 1.0f, 2.0f, 3.0f, 4.0f };
+
+    uint1 uiasfloat_1(*(uint1*)&fval[0]);
+    float1 fasfloat_1 = asfloat(uiasfloat_1); eq(fasfloat_1, fval[0]);
+
+    int2 iasfloat_2(*(int1*)&fval[0], *(int1*)&fval[1]);
+    float2 fasfloat_2 = asfloat(iasfloat_2); eq(fasfloat_2, fval[0], fval[1]);
+
+    uint4 uiasfloat_4 = uint4(*(uint1*)&fval[0], *(uint1*)&fval[1], *(uint1*)&fval[2], *(uint1*)&fval[3]);
+    float4 fasfloat_4 = asfloat(uiasfloat_4); eq(fasfloat_4, fval[0], fval[1], fval[2], fval[3]);
+
 	// Bit shifting
 
 	int1 ivshift_value_1 = int1(1);

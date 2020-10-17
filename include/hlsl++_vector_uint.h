@@ -755,4 +755,39 @@ namespace hlslpp
 		vec = swizzle<0, 1, 2, 3, X, Y, Z, W>(i.vec);
 		return *this;
 	}
+
+    //----------------
+    // asfloat, asuint, asint
+    //----------------
+    hlslpp_inline float1 asfloat(uint1 v) { return (float1&)v; }
+    hlslpp_inline float2 asfloat(uint2 v) { return (float2&)v; }
+    hlslpp_inline float3 asfloat(uint3 v) { return (float3&)v; }
+    hlslpp_inline float4 asfloat(uint4 v) { return (float4&)v; }
+
+    hlslpp_inline float1 asfloat(int1 v) { return (float1&)v; }
+    hlslpp_inline float2 asfloat(int2 v) { return (float2&)v; }
+    hlslpp_inline float3 asfloat(int3 v) { return (float3&)v; }
+    hlslpp_inline float4 asfloat(int4 v) { return (float4&)v; }
+
+    hlslpp_inline uint1 asuint(int1 v) { return (uint1&)v; }
+    hlslpp_inline uint2 asuint(int2 v) { return (uint2&)v; }
+    hlslpp_inline uint3 asuint(int3 v) { return (uint3&)v; }
+    hlslpp_inline uint4 asuint(int4 v) { return (uint4&)v; }
+
+    hlslpp_inline uint1 asuint(float1 v) { return (uint1&)v; }
+    hlslpp_inline uint2 asuint(float2 v) { return (uint2&)v; }
+    hlslpp_inline uint3 asuint(float3 v) { return (uint3&)v; }
+    hlslpp_inline uint4 asuint(float4 v) { return (uint4&)v; }
+
+    hlslpp_inline int1 asint(uint1 v) { return (int1&)v; }
+    hlslpp_inline int2 asint(uint2 v) { return (int2&)v; }
+    hlslpp_inline int3 asint(uint3 v) { return (int3&)v; }
+    hlslpp_inline int4 asint(uint4 v) { return (int4&)v; }
+
+    hlslpp_inline int1 asint(float1 v) { return (int1&)v; }
+    hlslpp_inline int2 asint(float2 v) { return (int2&)v; }
+    hlslpp_inline int3 asint(float3 v) { return (int3&)v; }
+    hlslpp_inline int4 asint(float4 v) { return (int4&)v; }
+
+
 }
