@@ -297,14 +297,57 @@ void RunUnitTestsVectorInt()
     // reinterpret cast
     float fval[4] = { 1.0f, 2.0f, 3.0f, 4.0f };
 
-    uint1 uiasfloat_1(*(uint1*)&fval[0]);
-    float1 fasfloat_1 = asfloat(uiasfloat_1); eq(fasfloat_1, fval[0]);
+    uint1 uiasfloat_1(*(uint32_t*)&fval[0]);
+    float1 fuiasfloat_1 = asfloat(uiasfloat_1); eq(fuiasfloat_1, fval[0]);
 
-    int2 iasfloat_2(*(int1*)&fval[0], *(int1*)&fval[1]);
-    float2 fasfloat_2 = asfloat(iasfloat_2); eq(fasfloat_2, fval[0], fval[1]);
+    uint2 uiasfloat_2 = uint2(*(uint32_t*)&fval[0], *(uint32_t*)&fval[1]);
+    float2 fuiasfloat_2 = asfloat(uiasfloat_2); eq(fuiasfloat_2, fval[0], fval[1]);
 
-    uint4 uiasfloat_4 = uint4(*(uint1*)&fval[0], *(uint1*)&fval[1], *(uint1*)&fval[2], *(uint1*)&fval[3]);
-    float4 fasfloat_4 = asfloat(uiasfloat_4); eq(fasfloat_4, fval[0], fval[1], fval[2], fval[3]);
+    uint3 uiasfloat_3 = uint3(*(uint32_t*)&fval[0], *(uint32_t*)&fval[1], *(uint32_t*)&fval[2]);
+    float3 fuiasfloat_3 = asfloat(uiasfloat_3); eq(fuiasfloat_3, fval[0], fval[1], fval[2]);
+
+    uint4 uiasfloat_4 = uint4(*(uint32_t*)&fval[0], *(uint32_t*)&fval[1], *(uint32_t*)&fval[2], *(uint32_t*)&fval[3]);
+    float4 fuiasfloat_4 = asfloat(uiasfloat_4); eq(fuiasfloat_4, fval[0], fval[1], fval[2], fval[3]);
+
+    int1 iasfloat_1(*(int32_t*)&fval[0]);
+    float1 fiasfloat_1 = asfloat(iasfloat_1); eq(fiasfloat_1, fval[0]);
+
+    int2 iasfloat_2(*(int32_t*)&fval[0], *(int32_t*)&fval[1]);
+    float2 fiasfloat_2 = asfloat(iasfloat_2); eq(fiasfloat_2, fval[0], fval[1]);
+
+    int3 iasfloat_3(*(int32_t*)&fval[0], *(int32_t*)&fval[1], *(int32_t*)&fval[2]);
+    float3 fiasfloat_3 = asfloat(iasfloat_3); eq(fiasfloat_3, fval[0], fval[1], fval[2]);
+
+    int4 iasfloat_4(*(int32_t*)&fval[0], *(int32_t*)&fval[1], *(int32_t*)&fval[2], *(int32_t*)&fval[3]);
+    float4 fiasfloat_4 = asfloat(iasfloat_4); eq(fiasfloat_4, fval[0], fval[1], fval[2], fval[3]);
+
+    uint32_t uival[4] = { 7, 8, 9, 10 };
+
+    float1 fasuint_1(*(float*)&uival[0]);
+    uint1 uisuint_1 = asuint(fasuint_1); eq(uisuint_1, uival[0]);
+
+    float2 fasuint_2(*(float*)&uival[0], *(float*)&uival[1]);
+    uint2 uisuint_2 = asuint(fasuint_2); eq(uisuint_2, uival[0], uival[1]);
+
+    float3 fasuint_3(*(float*)&uival[0], *(float*)&uival[1], *(float*)&uival[2]);
+    uint3 uisuint_3 = asuint(fasuint_3); eq(uisuint_3, uival[0], uival[1], uival[2]);
+
+    float4 fasuint_4(*(float*)&uival[0], *(float*)&uival[1], *(float*)&uival[2], *(float*)&uival[3]);
+    uint4 uisuint_4 = asuint(fasuint_4); eq(uisuint_4, uival[0], uival[1], uival[2], uival[3]);
+
+    int32_t ival[4] = { 11, 12, 13, 14 };
+
+    float1 fasint_1(*(float*)&ival[0]);
+    int1 isuint_1 = asint(fasint_1); eq(isuint_1, ival[0]);
+
+    float2 fasint_2(*(float*)&ival[0], *(float*)&ival[1]);
+    int2 isuint_2 = asint(fasint_2); eq(isuint_2, ival[0], ival[1]);
+
+    float3 fasint_3(*(float*)&ival[0], *(float*)&ival[1], *(float*)&ival[2]);
+    int3 isuint_3 = asint(fasint_3); eq(isuint_3, ival[0], ival[1], ival[2]);
+
+    float4 fasint_4(*(float*)&ival[0], *(float*)&ival[1], *(float*)&ival[2], *(float*)&ival[3]);
+    int4 isuint_4 = asint(fasint_4); eq(isuint_4, ival[0], ival[1], ival[2], ival[3]);
 
 	// Bit shifting
 

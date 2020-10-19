@@ -147,6 +147,32 @@ namespace hlslpp_unit
 		eq(v.w, w);
 	}
 
+    void eq(uint32_t a, uint32_t b)
+    {
+        assert(a == b);
+    }
+
+    void eq(const uint2& v, uint32_t x, uint32_t y)
+    {
+        eq(v.x, x);
+        eq(v.y, y);
+    }
+
+    void eq(const uint3& v, uint32_t x, uint32_t y, uint32_t z)
+    {
+        eq(v.x, x);
+        eq(v.y, y);
+        eq(v.z, z);
+    }
+
+    void eq(const uint4& v, uint32_t x, uint32_t y, uint32_t z, uint32_t w)
+    {
+        eq(v.x, x);
+        eq(v.y, y);
+        eq(v.z, z);
+        eq(v.w, w);
+    }
+
 	void eq(bool a, bool c)
 	{
 		bool equals = a == c;

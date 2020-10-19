@@ -220,6 +220,14 @@ namespace hlslpp_unit
 
 	void eq(const int4& v, int32_t x, int32_t y, int32_t z, int32_t w);
 
+    void eq(uint32_t a, uint32_t b);
+
+    void eq(const uint2& v, uint32_t x, uint32_t y);
+
+    void eq(const uint3& v, uint32_t x, uint32_t y, uint32_t z);
+
+    void eq(const uint4& v, uint32_t x, uint32_t y, uint32_t z, uint32_t w);
+
 	int32_t shift_left(int32_t a, int32_t b);
 
 	int32_t shift_right(int32_t a, int32_t b);
