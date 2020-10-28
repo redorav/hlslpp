@@ -322,7 +322,7 @@ namespace hlslpp
 		hlslpp_inline uint2(uint32_t i) : vec(_hlslpp_set_epu32(i, i, 0, 0)) {}
 
 		template<typename T1, typename T2>
-		hlslpp_inline uint2(T1 i1, T2 i2, hlslpp_enable_if_number_2(T1, T2)) : vec(_hlslpp_set_epi32((unsigned int)i1, (unsigned int)i2, 0, 0)) {}
+		hlslpp_inline uint2(T1 i1, T2 i2, hlslpp_enable_if_number_2(T1, T2)) : vec(_hlslpp_set_epu32((unsigned int)i1, (unsigned int)i2, 0, 0)) {}
 
 		hlslpp_inline uint2(const uint1& i1, const uint1& i2) { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
 		
@@ -350,7 +350,7 @@ namespace hlslpp
 		hlslpp_inline uint3(uint32_t i) : vec(_hlslpp_set_epu32(i, i, i, 0)) {}
 
 		template<typename T1, typename T2, typename T3>
-		hlslpp_inline uint3(T1 i1, T2 i2, T3 i3, hlslpp_enable_if_number_3(T1, T2, T3)) : vec(_hlslpp_set_epi32((unsigned int)i1, (unsigned int)i2, (unsigned int)i3, 0)) {}
+		hlslpp_inline uint3(T1 i1, T2 i2, T3 i3, hlslpp_enable_if_number_3(T1, T2, T3)) : vec(_hlslpp_set_epu32((unsigned int)i1, (unsigned int)i2, (unsigned int)i3, 0)) {}
 
 		hlslpp_inline uint3(const uint1& i1, const uint1& i2, const uint1& i3) { vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epi32(i1.vec, i3.vec), _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 
