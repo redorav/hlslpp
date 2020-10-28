@@ -61,13 +61,12 @@ Remember to also add an include path to "hlslpp/include". hlsl++.h pulls in othe
 * Efficient swizzling for all vector types
 * Basic operators +, *, -, / for all vector and matrix types
 * Per-component comparison operators ==, !=, >, <, >=, <= (no ternary operator as overloading is disallowed in C++)
-* hlsl vector functions: abs, acos, all, any, asin, atan, ceil, clamp, cos, cosh, cross, degrees, dot, floor, fmod, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, max, mad, min, modf, normalize, pow, radians, reflect, refract, round, rsqrt, saturate, sign, sin, sincos, sinh, smoothstep, sqrt, step, trunc, tan, tanh
+* hlsl vector functions: abs, acos, all, any, asin, atan, atan2, ceil, clamp, cos, cosh, cross, degrees, dot, floor, fmod, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, max, mad, min, modf, normalize, pow, radians, reflect, refract, round, rsqrt, saturate, sign, sin, sincos, sinh, smoothstep, sqrt, step, trunc, tan, tanh
 * Additional matrix functions: determinant, transpose, inverse (not in hlsl but very useful)
 * Matrix multiplication for all NxM matrix combinations
 * Native visualizers for Visual Studio (.natvis files) which correctly parse with both MSVC and Clang in Windows
 
 Missing/planned:
 
-* hlsl functions: atan2
 * floatNxM _m00_m01 style swizzling (rows implemented but missing columns)
 * boolN types
