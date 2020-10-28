@@ -173,7 +173,7 @@ namespace hlslpp
 		return _hlslpp256_cmpge1_ps(x, y);
 	}
 
-	#if !defined(HLSLPP_SIN_IMPLEMENTATION)
+#if !defined(HLSLPP_SIN_IMPLEMENTATION)
 
 		// Uses a minimax polynomial fitted to the [-pi/2, pi/2] range
 	inline n256 _hlslpp256_sin_ps(n256 x)
@@ -206,18 +206,18 @@ namespace hlslpp
 		return result;
 	}
 
-	#endif
+#endif
 
-	#if !defined(HLSLPP_COS_IMPLEMENTATION)
+#if !defined(HLSLPP_COS_IMPLEMENTATION)
 
 	hlslpp_inline n256 _hlslpp256_cos_ps(n256 x)
 	{
 		return _hlslpp256_sin_ps(_hlslpp256_sub_ps(f8_pi2, x));
 	}
 
-	#endif
+#endif
 
-	#if !defined(HLSLPP_TAN_IMPLEMENTATION)
+#if !defined(HLSLPP_TAN_IMPLEMENTATION)
 
 	// Uses a minimax polynomial fitted to the [-pi/4, pi/4] range
 	inline n256 _hlslpp256_tan_ps(n256 x)
@@ -255,9 +255,9 @@ namespace hlslpp
 		return result;
 	}
 
-	#endif
+#endif
 
-	#if !defined(HLSLPP_ACOS_IMPLEMENTATION)
+#if !defined(HLSLPP_ACOS_IMPLEMENTATION)
 
 	// Max error vs. std::acos
 	// SSE : 1.54972076e-6
@@ -293,9 +293,9 @@ namespace hlslpp
 		return result;
 	}
 
-	#endif
+#endif
 
-	#if !defined(HLSLPP_ASIN_IMPLEMENTATION)
+#if !defined(HLSLPP_ASIN_IMPLEMENTATION)
 
 	// Max error vs. std::asin
 	// SSE : 1.5348196e-6
@@ -330,9 +330,9 @@ namespace hlslpp
 		return result;
 	}
 
-	#endif
+#endif
 
-	#if !defined(HLSLPP_ATAN_IMPLEMENTATION)
+#if !defined(HLSLPP_ATAN_IMPLEMENTATION)
 
 	// Max error vs. std::atan
 	// SSE : 2.74181366e-6
@@ -370,9 +370,43 @@ namespace hlslpp
 		return result;
 	}
 
-	#endif
+#endif
 
-	#if !defined(HLSLPP_SINH_IMPLEMENTATION)
+#if !defined(HLSLPP_ATAN2_IMPLEMENTATION)
+
+	// Use definition from Wikipedia: https://en.wikipedia.org/wiki/Atan2
+	inline n128 _hlslpp256_atan2_ps(n256 y, n256 x)
+	{
+		n128 isxgt0 = _hlslpp256_cmpgt_ps(x, _hlslpp256_setzero_ps()); // x > 0
+		n128 isxeq0 = _hlslpp256_cmpeq_ps(x, _hlslpp256_setzero_ps()); // x == 0
+		n128 isxlt0 = _hlslpp256_cmplt_ps(x, _hlslpp256_setzero_ps()); // x < 0
+
+		n128 isyge0 = _hlslpp256_cmpge_ps(y, _hlslpp256_setzero_ps()); // y >= 0
+		n128 isygt0 = _hlslpp256_cmpgt_ps(y, _hlslpp256_setzero_ps()); // y > 0
+		n128 isylt0 = _hlslpp256_cmplt_ps(y, _hlslpp256_setzero_ps()); // y < 0
+
+		n128 atanydivx = _hlslpp256_atan_ps(_hlslpp256_div_ps(y, x)); // atan(y / x)
+		n128 atanydivxpluspi = _hlslpp256_add_ps(atanydivx, f4_pi);   // atan(y / x) + pi
+		n128 atanydivxminuspi = _hlslpp256_sub_ps(atanydivx, f4_pi);  // atan(y / x) - pi
+
+		n128 isxlt0yge0 = _hlslpp256_and_ps(isxlt0, isyge0);
+		n128 isxlt0ylt0 = _hlslpp256_and_ps(isxlt0, isylt0);
+		n128 isxeq0ygt0 = _hlslpp256_and_ps(isxeq0, isygt0);
+		n128 isxeq0ylt0 = _hlslpp256_and_ps(isxeq0, isylt0);
+
+		// If x == 0 and y == 0, return NaN
+		n128 result = f8_NaN;
+		result = _hlslpp256_sel_ps(result, atanydivx, isxgt0);
+		result = _hlslpp256_sel_ps(result, atanydivxpluspi, isxlt0yge0);
+		result = _hlslpp256_sel_ps(result, atanydivxminuspi, isxlt0ylt0);
+		result = _hlslpp256_sel_ps(result, f4_pi2, isxeq0ygt0);
+		result = _hlslpp256_sel_ps(result, f4_minusPi2, isxeq0ylt0);
+		return result;
+	}
+
+#endif
+
+#if !defined(HLSLPP_SINH_IMPLEMENTATION)
 
 	// sinh(x) = (exp(x) - exp(-x)) / 2.0
 	hlslpp_inline n256 _hlslpp256_sinh_ps(n256 x)
@@ -382,9 +416,9 @@ namespace hlslpp
 		return _hlslpp256_mul_ps(_hlslpp256_sub_ps(expx, exp_minusx), f8_05);
 	}
 
-	#endif
+#endif
 
-	#if !defined(HLSLPP_COSH_IMPLEMENTATION)
+#if !defined(HLSLPP_COSH_IMPLEMENTATION)
 
 	// cosh(x) = (exp(x) + exp(-x)) / 2.0
 	hlslpp_inline n256 _hlslpp256_cosh_ps(n256 x)
@@ -394,9 +428,9 @@ namespace hlslpp
 		return _hlslpp256_mul_ps(_hlslpp256_add_ps(expx, exp_minusx), f8_05);
 	}
 
-	#endif
+#endif
 
-	#if !defined(HLSLPP_TANH_IMPLEMENTATION)
+#if !defined(HLSLPP_TANH_IMPLEMENTATION)
 
 	// tanh(x) = (exp(x) - exp(-x)) / (exp(x) + exp(-x))
 	hlslpp_inline n256 _hlslpp256_tanh_ps(n256 x)
@@ -406,7 +440,7 @@ namespace hlslpp
 		return _hlslpp256_div_ps(_hlslpp256_sub_ps(expx, exp_minusx), _hlslpp256_add_ps(expx, exp_minusx));
 	}
 
-	#endif
+#endif
 
 	hlslpp_inline n256 _hlslpp256_reflect8_ps(n256 i, n256 n)
 	{
@@ -591,6 +625,8 @@ namespace hlslpp
 	hlslpp_inline float8 asin(const float8& f) { return float8(_hlslpp256_asin_ps(f.vec)); }
 
 	hlslpp_inline float8 atan(const float8& f) { return float8(_hlslpp256_atan_ps(f.vec)); }
+
+	hlslpp_inline float8 atan2(const float8& y, const float8& x) { return float8(_hlslpp256_atan2_ps(y.vec, x.vec)); }
 
 	hlslpp_inline float8 ceil(const float8& f) { return float8(_hlslpp256_ceil_ps(f.vec)); }
 

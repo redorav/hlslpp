@@ -501,15 +501,25 @@ void RunUnitTestsVectorFloat()
 	float3 vasin_swiz_3 = asin(vfoo3.bgr);
 	float4 vasin_swiz_4 = asin(vfoo4.wwww);
 
-	float1 vatan1 = atan(vfoo1);
-	float2 vatan2 = atan(vfoo2);
-	float3 vatan3 = atan(vfoo3);
-	float4 vatan4 = atan(vfoo4);
+	float1 vatan_1 = atan(vfoo1);
+	float2 vatan_2 = atan(vfoo2);
+	float3 vatan_3 = atan(vfoo3);
+	float4 vatan_4 = atan(vfoo4);
 
 	float1 vatan_swiz_1 = atan(vfoo1.r);
 	float2 vatan_swiz_2 = atan(vfoo2.yx);
 	float3 vatan_swiz_3 = atan(vfoo3.bgr);
 	float4 vatan_swiz_4 = atan(vfoo4.wwww);
+
+	float1 vatan2_1 = atan2(vfoo1, vbar1);
+	float2 vatan2_2 = atan2(vfoo2, vbar2);
+	float3 vatan2_3 = atan2(vfoo3, vbar3);
+	float4 vatan2_4 = atan2(vfoo4, vbar4);
+
+	float1 vatan2_swiz_1 = atan2(vfoo1.r, vbar1.r);
+	float2 vatan2_swiz_2 = atan2(vfoo2.yx, vbar2.yx);
+	float3 vatan2_swiz_3 = atan2(vfoo3.bgr, vbar3.bgr);
+	float4 vatan2_swiz_4 = atan2(vfoo4.wwww, vbar4.wwww);
 
 	float1 vceil1 = ceil(vfoo1);							eq(vceil1, ceil((float)vfoo1.x));
 	float2 vceil2 = ceil(vfoo2);							eq(vceil2, ceil((float)vfoo2.x), ceil((float)vfoo2.y));

@@ -406,6 +406,40 @@ namespace hlslpp
 
 #endif
 
+#if !defined(HLSLPP_ATAN2_IMPLEMENTATION)
+
+	// Use definition from Wikipedia: https://en.wikipedia.org/wiki/Atan2
+	inline n128 _hlslpp_atan2_ps(n128 y, n128 x)
+	{
+		n128 isxgt0 = _hlslpp_cmpgt_ps(x, _hlslpp_setzero_ps()); // x > 0
+		n128 isxeq0 = _hlslpp_cmpeq_ps(x, _hlslpp_setzero_ps()); // x == 0
+		n128 isxlt0 = _hlslpp_cmplt_ps(x, _hlslpp_setzero_ps()); // x < 0
+
+		n128 isyge0 = _hlslpp_cmpge_ps(y, _hlslpp_setzero_ps()); // y >= 0
+		n128 isygt0 = _hlslpp_cmpgt_ps(y, _hlslpp_setzero_ps()); // y > 0
+		n128 isylt0 = _hlslpp_cmplt_ps(y, _hlslpp_setzero_ps()); // y < 0
+
+		n128 atanydivx        = _hlslpp_atan_ps(_hlslpp_div_ps(y, x)); // atan(y / x)
+		n128 atanydivxpluspi  = _hlslpp_add_ps(atanydivx, f4_pi);      // atan(y / x) + pi
+		n128 atanydivxminuspi = _hlslpp_sub_ps(atanydivx, f4_pi);      // atan(y / x) - pi
+
+		n128 isxlt0yge0 = _hlslpp_and_ps(isxlt0, isyge0);
+		n128 isxlt0ylt0 = _hlslpp_and_ps(isxlt0, isylt0);
+		n128 isxeq0ygt0 = _hlslpp_and_ps(isxeq0, isygt0);
+		n128 isxeq0ylt0 = _hlslpp_and_ps(isxeq0, isylt0);
+
+		// If x == 0 and y == 0, return NaN
+		n128 result = f4_NaN;
+		result = _hlslpp_sel_ps(result, atanydivx,        isxgt0);
+		result = _hlslpp_sel_ps(result, atanydivxpluspi,  isxlt0yge0);
+		result = _hlslpp_sel_ps(result, atanydivxminuspi, isxlt0ylt0);
+		result = _hlslpp_sel_ps(result, f4_pi2,           isxeq0ygt0);
+		result = _hlslpp_sel_ps(result, f4_minusPi2,      isxeq0ylt0);
+		return result;
+	}
+
+#endif
+
 #if !defined(HLSLPP_SINH_IMPLEMENTATION)
 
 	// sinh(x) = (exp(x) - exp(-x)) / 2.0
@@ -1149,6 +1183,11 @@ namespace hlslpp
 	hlslpp_inline float3 atan(const float3& f) { return float3(_hlslpp_atan_ps(f.vec)); }
 	hlslpp_inline float4 atan(const float4& f) { return float4(_hlslpp_atan_ps(f.vec)); }
 
+	hlslpp_inline float1 atan2(const float1& y, const float1& x) { return float1(_hlslpp_atan2_ps(y.vec, x.vec)); }
+	hlslpp_inline float2 atan2(const float2& y, const float2& x) { return float2(_hlslpp_atan2_ps(y.vec, x.vec)); }
+	hlslpp_inline float3 atan2(const float3& y, const float3& x) { return float3(_hlslpp_atan2_ps(y.vec, x.vec)); }
+	hlslpp_inline float4 atan2(const float4& y, const float4& x) { return float4(_hlslpp_atan2_ps(y.vec, x.vec)); }
+
 	hlslpp_inline float1 ceil(const float1& f) { return float1(_hlslpp_ceil_ps(f.vec)); }
 	hlslpp_inline float2 ceil(const float2& f) { return float2(_hlslpp_ceil_ps(f.vec)); }
 	hlslpp_inline float3 ceil(const float3& f) { return float3(_hlslpp_ceil_ps(f.vec)); }
@@ -1413,6 +1452,7 @@ namespace hlslpp
 	template<int X> hlslpp_inline float1 acos(const swizzle1<X>& s) { return acos(float1(s)); }
 	template<int X> hlslpp_inline float1 asin(const swizzle1<X>& s) { return asin(float1(s)); }
 	template<int X> hlslpp_inline float1 atan(const swizzle1<X>& s) { return atan(float1(s)); }
+	template<int X> hlslpp_inline float1 atan2(const swizzle1<X>& s1, const swizzle1<X>& s2) { return atan2(float1(s1), float1(s2)); }
 	template<int X> hlslpp_inline float1 ceil(const swizzle1<X>& s) { return ceil(float1(s)); }
 	template<int X> hlslpp_inline float1 cos(const swizzle1<X>& s) { return cos(float1(s)); }
 	template<int X> hlslpp_inline float1 cosh(const swizzle1<X>& s) { return cosh(float1(s)); }

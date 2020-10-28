@@ -696,6 +696,7 @@ void RunPerformanceTests()
 	benchmark<float4, iter>("any", [&]() -> float4 { v4_1 = any(v4_1); return v4_1; });
 	benchmark<float4, iter>("asin", [&]() -> float4 { v4_1 = asin(v4_1); return v4_1; });
 	benchmark<float4, iter>("atan", [&]() -> float4 { v4_1 = atan(v4_1); return v4_1; });
+	benchmark<float4, iter>("atan2", [&]() -> float4 { v4_1 = atan2(v4_1, v4_2); return v4_1; });
 	benchmark<float4, iter>("ceil", [&]() -> float4 { v4_1 = ceil(v4_1); return v4_1; });
 	benchmark<float4, iter>("clamp", [&]() -> float4 { v4_1 = clamp(v4_1, v4_2, v4_3); return v4_1; });
 	benchmark<float4, iter>("cos", [&]() -> float4 { v4_1 = cos(v4_1); return v4_1; });

@@ -375,6 +375,13 @@ namespace hlslpp
 		return vector_float4(std::atan(v.x), std::atan(v.y), std::atan(v.z), std::atan(v.w));
 	}
 
+#define HLSLPP_ATAN2_IMPLEMENTATION
+
+	hlslpp_inline vector_float4 _hlslpp_atan2_ps(const vector_float4& y, const vector_float4& x)
+	{
+		return vector_float4(std::atan2(y.x, x.x), std::atan2(y.y, x.y), std::atan2(y.z, x.z), std::atan2(y.w, x.w));
+	}
+
 #define HLSLPP_SIN_IMPLEMENTATION
 
 	hlslpp_inline vector_float4 _hlslpp_sin_ps(const vector_float4& v)
