@@ -81,9 +81,9 @@
 
 	#define HLSLPP_360
 
-#elif !defined(HLSLP_SSE) && (defined(__SSE__) || (_M_IX86_FP > 0) || defined(_M_AMD64) || defined(_M_X64))
+#elif !defined(HLSLPP_SSE) && (defined(__SSE__) || (_M_IX86_FP > 0) || defined(_M_AMD64) || defined(_M_X64))
 
-	#define HLSLP_SSE
+	#define HLSLPP_SSE
 
 #elif !defined(HLSLPP_SCALAR)
 
@@ -104,7 +104,7 @@
 
 	#include "platforms/hlsl++_scalar.h"
 
-#elif defined(HLSLP_SSE)
+#elif defined(HLSLPP_SSE)
 
 	#include "platforms/hlsl++_sse.h"
 
