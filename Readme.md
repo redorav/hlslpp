@@ -9,7 +9,7 @@ Small header-only math library for C++ with the same syntax as the hlsl shading 
 
 hlsl++ allows you to be as expressive in C++ as when programming in the shader language. Constructs such as the following are possible.
 
-```cpp
+```hlsl
 float4 foo4 = float4(1, 2, 3, 4);
 float3 bar3 = foo4.xzy;
 float2 logFoo2 = log(bar3.xz);
