@@ -3,6 +3,8 @@
 // Hacky but needs FLOAT64
 #include "hlsl++_unit_tests.h"
 
+#include <iostream>
+
 const float deg2rad = 3.14159265f / 180.0f;
 
 namespace hlslpp_unit
@@ -23,6 +25,10 @@ namespace hlslpp_unit
 	{
 		bool withinTolerance = abs(a - b) <= tolerance;
 		assert(withinTolerance);
+ 		if (!withinTolerance)
+ 		{
+ 			std::cerr << "Assertion failed! Values are not equal: a = " << a << ", b = " << b << ", tolerance = " << tolerance << std::endl;
+ 		}
 	}
 
 	void eq(const float2& v, float x, float y, float tolerance /*= 0.0f*/)
