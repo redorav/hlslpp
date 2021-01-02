@@ -6,6 +6,7 @@
 
 namespace hlslpp
 {
+	// Scale
 
 	hlslpp_inline float2x2 float2x2_scale(float sx, float sy)
 	{
@@ -44,6 +45,8 @@ namespace hlslpp
 		return float3x3_scale(su, su, su);
 	}
 
+	// Rotation
+
 	hlslpp_inline float2x2 float2x2_rotation(float angle_rad)
 	{
 		const float s = std::sin(angle_rad);
@@ -70,6 +73,37 @@ namespace hlslpp
 			v2.x - as.z, v1.y + c,    v2.y + as.x,
 			v2.z + as.y, v2.y - as.x, v1.z + c
 		);
+	}
+
+	// Translation
+
+	hlslpp_inline float3x3 float3x3_translation(float tx, float ty)
+	{
+		return float3x3(
+			1.f, 0.f, tx,
+			0.f, 1.f, ty,
+			0.f, 0.f, 1.f
+		);
+	}
+
+	hlslpp_inline float3x3 float3x3_translation(const float2& t)
+	{
+		return float3x3_translation(t.x, t.y);
+	}
+
+	hlslpp_inline float4x4 float4x4_translation(float tx, float ty, float tz)
+	{
+		return float4x4(
+			1.f, 0.f, 0.f, tx,
+			0.f, 1.f, 0.f, ty,
+			0.f, 0.f, 1.f, tz,
+			0.f, 0.f, 0.f, 1.f
+		);
+	}
+
+	hlslpp_inline float4x4 float4x4_translation(const float3& t)
+	{
+		return float4x4_translation(t.x, t.y, t.z);
 	}
 
 } // namespace hlslpp
