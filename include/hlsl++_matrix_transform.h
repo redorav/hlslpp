@@ -2,6 +2,10 @@
 // Special Transformation Matrices //
 //---------------------------------//
 
+// NOTE:
+// All transformation matrices assume "vector(N) * matrix(NxM)" multiplication order because
+// HLSL math is based on row-major matrix storage and vector can be represented as 1xN matrix
+
 #include <cmath>
 
 namespace hlslpp
@@ -94,8 +98,8 @@ namespace hlslpp
 		const float c = std::cos(angle_rad);
 
 		return float2x2(
-			c, -s,
-			s,  c
+			c,  s,
+			-s, c
 		);
 	}
 
@@ -105,8 +109,8 @@ namespace hlslpp
 		const float c = std::cos(angle_rad);
 
 		return float3x3(
-			c,  -s,   0.f,
-			s,   c,   0.f,
+			c,   s,   0.f,
+			-s,  c,   0.f,
 			0.f, 0.f, 1.f
 		);
 	}
@@ -124,9 +128,9 @@ namespace hlslpp
 		const float3 v2 = axis * ac.yzx;
 
 		return float3x3(
-			v1.x + c,    v2.x + as.z, v2.z - as.y,
-			v2.x - as.z, v1.y + c,    v2.y + as.x,
-			v2.z + as.y, v2.y - as.x, v1.z + c
+			v1.x + c,    v2.x - as.z, v2.z + as.y,
+			v2.x + as.z, v1.y + c,    v2.y - as.x,
+			v2.z - as.y, v2.y + as.x, v1.z + c
 		);
 	}
 
@@ -141,9 +145,9 @@ namespace hlslpp
 		const float3 v2 = axis * ac.yzx;
 
 		return float4x4(
-			v1.x + c,    v2.x + as.z, v2.z - as.y, 0.f,
-			v2.x - as.z, v1.y + c,    v2.y + as.x, 0.f,
-			v2.z + as.y, v2.y - as.x, v1.z + c,    0.f,
+			v1.x + c,    v2.x - as.z, v2.z + as.y, 0.f,
+			v2.x + as.z, v1.y + c,    v2.y - as.x, 0.f,
+			v2.z - as.y, v2.y + as.x, v1.z + c,    0.f,
 			0.f,         0.f,         0.f,         1.f
 		);
 	}
@@ -153,9 +157,9 @@ namespace hlslpp
 	hlslpp_inline float3x3 float3x3_translation_2d(float tx, float ty)
 	{
 		return float3x3(
-			1.f, 0.f, tx,
-			0.f, 1.f, ty,
-			0.f, 0.f, 1.f
+			1.f, 0.f, 0.f,
+			0.f, 1.f, 0.f,
+			tx,  ty,  1.f
 		);
 	}
 
@@ -169,10 +173,10 @@ namespace hlslpp
 	hlslpp_inline float4x4 float4x4_translation_3d(float tx, float ty, float tz)
 	{
 		return float4x4(
-			1.f, 0.f, 0.f, tx,
-			0.f, 1.f, 0.f, ty,
-			0.f, 0.f, 1.f, tz,
-			0.f, 0.f, 0.f, 1.f
+			1.f, 0.f, 0.f, 0.f,
+			0.f, 1.f, 0.f, 0.f,
+			0.f, 0.f, 1.f, 0.f,
+			tx,  ty,  tz,  1.f
 		);
 	}
 
@@ -189,12 +193,12 @@ namespace hlslpp
 		const float3 right = normalize(cross(up, look));
 		const float3 up_dir = cross(look, right);
 
-		return float4x4(
+		return transpose(float4x4(
 			float4(right,  -dot(position, right)),
 			float4(up_dir, -dot(position, up_dir)),
 			float4(look,   -dot(position, look)),
 			float4(0.f, 0.f, 0.f, 1.f)
-		);
+		));
 	}
 
 } // namespace hlslpp
