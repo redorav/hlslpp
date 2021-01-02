@@ -107,4 +107,13 @@ void RunUnitTestsMatrixTransform()
 
 	eq(mul(float4x4_translation_3d(2.f, 3.f, 4.f), vec4d_a1), 3.f, 4.f, 5.f, 1.f, tolerance);
 	eq(mul(float4x4_translation_3d(float3(2.f, 3.f, 4.f)), vec4d_a1), 3.f, 4.f, 5.f, 1.f, tolerance);
+
+	// View 3D
+
+	const float3 view_position(1.f, 0.f, 0.f);
+	const float3 view_target(0.f, 0.f, 0.f);
+	const float3 view_up(0.f, 0.f, 1.f);
+
+	eq(mul(float4x4_view(view_position, view_target, view_up, true), vec4d_a1), -1.f, 1.f, 0.f, 1.f);
+	eq(mul(float4x4_view(view_position, view_target, view_up, false), vec4d_a1), 1.f, 1.f, 0.f, 1.f);
 }

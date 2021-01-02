@@ -181,4 +181,20 @@ namespace hlslpp
 		return float4x4_translation_3d(t.x, t.y, t.z);
 	}
 
+	// View
+
+	hlslpp_inline float4x4 float4x4_view(const float3& position, const float3& target, const float3& up, bool left_handed = true)
+	{
+		const float3 look = normalize(target - position) * (left_handed ? 1.f : -1.f);
+		const float3 right = normalize(cross(up, look));
+		const float3 up_dir = cross(look, right);
+
+		return float4x4(
+			float4(right,  -dot(position, right)),
+			float4(up_dir, -dot(position, up_dir)),
+			float4(look,   -dot(position, look)),
+			float4(0.f, 0.f, 0.f, 1.f)
+		);
+	}
+
 } // namespace hlslpp
