@@ -549,6 +549,8 @@ void RunExperiments()
 
 void RunUnitTestsMatrixFloat();
 
+void RunUnitTestsMatrixTransform();
+
 void RunUnitTestsVectorFloat();
 
 void RunUnitTestsVectorInt();
@@ -571,6 +573,8 @@ void RunUnitTests()
 	RunUnitTestsVectorDouble();
 
 	RunUnitTestsMatrixFloat();
+
+    RunUnitTestsMatrixTransform();
 
 	// Quaternion tests
 

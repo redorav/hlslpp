@@ -7,6 +7,43 @@
 namespace hlslpp
 {
 
+	hlslpp_inline float2x2 float2x2_scale(float sx, float sy)
+	{
+		return float2x2(
+			sx,  0.f,
+			0.f, sy
+		);
+	}
+
+	hlslpp_inline float2x2 float2x2_scale(float2 s)
+	{
+		return float2x2_scale(s.x, s.y);
+	}
+
+	hlslpp_inline float2x2 float2x2_scale(float su)
+	{
+		return float2x2_scale(su, su);
+	}
+
+	hlslpp_inline float3x3 float3x3_scale(float sx, float sy, float sz)
+	{
+		return float3x3(
+			sx,  0.f, 0.f,
+			0.f, sy,  0.f,
+			0.f, 0.f, sz
+		);
+	}
+
+	hlslpp_inline float3x3 float3x3_scale(float3 s)
+	{
+		return float3x3_scale(s.x, s.y, s.z);
+	}
+
+	hlslpp_inline float3x3 float3x3_scale(float su)
+	{
+		return float3x3_scale(su, su, su);
+	}
+
 	hlslpp_inline float2x2 float2x2_rotation(float angle_rad)
 	{
 		const float s = std::sin(angle_rad);
