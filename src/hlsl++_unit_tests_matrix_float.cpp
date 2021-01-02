@@ -710,33 +710,6 @@ void RunUnitTestsMatrixFloat()
 	const float pi = std::acos(-1.f);
 	const float rot_tolerance = 1e-7;
 
-	// 2D Rotation
-
-	const float2 vec2d_x1(1.f, 0.f);
-	const float  sq2 = std::sqrt(2.f) / 2.f;
-
-	eq(mul(rotation_matrix(pi / 2.f), vec2d_x1), 0.f, 1.f, rot_tolerance);
-	eq(mul(rotation_matrix(pi / 4.f), vec2d_x1), sq2, sq2, rot_tolerance);
-	eq(mul(rotation_matrix(pi * 3.f / 4.f), vec2d_x1), -sq2, sq2, rot_tolerance);
-
-	// 3D Rotation
-
-	const float3 vec3d_x1(1.f, 0.f, 0.f);
-	const float3 vec3d_y1(0.f, 1.f, 0.f);
-	const float3 vec3d_z1(0.f, 0.f, 1.f);
-
-	eq(mul(rotation_matrix(vec3d_x1, -pi / 2.f), vec3d_y1), 0.f, 0.f, 1.f, rot_tolerance);
-	eq(mul(rotation_matrix(vec3d_y1, -pi / 2.f), vec3d_z1), 1.f, 0.f, 0.f, rot_tolerance);
-	eq(mul(rotation_matrix(vec3d_z1, -pi / 2.f), vec3d_x1), 0.f, 1.f, 0.f, rot_tolerance);
-
-	eq(mul(rotation_matrix(vec3d_x1, -pi / 4.f), vec3d_y1), 0.f, sq2, sq2, rot_tolerance);
-	eq(mul(rotation_matrix(vec3d_y1, -pi / 4.f), vec3d_z1), sq2, 0.f, sq2, rot_tolerance);
-	eq(mul(rotation_matrix(vec3d_z1, -pi / 4.f), vec3d_x1), sq2, sq2, 0.f, rot_tolerance);
-
-	eq(mul(rotation_matrix(vec3d_x1, -pi * 3.f / 4.f), vec3d_y1), 0.f, -sq2, sq2, rot_tolerance);
-	eq(mul(rotation_matrix(vec3d_y1, -pi * 3.f / 4.f), vec3d_z1), sq2, 0.f, -sq2, rot_tolerance);
-	eq(mul(rotation_matrix(vec3d_z1, -pi * 3.f / 4.f), vec3d_x1), -sq2, sq2, 0.f, rot_tolerance);
-
 	// Storage
 
 	float mat_store_3x3[9];
@@ -754,4 +727,33 @@ void RunUnitTestsMatrixFloat()
 		mat_store_4x4[4], mat_store_4x4[5], mat_store_4x4[6], mat_store_4x4[7],
 		mat_store_4x4[8], mat_store_4x4[9], mat_store_4x4[10], mat_store_4x4[11],
 		mat_store_4x4[12], mat_store_4x4[13], mat_store_4x4[14], mat_store_4x4[15]);
+
+    // Transformation Matrix Tests
+
+    // 2D Rotation
+
+    const float2 vec2d_x1(1.f, 0.f);
+    const float  sq2 = std::sqrt(2.f) / 2.f;
+
+    eq(mul(rotation_2d_matrix(pi / 2.f), vec2d_x1), 0.f, 1.f, rot_tolerance);
+    eq(mul(rotation_2d_matrix(pi / 4.f), vec2d_x1), sq2, sq2, rot_tolerance);
+    eq(mul(rotation_2d_matrix(pi * 3.f / 4.f), vec2d_x1), -sq2, sq2, rot_tolerance);
+
+    // 3D Rotation
+
+    const float3 vec3d_x1(1.f, 0.f, 0.f);
+    const float3 vec3d_y1(0.f, 1.f, 0.f);
+    const float3 vec3d_z1(0.f, 0.f, 1.f);
+
+    eq(mul(rotation_3d_matrix(vec3d_x1, -pi / 2.f), vec3d_y1), 0.f, 0.f, 1.f, rot_tolerance);
+    eq(mul(rotation_3d_matrix(vec3d_y1, -pi / 2.f), vec3d_z1), 1.f, 0.f, 0.f, rot_tolerance);
+    eq(mul(rotation_3d_matrix(vec3d_z1, -pi / 2.f), vec3d_x1), 0.f, 1.f, 0.f, rot_tolerance);
+
+    eq(mul(rotation_3d_matrix(vec3d_x1, -pi / 4.f), vec3d_y1), 0.f, sq2, sq2, rot_tolerance);
+    eq(mul(rotation_3d_matrix(vec3d_y1, -pi / 4.f), vec3d_z1), sq2, 0.f, sq2, rot_tolerance);
+    eq(mul(rotation_3d_matrix(vec3d_z1, -pi / 4.f), vec3d_x1), sq2, sq2, 0.f, rot_tolerance);
+
+    eq(mul(rotation_3d_matrix(vec3d_x1, -pi * 3.f / 4.f), vec3d_y1), 0.f, -sq2, sq2, rot_tolerance);
+    eq(mul(rotation_3d_matrix(vec3d_y1, -pi * 3.f / 4.f), vec3d_z1), sq2, 0.f, -sq2, rot_tolerance);
+    eq(mul(rotation_3d_matrix(vec3d_z1, -pi * 3.f / 4.f), vec3d_x1), -sq2, sq2, 0.f, rot_tolerance);
 }
