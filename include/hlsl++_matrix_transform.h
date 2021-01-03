@@ -10,9 +10,9 @@
 
 namespace hlslpp
 {
-	// Scale 2D
+	// Scaling
 
-	hlslpp_inline float2x2 float2x2_scale_2d(float sx, float sy)
+	hlslpp_inline float2x2 float2x2_scale(float sx, float sy)
 	{
 		return float2x2(
 			sx,  0.f,
@@ -20,38 +20,17 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float2x2 float2x2_scale_2d(const float2& s)
+	hlslpp_inline float2x2 float2x2_scale(const float2& s)
 	{
-		return float2x2_scale_2d(s.x, s.y);
+		return float2x2_scale(s.x, s.y);
 	}
 
-	hlslpp_inline float2x2 float2x2_scale_2d(float su)
+	hlslpp_inline float2x2 float2x2_scale(float su)
 	{
-		return float2x2_scale_2d(su, su);
+		return float2x2_scale(su, su);
 	}
 
-	hlslpp_inline float3x3 float3x3_scale_2d(float sx, float sy)
-	{
-		return float3x3(
-			sx,  0.f, 0.f,
-			0.f, sy,  0.f,
-			0.f, 0.f, 1.f
-		);
-	}
-
-	hlslpp_inline float3x3 float3x3_scale_2d(const float2& s)
-	{
-		return float3x3_scale_2d(s.x, s.y);
-	}
-
-	hlslpp_inline float3x3 float3x3_scale_2d(float su)
-	{
-		return float3x3_scale_2d(su, su);
-	}
-
-	// Scale 3D
-
-	hlslpp_inline float3x3 float3x3_scale_3d(float sx, float sy, float sz)
+	hlslpp_inline float3x3 float3x3_scale(float sx, float sy, float sz = 1.f)
 	{
 		return float3x3(
 			sx,  0.f, 0.f,
@@ -60,17 +39,22 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float3x3 float3x3_scale_3d(const float3& s)
+	hlslpp_inline float3x3 float3x3_scale(const float3& s)
 	{
-		return float3x3_scale_3d(s.x, s.y, s.z);
+		return float3x3_scale(s.x, s.y, s.z);
 	}
 
-	hlslpp_inline float3x3 float3x3_scale_3d(float su)
+	hlslpp_inline float3x3 float3x3_scale(const float2& s)
 	{
-		return float3x3_scale_3d(su, su, su);
+		return float3x3_scale(s.x, s.y, 1.f);
 	}
 
-	hlslpp_inline float4x4 float4x4_scale_3d(float sx, float sy, float sz)
+	hlslpp_inline float3x3 float3x3_scale(float su)
+	{
+		return float3x3_scale(su, su, su);
+	}
+
+	hlslpp_inline float4x4 float4x4_scale(float sx, float sy, float sz)
 	{
 		return float4x4(
 			sx,  0.f, 0.f, 0.f,
@@ -80,19 +64,19 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_scale_3d(const float3& s)
+	hlslpp_inline float4x4 float4x4_scale(const float3& s)
 	{
-		return float4x4_scale_3d(s.x, s.y, s.z);
+		return float4x4_scale(s.x, s.y, s.z);
 	}
 
-	hlslpp_inline float4x4 float4x4_scale_3d(float su)
+	hlslpp_inline float4x4 float4x4_scale(float su)
 	{
-		return float4x4_scale_3d(su, su, su);
+		return float4x4_scale(su, su, su);
 	}
 
-	// Rotation 2D
+	// Rotation
 
-	hlslpp_inline float2x2 float2x2_rotation_2d(float angle_rad)
+	hlslpp_inline float2x2 float2x2_rotate(float angle_rad)
 	{
 		const float s = std::sin(angle_rad);
 		const float c = std::cos(angle_rad);
@@ -103,7 +87,7 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float3x3 float3x3_rotation_2d(float angle_rad)
+	hlslpp_inline float3x3 float3x3_rotate(float angle_rad)
 	{
 		const float s = std::sin(angle_rad);
 		const float c = std::cos(angle_rad);
@@ -115,9 +99,7 @@ namespace hlslpp
 		);
 	}
 
-	// Rotation 3D
-
-	hlslpp_inline float3x3 float3x3_rotation_3d(const float3& axis, float angle_rad)
+	hlslpp_inline float3x3 float3x3_rotate(const float3& axis, float angle_rad)
 	{
 		const float s  = std::sin(angle_rad);
 		const float c  = std::cos(angle_rad);
@@ -134,7 +116,7 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_rotation_3d(const float3& axis, float angle_rad)
+	hlslpp_inline float4x4 float4x4_rotate(const float3& axis, float angle_rad)
 	{
 		const float s  = std::sin(angle_rad);
 		const float c  = std::cos(angle_rad);
@@ -152,9 +134,9 @@ namespace hlslpp
 		);
 	}
 
-	// Translation 2D
+	// Translation
 
-	hlslpp_inline float3x3 float3x3_translation_2d(float tx, float ty)
+	hlslpp_inline float3x3 float3x3_translate(float tx, float ty)
 	{
 		return float3x3(
 			1.f, 0.f, 0.f,
@@ -163,14 +145,12 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float3x3 float3x3_translation_2d(const float2& t)
+	hlslpp_inline float3x3 float3x3_translate(const float2& t)
 	{
-		return float3x3_translation_2d(t.x, t.y);
+		return float3x3_translate(t.x, t.y);
 	}
 
-	// Translation 3D
-
-	hlslpp_inline float4x4 float4x4_translation_3d(float tx, float ty, float tz)
+	hlslpp_inline float4x4 float4x4_translate(float tx, float ty, float tz)
 	{
 		return float4x4(
 			1.f, 0.f, 0.f, 0.f,
@@ -180,14 +160,14 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_translation_3d(const float3& t)
+	hlslpp_inline float4x4 float4x4_translate(const float3& t)
 	{
-		return float4x4_translation_3d(t.x, t.y, t.z);
+		return float4x4_translate(t.x, t.y, t.z);
 	}
 
-	// View
+	// World to View coordinates transformation
 
-	hlslpp_inline float4x4 float4x4_view(const float3& position, const float3& target, const float3& up, bool left_handed = true)
+	hlslpp_inline float4x4 float4x4_look_at(const float3& position, const float3& target, const float3& up, bool left_handed = true)
 	{
 		const float3 look = normalize(target - position) * (left_handed ? 1.f : -1.f);
 		const float3 right = normalize(cross(up, look));
