@@ -173,12 +173,36 @@ namespace hlslpp
 		const float3 right = normalize(cross(up, look));
 		const float3 up_dir = cross(look, right);
 
-		return transpose(float4x4(
-			float4(right,  -dot(position, right)),
-			float4(up_dir, -dot(position, up_dir)),
-			float4(look,   -dot(position, look)),
-			float4(0.f, 0.f, 0.f, 1.f)
-		));
+		return float4x4(
+			right.x,               up_dir.x,               look.x,               0.f,
+			right.y,               up_dir.y,               look.y,               0.f,
+			right.z,               up_dir.z,               look.z,               0.f,
+			-dot(position, right), -dot(position, up_dir), -dot(position, look), 1.f
+		);
+	}
+
+	// View to Orthographic Projection coordinates transformation
+
+    hlslpp_inline float4x4 float4x4_orthographic(float left, float right, float bottom, float top, float near, float far, bool zclip_zero, bool left_handed = true)
+	{
+		const float inv_width  = 1.f / (right - left);
+		const float inv_height = 1.f / (top - bottom);
+		const float inv_depth  = 1.f / (far - near);
+		const float s = left_handed ? 1.f : -1.f;
+
+		return float4x4(
+			2.f * inv_width,             0.f,                          0.f,                                            0.f,
+			0.f,                         2.f * inv_height,             0.f,                                            0.f,
+			0.f,                         0.f,                          s * (zclip_zero ? 1.f : 2.f) * inv_depth,       0.f,
+			-(right + left) * inv_width, -(top + bottom) * inv_height, -(near + (zclip_zero ? 0.f : far)) * inv_depth, 1.f
+		);
+	}
+
+    hlslpp_inline float4x4 float4x4_orthographic(float width, float height, float near, float far, bool zclip_zero, bool left_handed = true)
+	{
+		const float half_width  = width  / 2.f;
+		const float half_height = height / 2.f;
+		return float4x4_orthographic(-half_width, half_width, -half_height, half_height, near, far, left_handed, zclip_zero);
 	}
 
 } // namespace hlslpp

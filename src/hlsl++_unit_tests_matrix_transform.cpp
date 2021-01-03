@@ -110,4 +110,14 @@ void RunUnitTestsMatrixTransform()
 
 	eq(mul(vec4d_a1, float4x4_look_at(view_position, view_target, view_up, true)), -1.f, 1.f, 0.f, 1.f);
 	eq(mul(vec4d_a1, float4x4_look_at(view_position, view_target, view_up, false)), 1.f, 1.f, 0.f, 1.f);
+
+	// View to Orthographic Projection coordinates transformation
+
+	const float4 vec4d_view(0.5f, 0.5f, 0.f, 1.f);
+
+	eq(mul(vec4d_view, float4x4_orthographic(-0.5f, 0.5f, -0.5f, 0.5f, -1.f, 1.f, true, true)), 1.f, 1.f, 0.5f, 1.f);
+	eq(mul(vec4d_view, float4x4_orthographic(1.f, 1.f, -1.f, 1.f, true, true)), 1.f, 1.f, 0.5f, 1.f);
+
+	eq(mul(vec4d_view, float4x4_orthographic(-0.5f, 0.5f, -0.5f, 0.5f, -1.f, 1.f, false, false)), 1.f, 1.f, 0.f, 1.f);
+	eq(mul(vec4d_view, float4x4_orthographic(1.f, 1.f, -1.f, 1.f, false, false)), 1.f, 1.f, 0.f, 1.f);
 }
