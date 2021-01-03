@@ -183,40 +183,40 @@ namespace hlslpp
 
 	// View to Orthographic Projection coordinates transformation
 
-	hlslpp_inline float4x4 float4x4_orthographic(float left, float right, float bottom, float top, float near, float far, bool zclip_zero, bool left_handed = true)
+	hlslpp_inline float4x4 float4x4_orthographic(float left, float right, float bottom, float top, float near_z, float far_z, bool zclip_zero, bool left_handed = true)
 	{
 		const float inv_width  = 1.f / (right - left);
 		const float inv_height = 1.f / (top - bottom);
-		const float inv_depth  = 1.f / (far - near);
+		const float inv_depth  = 1.f / (far_z - near_z);
 		const float s = left_handed ? 1.f : -1.f;
 
 		return float4x4(
 			2.f * inv_width,             0.f,                          0.f,                                            0.f,
 			0.f,                         2.f * inv_height,             0.f,                                            0.f,
 			0.f,                         0.f,                          s * (zclip_zero ? 1.f : 2.f) * inv_depth,       0.f,
-			-(right + left) * inv_width, -(top + bottom) * inv_height, -(near + (zclip_zero ? 0.f : far)) * inv_depth, 1.f
+			-(right + left) * inv_width, -(top + bottom) * inv_height, -(near_z + (zclip_zero ? 0.f : far_z)) * inv_depth, 1.f
 		);
 	}
 
-    hlslpp_inline float4x4 float4x4_orthographic(float width, float height, float near, float far, bool zclip_zero, bool left_handed = true)
+    hlslpp_inline float4x4 float4x4_orthographic(float width, float height, float near_z, float far_z, bool zclip_zero, bool left_handed = true)
 	{
 		const float half_width  = width  / 2.f;
 		const float half_height = height / 2.f;
-		return float4x4_orthographic(-half_width, half_width, -half_height, half_height, near, far, zclip_zero, left_handed);
+		return float4x4_orthographic(-half_width, half_width, -half_height, half_height, near_z, far_z, zclip_zero, left_handed);
 	}
 
 	// View to Perspective Projection coordinates transformation
 
-	hlslpp_inline float4x4 float4x4_perspective(float left, float right, float bottom, float top, float near, float far, bool zclip_zero, bool left_handed = true)
+	hlslpp_inline float4x4 float4x4_perspective(float left, float right, float bottom, float top, float near_z, float far_z, bool zclip_zero, bool left_handed = true)
 	{
 		const float inv_width  = 1.f / (right - left);
 		const float inv_height = 1.f / (top - bottom);
-		const float inv_depth  = 1.f / (far - near);
-		const float dbl_near   = 2.f * near;
+		const float inv_depth  = 1.f / (far_z - near_z);
+		const float dbl_near   = 2.f * near_z;
 
 		const float s   = left_handed ? 1.f : -1.f;
-		const float m22 = s * (far + (zclip_zero ? 0.f : near)) * inv_depth;
-		const float m23 = zclip_zero ? -s * near * m22 : -2.f * far * near * inv_depth;
+		const float m22 = s * (far_z + (zclip_zero ? 0.f : near_z)) * inv_depth;
+		const float m23 = zclip_zero ? -s * near_z * m22 : -2.f * far_z * near_z * inv_depth;
 
 		return float4x4(
 			dbl_near * inv_width,            0.f,                               0.f, 0.f,
@@ -226,23 +226,23 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_perspective(float width, float height, float near, float far, bool zclip_zero, bool left_handed = true)
+	hlslpp_inline float4x4 float4x4_perspective(float width, float height, float near_z, float far_z, bool zclip_zero, bool left_handed = true)
 	{
 		const float half_width  = width  / 2.f;
 		const float half_height = height / 2.f;
-		return float4x4_perspective(-half_width, half_width, -half_height, half_height, near, far, zclip_zero, left_handed);
+		return float4x4_perspective(-half_width, half_width, -half_height, half_height, near_z, far_z, zclip_zero, left_handed);
 	}
 
-	hlslpp_inline float4x4 float4x4_perspective_fovx(float fov_x, float aspect, float near, float far, bool zclip_zero, bool left_handed = true)
+	hlslpp_inline float4x4 float4x4_perspective_fovx(float fov_x, float aspect, float near_z, float far_z, bool zclip_zero, bool left_handed = true)
 	{
-		const float width = 2.f * near * std::tan(fov_x / 2.f);
-		return float4x4_perspective(width, width / aspect, near, far, zclip_zero, left_handed);
+		const float width = 2.f * near_z * std::tan(fov_x / 2.f);
+		return float4x4_perspective(width, width / aspect, near_z, far_z, zclip_zero, left_handed);
 	}
 
-	hlslpp_inline float4x4 float4x4_perspective_fovy(float fov_y, float aspect, float near, float far, bool zclip_zero, bool left_handed = true)
+	hlslpp_inline float4x4 float4x4_perspective_fovy(float fov_y, float aspect, float near_z, float far_z, bool zclip_zero, bool left_handed = true)
 	{
-		const float height = 2.f * near * std::tan(fov_y / 2.f);
-		return float4x4_perspective(height * aspect, height, near, far, zclip_zero, left_handed);
+		const float height = 2.f * near_z * std::tan(fov_y / 2.f);
+		return float4x4_perspective(height * aspect, height, near_z, far_z, zclip_zero, left_handed);
 	}
 
 } // namespace hlslpp
