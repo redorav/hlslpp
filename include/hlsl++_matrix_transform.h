@@ -87,7 +87,7 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float3x3 float3x3_rotate(float angle_rad)
+	hlslpp_inline float3x3 float3x3_rotate_z(float angle_rad)
 	{
 		const float s = std::sin(angle_rad);
 		const float c = std::cos(angle_rad);
@@ -99,7 +99,70 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float3x3 float3x3_rotate(const float3& axis, float angle_rad)
+	hlslpp_inline float4x4 float4x4_rotate_z(float angle_rad)
+	{
+		const float s = std::sin(angle_rad);
+		const float c = std::cos(angle_rad);
+
+		return float4x4(
+			c,   s,   0.f, 0.f,
+			-s,  c,   0.f, 0.f,
+			0.f, 0.f, 1.f, 0.f,
+			0.f, 0.f, 0.f, 1.f
+		);
+	}
+	
+	hlslpp_inline float3x3 float3x3_rotate_y(float angle_rad)
+	{
+		const float s = std::sin(angle_rad);
+		const float c = std::cos(angle_rad);
+
+		return float3x3(
+			c,   0.f, -s,
+			0.f, 1.f, 0.f,
+			s,  0.f, c
+		);
+	}
+
+	hlslpp_inline float4x4 float4x4_rotate_y(float angle_rad)
+	{
+		const float s = std::sin(angle_rad);
+		const float c = std::cos(angle_rad);
+
+		return float4x4(
+			c,   0.f, -s,   0.f,
+			0.f, 1.f, 0.f, 0.f,
+			s,  0.f,  c,   0.f,
+			0.f, 0.f, 0.f, 1.f
+		);
+	}
+
+	hlslpp_inline float3x3 float3x3_rotate_x(float angle_rad)
+	{
+		const float s = std::sin(angle_rad);
+		const float c = std::cos(angle_rad);
+
+		return float3x3(
+			1.f, 0.f, 0.f,
+			0.f, c,   s,
+			0.f, -s,  c
+		);
+	}
+
+	hlslpp_inline float4x4 float4x4_rotate_x(float angle_rad)
+	{
+		const float s = std::sin(angle_rad);
+		const float c = std::cos(angle_rad);
+
+		return float4x4(
+			1.f, 0.f, 0.f, 0.f,
+			0.f, c,   s,   0.f,
+			0.f, -s,  c,   0.f,
+			0.f, 0.f, 0.f, 1.f
+		);
+	}
+
+	hlslpp_inline float3x3 float3x3_rotate_axis(const float3& axis, float angle_rad)
 	{
 		const float s  = std::sin(angle_rad);
 		const float c  = std::cos(angle_rad);
@@ -110,13 +173,13 @@ namespace hlslpp
 		const float3 v2 = axis * ac.yzx;
 
 		return float3x3(
-			v1.x + c,    v2.x - as.z, v2.z + as.y,
-			v2.x + as.z, v1.y + c,    v2.y - as.x,
-			v2.z - as.y, v2.y + as.x, v1.z + c
+			v1.x + c,    v2.x + as.z, v2.z - as.y,
+			v2.x - as.z, v1.y + c,    v2.y + as.x,
+			v2.z + as.y, v2.y - as.x, v1.z + c
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_rotate(const float3& axis, float angle_rad)
+	hlslpp_inline float4x4 float4x4_rotate_axis(const float3& axis, float angle_rad)
 	{
 		const float s  = std::sin(angle_rad);
 		const float c  = std::cos(angle_rad);
@@ -127,9 +190,9 @@ namespace hlslpp
 		const float3 v2 = axis * ac.yzx;
 
 		return float4x4(
-			v1.x + c,    v2.x - as.z, v2.z + as.y, 0.f,
-			v2.x + as.z, v1.y + c,    v2.y - as.x, 0.f,
-			v2.z - as.y, v2.y + as.x, v1.z + c,    0.f,
+			v1.x + c,    v2.x + as.z, v2.z - as.y, 0.f,
+			v2.x - as.z, v1.y + c,    v2.y + as.x, 0.f,
+			v2.z + as.y, v2.y - as.x, v1.z + c,    0.f,
 			0.f,         0.f,         0.f,         1.f
 		);
 	}
@@ -198,7 +261,7 @@ namespace hlslpp
 		);
 	}
 
-    hlslpp_inline float4x4 float4x4_orthographic(float width, float height, float near_z, float far_z, bool zclip_zero, bool left_handed = true)
+	hlslpp_inline float4x4 float4x4_orthographic(float width, float height, float near_z, float far_z, bool zclip_zero, bool left_handed = true)
 	{
 		const float half_width  = width  / 2.f;
 		const float half_height = height / 2.f;

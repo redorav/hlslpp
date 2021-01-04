@@ -47,52 +47,67 @@ void RunUnitTestsMatrixTransform()
 	// Rotation
 
 	eq(mul(vec2d_x1, float2x2_rotate(pi / 2.f)), 0.f, 1.f, tolerance);
-	eq(mul(vec3d_x1, float3x3_rotate(pi / 2.f)), 0.f, 1.f, 0.f, tolerance);
+	eq(mul(vec3d_x1, float3x3_rotate_z(pi / 2.f)), 0.f, 1.f, 0.f, tolerance);
 
 	eq(mul(vec2d_y1, float2x2_rotate(pi / 2.f)), -1.f, 0.f, tolerance);
-	eq(mul(vec3d_y1, float3x3_rotate(pi / 2.f)), -1.f, 0.f, 0.f, tolerance);
+	eq(mul(vec3d_y1, float3x3_rotate_z(pi / 2.f)), -1.f, 0.f, 0.f, tolerance);
 
 	eq(mul(vec2d_x1, float2x2_rotate(pi / 4.f)), sq2, sq2, tolerance);
-	eq(mul(vec3d_x1, float3x3_rotate(pi / 4.f)), sq2, sq2, 0.f, tolerance);
+	eq(mul(vec3d_x1, float3x3_rotate_z(pi / 4.f)), sq2, sq2, 0.f, tolerance);
 
 	eq(mul(vec2d_y1, float2x2_rotate(pi / 4.f)), -sq2, sq2, tolerance);
-	eq(mul(vec3d_y1, float3x3_rotate(pi / 4.f)), -sq2, sq2, 0.f, tolerance);
+	eq(mul(vec3d_y1, float3x3_rotate_z(pi / 4.f)), -sq2, sq2, 0.f, tolerance);
 
 	eq(mul(vec2d_x1, float2x2_rotate(pi * 3.f / 4.f)), -sq2, sq2, tolerance);
-	eq(mul(vec3d_x1, float3x3_rotate(pi * 3.f / 4.f)), -sq2, sq2, 0.f, tolerance);
+	eq(mul(vec3d_x1, float3x3_rotate_z(pi * 3.f / 4.f)), -sq2, sq2, 0.f, tolerance);
 
 	eq(mul(vec2d_y1, float2x2_rotate(pi * 3.f / 4.f)), -sq2, -sq2, tolerance);
-	eq(mul(vec3d_y1, float3x3_rotate(pi * 3.f / 4.f)), -sq2, -sq2, 0.f, tolerance);
+	eq(mul(vec3d_y1, float3x3_rotate_z(pi * 3.f / 4.f)), -sq2, -sq2, 0.f, tolerance);
 
-	eq(mul(vec2d_y1, float2x2_rotate(pi * 3.f / 4.f)), -sq2, -sq2, tolerance);
-	eq(mul(vec3d_y1, float3x3_rotate(pi * 3.f / 4.f)), -sq2, -sq2, 0.f, tolerance);
+	eq(mul(vec3d_y1, float3x3_rotate_x(pi / 2.f)), 0.f, 0.f, 1.f, tolerance);
+	eq(mul(vec4d_y1, float4x4_rotate_x(pi / 2.f)), 0.f, 0.f, 1.f, 1.f, tolerance);
+	eq(mul(vec3d_y1, float3x3_rotate_axis(vec3d_x1, pi / 2.f)), 0.f, 0.f, 1.f, tolerance);
+	eq(mul(vec4d_y1, float4x4_rotate_axis(vec3d_x1, pi / 2.f)), 0.f, 0.f, 1.f, 1.f, tolerance);
 
-	eq(mul(vec3d_y1, float3x3_rotate(vec3d_x1, -pi / 2.f)), 0.f, 0.f, 1.f, tolerance);
-	eq(mul(vec4d_y1, float4x4_rotate(vec3d_x1, -pi / 2.f)), 0.f, 0.f, 1.f, 1.f, tolerance);
+	eq(mul(vec3d_z1, float3x3_rotate_y(pi / 2.f)), 1.f, 0.f, 0.f, tolerance);
+	eq(mul(vec4d_z1, float4x4_rotate_y(pi / 2.f)), 1.f, 0.f, 0.f, 1.f, tolerance);
+	eq(mul(vec3d_z1, float3x3_rotate_axis(vec3d_y1, pi / 2.f)), 1.f, 0.f, 0.f, tolerance);
+	eq(mul(vec4d_z1, float4x4_rotate_axis(vec3d_y1, pi / 2.f)), 1.f, 0.f, 0.f, 1.f, tolerance);
 
-	eq(mul(vec3d_z1, float3x3_rotate(vec3d_y1, -pi / 2.f)), 1.f, 0.f, 0.f, tolerance);
-	eq(mul(vec4d_z1, float4x4_rotate(vec3d_y1, -pi / 2.f)), 1.f, 0.f, 0.f, 1.f, tolerance);
+	eq(mul(vec3d_x1, float3x3_rotate_z(pi / 2.f)), 0.f, 1.f, 0.f, tolerance);
+	eq(mul(vec4d_x1, float4x4_rotate_z(pi / 2.f)), 0.f, 1.f, 0.f, 1.f, tolerance);
+	eq(mul(vec3d_x1, float3x3_rotate_axis(vec3d_z1, pi / 2.f)), 0.f, 1.f, 0.f, tolerance);
+	eq(mul(vec4d_x1, float4x4_rotate_axis(vec3d_z1, pi / 2.f)), 0.f, 1.f, 0.f, 1.f, tolerance);
 
-	eq(mul(vec3d_x1, float3x3_rotate(vec3d_z1, -pi / 2.f)), 0.f, 1.f, 0.f, tolerance);
-	eq(mul(vec4d_x1, float4x4_rotate(vec3d_z1, -pi / 2.f)), 0.f, 1.f, 0.f, 1.f, tolerance);
+	eq(mul(vec3d_y1, float3x3_rotate_x(pi / 4.f)), 0.f, sq2, sq2, tolerance);
+	eq(mul(vec4d_y1, float4x4_rotate_x(pi / 4.f)), 0.f, sq2, sq2, 1.f, tolerance);
+	eq(mul(vec3d_y1, float3x3_rotate_axis(vec3d_x1, pi / 4.f)), 0.f, sq2, sq2, tolerance);
+	eq(mul(vec4d_y1, float4x4_rotate_axis(vec3d_x1, pi / 4.f)), 0.f, sq2, sq2, 1.f, tolerance);
 
-	eq(mul(vec3d_y1, float3x3_rotate(vec3d_x1, -pi / 4.f)), 0.f, sq2, sq2, tolerance);
-	eq(mul(vec4d_y1, float4x4_rotate(vec3d_x1, -pi / 4.f)), 0.f, sq2, sq2, 1.f, tolerance);
+	eq(mul(vec3d_z1, float3x3_rotate_y(pi / 4.f)), sq2, 0.f, sq2, tolerance);
+	eq(mul(vec4d_z1, float4x4_rotate_y(pi / 4.f)), sq2, 0.f, sq2, 1.f, tolerance);
+	eq(mul(vec3d_z1, float3x3_rotate_axis(vec3d_y1, pi / 4.f)), sq2, 0.f, sq2, tolerance);
+	eq(mul(vec4d_z1, float4x4_rotate_axis(vec3d_y1, pi / 4.f)), sq2, 0.f, sq2, 1.f, tolerance);
 
-	eq(mul(vec3d_z1, float3x3_rotate(vec3d_y1, -pi / 4.f)), sq2, 0.f, sq2, tolerance);
-	eq(mul(vec4d_z1, float4x4_rotate(vec3d_y1, -pi / 4.f)), sq2, 0.f, sq2, 1.f, tolerance);
+	eq(mul(vec3d_x1, float3x3_rotate_z(pi / 4.f)), sq2, sq2, 0.f, tolerance);
+	eq(mul(vec4d_x1, float4x4_rotate_z(pi / 4.f)), sq2, sq2, 0.f, 1.f, tolerance);
+	eq(mul(vec3d_x1, float3x3_rotate_axis(vec3d_z1, pi / 4.f)), sq2, sq2, 0.f, tolerance);
+	eq(mul(vec4d_x1, float4x4_rotate_axis(vec3d_z1, pi / 4.f)), sq2, sq2, 0.f, 1.f, tolerance);
 
-	eq(mul(vec3d_x1, float3x3_rotate(vec3d_z1, -pi / 4.f)), sq2, sq2, 0.f, tolerance);
-	eq(mul(vec4d_x1, float4x4_rotate(vec3d_z1, -pi / 4.f)), sq2, sq2, 0.f, 1.f, tolerance);
+	eq(mul(vec3d_y1, float3x3_rotate_x(pi * 3.f / 4.f)), 0.f, -sq2, sq2, tolerance);
+	eq(mul(vec4d_y1, float4x4_rotate_x(pi * 3.f / 4.f)), 0.f, -sq2, sq2, 1.f, tolerance);
+	eq(mul(vec3d_y1, float3x3_rotate_axis(vec3d_x1, pi * 3.f / 4.f)), 0.f, -sq2, sq2, tolerance);
+	eq(mul(vec4d_y1, float4x4_rotate_axis(vec3d_x1, pi * 3.f / 4.f)), 0.f, -sq2, sq2, 1.f, tolerance);
 
-	eq(mul(vec3d_y1, float3x3_rotate(vec3d_x1, -pi * 3.f / 4.f)), 0.f, -sq2, sq2, tolerance);
-	eq(mul(vec4d_y1, float4x4_rotate(vec3d_x1, -pi * 3.f / 4.f)), 0.f, -sq2, sq2, 1.f, tolerance);
+	eq(mul(vec3d_z1, float3x3_rotate_y(pi * 3.f / 4.f)), sq2, 0.f, -sq2, tolerance);
+	eq(mul(vec4d_z1, float4x4_rotate_y(pi * 3.f / 4.f)), sq2, 0.f, -sq2, 1.f, tolerance);
+	eq(mul(vec3d_z1, float3x3_rotate_axis(vec3d_y1, pi * 3.f / 4.f)), sq2, 0.f, -sq2, tolerance);
+	eq(mul(vec4d_z1, float4x4_rotate_axis(vec3d_y1, pi * 3.f / 4.f)), sq2, 0.f, -sq2, 1.f, tolerance);
 
-	eq(mul(vec3d_z1, float3x3_rotate(vec3d_y1, -pi * 3.f / 4.f)), sq2, 0.f, -sq2, tolerance);
-	eq(mul(vec4d_z1, float4x4_rotate(vec3d_y1, -pi * 3.f / 4.f)), sq2, 0.f, -sq2, 1.f, tolerance);
-
-	eq(mul(vec3d_x1, float3x3_rotate(vec3d_z1, -pi * 3.f / 4.f)), -sq2, sq2, 0.f, tolerance);
-	eq(mul(vec4d_x1, float4x4_rotate(vec3d_z1, -pi * 3.f / 4.f)), -sq2, sq2, 0.f, 1.f, tolerance);
+	eq(mul(vec3d_x1, float3x3_rotate_z(pi * 3.f / 4.f)), -sq2, sq2, 0.f, tolerance);
+	eq(mul(vec4d_x1, float4x4_rotate_z(pi * 3.f / 4.f)), -sq2, sq2, 0.f, 1.f, tolerance);
+	eq(mul(vec3d_x1, float3x3_rotate_axis(vec3d_z1, pi * 3.f / 4.f)), -sq2, sq2, 0.f, tolerance);
+	eq(mul(vec4d_x1, float4x4_rotate_axis(vec3d_z1, pi * 3.f / 4.f)), -sq2, sq2, 0.f, 1.f, tolerance);
 
 	// Translation
 
