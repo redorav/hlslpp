@@ -2,9 +2,10 @@
 // Special Transformation Matrices //
 //---------------------------------//
 
-// NOTE:
 // All transformation matrices assume "vector(N) * matrix(NxM)" multiplication order because
-// HLSL math is based on row-major matrix storage and vector can be represented as 1xN matrix
+// HLSL++ math is based on row-major matrix storage and vector can be represented as matrix(1xN).
+// Also be aware that matrices in HLSL Shaders conversely use column-major storage layout by default
+// and thus HLSL++ matrices must be transposed before writing to constant buffers for reading in HLSL.
 
 #include <cmath>
 
