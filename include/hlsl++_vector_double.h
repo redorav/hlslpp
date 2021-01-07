@@ -579,7 +579,6 @@ namespace hlslpp
 	struct hlslpp_nodiscard double1
 	{
 		hlslpp_inline double1() {}
-		hlslpp_inline double1(const double1& f) : vec(f.vec) {}
 		explicit hlslpp_inline double1(n128d vec) : vec(vec) {}
 
 		template<typename T>
@@ -604,7 +603,6 @@ namespace hlslpp
 		// Constructors
 
 		hlslpp_inline double2() {}
-		hlslpp_inline double2(const double2& f) : vec(f.vec) {}
 		explicit hlslpp_inline double2(n128d vec) : vec(vec) {}
 		explicit hlslpp_inline double2(const double1& f) : vec(_hlslpp_perm_xx_pd(f.vec)) {}
 
@@ -637,7 +635,6 @@ namespace hlslpp
 
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
-		hlslpp_inline double3(const double3& f) : vec(f.vec) {}
 		explicit hlslpp_inline double3(n256d vec) : vec(vec) {}
 		explicit hlslpp_inline double3(const double1& f) : vec(_hlslpp256_set128_pd(_hlslpp_perm_xx_pd(f.vec), _hlslpp_perm_xx_pd(f.vec))) {}
 
@@ -649,7 +646,6 @@ namespace hlslpp
 
 #else
 
-		hlslpp_inline double3(const double3& f) : vec0(f.vec0), vec1(f.vec1) {}
 		explicit hlslpp_inline double3(n128d vec0, n128d vec1) : vec0(vec0), vec1(vec1) {}
 		explicit hlslpp_inline double3(const double1& f) : vec0(_hlslpp_perm_xx_pd(f.vec)), vec1(_hlslpp_perm_xx_pd(f.vec)) {}
 
@@ -737,7 +733,6 @@ namespace hlslpp
 	
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
-		hlslpp_inline double4(const double4& f) : vec(f.vec) {}
 		explicit hlslpp_inline double4(n256d vec) : vec(vec) {}
 		explicit hlslpp_inline double4(const double1& f) : vec(_hlslpp256_set128_pd(_hlslpp_perm_xx_pd(f.vec), _hlslpp_perm_xx_pd(f.vec))) {}
 
@@ -749,7 +744,6 @@ namespace hlslpp
 
 #else
 
-		hlslpp_inline double4(const double4& f) : vec0(f.vec0), vec1(f.vec1) {}
 		explicit hlslpp_inline double4(n128d vec0, n128d vec1) : vec0(vec0), vec1(vec1) {}
 		explicit hlslpp_inline double4(const double1& f) : vec0(_hlslpp_perm_xx_pd(f.vec)), vec1(_hlslpp_perm_xx_pd(f.vec)) {}
 
