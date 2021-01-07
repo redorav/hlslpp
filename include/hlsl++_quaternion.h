@@ -6,7 +6,7 @@ namespace hlslpp
 {
 	struct hlslpp_nodiscard quaternion
 	{
-		quaternion() {}
+		quaternion() : vec(_hlslpp_setzero_ps()) {}
 		explicit quaternion(n128 vec) : vec(vec) {}
 
 		template<typename T1, typename T2, typename T3, typename T4>

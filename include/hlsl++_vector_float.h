@@ -746,8 +746,7 @@ namespace hlslpp
 
 	struct hlslpp_nodiscard float1
 	{
-		hlslpp_inline float1() {}
-		hlslpp_inline float1(const float1& f) : vec(f.vec) {}
+		hlslpp_inline float1() : vec(_hlslpp_setzero_ps()) {}
 		explicit hlslpp_inline float1(n128 vec) : vec(vec) {}
 
 		template<typename T>
@@ -773,8 +772,7 @@ namespace hlslpp
 	{
 		// Constructors
 
-		hlslpp_inline float2() {}
-		hlslpp_inline float2(const float2& f) : vec(f.vec) {}
+		hlslpp_inline float2() : vec(_hlslpp_setzero_ps()) {}
 		explicit hlslpp_inline float2(n128 vec) : vec(vec) {}
 		explicit hlslpp_inline float2(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 
@@ -805,8 +803,7 @@ namespace hlslpp
 	{
 		// Constructors
 
-		hlslpp_inline float3() {}
-		hlslpp_inline float3(const float3& f) : vec(f.vec) {}
+		hlslpp_inline float3() : vec(_hlslpp_setzero_ps()) {}
 		explicit hlslpp_inline float3(n128 vec) : vec(vec) {}
 		explicit hlslpp_inline float3(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 
@@ -840,8 +837,7 @@ namespace hlslpp
 
 	struct hlslpp_nodiscard	float4
 	{
-		hlslpp_inline float4() {}
-		hlslpp_inline float4(const float4& f) : vec(f.vec) {}
+		hlslpp_inline float4() : vec(_hlslpp_setzero_ps()) {}
 		explicit hlslpp_inline float4(n128 vec) : vec(vec) {}
 		explicit hlslpp_inline float4(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 

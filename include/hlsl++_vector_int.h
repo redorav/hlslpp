@@ -285,8 +285,7 @@ namespace hlslpp
 
 	struct hlslpp_nodiscard int1
 	{
-		hlslpp_inline int1() {}
-		hlslpp_inline int1(const int1& i) : vec(i.vec) {}
+		hlslpp_inline int1() : vec(_hlslpp_setzero_epi32()) {}
 		explicit hlslpp_inline int1(n128i vec) : vec(vec) {}
 
 		template<typename T>
@@ -309,8 +308,7 @@ namespace hlslpp
 	{
 		// Constructors
 
-		hlslpp_inline int2() {}
-		hlslpp_inline int2(const int2& i) : vec(i.vec) {}
+		hlslpp_inline int2() : vec(_hlslpp_setzero_epi32()) {}
 		explicit hlslpp_inline int2(n128i vec) : vec(vec) {}
 		explicit hlslpp_inline int2(const int1& i) : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}
 
@@ -336,8 +334,7 @@ namespace hlslpp
 	{
 		// Constructors
 
-		hlslpp_inline int3() {}
-		hlslpp_inline int3(const int3& i) : vec(i.vec) {}
+		hlslpp_inline int3() : vec(_hlslpp_setzero_epi32()) {}
 		explicit hlslpp_inline int3(n128i vec) : vec(vec) {}
 
 		explicit hlslpp_inline int3(const int1& i) : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}
@@ -367,8 +364,7 @@ namespace hlslpp
 
 	struct hlslpp_nodiscard int4
 	{
-		hlslpp_inline int4() {}
-		hlslpp_inline int4(const int4& i) : vec(i.vec) {}
+		hlslpp_inline int4() : vec(_hlslpp_setzero_epi32()) {}
 		explicit hlslpp_inline int4(n128i vec) : vec(vec) {}
 
 		explicit hlslpp_inline int4(const int1& i) : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}
