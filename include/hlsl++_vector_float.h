@@ -761,8 +761,6 @@ namespace hlslpp
 
 		hlslpp_inline operator float() const { return f32[0]; }
 
-		hlslpp_inline explicit operator bool() const  { return _hlslpp_all1_ps(vec); }
-
 		union
 		{
 			n128 vec;
@@ -793,8 +791,6 @@ namespace hlslpp
 		hlslpp_inline float2(const int2& i);
 
 		hlslpp_inline float2(const uint2& i);
-
-		hlslpp_inline explicit operator bool() const { return _hlslpp_all2_ps(vec); }
 
 		union
 		{
@@ -831,8 +827,6 @@ namespace hlslpp
 		hlslpp_inline float3(const int3& i);
 
 		hlslpp_inline float3(const uint3& i);
-
-		hlslpp_inline explicit operator bool() const { return _hlslpp_all3_ps(vec); }
 
 		union
 		{
@@ -874,8 +868,6 @@ namespace hlslpp
 		hlslpp_inline float4(const int4& i);
 
 		hlslpp_inline float4(const uint4& i);
-
-		hlslpp_inline explicit operator bool() const { return _hlslpp_all4_ps(vec); }
 
 		union
 		{
