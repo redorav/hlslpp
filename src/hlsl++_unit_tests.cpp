@@ -572,7 +572,7 @@ void RunUnitTests()
 
 	RunUnitTestsMatrixFloat();
 
-    RunUnitTestsMatrixTransform();
+	RunUnitTestsMatrixTransform();
 
 	// Quaternion tests
 
