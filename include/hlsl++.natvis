@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
 
-  <Type Name="hlslpp::float1;">
-    <DisplayString Optional="true">float1 {{ {f32[0]} }}</DisplayString>
-  </Type>
+	<Type Name="hlslpp::float1;">
+		<DisplayString Optional="true">float1 {{ {f32[0]} }}</DisplayString>
+	</Type>
 
-  <Type Name="hlslpp::float2;">
-    <DisplayString Optional="true">float2 {{ {f32[0]}, {f32[1]} }}</DisplayString>
-  </Type>
+	<Type Name="hlslpp::float2;">
+		<DisplayString Optional="true">float2 {{ {f32[0]}, {f32[1]} }}</DisplayString>
+	</Type>
 
-  <Type Name="hlslpp::float3;">
-    <DisplayString Optional="true">float3 {{ {f32[0]}, {f32[1]}, {f32[2]} }}</DisplayString>
-  </Type>
+	<Type Name="hlslpp::float3;">
+		<DisplayString Optional="true">float3 {{ {f32[0]}, {f32[1]}, {f32[2]} }}</DisplayString>
+	</Type>
 
-  <Type Name="hlslpp::float4;">
+	<Type Name="hlslpp::float4;">
 		<DisplayString Optional="true">float4 {{ {f32[0]}, {f32[1]}, {f32[2]}, {f32[3]} }}</DisplayString>
+	</Type>
+
+	<Type Name="hlslpp::float8;">
+		<DisplayString Optional="true">float8 {{ {f32[0]}, {f32[1]}, {f32[2]}, {f32[3]}, {f32[4]}, {f32[5]}, {f32[6]}, {f32[7]} }}</DisplayString>
 	</Type>
 
 	<Type Name="hlslpp::float1x1;">
@@ -71,16 +75,16 @@
 	<Type Name="hlslpp::float2x3">
 		<DisplayString>float2x3</DisplayString>
 		<Expand>
-		<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}</DisplayString></Synthetic>
-		<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
   
 	<Type Name="hlslpp::float2x4">
 		<DisplayString>float2x4</DisplayString>
 		<Expand>
-		<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}, {f32_0[3]}</DisplayString></Synthetic>
-		<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}, {f32_1[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}, {f32_0[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}, {f32_1[3]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
   
@@ -1205,7 +1209,7 @@
 	<Type Name="hlslpp::iswizzle4&lt;2, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {i32[2]}, {i32[3]}, {i32[3]}, {i32[3]} }}</DisplayString></Type>
 	<Type Name="hlslpp::iswizzle4&lt;3, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {i32[3]}, {i32[3]}, {i32[3]}, {i32[3]} }}</DisplayString></Type>
 
-  <Type Name="hlslpp::uint1;">
+<Type Name="hlslpp::uint1;">
     <DisplayString Optional="true">uint1 {{ {u32[0]} }}</DisplayString>
   </Type>
 

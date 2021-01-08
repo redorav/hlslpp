@@ -375,32 +375,32 @@ namespace hlslpp
 #if !defined(HLSLPP_ATAN2_IMPLEMENTATION)
 
 	// Use definition from Wikipedia: https://en.wikipedia.org/wiki/Atan2
-	inline n128 _hlslpp256_atan2_ps(n256 y, n256 x)
+	inline n256 _hlslpp256_atan2_ps(n256 y, n256 x)
 	{
-		n128 isxgt0 = _hlslpp256_cmpgt_ps(x, _hlslpp256_setzero_ps()); // x > 0
-		n128 isxeq0 = _hlslpp256_cmpeq_ps(x, _hlslpp256_setzero_ps()); // x == 0
-		n128 isxlt0 = _hlslpp256_cmplt_ps(x, _hlslpp256_setzero_ps()); // x < 0
+		n256 isxgt0 = _hlslpp256_cmpgt_ps(x, _hlslpp256_setzero_ps()); // x > 0
+		n256 isxeq0 = _hlslpp256_cmpeq_ps(x, _hlslpp256_setzero_ps()); // x == 0
+		n256 isxlt0 = _hlslpp256_cmplt_ps(x, _hlslpp256_setzero_ps()); // x < 0
 
-		n128 isyge0 = _hlslpp256_cmpge_ps(y, _hlslpp256_setzero_ps()); // y >= 0
-		n128 isygt0 = _hlslpp256_cmpgt_ps(y, _hlslpp256_setzero_ps()); // y > 0
-		n128 isylt0 = _hlslpp256_cmplt_ps(y, _hlslpp256_setzero_ps()); // y < 0
+		n256 isyge0 = _hlslpp256_cmpge_ps(y, _hlslpp256_setzero_ps()); // y >= 0
+		n256 isygt0 = _hlslpp256_cmpgt_ps(y, _hlslpp256_setzero_ps()); // y > 0
+		n256 isylt0 = _hlslpp256_cmplt_ps(y, _hlslpp256_setzero_ps()); // y < 0
 
-		n128 atanydivx = _hlslpp256_atan_ps(_hlslpp256_div_ps(y, x)); // atan(y / x)
-		n128 atanydivxpluspi = _hlslpp256_add_ps(atanydivx, f4_pi);   // atan(y / x) + pi
-		n128 atanydivxminuspi = _hlslpp256_sub_ps(atanydivx, f4_pi);  // atan(y / x) - pi
+		n256 atanydivx = _hlslpp256_atan_ps(_hlslpp256_div_ps(y, x)); // atan(y / x)
+		n256 atanydivxpluspi = _hlslpp256_add_ps(atanydivx, f8_pi);   // atan(y / x) + pi
+		n256 atanydivxminuspi = _hlslpp256_sub_ps(atanydivx, f8_pi);  // atan(y / x) - pi
 
-		n128 isxlt0yge0 = _hlslpp256_and_ps(isxlt0, isyge0);
-		n128 isxlt0ylt0 = _hlslpp256_and_ps(isxlt0, isylt0);
-		n128 isxeq0ygt0 = _hlslpp256_and_ps(isxeq0, isygt0);
-		n128 isxeq0ylt0 = _hlslpp256_and_ps(isxeq0, isylt0);
+		n256 isxlt0yge0 = _hlslpp256_and_ps(isxlt0, isyge0);
+		n256 isxlt0ylt0 = _hlslpp256_and_ps(isxlt0, isylt0);
+		n256 isxeq0ygt0 = _hlslpp256_and_ps(isxeq0, isygt0);
+		n256 isxeq0ylt0 = _hlslpp256_and_ps(isxeq0, isylt0);
 
 		// If x == 0 and y == 0, return NaN
-		n128 result = f8_NaN;
+		n256 result = f8_NaN;
 		result = _hlslpp256_sel_ps(result, atanydivx, isxgt0);
 		result = _hlslpp256_sel_ps(result, atanydivxpluspi, isxlt0yge0);
 		result = _hlslpp256_sel_ps(result, atanydivxminuspi, isxlt0ylt0);
-		result = _hlslpp256_sel_ps(result, f4_pi2, isxeq0ygt0);
-		result = _hlslpp256_sel_ps(result, f4_minusPi2, isxeq0ylt0);
+		result = _hlslpp256_sel_ps(result, f8_pi2, isxeq0ygt0);
+		result = _hlslpp256_sel_ps(result, f8_minusPi2, isxeq0ylt0);
 		return result;
 	}
 
