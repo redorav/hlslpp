@@ -2,6 +2,7 @@
 // Special Transformation Matrices //
 //   (Optional Extension Header)   //
 //---------------------------------//
+#pragma once
 
 #include "hlsl++.h"
 
@@ -21,50 +22,148 @@ namespace hlslpp
 		RightHanded // The positive x, y and z axes point right, up and backward. Positive rotation is counterclockwise about the axis of rotation. (used in OpenGL)
 	};
 
+	enum class ZClip
+	{
+		Zero,		// Clip all points wtih z < 0
+		NegativeOne // Clip all points wtih z < -1
+	};
+
+    enum class ProjectionType
+    {
+        Perspective, // Frustrum is truncated pyramid
+        Orthographic // Frustrum is parallelepiped
+    };
+
 	struct Frustrum
 	{
-		float left;
-		float right;
-		float bottom;
-		float top;
-		float near;
-		float far;
+		float x_left;
+		float x_right;
+		float y_bottom;
+		float y_top;
+		float z_near;
+		float z_far;
 
-		Frustrum(float left, float right, float bottom, float top, float near, float far)
-			: left(left), right(right), bottom(bottom), top(top), near(near), far(far)
+		Frustrum(float x_left, float x_right, float y_bottom, float y_top, float z_near, float z_far)
+			: x_left(x_left), x_right(x_right), y_bottom(y_bottom), y_top(y_top), z_near(z_near), z_far(z_far)
 		{ }
 
-		Frustrum(float width, float height, float near, float far)
-			: left(-width / 2.f), right(width / 2.f), bottom(-height / 2.f), top(height / 2.f), near(near), far(far)
+		Frustrum(float width, float height, float z_near, float z_far)
+			: x_left(-width / 2.f), x_right(width / 2.f), y_bottom(-height / 2.f), y_top(height / 2.f), z_near(z_near), z_far(z_far)
 		{ }
 
-		static Frustrum WithFieldOfViewX(float fov_x, float aspect, float near, float far)
+		// Field of view fabric function should be used with perspective projections only
+		// - fov_angle_rad is either horizontal (x) or vertical (y) angle depending on function variant
+		// - aspect = width / height
+
+		static Frustrum WithFieldOfViewX(float fov_angle_rad, float aspect, float z_near, float z_far)
 		{
-			const float width = 2.f * near * tanf(fov_x / 2.f);
-			return Frustrum(width, width / aspect, near, far);
+			const float width = 2.f * z_near * tanf(fov_angle_rad / 2.f);
+			return Frustrum(width, width / aspect, z_near, z_far);
 		}
 
-		static Frustrum WithFieldOfViewY(float fov_y, float aspect, float near, float far)
+		static Frustrum WithFieldOfViewY(float fov_angle_rad, float aspect, float z_near, float z_far)
 		{
-			const float height = 2.f * near * tanf(fov_y / 2.f);
-			return Frustrum(height * aspect, height, near, far);
+			const float height = 2.f * z_near * tanf(fov_angle_rad / 2.f);
+			return Frustrum(height * aspect, height, z_near, z_far);
 		}
 
-		float width() const  { return right - left; }
-		float height() const { return top - bottom; }
-		float depth() const  { return far - near; }
+		float width() const  { return x_right - x_left; }
+		float height() const { return y_top - y_bottom; }
+		float depth() const  { return z_far - z_near; }
 	};
 
 	struct ProjectionSettings
 	{
-		Frustrum    frustrum;
-		bool        zclip_zero;
-		Coordinates coordinates;
+		Frustrum       frustrum;
+		ProjectionType type;
+		ZClip          zclip;
+		Coordinates    coordinates;
 
-		ProjectionSettings(const Frustrum& frustrum, bool zclip_zero, Coordinates coordinates = Coordinates::LeftHanded)
-			: frustrum(frustrum), zclip_zero(zclip_zero), coordinates(coordinates)
+		ProjectionSettings(const Frustrum& frustrum, ProjectionType type, ZClip zclip, Coordinates coordinates = Coordinates::LeftHanded)
+			: frustrum(frustrum), type(type), zclip(zclip), coordinates(coordinates)
 		{ }
 	};
+
+	// World to View coordinates transformation
+
+	hlslpp_inline float4x4 float4x4_look_at(const float3& position, const float3& target, const float3& up,
+											Coordinates coordinates = Coordinates::LeftHanded,
+											MatrixLayout layout = MatrixLayout::RowMajor)
+	{
+		const float3 look = normalize(target - position) * (coordinates == Coordinates::LeftHanded ? 1.f : -1.f);
+		const float3 x_right = normalize(cross(up, look));
+		const float3 up_dir = cross(look, x_right);
+
+		return layout == MatrixLayout::RowMajor
+			? float4x4(
+				x_right.x,               up_dir.x,               look.x,               0.f,
+				x_right.y,               up_dir.y,               look.y,               0.f,
+				x_right.z,               up_dir.z,               look.z,               0.f,
+				-dot(position, x_right), -dot(position, up_dir), -dot(position, look), 1.f
+			)
+			: float4x4(
+				float4(x_right,  -dot(position, x_right)),
+				float4(up_dir, -dot(position, up_dir)),
+				float4(look,   -dot(position, look)),
+				float4(0.f, 0.f, 0.f, 1.f)
+			);
+	}
+
+	// View to Projection coordinates transformation
+
+	hlslpp_inline float4x4 float4x4_projection(const ProjectionSettings& proj, MatrixLayout layout = MatrixLayout::RowMajor)
+	{
+		const float inv_width  = 1.f / proj.frustrum.width();
+		const float inv_height = 1.f / proj.frustrum.height();
+		const float inv_depth  = 1.f / proj.frustrum.depth();
+
+		const float s  = proj.coordinates == Coordinates::LeftHanded ? 1.f : -1.f;
+		const float rl = proj.frustrum.x_right + proj.frustrum.x_left;
+		const float tb = proj.frustrum.y_top   + proj.frustrum.y_bottom;
+
+		if (proj.type == ProjectionType::Perspective)
+		{
+			const float dbl_near = 2.f * proj.frustrum.z_near;
+			const float nf  = proj.frustrum.z_far   + (proj.zclip == ZClip::Zero ? 0.f : proj.frustrum.z_near);
+			const float m22 = s * nf * inv_depth;
+			const float m23 = proj.zclip == ZClip::Zero
+			                ? -s * proj.frustrum.z_near * m22
+			                : -2.f * proj.frustrum.z_far * proj.frustrum.z_near * inv_depth;
+
+			return layout == MatrixLayout::RowMajor
+				? float4x4(
+					dbl_near * inv_width, 0.f,                   0.f, 0.f,
+					0.f,                  dbl_near * inv_height, 0.f, 0.f,
+					-s * rl * inv_width,  -s * tb * inv_height,  m22, s,
+					0.f,                  0.f,                   m23, 0.f
+				)
+				: float4x4(
+					dbl_near * inv_width, 0.f,                   -s * rl * inv_width,  0.f,
+					0.f,                  dbl_near * inv_height, -s * tb * inv_height, 0.f,
+					0.f,                  0.f,                   m22,                  m23,
+					0.f,                  0.f,                   s,                    0.f
+				);
+		}
+		else
+		{
+			const float nf = proj.frustrum.z_near  + (proj.zclip == ZClip::Zero ? 0.f : proj.frustrum.z_far);
+			const float sd = s * (proj.zclip == ZClip::Zero ? 1.f : 2.f);
+
+			return layout == MatrixLayout::RowMajor
+				? float4x4(
+					2.f * inv_width, 0.f,              0.f,             0.f,
+					0.f,             2.f * inv_height, 0.f,             0.f,
+					0.f,             0.f,              sd * inv_depth,  0.f,
+					-rl * inv_width, -tb * inv_height, -nf * inv_depth, 1.f
+				)
+				: float4x4(
+					2.f * inv_width, 0.f,              0.f,             -rl * inv_width,
+					0.f,             2.f * inv_height, 0.f,             -tb * inv_height,
+					0.f,             0.f,              sd * inv_depth,  -nf * inv_depth,
+					0.f,             0.f,              0.f,             1.f
+				);
+		}
+	}
 
 	// Scaling
 
@@ -272,109 +371,29 @@ namespace hlslpp
 
 	hlslpp_inline float3x3 float3x3_translate(const float2& t, MatrixLayout layout = MatrixLayout::RowMajor)
 	{
-		return float3x3_translate(t.x, t.y);
+		return float3x3_translate(t.x, t.y, layout);
 	}
 
 	hlslpp_inline float4x4 float4x4_translate(float tx, float ty, float tz, MatrixLayout layout = MatrixLayout::RowMajor)
 	{
-		return float4x4(
-			1.f, 0.f, 0.f, 0.f,
-			0.f, 1.f, 0.f, 0.f,
-			0.f, 0.f, 1.f, 0.f,
-			tx,  ty,  tz,  1.f
-		);
+		return layout == MatrixLayout::RowMajor
+			? float4x4(
+				1.f, 0.f, 0.f, 0.f,
+				0.f, 1.f, 0.f, 0.f,
+				0.f, 0.f, 1.f, 0.f,
+				tx,  ty,  tz,  1.f
+			)
+			: float4x4(
+				1.f, 0.f, 0.f, tx,
+				0.f, 1.f, 0.f, ty,
+				0.f, 0.f, 1.f, tz,
+				0.f, 0.f, 0.f, 1.f
+			);
 	}
 
 	hlslpp_inline float4x4 float4x4_translate(const float3& t, MatrixLayout layout = MatrixLayout::RowMajor)
 	{
-		return float4x4_translate(t.x, t.y, t.z);
-	}
-
-	// World to View coordinates transformation
-
-	hlslpp_inline float4x4 float4x4_look_at(const float3& position, const float3& target, const float3& up,
-											Coordinates coordinates = Coordinates::LeftHanded,
-											MatrixLayout layout = MatrixLayout::RowMajor)
-	{
-		const float3 look = normalize(target - position) * (coordinates == Coordinates::LeftHanded ? 1.f : -1.f);
-		const float3 right = normalize(cross(up, look));
-		const float3 up_dir = cross(look, right);
-
-		return layout == MatrixLayout::RowMajor
-			? float4x4(
-				right.x,               up_dir.x,               look.x,               0.f,
-				right.y,               up_dir.y,               look.y,               0.f,
-				right.z,               up_dir.z,               look.z,               0.f,
-				-dot(position, right), -dot(position, up_dir), -dot(position, look), 1.f
-			)
-			: float4x4(
-				float4(right,  -dot(position, right)),
-				float4(up_dir, -dot(position, up_dir)),
-				float4(look,   -dot(position, look)),
-				float4(0.f, 0.f, 0.f, 1.f)
-			);
-	}
-
-	// View to Orthographic Projection coordinates transformation
-
-	hlslpp_inline float4x4 float4x4_orthographic(const ProjectionSettings& settings, MatrixLayout layout = MatrixLayout::RowMajor)
-	{
-		const float inv_width  = 1.f / settings.frustrum.width();
-		const float inv_height = 1.f / settings.frustrum.height();
-		const float inv_depth  = 1.f / settings.frustrum.depth();
-		const float s = settings.coordinates == Coordinates::LeftHanded ? 1.f : -1.f;
-
-		const float rl = settings.frustrum.right + settings.frustrum.left;
-		const float tb = settings.frustrum.top   + settings.frustrum.bottom;
-		const float nf = settings.frustrum.near  + (settings.zclip_zero ? 0.f : settings.frustrum.far);
-		const float sd = s * (settings.zclip_zero ? 1.f : 2.f);
-
-		return layout == MatrixLayout::RowMajor
-			? float4x4(
-				2.f * inv_width, 0.f,              0.f,             0.f,
-				0.f,             2.f * inv_height, 0.f,             0.f,
-				0.f,             0.f,              sd * inv_depth,  0.f,
-				-rl * inv_width, -tb * inv_height, -nf * inv_depth, 1.f
-			)
-			: float4x4(
-				2.f * inv_width, 0.f,              0.f,             -rl * inv_width,
-				0.f,             2.f * inv_height, 0.f,             -tb * inv_height,
-				0.f,             0.f,              sd * inv_depth,  -nf * inv_depth,
-				0.f,             0.f,              0.f,             1.f
-			);
-	}
-
-	// View to Perspective Projection coordinates transformation
-
-	hlslpp_inline float4x4 float4x4_perspective(const ProjectionSettings& settings, MatrixLayout layout = MatrixLayout::RowMajor)
-	{
-		const float inv_width  = 1.f / settings.frustrum.width();
-		const float inv_height = 1.f / settings.frustrum.height();
-		const float inv_depth  = 1.f / settings.frustrum.depth();
-		const float dbl_near   = 2.f * settings.frustrum.near;
-
-		const float s   = settings.coordinates == Coordinates::LeftHanded ? 1.f : -1.f;
-		const float rl  = settings.frustrum.right + settings.frustrum.left;
-		const float tb  = settings.frustrum.top   + settings.frustrum.bottom;
-		const float nf  = settings.frustrum.far   + (settings.zclip_zero ? 0.f : settings.frustrum.near);
-		const float m22 = s * nf * inv_depth;
-		const float m23 = settings.zclip_zero
-		                ? -s * settings.frustrum.near * m22
-		                : -2.f * settings.frustrum.far * settings.frustrum.near * inv_depth;
-
-		return layout == MatrixLayout::RowMajor
-			? float4x4(
-				dbl_near * inv_width, 0.f,                   0.f, 0.f,
-				0.f,                  dbl_near * inv_height, 0.f, 0.f,
-				-s * rl * inv_width,  -s * tb * inv_height,  m22, s,
-				0.f,                  0.f,                   m23, 0.f
-			)
-			: float4x4(
-				dbl_near * inv_width, 0.f,                   -s * rl * inv_width,  0.f,
-				0.f,                  dbl_near * inv_height, -s * tb * inv_height, 0.f,
-				0.f,                  0.f,                   m22,                  m23,
-				0.f,                  0.f,                   s,                    0.f
-			);
+		return float4x4_translate(t.x, t.y, t.z, layout);
 	}
 
 } // namespace hlslpp
