@@ -138,10 +138,15 @@
 	<Type Name="hlslpp::float4x4">
 		<DisplayString>float4x4</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}, {f32_0[3]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}, {f32_1[3]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32_2[0]}, {f32_2[1]}, {f32_2[2]}, {f32_2[3]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec3" Optional="true"><DisplayString>{f32_3[0]}, {f32_3[1]}, {f32_3[2]}, {f32_3[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_128_0[0]}, {f32_128_0[1]}, {f32_128_0[2]}, {f32_128_0[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_128_1[0]}, {f32_128_1[1]}, {f32_128_1[2]}, {f32_128_1[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32_128_2[0]}, {f32_128_2[1]}, {f32_128_2[2]}, {f32_128_2[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="vec3" Optional="true"><DisplayString>{f32_128_3[0]}, {f32_128_3[1]}, {f32_128_3[2]}, {f32_128_3[3]}</DisplayString></Synthetic>
+
+			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_256_0[0]}, {f32_256_0[1]}, {f32_256_0[2]}, {f32_256_0[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32_256_0[4]}, {f32_256_0[5]}, {f32_256_0[6]}, {f32_256_0[7]}</DisplayString></Synthetic>
+			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_256_1[0]}, {f32_256_1[1]}, {f32_256_1[2]}, {f32_256_1[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="vec3" Optional="true"><DisplayString>{f32_256_1[4]}, {f32_256_1[5]}, {f32_256_1[6]}, {f32_256_1[7]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
 
