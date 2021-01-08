@@ -1,6 +1,9 @@
 //---------------------------------//
 // Special Transformation Matrices //
+//   (Optional Extension Header)   //
 //---------------------------------//
+
+#include "hlsl++.h"
 
 #include <math.h>
 
