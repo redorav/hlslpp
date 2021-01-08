@@ -7,7 +7,7 @@
 // Also be aware that matrices in HLSL Shaders conversely use column-major storage layout by default
 // and thus HLSL++ matrices must be transposed before writing to constant buffers for reading in HLSL.
 
-#include <cmath>
+#include <math.h>
 
 namespace hlslpp
 {
@@ -79,8 +79,8 @@ namespace hlslpp
 
 	hlslpp_inline float2x2 float2x2_rotate(float angle_rad)
 	{
-		const float s = std::sin(angle_rad);
-		const float c = std::cos(angle_rad);
+		const float s = sinf(angle_rad);
+		const float c = cosf(angle_rad);
 
 		return float2x2(
 			c,  s,
@@ -90,8 +90,8 @@ namespace hlslpp
 
 	hlslpp_inline float3x3 float3x3_rotate_z(float angle_rad)
 	{
-		const float s = std::sin(angle_rad);
-		const float c = std::cos(angle_rad);
+		const float s = sinf(angle_rad);
+		const float c = cosf(angle_rad);
 
 		return float3x3(
 			c,   s,   0.f,
@@ -102,8 +102,8 @@ namespace hlslpp
 
 	hlslpp_inline float4x4 float4x4_rotate_z(float angle_rad)
 	{
-		const float s = std::sin(angle_rad);
-		const float c = std::cos(angle_rad);
+		const float s = sinf(angle_rad);
+		const float c = cosf(angle_rad);
 
 		return float4x4(
 			c,   s,   0.f, 0.f,
@@ -115,8 +115,8 @@ namespace hlslpp
 	
 	hlslpp_inline float3x3 float3x3_rotate_y(float angle_rad)
 	{
-		const float s = std::sin(angle_rad);
-		const float c = std::cos(angle_rad);
+		const float s = sinf(angle_rad);
+		const float c = cosf(angle_rad);
 
 		return float3x3(
 			c,   0.f, -s,
@@ -127,8 +127,8 @@ namespace hlslpp
 
 	hlslpp_inline float4x4 float4x4_rotate_y(float angle_rad)
 	{
-		const float s = std::sin(angle_rad);
-		const float c = std::cos(angle_rad);
+		const float s = sinf(angle_rad);
+		const float c = cosf(angle_rad);
 
 		return float4x4(
 			c,   0.f, -s,   0.f,
@@ -140,8 +140,8 @@ namespace hlslpp
 
 	hlslpp_inline float3x3 float3x3_rotate_x(float angle_rad)
 	{
-		const float s = std::sin(angle_rad);
-		const float c = std::cos(angle_rad);
+		const float s = sinf(angle_rad);
+		const float c = cosf(angle_rad);
 
 		return float3x3(
 			1.f, 0.f, 0.f,
@@ -152,8 +152,8 @@ namespace hlslpp
 
 	hlslpp_inline float4x4 float4x4_rotate_x(float angle_rad)
 	{
-		const float s = std::sin(angle_rad);
-		const float c = std::cos(angle_rad);
+		const float s = sinf(angle_rad);
+		const float c = cosf(angle_rad);
 
 		return float4x4(
 			1.f, 0.f, 0.f, 0.f,
@@ -165,8 +165,8 @@ namespace hlslpp
 
 	hlslpp_inline float3x3 float3x3_rotate_axis(const float3& axis, float angle_rad)
 	{
-		const float s  = std::sin(angle_rad);
-		const float c  = std::cos(angle_rad);
+		const float s  = sinf(angle_rad);
+		const float c  = cosf(angle_rad);
 
 		const float3 as = axis * s;
 		const float3 ac = axis * (1.f - c);
@@ -182,8 +182,8 @@ namespace hlslpp
 
 	hlslpp_inline float4x4 float4x4_rotate_axis(const float3& axis, float angle_rad)
 	{
-		const float s  = std::sin(angle_rad);
-		const float c  = std::cos(angle_rad);
+		const float s  = sinf(angle_rad);
+		const float c  = cosf(angle_rad);
 
 		const float3 as = axis * s;
 		const float3 ac = axis * (1.f - c);
@@ -299,13 +299,13 @@ namespace hlslpp
 
 	hlslpp_inline float4x4 float4x4_perspective_fovx(float fov_x, float aspect, float near_z, float far_z, bool zclip_zero, bool left_handed = true)
 	{
-		const float width = 2.f * near_z * std::tan(fov_x / 2.f);
+		const float width = 2.f * near_z * tanf(fov_x / 2.f);
 		return float4x4_perspective(width, width / aspect, near_z, far_z, zclip_zero, left_handed);
 	}
 
 	hlslpp_inline float4x4 float4x4_perspective_fovy(float fov_y, float aspect, float near_z, float far_z, bool zclip_zero, bool left_handed = true)
 	{
-		const float height = 2.f * near_z * std::tan(fov_y / 2.f);
+		const float height = 2.f * near_z * tanf(fov_y / 2.f);
 		return float4x4_perspective(height * aspect, height, near_z, far_z, zclip_zero, left_handed);
 	}
 
