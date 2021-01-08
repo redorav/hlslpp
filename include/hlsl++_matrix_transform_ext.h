@@ -24,8 +24,8 @@ namespace hlslpp
 
 	enum class ZClip
 	{
-		Zero,		// Clip all points wtih z < 0
-		NegativeOne // Clip all points wtih z < -1
+		Zero,       // Clip points with z < 0 in projection coordinates
+		NegativeOne // Clip points with z < -1 in projection coordinates
 	};
 
     enum class ProjectionType
