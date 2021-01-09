@@ -9,7 +9,7 @@
 // Default HLSL++ logical layout of transformation matrices is Row-Major
 // It can be changed by overriding this definition value in external project
 #ifndef HLSLPP_LOGICAL_LAYOUT
-#define HLSLPP_LOGICAL_LAYOUT HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
+	#define HLSLPP_LOGICAL_LAYOUT HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
 #endif
 
 // The positive x, y and z axes point right, up and forward.  Positive rotation is clockwise about the axis of rotation. (used in DirectX)
@@ -21,33 +21,28 @@
 // Default HLSL++ coordinate system is Left-Handed
 // It can be changed by overriding this definition value in external project
 #ifndef HLSLPP_COORDINATES
-#define HLSLPP_COORDINATES HLSLPP_COORDINATES_LEFT_HANDED
+	#define HLSLPP_COORDINATES HLSLPP_COORDINATES_LEFT_HANDED
 #endif
 
 #if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
-#define HLSLPP_MATRIX_LAYOUT_SIGN 1.0f
+	#define HLSLPP_MATRIX_LAYOUT_SIGN 1.0f
 #else
-#define HLSLPP_MATRIX_LAYOUT_SIGN -1.0f
+	#define HLSLPP_MATRIX_LAYOUT_SIGN -1.0f
 #endif
 
 #if HLSLPP_COORDINATES == HLSLPP_COORDINATES_LEFT_HANDED
-#define HLSLPP_COORDINATES_SIGN 1.0f
+	#define HLSLPP_COORDINATES_SIGN 1.0f
 #else
-#define HLSLPP_COORDINATES_SIGN -1.0f
+	#define HLSLPP_COORDINATES_SIGN -1.0f
 #endif
 
 namespace hlslpp
 {
-    enum class ZClip
+
+	enum class ZClip
 	{
 		Zero,       // Clip points with z < 0 in projection coordinates
 		NegativeOne // Clip points with z < -1 in projection coordinates
-	};
-
-	enum class ProjectionType
-	{
-		Perspective, // Frustrum is truncated pyramid
-		Orthographic // Frustrum is parallelepiped
 	};
 
 	struct Frustrum
@@ -90,14 +85,14 @@ namespace hlslpp
 
 	struct ProjectionSettings
 	{
-		Frustrum       frustrum;
-		ProjectionType type;
-		ZClip          zClip;
+		Frustrum frustrum;
+		ZClip    zClip;
 
-		ProjectionSettings(const Frustrum& frustrum, ProjectionType type, ZClip zClip)
-			: frustrum(frustrum), type(type), zClip(zClip)
+		ProjectionSettings(const Frustrum& frustrum, ZClip zClip)
+			: frustrum(frustrum), zClip(zClip)
 		{ }
 	};
+
 } // namespace hlslpp
 
 #endif // HLSLPP_FEATURE_TRANSFORM

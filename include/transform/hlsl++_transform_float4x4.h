@@ -31,7 +31,7 @@ static hlslpp_inline float4x4 look_at(const float3& position, const float3& targ
 // View to Projection coordinates transformation //
 //-----------------------------------------------//
 
-static hlslpp_inline float4x4 projection(const ProjectionSettings& proj)
+static hlslpp_inline float4x4 perspective(const ProjectionSettings& proj)
 {
 	const float invWidth  = 1.0f / proj.frustrum.width();
 	const float invHeight = 1.0f / proj.frustrum.height();
@@ -41,52 +41,58 @@ static hlslpp_inline float4x4 projection(const ProjectionSettings& proj)
 	const float rl = proj.frustrum.xRight + proj.frustrum.xLeft;
 	const float tb = proj.frustrum.yTop   + proj.frustrum.yBottom;
 
-	if (proj.type == ProjectionType::Perspective)
-	{
-		const float dblNear = 2.0f * proj.frustrum.zNear;
-		const float nf  = proj.frustrum.zFar   + (proj.zClip == ZClip::Zero ? 0.0f : proj.frustrum.zNear);
-		const float m22 = s * nf * invDepth;
-		const float m23 = proj.zClip == ZClip::Zero
-		                ? -s * proj.frustrum.zNear * m22
-		                : -2.0f * proj.frustrum.zFar * proj.frustrum.zNear * invDepth;
+	const float dblNear = 2.0f * proj.frustrum.zNear;
+	const float nf  = proj.frustrum.zFar   + (proj.zClip == ZClip::Zero ? 0.0f : proj.frustrum.zNear);
+	const float m22 = s * nf * invDepth;
+	const float m23 = proj.zClip == ZClip::Zero
+	                ? -s * proj.frustrum.zNear * m22
+	                : -2.0f * proj.frustrum.zFar * proj.frustrum.zNear * invDepth;
 
 #if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
-		return float4x4(
-			dblNear * invWidth, 0.0f,                0.0f, 0.0f,
-			0.0f,               dblNear * invHeight, 0.0f, 0.0f,
-			-s * rl * invWidth, -s * tb * invHeight, m22,  s,
-			0.0f,               0.0f,                m23,  0.0f
-		);
+	return float4x4(
+		dblNear * invWidth, 0.0f,                0.0f, 0.0f,
+		0.0f,               dblNear * invHeight, 0.0f, 0.0f,
+		-s * rl * invWidth, -s * tb * invHeight, m22,  s,
+		0.0f,               0.0f,                m23,  0.0f
+	);
 #else
-		return float4x4(
-			dblNear * invWidth, 0.0f,                -s * rl * invWidth,  0.0f,
-			0.0f,               dblNear * invHeight, -s * tb * invHeight, 0.0f,
-			0.0f,               0.0f,                m22,                 m23,
-			0.0f,               0.0f,                s,                   0.0f
-		);
+	return float4x4(
+		dblNear * invWidth, 0.0f,                -s * rl * invWidth,  0.0f,
+		0.0f,               dblNear * invHeight, -s * tb * invHeight, 0.0f,
+		0.0f,               0.0f,                m22,                 m23,
+		0.0f,               0.0f,                s,                   0.0f
+	);
 #endif
-	}
-	else
-	{
-		const float nf = proj.frustrum.zNear  + (proj.zClip == ZClip::Zero ? 0.0f : proj.frustrum.zFar);
-		const float sd = s * (proj.zClip == ZClip::Zero ? 1.0f : 2.0f);
+}
+
+static hlslpp_inline float4x4 orthographic(const ProjectionSettings& proj)
+{
+	const float invWidth  = 1.0f / proj.frustrum.width();
+	const float invHeight = 1.0f / proj.frustrum.height();
+	const float invDepth  = 1.0f / proj.frustrum.depth();
+
+	const float s  = HLSLPP_COORDINATES_SIGN;
+	const float rl = proj.frustrum.xRight + proj.frustrum.xLeft;
+	const float tb = proj.frustrum.yTop   + proj.frustrum.yBottom;
+
+	const float nf = proj.frustrum.zNear  + (proj.zClip == ZClip::Zero ? 0.0f : proj.frustrum.zFar);
+	const float sd = s * (proj.zClip == ZClip::Zero ? 1.0f : 2.0f);
 
 #if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
-		return float4x4(
-			2.0f * invWidth, 0.0f,             0.0f,          0.0f,
-			0.0f,            2.0f * invHeight, 0.0f,          0.0f,
-			0.0f,            0.0f,             sd * invDepth, 0.0f,
-			-rl * invWidth,  -tb * invHeight, -nf * invDepth, 1.0f
-		);
+	return float4x4(
+		2.0f * invWidth, 0.0f,             0.0f,          0.0f,
+		0.0f,            2.0f * invHeight, 0.0f,          0.0f,
+		0.0f,            0.0f,             sd * invDepth, 0.0f,
+		-rl * invWidth,  -tb * invHeight, -nf * invDepth, 1.0f
+	);
 #else
-		return float4x4(
-			2.0f * invWidth, 0.0f,             0.0f,          -rl * invWidth,
-			0.0f,            2.0f * invHeight, 0.0f,          -tb * invHeight,
-			0.0f,            0.0f,             sd * invDepth, -nf * invDepth,
-			0.0f,            0.0f,             0.0f,           1.0f
-		);
+	return float4x4(
+		2.0f * invWidth, 0.0f,             0.0f,          -rl * invWidth,
+		0.0f,            2.0f * invHeight, 0.0f,          -tb * invHeight,
+		0.0f,            0.0f,             sd * invDepth, -nf * invDepth,
+		0.0f,            0.0f,             0.0f,           1.0f
+	);
 #endif
-	}
 }
 
 //-------//
