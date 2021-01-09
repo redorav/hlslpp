@@ -90,6 +90,12 @@ install:
   - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = macOS ]]; then ./premake/osx/premake5 --file=premake.lua xcode4; fi;
 
 build_script:
+  - cmd: if %vsversion%==2015
+         msbuild "C:\projects\hlslpp\workspace\vs2015\hlsl++.sln"
+  - cmd: if %vsversion%==2017
+         msbuild "C:\projects\hlslpp\workspace\vs2017\hlsl++.sln"
+  - cmd: if %vsversion%==2019
+         msbuild "C:\projects\hlslpp\workspace\vs2019\hlsl++.sln"
   - sh: if [[ $platform = "Linux64 GGC" ]]; then 
         pushd workspace/gmake2;
         make all config=release_linux64_gcc;
