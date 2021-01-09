@@ -118,6 +118,8 @@
 
 #endif
 
+#include "transform/hlsl++_transform_common.h"
+
 #include "hlsl++_common.h"
 
 #include "hlsl++_vector_float.h"
