@@ -123,22 +123,21 @@ void RunUnitTestsMatrixTransform()
 	const float3 view_target(0.f, 0.f, 0.f);
 	const float3 view_up(0.f, 0.f, 1.f);
 
-	eq(mul(vec4d_a1, float4x4_look_at(view_position, view_target, view_up, Coordinates::LeftHanded)), -1.f, 1.f, 0.f, 1.f, tolerance);
-	eq(mul(vec4d_a1, float4x4_look_at(view_position, view_target, view_up, Coordinates::RightHanded)), 1.f, 1.f, 0.f, 1.f, tolerance);
+	eq(mul(vec4d_a1, float4x4_look_at(view_position, view_target, view_up)), -1.f, 1.f, 0.f, 1.f, tolerance);
 
 	// View to Orthographic Projection coordinates transformation
 
 	const float4 vec4d_view1(0.5f, 0.5f, 0.f, 1.f);
 	Frustrum ortho_frustrum(-0.5f, 0.5f, -0.5f, 0.5f, -1.f, 1.f);
 
-	eq(mul(vec4d_view1, float4x4_projection(ProjectionSettings(ortho_frustrum, ProjectionType::Orthographic, ZClip::Zero, Coordinates::LeftHanded))), 1.f, 1.f, 0.5f, 1.f, tolerance);
-	eq(mul(vec4d_view1, float4x4_projection(ProjectionSettings(ortho_frustrum, ProjectionType::Orthographic, ZClip::NegativeOne, Coordinates::RightHanded))), 1.f, 1.f, 0.f, 1.f, tolerance);
+	eq(mul(vec4d_view1, float4x4_projection(ProjectionSettings(ortho_frustrum, ProjectionType::Orthographic, ZClip::Zero))), 1.f, 1.f, 0.5f, 1.f, tolerance);
+	eq(mul(vec4d_view1, float4x4_projection(ProjectionSettings(ortho_frustrum, ProjectionType::Orthographic, ZClip::NegativeOne))), 1.f, 1.f, 0.f, 1.f, tolerance);
 
 	// View to Perspective Projection coordinates transformation
 
 	const float4 vec4d_view2(0.5f, 0.5f, 1.f, 1.f);
 	Frustrum persp_frustrum(-0.5f, 0.5f, -0.5f, 0.5f, 0.001f, 1.f);
 
-	eq(mul(vec4d_view2, float4x4_projection(ProjectionSettings(persp_frustrum, ProjectionType::Perspective, ZClip::Zero, Coordinates::LeftHanded))), 0.001f, 0.001f, 1.f, 1.f, tolerance);
-	eq(mul(vec4d_view2, float4x4_projection(ProjectionSettings(persp_frustrum, ProjectionType::Perspective, ZClip::NegativeOne, Coordinates::RightHanded))), 0.001f, 0.001f, -1.004004f, -1.f, tolerance);
+	eq(mul(vec4d_view2, float4x4_projection(ProjectionSettings(persp_frustrum, ProjectionType::Perspective, ZClip::Zero))), 0.001f, 0.001f, 1.f, 1.f, tolerance);
+	eq(mul(vec4d_view2, float4x4_projection(ProjectionSettings(persp_frustrum, ProjectionType::Perspective, ZClip::NegativeOne))), 0.001f, 0.001f, 1.0f, 1.f, tolerance);
 }

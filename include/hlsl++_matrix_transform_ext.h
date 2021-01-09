@@ -8,20 +8,46 @@
 
 #include <math.h>
 
+// Row-Major layout assumes "vector-row(N) * matrix(NxM)" multiplication order
+#define HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR 0
+
+// Column-Major layout assumes "matrix(MxN) * vector-col(N)" multiplication order
+#define HLSLPP_LOGICAL_LAYOUT_COL_MAJOR 1
+
+// Default HLSL++ logical layout of transformation matrices is Row-Major
+// It can be changed by overriding this definition value in external project
+#ifndef HLSLPP_LOGICAL_LAYOUT
+#define HLSLPP_LOGICAL_LAYOUT HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
+#endif
+
+// The positive x, y and z axes point right, up and forward.  Positive rotation is clockwise about the axis of rotation. (used in DirectX)
+#define HLSLPP_COORDINATES_LEFT_HANDED 0
+
+// The positive x, y and z axes point right, up and backward. Positive rotation is counterclockwise about the axis of rotation. (used in OpenGL)
+#define HLSLPP_COORDINATES_RIGHT_HANDED 1
+
+// Default HLSL++ coordinate system is Left-Handed
+// It can be changed by overriding this definition value in external project
+#ifndef HLSLPP_COORDINATES
+#define HLSLPP_COORDINATES HLSLPP_COORDINATES_LEFT_HANDED
+#endif
+
+#if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
+#define HLSLPP_MATRIX_LAYOUT_SIGN 1.0f
+#else
+#define HLSLPP_MATRIX_LAYOUT_SIGN -1.0f
+#endif
+
+#if HLSLPP_COORDINATES == HLSLPP_COORDINATES_LEFT_HANDED
+#define HLSLPP_COORDINATES_SIGN 1.0f
+#else
+#define HLSLPP_COORDINATES_SIGN -1.0f
+#endif
+
+#define HLSLPP_ROTATION_MATRIX_SIGN HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN
+
 namespace hlslpp
 {
-	enum class MatrixLayout
-	{
-		RowMajor,   // Row-Major matrix layout assumes "vector-row(N) * matrix(NxM)" multiplication order
-		ColumnMajor // Column-Major matrix layout assumes "matrix(MxN) * vector-col(N)" multiplication order
-	};
-
-	enum class Coordinates
-	{
-		LeftHanded, // The positive x, y and z axes point right, up and forward.  Positive rotation is clockwise about the axis of rotation. (used in DirectX)
-		RightHanded // The positive x, y and z axes point right, up and backward. Positive rotation is counterclockwise about the axis of rotation. (used in OpenGL)
-	};
-
 	enum class ZClip
 	{
 		Zero,       // Clip points with z < 0 in projection coordinates
@@ -55,13 +81,13 @@ namespace hlslpp
 		// - fovAngleRad: either horizontal (x) or vertical (y) angle depending on function variant
 		// - aspect: width / height
 
-		static Frustrum WithFieldOfViewX(float fovAngleRad, float aspect, float zNear, float zFar)
+		static Frustrum withFieldOfViewX(float fovAngleRad, float aspect, float zNear, float zFar)
 		{
 			const float width = 2.f * zNear * tanf(fovAngleRad / 2.f);
 			return Frustrum(width, width / aspect, zNear, zFar);
 		}
 
-		static Frustrum WithFieldOfViewY(float fovAngleRad, float aspect, float zNear, float zFar)
+		static Frustrum withFieldOfViewY(float fovAngleRad, float aspect, float zNear, float zFar)
 		{
 			const float height = 2.f * zNear * tanf(fovAngleRad / 2.f);
 			return Frustrum(height * aspect, height, zNear, zFar);
@@ -77,47 +103,46 @@ namespace hlslpp
 		Frustrum       frustrum;
 		ProjectionType type;
 		ZClip          zClip;
-		Coordinates    coordinates;
 
-		ProjectionSettings(const Frustrum& frustrum, ProjectionType type, ZClip zClip, Coordinates coordinates = Coordinates::LeftHanded)
-			: frustrum(frustrum), type(type), zClip(zClip), coordinates(coordinates)
+		ProjectionSettings(const Frustrum& frustrum, ProjectionType type, ZClip zClip)
+			: frustrum(frustrum), type(type), zClip(zClip)
 		{ }
 	};
 
 	// World to View coordinates transformation
 
-	hlslpp_inline float4x4 float4x4_look_at(const float3& position, const float3& target, const float3& up,
-											Coordinates coordinates = Coordinates::LeftHanded,
-											MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float4x4 float4x4_look_at(const float3& position, const float3& target, const float3& up)
 	{
-		const float3 look   = normalize(target - position) * (coordinates == Coordinates::LeftHanded ? 1.f : -1.f);
+		const float3 look   = normalize(target - position) * HLSLPP_COORDINATES_SIGN;
 		const float3 xRight = normalize(cross(up, look));
 		const float3 upDir = cross(look, xRight);
 
-		return layout == MatrixLayout::RowMajor
-			? float4x4(
-				xRight.x,               upDir.x,               look.x,               0.f,
-				xRight.y,               upDir.y,               look.y,               0.f,
-				xRight.z,               upDir.z,               look.z,               0.f,
-				-dot(position, xRight), -dot(position, upDir), -dot(position, look), 1.f
-			)
-			: float4x4(
-				float4(xRight, -dot(position, xRight)),
-				float4(upDir,  -dot(position, upDir)),
-				float4(look,   -dot(position, look)),
-				float4(0.f, 0.f, 0.f, 1.f)
-			);
+#if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
+		return float4x4(
+			xRight.x,               upDir.x,               look.x,               0.f,
+			xRight.y,               upDir.y,               look.y,               0.f,
+			xRight.z,               upDir.z,               look.z,               0.f,
+			-dot(position, xRight), -dot(position, upDir), -dot(position, look), 1.f
+		);
+#else
+		return float4x4(
+			float4(xRight, -dot(position, xRight)),
+			float4(upDir,  -dot(position, upDir)),
+			float4(look,   -dot(position, look)),
+			float4(0.f, 0.f, 0.f, 1.f)
+		);
+#endif
 	}
 
 	// View to Projection coordinates transformation
 
-	hlslpp_inline float4x4 float4x4_projection(const ProjectionSettings& proj, MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float4x4 float4x4_projection(const ProjectionSettings& proj)
 	{
 		const float invWidth  = 1.f / proj.frustrum.width();
 		const float invHeight = 1.f / proj.frustrum.height();
 		const float invDepth  = 1.f / proj.frustrum.depth();
 
-		const float s  = proj.coordinates == Coordinates::LeftHanded ? 1.f : -1.f;
+		const float s  = HLSLPP_COORDINATES_SIGN;
 		const float rl = proj.frustrum.xRight + proj.frustrum.xLeft;
 		const float tb = proj.frustrum.yTop   + proj.frustrum.yBottom;
 
@@ -130,38 +155,42 @@ namespace hlslpp
 			                ? -s * proj.frustrum.zNear * m22
 			                : -2.f * proj.frustrum.zFar * proj.frustrum.zNear * invDepth;
 
-			return layout == MatrixLayout::RowMajor
-				? float4x4(
-					dblNear * invWidth, 0.f,                 0.f, 0.f,
-					0.f,                dblNear * invHeight, 0.f, 0.f,
-					-s * rl * invWidth, -s * tb * invHeight, m22, s,
-					0.f,                0.f,                 m23, 0.f
-				)
-				: float4x4(
-					dblNear * invWidth, 0.f,                 -s * rl * invWidth,  0.f,
-					0.f,                dblNear * invHeight, -s * tb * invHeight, 0.f,
-					0.f,                0.f,                 m22,                 m23,
-					0.f,                0.f,                 s,                   0.f
-				);
+#if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
+			return float4x4(
+				dblNear * invWidth, 0.f,                 0.f, 0.f,
+				0.f,                dblNear * invHeight, 0.f, 0.f,
+				-s * rl * invWidth, -s * tb * invHeight, m22, s,
+				0.f,                0.f,                 m23, 0.f
+			);
+#else
+			return float4x4(
+				dblNear * invWidth, 0.f,                 -s * rl * invWidth,  0.f,
+				0.f,                dblNear * invHeight, -s * tb * invHeight, 0.f,
+				0.f,                0.f,                 m22,                 m23,
+				0.f,                0.f,                 s,                   0.f
+			);
+#endif
 		}
 		else
 		{
 			const float nf = proj.frustrum.zNear  + (proj.zClip == ZClip::Zero ? 0.f : proj.frustrum.zFar);
 			const float sd = s * (proj.zClip == ZClip::Zero ? 1.f : 2.f);
 
-			return layout == MatrixLayout::RowMajor
-				? float4x4(
-					2.f * invWidth, 0.f,             0.f,            0.f,
-					0.f,            2.f * invHeight, 0.f,            0.f,
-					0.f,            0.f,             sd * invDepth,  0.f,
-					-rl * invWidth, -tb * invHeight, -nf * invDepth, 1.f
-				)
-				: float4x4(
-					2.f * invWidth, 0.f,             0.f,           -rl * invWidth,
-					0.f,            2.f * invHeight, 0.f,           -tb * invHeight,
-					0.f,            0.f,             sd * invDepth, -nf * invDepth,
-					0.f,            0.f,             0.f,           1.f
-				);
+#if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
+			return float4x4(
+				2.f * invWidth, 0.f,             0.f,            0.f,
+				0.f,            2.f * invHeight, 0.f,            0.f,
+				0.f,            0.f,             sd * invDepth,  0.f,
+				-rl * invWidth, -tb * invHeight, -nf * invDepth, 1.f
+			);
+#else
+			return float4x4(
+				2.f * invWidth, 0.f,             0.f,           -rl * invWidth,
+				0.f,            2.f * invHeight, 0.f,           -tb * invHeight,
+				0.f,            0.f,             sd * invDepth, -nf * invDepth,
+				0.f,            0.f,             0.f,           1.f
+			);
+#endif
 		}
 	}
 
@@ -231,17 +260,9 @@ namespace hlslpp
 
 	// Rotation
 
-	hlslpp_inline float GetRotationSign(Coordinates coordinates, MatrixLayout layout)
+	hlslpp_inline float2x2 float2x2_rotate(float angleRad)
 	{
-		return (coordinates == Coordinates::LeftHanded ? 1.f : -1.f) *
-		       (layout == MatrixLayout::RowMajor ? 1.f : -1.f);
-	}
-
-	hlslpp_inline float2x2 float2x2_rotate(float angleRad,
-											Coordinates coordinates = Coordinates::LeftHanded,
-											MatrixLayout layout = MatrixLayout::RowMajor)
-	{
-		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
+		const float s = sinf(angleRad) * HLSLPP_ROTATION_MATRIX_SIGN;
 		const float c = cosf(angleRad);
 
 		return float2x2(
@@ -250,11 +271,9 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float3x3 float3x3_rotate_z(float angleRad,
-											Coordinates coordinates = Coordinates::LeftHanded,
-											MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float3x3 float3x3_rotate_z(float angleRad)
 	{
-		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
+		const float s = sinf(angleRad) * HLSLPP_ROTATION_MATRIX_SIGN;
 		const float c = cosf(angleRad);
 
 		return float3x3(
@@ -264,11 +283,9 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_rotate_z(float angleRad,
-											Coordinates coordinates = Coordinates::LeftHanded,
-											MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float4x4 float4x4_rotate_z(float angleRad)
 	{
-		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
+		const float s = sinf(angleRad) * HLSLPP_ROTATION_MATRIX_SIGN;
 		const float c = cosf(angleRad);
 
 		return float4x4(
@@ -279,11 +296,9 @@ namespace hlslpp
 		);
 	}
 	
-	hlslpp_inline float3x3 float3x3_rotate_y(float angleRad,
-											Coordinates coordinates = Coordinates::LeftHanded,
-											MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float3x3 float3x3_rotate_y(float angleRad)
 	{
-		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
+		const float s = sinf(angleRad) * HLSLPP_ROTATION_MATRIX_SIGN;
 		const float c = cosf(angleRad);
 
 		return float3x3(
@@ -293,11 +308,9 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_rotate_y(float angleRad,
-											Coordinates coordinates = Coordinates::LeftHanded,
-											MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float4x4 float4x4_rotate_y(float angleRad)
 	{
-		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
+		const float s = sinf(angleRad) * HLSLPP_ROTATION_MATRIX_SIGN;
 		const float c = cosf(angleRad);
 
 		return float4x4(
@@ -308,11 +321,9 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float3x3 float3x3_rotate_x(float angleRad,
-											Coordinates coordinates = Coordinates::LeftHanded,
-											MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float3x3 float3x3_rotate_x(float angleRad)
 	{
-		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
+		const float s = sinf(angleRad) * HLSLPP_ROTATION_MATRIX_SIGN;
 		const float c = cosf(angleRad);
 
 		return float3x3(
@@ -322,11 +333,9 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_rotate_x(float angleRad,
-											Coordinates coordinates = Coordinates::LeftHanded,
-											MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float4x4 float4x4_rotate_x(float angleRad)
 	{
-		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
+		const float s = sinf(angleRad) * HLSLPP_ROTATION_MATRIX_SIGN;
 		const float c = cosf(angleRad);
 
 		return float4x4(
@@ -337,11 +346,9 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float3x3 float3x3_rotate_axis(const float3& axis, float angleRad,
-												Coordinates coordinates = Coordinates::LeftHanded,
-												MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float3x3 float3x3_rotate_axis(const float3& axis, float angleRad)
 	{
-		const float s  = sinf(angleRad) * GetRotationSign(coordinates, layout);
+		const float s  = sinf(angleRad) * HLSLPP_ROTATION_MATRIX_SIGN;
 		const float c  = cosf(angleRad);
 
 		const float3 as = axis * s;
@@ -356,11 +363,9 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_rotate_axis(const float3& axis, float angleRad,
-												Coordinates coordinates = Coordinates::LeftHanded,
-												MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float4x4 float4x4_rotate_axis(const float3& axis, float angleRad)
 	{
-		const float s  = sinf(angleRad) * GetRotationSign(coordinates, layout);
+		const float s  = sinf(angleRad) * HLSLPP_ROTATION_MATRIX_SIGN;
 		const float c  = cosf(angleRad);
 
 		const float3 as = axis * s;
@@ -378,46 +383,50 @@ namespace hlslpp
 
 	// Translation
 
-	hlslpp_inline float3x3 float3x3_translate(float tx, float ty, MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float3x3 float3x3_translate(float tx, float ty)
 	{
-		return layout == MatrixLayout::RowMajor
-			? float3x3(
-				1.f, 0.f, 0.f,
-				0.f, 1.f, 0.f,
-				tx,  ty,  1.f
-			)
-			: float3x3(
-				1.f, 0.f, tx,
-				0.f, 1.f, ty,
-				0.f, 0.f, 1.f
-			);
+#if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
+		return float3x3(
+			1.f, 0.f, 0.f,
+			0.f, 1.f, 0.f,
+			tx,  ty,  1.f
+		);
+#else
+		return float3x3(
+			1.f, 0.f, tx,
+			0.f, 1.f, ty,
+			0.f, 0.f, 1.f
+		);
+#endif
 	}
 
-	hlslpp_inline float3x3 float3x3_translate(const float2& t, MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float3x3 float3x3_translate(const float2& t)
 	{
-		return float3x3_translate(t.x, t.y, layout);
+		return float3x3_translate(t.x, t.y);
 	}
 
-	hlslpp_inline float4x4 float4x4_translate(float tx, float ty, float tz, MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float4x4 float4x4_translate(float tx, float ty, float tz)
 	{
-		return layout == MatrixLayout::RowMajor
-			? float4x4(
-				1.f, 0.f, 0.f, 0.f,
-				0.f, 1.f, 0.f, 0.f,
-				0.f, 0.f, 1.f, 0.f,
-				tx,  ty,  tz,  1.f
-			)
-			: float4x4(
-				1.f, 0.f, 0.f, tx,
-				0.f, 1.f, 0.f, ty,
-				0.f, 0.f, 1.f, tz,
-				0.f, 0.f, 0.f, 1.f
-			);
+#if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
+		return float4x4(
+			1.f, 0.f, 0.f, 0.f,
+			0.f, 1.f, 0.f, 0.f,
+			0.f, 0.f, 1.f, 0.f,
+			tx,  ty,  tz,  1.f
+		);
+#else
+		return float4x4(
+			1.f, 0.f, 0.f, tx,
+			0.f, 1.f, 0.f, ty,
+			0.f, 0.f, 1.f, tz,
+			0.f, 0.f, 0.f, 1.f
+		);
+#endif
 	}
 
-	hlslpp_inline float4x4 float4x4_translate(const float3& t, MatrixLayout layout = MatrixLayout::RowMajor)
+	hlslpp_inline float4x4 float4x4_translate(const float3& t)
 	{
-		return float4x4_translate(t.x, t.y, t.z, layout);
+		return float4x4_translate(t.x, t.y, t.z);
 	}
 
 } // namespace hlslpp
