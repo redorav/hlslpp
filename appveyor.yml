@@ -18,6 +18,18 @@ environment:
       build: off
       platform: OSX64 Clang
       configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      vsversion: 2019
+      platform: Android ARM
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      vsversion: 2019
+      platform: Android ARM64
+      configuration: Release
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      vsversion: 2019
+      platform: MSVC ARM64
+      configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       vsversion: 2015
       platform: MSVC 32
