@@ -231,9 +231,17 @@ namespace hlslpp
 
 	// Rotation
 
-	hlslpp_inline float2x2 float2x2_rotate(float angleRad)
+	hlslpp_inline float GetRotationSign(Coordinates coordinates, MatrixLayout layout)
 	{
-		const float s = sinf(angleRad);
+		return (coordinates == Coordinates::LeftHanded ? 1.f : -1.f) *
+		       (layout == MatrixLayout::RowMajor ? 1.f : -1.f);
+	}
+
+	hlslpp_inline float2x2 float2x2_rotate(float angleRad,
+											Coordinates coordinates = Coordinates::LeftHanded,
+											MatrixLayout layout = MatrixLayout::RowMajor)
+	{
+		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
 		const float c = cosf(angleRad);
 
 		return float2x2(
@@ -242,9 +250,11 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float3x3 float3x3_rotate_z(float angleRad)
+	hlslpp_inline float3x3 float3x3_rotate_z(float angleRad,
+											Coordinates coordinates = Coordinates::LeftHanded,
+											MatrixLayout layout = MatrixLayout::RowMajor)
 	{
-		const float s = sinf(angleRad);
+		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
 		const float c = cosf(angleRad);
 
 		return float3x3(
@@ -254,9 +264,11 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_rotate_z(float angleRad)
+	hlslpp_inline float4x4 float4x4_rotate_z(float angleRad,
+											Coordinates coordinates = Coordinates::LeftHanded,
+											MatrixLayout layout = MatrixLayout::RowMajor)
 	{
-		const float s = sinf(angleRad);
+		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
 		const float c = cosf(angleRad);
 
 		return float4x4(
@@ -267,9 +279,11 @@ namespace hlslpp
 		);
 	}
 	
-	hlslpp_inline float3x3 float3x3_rotate_y(float angleRad)
+	hlslpp_inline float3x3 float3x3_rotate_y(float angleRad,
+											Coordinates coordinates = Coordinates::LeftHanded,
+											MatrixLayout layout = MatrixLayout::RowMajor)
 	{
-		const float s = sinf(angleRad);
+		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
 		const float c = cosf(angleRad);
 
 		return float3x3(
@@ -279,9 +293,11 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_rotate_y(float angleRad)
+	hlslpp_inline float4x4 float4x4_rotate_y(float angleRad,
+											Coordinates coordinates = Coordinates::LeftHanded,
+											MatrixLayout layout = MatrixLayout::RowMajor)
 	{
-		const float s = sinf(angleRad);
+		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
 		const float c = cosf(angleRad);
 
 		return float4x4(
@@ -292,9 +308,11 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float3x3 float3x3_rotate_x(float angleRad)
+	hlslpp_inline float3x3 float3x3_rotate_x(float angleRad,
+											Coordinates coordinates = Coordinates::LeftHanded,
+											MatrixLayout layout = MatrixLayout::RowMajor)
 	{
-		const float s = sinf(angleRad);
+		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
 		const float c = cosf(angleRad);
 
 		return float3x3(
@@ -304,9 +322,11 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_rotate_x(float angleRad)
+	hlslpp_inline float4x4 float4x4_rotate_x(float angleRad,
+											Coordinates coordinates = Coordinates::LeftHanded,
+											MatrixLayout layout = MatrixLayout::RowMajor)
 	{
-		const float s = sinf(angleRad);
+		const float s = sinf(angleRad) * GetRotationSign(coordinates, layout);
 		const float c = cosf(angleRad);
 
 		return float4x4(
@@ -317,9 +337,11 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float3x3 float3x3_rotate_axis(const float3& axis, float angleRad)
+	hlslpp_inline float3x3 float3x3_rotate_axis(const float3& axis, float angleRad,
+												Coordinates coordinates = Coordinates::LeftHanded,
+												MatrixLayout layout = MatrixLayout::RowMajor)
 	{
-		const float s  = sinf(angleRad);
+		const float s  = sinf(angleRad) * GetRotationSign(coordinates, layout);
 		const float c  = cosf(angleRad);
 
 		const float3 as = axis * s;
@@ -334,9 +356,11 @@ namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x4 float4x4_rotate_axis(const float3& axis, float angleRad)
+	hlslpp_inline float4x4 float4x4_rotate_axis(const float3& axis, float angleRad,
+												Coordinates coordinates = Coordinates::LeftHanded,
+												MatrixLayout layout = MatrixLayout::RowMajor)
 	{
-		const float s  = sinf(angleRad);
+		const float s  = sinf(angleRad) * GetRotationSign(coordinates, layout);
 		const float c  = cosf(angleRad);
 
 		const float3 as = axis * s;
