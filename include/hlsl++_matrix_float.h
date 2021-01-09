@@ -473,8 +473,6 @@ namespace hlslpp
 
 		hlslpp_inline float4x4(const float4& f1, const float4& f2, const float4& f3, const float4& f4) : vec0(f1.vec), vec1(f2.vec), vec2(f3.vec), vec3(f4.vec) {}
 
-		hlslpp_inline float4x4(const float4x4& m) : vec0(m.vec0), vec1(m.vec1), vec2(m.vec2), vec3(m.vec3) {}
-
 		union
 		{
 			n128 vec0;
