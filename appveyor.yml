@@ -32,15 +32,15 @@ environment:
       configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       vsversion: 2015
-      platform: MSVC 32
+      platform: MSVC 32 SSE 2
       configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       vsversion: 2015
-      platform: MSVC 64
-      configuration: Release      
+      platform: MSVC 64 SSE 2
+      configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       vsversion: 2017
-      platform: MSVC 32
+      platform: MSVC 32 SSE 2
       configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       vsversion: 2017
@@ -56,7 +56,7 @@ environment:
       configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       vsversion: 2017
-      platform: LLVM 32
+      platform: LLVM 32 SSE 2
       configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       vsversion: 2017
@@ -82,20 +82,20 @@ environment:
 install:
   - cmd: if %vsversion%==2015
          start /B /W premake/win/premake5 --file=premake.lua vs2015
-  - cmd: if %vsversion%==2017
+         if %vsversion%==2017
          start /B /W premake/win/premake5 --file=premake.lua vs2017
-  - cmd: if %vsversion%==2019
+         if %vsversion%==2019
          start /B /W premake/win/premake5 --file=premake.lua vs2019
   - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = Ubuntu ]]; then ./premake/linux/premake5 --file=premake.lua gmake2; fi;
   - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = macOS ]]; then ./premake/osx/premake5 --file=premake.lua xcode4; fi;
 
 build_script:
   - cmd: if %vsversion%==2015
-         msbuild "C:\projects\hlslpp\workspace\vs2015\hlsl++.sln"
-  - cmd: if %vsversion%==2017
-         msbuild "C:\projects\hlslpp\workspace\vs2017\hlsl++.sln"
-  - cmd: if %vsversion%==2019
-         msbuild "C:\projects\hlslpp\workspace\vs2019\hlsl++.sln"
+         msbuild "C:\projects\hlslpp\workspace\vs2015\hlsl++.sln" /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+         if %vsversion%==2017
+         msbuild "C:\projects\hlslpp\workspace\vs2017\hlsl++.sln" /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+         if %vsversion%==2019
+         msbuild "C:\projects\hlslpp\workspace\vs2019\hlsl++.sln" /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   - sh: if [[ $platform = "Linux64 GGC" ]]; then 
         pushd workspace/gmake2;
         make all config=release_linux64_gcc;
