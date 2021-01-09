@@ -84,6 +84,8 @@ install:
          start /B /W premake/win/premake5 --file=premake.lua vs2015
   - cmd: if %vsversion%==2017
          start /B /W premake/win/premake5 --file=premake.lua vs2017
+  - cmd: if %vsversion%==2019
+         start /B /W premake/win/premake5 --file=premake.lua vs2019
   - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = Ubuntu ]]; then ./premake/linux/premake5 --file=premake.lua gmake2; fi;
   - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = macOS ]]; then ./premake/osx/premake5 --file=premake.lua xcode4; fi;
 
