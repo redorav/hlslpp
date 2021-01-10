@@ -570,35 +570,35 @@ namespace hlslpp
 	hlslpp_inline uint3& operator *= (uint3& i1, const uint3& i2) { i1 = i1 * i2; return i1; }
 	hlslpp_inline uint4& operator *= (uint4& i1, const uint4& i2) { i1 = i1 * i2; return i1; }
 
-	//hlslpp_inline uint1 operator == (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint2 operator == (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint3 operator == (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint4 operator == (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
-	//
-	//hlslpp_inline uint1 operator != (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint2 operator != (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint3 operator != (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint4 operator != (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
-	//
-	//hlslpp_inline uint1 operator > (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint2 operator > (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint3 operator > (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint4 operator > (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint1 operator == (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint2 operator == (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint3 operator == (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint4 operator == (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
+	
+	hlslpp_inline uint1 operator != (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint2 operator != (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint3 operator != (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint4 operator != (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
+	
+	hlslpp_inline uint1 operator > (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint2 operator > (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint3 operator > (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint4 operator > (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
 
-	//hlslpp_inline uint1 operator >= (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint2 operator >= (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint3 operator >= (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint4 operator >= (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
-	//
-	//hlslpp_inline uint1 operator < (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint2 operator < (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint3 operator < (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint4 operator < (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
-	//
-	//hlslpp_inline uint1 operator <= (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint2 operator <= (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint3 operator <= (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
-	//hlslpp_inline uint4 operator <= (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint1 operator >= (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint2 operator >= (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint3 operator >= (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint4 operator >= (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
+	
+	hlslpp_inline uint1 operator < (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint2 operator < (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint3 operator < (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint4 operator < (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
+	
+	hlslpp_inline uint1 operator <= (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint2 operator <= (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint3 operator <= (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline uint4 operator <= (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
 
 	// Bitwise
 
