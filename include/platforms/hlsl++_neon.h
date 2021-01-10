@@ -257,12 +257,14 @@ hlslpp_inline float32x4_t vrndq_f32(float32x4_t x)
 }
 #endif
 
+#if !defined(vsqrtq_f32)
 hlslpp_inline float32x4_t vsqrtq_f32(float32x4_t x)
 {
 	uint32x4_t cmpZero = vceqq_f32(x, vmovq_n_f32(0.0f));							// Sqrt of 0 is NaN (since we use rsqrt to compute it) which is incorrect but we still want it to go NaN on negatives
 	float32x4_t sqrt = vmulq_f32(x, vrsqrtq_f32(x));								// Multiply by x to get x * rqsrt(x)
 	return vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32(sqrt), cmpZero));	// Select 0 if input is 0
 }
+#endif
 
 #endif
 

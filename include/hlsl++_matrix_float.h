@@ -405,7 +405,7 @@ namespace hlslpp
 		union
 		{
 			n256 vec0;
-			float f32_0[8];
+			float f32_256_0[8];
 
 			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 			struct
@@ -432,7 +432,7 @@ namespace hlslpp
 		union
 		{
 			n256 vec1;
-			float f32_1[8];
+			float f32_256_1[8];
 
 			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 			struct
@@ -478,7 +478,7 @@ namespace hlslpp
 		union
 		{
 			n128 vec0;
-			float f32_0[4];
+			float f32_128_0[4];
 			#include "swizzle/hlsl++_matrix_row0_1.h"
 			#include "swizzle/hlsl++_matrix_row0_2.h"
 			#include "swizzle/hlsl++_matrix_row0_3.h"
@@ -488,7 +488,7 @@ namespace hlslpp
 		union
 		{
 			n128 vec1;
-			float f32_1[4];
+			float f32_128_1[4];
 			#include "swizzle/hlsl++_matrix_row1_1.h"
 			#include "swizzle/hlsl++_matrix_row1_2.h"
 			#include "swizzle/hlsl++_matrix_row1_3.h"
@@ -498,7 +498,7 @@ namespace hlslpp
 		union
 		{
 			n128 vec2;
-			float f32_2[4];
+			float f32_128_2[4];
 			#include "swizzle/hlsl++_matrix_row2_1.h"
 			#include "swizzle/hlsl++_matrix_row2_2.h"
 			#include "swizzle/hlsl++_matrix_row2_3.h"
@@ -508,7 +508,7 @@ namespace hlslpp
 		union
 		{
 			n128 vec3;
-			float f32_3[4];
+			float f32_128_3[4];
 			#include "swizzle/hlsl++_matrix_row3_1.h"
 			#include "swizzle/hlsl++_matrix_row3_2.h"
 			#include "swizzle/hlsl++_matrix_row3_3.h"

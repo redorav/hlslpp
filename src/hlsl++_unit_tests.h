@@ -22,7 +22,7 @@ using namespace std;
 using namespace hlslpp;
 
 // Temporary until we properly do it multiplatform
-#if defined(_MSC_VER) && defined(_WIN64)
+#if defined(_MSC_VER) && defined(_WIN64) && !defined(HLSLPP_ARM)
 extern "C" unsigned __int64 __rdtsc();
 #pragma intrinsic(__rdtsc)
 inline uint64_t ClockCycleCount()
