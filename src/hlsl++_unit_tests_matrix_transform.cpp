@@ -7,8 +7,8 @@ void RunUnitTestsMatrixTransform()
 {
 	using namespace hlslpp_unit;
 
-	const float pi = std::acos(-1.0f);
-	const float sq2 = std::sqrt(2.0f) / 2.0f;
+	const float pi  = acosf(-1.0f);
+	const float sq2 = sqrtf(2.0f) / 2.0f;
 	const float tolerance = 1e-7f;
 
 	const float2 vec2d_a1(1.0f, 1.0f);
@@ -129,16 +129,16 @@ void RunUnitTestsMatrixTransform()
 	// View to Orthographic Projection coordinates transformation
 
 	const float4 vec4d_view1(0.5f, 0.5f, 0.0f, 1.0f);
-	Frustrum ortho_frustrum(-0.5f, 0.5f, -0.5f, 0.5f, -1.0f, 1.0f);
+	const frustrum ortho_frustrum(-0.5f, 0.5f, -0.5f, 0.5f, -1.0f, 1.0f);
 
-	eq(mul(vec4d_view1, float4x4::orthographic(ProjectionSettings(ortho_frustrum, ZClip::Zero))), 1.0f, 1.0f, 0.5f, 1.0f, tolerance);
-	eq(mul(vec4d_view1, float4x4::orthographic(ProjectionSettings(ortho_frustrum, ZClip::NegativeOne))), 1.0f, 1.0f, 0.0f, 1.0f, tolerance);
+	eq(mul(vec4d_view1, float4x4::orthographic(projection(ortho_frustrum, zclip::zero))), 1.0f, 1.0f, 0.5f, 1.0f, tolerance);
+	eq(mul(vec4d_view1, float4x4::orthographic(projection(ortho_frustrum, zclip::negative_one))), 1.0f, 1.0f, 0.0f, 1.0f, tolerance);
 
 	// View to Perspective Projection coordinates transformation
 
 	const float4 vec4d_view2(0.5f, 0.5f, 1.0f, 1.0f);
-	Frustrum persp_frustrum(-0.5f, 0.5f, -0.5f, 0.5f, 0.001f, 1.0f);
+	const frustrum persp_frustrum(-0.5f, 0.5f, -0.5f, 0.5f, 0.001f, 1.0f);
 
-	eq(mul(vec4d_view2, float4x4::perspective(ProjectionSettings(persp_frustrum, ZClip::Zero))), 0.001f, 0.001f, 1.0f, 1.0f, tolerance);
-	eq(mul(vec4d_view2, float4x4::perspective(ProjectionSettings(persp_frustrum, ZClip::NegativeOne))), 0.001f, 0.001f, 1.0f, 1.0f, tolerance);
+	eq(mul(vec4d_view2, float4x4::perspective(projection(persp_frustrum, zclip::zero))), 0.001f, 0.001f, 1.0f, 1.0f, tolerance);
+	eq(mul(vec4d_view2, float4x4::perspective(projection(persp_frustrum, zclip::negative_one))), 0.001f, 0.001f, 1.0f, 1.0f, tolerance);
 }

@@ -118,10 +118,10 @@
 
 #endif
 
+#include "hlsl++_common.h"
+
 // Add HLSLPP_FEATURE_TRANSFORM definition prior to including hlsl++.h to enable compilation of matrix transformations
 #include "transform/hlsl++_transform_common.h"
-
-#include "hlsl++_common.h"
 
 #include "hlsl++_vector_float.h"
 

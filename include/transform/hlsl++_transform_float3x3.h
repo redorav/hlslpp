@@ -7,8 +7,8 @@
 static hlslpp_inline float3x3 scale(float sx, float sy, float sz = 1.0f)
 {
 	return float3x3(
-		sx,  0.0f, 0.0f,
-		0.0f, sy,  0.0f,
+		sx,   0.0f, 0.0f,
+		0.0f, sy,   0.0f,
 		0.0f, 0.0f, sz
 	);
 }
@@ -32,22 +32,22 @@ static hlslpp_inline float3x3 scale(float su)
 // Rotation //
 //----------//
 
-static hlslpp_inline float3x3 rotation_z(float angleRad)
+static hlslpp_inline float3x3 rotation_z(float angle_rad)
 {
-	const float s = sinf(angleRad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
-	const float c = cosf(angleRad);
+	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+	const float c = cosf(angle_rad);
 
 	return float3x3(
-		c,   s,   0.0f,
-		-s,  c,   0.0f,
+		c,    s,    0.0f,
+		-s,   c,    0.0f,
 		0.0f, 0.0f, 1.0f
 	);
 }
 
-static hlslpp_inline float3x3 rotation_y(float angleRad)
+static hlslpp_inline float3x3 rotation_y(float angle_rad)
 {
-	const float s = sinf(angleRad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
-	const float c = cosf(angleRad);
+	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+	const float c = cosf(angle_rad);
 
 	return float3x3(
 		c,    0.0f, -s,
@@ -56,10 +56,10 @@ static hlslpp_inline float3x3 rotation_y(float angleRad)
 	);
 }
 
-static hlslpp_inline float3x3 rotation_x(float angleRad)
+static hlslpp_inline float3x3 rotation_x(float angle_rad)
 {
-	const float s = sinf(angleRad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
-	const float c = cosf(angleRad);
+	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+	const float c = cosf(angle_rad);
 
 	return float3x3(
 		1.0f, 0.0f, 0.0f,
@@ -68,10 +68,10 @@ static hlslpp_inline float3x3 rotation_x(float angleRad)
 	);
 }
 
-static hlslpp_inline float3x3 rotation_axis(const float3& axis, float angleRad)
+static hlslpp_inline float3x3 rotation_axis(const float3& axis, float angle_rad)
 {
-	const float s  = sinf(angleRad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
-	const float c  = cosf(angleRad);
+	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+	const float c = cosf(angle_rad);
 
 	const float3 as = axis * s;
 	const float3 ac = axis * (1.0f - c);
