@@ -275,6 +275,15 @@ namespace hlslpp
 	#define _hlslpp_cmplt1_epi32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmplt_epi32((val1), (val2)), i4_1)
 	#define _hlslpp_cmple1_epi32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmple_epi32((val1), (val2)), i4_1)
 
+	#define _hlslpp_cmpneq1_epu32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmpneq_epu32((val1), (val2)), u4_1)
+	#define _hlslpp_cmpeq1_epu32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmpeq_epu32((val1), (val2)), u4_1)
+
+	#define _hlslpp_cmpgt1_epu32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmpgt_epu32((val1), (val2)), u4_1)
+	#define _hlslpp_cmpge1_epu32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmpge_epu32((val1), (val2)), u4_1)
+
+	#define _hlslpp_cmplt1_epu32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmplt_epu32((val1), (val2)), u4_1)
+	#define _hlslpp_cmple1_epu32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmple_epu32((val1), (val2)), u4_1)
+
 	#define _hlslpp256_sign_ps(val)				_hlslpp256_and_ps(_hlslpp256_or_ps(_hlslpp256_and_ps((val), f8minusOne), f8_1), _hlslpp256_cmpneq_ps((val), f8_0))
 
 	#define _hlslpp256_cmpneq1_ps(val1, val2)	_hlslpp256_and_ps(_hlslpp256_cmpneq_ps((val1), (val2)), f8_1)

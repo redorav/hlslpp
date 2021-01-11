@@ -1076,6 +1076,128 @@ namespace hlslpp
 #endif
 	}
 
+	hlslpp_inline double1 operator == (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpeq1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double2 operator == (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpeq1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double3 operator == (const double3& f1, const double3& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double3(_hlslpp256_cmpeq1_pd(f1.vec, f2.vec));
+#else
+		return double3(_hlslpp_cmpeq1_pd(f1.vec0, f2.vec0), _hlslpp_cmpeq1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+
+	hlslpp_inline double4 operator == (const double4& f1, const double4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double4(_hlslpp256_cmpeq1_pd(f1.vec, f2.vec));
+#else
+		return double4(_hlslpp_cmpeq1_pd(f1.vec0, f2.vec0), _hlslpp_cmpeq1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+	
+	hlslpp_inline double1 operator != (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpneq1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double2 operator != (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpneq1_pd(f1.vec, f2.vec)); }
+	
+	hlslpp_inline double3 operator != (const double3& f1, const double3& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double3(_hlslpp256_cmpneq1_pd(f1.vec, f2.vec));
+#else
+		return double3(_hlslpp_cmpneq1_pd(f1.vec0, f2.vec0), _hlslpp_cmpneq1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+
+	hlslpp_inline double4 operator != (const double4& f1, const double4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double4(_hlslpp256_cmpneq1_pd(f1.vec, f2.vec));
+#else
+		return double4(_hlslpp_cmpneq1_pd(f1.vec0, f2.vec0), _hlslpp_cmpneq1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+
+	hlslpp_inline double1 operator > (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpgt1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double2 operator > (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpgt1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double3 operator > (const double3& f1, const double3& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double3(_hlslpp256_cmpgt1_pd(f1.vec, f2.vec));
+#else
+		return double3(_hlslpp_cmpgt1_pd(f1.vec0, f2.vec0), _hlslpp_cmpgt1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+
+	hlslpp_inline double4 operator > (const double4& f1, const double4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double4(_hlslpp256_cmpgt1_pd(f1.vec, f2.vec));
+#else
+		return double4(_hlslpp_cmpgt1_pd(f1.vec0, f2.vec0), _hlslpp_cmpgt1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+
+	hlslpp_inline double1 operator >= (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpge1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double2 operator >= (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpge1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double3 operator >= (const double3& f1, const double3& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double3(_hlslpp256_cmpge1_pd(f1.vec, f2.vec));
+#else
+		return double3(_hlslpp_cmpge1_pd(f1.vec0, f2.vec0), _hlslpp_cmpge1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+
+	hlslpp_inline double4 operator >= (const double4& f1, const double4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double4(_hlslpp256_cmpge1_pd(f1.vec, f2.vec));
+#else
+		return double4(_hlslpp_cmpge1_pd(f1.vec0, f2.vec0), _hlslpp_cmpge1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+
+	hlslpp_inline double1 operator < (const double1& f1, const double1& f2) { return double1(_hlslpp_cmplt1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double2 operator < (const double2& f1, const double2& f2) { return double2(_hlslpp_cmplt1_pd(f1.vec, f2.vec)); }
+	
+	hlslpp_inline double3 operator < (const double3& f1, const double3& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double3(_hlslpp256_cmplt1_pd(f1.vec, f2.vec));
+#else
+		return double3(_hlslpp_cmplt1_pd(f1.vec0, f2.vec0), _hlslpp_cmplt1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+
+	hlslpp_inline double4 operator < (const double4& f1, const double4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double4(_hlslpp256_cmplt1_pd(f1.vec, f2.vec));
+#else
+		return double4(_hlslpp_cmplt1_pd(f1.vec0, f2.vec0), _hlslpp_cmplt1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+
+	hlslpp_inline double1 operator <= (const double1& f1, const double1& f2) { return double1(_hlslpp_cmple1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double2 operator <= (const double2& f1, const double2& f2) { return double2(_hlslpp_cmple1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline double3 operator <= (const double3& f1, const double3& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double3(_hlslpp256_cmple1_pd(f1.vec, f2.vec));
+#else
+		return double3(_hlslpp_cmple1_pd(f1.vec0, f2.vec0), _hlslpp_cmple1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+
+	hlslpp_inline double4 operator <= (const double4& f1, const double4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double4(_hlslpp256_cmple1_pd(f1.vec, f2.vec));
+#else
+		return double4(_hlslpp_cmple1_pd(f1.vec0, f2.vec0), _hlslpp_cmple1_pd(f1.vec1, f2.vec1));
+#endif
+	}
+
 	hlslpp_inline double1& operator += (double1& f1, const double1& f2) { f1 = f1 + f2; return f1; }
 	hlslpp_inline double2& operator += (double2& f1, const double2& f2) { f1 = f1 + f2; return f1; }
 	hlslpp_inline double3& operator += (double3& f1, const double3& f2) { f1 = f1 + f2; return f1; }

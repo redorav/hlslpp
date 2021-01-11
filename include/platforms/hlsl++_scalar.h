@@ -238,15 +238,15 @@ namespace hlslpp
 
 	hlslpp_inline vector_float4 _hlslpp_andnot_ps(const vector_float4& v1, const vector_float4& v2)
 	{
-		uint32_t ix = (!v1.ix) & v2.ix; uint32_t iy = (!v1.iy) & v2.iy;
-		uint32_t iz = (!v1.iz) & v2.iz; uint32_t iw = (!v1.iw) & v2.iw;
+		uint32_t ix = (~v1.ix) & v2.ix; uint32_t iy = (~v1.iy) & v2.iy;
+		uint32_t iz = (~v1.iz) & v2.iz; uint32_t iw = (~v1.iw) & v2.iw;
 
 		return vector_float4(*(const float*)(&ix), *(const float*)(&iy), *(const float*)(&iz), *(const float*)(&iw));
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_not_ps(const vector_float4& v1)
 	{
-		uint32_t ix = !v1.ix; uint32_t iy = !v1.iy; uint32_t iz = !v1.iz; uint32_t iw = !v1.iw;
+		uint32_t ix = ~v1.ix; uint32_t iy = ~v1.iy; uint32_t iz = ~v1.iz; uint32_t iw = ~v1.iw;
 		return vector_float4(*(const float*)(&ix), *(const float*)(&iy), *(const float*)(&iz), *(const float*)(&iw));
 	}
 
@@ -461,14 +461,35 @@ namespace hlslpp
 
 	hlslpp_inline vector_int4 _hlslpp_abs_epi32(const vector_int4& v) { return vector_int4(std::abs(v.x), std::abs(v.y), std::abs(v.z), std::abs(v.w)); }
 
-	hlslpp_inline vector_int4 _hlslpp_cmpeq_epi32(const vector_int4& x, const vector_int4& y) { return vector_int4(0, 0, 0, 0); }
-	hlslpp_inline vector_int4 _hlslpp_cmpneq_epi32(const vector_int4& x, const vector_int4& y) { return vector_int4(0, 0, 0, 0); }
+	hlslpp_inline vector_int4 _hlslpp_cmpeq_epi32(const vector_int4& v1, const vector_int4& v2)
+	{
+		return vector_int4(v1.x == v2.x ? 0xffffffff : 0, v1.y == v2.y ? 0xffffffff : 0, v1.z == v2.z ? 0xffffffff : 0, v1.w == v2.w ? 0xffffffff : 0);
+	}
 
-	hlslpp_inline vector_int4 _hlslpp_cmpgt_epi32(const vector_int4& x, const vector_int4& y) { return vector_int4(0, 0, 0, 0); }
-	hlslpp_inline vector_int4 _hlslpp_cmpge_epi32(const vector_int4& x, const vector_int4& y) { return vector_int4(0, 0, 0, 0); }
+	hlslpp_inline vector_int4 _hlslpp_cmpneq_epi32(const vector_int4& v1, const vector_int4& v2)
+	{
+		return vector_int4(v1.x != v2.x ? 0xffffffff : 0, v1.y != v2.y ? 0xffffffff : 0, v1.z != v2.z ? 0xffffffff : 0, v1.w != v2.w ? 0xffffffff : 0);
+	}
 
-	hlslpp_inline vector_int4 _hlslpp_cmplt_epi32(const vector_int4& x, const vector_int4& y) { return vector_int4(0, 0, 0, 0); }
-	hlslpp_inline vector_int4 _hlslpp_cmple_epi32(const vector_int4& x, const vector_int4& y) { return vector_int4(0, 0, 0, 0); }
+	hlslpp_inline vector_int4 _hlslpp_cmpgt_epi32(const vector_int4& v1, const vector_int4& v2)
+	{
+		return vector_int4(v1.x > v2.x ? 0xffffffff : 0, v1.y > v2.y ? 0xffffffff : 0, v1.z > v2.z ? 0xffffffff : 0, v1.w > v2.w ? 0xffffffff : 0);
+	}
+
+	hlslpp_inline vector_int4 _hlslpp_cmpge_epi32(const vector_int4& v1, const vector_int4& v2)
+	{
+		return vector_int4(v1.x >= v2.x ? 0xffffffff : 0, v1.y >= v2.y ? 0xffffffff : 0, v1.z >= v2.z ? 0xffffffff : 0, v1.w >= v2.w ? 0xffffffff : 0);
+	}
+
+	hlslpp_inline vector_int4 _hlslpp_cmplt_epi32(const vector_int4& v1, const vector_int4& v2)
+	{
+		return vector_int4(v1.x < v2.x ? 0xffffffff : 0, v1.y < v2.y ? 0xffffffff : 0, v1.z < v2.z ? 0xffffffff : 0, v1.w < v2.w ? 0xffffffff : 0);
+	}
+
+	hlslpp_inline vector_int4 _hlslpp_cmple_epi32(const vector_int4& v1, const vector_int4& v2)
+	{
+		return vector_int4(v1.x <= v2.x ? 0xffffffff : 0, v1.y <= v2.y ? 0xffffffff : 0, v1.z <= v2.z ? 0xffffffff : 0, v1.w <= v2.w ? 0xffffffff : 0);
+	}
 
 	hlslpp_inline vector_int4 _hlslpp_max_epi32(const vector_int4& v1, const vector_int4& v2)
 	{
@@ -503,12 +524,12 @@ namespace hlslpp
 
 	hlslpp_inline vector_int4 _hlslpp_andnot_si128(const vector_int4& v1, const vector_int4& v2)
 	{
-		return vector_int4(!v1.x & v2.x, !v1.y & v2.y, !v1.z & v2.z, !v1.w & v2.w);
+		return vector_int4(~v1.x & v2.x, ~v1.y & v2.y, ~v1.z & v2.z, ~v1.w & v2.w);
 	}
 
 	hlslpp_inline vector_int4 _hlslpp_not_si128(const vector_int4& v1)
 	{
-		return vector_int4(!v1.x, !v1.y, !v1.z, !v1.w);
+		return vector_int4(~v1.x, ~v1.y, ~v1.z, ~v1.w);
 	}
 
 	hlslpp_inline vector_int4 _hlslpp_or_si128(const vector_int4& v1, const vector_int4& v2)
@@ -650,34 +671,34 @@ namespace hlslpp
 		return vector_uint4(v1.x - v2.x * v3.x, v1.y - v2.y * v3.y, v1.z - v2.z * v3.z, v1.w - v2.w * v3.w);
 	}
 
-	hlslpp_inline vector_uint4 _hlslpp_cmpeq_epu32(const vector_uint4& x, const vector_uint4& y)
+	hlslpp_inline vector_uint4 _hlslpp_cmpeq_epu32(const vector_uint4& v1, const vector_uint4& v2)
 	{
-		return vector_uint4(0, 0, 0, 0);
+		return vector_uint4(v1.x == v2.x ? 0xffffffff : 0, v1.y == v2.y ? 0xffffffff : 0, v1.z == v2.z ? 0xffffffff : 0, v1.w == v2.w ? 0xffffffff : 0);
 	}
 
-	hlslpp_inline vector_uint4 _hlslpp_cmpneq_epu32(const vector_uint4& x, const vector_uint4& y)
+	hlslpp_inline vector_uint4 _hlslpp_cmpneq_epu32(const vector_uint4& v1, const vector_uint4& v2)
 	{
-		return vector_uint4(0, 0, 0, 0);
+		return vector_uint4(v1.x != v2.x ? 0xffffffff : 0, v1.y != v2.y ? 0xffffffff : 0, v1.z != v2.z ? 0xffffffff : 0, v1.w != v2.w ? 0xffffffff : 0);
 	}
 
-	hlslpp_inline vector_uint4 _hlslpp_cmpgt_epu32(const vector_uint4& x, const vector_uint4& y)
+	hlslpp_inline vector_uint4 _hlslpp_cmpgt_epu32(const vector_uint4& v1, const vector_uint4& v2)
 	{
-		return vector_uint4(0, 0, 0, 0);
+		return vector_uint4(v1.x > v2.x ? 0xffffffff : 0, v1.y > v2.y ? 0xffffffff : 0, v1.z > v2.z ? 0xffffffff : 0, v1.w > v2.w ? 0xffffffff : 0);
 	}
 
-	hlslpp_inline vector_uint4 _hlslpp_cmpge_epu32(const vector_uint4& x, const vector_uint4& y)
+	hlslpp_inline vector_uint4 _hlslpp_cmpge_epu32(const vector_uint4& v1, const vector_uint4& v2)
 	{
-		return vector_uint4(0, 0, 0, 0);
+		return vector_uint4(v1.x >= v2.x ? 0xffffffff : 0, v1.y >= v2.y ? 0xffffffff : 0, v1.z >= v2.z ? 0xffffffff : 0, v1.w >= v2.w ? 0xffffffff : 0);
 	}
 
-	hlslpp_inline vector_uint4 _hlslpp_cmplt_epu32(const vector_uint4& x, const vector_uint4& y)
+	hlslpp_inline vector_uint4 _hlslpp_cmplt_epu32(const vector_uint4& v1, const vector_uint4& v2)
 	{
-		return vector_uint4(0, 0, 0, 0);
+		return vector_uint4(v1.x < v2.x ? 0xffffffff : 0, v1.y < v2.y ? 0xffffffff : 0, v1.z < v2.z ? 0xffffffff : 0, v1.w < v2.w ? 0xffffffff : 0);
 	}
 
-	hlslpp_inline vector_uint4 _hlslpp_cmple_epu32(const vector_uint4& x, const vector_uint4& y)
+	hlslpp_inline vector_uint4 _hlslpp_cmple_epu32(const vector_uint4& v1, const vector_uint4& v2)
 	{
-		return vector_uint4(0, 0, 0, 0);
+		return vector_uint4(v1.x <= v2.x ? 0xffffffff : 0, v1.y <= v2.y ? 0xffffffff : 0, v1.z <= v2.z ? 0xffffffff : 0, v1.w <= v2.w ? 0xffffffff : 0);
 	}
 
 	hlslpp_inline vector_uint4 _hlslpp_max_epu32(const vector_uint4& v1, const vector_uint4& v2)
@@ -713,12 +734,12 @@ namespace hlslpp
 
 	hlslpp_inline vector_uint4 _hlslpp_andnot_si128(const vector_uint4& v1, const vector_uint4& v2)
 	{
-		return vector_uint4(!v1.x & v2.x, !v1.y & v2.y, !v1.z & v2.z, !v1.w & v2.w);
+		return vector_uint4(~v1.x & v2.x, ~v1.y & v2.y, ~v1.z & v2.z, ~v1.w & v2.w);
 	}
 
 	hlslpp_inline vector_uint4 _hlslpp_not_si128(const vector_uint4& v1)
 	{
-		return vector_uint4(!v1.x, !v1.y, !v1.z, !v1.w);
+		return vector_uint4(~v1.x, ~v1.y, ~v1.z, ~v1.w);
 	}
 
 	hlslpp_inline vector_uint4 _hlslpp_or_si128(const vector_uint4& v1, const vector_uint4& v2)
