@@ -23,6 +23,10 @@ namespace hlslpp_unit
 	{
 		bool withinTolerance = abs(a - b) <= tolerance;
 		assert(withinTolerance);
+		if (!withinTolerance)
+		{
+			printf("Assertion failed! Values are not equal: a = %f, b = %f, tolerance = %f\n", a, b, tolerance);
+		}
 	}
 
 	void eq(const float2& v, float x, float y, float tolerance /*= 0.0f*/)
@@ -543,6 +547,8 @@ void RunExperiments()
 
 void RunUnitTestsMatrixFloat();
 
+void RunUnitTestsMatrixTransform();
+
 void RunUnitTestsVectorFloat();
 
 void RunUnitTestsVectorInt();
@@ -565,6 +571,8 @@ void RunUnitTests()
 	RunUnitTestsVectorDouble();
 
 	RunUnitTestsMatrixFloat();
+
+	RunUnitTestsMatrixTransform();
 
 	// Quaternion tests
 

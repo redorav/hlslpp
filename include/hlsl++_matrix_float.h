@@ -157,6 +157,8 @@ namespace hlslpp
 
 		hlslpp_inline float2x2(const float2& f1, const float2& f2) : vec(_hlslpp_shuf_xyxy_ps(f1.vec, f2.vec)) {}
 
+		#include "transform/hlsl++_transform_float2x2.h"
+
 		union
 		{
 			n128 vec; // Store it in a single vector to save memory
@@ -284,6 +286,8 @@ namespace hlslpp
 		hlslpp_inline float3x3(const float3& f1, const float3& f2, const float3& f3) : vec0(f1.vec), vec1(f2.vec), vec2(f3.vec) {}
 
 		static const float3x3& identity() { static const float3x3 iden = float3x3(1, 0, 0, 0, 1, 0, 0, 0, 1); return iden; }
+
+		#include "transform/hlsl++_transform_float3x3.h"
 
 		union
 		{
@@ -469,8 +473,6 @@ namespace hlslpp
 
 		hlslpp_inline float4x4(const float4& f1, const float4& f2, const float4& f3, const float4& f4) : vec0(f1.vec), vec1(f2.vec), vec2(f3.vec), vec3(f4.vec) {}
 
-		hlslpp_inline float4x4(const float4x4& m) : vec0(m.vec0), vec1(m.vec1), vec2(m.vec2), vec3(m.vec3) {}
-
 		union
 		{
 			n128 vec0;
@@ -515,6 +517,8 @@ namespace hlslpp
 		explicit hlslpp_inline float4x4(const quaternion& q);
 
 		static const float4x4& identity() { static const float4x4 iden = float4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); return iden; };
+
+		#include "transform/hlsl++_transform_float4x4.h"
 	};
 
 	//-----------------
