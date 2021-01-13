@@ -59,19 +59,19 @@ namespace hlslpp
 
 	struct frustrum
 	{
-		float left_x;
-		float right_x;
-		float bottom_y;
-		float top_y;
+		float left;
+		float right;
+		float bottom;
+		float top;
 		float near_z;
 		float far_z;
 
-		frustrum(float left_x, float right_x, float bottom_y, float top_y, float near_z, float far_z)
-			: left_x(left_x), right_x(right_x), bottom_y(bottom_y), top_y(top_y), near_z(near_z), far_z(far_z)
+		frustrum(float left, float right, float bottom, float top, float near_z, float far_z)
+			: left(left), right(right), bottom(bottom), top(top), near_z(near_z), far_z(far_z)
 		{ }
 
 		frustrum(float width, float height, float near_z, float far_z)
-			: left_x(-width / 2.0f), right_x(width / 2.0f), bottom_y(-height / 2.0f), top_y(height / 2.0f), near_z(near_z), far_z(far_z)
+			: left(-width / 2.0f), right(width / 2.0f), bottom(-height / 2.0f), top(height / 2.0f), near_z(near_z), far_z(far_z)
 		{ }
 
 		// Field of view functions should be used for perspective projections only
@@ -90,8 +90,8 @@ namespace hlslpp
 			return frustrum(height * aspect, height, near_z, far_z);
 		}
 
-		float width() const  { return right_x - left_x; }
-		float height() const { return top_y - bottom_y; }
+		float width() const  { return right - left; }
+		float height() const { return top - bottom; }
 		float depth() const  { return far_z - near_z; }
 	};
 
