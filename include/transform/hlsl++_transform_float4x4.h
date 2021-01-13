@@ -4,27 +4,18 @@
 // World to View coordinates transformation //
 //------------------------------------------//
 
-// Workaround for Clang compiler bug on Android ARM resulting in build error:
-//     CLANGCOMPILE : fatal error : error in backend: Cannot select: 0x9351a98: v4f32 = insert_subvector undef:v4f32, 0x9e390f8, Constant:i32<0>
-// Additional multiplication of the vectors cross by 1.f makes Clang compiler work normally.
-#if defined(__ANDROID__) && (defined(_M_ARM) || defined(__arm__))
-	#define ANDROID_ARM_WORKAROUND * 1.f
-#else
-	#define ANDROID_ARM_WORKAROUND
-#endif
-
 static hlslpp_inline float4x4 look_at(const float3& position, const float3& target, const float3& up)
 {
 	const float3 look   = normalize(target - position) * HLSLPP_COORDINATES_SIGN;
 	const float3 right  = normalize(cross(up, look));
-	const float3 up_dir = cross(look, right) ANDROID_ARM_WORKAROUND;
+	const float3 up_dir = cross(look, right);
 
 #if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
 	return float4x4(
-		right.x,               up_dir.x,               look.x,               0.0f,
-		right.y,               up_dir.y,               look.y,               0.0f,
-		right.z,               up_dir.z,               look.z,               0.0f,
-		-dot(position, right), -dot(position, up_dir), -dot(position, look), 1.0f
+		float4(right.x,               up_dir.x,               look.x,               0.0f),
+		float4(right.y,               up_dir.y,               look.y,               0.0f),
+		float4(right.z,               up_dir.z,               look.z,               0.0f),
+		float4(-dot(position, right), -dot(position, up_dir), -dot(position, look), 1.0f)
 	);
 #else
 	return float4x4(
