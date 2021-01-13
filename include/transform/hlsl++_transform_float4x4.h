@@ -38,15 +38,15 @@ static hlslpp_inline float4x4 perspective(const projection& proj)
 	const float inv_depth  = 1.0f / proj.frust.depth();
 
 	const float s  = HLSLPP_COORDINATES_SIGN;
-	const float rl = proj.frust.x_right + proj.frust.x_left;
-	const float tb = proj.frust.y_top   + proj.frust.y_bottom;
+	const float rl = proj.frust.right_x + proj.frust.left_x;
+	const float tb = proj.frust.top_y   + proj.frust.bottom_y;
 
-	const float dbl_near = 2.0f * proj.frust.z_near;
-	const float nf  = proj.frust.z_far   + (proj.z_clip == zclip::zero ? 0.0f : proj.frust.z_near);
+	const float dbl_near = 2.0f * proj.frust.near_z;
+	const float nf  = proj.frust.far_z   + (proj.z_clip == zclip::zero ? 0.0f : proj.frust.near_z);
 	const float m22 = s * nf * inv_depth;
 	const float m32 = proj.z_clip == zclip::zero
-	                ? -s * proj.frust.z_near * m22
-	                : -2.0f * proj.frust.z_far * proj.frust.z_near * inv_depth;
+	                ? -s * proj.frust.near_z * m22
+	                : -2.0f * proj.frust.far_z * proj.frust.near_z * inv_depth;
 
 #if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
 	return float4x4(
@@ -72,10 +72,10 @@ static hlslpp_inline float4x4 orthographic(const projection& proj)
 	const float inv_depth  = 1.0f / proj.frust.depth();
 
 	const float s  = HLSLPP_COORDINATES_SIGN;
-	const float rl = proj.frust.x_right + proj.frust.x_left;
-	const float tb = proj.frust.y_top   + proj.frust.y_bottom;
+	const float rl = proj.frust.right_x + proj.frust.left_x;
+	const float tb = proj.frust.top_y   + proj.frust.bottom_y;
 
-	const float nf = proj.frust.z_near  + (proj.z_clip == zclip::zero ? 0.0f : proj.frust.z_far);
+	const float nf = proj.frust.near_z  + (proj.z_clip == zclip::zero ? 0.0f : proj.frust.far_z);
 	const float sd = s * (proj.z_clip == zclip::zero ? 1.0f : 2.0f);
 
 #if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR

@@ -59,40 +59,40 @@ namespace hlslpp
 
 	struct frustrum
 	{
-		float x_left;
-		float x_right;
-		float y_bottom;
-		float y_top;
-		float z_near;
-		float z_far;
+		float left_x;
+		float right_x;
+		float bottom_y;
+		float top_y;
+		float near_z;
+		float far_z;
 
-		frustrum(float x_left, float x_right, float y_bottom, float y_top, float z_near, float z_far)
-			: x_left(x_left), x_right(x_right), y_bottom(y_bottom), y_top(y_top), z_near(z_near), z_far(z_far)
+		frustrum(float left_x, float right_x, float bottom_y, float top_y, float near_z, float far_z)
+			: left_x(left_x), right_x(right_x), bottom_y(bottom_y), top_y(top_y), near_z(near_z), far_z(far_z)
 		{ }
 
-		frustrum(float width, float height, float z_near, float z_far)
-			: x_left(-width / 2.0f), x_right(width / 2.0f), y_bottom(-height / 2.0f), y_top(height / 2.0f), z_near(z_near), z_far(z_far)
+		frustrum(float width, float height, float near_z, float far_z)
+			: left_x(-width / 2.0f), right_x(width / 2.0f), bottom_y(-height / 2.0f), top_y(height / 2.0f), near_z(near_z), far_z(far_z)
 		{ }
 
 		// Field of view functions should be used for perspective projections only
 		// - fov_angle_rad: either horizontal (x) or vertical (y) angle depending on function variant
 		// - aspect: width / height
 
-		static frustrum field_of_view_x(float fov_angle_rad, float aspect, float z_near, float z_far)
+		static frustrum field_of_view_x(float fov_angle_rad, float aspect, float near_z, float far_z)
 		{
-			const float width = 2.0f * z_near * tanf(fov_angle_rad / 2.0f);
-			return frustrum(width, width / aspect, z_near, z_far);
+			const float width = 2.0f * near_z * tanf(fov_angle_rad / 2.0f);
+			return frustrum(width, width / aspect, near_z, far_z);
 		}
 
-		static frustrum field_of_view_y(float fov_angle_rad, float aspect, float z_near, float z_far)
+		static frustrum field_of_view_y(float fov_angle_rad, float aspect, float near_z, float far_z)
 		{
-			const float height = 2.0f * z_near * tanf(fov_angle_rad / 2.0f);
-			return frustrum(height * aspect, height, z_near, z_far);
+			const float height = 2.0f * near_z * tanf(fov_angle_rad / 2.0f);
+			return frustrum(height * aspect, height, near_z, far_z);
 		}
 
-		float width() const  { return x_right - x_left; }
-		float height() const { return y_top - y_bottom; }
-		float depth() const  { return z_far - z_near; }
+		float width() const  { return right_x - left_x; }
+		float height() const { return top_y - bottom_y; }
+		float depth() const  { return far_z - near_z; }
 	};
 
 	struct projection
