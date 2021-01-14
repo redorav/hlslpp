@@ -1,4 +1,4 @@
-#ifdef HLSLPP_FEATURE_TRANSFORM
+#if defined(HLSLPP_FEATURE_TRANSFORM)
 
 //------------------------------------------//
 // World to View coordinates transformation //
@@ -208,4 +208,4 @@ static hlslpp_inline float4x4 translation(const float3& t)
 	return translation(t.x, t.y, t.z);
 }
 
-#endif // HLSLPP_FEATURE_TRANSFORM
+#endif

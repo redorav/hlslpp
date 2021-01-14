@@ -1,4 +1,4 @@
-#ifdef HLSLPP_FEATURE_TRANSFORM
+#if defined(HLSLPP_FEATURE_TRANSFORM)
 
 //-------//
 // Scale //
@@ -37,4 +37,4 @@ static hlslpp_inline float2x2 rotation(float angle_rad)
 	);
 }
 
-#endif // HLSLPP_FEATURE_TRANSFORM
+#endif
