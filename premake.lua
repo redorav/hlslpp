@@ -135,6 +135,7 @@ workspace("hlsl++")
 			
 		filter { "platforms:"..PlatformMSVC64Scalar }
 			toolset("msc")
+			architecture("x64")
 			defines { "HLSLPP_SCALAR" }
 		
 		filter { "platforms:"..PlatformMSVC32SSE2 }
