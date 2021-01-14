@@ -133,18 +133,18 @@ void RunUnitTestsMatrixTransform()
 	// View to Orthographic Projection coordinates transformation
 
 	const float4 vec4d_view1(0.5f, 0.5f, 0.0f, 1.0f);
-	const frustum ortho_frustrum(-0.5f, 0.5f, -0.5f, 0.5f, -1.0f, 1.0f);
+	const frustum ortho_frustum(-0.5f, 0.5f, -0.5f, 0.5f, -1.0f, 1.0f);
 
-	eq(mul(vec4d_view1, float4x4::orthographic(projection(ortho_frustrum, zclip::zero))), 1.0f, 1.0f, 0.5f, 1.0f, tolerance);
-	eq(mul(vec4d_view1, float4x4::orthographic(projection(ortho_frustrum, zclip::minus_one))), 1.0f, 1.0f, 0.0f, 1.0f, tolerance);
+	eq(mul(vec4d_view1, float4x4::orthographic(projection(ortho_frustum, zclip::zero))), 1.0f, 1.0f, 0.5f, 1.0f, tolerance);
+	eq(mul(vec4d_view1, float4x4::orthographic(projection(ortho_frustum, zclip::minus_one))), 1.0f, 1.0f, 0.0f, 1.0f, tolerance);
 
 	// View to Perspective Projection coordinates transformation
 
 	const float4 vec4d_view2(0.5f, 0.5f, 1.0f, 1.0f);
-	const frustum persp_frustrum(-0.5f, 0.5f, -0.5f, 0.5f, 0.001f, 1.0f);
+	const frustum persp_frustum(-0.5f, 0.5f, -0.5f, 0.5f, 0.001f, 1.0f);
 
-	eq(mul(vec4d_view2, float4x4::perspective(projection(persp_frustrum, zclip::zero))), 0.001f, 0.001f, 1.0f, 1.0f, tolerance);
-	eq(mul(vec4d_view2, float4x4::perspective(projection(persp_frustrum, zclip::minus_one))), 0.001f, 0.001f, 1.0f, 1.0f, tolerance);
+	eq(mul(vec4d_view2, float4x4::perspective(projection(persp_frustum, zclip::zero))), 0.001f, 0.001f, 1.0f, 1.0f, tolerance);
+	eq(mul(vec4d_view2, float4x4::perspective(projection(persp_frustum, zclip::minus_one))), 0.001f, 0.001f, 1.0f, 1.0f, tolerance);
 
 #endif
 
