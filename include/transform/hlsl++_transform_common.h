@@ -20,12 +20,12 @@
 	#define HLSLPP_LOGICAL_LAYOUT HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
 #endif
 
-// Left-Handed coordinate system (default, in DirectX and Metal):
+// Left-Handed coordinate system (e.g. DirectX, Metal)
 // The positive x, y and z axes point right, up and forward.
 // Positive rotation is clockwise about the axis of rotation.
 #define HLSLPP_COORDINATES_LEFT_HANDED 0
 
-// Right-Handed coordinate system (optional, used in OpenGL and Vulkan):
+// Right-Handed coordinate system (e.g. OpenGL, Vulkan)
 // The positive x, y and z axes point right, up and backward.
 // Positive rotation is counterclockwise about the axis of rotation.
 #define HLSLPP_COORDINATES_RIGHT_HANDED 1
@@ -52,8 +52,8 @@ namespace hlslpp
 {
 	enum class zclip
 	{
-		zero,     // Clip points with z < 0 in projection coordinates
-		minus_one // Clip points with z < -1 in projection coordinates
+		zero,     // Clip points with z < 0 in projection coordinates (e.g. DirectX, Vulkan, Metal)
+		minus_one // Clip points with z < -1 in projection coordinates (e.g. OpenGL)
 	};
 
 	struct frustum
@@ -96,11 +96,11 @@ namespace hlslpp
 
 	struct projection
 	{
-		frustum frust;
-		zclip    z_clip;
+		frustum frustum_planes;
+		zclip   z_clip;
 
-		projection(const frustum& frust, zclip z_clip)
-			: frust(frust), z_clip(z_clip) {}
+		projection(const frustum& frustum_planes, zclip z_clip)
+			: frustum_planes(frustum_planes), z_clip(z_clip) {}
 	};
 }
 

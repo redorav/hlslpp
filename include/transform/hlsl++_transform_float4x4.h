@@ -33,64 +33,96 @@ static hlslpp_inline float4x4 look_at(const float3& position, const float3& targ
 
 static hlslpp_inline float4x4 perspective(const projection& proj)
 {
-	const float inv_width  = 1.0f / proj.frust.width();
-	const float inv_height = 1.0f / proj.frust.height();
-	const float inv_depth  = 1.0f / proj.frust.depth();
-
+	const float r = proj.frustum_planes.right;
+	const float l = proj.frustum_planes.left;
+	const float t = proj.frustum_planes.top;
+	const float b = proj.frustum_planes.bottom;
+	const float n = proj.frustum_planes.near_z;
+	const float f = proj.frustum_planes.far_z;
 	const float s  = HLSLPP_COORDINATES_SIGN;
-	const float rl = proj.frust.right + proj.frust.left;
-	const float tb = proj.frust.top   + proj.frust.bottom;
 
-	const float dbl_near = 2.0f * proj.frust.near_z;
-	const float nf  = proj.frust.far_z   + (proj.z_clip == zclip::zero ? 0.0f : proj.frust.near_z);
-	const float m22 = s * nf * inv_depth;
-	const float m32 = proj.z_clip == zclip::zero
-	                ? -s * proj.frust.near_z * m22
-	                : -2.0f * proj.frust.far_z * proj.frust.near_z * inv_depth;
+	const float m00 = 2.0f * n / (r - l);
+	const float m11 = 2.0f * n / (t - b);
+
+	const float m20 = -s * (r + l) / (r - l);
+	const float m21 = -s * (t + b) / (t - b);
+	const float m23 = s;
+
+	float m22 = 0.0f;
+	float m32 = 0.0f;
+
+	if (proj.z_clip == zclip::zero)
+	{
+		m22 = s * f / (f - n);
+		m32 = -n * f / (f - n);
+	}
+	else
+	{
+		m22 = s * (f + n) / (f - n);
+		m32 = -2.0f * f * n / (f - n);
+	}
 
 #if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
 	return float4x4(
-		dbl_near * inv_width, 0.0f,                  0.0f, 0.0f,
-		0.0f,                 dbl_near * inv_height, 0.0f, 0.0f,
-		-s * rl * inv_width,  -s * tb * inv_height,  m22,  s,
-		0.0f,                 0.0f,                  m32,  0.0f
+		m00,  0.0f, 0.0f, 0.0f,
+		0.0f, m11,  0.0f, 0.0f,
+		m20,  m21,  m22,  m23,
+		0.0f, 0.0f, m32,  0.0f
 	);
 #else
 	return float4x4(
-		dbl_near * inv_width, 0.0f,                  -s * rl * inv_width,  0.0f,
-		0.0f,                 dbl_near * inv_height, -s * tb * inv_height, 0.0f,
-		0.0f,                 0.0f,                  m22,                  m32,
-		0.0f,                 0.0f,                  s,                    0.0f
+		m00,  0.0f, m20, 0.0f,
+		0.0f, m11,  m21, 0.0f,
+		0.0f, 0.0f, m22, m32,
+		0.0f, 0.0f, m23, 0.0f
 	);
 #endif
 }
 
 static hlslpp_inline float4x4 orthographic(const projection& proj)
 {
-	const float inv_width  = 1.0f / proj.frust.width();
-	const float inv_height = 1.0f / proj.frust.height();
-	const float inv_depth  = 1.0f / proj.frust.depth();
+	const float r = proj.frustum_planes.right;
+	const float l = proj.frustum_planes.left;
+	const float t = proj.frustum_planes.top;
+	const float b = proj.frustum_planes.bottom;
+	const float n = proj.frustum_planes.near_z;
+	const float f = proj.frustum_planes.far_z;
 
-	const float s  = HLSLPP_COORDINATES_SIGN;
-	const float rl = proj.frust.right + proj.frust.left;
-	const float tb = proj.frust.top   + proj.frust.bottom;
+	const float s = HLSLPP_COORDINATES_SIGN;
 
-	const float nf = proj.frust.near_z  + (proj.z_clip == zclip::zero ? 0.0f : proj.frust.far_z);
-	const float sd = s * (proj.z_clip == zclip::zero ? 1.0f : 2.0f);
+	const float m00 = 2.0f / (r - l);
+	const float m11 = 2.0f / (t - b);
+
+	const float m30 = -(r + l) / (r - l);
+	const float m31 = -(t + b) / (t - b);
+
+	float m22 = 0.0f;
+	float m32 = 0.0f;
+
+	if (proj.z_clip == zclip::zero)
+	{
+		m22 = s / (f - n);
+		m32 = -n / (f - n);
+	}
+	else
+	{
+		m22 = s * 2.0f / (f - n);
+		m32 = -(f + n) / (f - n);
+	}
 
 #if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
 	return float4x4(
-		2.0f * inv_width, 0.0f,              0.0f,            0.0f,
-		0.0f,             2.0f * inv_height, 0.0f,            0.0f,
-		0.0f,             0.0f,              sd * inv_depth,  0.0f,
-		-rl * inv_width,  -tb * inv_height,  -nf * inv_depth, 1.0f
+		m00,  0.0f, 0.0f, 0.0f,
+		0.0f, m11,  0.0f, 0.0f,
+		0.0f, 0.0f, m22,  0.0f,
+		m30,  m31,  m32,  1.0f
 	);
 #else
 	return float4x4(
-		2.0f * inv_width, 0.0f,              0.0f,           -rl * inv_width,
-		0.0f,             2.0f * inv_height, 0.0f,           -tb * inv_height,
-		0.0f,             0.0f,              sd * inv_depth, -nf * inv_depth,
-		0.0f,             0.0f,              0.0f,           1.0f
+		m00,  0.0f, 0.0f, m30,
+		0.0f, m11,  0.0f, m31,
+		0.0f, 0.0f, m22,  m32,
+		0.0f, 0.0f, 0.0f, 1.0f
 	);
 #endif
 }
