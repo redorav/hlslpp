@@ -1868,6 +1868,30 @@ namespace hlslpp
 #endif
 	}
 
+	hlslpp_inline float1x1 operator - (const float1x1& m) { return float1x1(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline float1x2 operator - (const float1x2& m) { return float1x2(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline float1x3 operator - (const float1x3& m) { return float1x3(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline float1x4 operator - (const float1x4& m) { return float1x4(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline float2x1 operator - (const float2x1& m) { return float2x1(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline float3x1 operator - (const float3x1& m) { return float3x1(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline float4x1 operator - (const float4x1& m) { return float4x1(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline float2x2 operator - (const float2x2& m) { return float2x2(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline float2x3 operator - (const float2x3& m) { return float2x3(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
+	hlslpp_inline float3x2 operator - (const float3x2& m) { return float3x2(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
+	hlslpp_inline float2x4 operator - (const float2x4& m) { return float2x4(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
+	hlslpp_inline float4x2 operator - (const float4x2& m) { return float4x2(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
+	hlslpp_inline float3x3 operator - (const float3x3& m) { return float3x3(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2)); }
+	hlslpp_inline float3x4 operator - (const float3x4& m) { return float3x4(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2)); }
+	hlslpp_inline float4x3 operator - (const float4x3& m) { return float4x3(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2)); }
+	hlslpp_inline float4x4 operator - (const float4x4& m)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return float4x4(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1));
+#else
+		return float4x4(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2), _hlslpp_neg_ps(m.vec3));
+#endif
+	}
+
 	// Pre-increment
 
 	hlslpp_inline float1x1& operator ++ (float1x1& f) { f = f + float1x1(1.0f); return f; }
