@@ -1886,7 +1886,7 @@ namespace hlslpp
 	hlslpp_inline float4x4 operator - (const float4x4& m)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
-		return float4x4(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1));
+		return float4x4(_hlslpp256_neg_ps(m.vec0), _hlslpp256_neg_ps(m.vec1));
 #else
 		return float4x4(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2), _hlslpp_neg_ps(m.vec3));
 #endif
