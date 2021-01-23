@@ -35,6 +35,7 @@ AndroidProject = "hlsl++_android"
 isMacBuild = _ACTION == "xcode4"
 isLinuxBuild = _ACTION == "gmake2"
 isWindowsBuild = not isMacBuild and not isLinuxBuild
+supportsARMBuild = _ACTION == "vs2017" or _ACTION == "vs2019"
 
 -- Directories
 srcDir = "src"
@@ -99,13 +100,21 @@ workspace("hlsl++")
 			PlatformLLVM64SSE41,
 			PlatformLLVM64SSE2,
 			PlatformLLVM32SSE2, 
-			
-			PlatformARM, 
-			PlatformARM64, 
-			PlatformAndroidARM, 
-			PlatformAndroidARM64, 
+
 			Platform360
 		}
+
+		if(supportsARMBuild) then
+
+			platforms
+			{
+				PlatformARM, 
+				PlatformARM64, 
+				PlatformAndroidARM, 
+				PlatformAndroidARM64
+			}
+
+		end
 	
 		local llvmToolset;
 		
@@ -241,7 +250,7 @@ project (UnitTestProject)
 		srcDir.."/**.h"
 	}
 
-if (isWindowsBuild) then
+if (supportsARMBuild) then
 
 project (AndroidProject)
 	removeplatforms("*")
