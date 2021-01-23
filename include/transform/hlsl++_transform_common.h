@@ -50,11 +50,14 @@
 
 namespace hlslpp
 {
-	enum class zclip
+	namespace zclip
 	{
-		zero,     // Clip points with z < 0 in projection coordinates (e.g. DirectX, Vulkan, Metal)
-		minus_one // Clip points with z < -1 in projection coordinates (e.g. OpenGL)
-	};
+		enum t
+		{
+			zero,     // Clip points with z < 0 in projection coordinates (e.g. DirectX, Vulkan, Metal)
+			minus_one // Clip points with z < -1 in projection coordinates (e.g. OpenGL)
+		};
+	}
 
 	struct frustum
 	{
@@ -96,10 +99,10 @@ namespace hlslpp
 
 	struct projection
 	{
-		frustum frustum_planes;
-		zclip   z_clip;
+		frustum  frustum_planes;
+		zclip::t z_clip;
 
-		projection(const frustum& frustum_planes, zclip z_clip)
+		projection(const frustum& frustum_planes, zclip::t z_clip)
 			: frustum_planes(frustum_planes), z_clip(z_clip) {}
 	};
 }
