@@ -1963,6 +1963,94 @@ namespace hlslpp
 	hlslpp_inline float3x4 operator -- (float3x4& f, int) { float3x4 tmp = f; f = f - float3x4(1.0f); return tmp; }
 	hlslpp_inline float4x3 operator -- (float4x3& f, int) { float4x3 tmp = f; f = f - float4x3(1.0f); return tmp; }
 	hlslpp_inline float4x4 operator -- (float4x4& f, int) { float4x4 tmp = f; f = f - float4x4(1.0f); return tmp; }
+	
+	hlslpp_inline float2x2 operator == (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpeq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3x3 operator == (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpeq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpeq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpeq1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline float4x4 operator == (const float4x4& f1, const float4x4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return float4x4(_hlslpp256_cmpeq1_ps(f1.vec0, f2.vec0), _hlslpp256_cmpeq1_ps(f1.vec1, f2.vec1));
+#else
+		return float4x4(_hlslpp_cmpeq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpeq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpeq1_ps(f1.vec2, f2.vec2), _hlslpp_cmpeq1_ps(f1.vec3, f2.vec3));
+#endif
+	}
+
+	hlslpp_inline float2x2 operator != (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpneq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3x3 operator != (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpneq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpneq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpneq1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline float4x4 operator != (const float4x4& f1, const float4x4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return float4x4(_hlslpp256_cmpneq1_ps(f1.vec0, f2.vec0), _hlslpp256_cmpneq1_ps(f1.vec1, f2.vec1));
+#else
+		return float4x4(_hlslpp_cmpneq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpneq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpneq1_ps(f1.vec2, f2.vec2), _hlslpp_cmpneq1_ps(f1.vec3, f2.vec3));
+#endif
+	}
+
+	hlslpp_inline float2x2 operator > (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpgt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3x3 operator > (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpgt1_ps(f1.vec0, f2.vec0), _hlslpp_cmpgt1_ps(f1.vec1, f2.vec1), _hlslpp_cmpgt1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline float4x4 operator > (const float4x4& f1, const float4x4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return float4x4(_hlslpp256_cmpgt1_ps(f1.vec0, f2.vec0), _hlslpp256_cmpgt1_ps(f1.vec1, f2.vec1));
+#else
+		return float4x4(_hlslpp_cmpgt1_ps(f1.vec0, f2.vec0), _hlslpp_cmpgt1_ps(f1.vec1, f2.vec1), _hlslpp_cmpgt1_ps(f1.vec2, f2.vec2), _hlslpp_cmpgt1_ps(f1.vec3, f2.vec3));
+#endif
+	}
+
+	hlslpp_inline float2x2 operator >= (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpge1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3x3 operator >= (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpge1_ps(f1.vec0, f2.vec0), _hlslpp_cmpge1_ps(f1.vec1, f2.vec1), _hlslpp_cmpge1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline float4x4 operator >= (const float4x4& f1, const float4x4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return float4x4(_hlslpp256_cmpge1_ps(f1.vec0, f2.vec0), _hlslpp256_cmpge1_ps(f1.vec1, f2.vec1));
+#else
+		return float4x4(_hlslpp_cmpge1_ps(f1.vec0, f2.vec0), _hlslpp_cmpge1_ps(f1.vec1, f2.vec1), _hlslpp_cmpge1_ps(f1.vec2, f2.vec2), _hlslpp_cmpge1_ps(f1.vec3, f2.vec3));
+#endif
+	}
+
+	hlslpp_inline float2x2 operator < (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmplt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3x3 operator < (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmplt1_ps(f1.vec0, f2.vec0), _hlslpp_cmplt1_ps(f1.vec1, f2.vec1), _hlslpp_cmplt1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline float4x4 operator < (const float4x4& f1, const float4x4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return float4x4(_hlslpp256_cmplt1_ps(f1.vec0, f2.vec0), _hlslpp256_cmplt1_ps(f1.vec1, f2.vec1));
+#else
+		return float4x4(_hlslpp_cmplt1_ps(f1.vec0, f2.vec0), _hlslpp_cmplt1_ps(f1.vec1, f2.vec1), _hlslpp_cmplt1_ps(f1.vec2, f2.vec2), _hlslpp_cmplt1_ps(f1.vec3, f2.vec3));
+#endif
+	}
+
+	hlslpp_inline float2x2 operator <= (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmple1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline float3x3 operator <= (const float3x3& f1, const float3x3& f2)	{ return float3x3(_hlslpp_cmple1_ps(f1.vec0, f2.vec0), _hlslpp_cmple1_ps(f1.vec1, f2.vec1), _hlslpp_cmple1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline float4x4 operator <= (const float4x4& f1, const float4x4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return float4x4(_hlslpp256_cmple1_ps(f1.vec0, f2.vec0), _hlslpp256_cmple1_ps(f1.vec1, f2.vec1));
+#else
+		return float4x4(_hlslpp_cmple1_ps(f1.vec0, f2.vec0), _hlslpp_cmple1_ps(f1.vec1, f2.vec1), _hlslpp_cmple1_ps(f1.vec2, f2.vec2), _hlslpp_cmple1_ps(f1.vec3, f2.vec3));
+#endif
+	}
+
+	hlslpp_inline bool all(const float2x2& f) { return _hlslpp_all4_ps(f.vec); }
+	hlslpp_inline bool all(const float3x3& f) { return _hlslpp_all3_ps(f.vec0) && _hlslpp_all3_ps(f.vec1) && _hlslpp_all3_ps(f.vec2); }
+	hlslpp_inline bool all(const float4x4& f)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return _hlslpp256_all8_ps(f.vec0) && _hlslpp256_all8_ps(f.vec1);
+#else
+		return _hlslpp_all4_ps(f.vec0) && _hlslpp_all4_ps(f.vec1) && _hlslpp_all4_ps(f.vec2) && _hlslpp_all4_ps(f.vec3);
+#endif
+	}
+
+	hlslpp_inline bool any(const float2x2& f) { return _hlslpp_any4_ps(f.vec); }
+	hlslpp_inline bool any(const float3x3& f) { return _hlslpp_any3_ps(f.vec0) || _hlslpp_any3_ps(f.vec1) || _hlslpp_any3_ps(f.vec2); }
+	hlslpp_inline bool any(const float4x4& f)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return _hlslpp256_any8_ps(f.vec0) || _hlslpp256_any8_ps(f.vec1);
+#else
+		return _hlslpp_any4_ps(f.vec0) || _hlslpp_any4_ps(f.vec1) || _hlslpp_any4_ps(f.vec2) || _hlslpp_any4_ps(f.vec3);
+#endif
+	}
 
 	hlslpp_inline float1 trace(const float2x2& m)
 	{

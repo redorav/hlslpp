@@ -268,6 +268,28 @@ void RunUnitTestsMatrixFloat()
 	float4x3 mat_div_f_4x3 = mat_foo_4x3 / 2.0f;
 	float4x4 mat_div_f_4x4 = mat_foo_4x4 / 2.0f;
 
+	f1 = f2 = f3 = f4 = f5 =f6=f7=f8=f9=f10=f11=f12=f13=f14=f15=f16= 0.0f;
+
+	bool mat_all_f_2x2 = all(float2x2(f1, f2, f3, f4));
+	eq(mat_all_f_2x2, f1 != 0.0f && f2 != 0.0f && f3 != 0.0f && f4 != 0.0f);
+
+	bool mat_all_f_3x3 = all(float3x3(f1, f2, f3, f4, f5, f6, f7, f8, f9));
+	eq(mat_all_f_3x3, f1 != 0.0f && f2 != 0.0f && f3 != 0.0f && f4 != 0.0f && f5 != 0.0f && f6 != 0.0f && f7 != 0.0f && f8 != 0.0f && f9 != 0.0f);
+
+	bool mat_all_f_4x4 = all(float4x4(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16));
+	eq(mat_all_f_4x4, f1 != 0.0f && f2 != 0.0f && f3 != 0.0f && f4 != 0.0f && f5 != 0.0f && f6 != 0.0f && f7 != 0.0f && f8 != 0.0f && 
+		f9 != 0.0f && f10 != 0.0f && f11 != 0.0f && f12 != 0.0f && f13 != 0.0f && f14 != 0.0f && f15 != 0.0f && f16 != 0.0f);
+
+	bool mat_any_f_2x2 = any(float2x2(f1, f2, f3, f4));
+	eq(mat_any_f_2x2, f1 != 0.0f || f2 != 0.0f || f3 != 0.0f || f4 != 0.0f);
+
+	bool mat_any_f_3x3 = any(float3x3(f1, f2, f3, f4, f5, f6, f7, f8, f9));
+	eq(mat_any_f_3x3, f1 != 0.0f || f2 != 0.0f || f3 != 0.0f || f4 != 0.0f || f5 != 0.0f || f6 != 0.0f || f7 != 0.0f || f8 != 0.0f || f9 != 0.0f);
+
+	bool mat_any_f_4x4 = any(float4x4(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16));
+	eq(mat_any_f_4x4, f1 != 0.0f || f2 != 0.0f || f3 != 0.0f || f4 != 0.0f || f5 != 0.0f || f6 != 0.0f || f7 != 0.0f || f8 != 0.0f ||
+		f9 != 0.0f || f10 != 0.0f || f11 != 0.0f || f12 != 0.0f || f13 != 0.0f || f14 != 0.0f || f15 != 0.0f || f16 != 0.0f);
+
 	// Matrix - matrix multiplication
 
 	float1x1 mat_mmul_1x1_1x1 = mul(mat_foo_1x1, mat_bar_1x1);

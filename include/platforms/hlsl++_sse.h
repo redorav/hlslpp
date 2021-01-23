@@ -497,7 +497,7 @@ hlslpp_inline n256 _hlslpp256_dot8_ps(n256 x, n256 y)
 
 hlslpp_inline bool _hlslpp256_any8_ps(n256 x)
 {
-	return _mm256_movemask_ps(_mm256_cmp_ps(x, _mm256_setzero_ps(), _CMP_EQ_OQ)) != 0xf;
+	return _mm256_movemask_ps(_mm256_cmp_ps(x, _mm256_setzero_ps(), _CMP_EQ_OQ)) != 0xff;
 }
 
 hlslpp_inline bool _hlslpp256_all8_ps(n256 x)
