@@ -405,8 +405,12 @@ void RunUnitTestsMatrixFloat()
 	float2x1 mat_mmul_2x2_2x1 = mul(mat_bar_2x2, mat_foo_2x1);
 	eq(mat_mmul_2x2_2x1, 0.5f, 1.10000002f);
 	
-	float2x2 mat_mmul_2x2_2x2 = mul(mat_bar_2x2, mat_foo_2x2);
-	eq(mat_mmul_2x2_2x2, 0.700000048f, 1.0f, 1.50000000f, 2.20000005f);
+	float2x2 mat_nsym_1_2x2 = float2x2(69.0f, 420.0f, 17.0f, -2.5f);
+
+	float2x2 mat_nsym_2_2x2 = float2x2(33.33f, 6.66f, 3.33f, 5.55f);
+
+	float2x2 mat_mmul_2x2_2x2 = mul(mat_nsym_1_2x2, mat_nsym_2_2x2);
+	eq(mat_mmul_2x2_2x2, 3698.37f, 2790.54f, 558.285034f, 99.345f);
 	
 	float2x3 mat_mmul_2x2_2x3 = mul(mat_bar_2x2, mat_foo_2x3);
 	eq(mat_mmul_2x2_2x3, 
@@ -520,12 +524,26 @@ void RunUnitTestsMatrixFloat()
 		7.60000038f, 10.0000000f
 	);
 	
-	float3x3 mat_mmul_3x3_3x3 = mul(mat_bar_3x3, mat_foo_3x3);
-	eq(mat_mmul_3x3_3x3, 
-		3.00000000f, 3.60000014f, 4.19999981f,
-		6.59999990f, 8.10000038f, 9.59999943f,
-		10.1999998f, 12.6000004f, 15.0000000f
+	float3x3 mat_nsym_1_3x3 = float3x3
+	(
+		69.0f,    420.0f, 33.0f, 
+		17.0f,   -2.5f,   3.14f, 
+		0.2777f, -5.9f,   123.321f
 	);
+
+	float3x3 mat_nsym_2_3x3 = float3x3
+	(
+		33.33f, 6.66f, -6.66f,
+		3.33f,  5.55f,  321.0f,
+		976.7f, 50.0f, -9.0f
+	);
+
+	float3x3 mat_mmul_3x3_3x3 = mul(mat_nsym_1_3x3, mat_nsym_2_3x3);
+	eq(mat_mmul_3x3_3x3, 
+		35929.47f,   4440.54f,      134063.46f,
+		3625.123f,   256.345f,     -943.98f,
+		120437.234f, 6135.154482f, -3005.63867f,
+	0.0001f);
 
 	float3x4 mat_mmul_3x3_3x4 = mul(mat_bar_3x3, mat_foo_3x4);
 	eq(mat_mmul_3x3_3x4, 
@@ -604,15 +622,31 @@ void RunUnitTestsMatrixFloat()
 		33.4000015f, 39.2000008f, 45.0000000f
 	);
 
+	float4x4 mat_nsym_1_4x4 = float4x4
+	(
+		69.0f,    420.0f, 33.0f,     2.6f,
+		17.0f,   -2.5f,   3.14f,     1.5f,
+		0.2777f, -5.9f,   123.321f, -0.325f,
+		1.6f,     9.996f, 2.0f,      5.0f
+	);
+
+	float4x4 mat_nsym_2_4x4 = float4x4
+	(
+		 33.33f, 6.66f, -6.66f,  1.0f,
+		 3.33f,  5.55f,  321.0f, 7.2f,
+		 976.7f, 50.0f, -9.0f,   9.63f,
+		-9.67f,  0.132f, 1.0f,   2.0f
+	);
+
 	// TODO Revisit this unit test. Using AVX vs SSE gives very slightly different results.
 	// We would like them to be identical if possible
-	float4x4 mat_mmul_4x4_4x4 = mul(mat_bar_4x4, mat_foo_4x4);
+	float4x4 mat_mmul_4x4_4x4 = mul(mat_nsym_1_4x4, mat_nsym_2_4x4);
 	eq(mat_mmul_4x4_4x4, 
-		9.00000000f, 10.0000000f, 11.0000000f, 12.0000000f,
-		20.2000008f, 22.7999992f, 25.3999996f, 28.0000000f,
-		31.4000015f, 35.5999985f, 39.7999992f, 44.0000000f,
-		42.5999985f, 48.4000015f, 54.2000008f, 60.0000000f,
-		0.00001f
+		35904.328f,     4440.8832f,    134066.047f,  3415.99f,
+		3610.61816f,    256.543f,     -942.48f,      32.2382f,
+		120440.372191f, 6135.111582f, -3005.963482f, 1144.72893f,
+		1991.66468f,    166.7938f,     3185.06f,     102.8312f,
+		0.001f
 	);
 
 	// Matrix-vector multiplication
