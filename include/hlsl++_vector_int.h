@@ -535,6 +535,21 @@ namespace hlslpp
 	hlslpp_inline int3& operator += (int3& i1, const int3& i2) { i1 = i1 + i2; return i1; }
 	hlslpp_inline int4& operator += (int4& i1, const int4& i2) { i1 = i1 + i2; return i1; }
 
+	hlslpp_inline int1& operator -= (int1& i1, const int1& i2) { i1 = i1 - i2; return i1; }
+	hlslpp_inline int2& operator -= (int2& i1, const int2& i2) { i1 = i1 - i2; return i1; }
+	hlslpp_inline int3& operator -= (int3& i1, const int3& i2) { i1 = i1 - i2; return i1; }
+	hlslpp_inline int4& operator -= (int4& i1, const int4& i2) { i1 = i1 - i2; return i1; }
+
+	hlslpp_inline int1& operator *= (int1& i1, const int1& i2) { i1 = i1 * i2; return i1; }
+	hlslpp_inline int2& operator *= (int2& i1, const int2& i2) { i1 = i1 * i2; return i1; }
+	hlslpp_inline int3& operator *= (int3& i1, const int3& i2) { i1 = i1 * i2; return i1; }
+	hlslpp_inline int4& operator *= (int4& i1, const int4& i2) { i1 = i1 * i2; return i1; }
+
+	hlslpp_inline int1& operator /= (int1& i1, const int1& i2) { i1 = i1 / i2; return i1; }
+	hlslpp_inline int2& operator /= (int2& i1, const int2& i2) { i1 = i1 / i2; return i1; }
+	hlslpp_inline int3& operator /= (int3& i1, const int3& i2) { i1 = i1 / i2; return i1; }
+	hlslpp_inline int4& operator /= (int4& i1, const int4& i2) { i1 = i1 / i2; return i1; }
+
 	template<int X>	hlslpp_inline iswizzle1<X>& operator += (iswizzle1<X>& s, const int1& i) { s = int1(s) + i; return s; }
 	template<int X>	hlslpp_inline iswizzle1<X>& operator -= (iswizzle1<X>& s, const int1& i) { s = int1(s) - i; return s; }
 	template<int X>	hlslpp_inline iswizzle1<X>& operator *= (iswizzle1<X>& s, const int1& i) { s = int1(s) * i; return s; }
@@ -554,16 +569,6 @@ namespace hlslpp
 	template<int X, int Y, int Z, int W> hlslpp_inline iswizzle4<X, Y, Z, W>& operator -= (iswizzle4<X, Y, Z, W>& s, const int4& i) { s = int4(s) - i; return s; }
 	template<int X, int Y, int Z, int W> hlslpp_inline iswizzle4<X, Y, Z, W>& operator *= (iswizzle4<X, Y, Z, W>& s, const int4& i) { s = int4(s) * i; return s; }
 	template<int X, int Y, int Z, int W> hlslpp_inline iswizzle4<X, Y, Z, W>& operator /= (iswizzle4<X, Y, Z, W>& s, const int4& i) { s = int4(s) / i; return s; }
-
-	hlslpp_inline int1& operator -= (int1& i1, const int1& i2) { i1 = i1 - i2; return i1; }
-	hlslpp_inline int2& operator -= (int2& i1, const int2& i2) { i1 = i1 - i2; return i1; }
-	hlslpp_inline int3& operator -= (int3& i1, const int3& i2) { i1 = i1 - i2; return i1; }
-	hlslpp_inline int4& operator -= (int4& i1, const int4& i2) { i1 = i1 - i2; return i1; }
-
-	hlslpp_inline int1& operator *= (int1& i1, const int1& i2) { i1 = i1 * i2; return i1; }
-	hlslpp_inline int2& operator *= (int2& i1, const int2& i2) { i1 = i1 * i2; return i1; }
-	hlslpp_inline int3& operator *= (int3& i1, const int3& i2) { i1 = i1 * i2; return i1; }
-	hlslpp_inline int4& operator *= (int4& i1, const int4& i2) { i1 = i1 * i2; return i1; }
 
 	hlslpp_inline int1 operator == (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
 	hlslpp_inline int2 operator == (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
