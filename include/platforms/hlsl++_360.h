@@ -137,6 +137,95 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_dot4_ps(x, y)					__vmsum4fp((x), (y))
 
+//-----------------
+// Float Store/Load
+//-----------------
+
+hlslpp_inline void _hlslpp_store1_ps(float* p, n128 x)
+{
+	__stvewx(x, p, 0);
+}
+
+hlslpp_inline void _hlslpp_store2_ps(float* p, n128 x)
+{
+	__stvewx(x, p, 0);
+	__stvewx(__vpermwi(x, 1), p, 4);
+}
+
+hlslpp_inline void _hlslpp_store3_ps(float* p, n128 x)
+{
+	__stvewx(x, p, 0);
+	__stvewx(__vpermwi(x, 1), p, 4);
+	__stvewx(__vpermwi(x, 2), p, 8);
+}
+
+hlslpp_inline void _hlslpp_store4_ps(float* p, n128 x)
+{
+	__stvlx(x, p, 0);
+	__stvrx(x, p, 16);
+}
+
+hlslpp_inline void _hlslpp_store3x3_ps(float* p, n128 x0, n128 x1, n128 x2)
+{
+	__stvlx(x0, p, 0);
+	__stvrx(x0, p, 16);
+
+	__stvlx(x1, p + 3, 0);
+	__stvrx(x1, p + 3, 16);
+
+	__stvewx(x2, p + 6, 0);
+	__stvewx(__vpermwi(x2, 1), p + 6, 4);
+	__stvewx(__vpermwi(x2, 2), p + 6, 8);
+}
+
+hlslpp_inline void _hlslpp_store4x4_ps(float* p, n128 x0, n128 x1, n128 x2, n128 x3)
+{
+	__stvlx(x0, p, 0);
+	__stvrx(x0, p, 16);
+	__stvlx(x1, p + 4, 0);
+	__stvrx(x1, p + 4, 16);
+	__stvlx(x2, p + 8, 0);
+	__stvrx(x2, p + 8, 16);
+	__stvlx(x3, p + 12, 0);
+	__stvrx(x3, p + 12, 16);
+}
+
+hlslpp_inline void _hlslpp_load1_ps(float* p, n128& x)
+{
+	x = __lvlx(p, 0);
+}
+
+// http://fastcpp.blogspot.com/2011/03/loading-3d-vector-into-sse-register.html
+hlslpp_inline void _hlslpp_load2_ps(float* p, n128& x)
+{
+	x = __lvlx(p, 0);
+}
+
+hlslpp_inline void _hlslpp_load3_ps(float* p, n128& x)
+{
+	x = __vor(__lvlx(p, 0), __lvrx(p, 16));
+}
+
+hlslpp_inline void _hlslpp_load4_ps(float* p, n128& x)
+{
+	x = __vor(__lvlx(p, 0), __lvrx(p, 16));
+}
+
+hlslpp_inline void _hlslpp_load3x3_ps(float* p, n128& x0, n128& x1, n128& x2)
+{
+	x0 = __vor(__lvlx(p + 0, 0), __lvrx(p + 0, 16));
+	x1 = __vor(__lvlx(p + 3, 0), __lvrx(p + 3, 16));
+	x2 = __vor(__lvlx(p + 6, 0), __lvrx(p + 6, 16));
+}
+
+hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n128& x3)
+{
+	x0 = __vor(__lvlx(p + 0, 0), __lvrx(p + 0, 16));
+	x1 = __vor(__lvlx(p + 4, 0), __lvrx(p + 4, 16));
+	x2 = __vor(__lvlx(p + 8, 0), __lvrx(p + 8, 16));
+	x3 = __vor(__lvlx(p + 12, 0), __lvrx(p + 12, 16));
+}
+
 //--------
 // Integer
 //--------
@@ -210,6 +299,51 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_all2_epi32(x)					_hlslpp_all2_ps(x)
 #define _hlslpp_all3_epi32(x)					_hlslpp_all3_ps(x)
 #define _hlslpp_all4_epi32(x)					_hlslpp_all4_ps(x)
+
+//-----------------
+// Float Store/Load
+//-----------------
+
+hlslpp_inline void _hlslpp_store1_epi32(int32_t* p, n128i x)
+{
+	_hlslpp_store1_ps((float*)p, x);
+}
+
+hlslpp_inline void _hlslpp_store2_epi32(int32_t* p, n128i x)
+{
+	_hlslpp_store2_ps((float*)p, x);
+}
+
+hlslpp_inline void _hlslpp_store3_epi32(int32_t* p, n128i x)
+{
+	_hlslpp_store3_ps((float*)p, x);
+}
+
+hlslpp_inline void _hlslpp_store4_epi32(int32_t* p, n128i x)
+{
+	_hlslpp_store4_ps((float*)p, x);
+}
+
+hlslpp_inline void _hlslpp_load1_epi32(int32_t* p, n128i& x)
+{
+	_hlslpp_load1_ps((float*)p, x);
+}
+
+// http://fastcpp.blogspot.com/2011/03/loading-3d-vector-into-sse-register.html
+hlslpp_inline void _hlslpp_load2_epi32(int32_t* p, n128i& x)
+{
+	_hlslpp_load2_ps((float*)p, x);
+}
+
+hlslpp_inline void _hlslpp_load3_epi32(int32_t* p, n128i& x)
+{
+	_hlslpp_load3_ps((float*)p, x);
+}
+
+hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
+{
+	_hlslpp_load4_ps((float*)p, x);
+}
 
 //-----------------
 // Unsigned Integer
@@ -326,93 +460,4 @@ hlslpp_inline bool _hlslpp_all4_ps(n128 x)
 	unsigned int ctrl;
 	__vcmpeqfpR(x, __vzero(), &ctrl);
 	return (ctrl & XM_CRMASK_CR6FALSE) == XM_CRMASK_CR6FALSE;
-}
-
-//--------
-// Storing
-//--------
-
-hlslpp_inline void _hlslpp_store1_ps(float* p, n128 x)
-{
-	__stvewx(x, p, 0);
-}
-
-hlslpp_inline void _hlslpp_store2_ps(float* p, n128 x)
-{
-	__stvewx(x, p, 0);
-	__stvewx(__vpermwi(x, 1), p, 4);
-}
-
-hlslpp_inline void _hlslpp_store3_ps(float* p, n128 x)
-{
-	__stvewx(x, p, 0);
-	__stvewx(__vpermwi(x, 1), p, 4);
-	__stvewx(__vpermwi(x, 2), p, 8);
-}
-
-hlslpp_inline void _hlslpp_store4_ps(float* p, n128 x)
-{
-	__stvlx(x, p, 0);
-	__stvrx(x, p, 16);
-}
-
-hlslpp_inline void _hlslpp_store3x3_ps(float* p, n128 x0, n128 x1, n128 x2)
-{
-	__stvlx(x0, p, 0);
-	__stvrx(x0, p, 16);
-
-	__stvlx(x1, p + 3, 0);
-	__stvrx(x1, p + 3, 16);
-
-	__stvewx(x2, p + 6, 0);
-	__stvewx(__vpermwi(x2, 1), p + 6, 4);
-	__stvewx(__vpermwi(x2, 2), p + 6, 8);
-}
-
-hlslpp_inline void _hlslpp_store4x4_ps(float* p, n128 x0, n128 x1, n128 x2, n128 x3)
-{
-	__stvlx(x0, p, 0);
-	__stvrx(x0, p, 16);
-	__stvlx(x1, p + 4, 0);
-	__stvrx(x1, p + 4, 16);
-	__stvlx(x2, p + 8, 0);
-	__stvrx(x2, p + 8, 16);
-	__stvlx(x3, p + 12, 0);
-	__stvrx(x3, p + 12, 16);
-}
-
-hlslpp_inline void _hlslpp_load1_ps(float* p, n128& x)
-{
-	x = __lvlx(p, 0);
-}
-
-// http://fastcpp.blogspot.com/2011/03/loading-3d-vector-into-sse-register.html
-hlslpp_inline void _hlslpp_load2_ps(float* p, n128& x)
-{
-	x = __lvlx(p, 0);
-}
-
-hlslpp_inline void _hlslpp_load3_ps(float* p, n128& x)
-{
-	x = __vor(__lvlx(p, 0), __lvrx(p, 16));
-}
-
-hlslpp_inline void _hlslpp_load4_ps(float* p, n128& x)
-{
-	x = __vor(__lvlx(p, 0), __lvrx(p, 16));
-}
-
-hlslpp_inline void _hlslpp_load3x3_ps(float* p, n128& x0, n128& x1, n128& x2)
-{
-	x0 = __vor(__lvlx(p + 0, 0), __lvrx(p + 0, 16));
-	x1 = __vor(__lvlx(p + 3, 0), __lvrx(p + 3, 16));
-	x2 = __vor(__lvlx(p + 6, 0), __lvrx(p + 6, 16));
-}
-
-hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n128& x3)
-{
-	x0 = __vor(__lvlx(p + 0, 0),  __lvrx(p + 0,  16));
-	x1 = __vor(__lvlx(p + 4, 0),  __lvrx(p + 4,  16));
-	x2 = __vor(__lvlx(p + 8, 0),  __lvrx(p + 8,  16));
-	x3 = __vor(__lvlx(p + 12, 0), __lvrx(p + 12, 16));
 }

@@ -756,4 +756,44 @@ namespace hlslpp
 		vec = swizzle<0, 1, 2, 3, X, Y, Z, W>(i.vec);
 		return *this;
 	}
+
+	hlslpp_inline void store(const int1& v, int32_t* i)
+	{
+		_hlslpp_store1_epi32(i, v.vec);
+	}
+
+	hlslpp_inline void store(const int2& v, int32_t* i)
+	{
+		_hlslpp_store2_epi32(i, v.vec);
+	}
+	
+	hlslpp_inline void store(const int3& v, int32_t* i)
+	{
+		_hlslpp_store3_epi32(i, v.vec);
+	}
+	
+	hlslpp_inline void store(const int4& v, int32_t* i)
+	{
+		_hlslpp_store4_epi32(i, v.vec);
+	}
+	
+	hlslpp_inline void load(int1& v, int32_t* i)
+	{
+		_hlslpp_load1_epi32(i, v.vec);
+	}
+	
+	hlslpp_inline void load(int2& v, int32_t* i)
+	{
+		_hlslpp_load2_epi32(i, v.vec);
+	}
+	
+	hlslpp_inline void load(int3& v, int32_t* i)
+	{
+		_hlslpp_load3_epi32(i, v.vec);
+	}
+	
+	hlslpp_inline void load(int4& v, int32_t* i)
+	{
+		_hlslpp_load4_epi32(i, v.vec);
+	}
 }

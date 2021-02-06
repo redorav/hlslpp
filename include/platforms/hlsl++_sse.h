@@ -278,14 +278,12 @@ hlslpp_inline void _hlslpp_store1_ps(float* p, n128 x)
 
 hlslpp_inline void _hlslpp_store2_ps(float* p, n128 x)
 {
-	_mm_store_ss(p, x);
-	_mm_store_ss(p + 1, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(1, 1, 1, 1)));
+	_mm_storel_epi64((__m128i*)p, *(n128i*)&x);
 }
 
 hlslpp_inline void _hlslpp_store3_ps(float* p, n128 x)
 {
-	_mm_store_ss(p, x);
-	_mm_store_ss(p + 1, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(1, 1, 1, 1)));
+	_mm_storel_epi64((__m128i*)p, *(n128i*)&x);
 	_mm_store_ss(p + 2, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2)));
 }
 
@@ -318,12 +316,12 @@ hlslpp_inline void _hlslpp_load1_ps(float* p, n128& x)
 // http://fastcpp.blogspot.com/2011/03/loading-3d-vector-into-sse-register.html
 hlslpp_inline void _hlslpp_load2_ps(float* p, n128& x)
 {
-	x = _mm_castsi128_ps(_mm_loadl_epi64(reinterpret_cast<__m128i*>(p)));
+	x = _mm_castsi128_ps(_mm_loadl_epi64((__m128i*)p));
 }
 
 hlslpp_inline void _hlslpp_load3_ps(float* p, n128& x)
 {
-	x = _mm_movelh_ps(_mm_castsi128_ps(_mm_loadl_epi64(reinterpret_cast<__m128i*>(p))), _mm_load_ss(p + 2));
+	x = _mm_movelh_ps(_mm_castsi128_ps(_mm_loadl_epi64((__m128i*)p)), _mm_load_ss(p + 2));
 }
 
 hlslpp_inline void _hlslpp_load4_ps(float* p, n128& x)
@@ -762,6 +760,52 @@ hlslpp_inline bool _hlslpp_all3_epi32(n128i x)
 hlslpp_inline bool _hlslpp_all4_epi32(n128i x)
 {
 	return (_mm_movemask_epi8(_mm_cmpeq_epi32(x, _mm_setzero_si128())) & 0xffff) == 0;
+}
+
+//-------------------
+// Integer Store/Load
+//-------------------
+
+hlslpp_inline void _hlslpp_store1_epi32(int32_t* p, n128i x)
+{
+	_mm_store_ss((float*)p, *(n128*)&x);
+}
+
+hlslpp_inline void _hlslpp_store2_epi32(int32_t* p, n128i x)
+{
+	_mm_storel_epi64((__m128i*)p, x);
+}
+
+hlslpp_inline void _hlslpp_store3_epi32(int32_t* p, n128i x)
+{
+	_mm_storel_epi64((__m128i*)p, x);
+	_mm_store_ss((float*)p + 2, (const n128&)(_hlslpp_perm_epi32(x, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2))));
+}
+
+hlslpp_inline void _hlslpp_store4_epi32(int32_t* p, n128i x)
+{
+	_mm_storeu_si128((__m128i*)p, x);
+}
+
+hlslpp_inline void _hlslpp_load1_epi32(int32_t* p, n128i& x)
+{
+	x = (const n128i&)_mm_load_ss((float*)p);
+}
+
+// http://fastcpp.blogspot.com/2011/03/loading-3d-vector-into-sse-register.html
+hlslpp_inline void _hlslpp_load2_epi32(int32_t* p, n128i& x)
+{
+	x = _mm_loadl_epi64((__m128i*)p);
+}
+
+hlslpp_inline void _hlslpp_load3_epi32(int32_t* p, n128i& x)
+{
+	x = (const n128i&)_mm_movelh_ps((const n128&)_mm_loadl_epi64((__m128i*)p), _mm_load_ss((float*) + 2));
+}
+
+hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
+{
+	x = (const n128i&)_mm_loadu_ps((float*)p);
 }
 
 //------------

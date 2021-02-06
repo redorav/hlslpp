@@ -402,9 +402,9 @@ hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
 #define _hlslpp_all3_ps(x)						_hlslpp_all3_epi32(vreinterpretq_u32_f32(x))
 #define _hlslpp_all4_ps(x)						_hlslpp_all4_epi32(vreinterpretq_u32_f32(x))
 
-//--------
-// Storing
-//--------
+//-----------------
+// Float Store/Load
+//-----------------
 
 hlslpp_inline void _hlslpp_store1_ps(float* p, n128 x)
 {
@@ -603,6 +603,54 @@ hlslpp_inline bool _hlslpp_all4_epi32(n128i x)
 	uint32x2_t minlohi = vpmin_u32(vget_low_u32(x), vget_high_u32(x));
 	return vget_lane_u32(vpmin_u32(minlohi, minlohi), 0) != 0;
 #endif
+}
+
+//-------------------
+// Integer Store/Load
+//-------------------
+
+hlslpp_inline void _hlslpp_store1_epi32(int32_t* p, n128i x)
+{
+	vst1q_lane_s32(p, x, 0);
+}
+
+hlslpp_inline void _hlslpp_store2_epi32(int32_t* p, n128i x)
+{
+	vst1_s32(p, vget_low_s32(x));
+}
+
+hlslpp_inline void _hlslpp_store3_epi32(int32_t* p, n128i x)
+{
+	vst1_s32(p, vget_low_s32(x));
+	vst1q_lane_s32(p + 2, x, 2);
+}
+
+hlslpp_inline void _hlslpp_store4_epi32(int32_t* p, n128i x)
+{
+	vst1q_s32(p, x);
+}
+
+hlslpp_inline void _hlslpp_load1_epi32(int32_t* p, n128i& x)
+{
+	x = vld1q_lane_s32(p, x, 0);
+}
+
+hlslpp_inline void _hlslpp_load2_epi32(int32_t* p, n128i& x)
+{
+	int32x2_t t = vld1_s32(p); // Load the two values
+	x = vcombine_s32(t, t); // Replicate in the other two to create a float32x4_t
+}
+
+hlslpp_inline void _hlslpp_load3_epi32(int32_t* p, n128i& x)
+{
+	int32x2_t t = vld1_s32(p); // Load the two values
+	x = vcombine_s32(t, t); // Replicate in the other two to create a float32x4_t
+	x = vld1q_lane_s32(p + 2, x, 2);
+}
+
+hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
+{
+	x = vld1q_s32(p);
 }
 
 //-----------------
