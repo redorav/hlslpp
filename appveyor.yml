@@ -98,14 +98,17 @@ build_script:
          msbuild "C:\projects\hlslpp\workspace\vs2019\hlsl++.sln" /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   - sh: if [[ $platform = "Linux64 GGC" ]]; then 
         pushd workspace/gmake2;
+        set -e;
         make all config=release_linux64_gcc;
         popd; fi;
   - sh: if [[ $platform = "Linux64 Clang" ]]; then 
         pushd workspace/gmake2;
+        set -e;
         make all config=release_linux64_clang;
         popd; fi;
   - sh: if [[ $platform = "OSX64 Clang" ]]; then 
         pushd workspace/xcode4;
+        set -e;
         xcodebuild build -project unit_tests.xcodeproj -configuration Release;
         popd; fi;
 
