@@ -730,7 +730,7 @@ namespace hlslpp
 	template<int X>
 	uswizzle1<X>& uswizzle1<X>::operator = (const uint1& i)
 	{
-		vec = _hlslpp_blend_epi32(vec, i.vec, HLSLPP_COMPONENT_X(X)); return *this;
+		vec = _hlslpp_blend_epi32(vec, (swizzle<0, X>(i.vec)), HLSLPP_COMPONENT_X(X)); return *this;
 	}
 
 	template<int X, int Y>
