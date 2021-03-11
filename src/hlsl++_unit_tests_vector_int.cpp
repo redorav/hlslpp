@@ -161,6 +161,10 @@ void RunUnitTestsVectorInt()
 	ivadd_f_3 += 3;													eq(ivadd_f_3, (int32_t)ivfoo3.x + 3 + 3, (int32_t)ivfoo3.y + 3 + 3, (int32_t)ivfoo3.z + 3 + 3);
 	ivadd_f_4 += 4;													eq(ivadd_f_4, (int32_t)ivfoo4.x + 4 + 4, (int32_t)ivfoo4.y + 4 + 4, (int32_t)ivfoo4.z + 4 + 4, (int32_t)ivfoo4.w + 4 + 4);
 
+	ivadd_f_2.y += 2;												eq(ivadd_f_2, (int32_t)ivfoo2.x + 2 + 2, (int32_t)ivfoo2.y + 2 + 2 + 2);
+	ivadd_f_3.z += 3;												eq(ivadd_f_3, (int32_t)ivfoo3.x + 3 + 3, (int32_t)ivfoo3.y + 3 + 3, (int32_t)ivfoo3.z + 3 + 3 + 3);
+	ivadd_f_4.w += 4;												eq(ivadd_f_4, (int32_t)ivfoo4.x + 4 + 4, (int32_t)ivfoo4.y + 4 + 4, (int32_t)ivfoo4.z + 4 + 4, (int32_t)ivfoo4.w + 4 + 4 + 4);
+
 	int1 ivadd_swiz_a_1 = ivfoo1 + ivbar1.x;						eq(ivadd_swiz_a_1, (int32_t)ivfoo1 + (int32_t)ivbar1.x);
 	int1 ivadd_swiz_b_1 = ivfoo1.r + ivbar1.x;						eq(ivadd_swiz_b_1, (int32_t)ivfoo1.r + (int32_t)ivbar1.x);
 	int1 ivadd_swiz_c_1 = ivfoo1.r + ivbar1;						eq(ivadd_swiz_c_1, (int32_t)ivfoo1.r + (int32_t)ivbar1);
@@ -203,6 +207,10 @@ void RunUnitTestsVectorInt()
 	ivsub_f_2 -= 2;													eq(ivsub_f_2, (int32_t)ivfoo2.x - 2 - 2, (int32_t)ivfoo2.y - 2 - 2);
 	ivsub_f_3 -= 3;													eq(ivsub_f_3, (int32_t)ivfoo3.x - 3 - 3, (int32_t)ivfoo3.y - 3 - 3, (int32_t)ivfoo3.z - 3 - 3);
 	ivsub_f_4 -= 4;													eq(ivsub_f_4, (int32_t)ivfoo4.x - 4 - 4, (int32_t)ivfoo4.y - 4 - 4, (int32_t)ivfoo4.z - 4 - 4, (int32_t)ivfoo4.w - 4 - 4);
+
+	ivsub_f_2.y -= 2;												eq(ivsub_f_2, (int32_t)ivfoo2.x - 2 - 2, (int32_t)ivfoo2.y - 2 - 2 - 2);
+	ivsub_f_3.z -= 3;												eq(ivsub_f_3, (int32_t)ivfoo3.x - 3 - 3, (int32_t)ivfoo3.y - 3 - 3, (int32_t)ivfoo3.z - 3 - 3 - 3);
+	ivsub_f_4.w -= 4;												eq(ivsub_f_4, (int32_t)ivfoo4.x - 4 - 4, (int32_t)ivfoo4.y - 4 - 4, (int32_t)ivfoo4.z - 4 - 4, (int32_t)ivfoo4.w - 4 - 4 - 4);
 
 	int1 ivsub_swiz_a_1 = ivfoo1 - ivbar1.x;						eq(ivsub_swiz_a_1, (int32_t)ivfoo1 - (int32_t)ivbar1.x);
 	int1 ivsub_swiz_b_1 = ivfoo1.r - ivbar1.x;						eq(ivsub_swiz_b_1, (int32_t)ivfoo1.r - (int32_t)ivbar1.x);
@@ -250,6 +258,10 @@ void RunUnitTestsVectorInt()
 	ivmul_f_2 *= 2;													eq(ivmul_f_2, (int32_t)ivfoo2.x * 2 * 2, (int32_t)ivfoo2.y * 2 * 2);
 	ivmul_f_3 *= 3;													eq(ivmul_f_3, (int32_t)ivfoo3.x * 3 * 3, (int32_t)ivfoo3.y * 3 * 3, (int32_t)ivfoo3.z * 3 * 3);
 	ivmul_f_4 *= 4;													eq(ivmul_f_4, (int32_t)ivfoo4.x * 4 * 4, (int32_t)ivfoo4.y * 4 * 4, (int32_t)ivfoo4.z * 4 * 4, (int32_t)ivfoo4.w * 4 * 4);
+
+	ivmul_f_2.y *= 2;												eq(ivmul_f_2, (int32_t)ivfoo2.x * 2 * 2, (int32_t)ivfoo2.y * 2 * 2 * 2);
+	ivmul_f_3.z *= 3;												eq(ivmul_f_3, (int32_t)ivfoo3.x * 3 * 3, (int32_t)ivfoo3.y * 3 * 3, (int32_t)ivfoo3.z * 3 * 3 * 3);
+	ivmul_f_4.w *= 4;												eq(ivmul_f_4, (int32_t)ivfoo4.x * 4 * 4, (int32_t)ivfoo4.y * 4 * 4, (int32_t)ivfoo4.z * 4 * 4, (int32_t)ivfoo4.w * 4 * 4 * 4);
 
 	int1 ivmul_swiz_a_1 = ivfoo1 * ivbar1.x;
 	int1 ivmul_swiz_b_1 = ivfoo1.r * ivbar1.x;
