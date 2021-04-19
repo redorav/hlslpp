@@ -585,6 +585,13 @@ namespace hlslpp
 			return *this;
 		}
 
+		hlslpp_inline swizzle1& operator = (const swizzle1<X>& s) // Revise this function. Can I not do with swizzle?
+		{
+			n128 t = _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(X, X, X, X));
+			vec = _hlslpp_blend_ps(vec, t, HLSLPP_COMPONENT_X(X));
+			return *this;
+		}
+
 		hlslpp_inline swizzle1& operator = (const float1& f);
 
 	private:
@@ -628,6 +635,13 @@ namespace hlslpp
 		{
 			staticAsserts();
 			vec = blend(vec, s.template swizzle<A, B, X, Y>());
+			return *this;
+		}
+
+		hlslpp_inline swizzle2& operator = (const swizzle2<X, Y>& s)
+		{
+			staticAsserts();
+			vec = blend(vec, s.template swizzle<X, Y, X, Y>());
 			return *this;
 		}
 
@@ -679,6 +693,13 @@ namespace hlslpp
 		{
 			staticAsserts();
 			vec = blend(vec, s.template swizzle<A, B, C, X, Y, Z>());
+			return *this;
+		}
+
+		hlslpp_inline swizzle3& operator = (const swizzle3<X, Y, Z>& s)
+		{
+			staticAsserts();
+			vec = blend(vec, s.template swizzle<X, Y, Z, X, Y, Z>());
 			return *this;
 		}
 
@@ -734,6 +755,13 @@ namespace hlslpp
 			return *this;
 		}
 
+		hlslpp_inline swizzle4& operator = (const swizzle4<X, Y, Z, W>& s)
+		{
+			staticAsserts();
+			vec = s.template swizzle<X, Y, Z, W, X, Y, Z, W>();
+			return *this;
+		}
+
 		hlslpp_inline swizzle4& operator = (const float4& f);
 
 	private:
@@ -747,6 +775,7 @@ namespace hlslpp
 	struct hlslpp_nodiscard float1
 	{
 		hlslpp_inline float1() : vec(_hlslpp_setzero_ps()) {}
+		hlslpp_inline float1(const float1& f) : vec(f.vec) {}
 		explicit hlslpp_inline float1(n128 vec) : vec(vec) {}
 
 		template<typename T>
@@ -759,6 +788,8 @@ namespace hlslpp
 		hlslpp_inline float1(const uint1& i);
 
 		hlslpp_inline operator float() const { return f32[0]; }
+
+		hlslpp_inline float1& operator = (const float1& f) { vec = f.vec; return *this; }
 
 		union
 		{
@@ -773,6 +804,7 @@ namespace hlslpp
 		// Constructors
 
 		hlslpp_inline float2() : vec(_hlslpp_setzero_ps()) {}
+		hlslpp_inline float2(const float2& f) : vec(f.vec) {}
 		explicit hlslpp_inline float2(n128 vec) : vec(vec) {}
 		explicit hlslpp_inline float2(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 
@@ -790,6 +822,8 @@ namespace hlslpp
 
 		hlslpp_inline float2(const uint2& i);
 
+		hlslpp_inline float2& operator = (const float2& f) { vec = f.vec; return *this; }
+
 		union
 		{
 			n128 vec;
@@ -804,6 +838,7 @@ namespace hlslpp
 		// Constructors
 
 		hlslpp_inline float3() : vec(_hlslpp_setzero_ps()) {}
+		hlslpp_inline float3(const float3& f) : vec(f.vec) {}
 		explicit hlslpp_inline float3(n128 vec) : vec(vec) {}
 		explicit hlslpp_inline float3(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 
@@ -825,6 +860,8 @@ namespace hlslpp
 
 		hlslpp_inline float3(const uint3& i);
 
+		hlslpp_inline float3& operator = (const float3& f) { vec = f.vec; return *this; }
+
 		union
 		{
 			n128 vec;
@@ -838,6 +875,7 @@ namespace hlslpp
 	struct hlslpp_nodiscard	float4
 	{
 		hlslpp_inline float4() : vec(_hlslpp_setzero_ps()) {}
+		hlslpp_inline float4(const float4& f) : vec(f.vec) {}
 		explicit hlslpp_inline float4(n128 vec) : vec(vec) {}
 		explicit hlslpp_inline float4(const float1& f) : vec(_hlslpp_perm_xxxx_ps(f.vec)) {}
 
@@ -864,6 +902,8 @@ namespace hlslpp
 		hlslpp_inline float4(const int4& i);
 
 		hlslpp_inline float4(const uint4& i);
+
+		hlslpp_inline float4& operator = (const float4& f) { vec = f.vec; return *this; }
 
 		union
 		{
