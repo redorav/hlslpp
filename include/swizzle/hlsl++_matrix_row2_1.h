@@ -2,16 +2,16 @@
 // _mNM
 // -------------------------------
 
-swizzle1<0> _m20;
-swizzle2<0, 0> _m20_m20;
-swizzle3<0, 0, 0> _m20_m20_m20;
-swizzle4<0, 0, 0, 0> _m20_m20_m20_m20;
+hlslpp_declare_swizzle1(0, _m20);
+hlslpp_declare_swizzle2(0, 0, _m20_m20);
+hlslpp_declare_swizzle3(0, 0, 0, _m20_m20_m20);
+hlslpp_declare_swizzle4(0, 0, 0, 0, _m20_m20_m20_m20);
 
 // -------------------------------
 // _NM
 // -------------------------------
 
-swizzle1<0> _31;
-swizzle2<0, 0> _31_31;
-swizzle3<0, 0, 0> _31_31_31;
-swizzle4<0, 0, 0, 0> _31_31_31_31;
+hlslpp_declare_swizzle1(0, _31);
+hlslpp_declare_swizzle2(0, 0, _31_31);
+hlslpp_declare_swizzle3(0, 0, 0, _31_31_31);
+hlslpp_declare_swizzle4(0, 0, 0, 0, _31_31_31_31);
