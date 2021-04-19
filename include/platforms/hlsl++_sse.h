@@ -34,9 +34,6 @@
 
 	#endif
 
-	// https://github.com/p12tic/libsimdpp/issues/33
-	#include <intrin.h>
-
 	#include <immintrin.h>
 
 #endif
@@ -1259,19 +1256,19 @@ hlslpp_inline void _hlslpp_load1_pd(double* p, n128d& x)
 // http://fastcpp.blogspot.com/2011/03/loading-3d-vector-into-sse-register.html
 hlslpp_inline void _hlslpp_load2_pd(double* p, n128d& x)
 {
-	x = _mm_loadu_pd(p);
+	x = _mm_load_pd(p);
 }
 
 hlslpp_inline void _hlslpp_load3_pd(double* p, n128d& x0, n128d& x1)
 {
-	x0 = _mm_loadu_pd(p);
+	x0 = _mm_load_pd(p);
 	x1 = _mm_load1_pd(p + 2);
 }
 
 hlslpp_inline void _hlslpp_load4_pd(double* p, n128d& x0, n128d& x1)
 {
-	x0 = _mm_loadu_pd(p);
-	x1 = _mm_loadu_pd(p + 2);
+	x0 = _mm_load_pd(p);
+	x1 = _mm_load_pd(p + 2);
 }
 
 //-----------

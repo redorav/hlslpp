@@ -2,562 +2,562 @@
 // XYZW
 // -------------------------------
 
-struct { swizzle1<3> w; };
+swizzle1<3> w;
 
-struct { swizzle2<0, 3> xw; };
-struct { swizzle2<1, 3> yw; };
-struct { swizzle2<2, 3> zw; };
-struct { swizzle2<3, 0> wx; };
-struct { swizzle2<3, 1> wy; };
-struct { swizzle2<3, 2> wz; };
-struct { swizzle2<3, 3> ww; };
+swizzle2<0, 3> xw;
+swizzle2<1, 3> yw;
+swizzle2<2, 3> zw;
+swizzle2<3, 0> wx;
+swizzle2<3, 1> wy;
+swizzle2<3, 2> wz;
+swizzle2<3, 3> ww;
 
-struct { swizzle3<0, 0, 3> xxw; };
-struct { swizzle3<0, 1, 3> xyw; };
-struct { swizzle3<0, 2, 3> xzw; };
+swizzle3<0, 0, 3> xxw;
+swizzle3<0, 1, 3> xyw;
+swizzle3<0, 2, 3> xzw;
 
-struct { swizzle3<0, 3, 0> xwx; };
-struct { swizzle3<0, 3, 1> xwy; };
-struct { swizzle3<0, 3, 2> xwz; };
-struct { swizzle3<0, 3, 3> xww; };
+swizzle3<0, 3, 0> xwx;
+swizzle3<0, 3, 1> xwy;
+swizzle3<0, 3, 2> xwz;
+swizzle3<0, 3, 3> xww;
 
-struct { swizzle3<1, 0, 3> yxw; };
-struct { swizzle3<1, 1, 3> yyw; };
-struct { swizzle3<1, 2, 3> yzw; };
+swizzle3<1, 0, 3> yxw;
+swizzle3<1, 1, 3> yyw;
+swizzle3<1, 2, 3> yzw;
 
-struct { swizzle3<1, 3, 0> ywx; };
-struct { swizzle3<1, 3, 1> ywy; };
-struct { swizzle3<1, 3, 2> ywz; };
-struct { swizzle3<1, 3, 3> yww; };
+swizzle3<1, 3, 0> ywx;
+swizzle3<1, 3, 1> ywy;
+swizzle3<1, 3, 2> ywz;
+swizzle3<1, 3, 3> yww;
 
-struct { swizzle3<2, 0, 3> zxw; };
-struct { swizzle3<2, 1, 3> zyw; };
-struct { swizzle3<2, 2, 3> zzw; };
+swizzle3<2, 0, 3> zxw;
+swizzle3<2, 1, 3> zyw;
+swizzle3<2, 2, 3> zzw;
 
-struct { swizzle3<2, 3, 0> zwx; };
-struct { swizzle3<2, 3, 1> zwy; };
-struct { swizzle3<2, 3, 2> zwz; };
-struct { swizzle3<2, 3, 3> zww; };
+swizzle3<2, 3, 0> zwx;
+swizzle3<2, 3, 1> zwy;
+swizzle3<2, 3, 2> zwz;
+swizzle3<2, 3, 3> zww;
 
-struct { swizzle3<3, 0, 0> wxx; };
-struct { swizzle3<3, 0, 1> wxy; };
-struct { swizzle3<3, 0, 2> wxz; };
-struct { swizzle3<3, 0, 3> wxw; };
+swizzle3<3, 0, 0> wxx;
+swizzle3<3, 0, 1> wxy;
+swizzle3<3, 0, 2> wxz;
+swizzle3<3, 0, 3> wxw;
 
-struct { swizzle3<3, 1, 0> wyx; };
-struct { swizzle3<3, 1, 1> wyy; };
-struct { swizzle3<3, 1, 2> wyz; };
-struct { swizzle3<3, 1, 3> wyw; };
+swizzle3<3, 1, 0> wyx;
+swizzle3<3, 1, 1> wyy;
+swizzle3<3, 1, 2> wyz;
+swizzle3<3, 1, 3> wyw;
 
-struct { swizzle3<3, 2, 0> wzx; };
-struct { swizzle3<3, 2, 1> wzy; };
-struct { swizzle3<3, 2, 2> wzz; };
-struct { swizzle3<3, 2, 3> wzw; };
+swizzle3<3, 2, 0> wzx;
+swizzle3<3, 2, 1> wzy;
+swizzle3<3, 2, 2> wzz;
+swizzle3<3, 2, 3> wzw;
 
-struct { swizzle3<3, 3, 0> wwx; };
-struct { swizzle3<3, 3, 1> wwy; };
-struct { swizzle3<3, 3, 2> wwz; };
-struct { swizzle3<3, 3, 3> www; };
+swizzle3<3, 3, 0> wwx;
+swizzle3<3, 3, 1> wwy;
+swizzle3<3, 3, 2> wwz;
+swizzle3<3, 3, 3> www;
 
-struct { swizzle4<0, 0, 0, 3> xxxw; };
-struct { swizzle4<0, 0, 1, 3> xxyw; };
-struct { swizzle4<0, 0, 2, 3> xxzw; };
+swizzle4<0, 0, 0, 3> xxxw;
+swizzle4<0, 0, 1, 3> xxyw;
+swizzle4<0, 0, 2, 3> xxzw;
 
-struct { swizzle4<0, 0, 3, 0> xxwx; };
-struct { swizzle4<0, 0, 3, 1> xxwy; };
-struct { swizzle4<0, 0, 3, 2> xxwz; };
-struct { swizzle4<0, 0, 3, 3> xxww; };
+swizzle4<0, 0, 3, 0> xxwx;
+swizzle4<0, 0, 3, 1> xxwy;
+swizzle4<0, 0, 3, 2> xxwz;
+swizzle4<0, 0, 3, 3> xxww;
 
-struct { swizzle4<0, 1, 0, 3> xyxw; };
-struct { swizzle4<0, 1, 1, 3> xyyw; };
-struct { swizzle4<0, 1, 2, 3> xyzw; };
+swizzle4<0, 1, 0, 3> xyxw;
+swizzle4<0, 1, 1, 3> xyyw;
+swizzle4<0, 1, 2, 3> xyzw;
 
-struct { swizzle4<0, 1, 3, 0> xywx; };
-struct { swizzle4<0, 1, 3, 1> xywy; };
-struct { swizzle4<0, 1, 3, 2> xywz; };
-struct { swizzle4<0, 1, 3, 3> xyww; };
+swizzle4<0, 1, 3, 0> xywx;
+swizzle4<0, 1, 3, 1> xywy;
+swizzle4<0, 1, 3, 2> xywz;
+swizzle4<0, 1, 3, 3> xyww;
 
-struct { swizzle4<0, 2, 0, 3> xzxw; };
-struct { swizzle4<0, 2, 1, 3> xzyw; };
-struct { swizzle4<0, 2, 2, 3> xzzw; };
+swizzle4<0, 2, 0, 3> xzxw;
+swizzle4<0, 2, 1, 3> xzyw;
+swizzle4<0, 2, 2, 3> xzzw;
 
-struct { swizzle4<0, 2, 3, 0> xzwx; };
-struct { swizzle4<0, 2, 3, 1> xzwy; };
-struct { swizzle4<0, 2, 3, 2> xzwz; };
-struct { swizzle4<0, 2, 3, 3> xzww; };
+swizzle4<0, 2, 3, 0> xzwx;
+swizzle4<0, 2, 3, 1> xzwy;
+swizzle4<0, 2, 3, 2> xzwz;
+swizzle4<0, 2, 3, 3> xzww;
 
-struct { swizzle4<0, 3, 0, 0> xwxx; };
-struct { swizzle4<0, 3, 0, 1> xwxy; };
-struct { swizzle4<0, 3, 0, 2> xwxz; };
-struct { swizzle4<0, 3, 0, 3> xwxw; };
+swizzle4<0, 3, 0, 0> xwxx;
+swizzle4<0, 3, 0, 1> xwxy;
+swizzle4<0, 3, 0, 2> xwxz;
+swizzle4<0, 3, 0, 3> xwxw;
 
-struct { swizzle4<0, 3, 1, 0> xwyx; };
-struct { swizzle4<0, 3, 1, 1> xwyy; };
-struct { swizzle4<0, 3, 1, 2> xwyz; };
-struct { swizzle4<0, 3, 1, 3> xwyw; };
+swizzle4<0, 3, 1, 0> xwyx;
+swizzle4<0, 3, 1, 1> xwyy;
+swizzle4<0, 3, 1, 2> xwyz;
+swizzle4<0, 3, 1, 3> xwyw;
 
-struct { swizzle4<0, 3, 2, 0> xwzx; };
-struct { swizzle4<0, 3, 2, 1> xwzy; };
-struct { swizzle4<0, 3, 2, 2> xwzz; };
-struct { swizzle4<0, 3, 2, 3> xwzw; };
+swizzle4<0, 3, 2, 0> xwzx;
+swizzle4<0, 3, 2, 1> xwzy;
+swizzle4<0, 3, 2, 2> xwzz;
+swizzle4<0, 3, 2, 3> xwzw;
 
-struct { swizzle4<0, 3, 3, 0> xwwx; };
-struct { swizzle4<0, 3, 3, 1> xwwy; };
-struct { swizzle4<0, 3, 3, 2> xwwz; };
-struct { swizzle4<0, 3, 3, 3> xwww; };
+swizzle4<0, 3, 3, 0> xwwx;
+swizzle4<0, 3, 3, 1> xwwy;
+swizzle4<0, 3, 3, 2> xwwz;
+swizzle4<0, 3, 3, 3> xwww;
 
-struct { swizzle4<1, 0, 0, 3> yxxw; };
-struct { swizzle4<1, 0, 1, 3> yxyw; };
-struct { swizzle4<1, 0, 2, 3> yxzw; };
+swizzle4<1, 0, 0, 3> yxxw;
+swizzle4<1, 0, 1, 3> yxyw;
+swizzle4<1, 0, 2, 3> yxzw;
 
-struct { swizzle4<1, 0, 3, 0> yxwx; };
-struct { swizzle4<1, 0, 3, 1> yxwy; };
-struct { swizzle4<1, 0, 3, 2> yxwz; };
-struct { swizzle4<1, 0, 3, 3> yxww; };
+swizzle4<1, 0, 3, 0> yxwx;
+swizzle4<1, 0, 3, 1> yxwy;
+swizzle4<1, 0, 3, 2> yxwz;
+swizzle4<1, 0, 3, 3> yxww;
 
-struct { swizzle4<1, 1, 0, 3> yyxw; };
-struct { swizzle4<1, 1, 1, 3> yyyw; };
-struct { swizzle4<1, 1, 2, 3> yyzw; };
+swizzle4<1, 1, 0, 3> yyxw;
+swizzle4<1, 1, 1, 3> yyyw;
+swizzle4<1, 1, 2, 3> yyzw;
 
-struct { swizzle4<1, 1, 3, 0> yywx; };
-struct { swizzle4<1, 1, 3, 1> yywy; };
-struct { swizzle4<1, 1, 3, 2> yywz; };
-struct { swizzle4<1, 1, 3, 3> yyww; };
+swizzle4<1, 1, 3, 0> yywx;
+swizzle4<1, 1, 3, 1> yywy;
+swizzle4<1, 1, 3, 2> yywz;
+swizzle4<1, 1, 3, 3> yyww;
 
-struct { swizzle4<1, 2, 0, 3> yzxw; };
-struct { swizzle4<1, 2, 1, 3> yzyw; };
-struct { swizzle4<1, 2, 2, 3> yzzw; };
+swizzle4<1, 2, 0, 3> yzxw;
+swizzle4<1, 2, 1, 3> yzyw;
+swizzle4<1, 2, 2, 3> yzzw;
 
-struct { swizzle4<1, 2, 3, 0> yzwx; };
-struct { swizzle4<1, 2, 3, 1> yzwy; };
-struct { swizzle4<1, 2, 3, 2> yzwz; };
-struct { swizzle4<1, 2, 3, 3> yzww; };
+swizzle4<1, 2, 3, 0> yzwx;
+swizzle4<1, 2, 3, 1> yzwy;
+swizzle4<1, 2, 3, 2> yzwz;
+swizzle4<1, 2, 3, 3> yzww;
 
-struct { swizzle4<1, 3, 0, 0> ywxx; };
-struct { swizzle4<1, 3, 0, 1> ywxy; };
-struct { swizzle4<1, 3, 0, 2> ywxz; };
-struct { swizzle4<1, 3, 0, 3> ywxw; };
+swizzle4<1, 3, 0, 0> ywxx;
+swizzle4<1, 3, 0, 1> ywxy;
+swizzle4<1, 3, 0, 2> ywxz;
+swizzle4<1, 3, 0, 3> ywxw;
 
-struct { swizzle4<1, 3, 1, 0> ywyx; };
-struct { swizzle4<1, 3, 1, 1> ywyy; };
-struct { swizzle4<1, 3, 1, 2> ywyz; };
-struct { swizzle4<1, 3, 1, 3> ywyw; };
+swizzle4<1, 3, 1, 0> ywyx;
+swizzle4<1, 3, 1, 1> ywyy;
+swizzle4<1, 3, 1, 2> ywyz;
+swizzle4<1, 3, 1, 3> ywyw;
 
-struct { swizzle4<1, 3, 2, 0> ywzx; };
-struct { swizzle4<1, 3, 2, 1> ywzy; };
-struct { swizzle4<1, 3, 2, 2> ywzz; };
-struct { swizzle4<1, 3, 2, 3> ywzw; };
+swizzle4<1, 3, 2, 0> ywzx;
+swizzle4<1, 3, 2, 1> ywzy;
+swizzle4<1, 3, 2, 2> ywzz;
+swizzle4<1, 3, 2, 3> ywzw;
 
-struct { swizzle4<1, 3, 3, 0> ywwx; };
-struct { swizzle4<1, 3, 3, 1> ywwy; };
-struct { swizzle4<1, 3, 3, 2> ywwz; };
-struct { swizzle4<1, 3, 3, 3> ywww; };
+swizzle4<1, 3, 3, 0> ywwx;
+swizzle4<1, 3, 3, 1> ywwy;
+swizzle4<1, 3, 3, 2> ywwz;
+swizzle4<1, 3, 3, 3> ywww;
 
-struct { swizzle4<2, 0, 0, 3> zxxw; };
-struct { swizzle4<2, 0, 1, 3> zxyw; };
-struct { swizzle4<2, 0, 2, 3> zxzw; };
+swizzle4<2, 0, 0, 3> zxxw;
+swizzle4<2, 0, 1, 3> zxyw;
+swizzle4<2, 0, 2, 3> zxzw;
 
-struct { swizzle4<2, 0, 3, 0> zxwx; };
-struct { swizzle4<2, 0, 3, 1> zxwy; };
-struct { swizzle4<2, 0, 3, 2> zxwz; };
-struct { swizzle4<2, 0, 3, 3> zxww; };
+swizzle4<2, 0, 3, 0> zxwx;
+swizzle4<2, 0, 3, 1> zxwy;
+swizzle4<2, 0, 3, 2> zxwz;
+swizzle4<2, 0, 3, 3> zxww;
 
-struct { swizzle4<2, 1, 0, 3> zyxw; };
-struct { swizzle4<2, 1, 1, 3> zyyw; };
-struct { swizzle4<2, 1, 2, 3> zyzw; };
+swizzle4<2, 1, 0, 3> zyxw;
+swizzle4<2, 1, 1, 3> zyyw;
+swizzle4<2, 1, 2, 3> zyzw;
 
-struct { swizzle4<2, 1, 3, 0> zywx; };
-struct { swizzle4<2, 1, 3, 1> zywy; };
-struct { swizzle4<2, 1, 3, 2> zywz; };
-struct { swizzle4<2, 1, 3, 3> zyww; };
+swizzle4<2, 1, 3, 0> zywx;
+swizzle4<2, 1, 3, 1> zywy;
+swizzle4<2, 1, 3, 2> zywz;
+swizzle4<2, 1, 3, 3> zyww;
 
-struct { swizzle4<2, 2, 0, 3> zzxw; };
-struct { swizzle4<2, 2, 1, 3> zzyw; };
-struct { swizzle4<2, 2, 2, 3> zzzw; };
+swizzle4<2, 2, 0, 3> zzxw;
+swizzle4<2, 2, 1, 3> zzyw;
+swizzle4<2, 2, 2, 3> zzzw;
 
-struct { swizzle4<2, 2, 3, 0> zzwx; };
-struct { swizzle4<2, 2, 3, 1> zzwy; };
-struct { swizzle4<2, 2, 3, 2> zzwz; };
-struct { swizzle4<2, 2, 3, 3> zzww; };
+swizzle4<2, 2, 3, 0> zzwx;
+swizzle4<2, 2, 3, 1> zzwy;
+swizzle4<2, 2, 3, 2> zzwz;
+swizzle4<2, 2, 3, 3> zzww;
 
-struct { swizzle4<2, 3, 0, 0> zwxx; };
-struct { swizzle4<2, 3, 0, 1> zwxy; };
-struct { swizzle4<2, 3, 0, 2> zwxz; };
-struct { swizzle4<2, 3, 0, 3> zwxw; };
+swizzle4<2, 3, 0, 0> zwxx;
+swizzle4<2, 3, 0, 1> zwxy;
+swizzle4<2, 3, 0, 2> zwxz;
+swizzle4<2, 3, 0, 3> zwxw;
 
-struct { swizzle4<2, 3, 1, 0> zwyx; };
-struct { swizzle4<2, 3, 1, 1> zwyy; };
-struct { swizzle4<2, 3, 1, 2> zwyz; };
-struct { swizzle4<2, 3, 1, 3> zwyw; };
+swizzle4<2, 3, 1, 0> zwyx;
+swizzle4<2, 3, 1, 1> zwyy;
+swizzle4<2, 3, 1, 2> zwyz;
+swizzle4<2, 3, 1, 3> zwyw;
 
-struct { swizzle4<2, 3, 2, 0> zwzx; };
-struct { swizzle4<2, 3, 2, 1> zwzy; };
-struct { swizzle4<2, 3, 2, 2> zwzz; };
-struct { swizzle4<2, 3, 2, 3> zwzw; };
+swizzle4<2, 3, 2, 0> zwzx;
+swizzle4<2, 3, 2, 1> zwzy;
+swizzle4<2, 3, 2, 2> zwzz;
+swizzle4<2, 3, 2, 3> zwzw;
 
-struct { swizzle4<2, 3, 3, 0> zwwx; };
-struct { swizzle4<2, 3, 3, 1> zwwy; };
-struct { swizzle4<2, 3, 3, 2> zwwz; };
-struct { swizzle4<2, 3, 3, 3> zwww; };
+swizzle4<2, 3, 3, 0> zwwx;
+swizzle4<2, 3, 3, 1> zwwy;
+swizzle4<2, 3, 3, 2> zwwz;
+swizzle4<2, 3, 3, 3> zwww;
 
-struct { swizzle4<3, 0, 0, 0> wxxx; };
-struct { swizzle4<3, 0, 0, 1> wxxy; };
-struct { swizzle4<3, 0, 0, 2> wxxz; };
-struct { swizzle4<3, 0, 0, 3> wxxw; };
+swizzle4<3, 0, 0, 0> wxxx;
+swizzle4<3, 0, 0, 1> wxxy;
+swizzle4<3, 0, 0, 2> wxxz;
+swizzle4<3, 0, 0, 3> wxxw;
 
-struct { swizzle4<3, 0, 1, 0> wxyx; };
-struct { swizzle4<3, 0, 1, 1> wxyy; };
-struct { swizzle4<3, 0, 1, 2> wxyz; };
-struct { swizzle4<3, 0, 1, 3> wxyw; };
+swizzle4<3, 0, 1, 0> wxyx;
+swizzle4<3, 0, 1, 1> wxyy;
+swizzle4<3, 0, 1, 2> wxyz;
+swizzle4<3, 0, 1, 3> wxyw;
 
-struct { swizzle4<3, 0, 2, 0> wxzx; };
-struct { swizzle4<3, 0, 2, 1> wxzy; };
-struct { swizzle4<3, 0, 2, 2> wxzz; };
-struct { swizzle4<3, 0, 2, 3> wxzw; };
+swizzle4<3, 0, 2, 0> wxzx;
+swizzle4<3, 0, 2, 1> wxzy;
+swizzle4<3, 0, 2, 2> wxzz;
+swizzle4<3, 0, 2, 3> wxzw;
 
-struct { swizzle4<3, 0, 3, 0> wxwx; };
-struct { swizzle4<3, 0, 3, 1> wxwy; };
-struct { swizzle4<3, 0, 3, 2> wxwz; };
-struct { swizzle4<3, 0, 3, 3> wxww; };
+swizzle4<3, 0, 3, 0> wxwx;
+swizzle4<3, 0, 3, 1> wxwy;
+swizzle4<3, 0, 3, 2> wxwz;
+swizzle4<3, 0, 3, 3> wxww;
 
-struct { swizzle4<3, 1, 0, 0> wyxx; };
-struct { swizzle4<3, 1, 0, 1> wyxy; };
-struct { swizzle4<3, 1, 0, 2> wyxz; };
-struct { swizzle4<3, 1, 0, 3> wyxw; };
+swizzle4<3, 1, 0, 0> wyxx;
+swizzle4<3, 1, 0, 1> wyxy;
+swizzle4<3, 1, 0, 2> wyxz;
+swizzle4<3, 1, 0, 3> wyxw;
 
-struct { swizzle4<3, 1, 1, 0> wyyx; };
-struct { swizzle4<3, 1, 1, 1> wyyy; };
-struct { swizzle4<3, 1, 1, 2> wyyz; };
-struct { swizzle4<3, 1, 1, 3> wyyw; };
+swizzle4<3, 1, 1, 0> wyyx;
+swizzle4<3, 1, 1, 1> wyyy;
+swizzle4<3, 1, 1, 2> wyyz;
+swizzle4<3, 1, 1, 3> wyyw;
 
-struct { swizzle4<3, 1, 2, 0> wyzx; };
-struct { swizzle4<3, 1, 2, 1> wyzy; };
-struct { swizzle4<3, 1, 2, 2> wyzz; };
-struct { swizzle4<3, 1, 2, 3> wyzw; };
+swizzle4<3, 1, 2, 0> wyzx;
+swizzle4<3, 1, 2, 1> wyzy;
+swizzle4<3, 1, 2, 2> wyzz;
+swizzle4<3, 1, 2, 3> wyzw;
 
-struct { swizzle4<3, 1, 3, 0> wywx; };
-struct { swizzle4<3, 1, 3, 1> wywy; };
-struct { swizzle4<3, 1, 3, 2> wywz; };
-struct { swizzle4<3, 1, 3, 3> wyww; };
+swizzle4<3, 1, 3, 0> wywx;
+swizzle4<3, 1, 3, 1> wywy;
+swizzle4<3, 1, 3, 2> wywz;
+swizzle4<3, 1, 3, 3> wyww;
 
-struct { swizzle4<3, 2, 0, 0> wzxx; };
-struct { swizzle4<3, 2, 0, 1> wzxy; };
-struct { swizzle4<3, 2, 0, 2> wzxz; };
-struct { swizzle4<3, 2, 0, 3> wzxw; };
+swizzle4<3, 2, 0, 0> wzxx;
+swizzle4<3, 2, 0, 1> wzxy;
+swizzle4<3, 2, 0, 2> wzxz;
+swizzle4<3, 2, 0, 3> wzxw;
 
-struct { swizzle4<3, 2, 1, 0> wzyx; };
-struct { swizzle4<3, 2, 1, 1> wzyy; };
-struct { swizzle4<3, 2, 1, 2> wzyz; };
-struct { swizzle4<3, 2, 1, 3> wzyw; };
+swizzle4<3, 2, 1, 0> wzyx;
+swizzle4<3, 2, 1, 1> wzyy;
+swizzle4<3, 2, 1, 2> wzyz;
+swizzle4<3, 2, 1, 3> wzyw;
 
-struct { swizzle4<3, 2, 2, 0> wzzx; };
-struct { swizzle4<3, 2, 2, 1> wzzy; };
-struct { swizzle4<3, 2, 2, 2> wzzz; };
-struct { swizzle4<3, 2, 2, 3> wzzw; };
+swizzle4<3, 2, 2, 0> wzzx;
+swizzle4<3, 2, 2, 1> wzzy;
+swizzle4<3, 2, 2, 2> wzzz;
+swizzle4<3, 2, 2, 3> wzzw;
 
-struct { swizzle4<3, 2, 3, 0> wzwx; };
-struct { swizzle4<3, 2, 3, 1> wzwy; };
-struct { swizzle4<3, 2, 3, 2> wzwz; };
-struct { swizzle4<3, 2, 3, 3> wzww; };
+swizzle4<3, 2, 3, 0> wzwx;
+swizzle4<3, 2, 3, 1> wzwy;
+swizzle4<3, 2, 3, 2> wzwz;
+swizzle4<3, 2, 3, 3> wzww;
 
-struct { swizzle4<3, 3, 0, 0> wwxx; };
-struct { swizzle4<3, 3, 0, 1> wwxy; };
-struct { swizzle4<3, 3, 0, 2> wwxz; };
-struct { swizzle4<3, 3, 0, 3> wwxw; };
+swizzle4<3, 3, 0, 0> wwxx;
+swizzle4<3, 3, 0, 1> wwxy;
+swizzle4<3, 3, 0, 2> wwxz;
+swizzle4<3, 3, 0, 3> wwxw;
 
-struct { swizzle4<3, 3, 1, 0> wwyx; };
-struct { swizzle4<3, 3, 1, 1> wwyy; };
-struct { swizzle4<3, 3, 1, 2> wwyz; };
-struct { swizzle4<3, 3, 1, 3> wwyw; };
+swizzle4<3, 3, 1, 0> wwyx;
+swizzle4<3, 3, 1, 1> wwyy;
+swizzle4<3, 3, 1, 2> wwyz;
+swizzle4<3, 3, 1, 3> wwyw;
 
-struct { swizzle4<3, 3, 2, 0> wwzx; };
-struct { swizzle4<3, 3, 2, 1> wwzy; };
-struct { swizzle4<3, 3, 2, 2> wwzz; };
-struct { swizzle4<3, 3, 2, 3> wwzw; };
+swizzle4<3, 3, 2, 0> wwzx;
+swizzle4<3, 3, 2, 1> wwzy;
+swizzle4<3, 3, 2, 2> wwzz;
+swizzle4<3, 3, 2, 3> wwzw;
 
-struct { swizzle4<3, 3, 3, 0> wwwx; };
-struct { swizzle4<3, 3, 3, 1> wwwy; };
-struct { swizzle4<3, 3, 3, 2> wwwz; };
-struct { swizzle4<3, 3, 3, 3> wwww; };
+swizzle4<3, 3, 3, 0> wwwx;
+swizzle4<3, 3, 3, 1> wwwy;
+swizzle4<3, 3, 3, 2> wwwz;
+swizzle4<3, 3, 3, 3> wwww;
 
 // -------------------------------
 // RGBA
 // -------------------------------
 
-struct { swizzle1<3> a; };
+swizzle1<3> a;
 
-struct { swizzle2<0, 3> ra; };
-struct { swizzle2<1, 3> ga; };
-struct { swizzle2<2, 3> ba; };
-struct { swizzle2<3, 0> ar; };
-struct { swizzle2<3, 1> ag; };
-struct { swizzle2<3, 2> ab; };
-struct { swizzle2<3, 3> aa; };
+swizzle2<0, 3> ra;
+swizzle2<1, 3> ga;
+swizzle2<2, 3> ba;
+swizzle2<3, 0> ar;
+swizzle2<3, 1> ag;
+swizzle2<3, 2> ab;
+swizzle2<3, 3> aa;
 
-struct { swizzle3<0, 0, 3> rra; };
-struct { swizzle3<0, 1, 3> rga; };
-struct { swizzle3<0, 2, 3> rba; };
+swizzle3<0, 0, 3> rra;
+swizzle3<0, 1, 3> rga;
+swizzle3<0, 2, 3> rba;
 
-struct { swizzle3<0, 3, 0> rar; };
-struct { swizzle3<0, 3, 1> rag; };
-struct { swizzle3<0, 3, 2> rab; };
-struct { swizzle3<0, 3, 3> raa; };
+swizzle3<0, 3, 0> rar;
+swizzle3<0, 3, 1> rag;
+swizzle3<0, 3, 2> rab;
+swizzle3<0, 3, 3> raa;
 
-struct { swizzle3<1, 0, 3> gra; };
-struct { swizzle3<1, 1, 3> gga; };
-struct { swizzle3<1, 2, 3> gba; };
+swizzle3<1, 0, 3> gra;
+swizzle3<1, 1, 3> gga;
+swizzle3<1, 2, 3> gba;
 
-struct { swizzle3<1, 3, 0> gar; };
-struct { swizzle3<1, 3, 1> gag; };
-struct { swizzle3<1, 3, 2> gab; };
-struct { swizzle3<1, 3, 3> gaa; };
+swizzle3<1, 3, 0> gar;
+swizzle3<1, 3, 1> gag;
+swizzle3<1, 3, 2> gab;
+swizzle3<1, 3, 3> gaa;
 
-struct { swizzle3<2, 0, 3> bra; };
-struct { swizzle3<2, 1, 3> bga; };
-struct { swizzle3<2, 2, 3> bba; };
+swizzle3<2, 0, 3> bra;
+swizzle3<2, 1, 3> bga;
+swizzle3<2, 2, 3> bba;
 
-struct { swizzle3<2, 3, 0> bar; };
-struct { swizzle3<2, 3, 1> bag; };
-struct { swizzle3<2, 3, 2> bab; };
-struct { swizzle3<2, 3, 3> baa; };
+swizzle3<2, 3, 0> bar;
+swizzle3<2, 3, 1> bag;
+swizzle3<2, 3, 2> bab;
+swizzle3<2, 3, 3> baa;
 
-struct { swizzle3<3, 0, 0> arr; };
-struct { swizzle3<3, 0, 1> arg; };
-struct { swizzle3<3, 0, 2> arb; };
-struct { swizzle3<3, 0, 3> ara; };
+swizzle3<3, 0, 0> arr;
+swizzle3<3, 0, 1> arg;
+swizzle3<3, 0, 2> arb;
+swizzle3<3, 0, 3> ara;
 
-struct { swizzle3<3, 1, 0> agr; };
-struct { swizzle3<3, 1, 1> agg; };
-struct { swizzle3<3, 1, 2> agb; };
-struct { swizzle3<3, 1, 3> aga; };
+swizzle3<3, 1, 0> agr;
+swizzle3<3, 1, 1> agg;
+swizzle3<3, 1, 2> agb;
+swizzle3<3, 1, 3> aga;
 
-struct { swizzle3<3, 2, 0> abr; };
-struct { swizzle3<3, 2, 1> abg; };
-struct { swizzle3<3, 2, 2> abb; };
-struct { swizzle3<3, 2, 3> aba; };
+swizzle3<3, 2, 0> abr;
+swizzle3<3, 2, 1> abg;
+swizzle3<3, 2, 2> abb;
+swizzle3<3, 2, 3> aba;
 
-struct { swizzle3<3, 3, 0> aar; };
-struct { swizzle3<3, 3, 1> aag; };
-struct { swizzle3<3, 3, 2> aab; };
-struct { swizzle3<3, 3, 3> aaa; };
+swizzle3<3, 3, 0> aar;
+swizzle3<3, 3, 1> aag;
+swizzle3<3, 3, 2> aab;
+swizzle3<3, 3, 3> aaa;
 
-struct { swizzle4<0, 0, 0, 3> rrra; };
-struct { swizzle4<0, 0, 1, 3> rrga; };
-struct { swizzle4<0, 0, 2, 3> rrba; };
+swizzle4<0, 0, 0, 3> rrra;
+swizzle4<0, 0, 1, 3> rrga;
+swizzle4<0, 0, 2, 3> rrba;
 
-struct { swizzle4<0, 0, 3, 0> rrar; };
-struct { swizzle4<0, 0, 3, 1> rrag; };
-struct { swizzle4<0, 0, 3, 2> rrab; };
-struct { swizzle4<0, 0, 3, 3> rraa; };
+swizzle4<0, 0, 3, 0> rrar;
+swizzle4<0, 0, 3, 1> rrag;
+swizzle4<0, 0, 3, 2> rrab;
+swizzle4<0, 0, 3, 3> rraa;
 
-struct { swizzle4<0, 1, 0, 3> rgra; };
-struct { swizzle4<0, 1, 1, 3> rgga; };
-struct { swizzle4<0, 1, 2, 3> rgba; };
+swizzle4<0, 1, 0, 3> rgra;
+swizzle4<0, 1, 1, 3> rgga;
+swizzle4<0, 1, 2, 3> rgba;
 
-struct { swizzle4<0, 1, 3, 0> rgar; };
-struct { swizzle4<0, 1, 3, 1> rgag; };
-struct { swizzle4<0, 1, 3, 2> rgab; };
-struct { swizzle4<0, 1, 3, 3> rgaa; };
+swizzle4<0, 1, 3, 0> rgar;
+swizzle4<0, 1, 3, 1> rgag;
+swizzle4<0, 1, 3, 2> rgab;
+swizzle4<0, 1, 3, 3> rgaa;
 
-struct { swizzle4<0, 2, 0, 3> rbra; };
-struct { swizzle4<0, 2, 1, 3> rbga; };
-struct { swizzle4<0, 2, 2, 3> rbba; };
+swizzle4<0, 2, 0, 3> rbra;
+swizzle4<0, 2, 1, 3> rbga;
+swizzle4<0, 2, 2, 3> rbba;
 
-struct { swizzle4<0, 2, 3, 0> rbar; };
-struct { swizzle4<0, 2, 3, 1> rbag; };
-struct { swizzle4<0, 2, 3, 2> rbab; };
-struct { swizzle4<0, 2, 3, 3> rbaa; };
+swizzle4<0, 2, 3, 0> rbar;
+swizzle4<0, 2, 3, 1> rbag;
+swizzle4<0, 2, 3, 2> rbab;
+swizzle4<0, 2, 3, 3> rbaa;
 
-struct { swizzle4<0, 3, 0, 0> rarr; };
-struct { swizzle4<0, 3, 0, 1> rarg; };
-struct { swizzle4<0, 3, 0, 2> rarb; };
-struct { swizzle4<0, 3, 0, 3> rara; };
+swizzle4<0, 3, 0, 0> rarr;
+swizzle4<0, 3, 0, 1> rarg;
+swizzle4<0, 3, 0, 2> rarb;
+swizzle4<0, 3, 0, 3> rara;
 
-struct { swizzle4<0, 3, 1, 0> ragr; };
-struct { swizzle4<0, 3, 1, 1> ragg; };
-struct { swizzle4<0, 3, 1, 2> ragb; };
-struct { swizzle4<0, 3, 1, 3> raga; };
+swizzle4<0, 3, 1, 0> ragr;
+swizzle4<0, 3, 1, 1> ragg;
+swizzle4<0, 3, 1, 2> ragb;
+swizzle4<0, 3, 1, 3> raga;
 
-struct { swizzle4<0, 3, 2, 0> rabr; };
-struct { swizzle4<0, 3, 2, 1> rabg; };
-struct { swizzle4<0, 3, 2, 2> rabb; };
-struct { swizzle4<0, 3, 2, 3> raba; };
+swizzle4<0, 3, 2, 0> rabr;
+swizzle4<0, 3, 2, 1> rabg;
+swizzle4<0, 3, 2, 2> rabb;
+swizzle4<0, 3, 2, 3> raba;
 
-struct { swizzle4<0, 3, 3, 0> raar; };
-struct { swizzle4<0, 3, 3, 1> raag; };
-struct { swizzle4<0, 3, 3, 2> raab; };
-struct { swizzle4<0, 3, 3, 3> raaa; };
+swizzle4<0, 3, 3, 0> raar;
+swizzle4<0, 3, 3, 1> raag;
+swizzle4<0, 3, 3, 2> raab;
+swizzle4<0, 3, 3, 3> raaa;
 
-struct { swizzle4<1, 0, 0, 3> grra; };
-struct { swizzle4<1, 0, 1, 3> grga; };
-struct { swizzle4<1, 0, 2, 3> grba; };
+swizzle4<1, 0, 0, 3> grra;
+swizzle4<1, 0, 1, 3> grga;
+swizzle4<1, 0, 2, 3> grba;
 
-struct { swizzle4<1, 0, 3, 0> grar; };
-struct { swizzle4<1, 0, 3, 1> grag; };
-struct { swizzle4<1, 0, 3, 2> grab; };
-struct { swizzle4<1, 0, 3, 3> graa; };
+swizzle4<1, 0, 3, 0> grar;
+swizzle4<1, 0, 3, 1> grag;
+swizzle4<1, 0, 3, 2> grab;
+swizzle4<1, 0, 3, 3> graa;
 
-struct { swizzle4<1, 1, 0, 3> ggra; };
-struct { swizzle4<1, 1, 1, 3> ggga; };
-struct { swizzle4<1, 1, 2, 3> ggba; };
+swizzle4<1, 1, 0, 3> ggra;
+swizzle4<1, 1, 1, 3> ggga;
+swizzle4<1, 1, 2, 3> ggba;
 
-struct { swizzle4<1, 1, 3, 0> ggar; };
-struct { swizzle4<1, 1, 3, 1> ggag; };
-struct { swizzle4<1, 1, 3, 2> ggab; };
-struct { swizzle4<1, 1, 3, 3> ggaa; };
+swizzle4<1, 1, 3, 0> ggar;
+swizzle4<1, 1, 3, 1> ggag;
+swizzle4<1, 1, 3, 2> ggab;
+swizzle4<1, 1, 3, 3> ggaa;
 
-struct { swizzle4<1, 2, 0, 3> gbra; };
-struct { swizzle4<1, 2, 1, 3> gbga; };
-struct { swizzle4<1, 2, 2, 3> gbba; };
+swizzle4<1, 2, 0, 3> gbra;
+swizzle4<1, 2, 1, 3> gbga;
+swizzle4<1, 2, 2, 3> gbba;
 
-struct { swizzle4<1, 2, 3, 0> gbar; };
-struct { swizzle4<1, 2, 3, 1> gbag; };
-struct { swizzle4<1, 2, 3, 2> gbab; };
-struct { swizzle4<1, 2, 3, 3> gbaa; };
+swizzle4<1, 2, 3, 0> gbar;
+swizzle4<1, 2, 3, 1> gbag;
+swizzle4<1, 2, 3, 2> gbab;
+swizzle4<1, 2, 3, 3> gbaa;
 
-struct { swizzle4<1, 3, 0, 0> garr; };
-struct { swizzle4<1, 3, 0, 1> garg; };
-struct { swizzle4<1, 3, 0, 2> garb; };
-struct { swizzle4<1, 3, 0, 3> gara; };
+swizzle4<1, 3, 0, 0> garr;
+swizzle4<1, 3, 0, 1> garg;
+swizzle4<1, 3, 0, 2> garb;
+swizzle4<1, 3, 0, 3> gara;
 
-struct { swizzle4<1, 3, 1, 0> gagr; };
-struct { swizzle4<1, 3, 1, 1> gagg; };
-struct { swizzle4<1, 3, 1, 2> gagb; };
-struct { swizzle4<1, 3, 1, 3> gaga; };
+swizzle4<1, 3, 1, 0> gagr;
+swizzle4<1, 3, 1, 1> gagg;
+swizzle4<1, 3, 1, 2> gagb;
+swizzle4<1, 3, 1, 3> gaga;
 
-struct { swizzle4<1, 3, 2, 0> gabr; };
-struct { swizzle4<1, 3, 2, 1> gabg; };
-struct { swizzle4<1, 3, 2, 2> gabb; };
-struct { swizzle4<1, 3, 2, 3> gaba; };
+swizzle4<1, 3, 2, 0> gabr;
+swizzle4<1, 3, 2, 1> gabg;
+swizzle4<1, 3, 2, 2> gabb;
+swizzle4<1, 3, 2, 3> gaba;
 
-struct { swizzle4<1, 3, 3, 0> gaar; };
-struct { swizzle4<1, 3, 3, 1> gaag; };
-struct { swizzle4<1, 3, 3, 2> gaab; };
-struct { swizzle4<1, 3, 3, 3> gaaa; };
+swizzle4<1, 3, 3, 0> gaar;
+swizzle4<1, 3, 3, 1> gaag;
+swizzle4<1, 3, 3, 2> gaab;
+swizzle4<1, 3, 3, 3> gaaa;
 
-struct { swizzle4<2, 0, 0, 3> brra; };
-struct { swizzle4<2, 0, 1, 3> brga; };
-struct { swizzle4<2, 0, 2, 3> brba; };
+swizzle4<2, 0, 0, 3> brra;
+swizzle4<2, 0, 1, 3> brga;
+swizzle4<2, 0, 2, 3> brba;
 
-struct { swizzle4<2, 0, 3, 0> brar; };
-struct { swizzle4<2, 0, 3, 1> brag; };
-struct { swizzle4<2, 0, 3, 2> brab; };
-struct { swizzle4<2, 0, 3, 3> braa; };
+swizzle4<2, 0, 3, 0> brar;
+swizzle4<2, 0, 3, 1> brag;
+swizzle4<2, 0, 3, 2> brab;
+swizzle4<2, 0, 3, 3> braa;
 
-struct { swizzle4<2, 1, 0, 3> bgra; };
-struct { swizzle4<2, 1, 1, 3> bgga; };
-struct { swizzle4<2, 1, 2, 3> bgba; };
+swizzle4<2, 1, 0, 3> bgra;
+swizzle4<2, 1, 1, 3> bgga;
+swizzle4<2, 1, 2, 3> bgba;
 
-struct { swizzle4<2, 1, 3, 0> bgar; };
-struct { swizzle4<2, 1, 3, 1> bgag; };
-struct { swizzle4<2, 1, 3, 2> bgab; };
-struct { swizzle4<2, 1, 3, 3> bgaa; };
+swizzle4<2, 1, 3, 0> bgar;
+swizzle4<2, 1, 3, 1> bgag;
+swizzle4<2, 1, 3, 2> bgab;
+swizzle4<2, 1, 3, 3> bgaa;
 
-struct { swizzle4<2, 2, 0, 3> bbra; };
-struct { swizzle4<2, 2, 1, 3> bbga; };
-struct { swizzle4<2, 2, 2, 3> bbba; };
+swizzle4<2, 2, 0, 3> bbra;
+swizzle4<2, 2, 1, 3> bbga;
+swizzle4<2, 2, 2, 3> bbba;
 
-struct { swizzle4<2, 2, 3, 0> bbar; };
-struct { swizzle4<2, 2, 3, 1> bbag; };
-struct { swizzle4<2, 2, 3, 2> bbab; };
-struct { swizzle4<2, 2, 3, 3> bbaa; };
+swizzle4<2, 2, 3, 0> bbar;
+swizzle4<2, 2, 3, 1> bbag;
+swizzle4<2, 2, 3, 2> bbab;
+swizzle4<2, 2, 3, 3> bbaa;
 
-struct { swizzle4<2, 3, 0, 0> barr; };
-struct { swizzle4<2, 3, 0, 1> barg; };
-struct { swizzle4<2, 3, 0, 2> barb; };
-struct { swizzle4<2, 3, 0, 3> bara; };
+swizzle4<2, 3, 0, 0> barr;
+swizzle4<2, 3, 0, 1> barg;
+swizzle4<2, 3, 0, 2> barb;
+swizzle4<2, 3, 0, 3> bara;
 
-struct { swizzle4<2, 3, 1, 0> bagr; };
-struct { swizzle4<2, 3, 1, 1> bagg; };
-struct { swizzle4<2, 3, 1, 2> bagb; };
-struct { swizzle4<2, 3, 1, 3> baga; };
+swizzle4<2, 3, 1, 0> bagr;
+swizzle4<2, 3, 1, 1> bagg;
+swizzle4<2, 3, 1, 2> bagb;
+swizzle4<2, 3, 1, 3> baga;
 
-struct { swizzle4<2, 3, 2, 0> babr; };
-struct { swizzle4<2, 3, 2, 1> babg; };
-struct { swizzle4<2, 3, 2, 2> babb; };
-struct { swizzle4<2, 3, 2, 3> baba; };
+swizzle4<2, 3, 2, 0> babr;
+swizzle4<2, 3, 2, 1> babg;
+swizzle4<2, 3, 2, 2> babb;
+swizzle4<2, 3, 2, 3> baba;
 
-struct { swizzle4<2, 3, 3, 0> baar; };
-struct { swizzle4<2, 3, 3, 1> baag; };
-struct { swizzle4<2, 3, 3, 2> baab; };
-struct { swizzle4<2, 3, 3, 3> baaa; };
+swizzle4<2, 3, 3, 0> baar;
+swizzle4<2, 3, 3, 1> baag;
+swizzle4<2, 3, 3, 2> baab;
+swizzle4<2, 3, 3, 3> baaa;
 
-struct { swizzle4<3, 0, 0, 0> arrr; };
-struct { swizzle4<3, 0, 0, 1> arrg; };
-struct { swizzle4<3, 0, 0, 2> arrb; };
-struct { swizzle4<3, 0, 0, 3> arra; };
+swizzle4<3, 0, 0, 0> arrr;
+swizzle4<3, 0, 0, 1> arrg;
+swizzle4<3, 0, 0, 2> arrb;
+swizzle4<3, 0, 0, 3> arra;
 
-struct { swizzle4<3, 0, 1, 0> argr; };
-struct { swizzle4<3, 0, 1, 1> argg; };
-struct { swizzle4<3, 0, 1, 2> argb; };
-struct { swizzle4<3, 0, 1, 3> arga; };
+swizzle4<3, 0, 1, 0> argr;
+swizzle4<3, 0, 1, 1> argg;
+swizzle4<3, 0, 1, 2> argb;
+swizzle4<3, 0, 1, 3> arga;
 
-struct { swizzle4<3, 0, 2, 0> arbr; };
-struct { swizzle4<3, 0, 2, 1> arbg; };
-struct { swizzle4<3, 0, 2, 2> arbb; };
-struct { swizzle4<3, 0, 2, 3> arba; };
+swizzle4<3, 0, 2, 0> arbr;
+swizzle4<3, 0, 2, 1> arbg;
+swizzle4<3, 0, 2, 2> arbb;
+swizzle4<3, 0, 2, 3> arba;
 
-struct { swizzle4<3, 0, 3, 0> arar; };
-struct { swizzle4<3, 0, 3, 1> arag; };
-struct { swizzle4<3, 0, 3, 2> arab; };
-struct { swizzle4<3, 0, 3, 3> araa; };
+swizzle4<3, 0, 3, 0> arar;
+swizzle4<3, 0, 3, 1> arag;
+swizzle4<3, 0, 3, 2> arab;
+swizzle4<3, 0, 3, 3> araa;
 
-struct { swizzle4<3, 1, 0, 0> agrr; };
-struct { swizzle4<3, 1, 0, 1> agrg; };
-struct { swizzle4<3, 1, 0, 2> agrb; };
-struct { swizzle4<3, 1, 0, 3> agra; };
+swizzle4<3, 1, 0, 0> agrr;
+swizzle4<3, 1, 0, 1> agrg;
+swizzle4<3, 1, 0, 2> agrb;
+swizzle4<3, 1, 0, 3> agra;
 
-struct { swizzle4<3, 1, 1, 0> aggr; };
-struct { swizzle4<3, 1, 1, 1> aggg; };
-struct { swizzle4<3, 1, 1, 2> aggb; };
-struct { swizzle4<3, 1, 1, 3> agga; };
+swizzle4<3, 1, 1, 0> aggr;
+swizzle4<3, 1, 1, 1> aggg;
+swizzle4<3, 1, 1, 2> aggb;
+swizzle4<3, 1, 1, 3> agga;
 
-struct { swizzle4<3, 1, 2, 0> agbr; };
-struct { swizzle4<3, 1, 2, 1> agbg; };
-struct { swizzle4<3, 1, 2, 2> agbb; };
-struct { swizzle4<3, 1, 2, 3> agba; };
+swizzle4<3, 1, 2, 0> agbr;
+swizzle4<3, 1, 2, 1> agbg;
+swizzle4<3, 1, 2, 2> agbb;
+swizzle4<3, 1, 2, 3> agba;
 
-struct { swizzle4<3, 1, 3, 0> agar; };
-struct { swizzle4<3, 1, 3, 1> agag; };
-struct { swizzle4<3, 1, 3, 2> agab; };
-struct { swizzle4<3, 1, 3, 3> agaa; };
+swizzle4<3, 1, 3, 0> agar;
+swizzle4<3, 1, 3, 1> agag;
+swizzle4<3, 1, 3, 2> agab;
+swizzle4<3, 1, 3, 3> agaa;
 
-struct { swizzle4<3, 2, 0, 0> abrr; };
-struct { swizzle4<3, 2, 0, 1> abrg; };
-struct { swizzle4<3, 2, 0, 2> abrb; };
-struct { swizzle4<3, 2, 0, 3> abra; };
+swizzle4<3, 2, 0, 0> abrr;
+swizzle4<3, 2, 0, 1> abrg;
+swizzle4<3, 2, 0, 2> abrb;
+swizzle4<3, 2, 0, 3> abra;
 
-struct { swizzle4<3, 2, 1, 0> abgr; };
-struct { swizzle4<3, 2, 1, 1> abgg; };
-struct { swizzle4<3, 2, 1, 2> abgb; };
-struct { swizzle4<3, 2, 1, 3> abga; };
+swizzle4<3, 2, 1, 0> abgr;
+swizzle4<3, 2, 1, 1> abgg;
+swizzle4<3, 2, 1, 2> abgb;
+swizzle4<3, 2, 1, 3> abga;
 
-struct { swizzle4<3, 2, 2, 0> abbr; };
-struct { swizzle4<3, 2, 2, 1> abbg; };
-struct { swizzle4<3, 2, 2, 2> abbb; };
-struct { swizzle4<3, 2, 2, 3> abba; };
+swizzle4<3, 2, 2, 0> abbr;
+swizzle4<3, 2, 2, 1> abbg;
+swizzle4<3, 2, 2, 2> abbb;
+swizzle4<3, 2, 2, 3> abba;
 
-struct { swizzle4<3, 2, 3, 0> abar; };
-struct { swizzle4<3, 2, 3, 1> abag; };
-struct { swizzle4<3, 2, 3, 2> abab; };
-struct { swizzle4<3, 2, 3, 3> abaa; };
+swizzle4<3, 2, 3, 0> abar;
+swizzle4<3, 2, 3, 1> abag;
+swizzle4<3, 2, 3, 2> abab;
+swizzle4<3, 2, 3, 3> abaa;
 
-struct { swizzle4<3, 3, 0, 0> aarr; };
-struct { swizzle4<3, 3, 0, 1> aarg; };
-struct { swizzle4<3, 3, 0, 2> aarb; };
-struct { swizzle4<3, 3, 0, 3> aara; };
+swizzle4<3, 3, 0, 0> aarr;
+swizzle4<3, 3, 0, 1> aarg;
+swizzle4<3, 3, 0, 2> aarb;
+swizzle4<3, 3, 0, 3> aara;
 
-struct { swizzle4<3, 3, 1, 0> aagr; };
-struct { swizzle4<3, 3, 1, 1> aagg; };
-struct { swizzle4<3, 3, 1, 2> aagb; };
-struct { swizzle4<3, 3, 1, 3> aaga; };
+swizzle4<3, 3, 1, 0> aagr;
+swizzle4<3, 3, 1, 1> aagg;
+swizzle4<3, 3, 1, 2> aagb;
+swizzle4<3, 3, 1, 3> aaga;
 
-struct { swizzle4<3, 3, 2, 0> aabr; };
-struct { swizzle4<3, 3, 2, 1> aabg; };
-struct { swizzle4<3, 3, 2, 2> aabb; };
-struct { swizzle4<3, 3, 2, 3> aaba; };
+swizzle4<3, 3, 2, 0> aabr;
+swizzle4<3, 3, 2, 1> aabg;
+swizzle4<3, 3, 2, 2> aabb;
+swizzle4<3, 3, 2, 3> aaba;
 
-struct { swizzle4<3, 3, 3, 0> aaar; };
-struct { swizzle4<3, 3, 3, 1> aaag; };
-struct { swizzle4<3, 3, 3, 2> aaab; };
-struct { swizzle4<3, 3, 3, 3> aaaa; };
+swizzle4<3, 3, 3, 0> aaar;
+swizzle4<3, 3, 3, 1> aaag;
+swizzle4<3, 3, 3, 2> aaab;
+swizzle4<3, 3, 3, 3> aaaa;

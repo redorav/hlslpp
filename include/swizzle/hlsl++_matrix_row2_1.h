@@ -2,16 +2,16 @@
 // _mNM
 // -------------------------------
 
-struct { swizzle1<0> _m20; };
-struct { swizzle2<0, 0> _m20_m20; };
-struct { swizzle3<0, 0, 0> _m20_m20_m20; };
-struct { swizzle4<0, 0, 0, 0> _m20_m20_m20_m20; };
+swizzle1<0> _m20;
+swizzle2<0, 0> _m20_m20;
+swizzle3<0, 0, 0> _m20_m20_m20;
+swizzle4<0, 0, 0, 0> _m20_m20_m20_m20;
 
 // -------------------------------
 // _NM
 // -------------------------------
 
-struct { swizzle1<0> _31; };
-struct { swizzle2<0, 0> _31_31; };
-struct { swizzle3<0, 0, 0> _31_31_31; };
-struct { swizzle4<0, 0, 0, 0> _31_31_31_31; };
+swizzle1<0> _31;
+swizzle2<0, 0> _31_31;
+swizzle3<0, 0, 0> _31_31_31;
+swizzle4<0, 0, 0, 0> _31_31_31_31;

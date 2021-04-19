@@ -173,17 +173,6 @@ void RunUnitTestsVectorFloat()
 	vassign3.rbg = vfoo3;													eq(vassign3, vfoo3.x, vfoo3.z, vfoo3.y);
 	vassign3.rgb = vfoo3.grr;												eq(vassign3, vfoo3.y, vfoo3.x, vfoo3.x);
 
-	// Stomping tests (writing one variable stomping others)
-
-	vassign2 = float2(f1, f2);
-	vassign2.r = vfoo1.x;													eq(vassign2, vfoo1.x, f2);
-
-	vassign3 = float3(f1, f2, f3);
-	vassign3.rg = vfoo3.rg;													eq(vassign3, vfoo3.r, vfoo3.g, f3);
-
-	vassign3 = float3(f1, f2, f3);
-	vassign3.z = vfoo3.z;													eq(vassign3, f1, f2, vfoo3.z);
-
 	float4 vassign4 = vfoo4.yxzw;											eq(vassign4, vfoo4.y, vfoo4.x, vfoo4.z, vfoo4.w);
 	vassign4 = vfoo4.yyxx;													eq(vassign4, vfoo4.y, vfoo4.y, vfoo4.x, vfoo4.x);
 	vassign4.bgra = vfoo4;													eq(vassign4, vfoo4.b, vfoo4.g, vfoo4.r, vfoo4.a);
