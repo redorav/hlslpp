@@ -7,6 +7,7 @@ namespace hlslpp
 	struct hlslpp_nodiscard quaternion
 	{
 		quaternion() : vec(_hlslpp_setzero_ps()) {}
+		quaternion(const quaternion& q) : vec(q.vec) {}
 		explicit quaternion(n128 vec) : vec(vec) {}
 
 		template<typename T1, typename T2, typename T3, typename T4>
@@ -25,6 +26,8 @@ namespace hlslpp
 
 		quaternion(const float4& f) { vec = f.vec; }
 		//quaternion(const float1x4& q) { vec = q.vec; }
+
+		hlslpp_inline quaternion& operator = (const quaternion& q) { vec = q.vec; return *this; }
 
 		static const quaternion& identity() { static const quaternion identity = quaternion(0.0f, 0.0f, 0.0f, 1.0f); return identity; };
 
