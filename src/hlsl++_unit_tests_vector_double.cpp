@@ -152,6 +152,20 @@ void RunUnitTestsVectorDouble()
 
 	//double2 dvneg_swiz_2 = -dvfoo2.yx;										assert(dvneg_swiz_2.x == -(float)dvfoo2.y && dvneg_swiz_2.y == -(float)dvfoo2.x);
 
+	// Stomping tests (writing one variable stomping others)
+
+	dvassign2 = double2(df1, df2);
+	dvassign2.r = dvfoo1.x;													eq(dvassign2, dvfoo1.x, df2);
+
+	dvassign3 = double3(df1, df2, df3);
+	dvassign3.gb = dvfoo3.gb;												eq(dvassign3, df1, dvfoo3.g, dvfoo3.b);
+
+	dvassign3 = double3(df1, df2, df3);
+	dvassign3.z = dvfoo3.z;													eq(dvassign3, df1, df2, dvfoo3.z);
+
+	dvassign4 = double4(df1, df2, df3, df4);
+	dvassign4.gba = dvfoo4.gba;												eq(dvassign4, df1, dvfoo4.g, dvfoo4.b, dvfoo4.a);
+
 	// Addition
 
 	double1 dvadd1 = dvfoo1 + dvbar1;										eq(dvadd1, (double)dvfoo1.x + (double)dvbar1.x);
