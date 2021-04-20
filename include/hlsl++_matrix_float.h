@@ -1651,22 +1651,22 @@ namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float1x1 operator += (float1x1& m1, const float1x1& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float1x2 operator += (float1x2& m1, const float1x2& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float1x3 operator += (float1x3& m1, const float1x3& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float1x4 operator += (float1x4& m1, const float1x4& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float2x1 operator += (float2x1& m1, const float2x1& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float3x1 operator += (float3x1& m1, const float3x1& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float4x1 operator += (float4x1& m1, const float4x1& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float2x2 operator += (float2x2& m1, const float2x2& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float2x3 operator += (float2x3& m1, const float2x3& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float2x4 operator += (float2x4& m1, const float2x4& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float3x2 operator += (float3x2& m1, const float3x2& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float4x2 operator += (float4x2& m1, const float4x2& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float3x3 operator += (float3x3& m1, const float3x3& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float3x4 operator += (float3x4& m1, const float3x4& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float4x3 operator += (float4x3& m1, const float4x3& m2) { m1 = m1 + m2; return m1; }
-	hlslpp_inline float4x4 operator += (float4x4& m1, const float4x4& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float1x1& operator += (float1x1& m1, const float1x1& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float1x2& operator += (float1x2& m1, const float1x2& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float1x3& operator += (float1x3& m1, const float1x3& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float1x4& operator += (float1x4& m1, const float1x4& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float2x1& operator += (float2x1& m1, const float2x1& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float3x1& operator += (float3x1& m1, const float3x1& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float4x1& operator += (float4x1& m1, const float4x1& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float2x2& operator += (float2x2& m1, const float2x2& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float2x3& operator += (float2x3& m1, const float2x3& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float2x4& operator += (float2x4& m1, const float2x4& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float3x2& operator += (float3x2& m1, const float3x2& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float4x2& operator += (float4x2& m1, const float4x2& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float3x3& operator += (float3x3& m1, const float3x3& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float3x4& operator += (float3x4& m1, const float3x4& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float4x3& operator += (float4x3& m1, const float4x3& m2) { m1 = m1 + m2; return m1; }
+	hlslpp_inline float4x4& operator += (float4x4& m1, const float4x4& m2) { m1 = m1 + m2; return m1; }
 
 	hlslpp_inline float1x1 operator - (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_sub_ps(m1.vec, m2.vec)); }
 	hlslpp_inline float1x2 operator - (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_sub_ps(m1.vec, m2.vec)); }
@@ -1692,22 +1692,22 @@ namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float1x1 operator -= (float1x1& m1, const float1x1& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float1x2 operator -= (float1x2& m1, const float1x2& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float1x3 operator -= (float1x3& m1, const float1x3& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float1x4 operator -= (float1x4& m1, const float1x4& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float2x1 operator -= (float2x1& m1, const float2x1& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float3x1 operator -= (float3x1& m1, const float3x1& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float4x1 operator -= (float4x1& m1, const float4x1& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float2x2 operator -= (float2x2& m1, const float2x2& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float2x3 operator -= (float2x3& m1, const float2x3& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float2x4 operator -= (float2x4& m1, const float2x4& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float3x2 operator -= (float3x2& m1, const float3x2& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float4x2 operator -= (float4x2& m1, const float4x2& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float3x3 operator -= (float3x3& m1, const float3x3& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float3x4 operator -= (float3x4& m1, const float3x4& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float4x3 operator -= (float4x3& m1, const float4x3& m2) { m1 = m1 - m2; return m1; }
-	hlslpp_inline float4x4 operator -= (float4x4& m1, const float4x4& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float1x1& operator -= (float1x1& m1, const float1x1& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float1x2& operator -= (float1x2& m1, const float1x2& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float1x3& operator -= (float1x3& m1, const float1x3& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float1x4& operator -= (float1x4& m1, const float1x4& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float2x1& operator -= (float2x1& m1, const float2x1& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float3x1& operator -= (float3x1& m1, const float3x1& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float4x1& operator -= (float4x1& m1, const float4x1& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float2x2& operator -= (float2x2& m1, const float2x2& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float2x3& operator -= (float2x3& m1, const float2x3& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float2x4& operator -= (float2x4& m1, const float2x4& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float3x2& operator -= (float3x2& m1, const float3x2& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float4x2& operator -= (float4x2& m1, const float4x2& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float3x3& operator -= (float3x3& m1, const float3x3& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float3x4& operator -= (float3x4& m1, const float3x4& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float4x3& operator -= (float4x3& m1, const float4x3& m2) { m1 = m1 - m2; return m1; }
+	hlslpp_inline float4x4& operator -= (float4x4& m1, const float4x4& m2) { m1 = m1 - m2; return m1; }
 
 	hlslpp_inline float1x1 operator * (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_mul_ps(m1.vec, m2.vec)); }
 	hlslpp_inline float1x2 operator * (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_mul_ps(m1.vec, m2.vec)); }
@@ -1733,22 +1733,22 @@ namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float1x1 operator *= (float1x1& m1, const float1x1& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float1x2 operator *= (float1x2& m1, const float1x2& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float1x3 operator *= (float1x3& m1, const float1x3& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float1x4 operator *= (float1x4& m1, const float1x4& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float2x1 operator *= (float2x1& m1, const float2x1& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float3x1 operator *= (float3x1& m1, const float3x1& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float4x1 operator *= (float4x1& m1, const float4x1& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float2x2 operator *= (float2x2& m1, const float2x2& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float2x3 operator *= (float2x3& m1, const float2x3& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float2x4 operator *= (float2x4& m1, const float2x4& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float3x2 operator *= (float3x2& m1, const float3x2& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float4x2 operator *= (float4x2& m1, const float4x2& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float3x3 operator *= (float3x3& m1, const float3x3& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float3x4 operator *= (float3x4& m1, const float3x4& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float4x3 operator *= (float4x3& m1, const float4x3& m2) { m1 = m1 * m2; return m1; }
-	hlslpp_inline float4x4 operator *= (float4x4& m1, const float4x4& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float1x1& operator *= (float1x1& m1, const float1x1& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float1x2& operator *= (float1x2& m1, const float1x2& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float1x3& operator *= (float1x3& m1, const float1x3& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float1x4& operator *= (float1x4& m1, const float1x4& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float2x1& operator *= (float2x1& m1, const float2x1& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float3x1& operator *= (float3x1& m1, const float3x1& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float4x1& operator *= (float4x1& m1, const float4x1& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float2x2& operator *= (float2x2& m1, const float2x2& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float2x3& operator *= (float2x3& m1, const float2x3& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float2x4& operator *= (float2x4& m1, const float2x4& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float3x2& operator *= (float3x2& m1, const float3x2& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float4x2& operator *= (float4x2& m1, const float4x2& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float3x3& operator *= (float3x3& m1, const float3x3& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float3x4& operator *= (float3x4& m1, const float3x4& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float4x3& operator *= (float4x3& m1, const float4x3& m2) { m1 = m1 * m2; return m1; }
+	hlslpp_inline float4x4& operator *= (float4x4& m1, const float4x4& m2) { m1 = m1 * m2; return m1; }
 
 	hlslpp_inline float1x1 operator / (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_div_ps(m1.vec, m2.vec)); }
 	hlslpp_inline float1x2 operator / (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_div_ps(m1.vec, m2.vec)); }
@@ -1774,22 +1774,22 @@ namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float1x1 operator /= (float1x1& m1, const float1x1& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float1x2 operator /= (float1x2& m1, const float1x2& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float1x3 operator /= (float1x3& m1, const float1x3& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float1x4 operator /= (float1x4& m1, const float1x4& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float2x1 operator /= (float2x1& m1, const float2x1& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float3x1 operator /= (float3x1& m1, const float3x1& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float4x1 operator /= (float4x1& m1, const float4x1& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float2x2 operator /= (float2x2& m1, const float2x2& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float2x3 operator /= (float2x3& m1, const float2x3& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float2x4 operator /= (float2x4& m1, const float2x4& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float3x2 operator /= (float3x2& m1, const float3x2& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float4x2 operator /= (float4x2& m1, const float4x2& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float3x3 operator /= (float3x3& m1, const float3x3& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float3x4 operator /= (float3x4& m1, const float3x4& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float4x3 operator /= (float4x3& m1, const float4x3& m2) { m1 = m1 / m2; return m1; }
-	hlslpp_inline float4x4 operator /= (float4x4& m1, const float4x4& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float1x1& operator /= (float1x1& m1, const float1x1& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float1x2& operator /= (float1x2& m1, const float1x2& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float1x3& operator /= (float1x3& m1, const float1x3& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float1x4& operator /= (float1x4& m1, const float1x4& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float2x1& operator /= (float2x1& m1, const float2x1& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float3x1& operator /= (float3x1& m1, const float3x1& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float4x1& operator /= (float4x1& m1, const float4x1& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float2x2& operator /= (float2x2& m1, const float2x2& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float2x3& operator /= (float2x3& m1, const float2x3& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float2x4& operator /= (float2x4& m1, const float2x4& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float3x2& operator /= (float3x2& m1, const float3x2& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float4x2& operator /= (float4x2& m1, const float4x2& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float3x3& operator /= (float3x3& m1, const float3x3& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float3x4& operator /= (float3x4& m1, const float3x4& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float4x3& operator /= (float4x3& m1, const float4x3& m2) { m1 = m1 / m2; return m1; }
+	hlslpp_inline float4x4& operator /= (float4x4& m1, const float4x4& m2) { m1 = m1 / m2; return m1; }
 
 	// Scalar operators
 
