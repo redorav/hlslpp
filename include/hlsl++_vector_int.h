@@ -105,18 +105,27 @@ namespace hlslpp
 			return swizzle<E, A>(vec);
 		}
 	
+		// Assignment
+
 		hlslpp_inline iswizzle1& operator = (int32_t i)
 		{
 			vec = _hlslpp_blend_epi32(vec, _hlslpp_set1_epi32(i), HLSLPP_COMPONENT_X(X));
 			return *this;
 		}
-	
-		// Assignment
+
+		// Revise these functions. Can I not do with swizzle?
 	
 		template<int A>
-		hlslpp_inline iswizzle1& operator = (const iswizzle1<A>& s) // Revise this function. Can I not do with swizzle?
+		hlslpp_inline iswizzle1& operator = (const iswizzle1<A>& s)
 		{
 			n128i t = _hlslpp_shuffle_epi32(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
+			vec = _hlslpp_blend_epi32(vec, t, HLSLPP_COMPONENT_X(X));
+			return *this;
+		}
+
+		hlslpp_inline iswizzle1& operator = (const iswizzle1<X>& s)
+		{
+			n128i t = _hlslpp_shuffle_epi32(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(X, X, X, X));
 			vec = _hlslpp_blend_epi32(vec, t, HLSLPP_COMPONENT_X(X));
 			return *this;
 		}
@@ -173,6 +182,13 @@ namespace hlslpp
 			return *this;
 		}
 
+		hlslpp_inline iswizzle2& operator = (const iswizzle2<X, Y>& s)
+		{
+			staticAsserts();
+			vec = blend(vec, s.template swizzle<X, Y, X, Y>());
+			return *this;
+		}
+
 		hlslpp_inline iswizzle2& operator = (const int2& i);
 
 	private:
@@ -225,6 +241,13 @@ namespace hlslpp
 			return *this;
 		}
 
+		hlslpp_inline iswizzle3& operator = (const iswizzle3<X, Y, Z>& s)
+		{
+			staticAsserts();
+			vec = blend(vec, s.template swizzle<X, Y, Z, X, Y, Z>());
+			return *this;
+		}
+
 		hlslpp_inline iswizzle3& operator = (const int3& i);
 
 	private:
@@ -273,6 +296,13 @@ namespace hlslpp
 			return *this;
 		}
 
+		hlslpp_inline iswizzle4& operator = (const iswizzle4<X, Y, Z, W>& s)
+		{
+			staticAsserts();
+			vec = s.template swizzle<X, Y, Z, W, X, Y, Z, W>();
+			return *this;
+		}
+
 		hlslpp_inline iswizzle4& operator = (const int4& i);
 
 	private:
@@ -286,12 +316,15 @@ namespace hlslpp
 	struct hlslpp_nodiscard int1
 	{
 		hlslpp_inline int1() : vec(_hlslpp_setzero_epi32()) {}
+		hlslpp_inline int1(const int1& i) : vec(i.vec) {}
 		explicit hlslpp_inline int1(n128i vec) : vec(vec) {}
 
 		template<typename T>
 		hlslpp_inline int1(T i, hlslpp_enable_if_number(T)) : vec(_hlslpp_set_epi32((int)i, 0, 0, 0)) {}
 
 		template<int X> hlslpp_inline int1(const iswizzle1<X>& s) : vec(s.template swizzle<X, 0>()) {}
+
+		hlslpp_inline int1& operator = (const int1& i) { vec = i.vec; return *this; }
 
 		hlslpp_inline operator int32_t() const { return i32[0]; }
 
@@ -309,6 +342,7 @@ namespace hlslpp
 		// Constructors
 
 		hlslpp_inline int2() : vec(_hlslpp_setzero_epi32()) {}
+		hlslpp_inline int2(const int2& i) : vec(i.vec) {}
 		explicit hlslpp_inline int2(n128i vec) : vec(vec) {}
 		explicit hlslpp_inline int2(const int1& i) : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}
 
@@ -320,6 +354,8 @@ namespace hlslpp
 		hlslpp_inline int2(const int1& i1, const int1& i2) { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
 		
 		template<int X, int Y> hlslpp_inline int2(const iswizzle2<X, Y>& s) : vec(s.template swizzle<X, Y, 0, 1>()) {}
+
+		hlslpp_inline int2& operator = (const int2& i) { vec = i.vec; return *this; }
 
 		union
 		{
@@ -335,6 +371,7 @@ namespace hlslpp
 		// Constructors
 
 		hlslpp_inline int3() : vec(_hlslpp_setzero_epi32()) {}
+		hlslpp_inline int3(const int3& i) : vec(i.vec) {}
 		explicit hlslpp_inline int3(n128i vec) : vec(vec) {}
 
 		explicit hlslpp_inline int3(const int1& i) : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}
@@ -352,6 +389,8 @@ namespace hlslpp
 		template<int X, int Y, int Z>
 		hlslpp_inline int3(const iswizzle3<X, Y, Z>& s) : vec(s.template swizzle<X, Y, Z, 0, 1, 2>()) {}
 
+		hlslpp_inline int3& operator = (const int3& i) { vec = i.vec; return *this; }
+
 		union
 		{
 			n128i vec;
@@ -365,6 +404,7 @@ namespace hlslpp
 	struct hlslpp_nodiscard int4
 	{
 		hlslpp_inline int4() : vec(_hlslpp_setzero_epi32()) {}
+		hlslpp_inline int4(const int4& i) : vec(i.vec) {}
 		explicit hlslpp_inline int4(n128i vec) : vec(vec) {}
 
 		explicit hlslpp_inline int4(const int1& i) : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}

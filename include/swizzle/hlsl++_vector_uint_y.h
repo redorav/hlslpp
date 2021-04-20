@@ -2,82 +2,82 @@
 // XYZW
 // -------------------------------
 
-uswizzle1<1> y;
+hlslpp_declare_swizzle1(uswizzle1, 1, y);
 
-uswizzle2<0, 1> xy;
-uswizzle2<1, 0> yx;
-uswizzle2<1, 1> yy;
+hlslpp_declare_swizzle2(uswizzle2, 0, 1, xy);
+hlslpp_declare_swizzle2(uswizzle2, 1, 0, yx);
+hlslpp_declare_swizzle2(uswizzle2, 1, 1, yy);
 
-uswizzle3<0, 0, 1> xxy;
-uswizzle3<0, 1, 0> xyx;
-uswizzle3<0, 1, 1> xyy;
+hlslpp_declare_swizzle3(uswizzle3, 0, 0, 1, xxy);
+hlslpp_declare_swizzle3(uswizzle3, 0, 1, 0, xyx);
+hlslpp_declare_swizzle3(uswizzle3, 0, 1, 1, xyy);
 
-uswizzle3<1, 0, 0> yxx;
-uswizzle3<1, 0, 1> yxy;
-uswizzle3<1, 1, 0> yyx;
-uswizzle3<1, 1, 1> yyy;
+hlslpp_declare_swizzle3(uswizzle3, 1, 0, 0, yxx);
+hlslpp_declare_swizzle3(uswizzle3, 1, 0, 1, yxy);
+hlslpp_declare_swizzle3(uswizzle3, 1, 1, 0, yyx);
+hlslpp_declare_swizzle3(uswizzle3, 1, 1, 1, yyy);
 
-uswizzle4<0, 0, 0, 1> xxxy;
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 0, 1, xxxy);
 
-uswizzle4<0, 0, 1, 0> xxyx;
-uswizzle4<0, 0, 1, 1> xxyy;
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 1, 0, xxyx);
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 1, 1, xxyy);
 
-uswizzle4<0, 1, 0, 0> xyxx;
-uswizzle4<0, 1, 0, 1> xyxy;
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 0, 0, xyxx);
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 0, 1, xyxy);
 
-uswizzle4<0, 1, 1, 0> xyyx;
-uswizzle4<0, 1, 1, 1> xyyy;
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 1, 0, xyyx);
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 1, 1, xyyy);
 
-uswizzle4<1, 0, 0, 0> yxxx;
-uswizzle4<1, 0, 0, 1> yxxy;
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 0, 0, yxxx);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 0, 1, yxxy);
 
-uswizzle4<1, 0, 1, 0> yxyx;
-uswizzle4<1, 0, 1, 1> yxyy;
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 1, 0, yxyx);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 1, 1, yxyy);
 
-uswizzle4<1, 1, 0, 0> yyxx;
-uswizzle4<1, 1, 0, 1> yyxy;
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 0, 0, yyxx);
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 0, 1, yyxy);
 
-uswizzle4<1, 1, 1, 0> yyyx;
-uswizzle4<1, 1, 1, 1> yyyy;
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 1, 0, yyyx);
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 1, 1, yyyy);
 
 // -------------------------------
 // RGBA
 // -------------------------------
 
-uswizzle1<1> g;
+hlslpp_declare_swizzle1(uswizzle1, 1, g);
 
-uswizzle2<0, 1> rg;
-uswizzle2<1, 0> gr;
-uswizzle2<1, 1> gg;
+hlslpp_declare_swizzle2(uswizzle2, 0, 1, rg);
+hlslpp_declare_swizzle2(uswizzle2, 1, 0, gr);
+hlslpp_declare_swizzle2(uswizzle2, 1, 1, gg);
 
-uswizzle3<0, 0, 1> rrg;
-uswizzle3<0, 1, 0> rgr;
-uswizzle3<0, 1, 1> rgg;
+hlslpp_declare_swizzle3(uswizzle3, 0, 0, 1, rrg);
+hlslpp_declare_swizzle3(uswizzle3, 0, 1, 0, rgr);
+hlslpp_declare_swizzle3(uswizzle3, 0, 1, 1, rgg);
 
-uswizzle3<1, 0, 0> grr;
-uswizzle3<1, 0, 1> grg;
-uswizzle3<1, 1, 0> ggr;
-uswizzle3<1, 1, 1> ggg;
+hlslpp_declare_swizzle3(uswizzle3, 1, 0, 0, grr);
+hlslpp_declare_swizzle3(uswizzle3, 1, 0, 1, grg);
+hlslpp_declare_swizzle3(uswizzle3, 1, 1, 0, ggr);
+hlslpp_declare_swizzle3(uswizzle3, 1, 1, 1, ggg);
 
-uswizzle4<0, 0, 0, 1> rrrg;
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 0, 1, rrrg);
 
-uswizzle4<0, 0, 1, 0> rrgr;
-uswizzle4<0, 0, 1, 1> rrgg;
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 1, 0, rrgr);
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 1, 1, rrgg);
 
-uswizzle4<0, 1, 0, 0> rgrr;
-uswizzle4<0, 1, 0, 1> rgrg;
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 0, 0, rgrr);
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 0, 1, rgrg);
 
-uswizzle4<0, 1, 1, 0> rggr;
-uswizzle4<0, 1, 1, 1> rggg;
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 1, 0, rggr);
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 1, 1, rggg);
 
-uswizzle4<1, 0, 0, 0> grrr;
-uswizzle4<1, 0, 0, 1> grrg;
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 0, 0, grrr);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 0, 1, grrg);
 
-uswizzle4<1, 0, 1, 0> grgr;
-uswizzle4<1, 0, 1, 1> grgg;
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 1, 0, grgr);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 1, 1, grgg);
 
-uswizzle4<1, 1, 0, 0> ggrr;
-uswizzle4<1, 1, 0, 1> ggrg;
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 0, 0, ggrr);
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 0, 1, ggrg);
 
-uswizzle4<1, 1, 1, 0> gggr;
-uswizzle4<1, 1, 1, 1> gggg;
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 1, 0, gggr);
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 1, 1, gggg);

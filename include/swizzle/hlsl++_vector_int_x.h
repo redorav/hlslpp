@@ -2,16 +2,16 @@
 // XYZW
 // -------------------------------
 
-iswizzle1<0> x;
-iswizzle2<0, 0> xx;
-iswizzle3<0, 0, 0> xxx;
-iswizzle4<0, 0, 0, 0> xxxx;
+hlslpp_declare_swizzle1(iswizzle1, 0, x);
+hlslpp_declare_swizzle2(iswizzle2, 0, 0, xx);
+hlslpp_declare_swizzle3(iswizzle3, 0, 0, 0, xxx);
+hlslpp_declare_swizzle4(iswizzle4, 0, 0, 0, 0, xxxx);
 
 // -------------------------------
 // RGBA
 // -------------------------------
 
-iswizzle1<0> r;
-iswizzle2<0, 0> rr;
-iswizzle3<0, 0, 0> rrr;
-iswizzle4<0, 0, 0, 0> rrrr;
+hlslpp_declare_swizzle1(iswizzle1, 0, r);
+hlslpp_declare_swizzle2(iswizzle2, 0, 0, rr);
+hlslpp_declare_swizzle3(iswizzle3, 0, 0, 0, rrr);
+hlslpp_declare_swizzle4(iswizzle4, 0, 0, 0, 0, rrrr);

@@ -577,15 +577,17 @@ namespace hlslpp
 			return *this;
 		}
 
+		// Revise these functions. Can I not do with swizzle?
+
 		template<int A>
-		hlslpp_inline swizzle1& operator = (const swizzle1<A>& s) // Revise this function. Can I not do with swizzle?
+		hlslpp_inline swizzle1& operator = (const swizzle1<A>& s)
 		{
 			n128 t = _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
 			vec = _hlslpp_blend_ps(vec, t, HLSLPP_COMPONENT_X(X));
 			return *this;
 		}
 
-		hlslpp_inline swizzle1& operator = (const swizzle1<X>& s) // Revise this function. Can I not do with swizzle?
+		hlslpp_inline swizzle1& operator = (const swizzle1<X>& s)
 		{
 			n128 t = _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(X, X, X, X));
 			vec = _hlslpp_blend_ps(vec, t, HLSLPP_COMPONENT_X(X));

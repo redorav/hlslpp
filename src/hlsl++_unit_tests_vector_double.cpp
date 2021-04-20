@@ -166,6 +166,9 @@ void RunUnitTestsVectorDouble()
 	dvassign4 = double4(df1, df2, df3, df4);
 	dvassign4.gba = dvfoo4.gba;												eq(dvassign4, df1, dvfoo4.g, dvfoo4.b, dvfoo4.a);
 
+	dvassign4 = double4(df1, df2, df3, df4);
+	dvassign4.z = dvfoo4.w;													eq(dvassign4, df1, df2, dvfoo4.w, df4);
+
 	// Addition
 
 	double1 dvadd1 = dvfoo1 + dvbar1;										eq(dvadd1, (double)dvfoo1.x + (double)dvbar1.x);

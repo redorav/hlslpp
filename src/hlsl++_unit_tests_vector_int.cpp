@@ -139,6 +139,20 @@ void RunUnitTestsVectorInt()
 
 	//	int2 ivneg_swiz_2 = -ivfoo2.yx;									//assert(ivassign2.x == (int32_t)ivfoo2.y && ivassign2.y == (int32_t)ivfoo2.x);
 
+	// Stomping tests (writing one variable stomping others)
+
+	ivassign2 = int2(i1, i2);
+	ivassign2.r = ivfoo1.x;											eq(ivassign2, ivfoo1.x, i2);
+
+	ivassign3 = int3(i1, i2, i3);
+	ivassign3.rg = ivfoo3.rg;										eq(ivassign3, ivfoo3.r, ivfoo3.g, i3);
+
+	ivassign3 = int3(i1, i2, i3);
+	ivassign3.z = ivfoo3.z;											eq(ivassign3, i1, i2, ivfoo3.z);
+
+	ivassign4 = int4(i1, i2, i3, i4);
+	ivassign4.y = ivfoo4.y;											eq(ivassign4, i1, ivfoo4.y, i3, i4);
+
 	// Addition
 
 	int1 ivadd1 = ivfoo1 + ivbar1;									eq(ivadd1, (int32_t)ivfoo1.x + (int32_t)ivbar1.x);

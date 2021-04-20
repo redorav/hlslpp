@@ -2,242 +2,242 @@
 // XYZW
 // -------------------------------
 
-uswizzle1<2> z;
+hlslpp_declare_swizzle1(uswizzle1, 2, z);
 
-uswizzle2<0, 2> xz;
-uswizzle2<1, 2> yz;
-uswizzle2<2, 0> zx;
-uswizzle2<2, 1> zy;
-uswizzle2<2, 2> zz;
+hlslpp_declare_swizzle2(uswizzle2, 0, 2, xz);
+hlslpp_declare_swizzle2(uswizzle2, 1, 2, yz);
+hlslpp_declare_swizzle2(uswizzle2, 2, 0, zx);
+hlslpp_declare_swizzle2(uswizzle2, 2, 1, zy);
+hlslpp_declare_swizzle2(uswizzle2, 2, 2, zz);
 
-uswizzle3<0, 0, 2> xxz;
-uswizzle3<0, 1, 2> xyz;
-uswizzle3<0, 2, 0> xzx;
-uswizzle3<0, 2, 1> xzy;
-uswizzle3<0, 2, 2> xzz;
+hlslpp_declare_swizzle3(uswizzle3, 0, 0, 2, xxz);
+hlslpp_declare_swizzle3(uswizzle3, 0, 1, 2, xyz);
+hlslpp_declare_swizzle3(uswizzle3, 0, 2, 0, xzx);
+hlslpp_declare_swizzle3(uswizzle3, 0, 2, 1, xzy);
+hlslpp_declare_swizzle3(uswizzle3, 0, 2, 2, xzz);
 
-uswizzle3<1, 0, 2> yxz;
-uswizzle3<1, 1, 2> yyz;
-uswizzle3<1, 2, 0> yzx;
-uswizzle3<1, 2, 1> yzy;
-uswizzle3<1, 2, 2> yzz;
+hlslpp_declare_swizzle3(uswizzle3, 1, 0, 2, yxz);
+hlslpp_declare_swizzle3(uswizzle3, 1, 1, 2, yyz);
+hlslpp_declare_swizzle3(uswizzle3, 1, 2, 0, yzx);
+hlslpp_declare_swizzle3(uswizzle3, 1, 2, 1, yzy);
+hlslpp_declare_swizzle3(uswizzle3, 1, 2, 2, yzz);
 
-uswizzle3<2, 0, 0> zxx;
-uswizzle3<2, 0, 1> zxy;
-uswizzle3<2, 0, 2> zxz;
-uswizzle3<2, 1, 0> zyx;
-uswizzle3<2, 1, 1> zyy;
-uswizzle3<2, 1, 2> zyz;
+hlslpp_declare_swizzle3(uswizzle3, 2, 0, 0, zxx);
+hlslpp_declare_swizzle3(uswizzle3, 2, 0, 1, zxy);
+hlslpp_declare_swizzle3(uswizzle3, 2, 0, 2, zxz);
+hlslpp_declare_swizzle3(uswizzle3, 2, 1, 0, zyx);
+hlslpp_declare_swizzle3(uswizzle3, 2, 1, 1, zyy);
+hlslpp_declare_swizzle3(uswizzle3, 2, 1, 2, zyz);
 
-uswizzle3<2, 2, 0> zzx;
-uswizzle3<2, 2, 1> zzy;
-uswizzle3<2, 2, 2> zzz;
+hlslpp_declare_swizzle3(uswizzle3, 2, 2, 0, zzx);
+hlslpp_declare_swizzle3(uswizzle3, 2, 2, 1, zzy);
+hlslpp_declare_swizzle3(uswizzle3, 2, 2, 2, zzz);
 
-uswizzle4<0, 0, 0, 2> xxxz;
-uswizzle4<0, 0, 1, 2> xxyz;
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 0, 2, xxxz);
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 1, 2, xxyz);
 
-uswizzle4<0, 0, 2, 0> xxzx;
-uswizzle4<0, 0, 2, 1> xxzy;
-uswizzle4<0, 0, 2, 2> xxzz;
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 2, 0, xxzx);
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 2, 1, xxzy);
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 2, 2, xxzz);
 
-uswizzle4<0, 1, 0, 2> xyxz;
-uswizzle4<0, 1, 1, 2> xyyz;
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 0, 2, xyxz);
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 1, 2, xyyz);
 
-uswizzle4<0, 1, 2, 0> xyzx;
-uswizzle4<0, 1, 2, 1> xyzy;
-uswizzle4<0, 1, 2, 2> xyzz;
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 2, 0, xyzx);
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 2, 1, xyzy);
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 2, 2, xyzz);
 
-uswizzle4<0, 2, 0, 0> xzxx;
-uswizzle4<0, 2, 0, 1> xzxy;
-uswizzle4<0, 2, 0, 2> xzxz;
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 0, 0, xzxx);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 0, 1, xzxy);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 0, 2, xzxz);
 
-uswizzle4<0, 2, 1, 0> xzyx;
-uswizzle4<0, 2, 1, 1> xzyy;
-uswizzle4<0, 2, 1, 2> xzyz;
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 1, 0, xzyx);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 1, 1, xzyy);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 1, 2, xzyz);
 
-uswizzle4<0, 2, 2, 0> xzzx;
-uswizzle4<0, 2, 2, 1> xzzy;
-uswizzle4<0, 2, 2, 2> xzzz;
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 2, 0, xzzx);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 2, 1, xzzy);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 2, 2, xzzz);
 
-uswizzle4<1, 0, 0, 2> yxxz;
-uswizzle4<1, 0, 1, 2> yxyz;
-uswizzle4<1, 0, 2, 0> yxzx;
-uswizzle4<1, 0, 2, 1> yxzy;
-uswizzle4<1, 0, 2, 2> yxzz;
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 0, 2, yxxz);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 1, 2, yxyz);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 2, 0, yxzx);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 2, 1, yxzy);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 2, 2, yxzz);
 
-uswizzle4<1, 1, 0, 2> yyxz;
-uswizzle4<1, 1, 1, 2> yyyz;
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 0, 2, yyxz);
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 1, 2, yyyz);
 
-uswizzle4<1, 1, 2, 0> yyzx;
-uswizzle4<1, 1, 2, 1> yyzy;
-uswizzle4<1, 1, 2, 2> yyzz;
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 2, 0, yyzx);
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 2, 1, yyzy);
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 2, 2, yyzz);
 
-uswizzle4<1, 2, 0, 0> yzxx;
-uswizzle4<1, 2, 0, 1> yzxy;
-uswizzle4<1, 2, 0, 2> yzxz;
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 0, 0, yzxx);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 0, 1, yzxy);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 0, 2, yzxz);
 
-uswizzle4<1, 2, 1, 0> yzyx;
-uswizzle4<1, 2, 1, 1> yzyy;
-uswizzle4<1, 2, 1, 2> yzyz;
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 1, 0, yzyx);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 1, 1, yzyy);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 1, 2, yzyz);
 
-uswizzle4<1, 2, 2, 0> yzzx;
-uswizzle4<1, 2, 2, 1> yzzy;
-uswizzle4<1, 2, 2, 2> yzzz;
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 2, 0, yzzx);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 2, 1, yzzy);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 2, 2, yzzz);
 
-uswizzle4<2, 0, 0, 0> zxxx;
-uswizzle4<2, 0, 0, 1> zxxy;
-uswizzle4<2, 0, 0, 2> zxxz;
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 0, 0, zxxx);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 0, 1, zxxy);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 0, 2, zxxz);
 
-uswizzle4<2, 0, 1, 0> zxyx;
-uswizzle4<2, 0, 1, 1> zxyy;
-uswizzle4<2, 0, 1, 2> zxyz;
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 1, 0, zxyx);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 1, 1, zxyy);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 1, 2, zxyz);
 
-uswizzle4<2, 0, 2, 0> zxzx;
-uswizzle4<2, 0, 2, 1> zxzy;
-uswizzle4<2, 0, 2, 2> zxzz;
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 2, 0, zxzx);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 2, 1, zxzy);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 2, 2, zxzz);
 
-uswizzle4<2, 1, 0, 0> zyxx;
-uswizzle4<2, 1, 0, 1> zyxy;
-uswizzle4<2, 1, 0, 2> zyxz;
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 0, 0, zyxx);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 0, 1, zyxy);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 0, 2, zyxz);
 
-uswizzle4<2, 1, 1, 0> zyyx;
-uswizzle4<2, 1, 1, 1> zyyy;
-uswizzle4<2, 1, 1, 2> zyyz;
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 1, 0, zyyx);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 1, 1, zyyy);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 1, 2, zyyz);
 
-uswizzle4<2, 1, 2, 0> zyzx;
-uswizzle4<2, 1, 2, 1> zyzy;
-uswizzle4<2, 1, 2, 2> zyzz;
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 2, 0, zyzx);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 2, 1, zyzy);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 2, 2, zyzz);
 
-uswizzle4<2, 2, 0, 0> zzxx;
-uswizzle4<2, 2, 0, 1> zzxy;
-uswizzle4<2, 2, 0, 2> zzxz;
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 0, 0, zzxx);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 0, 1, zzxy);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 0, 2, zzxz);
 
-uswizzle4<2, 2, 1, 0> zzyx;
-uswizzle4<2, 2, 1, 1> zzyy;
-uswizzle4<2, 2, 1, 2> zzyz;
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 1, 0, zzyx);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 1, 1, zzyy);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 1, 2, zzyz);
 
-uswizzle4<2, 2, 2, 0> zzzx;
-uswizzle4<2, 2, 2, 1> zzzy;
-uswizzle4<2, 2, 2, 2> zzzz;
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 2, 0, zzzx);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 2, 1, zzzy);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 2, 2, zzzz);
 
 // -------------------------------
 // RGBA
 // -------------------------------
 
-uswizzle1<2> b;
+hlslpp_declare_swizzle1(uswizzle1, 2, b);
 
-uswizzle2<0, 2> rb;
-uswizzle2<1, 2> gb;
-uswizzle2<2, 0> br;
-uswizzle2<2, 1> bg;
-uswizzle2<2, 2> bb;
+hlslpp_declare_swizzle2(uswizzle2, 0, 2, rb);
+hlslpp_declare_swizzle2(uswizzle2, 1, 2, gb);
+hlslpp_declare_swizzle2(uswizzle2, 2, 0, br);
+hlslpp_declare_swizzle2(uswizzle2, 2, 1, bg);
+hlslpp_declare_swizzle2(uswizzle2, 2, 2, bb);
 
-uswizzle3<0, 0, 2> rrb;
-uswizzle3<0, 1, 2> rgb;
-uswizzle3<0, 2, 0> rbr;
-uswizzle3<0, 2, 1> rbg;
-uswizzle3<0, 2, 2> rbb;
+hlslpp_declare_swizzle3(uswizzle3, 0, 0, 2, rrb);
+hlslpp_declare_swizzle3(uswizzle3, 0, 1, 2, rgb);
+hlslpp_declare_swizzle3(uswizzle3, 0, 2, 0, rbr);
+hlslpp_declare_swizzle3(uswizzle3, 0, 2, 1, rbg);
+hlslpp_declare_swizzle3(uswizzle3, 0, 2, 2, rbb);
 
-uswizzle3<1, 0, 2> grb;
-uswizzle3<1, 1, 2> ggb;
-uswizzle3<1, 2, 0> gbr;
-uswizzle3<1, 2, 1> gbg;
-uswizzle3<1, 2, 2> gbb;
+hlslpp_declare_swizzle3(uswizzle3, 1, 0, 2, grb);
+hlslpp_declare_swizzle3(uswizzle3, 1, 1, 2, ggb);
+hlslpp_declare_swizzle3(uswizzle3, 1, 2, 0, gbr);
+hlslpp_declare_swizzle3(uswizzle3, 1, 2, 1, gbg);
+hlslpp_declare_swizzle3(uswizzle3, 1, 2, 2, gbb);
 
-uswizzle3<2, 0, 0> brr;
-uswizzle3<2, 0, 1> brg;
-uswizzle3<2, 0, 2> brb;
-uswizzle3<2, 1, 0> bgr;
-uswizzle3<2, 1, 1> bgg;
-uswizzle3<2, 1, 2> bgb;
+hlslpp_declare_swizzle3(uswizzle3, 2, 0, 0, brr);
+hlslpp_declare_swizzle3(uswizzle3, 2, 0, 1, brg);
+hlslpp_declare_swizzle3(uswizzle3, 2, 0, 2, brb);
+hlslpp_declare_swizzle3(uswizzle3, 2, 1, 0, bgr);
+hlslpp_declare_swizzle3(uswizzle3, 2, 1, 1, bgg);
+hlslpp_declare_swizzle3(uswizzle3, 2, 1, 2, bgb);
 
-uswizzle3<2, 2, 0> bbr;
-uswizzle3<2, 2, 1> bbg;
-uswizzle3<2, 2, 2> bbb;
+hlslpp_declare_swizzle3(uswizzle3, 2, 2, 0, bbr);
+hlslpp_declare_swizzle3(uswizzle3, 2, 2, 1, bbg);
+hlslpp_declare_swizzle3(uswizzle3, 2, 2, 2, bbb);
 
-uswizzle4<0, 0, 0, 2> rrrb;
-uswizzle4<0, 0, 1, 2> rrgb;
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 0, 2, rrrb);
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 1, 2, rrgb);
 
-uswizzle4<0, 0, 2, 0> rrbr;
-uswizzle4<0, 0, 2, 1> rrbg;
-uswizzle4<0, 0, 2, 2> rrbb;
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 2, 0, rrbr);
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 2, 1, rrbg);
+hlslpp_declare_swizzle4(uswizzle4, 0, 0, 2, 2, rrbb);
 
-uswizzle4<0, 1, 0, 2> rgrb;
-uswizzle4<0, 1, 1, 2> rggb;
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 0, 2, rgrb);
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 1, 2, rggb);
 
-uswizzle4<0, 1, 2, 0> rgbr;
-uswizzle4<0, 1, 2, 1> rgbg;
-uswizzle4<0, 1, 2, 2> rgbb;
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 2, 0, rgbr);
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 2, 1, rgbg);
+hlslpp_declare_swizzle4(uswizzle4, 0, 1, 2, 2, rgbb);
 
-uswizzle4<0, 2, 0, 0> rbrr;
-uswizzle4<0, 2, 0, 1> rbrg;
-uswizzle4<0, 2, 0, 2> rbrb;
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 0, 0, rbrr);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 0, 1, rbrg);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 0, 2, rbrb);
 
-uswizzle4<0, 2, 1, 0> rbgr;
-uswizzle4<0, 2, 1, 1> rbgg;
-uswizzle4<0, 2, 1, 2> rbgb;
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 1, 0, rbgr);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 1, 1, rbgg);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 1, 2, rbgb);
 
-uswizzle4<0, 2, 2, 0> rbbr;
-uswizzle4<0, 2, 2, 1> rbbg;
-uswizzle4<0, 2, 2, 2> rbbb;
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 2, 0, rbbr);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 2, 1, rbbg);
+hlslpp_declare_swizzle4(uswizzle4, 0, 2, 2, 2, rbbb);
 
-uswizzle4<1, 0, 0, 2> grrb;
-uswizzle4<1, 0, 1, 2> grgb;
-uswizzle4<1, 0, 2, 0> grbr;
-uswizzle4<1, 0, 2, 1> grbg;
-uswizzle4<1, 0, 2, 2> grbb;
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 0, 2, grrb);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 1, 2, grgb);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 2, 0, grbr);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 2, 1, grbg);
+hlslpp_declare_swizzle4(uswizzle4, 1, 0, 2, 2, grbb);
 
-uswizzle4<1, 1, 0, 2> ggrb;
-uswizzle4<1, 1, 1, 2> gggb;
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 0, 2, ggrb);
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 1, 2, gggb);
 
-uswizzle4<1, 1, 2, 0> ggbr;
-uswizzle4<1, 1, 2, 1> ggbg;
-uswizzle4<1, 1, 2, 2> ggbb;
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 2, 0, ggbr);
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 2, 1, ggbg);
+hlslpp_declare_swizzle4(uswizzle4, 1, 1, 2, 2, ggbb);
 
-uswizzle4<1, 2, 0, 0> gbrr;
-uswizzle4<1, 2, 0, 1> gbrg;
-uswizzle4<1, 2, 0, 2> gbrb;
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 0, 0, gbrr);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 0, 1, gbrg);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 0, 2, gbrb);
 
-uswizzle4<1, 2, 1, 0> gbgr;
-uswizzle4<1, 2, 1, 1> gbgg;
-uswizzle4<1, 2, 1, 2> gbgb;
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 1, 0, gbgr);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 1, 1, gbgg);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 1, 2, gbgb);
 
-uswizzle4<1, 2, 2, 0> gbbr;
-uswizzle4<1, 2, 2, 1> gbbg;
-uswizzle4<1, 2, 2, 2> gbbb;
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 2, 0, gbbr);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 2, 1, gbbg);
+hlslpp_declare_swizzle4(uswizzle4, 1, 2, 2, 2, gbbb);
 
-uswizzle4<2, 0, 0, 0> brrr;
-uswizzle4<2, 0, 0, 1> brrg;
-uswizzle4<2, 0, 0, 2> brrb;
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 0, 0, brrr);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 0, 1, brrg);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 0, 2, brrb);
 
-uswizzle4<2, 0, 1, 0> brgr;
-uswizzle4<2, 0, 1, 1> brgg;
-uswizzle4<2, 0, 1, 2> brgb;
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 1, 0, brgr);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 1, 1, brgg);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 1, 2, brgb);
 
-uswizzle4<2, 0, 2, 0> brbr;
-uswizzle4<2, 0, 2, 1> brbg;
-uswizzle4<2, 0, 2, 2> brbb;
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 2, 0, brbr);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 2, 1, brbg);
+hlslpp_declare_swizzle4(uswizzle4, 2, 0, 2, 2, brbb);
 
-uswizzle4<2, 1, 0, 0> bgrr;
-uswizzle4<2, 1, 0, 1> bgrg;
-uswizzle4<2, 1, 0, 2> bgrb;
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 0, 0, bgrr);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 0, 1, bgrg);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 0, 2, bgrb);
 
-uswizzle4<2, 1, 1, 0> bggr;
-uswizzle4<2, 1, 1, 1> bggg;
-uswizzle4<2, 1, 1, 2> bggb;
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 1, 0, bggr);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 1, 1, bggg);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 1, 2, bggb);
 
-uswizzle4<2, 1, 2, 0> bgbr;
-uswizzle4<2, 1, 2, 1> bgbg;
-uswizzle4<2, 1, 2, 2> bgbb;
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 2, 0, bgbr);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 2, 1, bgbg);
+hlslpp_declare_swizzle4(uswizzle4, 2, 1, 2, 2, bgbb);
 
-uswizzle4<2, 2, 0, 0> bbrr;
-uswizzle4<2, 2, 0, 1> bbrg;
-uswizzle4<2, 2, 0, 2> bbrb;
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 0, 0, bbrr);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 0, 1, bbrg);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 0, 2, bbrb);
 
-uswizzle4<2, 2, 1, 0> bbgr;
-uswizzle4<2, 2, 1, 1> bbgg;
-uswizzle4<2, 2, 1, 2> bbgb;
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 1, 0, bbgr);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 1, 1, bbgg);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 1, 2, bbgb);
 
-uswizzle4<2, 2, 2, 0> bbbr;
-uswizzle4<2, 2, 2, 1> bbbg;
-uswizzle4<2, 2, 2, 2> bbbb;
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 2, 0, bbbr);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 2, 1, bbbg);
+hlslpp_declare_swizzle4(uswizzle4, 2, 2, 2, 2, bbbb);
