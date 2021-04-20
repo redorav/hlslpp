@@ -178,6 +178,20 @@ void RunUnitTestsVectorFloat()
 	vassign4.bgra = vfoo4;													eq(vassign4, vfoo4.b, vfoo4.g, vfoo4.r, vfoo4.a);
 	vassign4.rgba = vfoo4.grba;												eq(vassign4, vfoo4.g, vfoo4.r, vfoo4.b, vfoo4.a);
 
+	// Stomping tests (writing one variable stomping others)
+
+	vassign2 = float2(f1, f2);
+	vassign2.r = vfoo1.x;													eq(vassign2, vfoo1.x, f2);
+
+	vassign3 = float3(f1, f2, f3);
+	vassign3.rg = vfoo3.rg;													eq(vassign3, vfoo3.r, vfoo3.g, f3);
+
+	vassign3 = float3(f1, f2, f3);
+	vassign3.z = vfoo3.z;													eq(vassign3, f1, f2, vfoo3.z);
+
+	vassign4 = float4(f1, f2, f3, f4);
+	vassign4.y = vfoo4.y;													eq(vassign4, f1, vfoo4.y, f3, f4);
+
 	float2 vneg_swiz_2 = -vfoo2.yx;											assert(vneg_swiz_2.x == -(float)vfoo2.y && vneg_swiz_2.y == -(float)vfoo2.x);
 
 	// Addition
