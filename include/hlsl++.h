@@ -36,15 +36,15 @@
 #define hlslpp_unpack(...) __VA_ARGS__
 
 #if defined(_MSC_VER) && _MSC_VER < 1900
-	#define hlslpp_declare_swizzle1(X, name)          struct { swizzle1<X> name; }
-	#define hlslpp_declare_swizzle2(X, Y, name)       struct { swizzle2<X, Y> name; }
-	#define hlslpp_declare_swizzle3(X, Y, Z, name)    struct { swizzle3<X, Y, Z> name; }
-	#define hlslpp_declare_swizzle4(X, Y, Z, W, name) struct { swizzle4<X, Y, Z, W> name; }
+	#define hlslpp_declare_swizzle1(S, X, name)          struct { S<X> name; }
+	#define hlslpp_declare_swizzle2(S, X, Y, name)       struct { S<X, Y> name; }
+	#define hlslpp_declare_swizzle3(S, X, Y, Z, name)    struct { S<X, Y, Z> name; }
+	#define hlslpp_declare_swizzle4(S, X, Y, Z, W, name) struct { S<X, Y, Z, W> name; }
 #else
-	#define hlslpp_declare_swizzle1(X, name)          swizzle1<X> name
-	#define hlslpp_declare_swizzle2(X, Y, name)       swizzle2<X, Y> name
-	#define hlslpp_declare_swizzle3(X, Y, Z, name)    swizzle3<X, Y, Z> name
-	#define hlslpp_declare_swizzle4(X, Y, Z, W, name) swizzle4<X, Y, Z, W> name
+	#define hlslpp_declare_swizzle1(S, X, name)          S<X> name
+	#define hlslpp_declare_swizzle2(S, X, Y, name)       S<X, Y> name
+	#define hlslpp_declare_swizzle3(S, X, Y, Z, name)    S<X, Y, Z> name
+	#define hlslpp_declare_swizzle4(S, X, Y, Z, W, name) S<X, Y, Z, W> name
 #endif
 
 #define HLSLPP_SHUFFLE_MASK(X, Y, Z, W)		(((W) << 6) | ((Z) << 4) | ((Y) << 2) | (X))
