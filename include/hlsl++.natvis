@@ -40,113 +40,113 @@
 	<Type Name="hlslpp::float2x1">
 		<DisplayString Optional="true">float2x1 {{ {f32[0]}, {f32[1]} }}</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32[0]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32[1]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32[0]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32[1]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
 
 	<Type Name="hlslpp::float3x1">
 		<DisplayString Optional="true">float3x1 {{ {f32[0]}, {f32[1]}, {f32[2]} }}</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32[0]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32[1]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32[0]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32[1]}</DisplayString></Synthetic>
+			<Synthetic Name ="row2" Optional="true"><DisplayString>{f32[2]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
 
 	<Type Name="hlslpp::float4x1">
 		<DisplayString Optional="true">float4x1 {{ {f32[0]}, {f32[1]}, {f32[2]}, {f32[3]} }}</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32[0]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32[1]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32[2]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec3" Optional="true"><DisplayString>{f32[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32[0]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32[1]}</DisplayString></Synthetic>
+			<Synthetic Name ="row2" Optional="true"><DisplayString>{f32[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="row3" Optional="true"><DisplayString>{f32[3]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
 	
 	<Type Name="hlslpp::float2x2">
 		<DisplayString>float2x2</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32[0]}, {f32[1]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32[2]}, {f32[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32[0]}, {f32[1]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32[2]}, {f32[3]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
 	
 	<Type Name="hlslpp::float2x3">
 		<DisplayString>float2x3</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
   
 	<Type Name="hlslpp::float2x4">
 		<DisplayString>float2x4</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}, {f32_0[3]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}, {f32_1[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}, {f32_0[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}, {f32_1[3]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
   
 	<Type Name="hlslpp::float3x2">
 		<DisplayString>float3x2</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_1[0]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_0[1]}, {f32_1[1]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32_0[2]}, {f32_1[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32_0[0]}, {f32_1[0]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32_0[1]}, {f32_1[1]}</DisplayString></Synthetic>
+			<Synthetic Name ="row2" Optional="true"><DisplayString>{f32_0[2]}, {f32_1[2]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
   
 	<Type Name="hlslpp::float4x2">
 		<DisplayString>float4x2</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_1[0]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_0[1]}, {f32_1[1]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32_0[2]}, {f32_1[2]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec3" Optional="true"><DisplayString>{f32_0[3]}, {f32_1[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32_0[0]}, {f32_1[0]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32_0[1]}, {f32_1[1]}</DisplayString></Synthetic>
+			<Synthetic Name ="row2" Optional="true"><DisplayString>{f32_0[2]}, {f32_1[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="row3" Optional="true"><DisplayString>{f32_0[3]}, {f32_1[3]}</DisplayString></Synthetic>
 	  </Expand>
 	</Type>
   
 	<Type Name="hlslpp::float3x3">
 		<DisplayString>float3x3</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32_2[0]}, {f32_2[1]}, {f32_2[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="row2" Optional="true"><DisplayString>{f32_2[0]}, {f32_2[1]}, {f32_2[2]}</DisplayString></Synthetic>
 	  </Expand>
 	</Type>
   
 	<Type Name="hlslpp::float3x4">
 		<DisplayString>float3x4</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}, {f32_0[3]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}, {f32_1[3]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32_2[0]}, {f32_2[1]}, {f32_2[2]}, {f32_2[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32_0[0]}, {f32_0[1]}, {f32_0[2]}, {f32_0[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32_1[0]}, {f32_1[1]}, {f32_1[2]}, {f32_1[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row2" Optional="true"><DisplayString>{f32_2[0]}, {f32_2[1]}, {f32_2[2]}, {f32_2[3]}</DisplayString></Synthetic>
 	  </Expand>
 	</Type>
 	
 	<Type Name="hlslpp::float4x3">
 		<DisplayString>float4x3</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_0[0]}, {f32_1[0]}, {f32_2[0]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_0[1]}, {f32_1[1]}, {f32_2[1]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32_0[2]}, {f32_1[2]}, {f32_2[2]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec3" Optional="true"><DisplayString>{f32_0[3]}, {f32_1[3]}, {f32_2[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32_0[0]}, {f32_1[0]}, {f32_2[0]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32_0[1]}, {f32_1[1]}, {f32_2[1]}</DisplayString></Synthetic>
+			<Synthetic Name ="row2" Optional="true"><DisplayString>{f32_0[2]}, {f32_1[2]}, {f32_2[2]}</DisplayString></Synthetic>
+			<Synthetic Name ="row3" Optional="true"><DisplayString>{f32_0[3]}, {f32_1[3]}, {f32_2[3]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
 
 	<Type Name="hlslpp::float4x4">
 		<DisplayString>float4x4</DisplayString>
 		<Expand>
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_128_0[0]}, {f32_128_0[1]}, {f32_128_0[2]}, {f32_128_0[3]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_128_1[0]}, {f32_128_1[1]}, {f32_128_1[2]}, {f32_128_1[3]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32_128_2[0]}, {f32_128_2[1]}, {f32_128_2[2]}, {f32_128_2[3]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec3" Optional="true"><DisplayString>{f32_128_3[0]}, {f32_128_3[1]}, {f32_128_3[2]}, {f32_128_3[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32_128_0[0]}, {f32_128_0[1]}, {f32_128_0[2]}, {f32_128_0[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32_128_1[0]}, {f32_128_1[1]}, {f32_128_1[2]}, {f32_128_1[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row2" Optional="true"><DisplayString>{f32_128_2[0]}, {f32_128_2[1]}, {f32_128_2[2]}, {f32_128_2[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row3" Optional="true"><DisplayString>{f32_128_3[0]}, {f32_128_3[1]}, {f32_128_3[2]}, {f32_128_3[3]}</DisplayString></Synthetic>
 
-			<Synthetic Name ="vec0" Optional="true"><DisplayString>{f32_256_0[0]}, {f32_256_0[1]}, {f32_256_0[2]}, {f32_256_0[3]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec2" Optional="true"><DisplayString>{f32_256_0[4]}, {f32_256_0[5]}, {f32_256_0[6]}, {f32_256_0[7]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec1" Optional="true"><DisplayString>{f32_256_1[0]}, {f32_256_1[1]}, {f32_256_1[2]}, {f32_256_1[3]}</DisplayString></Synthetic>
-			<Synthetic Name ="vec3" Optional="true"><DisplayString>{f32_256_1[4]}, {f32_256_1[5]}, {f32_256_1[6]}, {f32_256_1[7]}</DisplayString></Synthetic>
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32_256_0[0]}, {f32_256_0[1]}, {f32_256_0[2]}, {f32_256_0[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row2" Optional="true"><DisplayString>{f32_256_0[4]}, {f32_256_0[5]}, {f32_256_0[6]}, {f32_256_0[7]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32_256_1[0]}, {f32_256_1[1]}, {f32_256_1[2]}, {f32_256_1[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row3" Optional="true"><DisplayString>{f32_256_1[4]}, {f32_256_1[5]}, {f32_256_1[6]}, {f32_256_1[7]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
 
