@@ -203,8 +203,6 @@ workspace("hlsl++")
 		filter{}
 	end
 	
-	--defines { "HLSLPP_SCALAR" }
-	
 	configuration "Debug"
 		defines { "DEBUG" }
 		symbols "full"
