@@ -189,8 +189,13 @@ hlslpp_inline n128 _hlslpp_round_ps(n128 x)
 #define _hlslpp_or_ps(x, y)						_mm_or_ps((x), (y))
 #define _hlslpp_xor_ps(x, y)					_mm_xor_ps((x), (y))
 
+// Equivalent to shuffle(x, y, X, Y, X, Y)
 #define _hlslpp_movelh_ps(x, y)					_mm_movelh_ps((x), (y))
+
+// Equivalent to shuffle(y, x, Z, W, Z, W)
 #define _hlslpp_movehl_ps(x, y)					_mm_movehl_ps((x), (y))
+
+// Equivalent to shuffle(x, x, Y, Y, W, W)
 #define _hlslpp_movehdup_ps(x)					_mm_movehdup_ps((x))
 
 #if defined(__AVX__)
@@ -219,9 +224,9 @@ hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
 	
 	#else
 	
-		n128 multi  = _mm_mul_ps(x, y);         // Multiply components
-		n128 shuf   = _hlslpp_perm_ps(multi, HLSLPP_SHUFFLE_MASK(1, 0, 3, 0));  // Move y into x, and w into z (ignore the rest)
-		n128 add    = _mm_add_ps(shuf, multi);  // Contains x+y, _, z+w, _
+		n128 mul    = _mm_mul_ps(x, y);         // Multiply components
+		n128 shuf   = _hlslpp_perm_ps(mul, HLSLPP_SHUFFLE_MASK(1, 0, 3, 0));  // Move y into x, and w into z (ignore the rest)
+		n128 add    = _mm_add_ps(shuf, mul);  // Contains x+y, _, z+w, _
 		shuf        = _mm_movehl_ps(shuf, add); // Move (z + w) into x
 		n128 result = _mm_add_ss(add, shuf);    // Contains x+y+z+w, _, _, _
 	
