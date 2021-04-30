@@ -24,19 +24,18 @@
 #endif
 
 #if (__cplusplus >= 201702L) || (_MSVC_LANG >= 201702L)
-
 	#define hlslpp_nodiscard [[nodiscard]]
-
 #else
-
 	#define hlslpp_nodiscard
-
 #endif
 
+// Versions previous to VS2015 need special attention
 #if defined(_MSC_VER) && _MSC_VER < 1900
+	#define hlslpp_noexcept
 	#define hlslpp_swizzle_start struct {
 	#define hlslpp_swizzle_end };
 #else
+	#define hlslpp_noexcept noexcept
 	#define hlslpp_swizzle_start
 	#define hlslpp_swizzle_end
 #endif
