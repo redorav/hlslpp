@@ -1,20 +1,20 @@
 namespace hlslpp
 {
-	float1::float1(const int1& i) : vec(_hlslpp_cvtepi32_ps(i.vec)) {}
+	float1::float1(const int1& i) hlslpp_noexcept : vec(_hlslpp_cvtepi32_ps(i.vec)) {}
 
-	float2::float2(const int2& i) : vec(_hlslpp_cvtepi32_ps(i.vec)) {}
+	float2::float2(const int2& i) hlslpp_noexcept : vec(_hlslpp_cvtepi32_ps(i.vec)) {}
 
-	float3::float3(const int3& i) : vec(_hlslpp_cvtepi32_ps(i.vec)) {}
+	float3::float3(const int3& i) hlslpp_noexcept : vec(_hlslpp_cvtepi32_ps(i.vec)) {}
 
-	float4::float4(const int4& i) : vec(_hlslpp_cvtepi32_ps(i.vec)) {}
+	float4::float4(const int4& i) hlslpp_noexcept : vec(_hlslpp_cvtepi32_ps(i.vec)) {}
 
-	float1::float1(const uint1& i) : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
+	float1::float1(const uint1& i) hlslpp_noexcept : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
 
-	float2::float2(const uint2& i) : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
+	float2::float2(const uint2& i) hlslpp_noexcept : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
 
-	float3::float3(const uint3& i) : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
+	float3::float3(const uint3& i) hlslpp_noexcept : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
 
-	float4::float4(const uint4& i) : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
+	float4::float4(const uint4& i) hlslpp_noexcept : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
 
 	hlslpp_inline float3x3::float3x3(const quaternion& q)
 	{
