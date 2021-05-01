@@ -471,17 +471,17 @@ namespace hlslpp
 
 	struct hlslpp_nodiscard float8
 	{
-		hlslpp_inline float8() {}
-		hlslpp_inline float8(const float8& f) : vec(f.vec) {}
-		explicit hlslpp_inline float8(n256 vec) : vec(vec) {}
-		explicit hlslpp_inline float8(const float1& f) : vec(_hlslpp256_set128_ps(_hlslpp_perm_xxxx_ps(f.vec), _hlslpp_perm_xxxx_ps(f.vec))) {}
+		hlslpp_inline float8() hlslpp_noexcept {}
+		hlslpp_inline float8(const float8& f) hlslpp_noexcept : vec(f.vec) {}
+		explicit hlslpp_inline float8(n256 vec) hlslpp_noexcept : vec(vec) {}
+		explicit hlslpp_inline float8(const float1& f) hlslpp_noexcept : vec(_hlslpp256_set128_ps(_hlslpp_perm_xxxx_ps(f.vec), _hlslpp_perm_xxxx_ps(f.vec))) {}
 
 		template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
 		hlslpp_inline float8(T1 f1, T2 f2, T3 f3, T4 f4, T5 f5, T6 f6, T7 f7, T8 f8, hlslpp_enable_if_number_8(T1, T2, T3, T4, T5, T6, T7, T8)) 
-			: vec(_hlslpp256_set_ps(float(f1), float(f2), float(f3), float(f4), float(f5), float(f6), float(f7), float(f8))) {}
+			hlslpp_noexcept : vec(_hlslpp256_set_ps(float(f1), float(f2), float(f3), float(f4), float(f5), float(f6), float(f7), float(f8))) {}
 
 		template<typename T>
-		float8(T f, hlslpp_enable_if_number(T)) : vec(_hlslpp256_set1_ps(float(f))) {}
+		float8(T f, hlslpp_enable_if_number(T)) hlslpp_noexcept : vec(_hlslpp256_set1_ps(float(f))) {}
 
 		/*hlslpp_inline float8(const float1& f1, const float1& f2, const float1& f3, const float1& f4) { vec = _hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(f1.vec, f3.vec), _hlslpp_shuf_xxxx_ps(f2.vec, f4.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 
@@ -495,6 +495,9 @@ namespace hlslpp
 		hlslpp_inline float8(const float3& f1, const float1& f2) { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
 
 		hlslpp_inline float8(const int4& i);*/
+
+		hlslpp_inline float8(float8&& f) hlslpp_noexcept : vec(f.vec) {}
+		hlslpp_inline float8& operator = (float8&& f) hlslpp_noexcept { vec = f.vec; return *this; }
 
 		union
 		{
