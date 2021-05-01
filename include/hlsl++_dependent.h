@@ -16,12 +16,12 @@ namespace hlslpp
 
 	float4::float4(const uint4& i) hlslpp_noexcept : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
 
-	hlslpp_inline float3x3::float3x3(const quaternion& q)
+	hlslpp_inline float3x3::float3x3(const quaternion& q) hlslpp_noexcept
 	{
 		_hlslpp_quat_to_3x3_ps(q.vec, vec0, vec1, vec2);
 	}
 
-	hlslpp_inline float4x4::float4x4(const quaternion& q)
+	hlslpp_inline float4x4::float4x4(const quaternion& q) hlslpp_noexcept
 	{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
