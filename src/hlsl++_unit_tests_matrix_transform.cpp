@@ -1,4 +1,3 @@
-#define HLSLPP_FEATURE_TRANSFORM
 #include "hlsl++.h"
 
 #include "hlsl++_unit_tests.h"

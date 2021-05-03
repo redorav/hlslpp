@@ -34,7 +34,11 @@ static hlslpp_inline float3x3 scale(float su)
 
 static hlslpp_inline float3x3 rotation_z(float angle_rad)
 {
-	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+#if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
+	angle_rad = -angle_rad;
+#endif
+
+	const float s = sinf(angle_rad);
 	const float c = cosf(angle_rad);
 
 	return float3x3(
@@ -46,7 +50,11 @@ static hlslpp_inline float3x3 rotation_z(float angle_rad)
 
 static hlslpp_inline float3x3 rotation_y(float angle_rad)
 {
-	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+#if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
+	angle_rad = -angle_rad;
+#endif
+
+	const float s = sinf(angle_rad);
 	const float c = cosf(angle_rad);
 
 	return float3x3(
@@ -58,7 +66,11 @@ static hlslpp_inline float3x3 rotation_y(float angle_rad)
 
 static hlslpp_inline float3x3 rotation_x(float angle_rad)
 {
-	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+#if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
+	angle_rad = -angle_rad;
+#endif
+
+	const float s = sinf(angle_rad);
 	const float c = cosf(angle_rad);
 
 	return float3x3(
@@ -70,7 +82,11 @@ static hlslpp_inline float3x3 rotation_x(float angle_rad)
 
 static hlslpp_inline float3x3 rotation_axis(const float3& axis, float angle_rad)
 {
-	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+#if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
+	angle_rad = -angle_rad;
+#endif
+
+	const float s = sinf(angle_rad);
 	const float c = cosf(angle_rad);
 
 	const float3 as = axis * s;

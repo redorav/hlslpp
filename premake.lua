@@ -240,6 +240,8 @@ project (UnitTestProject)
 		srcDir.."/*.h",
 	}
 	
+	defines { "HLSLPP_FEATURE_TRANSFORM" }
+	
 	filter { "platforms:"..PlatformAndroidARM.." or ".. PlatformAndroidARM64}
 		kind("sharedlib")
 		files

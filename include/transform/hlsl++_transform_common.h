@@ -1,8 +1,36 @@
-//---------------------------------------------------//
-// Common Transformation Macro-Definitions and Types //
-//---------------------------------------------------//
-
-#ifdef HLSLPP_FEATURE_TRANSFORM
+//------------------------------------------------------------------
+// Common Transformation Macro-Definitions and Types
+//
+// HLSL++ assumes a left-handed coordinate system for view and 
+// projection matrices by default. In a left-handed system 
+// positive rotations around an angle naturally move clockwise,
+// e.g. rotating the z axis 90 degrees around y returns the x axis.
+// 
+// However in a right-handed coordinate system, applying the
+// same transform computes the same numerical result but ends
+// up being a different physical rotation as it becomes anti-
+// clockwise. For that reason we must flip the sign of the angle.
+// The same thing happens with quaternions.
+// 
+// HLSL++ also assumes a logical row major layout, i.e. vectors are
+// laid out like a row, e.g.
+// 
+// [ x y z w ] * | m00 m01 m02 m03 |
+//               | m10 m11 m12 m13 |
+//               | m20 m21 m22 m23 |
+//               | m30 m31 m32 m33 |
+// 
+// This property also changes which direction an angle goes in as
+// a rotation matrix's inverse is the same as its transpose.
+// 
+// These defaults can be changed by defining HLSLPP_LOGICAL_LAYOUT
+// and/or HLSLPP_COORDINATES
+// 
+// Because of this behavior (where angles get flipped) creating your
+// own matrices and quaternions only works if you know that the raw
+// values being put in correspond to the convention you're using,
+// because those do not get reversed
+//------------------------------------------------------------------
 
 #include <cmath>
 
@@ -36,17 +64,22 @@
 	#define HLSLPP_COORDINATES HLSLPP_COORDINATES_LEFT_HANDED
 #endif
 
-#if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
-	#define HLSLPP_MATRIX_LAYOUT_SIGN 1.0f
-#else
-	#define HLSLPP_MATRIX_LAYOUT_SIGN -1.0f
-#endif
-
 #if HLSLPP_COORDINATES == HLSLPP_COORDINATES_LEFT_HANDED
 	#define HLSLPP_COORDINATES_SIGN 1.0f
 #else
 	#define HLSLPP_COORDINATES_SIGN -1.0f
 #endif
+
+// If row major and right handed, or column major and left handed, we need to swap sign
+// In other cases either we don't need to do anything or two swaps cancel each other
+#if ((HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR) && (HLSLPP_COORDINATES == HLSLPP_COORDINATES_RIGHT_HANDED)) || \
+	((HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_COL_MAJOR) && (HLSLPP_COORDINATES == HLSLPP_COORDINATES_LEFT_HANDED))
+
+	#define HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN
+
+#endif
+
+#ifdef HLSLPP_FEATURE_TRANSFORM
 
 namespace hlslpp
 {

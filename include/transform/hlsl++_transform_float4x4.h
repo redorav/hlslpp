@@ -6,7 +6,11 @@
 
 static hlslpp_inline float4x4 look_at(const float3& position, const float3& target, const float3& up)
 {
-	const float3 look   = normalize(target - position) * HLSLPP_COORDINATES_SIGN;
+#if HLSLPP_COORDINATES == HLSLPP_COORDINATES_LEFT_HANDED
+	const float3 look   = normalize(target - position);
+#else
+	const float3 look   = normalize(position - target); // Negate without the extra cost
+#endif
 	const float3 right  = normalize(cross(up, look));
 	const float3 up_dir = cross(look, right);
 
@@ -157,7 +161,11 @@ static hlslpp_inline float4x4 scale(float su)
 
 static hlslpp_inline float4x4 rotation_z(float angle_rad)
 {
-	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+#if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
+	angle_rad = -angle_rad;
+#endif
+
+	const float s = sinf(angle_rad);
 	const float c = cosf(angle_rad);
 
 	return float4x4(
@@ -170,7 +178,11 @@ static hlslpp_inline float4x4 rotation_z(float angle_rad)
 
 static hlslpp_inline float4x4 rotation_y(float angle_rad)
 {
-	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+#if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
+	angle_rad = -angle_rad;
+#endif
+
+	const float s = sinf(angle_rad);
 	const float c = cosf(angle_rad);
 
 	return float4x4(
@@ -183,7 +195,11 @@ static hlslpp_inline float4x4 rotation_y(float angle_rad)
 
 static hlslpp_inline float4x4 rotation_x(float angle_rad)
 {
-	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+#if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
+	angle_rad = -angle_rad;
+#endif
+
+	const float s = sinf(angle_rad);
 	const float c = cosf(angle_rad);
 
 	return float4x4(
@@ -196,7 +212,11 @@ static hlslpp_inline float4x4 rotation_x(float angle_rad)
 
 static hlslpp_inline float4x4 rotation_axis(const float3& axis, float angle_rad)
 {
-	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+#if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
+	angle_rad = -angle_rad;
+#endif
+
+	const float s = sinf(angle_rad);
 	const float c = cosf(angle_rad);
 
 	const float3 as = axis * s;

@@ -49,6 +49,11 @@ namespace hlslpp
 #endif
 	}
 
+	hlslpp_inline quaternion::quaternion(const float3x3& m) hlslpp_noexcept
+	{
+		_hlslpp_3x3_to_quat_ps(m.vec0, m.vec1, m.vec2, vec);
+	}
+
 	//----------------
 	// asfloat, asuint, asint
 	//----------------

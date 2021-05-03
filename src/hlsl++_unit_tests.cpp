@@ -486,11 +486,9 @@ void RunExperiments()
 	float4 nan = float4(1.0f) / float4(0.0f);
 	float4 subtractNan = float4(1.0f) - nan;
 
-	quaternion q1 = euler(float3(90.0f * deg2rad, 45.0f * deg2rad, 0.0f * deg2rad));
-	quaternion q2 = euler(float3(180.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
-	quaternion fax = axisangle(float3(0.0f, 1.0f, 0.0f), 1.57f);
-
-	quaternion q3 = q1 * q2;
+	quaternion q1 = quaternion::rotation_euler_zxy(float3(90.0f * deg2rad, 45.0f * deg2rad, 0.0f * deg2rad));
+	quaternion q2 = quaternion::rotation_euler_zxy(float3(180.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
+	quaternion fax = quaternion::rotation_axis(float3(0.0f, 1.0f, 0.0f), 1.57f);
 
 	quaternion slerp1 = slerp(q1, q2, 0.0f);
 	quaternion slerp2 = slerp(q1, q2, 1.0f);
@@ -502,12 +500,10 @@ void RunExperiments()
 	float3x3 matSlerp(testq);
 
 	// Quaternion vector tests
-	quaternion qEuler = euler(float3(0.0f * deg2rad, 90 * deg2rad, 0 * deg2rad));
+	quaternion qEuler = quaternion::rotation_euler_zxy(float3(0.0f * deg2rad, 90 * deg2rad, 0 * deg2rad));
 	quaternion qPure = quaternion(1.0f, 0.0f, 0.0f, 0.0f);
 
 	float3 vector = float3(1, 0, 0);
-
-	quaternion normalMultiply = qEuler * qPure;
 
 	float3 rotatedVector = mul(qEuler, vector);
 
@@ -516,9 +512,6 @@ void RunExperiments()
 	float2 a;
 
 	float3 lorry(1, 2, 3);
-
-	//float3 perry;
-	//perry.x *= 0.5f;
 
 	float3 intTexCoord = float3(1, 2, 3);
 
@@ -555,6 +548,8 @@ void RunUnitTestsVectorInt();
 
 void RunUnitTestsVectorDouble();
 
+void RunUnitTestsQuaternion();
+
 void RunUnitTests()
 {
 	printf("2) Unit tests started\n");
@@ -572,6 +567,8 @@ void RunUnitTests()
 
 	RunUnitTestsMatrixFloat();
 
+	RunUnitTestsQuaternion();
+
 	RunUnitTestsMatrixTransform();
 
 	// Quaternion tests
@@ -579,10 +576,10 @@ void RunUnitTests()
 	quaternion q1 = quaternion::identity();
 	quaternion q2 = quaternion(0.0f, 1.0f, 1.0f, 1.0f);
 
-	quaternion qeuler1 = euler(float3(90.0f * deg2rad, 45.0f * deg2rad, 0.0f * deg2rad));
-	quaternion qeuler2 = euler(float3(180.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
+	quaternion qeuler1 = quaternion::rotation_euler_zxy(float3(90.0f * deg2rad, 45.0f * deg2rad, 0.0f * deg2rad));
+	quaternion qeuler2 = quaternion::rotation_euler_zxy(float3(180.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
 
-	quaternion qaxisangle = axisangle(float3(0.0f, 1.0f, 0.0f), 1.57f);
+	quaternion qaxisangle = quaternion::rotation_axis(float3(0.0f, 1.0f, 0.0f), 1.57f);
 
 	quaternion slerp1 = slerp(q1, q2, 0.0f);
 	quaternion slerp2 = slerp(q1, q2, 1.0f);
@@ -670,14 +667,15 @@ void RunPerformanceTests()
 
 	const long int iter = 100000000;
 
-	//printf("float4: %f, %f, %f, %f = %f\n", (float)v4.x, (float)v4.y, (float)v4.z, (float)v4.w, time);
-	//printf("Vector4: %f, %f, %f, %f\n\n", (float)v4f.x, (float)v4f.y, (float)v4f.z, (float)v4f.w);
-	//printf("float4x4: %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f\n\n", 
-	//	(float)mat_foo_4x4._m00, (float)mat_foo_4x4._m01, (float)mat_foo_4x4._m02, (float)mat_foo_4x4._m03,
-	//	(float)mat_foo_4x4._m10, (float)mat_foo_4x4._m11, (float)mat_foo_4x4._m12, (float)mat_foo_4x4._m13,
-	//	(float)mat_foo_4x4._m20, (float)mat_foo_4x4._m21, (float)mat_foo_4x4._m22, (float)mat_foo_4x4._m23,
-	//	(float)mat_foo_4x4._m30, (float)mat_foo_4x4._m31, (float)mat_foo_4x4._m32, (float)mat_foo_4x4._m33);
-	//printf("Result: %f, Cycles/Loop: %f, Elapsed: %f\n", (float)dp.x, cyclesPerOperation, time);
+	float3x3 m = float3x3::rotation_y(3.1415f / 2.0f);
+
+	benchmark<float4x4, iter>("m4x4 add", [&]() -> float4x4 { m4x4_1 = m4x4_1 + m4x4_2; return m4x4_1; });
+	benchmark<quaternion, iter>("rotation_axis", [&]() -> quaternion { q1 = quaternion::rotation_axis(q1.xyz, t1_1); return q1; });
+	benchmark<quaternion, iter>("rotation_axis_cosangle", [&]() -> quaternion { q1 = quaternion::rotation_axis_cosangle(q1.xyz, f1, 1.0f); return q1; });
+	benchmark<quaternion, iter>("rotation_euler_zxy", [&]() -> quaternion { q1 = quaternion::rotation_euler_zxy(q1.xyz); return q1; });
+	benchmark<quaternion, iter>("conjugate", [&]() -> quaternion { q1 = conjugate(q1); return q1; });
+	benchmark<quaternion, iter>("slerp", [&]() -> quaternion { q1 = slerp(q1, q2, t1_1); return q1; });
+	benchmark<quaternion, iter>("quaternion(m3x3)", [&]() -> quaternion { q1 = quaternion(m); return q1; });
 
 	benchmark<float4x4, iter>("m4x4 add", [&]() -> float4x4 { m4x4_1 = m4x4_1 + m4x4_2; return m4x4_1; });
 	benchmark<float4x4, iter>("m4x4 div", [&]() -> float4x4 { m4x4_1 = m4x4_1 / m4x4_2; return m4x4_1; });
@@ -692,7 +690,7 @@ void RunPerformanceTests()
 
 	//benchmark<float4x4, iter>("f4x1 x f1x4", [&]() -> float4x4 { m4x4_1 = transpose(m4x4_1); return m4x4_1; });
 	benchmark<float1, iter>("m4x4 trace", [&]() -> float1 { v1_1 = trace(m4x4_1) + v1_1; return v1_1; });
-	benchmark<float4x4, iter>("m4x4 quaternion", [&]() -> float4x4 { m4x4_1 = float4x4(q1); return m4x4_1; });
+	benchmark<float4x4, iter>("m4x4(quaternion)", [&]() -> float4x4 { m4x4_1 = float4x4(q1); return m4x4_1; });
 
 	benchmark<float4, iter>("wzyx", [&]() -> float4 { v4_1 = v4_1.wzyx; return v4_1; });
 
@@ -751,11 +749,7 @@ void RunPerformanceTests()
 	benchmark<float4, iter>("mul", [&]() -> float4 { v4_1 = v4_1 * v4_2; return v4_1; });
 	benchmark<float4, iter>("div", [&]() -> float4 { v4_1 = v4_1 / v4_2; return v4_1; });
 	
-	benchmark<quaternion, iter>("axisangle", [&]() -> quaternion { q1 = axisangle(q1.xyz, t1_1); return q1; });
-	benchmark<quaternion, iter>("euler", [&]() -> quaternion { q1 = euler(q1.xyz); return q1; });
-	benchmark<quaternion, iter>("conjugate", [&]() -> quaternion { q1 = conjugate(q1); return q1; });
-	benchmark<quaternion, iter>("slerp", [&]() -> quaternion { q1 = slerp(q1, q2, t1_1); return q1; });
-
+	
 	printf("Performance tests completed\n\n");
 }
 

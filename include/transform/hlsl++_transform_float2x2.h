@@ -28,7 +28,11 @@ static hlslpp_inline float2x2 scale(float su)
 
 static hlslpp_inline float2x2 rotation(float angle_rad)
 {
-	const float s = sinf(angle_rad) * HLSLPP_MATRIX_LAYOUT_SIGN * HLSLPP_COORDINATES_SIGN;
+#if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
+	angle_rad = -angle_rad;
+#endif
+
+	const float s = sinf(angle_rad);
 	const float c = cosf(angle_rad);
 
 	return float2x2(
