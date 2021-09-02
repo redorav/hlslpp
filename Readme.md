@@ -3,7 +3,7 @@
 
 # HLSL++
 
-Small header-only math library for C++ with the same syntax as the hlsl shading language. It supports any SSE (x86/x64 devices like PC, Mac, PS4, Xbox One) and NEON (ARM devices like Android, iOS, Switch) platforms. It features swizzling and all the operators and functions from the [hlsl documentation](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reference). The library is aimed mainly at game developers as it's meant to ease the C++ to shader bridge by providing common syntax, but can be used for any application requiring fast, portable math. It also adds some functionality that hlsl doesn't natively provide, such as convenient matrix functions, quaternions and extended vectors such as float8 (8-component float) that take advantage of wide SSE registers.
+Small header-only math library for C++ with the same syntax as the hlsl shading language. It supports any SSE (x86/x64 devices like PC, Mac, PS4/5, Xbox One/Series) and NEON (ARM devices like Android, iOS, Switch) platforms. It features swizzling and all the operators and functions from the [hlsl documentation](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reference). The library is aimed mainly at game developers as it's meant to ease the C++ to shader bridge by providing common syntax, but can be used for any application requiring fast, portable math. It also adds some functionality that hlsl doesn't natively provide, such as convenient matrix functions, quaternions and extended vectors such as float8 (8-component float) that take advantage of wide SSE registers.
 
 ## Example
 
