@@ -300,12 +300,14 @@ hlslpp_inline void _hlslpp_store4_ps(float* p, n128 x)
 	_mm_storeu_ps(p, x);
 }
 
-// Store first 3, store second 3, store last 3, stomping one of the previous values but making sure it's the same
+// Store first 3, store second 3, store last 2 and then the last one
+// We need to do it this way to avoid stomping memory outside the provided buffer
 hlslpp_inline void _hlslpp_store3x3_ps(float* p, n128 x0, n128 x1, n128 x2)
 {
 	_mm_storeu_ps(p, x0);
 	_mm_storeu_ps(p + 3, x1);
-	_mm_storeu_ps(p + 5, _hlslpp_blend_ps(_hlslpp_perm_ps(x1, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2)), _hlslpp_perm_ps(x2, HLSLPP_SHUFFLE_MASK(3, 0, 1, 2)), HLSLPP_BLEND_MASK(1, 0, 0, 0)));
+	_mm_storel_epi64((__m128i*)(p + 6), *(n128i*)&x2);
+	_mm_store_ss(p + 8, _hlslpp_perm_ps(x2, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2)));
 }
 
 hlslpp_inline void _hlslpp_store4x4_ps(float* p, const n128& x0, const n128& x1, const n128& x2, const n128& x3)

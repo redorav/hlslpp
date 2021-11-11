@@ -478,6 +478,8 @@ namespace hlslpp
 		};
 	};
 
+	hlslpp_inline float4x4 transpose(const float4x4& m);
+
 	struct hlslpp_nodiscard float4x4
 	{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
@@ -503,6 +505,27 @@ namespace hlslpp
 
 		hlslpp_inline float4x4(float4x4&& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1) {}
 		hlslpp_inline float4x4& operator = (float4x4&& m) hlslpp_noexcept { vec0 = m.vec0; vec1 = m.vec1; return *this; }
+
+		// Conversion from lower-dimension matrices
+		explicit hlslpp_inline float4x4(const float3x3& m, const float4& v) hlslpp_noexcept
+		{
+			vec0 = _hlslpp256_and_ps(
+				_hlslpp256_set128_ps(m.vec0, m.vec1), 
+				_hlslpp256_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f, fffMask.f, fffMask.f, fffMask.f, 0.0f));
+
+			vec1 = _hlslpp256_and_ps(
+				_hlslpp256_set128_ps(m.vec2, v.vec), 
+				_hlslpp256_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f, fffMask.f, fffMask.f, fffMask.f, fffMask.f));
+		}
+
+		explicit hlslpp_inline float4x4(const float3x4& m, const float4& v) hlslpp_noexcept
+			: vec0(_hlslpp256_set128_ps(m.vec0, m.vec1)), vec1(_hlslpp256_set128_ps(m.vec2, v.vec)) {}
+
+		explicit hlslpp_inline float4x4(const float4x3& m) hlslpp_noexcept 
+			: vec0(_hlslpp256_set128_ps(m.vec0, m.vec1)), vec1(_hlslpp256_set128_ps(m.vec2, _hlslpp_setzero_ps()))
+		{
+			*this = transpose(*this); // Copy over as rows, then transpose
+		}
 
 		union
 		{
@@ -588,6 +611,26 @@ namespace hlslpp
 		hlslpp_inline float4x4(float4x4&& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1), vec2(m.vec2), vec3(m.vec3) {}
 		hlslpp_inline float4x4& operator = (float4x4&& m) hlslpp_noexcept { vec0 = m.vec0; vec1 = m.vec1; vec2 = m.vec2; vec3 = m.vec3; return *this; }
 
+		hlslpp_inline void build(const float3x3& m, const float4& v) hlslpp_noexcept
+		{
+			vec0 = _hlslpp_and_ps(m.vec0, _hlslpp_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f));
+			vec1 = _hlslpp_and_ps(m.vec1, _hlslpp_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f));
+			vec2 = _hlslpp_and_ps(m.vec2, _hlslpp_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f));
+			vec3 = v.vec;
+		}
+
+		hlslpp_inline void build(const float3x4& m, const float4& v) hlslpp_noexcept
+		{
+			vec0 = m.vec0; vec1 = m.vec1; vec2 = m.vec2; vec3 = v.vec;
+		}
+
+		hlslpp_inline void build(const float4x3& m, const float4& v) hlslpp_noexcept
+		{
+			vec0 = m.vec0; vec1 = m.vec1; vec2 = m.vec2;
+			*this = transpose(*this); // Copy over as rows, then transpose
+			vec3 = v.vec;
+		}
+
 		union
 		{
 			n128 vec0;
@@ -628,6 +671,15 @@ namespace hlslpp
 			#include "swizzle/hlsl++_matrix_row3_4.h"
 		};
 #endif
+
+		// Conversion from lower-dimension matrices
+		explicit hlslpp_inline float4x4(const float3x3& m, const float4& v) hlslpp_noexcept { build(m, v); }
+		explicit hlslpp_inline float4x4(const float3x3& m) hlslpp_noexcept { build(m, float4(_hlslpp_setzero_ps())); }
+		
+		explicit hlslpp_inline float4x4(const float3x4& m, const float4& v) hlslpp_noexcept { build(m, v); }
+		explicit hlslpp_inline float4x4(const float3x4& m) hlslpp_noexcept { build(m, float4(_hlslpp_setzero_ps())); }
+
+		explicit hlslpp_inline float4x4(const float4x3& m) hlslpp_noexcept { build(m, float4(_hlslpp_setzero_ps())); }
 
 		explicit hlslpp_inline float4x4(const quaternion& q) hlslpp_noexcept;
 
@@ -2478,9 +2530,60 @@ namespace hlslpp
 #endif
 	}
 
+	hlslpp_inline void store(const float1x1& m, float* f) { _hlslpp_store1_ps(f, m.vec); }
+	hlslpp_inline void store(const float1x2& m, float* f) { _hlslpp_store2_ps(f, m.vec); }
+	hlslpp_inline void store(const float2x1& m, float* f) { _hlslpp_store2_ps(f, m.vec); }
+	hlslpp_inline void store(const float1x3& m, float* f) { _hlslpp_store3_ps(f, m.vec); }
+	hlslpp_inline void store(const float3x1& m, float* f) { _hlslpp_store3_ps(f, m.vec); }
+	hlslpp_inline void store(const float1x4& m, float* f) { _hlslpp_store4_ps(f, m.vec); }
+	hlslpp_inline void store(const float4x1& m, float* f) { _hlslpp_store4_ps(f, m.vec); }
+
+	hlslpp_inline void store(const float2x2& m, float* f) { _hlslpp_store4_ps(f, m.vec); }
+	hlslpp_inline void store(const float2x3& m, float* f)
+	{
+		_hlslpp_store3_ps(f + 0, m.vec0);
+		_hlslpp_store3_ps(f + 3, m.vec1);
+	}
+	hlslpp_inline void store(const float2x4& m, float* f)
+	{
+		_hlslpp_store4_ps(f + 0, m.vec0);
+		_hlslpp_store4_ps(f + 4, m.vec1);
+	}
+
+	hlslpp_inline void store(const float3x2& m, float* f)
+	{
+		_hlslpp_store4_ps(f, _hlslpp_unpacklo_ps(m.vec0, m.vec1));
+		_hlslpp_store2_ps(f, _hlslpp_unpackhi_ps(m.vec0, m.vec1));
+	}
+
+	hlslpp_inline void store(const float4x2& m, float* f)
+	{
+		_hlslpp_store4_ps(f, _hlslpp_unpacklo_ps(m.vec0, m.vec1));
+		_hlslpp_store4_ps(f, _hlslpp_unpackhi_ps(m.vec0, m.vec1));
+	}
+
 	hlslpp_inline void store(const float3x3& m, float* f)
 	{
 		_hlslpp_store3x3_ps(f, m.vec0, m.vec1, m.vec2);
+	}
+
+	hlslpp_inline void store(const float3x4& m, float* f)
+	{
+		_hlslpp_store4_ps(f, m.vec0);
+		_hlslpp_store4_ps(f + 4, m.vec1);
+		_hlslpp_store4_ps(f + 8, m.vec2);
+	}
+
+	hlslpp_inline void store(const float4x3& m, float* f)
+	{
+		float tmp[12];
+		_hlslpp_store4_ps(tmp + 0, m.vec0);
+		_hlslpp_store4_ps(tmp + 4, m.vec1);
+		_hlslpp_store4_ps(tmp + 8, m.vec2);
+		f[0] = tmp[0]; f[ 1] = tmp[4]; f[ 2] = tmp[8];
+		f[3] = tmp[1]; f[ 4] = tmp[5]; f[ 5] = tmp[9];
+		f[6] = tmp[2]; f[ 7] = tmp[6]; f[ 8] = tmp[10];
+		f[9] = tmp[3]; f[10] = tmp[7]; f[11] = tmp[11];
 	}
 
 	hlslpp_inline void store(const float4x4& m, float* f)

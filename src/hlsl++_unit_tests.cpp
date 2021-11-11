@@ -656,11 +656,6 @@ void RunPerformanceTests()
 	quaternion q1 = quaternion(f1, f2, f3, f4);
 	quaternion q2 = quaternion(f4, f1, f3, f2);
 
-	float4x4 mat_foo_4x4 = float4x4(10, 20, 1, 1,
-		78, 5, 2, 8,
-		14, 5, 5, 6,
-		8, 4, 5, 6);
-
 	float1 t1_1 = f1;
 	float1 t1_2 = f2;
 	float1 t1_3 = f3;
@@ -748,7 +743,6 @@ void RunPerformanceTests()
 	benchmark<float4, iter>("sub", [&]() -> float4 { v4_1 = v4_1 - v4_2; return v4_1; });
 	benchmark<float4, iter>("mul", [&]() -> float4 { v4_1 = v4_1 * v4_2; return v4_1; });
 	benchmark<float4, iter>("div", [&]() -> float4 { v4_1 = v4_1 / v4_2; return v4_1; });
-	
 	
 	printf("Performance tests completed\n\n");
 }
