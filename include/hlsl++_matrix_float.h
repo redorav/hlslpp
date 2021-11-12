@@ -506,24 +506,27 @@ namespace hlslpp
 		hlslpp_inline float4x4(float4x4&& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1) {}
 		hlslpp_inline float4x4& operator = (float4x4&& m) hlslpp_noexcept { vec0 = m.vec0; vec1 = m.vec1; return *this; }
 
-		// Conversion from lower-dimension matrices
-		explicit hlslpp_inline float4x4(const float3x3& m, const float4& v) hlslpp_noexcept
+		hlslpp_inline void build(const float3x3& m, const float4& v) hlslpp_noexcept
 		{
 			vec0 = _hlslpp256_and_ps(
-				_hlslpp256_set128_ps(m.vec0, m.vec1), 
+				_hlslpp256_set128_ps(m.vec0, m.vec1),
 				_hlslpp256_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f, fffMask.f, fffMask.f, fffMask.f, 0.0f));
 
 			vec1 = _hlslpp256_and_ps(
-				_hlslpp256_set128_ps(m.vec2, v.vec), 
+				_hlslpp256_set128_ps(m.vec2, v.vec),
 				_hlslpp256_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f, fffMask.f, fffMask.f, fffMask.f, fffMask.f));
 		}
 
-		explicit hlslpp_inline float4x4(const float3x4& m, const float4& v) hlslpp_noexcept
-			: vec0(_hlslpp256_set128_ps(m.vec0, m.vec1)), vec1(_hlslpp256_set128_ps(m.vec2, v.vec)) {}
-
-		explicit hlslpp_inline float4x4(const float4x3& m) hlslpp_noexcept 
-			: vec0(_hlslpp256_set128_ps(m.vec0, m.vec1)), vec1(_hlslpp256_set128_ps(m.vec2, _hlslpp_setzero_ps()))
+		hlslpp_inline void build(const float3x4& m, const float4& v) hlslpp_noexcept
 		{
+			vec0 = _hlslpp256_set128_ps(m.vec0, m.vec1);
+			vec1 = _hlslpp256_set128_ps(m.vec2, v.vec);
+		}
+
+		hlslpp_inline void build(const float4x3& m, const float4& v) hlslpp_noexcept
+		{
+			vec0 = _hlslpp256_set128_ps(m.vec0, m.vec1);
+			vec1 = _hlslpp256_set128_ps(m.vec2, v.vec);
 			*this = transpose(*this); // Copy over as rows, then transpose
 		}
 
