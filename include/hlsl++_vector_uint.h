@@ -330,6 +330,8 @@ namespace hlslpp
 
 		template<int X> hlslpp_inline uint1(const uswizzle1<X>& s) hlslpp_noexcept : vec(s.template swizzle<X, 0>()) {}
 
+		hlslpp_inline uint1(const float1& f) hlslpp_noexcept;
+
 		hlslpp_inline uint1& operator = (const uint1& i) hlslpp_noexcept { vec = i.vec; return *this; }
 
 		hlslpp_inline uint1(uint1&& i) hlslpp_noexcept : vec(i.vec) {}
@@ -362,6 +364,8 @@ namespace hlslpp
 		hlslpp_inline uint2(const uint1& i1, const uint1& i2) hlslpp_noexcept { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
 		
 		template<int X, int Y> hlslpp_inline uint2(const uswizzle2<X, Y>& s) hlslpp_noexcept : vec(s.template swizzle<X, Y, 0, 1>()) {}
+
+		hlslpp_inline uint2(const float2& f) hlslpp_noexcept;
 
 		hlslpp_inline uint2& operator = (const uint2& i) hlslpp_noexcept { vec = i.vec; return *this; }
 
@@ -400,6 +404,8 @@ namespace hlslpp
 
 		template<int X, int Y, int Z>
 		hlslpp_inline uint3(const uswizzle3<X, Y, Z>& s) hlslpp_noexcept : vec(s.template swizzle<X, Y, Z, 0, 1, 2>()) {}
+
+		hlslpp_inline uint3(const float3& f) hlslpp_noexcept;
 
 		hlslpp_inline uint3& operator = (const uint3& i) hlslpp_noexcept { vec = i.vec; return *this; }
 
@@ -448,6 +454,8 @@ namespace hlslpp
 
 		template<int X, int Y, int Z, int W>
 		hlslpp_inline uint4(const uswizzle4<X, Y, Z, W>& s) hlslpp_noexcept : vec(s.template swizzle<X, Y, Z, W, 0, 1, 2, 3>()) {}
+
+		hlslpp_inline uint4(const float4& f) hlslpp_noexcept;
 
 		hlslpp_inline uint4& operator = (const uint4& i) hlslpp_noexcept { vec = i.vec; return *this; }
 

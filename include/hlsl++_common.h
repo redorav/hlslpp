@@ -218,7 +218,9 @@ namespace hlslpp
 	#define _hlslpp_shuf_ywwy_ps(x, y)	_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskY, MaskW, MaskW, MaskY))
 	#define _hlslpp_shuf_yxwz_ps(x, y)	_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskY, MaskX, MaskW, MaskZ))
 	#define _hlslpp_shuf_zzxx_ps(x, y)	_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskZ, MaskZ, MaskX, MaskX))
+	#define _hlslpp_shuf_zzzz_ps(x, y)	_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskZ, MaskZ, MaskZ, MaskZ))
 	#define _hlslpp_shuf_zwxx_ps(x, y)	_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskZ, MaskW, MaskX, MaskX))
+	#define _hlslpp_shuf_wwww_ps(x, y)	_hlslpp_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(MaskW, MaskW, MaskW, MaskW))
 	
 	#define _hlslpp256_perm_xxxx_xxxx_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX)
 	#define _hlslpp256_perm_xxxx_yyyy_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskX, MaskX, MaskX, MaskY, MaskY, MaskY, MaskY)

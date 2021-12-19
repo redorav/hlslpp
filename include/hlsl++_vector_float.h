@@ -26,10 +26,6 @@ namespace hlslpp
 
 	hlslpp_inline n128 _hlslpp_dot3_ps(n128 x, n128 y)
 	{
-		// SSE4 slower
-		// n128 result = _hlslpp_dp_ps(v1.xyzw, v2.xyzw, 0x7f);
-
-		// SSE2
 		n128 multi  = _hlslpp_mul_ps(x, y);         // Multiply components together
 		n128 shuf1  = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
 		n128 add1   = _hlslpp_add_ps(shuf1, multi); // Contains x+y, _, _, _
@@ -917,9 +913,9 @@ namespace hlslpp
 		template<int X, int Y, int Z, int W>
 		hlslpp_inline float4(const swizzle4<X, Y, Z, W>& s) hlslpp_noexcept : vec(s.template swizzle<X, Y, Z, W, 0, 1, 2, 3>()) {}
 
-		hlslpp_inline float4(const int4& i) hlslpp_noexcept ;
+		hlslpp_inline float4(const int4& i) hlslpp_noexcept;
 
-		hlslpp_inline float4(const uint4& i) hlslpp_noexcept ;
+		hlslpp_inline float4(const uint4& i) hlslpp_noexcept;
 
 		hlslpp_inline float4& operator = (const float4& f) hlslpp_noexcept { vec = f.vec; return *this; }
 
