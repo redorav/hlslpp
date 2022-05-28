@@ -1,3 +1,7 @@
+#pragma once
+
+#include "hlsl++_common.h"
+
 //---------------//
 // Float8 Vector //
 //---------------//

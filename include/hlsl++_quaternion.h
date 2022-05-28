@@ -1,3 +1,8 @@
+#pragma once
+
+#include "hlsl++_common.h"
+#include "hlsl++_vector_float.h"
+
 //-----------
 // Quaternion
 //-----------

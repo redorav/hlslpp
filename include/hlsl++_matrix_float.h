@@ -1,3 +1,10 @@
+#pragma once
+
+#include "hlsl++_common.h"
+#include "hlsl++_vector_float.h"
+
+#include "transform/hlsl++_transform_common.h"
+
 //--------------//
 // Float Matrix //
 //--------------//

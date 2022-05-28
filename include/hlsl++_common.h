@@ -1,3 +1,7 @@
+#pragma once
+
+#include "hlsl++_config.h"
+
 namespace hlslpp
 {
 	//----------------

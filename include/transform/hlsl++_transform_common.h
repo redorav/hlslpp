@@ -1,3 +1,5 @@
+#pragma once
+
 //------------------------------------------------------------------
 // Common Transformation Macro-Definitions and Types
 //
@@ -44,7 +46,7 @@
 
 // Default HLSL++ logical layout is Row-Major
 // It can be changed by overriding this definition value externally
-#ifndef HLSLPP_LOGICAL_LAYOUT
+#if !defined(HLSLPP_LOGICAL_LAYOUT)
 	#define HLSLPP_LOGICAL_LAYOUT HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
 #endif
 
@@ -60,7 +62,7 @@
 
 // Default HLSL++ coordinate system is Left-Handed
 // It can be changed by overriding this definition value externally
-#ifndef HLSLPP_COORDINATES
+#if !defined(HLSLPP_COORDINATES)
 	#define HLSLPP_COORDINATES HLSLPP_COORDINATES_LEFT_HANDED
 #endif
 
@@ -79,7 +81,7 @@
 
 #endif
 
-#ifdef HLSLPP_FEATURE_TRANSFORM
+#if defined(HLSLPP_FEATURE_TRANSFORM)
 
 namespace hlslpp
 {

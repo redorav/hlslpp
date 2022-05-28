@@ -1,3 +1,5 @@
+#pragma once
+
 #if defined(HLSLPP_FEATURE_TRANSFORM)
 
 //------------------------------------------//
