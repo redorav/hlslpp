@@ -42,6 +42,7 @@ namespace hlslpp
 	struct float2;
 	struct float3;
 	struct float4;
+	struct float8;
 
 	struct float2x2;
 	struct float3x3;

@@ -1,4 +1,5 @@
 #include "hlsl++_vector_float.h"
+#include "hlsl++_vector_float8.h"
 
 #include "hlsl++_unit_tests.h"
 
