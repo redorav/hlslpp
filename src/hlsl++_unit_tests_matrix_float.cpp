@@ -1,4 +1,5 @@
 #include "hlsl++_matrix_float.h"
+#include "hlsl++_dependent.h"
 
 #include "hlsl++_unit_tests.h"
 
@@ -778,4 +779,8 @@ void RunUnitTestsMatrixFloat()
 		mat_store_4x4[4], mat_store_4x4[5], mat_store_4x4[6], mat_store_4x4[7],
 		mat_store_4x4[8], mat_store_4x4[9], mat_store_4x4[10], mat_store_4x4[11],
 		mat_store_4x4[12], mat_store_4x4[13], mat_store_4x4[14], mat_store_4x4[15]);
+
+	float1x1 downcast_1x1 = (float1x1)mat_foo_2x2;
+	float2x2 downcast_2x2 = (float2x2)mat_foo_3x3;
+	float3x3 downcast_3x3 = (float3x3)mat_foo_4x4;
 }

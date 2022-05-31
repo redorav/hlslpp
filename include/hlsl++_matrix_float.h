@@ -23,6 +23,8 @@ namespace hlslpp
 
 		explicit hlslpp_inline float1x1(const float1& f) hlslpp_noexcept : vec(f.vec) {}
 
+		explicit hlslpp_inline float1x1(const float2x2& m) hlslpp_noexcept;
+
 		hlslpp_inline float1x1& operator = (const float1x1& m) hlslpp_noexcept { vec = m.vec; return *this; }
 
 		hlslpp_inline float1x1(float1x1&& m) hlslpp_noexcept : vec(m.vec) {}
@@ -206,6 +208,8 @@ namespace hlslpp
 
 		explicit hlslpp_inline float2x2(float f) hlslpp_noexcept : vec(_hlslpp_set1_ps(f)) {}
 
+		explicit hlslpp_inline float2x2(const float3x3& m) hlslpp_noexcept;
+
 		hlslpp_inline float2x2(const float2& f1, const float2& f2) hlslpp_noexcept : vec(_hlslpp_shuf_xyxy_ps(f1.vec, f2.vec)) {}
 
 		hlslpp_inline float2x2& operator = (const float2x2& m) hlslpp_noexcept { vec = m.vec; return *this; }
@@ -366,6 +370,7 @@ namespace hlslpp
 			hlslpp_noexcept : vec0(_hlslpp_set_ps(f00, f01, f02, 0.0f)), vec1(_hlslpp_set_ps(f10, f11, f12, 0.0f)), vec2(_hlslpp_set_ps(f20, f21, f22, 0.0f)) {}
 
 		explicit hlslpp_inline float3x3(const quaternion& q) hlslpp_noexcept;
+		explicit hlslpp_inline float3x3(const float4x4& m) hlslpp_noexcept;
 
 		explicit hlslpp_inline float3x3(float f) hlslpp_noexcept : vec0(_hlslpp_set1_ps(f)), vec1(_hlslpp_set1_ps(f)), vec2(_hlslpp_set1_ps(f)) {}
 

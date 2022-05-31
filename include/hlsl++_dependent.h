@@ -28,9 +28,32 @@ namespace hlslpp
 	uint3::uint3(const float3& f) hlslpp_noexcept : vec(_hlslpp_cvtps_epu32(f.vec)) {}
 	uint4::uint4(const float4& f) hlslpp_noexcept : vec(_hlslpp_cvtps_epu32(f.vec)) {}
 
+	hlslpp_inline float1x1::float1x1(const float2x2& m) hlslpp_noexcept
+	{
+		vec = m.vec;
+	}
+
+	hlslpp_inline float2x2::float2x2(const float3x3& m) hlslpp_noexcept
+	{
+		vec = _hlslpp_shuf_xyxy_ps(m.vec0, m.vec1);
+	}
+
 	hlslpp_inline float3x3::float3x3(const quaternion& q) hlslpp_noexcept
 	{
 		_hlslpp_quat_to_3x3_ps(q.vec, vec0, vec1, vec2);
+	}
+
+	hlslpp_inline float3x3::float3x3(const float4x4& m) hlslpp_noexcept
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		vec0 = _hlslpp256_high_ps(m.vec0);
+		vec1 = _hlslpp256_low_ps(m.vec0);
+		vec2 = _hlslpp256_high_ps(m.vec1);
+#else
+		vec0 = m.vec0;
+		vec1 = m.vec1;
+		vec2 = m.vec2;
+#endif
 	}
 
 	hlslpp_inline float4x4::float4x4(const quaternion& q) hlslpp_noexcept
