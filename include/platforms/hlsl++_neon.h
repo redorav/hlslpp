@@ -705,6 +705,55 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 #define _hlslpp_all3_epu32(x)					_hlslpp_all3_epi32(x)
 #define _hlslpp_all4_epu32(x)					_hlslpp_all4_epi32(x)
 
+//----------------------------
+// Unsigned Integer Store/Load
+//----------------------------
+
+
+hlslpp_inline void _hlslpp_store1_epu32(uint32_t* p, n128u x)
+{
+	vst1q_lane_u32(p, x, 0);
+}
+
+hlslpp_inline void _hlslpp_store2_epu32(uint32_t* p, n128u x)
+{
+	vst1_u32(p, vget_low_u32(x));
+}
+
+hlslpp_inline void _hlslpp_store3_epu32(uint32_t* p, n128u x)
+{
+	vst1_u32(p, vget_low_u32(x));
+	vst1q_lane_u32(p + 2, x, 2);
+}
+
+hlslpp_inline void _hlslpp_store4_epu32(uint32_t* p, n128u x)
+{
+	vst1q_u32(p, x);
+}
+
+hlslpp_inline void _hlslpp_load1_epu32(uint32_t* p, n128u& x)
+{
+	x = vld1q_lane_u32(p, x, 0);
+}
+
+hlslpp_inline void _hlslpp_load2_epu32(uint32_t* p, n128u& x)
+{
+	int32x2_t t = vld1_u32(p); // Load the two values
+	x = vcombine_u32(t, t); // Replicate in the other two to create a float32x4_t
+}
+
+hlslpp_inline void _hlslpp_load3_epu32(uint32_t* p, n128u& x)
+{
+	int32x2_t t = vld1_u32(p); // Load the two values
+	x = vcombine_u32(t, t); // Replicate in the other two to create a float32x4_t
+	x = vld1q_lane_u32(p + 2, x, 2);
+}
+
+hlslpp_inline void _hlslpp_load4_epu32(uint32_t* p, n128u& x)
+{
+	x = vld1q_u32(p);
+}
+
 #if defined(HLSLPP_DOUBLE)
 
 //-------
@@ -778,7 +827,7 @@ hlslpp_inline float64x2_t vrsqrtq_f64(float64x2_t x)
 #define _hlslpp_add_pd(x, y)					vaddq_f64((x), (y))
 #define _hlslpp_sub_pd(x, y)					vsubq_f64((x), (y))
 #define _hlslpp_mul_pd(x, y)					vmulq_f64((x), (y))
-#define _hlslpp_div_pd(x, y)					vdivq_f64(x, y)
+#define _hlslpp_div_pd(x, y)					vdivq_f64((x), (y))
 
 #define _hlslpp_rcp_pd(x)						vrcpq_f64(x)
 

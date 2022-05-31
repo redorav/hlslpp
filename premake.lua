@@ -36,7 +36,7 @@ AndroidProject = "hlsl++_android"
 isMacBuild = _ACTION == "xcode4"
 isLinuxBuild = _ACTION == "gmake2"
 isWindowsBuild = not isMacBuild and not isLinuxBuild
-supportsARMBuild = _ACTION == "vs2017" or _ACTION == "vs2019"
+supportsARMBuild = _ACTION == "vs2017" or _ACTION == "vs2019" or _ACTION == "vs2022"
 
 -- Directories
 srcDir = "src"

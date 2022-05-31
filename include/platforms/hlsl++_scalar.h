@@ -680,10 +680,10 @@ namespace hlslpp
 	hlslpp_inline void _hlslpp_store3_epi32(int32_t* p, const vector_int4& v) { p[0] = v.x; p[1] = v.y; p[2] = v.z; }
 	hlslpp_inline void _hlslpp_store4_epi32(int32_t* p, const vector_int4& v) { p[0] = v.x; p[1] = v.y; p[2] = v.z; p[3] = v.w; }
 
-	hlslpp_inline void _hlslpp_load1_epi32(int32_t* p, n128i& v) { v.x = p[0]; }
-	hlslpp_inline void _hlslpp_load2_epi32(int32_t* p, n128i& v) { v.x = p[0]; v.y = p[1]; }
-	hlslpp_inline void _hlslpp_load3_epi32(int32_t* p, n128i& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; }
-	hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; v.w = p[3]; }
+	hlslpp_inline void _hlslpp_load1_epi32(int32_t* p, vector_int4& v) { v.x = p[0]; }
+	hlslpp_inline void _hlslpp_load2_epi32(int32_t* p, vector_int4& v) { v.x = p[0]; v.y = p[1]; }
+	hlslpp_inline void _hlslpp_load3_epi32(int32_t* p, vector_int4& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; }
+	hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, vector_int4& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; v.w = p[3]; }
 
 	//-----------------
 	// Unsigned Integer
@@ -889,5 +889,17 @@ namespace hlslpp
 	hlslpp_inline bool _hlslpp_all3_epu32(const vector_uint4& v) { return v.x != 0 && v.y != 0 && v.z != 0; }
 	hlslpp_inline bool _hlslpp_all4_epu32(const vector_uint4& v) { return v.x != 0 && v.y != 0 && v.z != 0 && v.w != 0; }
 
-	
+	//----------------------------
+	// Unsigned Integer Store/Load
+	//----------------------------
+
+	hlslpp_inline void _hlslpp_store1_epu32(uint32_t* p, const vector_uint4& v) { p[0] = v.x; }
+	hlslpp_inline void _hlslpp_store2_epu32(uint32_t* p, const vector_uint4& v) { p[0] = v.x; p[1] = v.y; }
+	hlslpp_inline void _hlslpp_store3_epu32(uint32_t* p, const vector_uint4& v) { p[0] = v.x; p[1] = v.y; p[2] = v.z; }
+	hlslpp_inline void _hlslpp_store4_epu32(uint32_t* p, const vector_uint4& v) { p[0] = v.x; p[1] = v.y; p[2] = v.z; p[3] = v.w; }
+
+	hlslpp_inline void _hlslpp_load1_epu32(uint32_t* p, vector_uint4& v) { v.x = p[0]; }
+	hlslpp_inline void _hlslpp_load2_epu32(uint32_t* p, vector_uint4& v) { v.x = p[0]; v.y = p[1]; }
+	hlslpp_inline void _hlslpp_load3_epu32(uint32_t* p, vector_uint4& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; }
+	hlslpp_inline void _hlslpp_load4_epu32(uint32_t* p, vector_uint4& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; v.w = p[3]; }
 }

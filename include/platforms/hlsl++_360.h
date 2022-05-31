@@ -398,6 +398,19 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 #define _hlslpp_all3_epu32(x)					_hlslpp_all3_epi32(x)
 #define _hlslpp_all4_epu32(x)					_hlslpp_all4_epi32(x)
 
+//----------------------------
+// Unsigned Integer Store/Load
+//----------------------------
+
+hlslpp_inline void _hlslpp_store1_epu32(uint32_t* p, n128u x) { _hlslpp_store1_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_store2_epu32(uint32_t* p, n128u x) { _hlslpp_store2_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_store3_epu32(uint32_t* p, n128u x) { _hlslpp_store3_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_store4_epu32(uint32_t* p, n128u x) { _hlslpp_store4_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_load1_epu32(uint32_t* p, n128u& x) { _hlslpp_load1_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_load2_epu32(uint32_t* p, n128u& x) { _hlslpp_load2_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_load3_epu32(uint32_t* p, n128u& x) { _hlslpp_load3_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_load4_epu32(uint32_t* p, n128u& x) { _hlslpp_load4_epi32((int32_t*)p, x); }
+
 #if !defined(XM_CRMASK_CR6TRUE)
 #define XM_CRMASK_CR6TRUE  (1 << 7)
 #endif
