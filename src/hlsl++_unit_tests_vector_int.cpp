@@ -305,6 +305,56 @@ void RunUnitTestsVectorInt()
 	int1 vint3 = vint.r + vint2;
 	vint.r = vint2.x;
 
+    // Division
+    int1 ivdiv1 = ivfoo1 / ivbar1;  eq(ivdiv1, (int32_t)ivfoo1.x / (int32_t)ivbar1.x);
+    int2 ivdiv2 = ivfoo2 / ivbar2;  eq(ivdiv2, (int32_t)ivfoo2.x / (int32_t)ivbar2.x, (int32_t)ivfoo2.y / (int32_t)ivbar2.y);
+    int3 ivdiv3 = ivfoo3 / ivbar3;  eq(ivdiv3, (int32_t)ivfoo3.x / (int32_t)ivbar3.x, (int32_t)ivfoo3.y / (int32_t)ivbar3.y, (int32_t)ivfoo3.z / (int32_t)ivbar3.z);
+    int4 ivdiv4 = ivfoo4 / ivbar4;  eq(ivdiv4, (int32_t)ivfoo4.x / (int32_t)ivbar4.x, (int32_t)ivfoo4.y / (int32_t)ivbar4.y, (int32_t)ivfoo4.z / (int32_t)ivbar4.z, (int32_t)ivfoo4.w / (int32_t)ivbar4.w);
+
+    int1 ivdiv_f_1 = ivfoo1 / 1;    eq(ivdiv_f_1, (int32_t)ivfoo1.x / 1);
+    int2 ivdiv_f_2 = ivfoo2 / 2;    eq(ivdiv_f_2, (int32_t)ivfoo2.x / 2, (int32_t)ivfoo2.y / 2);
+    int3 ivdiv_f_3 = ivfoo3 / 3;    eq(ivdiv_f_3, (int32_t)ivfoo3.x / 3, (int32_t)ivfoo3.y / 3, (int32_t)ivfoo3.z / 3);
+    int4 ivdiv_f_4 = ivfoo4 / 4;    eq(ivdiv_f_4, (int32_t)ivfoo4.x / 4, (int32_t)ivfoo4.y / 4, (int32_t)ivfoo4.z / 4, (int32_t)ivfoo4.w / 4);
+
+    ivdiv_f_1 /= 1;                 eq(ivdiv_f_1, (int32_t)ivfoo1.x / 1 / 1);
+    ivdiv_f_2 /= 2;                 eq(ivdiv_f_2, (int32_t)ivfoo2.x / 2 / 2, (int32_t)ivfoo2.y / 2 / 2);
+    ivdiv_f_3 /= 3;                 eq(ivdiv_f_3, (int32_t)ivfoo3.x / 3 / 3, (int32_t)ivfoo3.y / 3 / 3, (int32_t)ivfoo3.z / 3 / 3);
+    ivdiv_f_4 /= 4;                 eq(ivdiv_f_4, (int32_t)ivfoo4.x / 4 / 4, (int32_t)ivfoo4.y / 4 / 4, (int32_t)ivfoo4.z / 4 / 4, (int32_t)ivfoo4.w / 4 / 4);
+
+    ivdiv_f_2.y /= 2;               eq(ivdiv_f_2, (int32_t)ivfoo2.x / 2 / 2, (int32_t)ivfoo2.y / 2 / 2 / 2);
+    ivdiv_f_3.z /= 3;               eq(ivdiv_f_3, (int32_t)ivfoo3.x / 3 / 3, (int32_t)ivfoo3.y / 3 / 3, (int32_t)ivfoo3.z / 3 / 3 / 3);
+    ivdiv_f_4.w /= 4;               eq(ivdiv_f_4, (int32_t)ivfoo4.x / 4 / 4, (int32_t)ivfoo4.y / 4 / 4, (int32_t)ivfoo4.z / 4 / 4, (int32_t)ivfoo4.w / 4 / 4 / 4);
+    
+    // Equality
+    int1 iveq1 = ivfoo1 == ivfoo1;  eq(all(iveq1), true);
+    int2 iveq2 = ivfoo2 == ivfoo2;  eq(all(iveq2), true);
+    int3 iveq3 = ivfoo3 == ivfoo3;  eq(all(iveq3), true);
+    int4 iveq4 = ivfoo4 == ivfoo4;  eq(all(iveq4), true);
+    
+    // Less
+    int1 ivls1 = ivfoo1 < (ivfoo1 + int1(1));           eq(all(ivls1), true);
+    int2 ivls2 = ivfoo2 < (ivfoo2 + int2(1, 1));        eq(all(ivls2), true);
+    int3 ivls3 = ivfoo3 < (ivfoo3 + int3(1, 1, 1));     eq(all(ivls3), true);
+    int4 ivls4 = ivfoo4 < (ivfoo4 + int4(1, 1, 1, 1));  eq(all(ivls4), true);
+    
+    // Less or equal
+    int1 ivle1 = ivfoo1 <= (ivfoo1 + int1(0));           eq(all(ivle1), true);
+    int2 ivle2 = ivfoo2 <= (ivfoo2 + int2(1, 0));        eq(all(ivle2), true);
+    int3 ivle3 = ivfoo3 <= (ivfoo3 + int3(0, 1, 0));     eq(all(ivle3), true);
+    int4 ivle4 = ivfoo4 <= (ivfoo4 + int4(1, 0, 1, 0));  eq(all(ivle4), true);
+    
+    // Greater
+    int1 ivgr1 = ivfoo1 > (ivfoo1 - int1(1));           eq(all(ivgr1), true);
+    int2 ivgr2 = ivfoo2 > (ivfoo2 - int2(1, 1));        eq(all(ivgr2), true);
+    int3 ivgr3 = ivfoo3 > (ivfoo3 - int3(1, 1, 1));     eq(all(ivgr3), true);
+    int4 ivgr4 = ivfoo4 > (ivfoo4 - int4(1, 1, 1, 1));  eq(all(ivgr4), true);
+    
+    // Greater or equal
+    int1 ivge1 = ivfoo1 >= (ivfoo1 - int1(0));           eq(all(ivge1), true);
+    int2 ivge2 = ivfoo2 >= (ivfoo2 - int2(1, 0));        eq(all(ivge2), true);
+    int3 ivge3 = ivfoo3 >= (ivfoo3 - int3(0, 1, 0));     eq(all(ivge3), true);
+    int4 ivge4 = ivfoo4 >= (ivfoo4 - int4(1, 0, 1, 0));  eq(all(ivge4), true);
+
 	// Cast from float to int and viceversa
 
 	float1 fcastfooi_1(ivfoo1);
