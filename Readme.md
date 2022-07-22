@@ -43,10 +43,18 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 ## How to use
 
 ```cpp
+// The quickest way
 #include "hlsl++.h"
+
+// If you care about your compile times
+#include "hlsl++_vector_float.h"
+#include "hlsl++_matrix_float.h"
 ```
 
-Remember to also add an include path to "hlslpp/include". hlsl++.h pulls in other headers that live in the same folder. To force the scalar version of the library, define HLSLPP_SCALAR. Also, Windows has defines for min and max so if you're using this library and the <windows.h> header remember to #define NOMINMAX before including it.
+* Remember to add an include path to "hlslpp/include"
+* Windows has defines for min and max so if you're using this library and the <windows.h> header remember to #define NOMINMAX before including it.
+* To force the scalar version of the library, define HLSLPP_SCALAR globally
+* To enable the transforms feature, define HLSLPP_FEATURE_TRANSFORM globally
 
 ## Features
 
