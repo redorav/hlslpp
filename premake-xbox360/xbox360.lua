@@ -14,7 +14,7 @@ if not p.modules.xbox360 then
 	p.modules.xbox360 = {}
 
 	if _ACTION < "vs2015" then
-		configuration { "xbox360" }
+		filter { "configurations:xbox360" }
 			system "xbox360"
 	end
 

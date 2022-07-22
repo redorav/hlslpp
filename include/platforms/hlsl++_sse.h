@@ -564,7 +564,7 @@ hlslpp_inline n128i _hlslpp_mul_epi32(n128i x, n128i y)
 
 #endif
 
-#define _hlslpp_div_epi32(x, y)					_mm_cvtps_epi32(_mm_div_ps(_mm_cvtepi32_ps(x), _mm_cvtepi32_ps(y)))
+#define _hlslpp_div_epi32(x, y)					_mm_cvttps_epi32(_mm_div_ps(_mm_cvtepi32_ps(x), _mm_cvtepi32_ps(y)))
 
 #if defined(__SSSE3__)
 #define _hlslpp_neg_epi32(x)					_mm_sign_epi32((x), _mm_set1_epi32(-1))
@@ -670,7 +670,7 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 #define _hlslpp_castsi128_ps(x)					_mm_castsi128_ps((x))
 
 #define _hlslpp_cvtepi32_ps(x)					_mm_cvtepi32_ps((x))
-#define _hlslpp_cvtps_epi32(x)					_mm_cvtps_epi32((x))
+#define _hlslpp_cvttps_epi32(x)					_mm_cvttps_epi32((x))
 
 #define _hlslpp_slli_epi32(x, y)				_mm_slli_epi32((x), (y))
 #define _hlslpp_srli_epi32(x, y)				_mm_srli_epi32((x), (y))
@@ -931,7 +931,7 @@ hlslpp_inline n256i _hlslpp256_or_si128(n256i x, n256i y)
 #define _hlslpp256_castsi256_ps(x)						_mm256_castsi256_ps((x))
 
 #define _hlslpp256_cvtepi32_ps(x)						_mm256_cvtepi32_ps((x))
-#define _hlslpp256_cvtps_epi32(x)						_mm256_cvtps_epi32((x))
+#define _hlslpp256_cvtps_epi32(x)						_mm256_cvttps_epi32((x))
 
 #if defined(__AVX2__)
 
@@ -1019,7 +1019,7 @@ hlslpp_inline n128i _hlslpp_min_epu32(n128u x, n128u y)
 #define _hlslpp_clamp_epu32(x, minx, maxx)		_hlslpp_max_epu32(_hlslpp_min_epu32((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					_hlslpp_max_epu32(_hlslpp_min_epu32((x), i4_1), i4_0)
 
-#define _hlslpp_cvtps_epu32(x)					_hlslpp_cvtps_epi32((x))
+#define _hlslpp_cvttps_epu32(x)					_hlslpp_cvttps_epi32((x))
 #define _hlslpp_cvtepu32_ps(x)					_hlslpp_cvtepi32_ps((x))
 
 #define _hlslpp_slli_epu32(x, y)				_hlslpp_slli_epi32((x), (y))

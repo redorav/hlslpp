@@ -534,4 +534,16 @@ void RunUnitTestsVectorInt()
 	vfoo2 = float2(ivfoo2);						eq(vfoo2, (float)ivfoo2.x, (float)ivfoo2.y);
 	vfoo3 = float3(ivfoo3);						eq(vfoo3, (float)ivfoo3.x, (float)ivfoo3.y, (float)ivfoo3.z);
 	vfoo4 = float4(ivfoo4);						eq(vfoo4, (float)ivfoo4.x, (float)ivfoo4.y, (float)ivfoo4.z, (float)ivfoo4.w);
+
+	// Conversion
+
+	vfoo1 = float1(f1);							eq(vfoo1, f1);
+	vfoo2 = float2(f2, f3);						eq(vfoo2, f2, f3);
+	vfoo3 = float3(f4, f5, f6);					eq(vfoo3, f4, f5, f6);
+	vfoo4 = float4(f7, f8, f9, f10);			eq(vfoo4, f7, f8, f9, f10);
+
+	int1 icfoo1 = int1( vfoo1);                 eq(icfoo1, (int32_t)vfoo1.x);
+	int2 icfoo2 = int2(-vfoo2);                 eq(icfoo2, (int32_t)-vfoo2.x, (int32_t)-vfoo2.y);
+	int3 icfoo3 = int3( vfoo3);                 eq(icfoo3, (int32_t)vfoo3.x, (int32_t)vfoo3.y, (int32_t)vfoo3.z);
+	int4 icfoo4 = int4(-vfoo4);                 eq(icfoo4, (int32_t)-vfoo4.x, (int32_t)-vfoo4.y, (int32_t)-vfoo4.z, (int32_t)-vfoo4.w);
 }

@@ -281,7 +281,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_castps_si128(x)					((x))
 #define _hlslpp_castsi128_ps(x)					((x))
 
-#define _hlslpp_cvtps_epi32(x)					__vcfpsxws((x), 0)
+#define _hlslpp_cvttps_epi32(x)					__vcfpsxws((x), 0)
 #define _hlslpp_cvtepi32_ps(x)					__vcsxwfp((x), 0)
 
 #define _hlslpp_slli_epi32(x, y)				__vslw((x), __vset1(y))
@@ -379,7 +379,7 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 #define _hlslpp_clamp_epu32(x, minx, maxx)		__vmaxuw(__vminuw((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					__vmaxuw(__vminuw((x), i4_1), i4_0)
 
-#define _hlslpp_cvtps_epu32(x)					__vcfpuxws((x), 0)
+#define _hlslpp_cvttps_epu32(x)					__vcfpuxws((x), 0)
 #define _hlslpp_cvtepu32_ps(x)					__vcuxwfp((x), 0)
 
 #define _hlslpp_slli_epu32(x, y)				_hlslpp_slli_epi32((x), (y))

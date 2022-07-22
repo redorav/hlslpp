@@ -625,7 +625,7 @@ namespace hlslpp
 		return vector_float4((float)(v.x), (float)(v.y), (float)(v.z), (float)(v.w));
 	}
 
-	hlslpp_inline vector_int4 _hlslpp_cvtps_epi32(const vector_float4& v)
+	hlslpp_inline vector_int4 _hlslpp_cvttps_epi32(const vector_float4& v)
 	{
 		return vector_int4((int32_t)(v.x), (int32_t)(v.y), (int32_t)(v.z), (int32_t)(v.w));
 	}
@@ -844,7 +844,7 @@ namespace hlslpp
 		return vector_float4((float)(v.x), (float)(v.y), (float)(v.z), (float)(v.w));
 	}
 
-	hlslpp_inline vector_uint4 _hlslpp_cvtps_epu32(const vector_float4& v)
+	hlslpp_inline vector_uint4 _hlslpp_cvttps_epu32(const vector_float4& v)
 	{
 		return vector_uint4((uint32_t)(v.x), (uint32_t)(v.y), (uint32_t)(v.z), (uint32_t)(v.w));
 	}

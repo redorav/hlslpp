@@ -163,7 +163,7 @@ namespace hlslpp
 		x = _hlslpp_max_ps(x, exp2_minus127);
 
 		// ipart = int(x - 0.5)
-		ipart = _hlslpp_cvtps_epi32(_hlslpp_sub_ps(x, f4_05));
+		ipart = _hlslpp_cvttps_epi32(_hlslpp_sub_ps(x, f4_05));
 
 		// fpart = x - ipart
 		fpart = _hlslpp_sub_ps(x, _hlslpp_cvtepi32_ps(ipart));

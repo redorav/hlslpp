@@ -18,15 +18,15 @@ namespace hlslpp
 	float3::float3(const uint3& i) hlslpp_noexcept : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
 	float4::float4(const uint4& i) hlslpp_noexcept : vec(_hlslpp_cvtepu32_ps(i.vec)) {}
 
-	int1::int1(const float1& f) hlslpp_noexcept : vec(_hlslpp_cvtps_epi32(f.vec)) {}
-	int2::int2(const float2& f) hlslpp_noexcept : vec(_hlslpp_cvtps_epi32(f.vec)) {}
-	int3::int3(const float3& f) hlslpp_noexcept : vec(_hlslpp_cvtps_epi32(f.vec)) {}
-	int4::int4(const float4& f) hlslpp_noexcept : vec(_hlslpp_cvtps_epi32(f.vec)) {}
+	int1::int1(const float1& f) hlslpp_noexcept : vec(_hlslpp_cvttps_epi32(f.vec)) {}
+	int2::int2(const float2& f) hlslpp_noexcept : vec(_hlslpp_cvttps_epi32(f.vec)) {}
+	int3::int3(const float3& f) hlslpp_noexcept : vec(_hlslpp_cvttps_epi32(f.vec)) {}
+	int4::int4(const float4& f) hlslpp_noexcept : vec(_hlslpp_cvttps_epi32(f.vec)) {}
 
-	uint1::uint1(const float1& f) hlslpp_noexcept : vec(_hlslpp_cvtps_epu32(f.vec)) {}
-	uint2::uint2(const float2& f) hlslpp_noexcept : vec(_hlslpp_cvtps_epu32(f.vec)) {}
-	uint3::uint3(const float3& f) hlslpp_noexcept : vec(_hlslpp_cvtps_epu32(f.vec)) {}
-	uint4::uint4(const float4& f) hlslpp_noexcept : vec(_hlslpp_cvtps_epu32(f.vec)) {}
+	uint1::uint1(const float1& f) hlslpp_noexcept : vec(_hlslpp_cvttps_epu32(f.vec)) {}
+	uint2::uint2(const float2& f) hlslpp_noexcept : vec(_hlslpp_cvttps_epu32(f.vec)) {}
+	uint3::uint3(const float3& f) hlslpp_noexcept : vec(_hlslpp_cvttps_epu32(f.vec)) {}
+	uint4::uint4(const float4& f) hlslpp_noexcept : vec(_hlslpp_cvttps_epu32(f.vec)) {}
 
 	hlslpp_inline float1x1::float1x1(const float2x2& m) hlslpp_noexcept
 	{

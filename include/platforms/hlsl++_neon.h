@@ -281,14 +281,14 @@ hlslpp_inline float32x4_t vdivq_f32(float32x4_t x, float32x4_t y)
 
 #endif
 
-hlslpp_inline int32x4_t vdivq_s32(int32x4_t x, int32x4_t y)
+inline int32x4_t vdivq_s32(int32x4_t x, int32x4_t y)
 {
-	return (int32x4_t)vdivq_f32((float32x4_t)x, (float32x4_t)y);
+	return vcvtq_s32_f32(vdivq_f32(vcvtq_f32_s32(x), vcvtq_f32_s32(y)));
 }
 
 hlslpp_inline uint32x4_t vdivq_u32(uint32x4_t x, uint32x4_t y)
 {
-	return (uint32x4_t)vdivq_f32((float32x4_t)x, (float32x4_t)y);
+	return vcvtq_u32_f32(vdivq_f32(vcvtq_f32_u32(x), vcvtq_f32_u32(y)));
 }
 
 hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
@@ -531,7 +531,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_castps_si128(x)					vreinterpretq_s32_f32((x))
 #define _hlslpp_castsi128_ps(x)					vreinterpretq_f32_s32((x))
 
-#define _hlslpp_cvtps_epi32(x)					vcvtq_s32_f32((x))
+#define _hlslpp_cvttps_epi32(x)					vcvtq_s32_f32((x))
 #define _hlslpp_cvtepi32_ps(x)					vcvtq_f32_s32((x))
 
 #define _hlslpp_slli_epi32(x, y)				vshlq_n_s32((x), (y))
@@ -685,7 +685,7 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 #define _hlslpp_clamp_epu32(x, minx, maxx)		vmaxq_u32(vminq_u32((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					vmaxq_u32(vminq_u32((x), i4_1), i4_0)
 
-#define _hlslpp_cvtps_epu32(x)					vcvtq_u32_f32((x))
+#define _hlslpp_cvttps_epu32(x)					vcvtq_u32_f32((x))
 #define _hlslpp_cvtepu32_ps(x)					vcvtq_f32_u32((x))
 
 #define _hlslpp_slli_epu32(x, y)				vshlq_n_u32((x), (y))
