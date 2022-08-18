@@ -796,10 +796,16 @@ namespace hlslpp
 		hlslpp_inline float1(float1&& f) hlslpp_noexcept : vec(f.vec) {}
 		hlslpp_inline float1& operator = (float1&& f) hlslpp_noexcept { vec = f.vec; return *this; }
 
+		float& operator[](int N)
+		{
+			hlslpp_assert(N == 0);
+			return f32[N];
+		}
+
 		union
 		{
 			n128 vec;
-			float f32[4];
+			float f32[1];
 			#include "swizzle/hlsl++_vector_float_x.h"
 		};
 	};
@@ -832,10 +838,16 @@ namespace hlslpp
 		hlslpp_inline float2(float2&& f) hlslpp_noexcept : vec(f.vec) {}
 		hlslpp_inline float2& operator = (float2&& f) hlslpp_noexcept { vec = f.vec; return *this; }
 
+		float& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 1);
+			return f32[N];
+		}
+
 		union
 		{
 			n128 vec;
-			float f32[4];
+			float f32[2];
 			#include "swizzle/hlsl++_vector_float_x.h"
 			#include "swizzle/hlsl++_vector_float_y.h"
 		};
@@ -874,10 +886,16 @@ namespace hlslpp
 		hlslpp_inline float3(float3&& f) hlslpp_noexcept : vec(f.vec) {}
 		hlslpp_inline float3& operator = (float3&& f) hlslpp_noexcept { vec = f.vec; return *this; }
 
+		float& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 2);
+			return f32[N];
+		}
+
 		union
 		{
 			n128 vec;
-			float f32[4];
+			float f32[3];
 			#include "swizzle/hlsl++_vector_float_x.h"
 			#include "swizzle/hlsl++_vector_float_y.h"
 			#include "swizzle/hlsl++_vector_float_z.h"
@@ -925,6 +943,12 @@ namespace hlslpp
 
 		hlslpp_inline float4(float4&& f) hlslpp_noexcept : vec(f.vec) {}
 		hlslpp_inline float4& operator = (float4&& f) hlslpp_noexcept { vec = f.vec; return *this; }
+
+		float& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 3);
+			return f32[N];
+		}
 
 		union
 		{

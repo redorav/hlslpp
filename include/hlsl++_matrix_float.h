@@ -385,32 +385,46 @@ namespace hlslpp
 
 		#include "transform/hlsl++_transform_float3x3.h"
 
-		union
+		float3& operator[](int N)
 		{
-			n128 vec0;
-			float f32_0[4];
-			#include "swizzle/hlsl++_matrix_row0_1.h"
-			#include "swizzle/hlsl++_matrix_row0_2.h"
-			#include "swizzle/hlsl++_matrix_row0_3.h"
-		};
+			hlslpp_assert(N >= 0 && N <= 2);
+			return rows[N];
+		}
 
 		union
 		{
-			n128 vec1;
-			float f32_1[4];
-			#include "swizzle/hlsl++_matrix_row1_1.h"
-			#include "swizzle/hlsl++_matrix_row1_2.h"
-			#include "swizzle/hlsl++_matrix_row1_3.h"
+			struct
+			{
+				union
+				{
+					n128 vec0;
+					float f32_0[3];
+					#include "swizzle/hlsl++_matrix_row0_1.h"
+					#include "swizzle/hlsl++_matrix_row0_2.h"
+					#include "swizzle/hlsl++_matrix_row0_3.h"
+				};
+
+				union
+				{
+					n128 vec1;
+					float f32_1[3];
+					#include "swizzle/hlsl++_matrix_row1_1.h"
+					#include "swizzle/hlsl++_matrix_row1_2.h"
+					#include "swizzle/hlsl++_matrix_row1_3.h"
+				};
+
+				union
+				{
+					n128 vec2;
+					float f32_2[3];
+					#include "swizzle/hlsl++_matrix_row2_1.h"
+					#include "swizzle/hlsl++_matrix_row2_2.h"
+					#include "swizzle/hlsl++_matrix_row2_3.h"
+				};
+			};
 		};
 
-		union
-		{
-			n128 vec2;
-			float f32_2[4];
-			#include "swizzle/hlsl++_matrix_row2_1.h"
-			#include "swizzle/hlsl++_matrix_row2_2.h"
-			#include "swizzle/hlsl++_matrix_row2_3.h"
-		};
+		float3 rows[3];
 	};
 
 	struct hlslpp_nodiscard float3x4
@@ -542,60 +556,73 @@ namespace hlslpp
 			*this = transpose(*this); // Copy over as rows, then transpose
 		}
 
+		float4& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 3);
+			return rows[N];
+		}
+
 		union
 		{
-			n256 vec0;
-			float f32_256_0[8];
-
-			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 			struct
 			{
-				union 
+				union
 				{
-					#include "swizzle/hlsl++_matrix_row0_1.h"
-					#include "swizzle/hlsl++_matrix_row0_2.h"
-					#include "swizzle/hlsl++_matrix_row0_3.h"
-					#include "swizzle/hlsl++_matrix_row0_4.h"
-				};
+					n256 vec0;
+					float f32_256_0[8];
+
+					HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
+					struct
+					{
+						union 
+						{
+							#include "swizzle/hlsl++_matrix_row0_1.h"
+							#include "swizzle/hlsl++_matrix_row0_2.h"
+							#include "swizzle/hlsl++_matrix_row0_3.h"
+							#include "swizzle/hlsl++_matrix_row0_4.h"
+						};
 			
+						union
+						{
+							#include "swizzle/hlsl++_matrix_row1_1.h"
+							#include "swizzle/hlsl++_matrix_row1_2.h"
+							#include "swizzle/hlsl++_matrix_row1_3.h"
+							#include "swizzle/hlsl++_matrix_row1_4.h"
+						};
+					};
+					HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
+				};
+
 				union
 				{
-					#include "swizzle/hlsl++_matrix_row1_1.h"
-					#include "swizzle/hlsl++_matrix_row1_2.h"
-					#include "swizzle/hlsl++_matrix_row1_3.h"
-					#include "swizzle/hlsl++_matrix_row1_4.h"
+					n256 vec1;
+					float f32_256_1[8];
+
+					HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
+					struct
+					{
+						union
+						{
+							#include "swizzle/hlsl++_matrix_row2_1.h"
+							#include "swizzle/hlsl++_matrix_row2_2.h"
+							#include "swizzle/hlsl++_matrix_row2_3.h"
+							#include "swizzle/hlsl++_matrix_row2_4.h"
+						};
+
+						union
+						{
+							#include "swizzle/hlsl++_matrix_row3_1.h"
+							#include "swizzle/hlsl++_matrix_row3_2.h"
+							#include "swizzle/hlsl++_matrix_row3_3.h"
+							#include "swizzle/hlsl++_matrix_row3_4.h"
+						};
+					};
+					HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 				};
 			};
-			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
+
+			hlslpp_swizzle_start float4 rows[4]; hlslpp_swizzle_end
 		};
-
-		union
-		{
-			n256 vec1;
-			float f32_256_1[8];
-
-			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
-			struct
-			{
-				union
-				{
-					#include "swizzle/hlsl++_matrix_row2_1.h"
-					#include "swizzle/hlsl++_matrix_row2_2.h"
-					#include "swizzle/hlsl++_matrix_row2_3.h"
-					#include "swizzle/hlsl++_matrix_row2_4.h"
-				};
-
-				union
-				{
-					#include "swizzle/hlsl++_matrix_row3_1.h"
-					#include "swizzle/hlsl++_matrix_row3_2.h"
-					#include "swizzle/hlsl++_matrix_row3_3.h"
-					#include "swizzle/hlsl++_matrix_row3_4.h"
-				};
-			};
-			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
-		};
-
 #else
 
 		hlslpp_inline float4x4() hlslpp_noexcept 
@@ -646,44 +673,58 @@ namespace hlslpp
 			vec3 = v.vec;
 		}
 
-		union
+		float4& operator[](int N)
 		{
-			n128 vec0;
-			float f32_128_0[4];
-			#include "swizzle/hlsl++_matrix_row0_1.h"
-			#include "swizzle/hlsl++_matrix_row0_2.h"
-			#include "swizzle/hlsl++_matrix_row0_3.h"
-			#include "swizzle/hlsl++_matrix_row0_4.h"
-		};
+			hlslpp_assert(N >= 0 && N <= 3);
+			return rows[N];
+		}
 
 		union
 		{
-			n128 vec1;
-			float f32_128_1[4];
-			#include "swizzle/hlsl++_matrix_row1_1.h"
-			#include "swizzle/hlsl++_matrix_row1_2.h"
-			#include "swizzle/hlsl++_matrix_row1_3.h"
-			#include "swizzle/hlsl++_matrix_row1_4.h"
-		};
+			struct
+			{
+				union
+				{
+					n128 vec0;
+					float f32_128_0[4];
+					#include "swizzle/hlsl++_matrix_row0_1.h"
+					#include "swizzle/hlsl++_matrix_row0_2.h"
+					#include "swizzle/hlsl++_matrix_row0_3.h"
+					#include "swizzle/hlsl++_matrix_row0_4.h"
+				};
 
-		union
-		{
-			n128 vec2;
-			float f32_128_2[4];
-			#include "swizzle/hlsl++_matrix_row2_1.h"
-			#include "swizzle/hlsl++_matrix_row2_2.h"
-			#include "swizzle/hlsl++_matrix_row2_3.h"
-			#include "swizzle/hlsl++_matrix_row2_4.h"
-		};
+				union
+				{
+					n128 vec1;
+					float f32_128_1[4];
+					#include "swizzle/hlsl++_matrix_row1_1.h"
+					#include "swizzle/hlsl++_matrix_row1_2.h"
+					#include "swizzle/hlsl++_matrix_row1_3.h"
+					#include "swizzle/hlsl++_matrix_row1_4.h"
+				};
 
-		union
-		{
-			n128 vec3;
-			float f32_128_3[4];
-			#include "swizzle/hlsl++_matrix_row3_1.h"
-			#include "swizzle/hlsl++_matrix_row3_2.h"
-			#include "swizzle/hlsl++_matrix_row3_3.h"
-			#include "swizzle/hlsl++_matrix_row3_4.h"
+				union
+				{
+					n128 vec2;
+					float f32_128_2[4];
+					#include "swizzle/hlsl++_matrix_row2_1.h"
+					#include "swizzle/hlsl++_matrix_row2_2.h"
+					#include "swizzle/hlsl++_matrix_row2_3.h"
+					#include "swizzle/hlsl++_matrix_row2_4.h"
+				};
+
+				union
+				{
+					n128 vec3;
+					float f32_128_3[4];
+					#include "swizzle/hlsl++_matrix_row3_1.h"
+					#include "swizzle/hlsl++_matrix_row3_2.h"
+					#include "swizzle/hlsl++_matrix_row3_3.h"
+					#include "swizzle/hlsl++_matrix_row3_4.h"
+				};
+			};
+
+			hlslpp_swizzle_start float4 rows[4]; hlslpp_swizzle_end
 		};
 #endif
 

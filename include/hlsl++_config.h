@@ -40,6 +40,13 @@
 	#define hlslpp_swizzle_end
 #endif
 
+#if defined(HLSLPP_ASSERT)
+#include <assert.h>
+#define hlslpp_assert(x) assert(x)
+#else
+#define hlslpp_assert(x)
+#endif
+
 #define HLSLPP_SHUFFLE_MASK(X, Y, Z, W)		(((W) << 6) | ((Z) << 4) | ((Y) << 2) | (X))
 #define HLSLPP_SHUFFLE_MASK_PD(X, Y)		(((Y) << 1) | (X))
 

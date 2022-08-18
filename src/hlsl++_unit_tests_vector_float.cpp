@@ -155,6 +155,20 @@ void RunUnitTestsVectorFloat()
 	float4 vfoo_mix_4_f_k = float4(f1, f2, vbar1, vbaz3.z);					eq(vfoo_mix_4_f_k, f1, f2, vbar1, vbaz3.z);
 	float4 vfoo_mix_4_f_l = float4(f3, f4, vbar2.y, vbaz1);					eq(vfoo_mix_4_f_l, f3, f4, vbar2.y, vbaz1);
 
+	// Array operator
+
+	vfoo2[0] = f1;
+	vfoo2[1] = f2;
+
+	vfoo3[0] = f1;
+	vfoo3[1] = f2;
+	vfoo3[2] = f3;
+
+	vfoo4[0] = f1;
+	vfoo4[1] = f2;
+	vfoo4[2] = f3;
+	vfoo4[3] = f4;
+
 	// Assignment and swizzle
 
 	float1 vassign1 = vfoo1.x;												eq(vassign1.x, vfoo1.x);

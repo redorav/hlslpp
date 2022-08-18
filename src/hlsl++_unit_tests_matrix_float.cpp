@@ -57,6 +57,19 @@ void RunUnitTestsMatrixFloat()
 	float4x3 mat_bar_4x3 = float4x3(0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f);
 	float4x4 mat_bar_4x4 = float4x4(0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f, 1.3f, 1.4f, 1.5f, 1.6f);
 
+	// Array accessors
+
+	mat_foo_4x4[0] = float4( 1.0f,  2.0f,  3.0f,  4.0f);
+	mat_foo_4x4[1] = float4( 5.0f,  6.0f,  7.0f,  8.0f);
+	mat_foo_4x4[2] = float4( 9.0f, 10.0f, 11.0f, 12.0f);
+	mat_foo_4x4[3] = float4(13.0f, 14.0f, 15.0f, 16.0f);
+	float4 v_foo_3ex[4] = { mat_foo_4x4[0], mat_foo_4x4[1], mat_foo_4x4[2], mat_foo_4x4[3] };
+
+	mat_foo_3x3[0] = float3(1.0f, 2.0f, 3.0f);
+	mat_foo_3x3[1] = float3(4.0f, 5.0f, 6.0f);
+	mat_foo_3x3[2] = float3(7.0f, 8.0f, 9.0f);
+	float3 v_foo_4ex[3] = { mat_foo_3x3[0], mat_foo_3x3[1], mat_foo_3x3[2] };
+
 	// Addition
 
 	float1x1 mat_add_1x1 = mat_foo_1x1 + mat_bar_1x1;
@@ -269,7 +282,7 @@ void RunUnitTestsMatrixFloat()
 	float4x3 mat_div_f_4x3 = mat_foo_4x3 / 2.0f;
 	float4x4 mat_div_f_4x4 = mat_foo_4x4 / 2.0f;
 
-	f1 = f2 = f3 = f4 = f5 =f6=f7=f8=f9=f10=f11=f12=f13=f14=f15=f16= 0.0f;
+	f1 = f2 = f3 = f4 = f5 = f6 = f7 = f8 = f9 = f10 = f11 = f12 = f13 = f14 = f15 = f16 = 0.0f;
 
 	bool mat_all_f_2x2 = all(float2x2(f1, f2, f3, f4));
 	eq(mat_all_f_2x2, f1 != 0.0f && f2 != 0.0f && f3 != 0.0f && f4 != 0.0f);
@@ -765,6 +778,8 @@ void RunUnitTestsMatrixFloat()
 	// Storage
 
 	float mat_store_3x3[9];
+	float mat_store_3x4[12];
+	float mat_store_4x3[12];
 	float mat_store_4x4[16];
 
 	store(mat_foo_3x3, mat_store_3x3);
@@ -772,6 +787,9 @@ void RunUnitTestsMatrixFloat()
 		mat_store_3x3[0], mat_store_3x3[1], mat_store_3x3[2],
 		mat_store_3x3[3], mat_store_3x3[4], mat_store_3x3[5],
 		mat_store_3x3[6], mat_store_3x3[7], mat_store_3x3[8]);
+
+	store(mat_foo_3x4, mat_store_3x4);
+	store(mat_foo_4x3, mat_store_4x3);
 
 	store(mat_foo_4x4, mat_store_4x4);
 	eq(mat_foo_4x4,
