@@ -801,6 +801,7 @@ namespace hlslpp
 			hlslpp_assert(N == 0);
 			return f32[N];
 		}
+
 		const float& operator[](int N) const
 		{
 			hlslpp_assert(N == 0);
@@ -848,6 +849,7 @@ namespace hlslpp
 			hlslpp_assert(N >= 0 && N <= 1);
 			return f32[N];
 		}
+
 		const float& operator[](int N) const
 		{
 			hlslpp_assert(N >= 0 && N <= 1);
@@ -901,6 +903,7 @@ namespace hlslpp
 			hlslpp_assert(N >= 0 && N <= 2);
 			return f32[N];
 		}
+
 		const float& operator[](int N) const
 		{
 			hlslpp_assert(N >= 0 && N <= 2);
@@ -964,6 +967,7 @@ namespace hlslpp
 			hlslpp_assert(N >= 0 && N <= 3);
 			return f32[N];
 		}
+
 		const float& operator[](int N) const
 		{
 			hlslpp_assert(N >= 0 && N <= 3);
