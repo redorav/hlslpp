@@ -2507,33 +2507,6 @@ namespace hlslpp
 #endif
 	}
 
-	//	hlslpp_inline float4x4 inverse_affine(const float4x4& m)
-	//	{
-	//#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
-	//
-	//		n128 m_vec0 = _hlslpp256_low_ps(m.vec0);
-	//		n128 m_vec1 = _hlslpp256_high_ps(m.vec0);
-	//		n128 m_vec2 = _hlslpp256_low_ps(m.vec1);
-	//		n128 m_vec3 = _hlslpp256_high_ps(m.vec1);
-	//
-	//#else
-	//
-	//		n128 m_vec0 = m.vec0;
-	//		n128 m_vec1 = m.vec1;
-	//		n128 m_vec2 = m.vec2;
-	//		n128 m_vec3 = m.vec3;
-	//
-	//#endif
-	//
-	//		// Invert the 3x3 part of the matrix
-	//
-	////#if defined()
-	////		
-	////#else
-	////
-	////#endif
-	//	}
-
 	hlslpp_inline void store(const float1x1& m, float* f) { _hlslpp_store1_ps(f, m.vec); }
 	hlslpp_inline void store(const float1x2& m, float* f) { _hlslpp_store2_ps(f, m.vec); }
 	hlslpp_inline void store(const float2x1& m, float* f) { _hlslpp_store2_ps(f, m.vec); }
