@@ -97,7 +97,6 @@ build_script:
   - cmd: if %vsversion%==2019
          msbuild "C:\projects\hlslpp\workspace\vs2019\hlsl++.sln" /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   - sh: if [[ $platform = "Linux64 GGC" ]]; then 
-        gcc --version
         pushd workspace/gmake2;
         set -e;
         make all config=release_linux64_gcc;
