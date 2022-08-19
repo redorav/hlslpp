@@ -801,6 +801,11 @@ namespace hlslpp
 			hlslpp_assert(N == 0);
 			return f32[N];
 		}
+		const float& operator[](int N) const
+		{
+			hlslpp_assert(N == 0);
+			return f32[N];
+		}
 
 		union
 		{
@@ -839,6 +844,11 @@ namespace hlslpp
 		hlslpp_inline float2& operator = (float2&& f) hlslpp_noexcept { vec = f.vec; return *this; }
 
 		float& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 1);
+			return f32[N];
+		}
+		const float& operator[](int N) const
 		{
 			hlslpp_assert(N >= 0 && N <= 1);
 			return f32[N];
@@ -887,6 +897,11 @@ namespace hlslpp
 		hlslpp_inline float3& operator = (float3&& f) hlslpp_noexcept { vec = f.vec; return *this; }
 
 		float& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 2);
+			return f32[N];
+		}
+		const float& operator[](int N) const
 		{
 			hlslpp_assert(N >= 0 && N <= 2);
 			return f32[N];
@@ -945,6 +960,11 @@ namespace hlslpp
 		hlslpp_inline float4& operator = (float4&& f) hlslpp_noexcept { vec = f.vec; return *this; }
 
 		float& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 3);
+			return f32[N];
+		}
+		const float& operator[](int N) const
 		{
 			hlslpp_assert(N >= 0 && N <= 3);
 			return f32[N];

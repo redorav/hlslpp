@@ -390,6 +390,11 @@ namespace hlslpp
 			hlslpp_assert(N >= 0 && N <= 2);
 			return *(&row0 + N);
 		}
+		const float3& operator[](int N) const
+		{
+			hlslpp_assert(N >= 0 && N <= 2);
+			return *(&row0 + N);
+		}
 
 		union
 		{
@@ -554,6 +559,11 @@ namespace hlslpp
 			hlslpp_assert(N >= 0 && N <= 3);
 			return *(&row0 + N);
 		}
+		const float4& operator[](int N) const
+		{
+			hlslpp_assert(N >= 0 && N <= 3);
+			return *(&row0 + N);
+		}
 
 		union
 		{
@@ -663,6 +673,11 @@ namespace hlslpp
 		{
 			hlslpp_assert(N >= 0 && N <= 3);
 			return *(& row0 + N);
+		}
+		const float4& operator[](int N) const
+		{
+			hlslpp_assert(N >= 0 && N <= 3);
+			return *(&row0 + N);
 		}
 
 		union
