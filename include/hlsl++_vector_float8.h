@@ -503,6 +503,18 @@ namespace hlslpp
 		hlslpp_inline float8(float8&& f) hlslpp_noexcept : vec(f.vec) {}
 		hlslpp_inline float8& operator = (float8&& f) hlslpp_noexcept { vec = f.vec; return *this; }
 
+		float& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 7);
+			return f32[N];
+		}
+
+		const float& operator[](int N) const
+		{
+			hlslpp_assert(N >= 0 && N <= 7);
+			return f32[N];
+		}
+
 		union
 		{
 			n256 vec;

@@ -337,10 +337,22 @@ namespace hlslpp
 
 		hlslpp_inline operator int32_t() const { return i32[0]; }
 
+		int32_t& operator[](int N)
+		{
+			hlslpp_assert(N == 0);
+			return i32[N];
+		}
+
+		const int32_t& operator[](int N) const
+		{
+			hlslpp_assert(N == 0);
+			return i32[N];
+		}
+
 		union
 		{
 			n128i vec;
-			int32_t i32[4];
+			int32_t i32[1];
 			#include "swizzle/hlsl++_vector_int_x.h"
 		};
 	};
@@ -371,10 +383,22 @@ namespace hlslpp
 		hlslpp_inline int2(int2&& i) hlslpp_noexcept : vec(i.vec) {}
 		hlslpp_inline int2& operator = (int2&& i) hlslpp_noexcept { vec = i.vec; return *this; }
 
+		int32_t& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 1);
+			return i32[N];
+		}
+
+		const int32_t& operator[](int N) const
+		{
+			hlslpp_assert(N >= 0 && N <= 1);
+			return i32[N];
+		}
+
 		union
 		{
 			n128i vec;
-			int32_t i32[4];
+			int32_t i32[2];
 			#include "swizzle/hlsl++_vector_int_x.h"
 			#include "swizzle/hlsl++_vector_int_y.h"
 		};
@@ -410,10 +434,22 @@ namespace hlslpp
 		hlslpp_inline int3(int3&& i) hlslpp_noexcept : vec(i.vec) {}
 		hlslpp_inline int3& operator = (int3&& i) hlslpp_noexcept { vec = i.vec; return *this; }
 
+		int32_t& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 2);
+			return i32[N];
+		}
+
+		const int32_t& operator[](int N) const
+		{
+			hlslpp_assert(N >= 0 && N <= 2);
+			return i32[N];
+		}
+
 		union
 		{
 			n128i vec;
-			int32_t i32[4];
+			int32_t i32[3];
 			#include "swizzle/hlsl++_vector_int_x.h"
 			#include "swizzle/hlsl++_vector_int_y.h"
 			#include "swizzle/hlsl++_vector_int_z.h"
@@ -459,6 +495,18 @@ namespace hlslpp
 
 		hlslpp_inline int4(int4&& i) hlslpp_noexcept : vec(i.vec) {}
 		hlslpp_inline int4& operator = (int4&& i) hlslpp_noexcept { vec = i.vec; return *this; }
+
+		int32_t& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 3);
+			return i32[N];
+		}
+
+		const int32_t& operator[](int N) const
+		{
+			hlslpp_assert(N >= 0 && N <= 3);
+			return i32[N];
+		}
 
 		union
 		{

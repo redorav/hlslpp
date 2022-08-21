@@ -343,10 +343,22 @@ namespace hlslpp
 
 		hlslpp_inline operator uint32_t() const { return u32[0]; }
 
+		uint32_t& operator[](int N)
+		{
+			hlslpp_assert(N == 0);
+			return u32[N];
+		}
+
+		const uint32_t& operator[](int N) const
+		{
+			hlslpp_assert(N == 0);
+			return u32[N];
+		}
+
 		union
 		{
 			n128u vec;
-			uint32_t u32[4];
+			uint32_t u32[1];
 			#include "swizzle/hlsl++_vector_uint_x.h"
 		};
 	};
@@ -376,10 +388,22 @@ namespace hlslpp
 		hlslpp_inline uint2(uint2&& i) hlslpp_noexcept : vec(i.vec) {}
 		hlslpp_inline uint2& operator = (uint2&& i) hlslpp_noexcept { vec = i.vec; return *this; }
 
+		uint32_t& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 1);
+			return u32[N];
+		}
+
+		const uint32_t& operator[](int N) const
+		{
+			hlslpp_assert(N >= 0 && N <= 1);
+			return u32[N];
+		}
+
 		union
 		{
 			n128u vec;
-			uint32_t u32[4];
+			uint32_t u32[2];
 			#include "swizzle/hlsl++_vector_uint_x.h"
 			#include "swizzle/hlsl++_vector_uint_y.h"
 		};
@@ -416,10 +440,22 @@ namespace hlslpp
 		hlslpp_inline uint3(uint3&& i) hlslpp_noexcept : vec(i.vec) {}
 		hlslpp_inline uint3& operator = (uint3&& i) hlslpp_noexcept { vec = i.vec; return *this; }
 
+		uint32_t& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 2);
+			return u32[N];
+		}
+
+		const uint32_t& operator[](int N) const
+		{
+			hlslpp_assert(N >= 0 && N <= 2);
+			return u32[N];
+		}
+
 		union
 		{
 			n128u vec;
-			uint32_t u32[4];
+			uint32_t u32[3];
 			#include "swizzle/hlsl++_vector_uint_x.h"
 			#include "swizzle/hlsl++_vector_uint_y.h"
 			#include "swizzle/hlsl++_vector_uint_z.h"
@@ -465,6 +501,18 @@ namespace hlslpp
 
 		hlslpp_inline uint4(uint4&& i) hlslpp_noexcept : vec(i.vec) {}
 		hlslpp_inline uint4& operator = (uint4&& i) hlslpp_noexcept { vec = i.vec; return *this; }
+
+		uint32_t& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 3);
+			return u32[N];
+		}
+
+		const uint32_t& operator[](int N) const
+		{
+			hlslpp_assert(N >= 0 && N <= 3);
+			return u32[N];
+		}
 
 		union
 		{
