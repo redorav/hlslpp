@@ -300,6 +300,10 @@ void RunUnitTestsVectorFloat()
 	vsub_swiz_c_2.xy -= vfoo2;
 	vsub_swiz_c_2.gr -= vfoo2.rg;
 
+	float2 vsub_f1_f2 = vsub1 - vsub2;	eq(vsub_f1_f2, (float)vsub1 - (float)vsub2.x, (float)vsub1 - (float)vsub2.y);
+	float3 vsub_f1_f3 = vsub1 - vsub3;	eq(vsub_f1_f3, (float)vsub1 - (float)vsub3.x, (float)vsub1 - (float)vsub3.y, (float)vsub1 - (float)vsub3.z);
+	float4 vsub_f1_f4 = vsub1 - vsub4;	eq(vsub_f1_f4, (float)vsub1 - (float)vsub4.x, (float)vsub1 - (float)vsub4.y, (float)vsub1 - (float)vsub4.z, (float)vsub1 - (float)vsub4.w);
+
 	// Multiplication
 
 	float1 vmul1 = vfoo1 * vbar1;						eq(vmul1, (float)vfoo1.x * (float)vbar1.x);
@@ -377,6 +381,10 @@ void RunUnitTestsVectorFloat()
 	vdiv_swiz_b_2 /= vfoo2.xy;
 	vdiv_swiz_c_2.xy /= vfoo2;
 	vdiv_swiz_c_2.gr /= vfoo2.rg;
+
+	float2 vdiv_f1_f2 = vdiv1 / vdiv2;	eq(vdiv_f1_f2, (float)vdiv1 / (float)vdiv2.x, (float)vdiv1 / (float)vdiv2.y);
+	float3 vdiv_f1_f3 = vdiv1 / vdiv3;	eq(vdiv_f1_f3, (float)vdiv1 / (float)vdiv3.x, (float)vdiv1 / (float)vdiv3.y, (float)vdiv1 / (float)vdiv3.z);
+	float4 vdiv_f1_f4 = vdiv1 / vdiv4;	eq(vdiv_f1_f4, (float)vdiv1 / (float)vdiv4.x, (float)vdiv1 / (float)vdiv4.y, (float)vdiv1 / (float)vdiv4.z, (float)vdiv1 / (float)vdiv4.w);
 
 	// Comparison
 

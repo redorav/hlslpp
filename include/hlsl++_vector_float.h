@@ -996,9 +996,9 @@ namespace hlslpp
 	hlslpp_inline float3 operator + (const float3& f1, const float1& f2) { return float3(_hlslpp_add_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 	hlslpp_inline float4 operator + (const float4& f1, const float1& f2) { return float4(_hlslpp_add_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 
-	hlslpp_inline float2 operator + (const float1& f1, const float2& f2) { return float2(_hlslpp_add_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
-	hlslpp_inline float3 operator + (const float1& f1, const float3& f2) { return float3(_hlslpp_add_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
-	hlslpp_inline float4 operator + (const float1& f1, const float4& f2) { return float4(_hlslpp_add_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
+	hlslpp_inline float2 operator + (const float1& f1, const float2& f2) { return float2(_hlslpp_add_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
+	hlslpp_inline float3 operator + (const float1& f1, const float3& f2) { return float3(_hlslpp_add_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
+	hlslpp_inline float4 operator + (const float1& f1, const float4& f2) { return float4(_hlslpp_add_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
 
 	hlslpp_inline float1 operator - (const float1& f1, const float1& f2) { return float1(_hlslpp_sub_ps(f1.vec, f2.vec)); }
 	hlslpp_inline float2 operator - (const float2& f1, const float2& f2) { return float2(_hlslpp_sub_ps(f1.vec, f2.vec)); }
@@ -1009,9 +1009,9 @@ namespace hlslpp
 	hlslpp_inline float3 operator - (const float3& f1, const float1& f2) { return float3(_hlslpp_sub_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 	hlslpp_inline float4 operator - (const float4& f1, const float1& f2) { return float4(_hlslpp_sub_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 
-	hlslpp_inline float2 operator - (const float1& f1, const float2& f2) { return float2(_hlslpp_sub_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
-	hlslpp_inline float3 operator - (const float1& f1, const float3& f2) { return float3(_hlslpp_sub_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
-	hlslpp_inline float4 operator - (const float1& f1, const float4& f2) { return float4(_hlslpp_sub_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
+	hlslpp_inline float2 operator - (const float1& f1, const float2& f2) { return float2(_hlslpp_sub_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
+	hlslpp_inline float3 operator - (const float1& f1, const float3& f2) { return float3(_hlslpp_sub_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
+	hlslpp_inline float4 operator - (const float1& f1, const float4& f2) { return float4(_hlslpp_sub_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
 
 	hlslpp_inline float1 operator * (const float1& f1, const float1& f2) { return float1(_hlslpp_mul_ps(f1.vec, f2.vec)); }
 	hlslpp_inline float2 operator * (const float2& f1, const float2& f2) { return float2(_hlslpp_mul_ps(f1.vec, f2.vec)); }
@@ -1022,9 +1022,9 @@ namespace hlslpp
 	hlslpp_inline float3 operator * (const float3& f1, const float1& f2) { return float3(_hlslpp_mul_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 	hlslpp_inline float4 operator * (const float4& f1, const float1& f2) { return float4(_hlslpp_mul_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 
-	hlslpp_inline float2 operator * (const float1& f1, const float2& f2) { return float2(_hlslpp_mul_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
-	hlslpp_inline float3 operator * (const float1& f1, const float3& f2) { return float3(_hlslpp_mul_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
-	hlslpp_inline float4 operator * (const float1& f1, const float4& f2) { return float4(_hlslpp_mul_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
+	hlslpp_inline float2 operator * (const float1& f1, const float2& f2) { return float2(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
+	hlslpp_inline float3 operator * (const float1& f1, const float3& f2) { return float3(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
+	hlslpp_inline float4 operator * (const float1& f1, const float4& f2) { return float4(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
 
 	hlslpp_inline float1 operator / (const float1& f1, const float1& f2) { return float1(_hlslpp_div_ps(f1.vec, f2.vec)); }
 	hlslpp_inline float2 operator / (const float2& f1, const float2& f2) { return float2(_hlslpp_div_ps(f1.vec, f2.vec)); }
@@ -1035,9 +1035,9 @@ namespace hlslpp
 	hlslpp_inline float3 operator / (const float3& f1, const float1& f2) { return float3(_hlslpp_div_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 	hlslpp_inline float4 operator / (const float4& f1, const float1& f2) { return float4(_hlslpp_div_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec))); }
 
-	hlslpp_inline float2 operator / (const float1& f1, const float2& f2) { return float2(_hlslpp_div_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
-	hlslpp_inline float3 operator / (const float1& f1, const float3& f2) { return float3(_hlslpp_div_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
-	hlslpp_inline float4 operator / (const float1& f1, const float4& f2) { return float4(_hlslpp_div_ps(f2.vec, _hlslpp_perm_xxxx_ps(f1.vec))); }
+	hlslpp_inline float2 operator / (const float1& f1, const float2& f2) { return float2(_hlslpp_div_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
+	hlslpp_inline float3 operator / (const float1& f1, const float3& f2) { return float3(_hlslpp_div_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
+	hlslpp_inline float4 operator / (const float1& f1, const float4& f2) { return float4(_hlslpp_div_ps(_hlslpp_perm_xxxx_ps(f1.vec), f2.vec)); }
 
 	hlslpp_inline float1 operator - (const float1& f) { return float1(_hlslpp_neg_ps(f.vec)); }
 	hlslpp_inline float2 operator - (const float2& f) { return float2(_hlslpp_neg_ps(f.vec)); }
