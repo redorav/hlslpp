@@ -56,7 +56,6 @@ namespace hlslpp
 	const n128i i4_1           = _hlslpp_set1_epi32(1);
 
 	const n128i i4negativeMask = _hlslpp_set1_epi32(negMask.i);
-	const n128i i4absMask      = _hlslpp_set1_epi32(absMask.i);
 	const n128i i4fffMask      = _hlslpp_set1_epi32(fffMask.i);
 	const n128i i4negMask      = _hlslpp_set1_epi32(negMask.i);
 

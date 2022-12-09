@@ -1202,8 +1202,6 @@ namespace hlslpp
 	template<int X> hlslpp_inline float1 operator / (const swizzle1<X>& s, const float1& f) { return float1(s) / f; }
 	template<int X> hlslpp_inline float1 operator % (const swizzle1<X>& s, const float1& f) { return float1(s) % f; }
 
-	template<int X> hlslpp_inline float1 operator - (const swizzle1<X>& s) { return -float1(s); }
-
 	template<int X>	hlslpp_inline swizzle1<X>& operator += (swizzle1<X>& s, const float1& f) { s = float1(s) + f; return s; }
 	template<int X>	hlslpp_inline swizzle1<X>& operator -= (swizzle1<X>& s, const float1& f) { s = float1(s) - f; return s; }
 	template<int X>	hlslpp_inline swizzle1<X>& operator *= (swizzle1<X>& s, const float1& f) { s = float1(s) * f; return s; }
@@ -1539,6 +1537,8 @@ namespace hlslpp
 	// Function disambiguation. This typically happens when pulling in math.h, <cmath> or <algorithm>, where functions now live
 	// in the global namespace. Due to implicit conversions, we need to clarify to the compiler which functions it needs to use.
 	//--------------------------------------------------------------------------------------------------------------------------
+
+	template<int X> hlslpp_inline float1 operator - (const swizzle1<X>& s) { return -float1(s); }
 
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) fmod(const float1& f1, T f2) { return fmod(f1, float1(f2)); }
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) fmod(T f1, const float1& f2) { return fmod(float1(f1), f2); }

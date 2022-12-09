@@ -388,20 +388,20 @@ namespace hlslpp
 		float3& operator[](int N)
 		{
 			hlslpp_assert(N >= 0 && N <= 2);
-			return *(&row0 + N);
+			return *(&reinterpret_cast<float3&>(vec0) + N);
 		}
 
 		const float3& operator[](int N) const
 		{
 			hlslpp_assert(N >= 0 && N <= 2);
-			return *(&row0 + N);
+			return *(&reinterpret_cast<const float3&>(vec0) + N);
 		}
 
 		union
 		{
 			n128 vec0;
 			float f32_0[3];
-			float3 row0;
+			//float3 row0;
 			#include "swizzle/hlsl++_matrix_row0_1.h"
 			#include "swizzle/hlsl++_matrix_row0_2.h"
 			#include "swizzle/hlsl++_matrix_row0_3.h"
@@ -674,20 +674,19 @@ namespace hlslpp
 		float4& operator[](int N)
 		{
 			hlslpp_assert(N >= 0 && N <= 3);
-			return *(& row0 + N);
+			return *(&reinterpret_cast<float4&>(vec0) + N);
 		}
 
 		const float4& operator[](int N) const
 		{
 			hlslpp_assert(N >= 0 && N <= 3);
-			return *(&row0 + N);
+			return *(&reinterpret_cast<const float4&>(vec0) + N);
 		}
 
 		union
 		{
 			n128 vec0;
 			float f32_128_0[4];
-			float4 row0;
 			#include "swizzle/hlsl++_matrix_row0_1.h"
 			#include "swizzle/hlsl++_matrix_row0_2.h"
 			#include "swizzle/hlsl++_matrix_row0_3.h"

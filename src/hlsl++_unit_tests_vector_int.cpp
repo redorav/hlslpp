@@ -472,6 +472,21 @@ void RunUnitTestsVectorInt()
 	bool ivany_swiz_3 = any(ivfoo3.bgr);	eq(ivany_swiz_3, ivfoo3.b != 0 || ivfoo3.g != 0 || ivfoo3.r != 0);
 	bool ivany_swiz_4 = any(ivfoo4.wwww);	eq(ivany_swiz_4, ivfoo4.w != 0);
 
+	int1 ivabs1 = abs(ivfoo1);								eq(ivabs1, abs((int32_t)ivfoo1.x));
+	int2 ivabs2 = abs(ivfoo2);								eq(ivabs2, abs((int32_t)ivfoo2.x), abs((int32_t)ivfoo2.y));
+	int3 ivabs3 = abs(ivfoo3);								eq(ivabs3, abs((int32_t)ivfoo3.x), abs((int32_t)ivfoo3.y), abs((int32_t)ivfoo3.z));
+	int4 ivabs4 = abs(ivfoo4);								eq(ivabs4, abs((int32_t)ivfoo4.x), abs((int32_t)ivfoo4.y), abs((int32_t)ivfoo4.z), abs((int32_t)ivfoo4.w));
+
+	int1 ivabsneg_1 = abs(-ivfoo1);							eq(ivabsneg_1, abs((int32_t)-ivfoo1));
+	int2 ivabsneg_2 = abs(-ivfoo2);							eq(ivabsneg_2, abs((int32_t)-ivfoo2.x), abs((int32_t)-ivfoo2.y));
+	int3 ivabsneg_3 = abs(-ivfoo3);							eq(ivabsneg_3, abs((int32_t)-ivfoo3.x), abs((int32_t)-ivfoo3.y), abs((int32_t)-ivfoo3.z));
+	int4 ivabsneg_4 = abs(-ivfoo4);							eq(ivabsneg_4, abs((int32_t)-ivfoo4.x), abs((int32_t)-ivfoo4.y), abs((int32_t)-ivfoo4.z), abs((int32_t)-ivfoo4.w));
+
+	int1 ivabs_swiz_1 = abs(ivfoo1.r);						eq(ivabs_swiz_1, abs((int32_t)ivfoo1.x));
+	int2 ivabs_swiz_2 = abs(ivfoo2.yx);						eq(ivabs_swiz_2, abs((int32_t)ivfoo2.g), abs((int32_t)ivfoo2.r));
+	int3 ivabs_swiz_3 = abs(ivfoo3.bgr);					eq(ivabs_swiz_3, abs((int32_t)ivfoo3.b), abs((int32_t)ivfoo3.g), abs((int32_t)ivfoo3.r));
+	int4 ivabs_swiz_4 = abs(ivfoo4.wwww);					eq(ivabs_swiz_4, abs((int32_t)ivfoo4.a), abs((int32_t)ivfoo4.a), abs((int32_t)ivfoo4.a), abs((int32_t)ivfoo4.a));
+
 	//	int4 sat4i = saturate(b);
 	//
 	//	int3 c = a + b.zzw;

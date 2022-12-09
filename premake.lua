@@ -212,13 +212,12 @@ workspace("hlsl++")
 	
 	filter { "configurations:Debug" }
 		defines { "DEBUG" }
-		symbols "full"
+		symbols ("full")
 		inlining("auto") -- hlslpp relies on inlining for speed, big gains in debug builds without losing legibility
 		optimize("debug")
 		
 	filter { "configurations:Release" }
 		defines { "NDEBUG" }
-		optimize "on"
 		inlining("auto")
 		optimize("speed")
 

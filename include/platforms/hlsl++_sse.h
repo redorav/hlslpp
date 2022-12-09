@@ -586,7 +586,19 @@ hlslpp_inline n128i _hlslpp_mul_epi32(n128i x, n128i y)
 
 #endif
 
-#define _hlslpp_abs_epi32(x)					_mm_and_si128(i4absMask, (x))
+#if defined(__SSSE3__)
+	#define _hlslpp_abs_epi32(x)				_mm_abs_epi32((x))
+#else
+
+	// https://graphics.stanford.edu/~seander/bithacks.html#IntegerAbs
+	hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
+	{
+		n128i mask = _mm_srai_epi32(x, 31);
+		n128i sum = _mm_add_epi32(x, mask);
+		return _mm_xor_si128(sum, mask);
+	}
+
+#endif
 
 #define _hlslpp_cmpeq_epi32(x, y)				_mm_cmpeq_epi32((x), (y))
 #define _hlslpp_cmpneq_epi32(x, y)				_mm_andnot_si128(_mm_cmpeq_epi32((x), (y)), i4fffMask)
@@ -672,6 +684,7 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 #define _hlslpp_cvtepi32_ps(x)					_mm_cvtepi32_ps((x))
 #define _hlslpp_cvttps_epi32(x)					_mm_cvttps_epi32((x))
 
+// Shift left/right while shifting in zeroes
 #define _hlslpp_slli_epi32(x, y)				_mm_slli_epi32((x), (y))
 #define _hlslpp_srli_epi32(x, y)				_mm_srli_epi32((x), (y))
 

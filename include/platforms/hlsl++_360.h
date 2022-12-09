@@ -248,7 +248,12 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_msub_epi32(x, y, z)				__vcfpsxws(_hlslpp_neg_ps(__vnmsubfp(__vcsxwfp((z), 0), __vcsxwfp((x), 0), __vcsxwfp((y), 0))))
 #define _hlslpp_subm_epi32(x, y, z)				__vcfpsxws(__vnmsubfp(__vcsxwfp((z), 0), __vcsxwfp((x), 0), __vcsxwfp((y), 0)))
 
-#define _hlslpp_abs_epi32(x)					__vand((x), i4absMask)
+hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
+{
+	n128i mask = __vcmpgtsw(__vzero(), x);
+	n128i sum = __vaddsws(x, mask);
+	return __vxor(sum, mask);
+}
 
 #define _hlslpp_cmpeq_epi32(x, y)				__vcmpequw((x), (y))
 #define _hlslpp_cmpneq_epi32(x, y)				__vxor(__vcmpequw((x), (y)), __vset1(fffMask.f))

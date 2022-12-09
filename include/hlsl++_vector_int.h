@@ -845,6 +845,15 @@ namespace hlslpp
 	hlslpp_inline int3 reversebits(const int3& i) { return int3(_hlslpp_reversebits_epi32(i.vec)); }
 	hlslpp_inline int4 reversebits(const int4& i) { return int4(_hlslpp_reversebits_epi32(i.vec)); }
 
+	//--------------------------------------------------------------------------------------------------------------------------
+	// Function disambiguation. This typically happens when pulling in math.h, <cmath> or <algorithm>, where functions now live
+	// in the global namespace. Due to implicit conversions, we need to clarify to the compiler which functions it needs to use.
+	//--------------------------------------------------------------------------------------------------------------------------
+
+	template<int X> hlslpp_inline int1 operator - (const iswizzle1<X>& s) { return -int1(s); }
+
+	template<int X> hlslpp_inline int1 abs(const iswizzle1<X>& s) { return abs(int1(s)); }
+
 	template<int X>
 	iswizzle1<X>& iswizzle1<X>::operator = (const int1& i)
 	{
