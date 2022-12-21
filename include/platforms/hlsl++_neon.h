@@ -514,6 +514,9 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_max_epi32(x, y)					vmaxq_s32((x), (y))
 #define _hlslpp_min_epi32(x, y)					vminq_s32((x), (y))
 
+#define _hlslpp_sel_epi32(x, y, mask)			vbslq_s32((mask), (y), (x))
+#define _hlslpp_blend_epi32(x, y, mask)			vbslq_s32(vmov4q_n_u32(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)), (x), (y))
+
 #define _hlslpp_clamp_epi32(x, minx, maxx)		vmaxq_s32(vminq_s32((x), (maxx)), (minx))
 #define _hlslpp_sat_epi32(x)					vmaxq_s32(vminq_s32((x), i4_1), i4_0)
 
@@ -525,8 +528,6 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 
 #define _hlslpp_perm_epi32(x, mask)				vpermq_s32((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
 #define _hlslpp_shuffle_epi32(x, y, mask)		vshufq_s32((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
-
-#define _hlslpp_blend_epi32(x, y, mask)			vbslq_s32(vmov4q_n_u32(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)), (x), (y))
 
 #define _hlslpp_castps_si128(x)					vreinterpretq_s32_f32((x))
 #define _hlslpp_castsi128_ps(x)					vreinterpretq_f32_s32((x))
@@ -681,6 +682,9 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 
 #define _hlslpp_max_epu32(x, y)					vmaxq_u32((x), (y))
 #define _hlslpp_min_epu32(x, y)					vminq_u32((x), (y))
+
+#define _hlslpp_sel_epu32(x, y, mask)			vbslq_u32((mask), (y), (x))
+#define _hlslpp_blend_epu32(x, y, mask)			vbslq_u32(vmov4q_n_u32(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)), (x), (y))
 
 #define _hlslpp_clamp_epu32(x, minx, maxx)		vmaxq_u32(vminq_u32((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					vmaxq_u32(vminq_u32((x), i4_1), i4_0)

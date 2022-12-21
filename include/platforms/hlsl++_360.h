@@ -268,6 +268,9 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 #define _hlslpp_max_epi32(x, y)					__vmaxsw((x), (y))
 #define _hlslpp_min_epi32(x, y)					__vminsw((x), (y))
 
+#define _hlslpp_sel_epi32(x, y, mask)			_hlslpp_sel_ps((x), (y), (mask))
+#define _hlslpp_blend_epi32(x, y, mask)			_hlslpp_blend_ps((x), (y), (mask))
+
 #define _hlslpp_clamp_epi32(x, minx, maxx)		__vmaxsw(__vminsw((x), (maxx)), (minx))
 #define _hlslpp_sat_epi32(x)					__vmaxsw(__vminsw((x), i4_1), i4_0)
 
@@ -279,8 +282,6 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 
 #define _hlslpp_perm_epi32(x, mask)				__vpermwi((x), mask)
 #define _hlslpp_shuffle_epi32(x, y, mask)		__vperm((x), (y), __vset(mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3))
-
-#define _hlslpp_blend_epi32(x, y, mask)			__vsel((x), (y), __vset(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)))
 
 // There are no intrinsics to reinterpret cast like these do as integer and float are all in the same __vector4 structure
 #define _hlslpp_castps_si128(x)					((x))
@@ -380,6 +381,9 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 
 #define _hlslpp_max_epu32(x, y)					__vmaxuw((x), (y))
 #define _hlslpp_min_epu32(x, y)					__vminuw((x), (y))
+
+#define _hlslpp_sel_epu32(x, y, mask)			_hlslpp_sel_ps((x), (y), (mask))
+#define _hlslpp_blend_epu32(x, y, mask)			_hlslpp_blend_ps((x), (y), (mask))
 
 #define _hlslpp_clamp_epu32(x, minx, maxx)		__vmaxuw(__vminuw((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					__vmaxuw(__vminuw((x), i4_1), i4_0)

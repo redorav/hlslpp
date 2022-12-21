@@ -602,6 +602,14 @@ namespace hlslpp
 #define _hlslpp_perm_epi32(x, msk)				perm4<msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3>((x))
 #define _hlslpp_shuffle_epi32(x, y, msk)		shuf4<msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3>((x), (y))
 
+	hlslpp_inline vector_int4 select4(const vector_int4& v1, const vector_int4& v2, const vector_int4& msk)
+	{
+		return vector_int4(msk.x == 0 ? v1.x : v2.x, msk.y == 0 ? v1.y : v2.y, msk.z == 0 ? v1.z : v2.z, msk.w == 0 ? v1.w : v2.w);
+	}
+
+	// Bit-select val1 and val2 based on the contents of the mask
+#define _hlslpp_sel_epi32(x, y, msk)				select4((x), (y), (msk))
+
 	template<int A, int B, int C, int D>
 	hlslpp_inline vector_int4 blend4(const vector_int4& v1, const vector_int4& v2)
 	{
@@ -822,6 +830,15 @@ namespace hlslpp
 	{
 		return vector_uint4(v1.m[A], v1.m[B], v2.m[C], v2.m[D]);
 	}
+
+#define _hlslpp_sel_epu32(x, y, msk)				select4((x), (y), (msk))
+
+	hlslpp_inline vector_uint4 select4(const vector_uint4& v1, const vector_uint4& v2, const vector_uint4& msk)
+	{
+		return vector_uint4(msk.x == 0 ? v1.x : v2.x, msk.y == 0 ? v1.y : v2.y, msk.z == 0 ? v1.z : v2.z, msk.w == 0 ? v1.w : v2.w);
+	}
+
+#define _hlslpp_blend_epu32(x, y, msk)			blend4<msk & 1, (msk >> 1) & 1, (msk >> 2) & 1, (msk >> 3) & 1>((x), (y))
 
 	template<int A, int B, int C, int D>
 	hlslpp_inline vector_uint4 blend4(const vector_uint4& v1, const vector_uint4& v2)

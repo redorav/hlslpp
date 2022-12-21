@@ -634,19 +634,6 @@ hlslpp_inline n128i _hlslpp_min_epi32(n128i x, n128i y)
 
 #endif
 
-#define _hlslpp_clamp_epi32(x, minx, maxx)		_mm_max_epi32(_mm_min_epi32((x), (maxx)), (minx))
-#define _hlslpp_sat_epi32(x)					_mm_max_epi32(_mm_min_epi32((x), i4_1), i4_0)
-
-#define _hlslpp_and_si128(x, y)					_mm_and_si128((x), (y))
-#define _hlslpp_andnot_si128(x, y)				_mm_andnot_si128((x), (y))
-#define _hlslpp_not_si128(x)					_mm_andnot_si128((x), i4fffMask)
-#define _hlslpp_or_si128(x, y)					_mm_or_si128((x), (y))
-#define _hlslpp_xor_si128(x, y)					_mm_xor_si128((x), (y))
-
-// https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epi32(x, mask)				_mm_shuffle_epi32((x), (mask))
-#define _hlslpp_shuffle_epi32(x, y, mask)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), (mask)))
-
 // SSE2 alternative https://markplusplus.wordpress.com/2007/03/14/fast-sse-select-operation/
 // Bit-select val1 and val2 based on the contents of the mask
 #if defined(__SSE4_1__)
@@ -677,6 +664,19 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 }
 
 #endif
+
+#define _hlslpp_clamp_epi32(x, minx, maxx)		_mm_max_epi32(_mm_min_epi32((x), (maxx)), (minx))
+#define _hlslpp_sat_epi32(x)					_mm_max_epi32(_mm_min_epi32((x), i4_1), i4_0)
+
+#define _hlslpp_and_si128(x, y)					_mm_and_si128((x), (y))
+#define _hlslpp_andnot_si128(x, y)				_mm_andnot_si128((x), (y))
+#define _hlslpp_not_si128(x)					_mm_andnot_si128((x), i4fffMask)
+#define _hlslpp_or_si128(x, y)					_mm_or_si128((x), (y))
+#define _hlslpp_xor_si128(x, y)					_mm_xor_si128((x), (y))
+
+// https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
+#define _hlslpp_perm_epi32(x, mask)				_mm_shuffle_epi32((x), (mask))
+#define _hlslpp_shuffle_epi32(x, y, mask)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), (mask)))
 
 #define _hlslpp_castps_si128(x)					_mm_castps_si128((x))
 #define _hlslpp_castsi128_ps(x)					_mm_castsi128_ps((x))
@@ -1028,6 +1028,9 @@ hlslpp_inline n128i _hlslpp_min_epu32(n128u x, n128u y)
 }
 
 #endif
+
+#define _hlslpp_sel_epu32(x, y, mask)			_hlslpp_sel_epi32((x), (y), (mask))
+#define _hlslpp_blend_epu32(x, y, mask)			_hlslpp_blend_epi32((x), (y), mask)
 
 #define _hlslpp_clamp_epu32(x, minx, maxx)		_hlslpp_max_epu32(_hlslpp_min_epu32((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					_hlslpp_max_epu32(_hlslpp_min_epu32((x), i4_1), i4_0)

@@ -487,6 +487,11 @@ void RunUnitTestsVectorInt()
 	int3 ivabs_swiz_3 = abs(ivfoo3.bgr);					eq(ivabs_swiz_3, abs((int32_t)ivfoo3.b), abs((int32_t)ivfoo3.g), abs((int32_t)ivfoo3.r));
 	int4 ivabs_swiz_4 = abs(ivfoo4.wwww);					eq(ivabs_swiz_4, abs((int32_t)ivfoo4.a), abs((int32_t)ivfoo4.a), abs((int32_t)ivfoo4.a), abs((int32_t)ivfoo4.a));
 
+	int1 ivselect1 = select(ivbaz1, ivfoo1, ivbar1);		eq(ivselect1, ivbaz1.x != 0 ? ivfoo1.x : ivbar1.x);
+	int2 ivselect2 = select(ivbaz2, ivfoo2, ivbar2);		eq(ivselect2, ivbaz2.x != 0 ? ivfoo2.x : ivbar2.x, ivbaz2.y != 0 ? ivfoo2.y : ivbar2.y);
+	int3 ivselect3 = select(ivbaz3, ivfoo3, ivbar3);		eq(ivselect3, ivbaz3.x != 0 ? ivfoo3.x : ivbar3.x, ivbaz3.y != 0 ? ivfoo3.y : ivbar3.y, ivbaz3.z != 0 ? ivfoo3.z : ivbar3.z);
+	int4 ivselect4 = select(ivbaz4, ivfoo4, ivbar4);		eq(ivselect4, ivbaz4.x != 0 ? ivfoo4.x : ivbar4.x, ivbaz4.y != 0 ? ivfoo4.y : ivbar4.y, ivbaz4.z != 0 ? ivfoo4.z : ivbar4.z, ivbaz4.w != 0 ? ivfoo4.w : ivbar4.w);
+
 	//	int4 sat4i = saturate(b);
 	//
 	//	int3 c = a + b.zzw;

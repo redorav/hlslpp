@@ -841,6 +841,11 @@ namespace hlslpp
 	hlslpp_inline uint3 max(const uint3& i1, const uint3& i2) { return uint3(_hlslpp_max_epu32(i1.vec, i2.vec)); }
 	hlslpp_inline uint4 max(const uint4& i1, const uint4& i2) { return uint4(_hlslpp_max_epu32(i1.vec, i2.vec)); }
 
+	hlslpp_inline uint1 select(const uint1& condition, const uint1& i1, const uint1& i2) { return uint1(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
+	hlslpp_inline uint2 select(const uint2& condition, const uint2& i1, const uint2& i2) { return uint2(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
+	hlslpp_inline uint3 select(const uint3& condition, const uint3& i1, const uint3& i2) { return uint3(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
+	hlslpp_inline uint4 select(const uint4& condition, const uint4& i1, const uint4& i2) { return uint4(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
+
 	hlslpp_inline uint1 reversebits(const uint1& i) { return uint1(_hlslpp_reversebits_epu32(i.vec)); }
 	hlslpp_inline uint2 reversebits(const uint2& i) { return uint2(_hlslpp_reversebits_epu32(i.vec)); }
 	hlslpp_inline uint3 reversebits(const uint3& i) { return uint3(_hlslpp_reversebits_epu32(i.vec)); }

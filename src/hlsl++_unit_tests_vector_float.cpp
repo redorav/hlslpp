@@ -803,6 +803,11 @@ void RunUnitTestsVectorFloat()
 	float3 vpow_swiz_3_b = pow(vfoo3.bgr, vbar3);
 	float4 vpow_swiz_4_b = pow(vfoo4.yyxw, vbar4);
 
+	float1 vselect1 = select(vbaz1, vfoo1, vbar1);	eq(vselect1, vbaz1.x != 0.0f ? vfoo1.x : vbar1.x);
+	float2 vselect2 = select(vbaz2, vfoo2, vbar2);	eq(vselect2, vbaz2.x != 0.0f ? vfoo2.x : vbar2.x, vbaz2.y != 0.0f ? vfoo2.y : vbar2.y);
+	float3 vselect3 = select(vbaz3, vfoo3, vbar3);	eq(vselect3, vbaz3.x != 0.0f ? vfoo3.x : vbar3.x, vbaz3.y != 0.0f ? vfoo3.y : vbar3.y, vbaz3.z != 0.0f ? vfoo3.z : vbar3.z);
+	float4 vselect4 = select(vbaz4, vfoo4, vbar4);	eq(vselect4, vbaz4.x != 0.0f ? vfoo4.x : vbar4.x, vbaz4.y != 0.0f ? vfoo4.y : vbar4.y, vbaz4.z != 0.0f ? vfoo4.z : vbar4.z, vbaz4.w != 0.0f ? vfoo4.w : vbar4.w);
+
 	float1 vradians1 = radians(vfoo1);
 	float2 vradians2 = radians(vfoo2);
 	float3 vradians3 = radians(vfoo3);

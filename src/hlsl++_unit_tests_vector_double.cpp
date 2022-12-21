@@ -418,6 +418,11 @@ void RunUnitTestsVectorDouble()
 	double1 dvdot4_b = dot(dvfoo4.rrgb, dvbar4);
 	double1 dvdot4_c = dot(dvfoo4.rrgg, dvbar4);
 
+	double1 dvselect1 = select(dvbaz1, dvfoo1, dvbar1);	eq(dvselect1, dvbaz1.x != 0.0 ? dvfoo1.x : dvbar1.x);
+	double2 dvselect2 = select(dvbaz2, dvfoo2, dvbar2);	eq(dvselect2, dvbaz2.x != 0.0 ? dvfoo2.x : dvbar2.x, dvbaz2.y != 0.0 ? dvfoo2.y : dvbar2.y);
+	double3 dvselect3 = select(dvbaz3, dvfoo3, dvbar3);	eq(dvselect3, dvbaz3.x != 0.0 ? dvfoo3.x : dvbar3.x, dvbaz3.y != 0.0 ? dvfoo3.y : dvbar3.y, dvbaz3.z != 0.0 ? dvfoo3.z : dvbar3.z);
+	double4 dvselect4 = select(dvbaz4, dvfoo4, dvbar4);	eq(dvselect4, dvbaz4.x != 0.0 ? dvfoo4.x : dvbar4.x, dvbaz4.y != 0.0 ? dvfoo4.y : dvbar4.y, dvbaz4.z != 0.0 ? dvfoo4.z : dvbar4.z, dvbaz4.w != 0.0 ? dvfoo4.w : dvbar4.w);
+
 	double1 dvsqrt1 = sqrt(dvfoo1);
 	double2 dvsqrt2 = sqrt(dvfoo2);
 	double3 dvsqrt3 = sqrt(dvfoo3);

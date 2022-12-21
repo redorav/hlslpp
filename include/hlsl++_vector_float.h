@@ -1448,6 +1448,11 @@ namespace hlslpp
 	hlslpp_inline float3 pow(const float3& f1, const float3& f2) { return float3(_hlslpp_exp2_ps(_hlslpp_mul_ps(f2.vec, _hlslpp_log2_ps(f1.vec)))); }
 	hlslpp_inline float4 pow(const float4& f1, const float4& f2) { return float4(_hlslpp_exp2_ps(_hlslpp_mul_ps(f2.vec, _hlslpp_log2_ps(f1.vec)))); }
 
+	hlslpp_inline float1 select(const float1& condition, const float1& f1, const float1& f2) { return float1(_hlslpp_sel_ps(f1.vec, f2.vec, _hlslpp_cmpeq_ps(condition.vec, _hlslpp_setzero_ps()))); }
+	hlslpp_inline float2 select(const float2& condition, const float2& f1, const float2& f2) { return float2(_hlslpp_sel_ps(f1.vec, f2.vec, _hlslpp_cmpeq_ps(condition.vec, _hlslpp_setzero_ps()))); }
+	hlslpp_inline float3 select(const float3& condition, const float3& f1, const float3& f2) { return float3(_hlslpp_sel_ps(f1.vec, f2.vec, _hlslpp_cmpeq_ps(condition.vec, _hlslpp_setzero_ps()))); }
+	hlslpp_inline float4 select(const float4& condition, const float4& f1, const float4& f2) { return float4(_hlslpp_sel_ps(f1.vec, f2.vec, _hlslpp_cmpeq_ps(condition.vec, _hlslpp_setzero_ps()))); }
+
 	hlslpp_inline float1 radians(const float1& f) { return float1(_hlslpp_mul_ps(f.vec, f4_deg2rad)); }
 	hlslpp_inline float2 radians(const float2& f) { return float2(_hlslpp_mul_ps(f.vec, f4_deg2rad)); }
 	hlslpp_inline float3 radians(const float3& f) { return float3(_hlslpp_mul_ps(f.vec, f4_deg2rad)); }

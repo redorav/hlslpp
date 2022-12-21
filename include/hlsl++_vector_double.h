@@ -1780,6 +1780,35 @@ namespace hlslpp
 #endif
 	}
 
+	hlslpp_inline double1 select(const double1& condition, const double1& f1, const double1& f2) { return double1(_hlslpp_sel_pd(f1.vec, f2.vec, _hlslpp_cmpeq_pd(condition.vec, _hlslpp_setzero_pd()))); }
+	hlslpp_inline double2 select(const double2& condition, const double2& f1, const double2& f2) { return double2(_hlslpp_sel_pd(f1.vec, f2.vec, _hlslpp_cmpeq_pd(condition.vec, _hlslpp_setzero_pd()))); }
+
+	hlslpp_inline double3 select(const double3& condition, const double3& f1, const double3& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double3(_hlslpp256_sel_pd(f1.vec, f2.vec, _hlslpp256_cmpeq_pd(condition.vec, _hlslpp256_setzero_pd())));
+#else
+		return double3
+		(
+			_hlslpp_sel_pd(f1.vec0, f2.vec0, _hlslpp_cmpeq_pd(condition.vec0, _hlslpp_setzero_pd())),
+			_hlslpp_sel_pd(f1.vec1, f2.vec1, _hlslpp_cmpeq_pd(condition.vec1, _hlslpp_setzero_pd()))
+		);
+#endif
+	}
+
+	hlslpp_inline double4 select(const double4& condition, const double4& f1, const double4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double4(_hlslpp256_sel_pd(f1.vec, f2.vec, _hlslpp256_cmpeq_pd(condition.vec, _hlslpp256_setzero_pd())));
+#else
+		return double4
+		(
+			_hlslpp_sel_pd(f1.vec0, f2.vec0, _hlslpp_cmpeq_pd(condition.vec0, _hlslpp_setzero_pd())),
+			_hlslpp_sel_pd(f1.vec1, f2.vec1, _hlslpp_cmpeq_pd(condition.vec1, _hlslpp_setzero_pd()))
+		);
+#endif
+	}
+
 	hlslpp_inline double1 radians(const double1& f) { return double1(_hlslpp_mul_pd(f.vec, d2_deg2rad)); }
 	hlslpp_inline double2 radians(const double2& f) { return double2(_hlslpp_mul_pd(f.vec, d2_deg2rad)); }
 	hlslpp_inline double3 radians(const double3& f)
