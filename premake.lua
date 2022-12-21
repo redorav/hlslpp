@@ -122,8 +122,10 @@ workspace("hlsl++")
 		
 		if (_ACTION == "vs2015") then
 			llvmToolset = "msc-llvm-vs2014";
-		else
+		elseif(_ACTION == "vs2017") then
 			llvmToolset = "msc-llvm";
+		else
+			llvmToolset = "msc-clangcl";
 		end
 		
 		startproject(UnitTestProject)
