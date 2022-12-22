@@ -82,5 +82,4 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 
 Missing/planned:
 
-* floatNxM _m00_m01 style swizzling (rows implemented but missing columns)
 * boolN types
