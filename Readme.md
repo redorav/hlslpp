@@ -43,12 +43,16 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 ## How to use
 
 ```cpp
-// The quickest way
+// The quickest way, expensive in compile times but good for fast iteration
 #include "hlsl++.h"
 
-// If you care about your compile times
+// If you care about your compile times in your cpp files
 #include "hlsl++_vector_float.h"
 #include "hlsl++_matrix_float.h"
+
+// If you only need type information (e.g. in header files) and don't use any functions
+#include "hlsl++_vector_float_type.h"
+#include "hlsl++_quaternion_type.h"
 ```
 
 * Remember to add an include path to "hlslpp/include"

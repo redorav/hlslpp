@@ -37,8 +37,6 @@
 	// https://github.com/p12tic/libsimdpp/issues/33
 	#include <intrin.h>
 
-	#include <immintrin.h>
-
 #endif
 
 #define HLSLPP_DOUBLE
