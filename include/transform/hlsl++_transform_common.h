@@ -34,7 +34,7 @@
 // because those do not get reversed
 //------------------------------------------------------------------
 
-#include <cmath>
+#include "math.h"
 
 // Row-Major logical layout (default)
 // assumes "vector-row(N) * matrix(NxM)" multiplication order

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cmath>
-#include <cstdint>
+#include "math.h"
+#include "stdint.h"
 
 namespace hlslpp
 {

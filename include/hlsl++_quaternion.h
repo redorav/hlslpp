@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cmath>
+#include "math.h"
 
 #include "hlsl++_common.h"
 #include "hlsl++_vector_float.h"

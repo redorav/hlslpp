@@ -105,7 +105,7 @@
 
 #endif
 
-#include <cstdint>
+#include "stdint.h"
 
 #include <type_traits>
 
