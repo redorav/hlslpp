@@ -111,11 +111,11 @@ namespace hlslpp
 			v.w >= 0.0f ? v.w : -v.w);
 	}
 
-	hlslpp_inline vector_float4 _hlslpp_sqrt_ps(const vector_float4& v) { return vector_float4(std::sqrt(v.x), std::sqrt(v.y), std::sqrt(v.z), std::sqrt(v.w)); }
+	hlslpp_inline vector_float4 _hlslpp_sqrt_ps(const vector_float4& v) { return vector_float4(sqrtf(v.x), sqrtf(v.y), sqrtf(v.z), sqrtf(v.w)); }
 
 	hlslpp_inline vector_float4 _hlslpp_rsqrt_ps(const vector_float4& v)
 	{
-		return vector_float4(1.0f / std::sqrt(v.x), 1.0f / std::sqrt(v.y), 1.0f / std::sqrt(v.z), 1.0f / std::sqrt(v.w));
+		return vector_float4(1.0f / sqrtf(v.x), 1.0f / sqrtf(v.y), 1.0f / sqrtf(v.z), 1.0f / sqrtf(v.w));
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_cmpeq_ps(const vector_float4& v1, const vector_float4& v2)
@@ -179,31 +179,31 @@ namespace hlslpp
 
 	hlslpp_inline vector_float4 _hlslpp_trunc_ps(const vector_float4& v)
 	{
-		return vector_float4(std::trunc(v.x), std::trunc(v.y), std::trunc(v.z), std::trunc(v.w));
+		return vector_float4(truncf(v.x), truncf(v.y), truncf(v.z), truncf(v.w));
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_floor_ps(const vector_float4& v)
 	{
-		return vector_float4(std::floor(v.x), std::floor(v.y), std::floor(v.z), std::floor(v.w));
+		return vector_float4(floorf(v.x), floorf(v.y), floorf(v.z), floorf(v.w));
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_ceil_ps(const vector_float4& v)
 	{
-		return vector_float4(std::ceil(v.x), std::ceil(v.y), std::ceil(v.z), std::ceil(v.w));
+		return vector_float4(ceilf(v.x), ceilf(v.y), ceilf(v.z), ceilf(v.w));
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_round_ps(const vector_float4& v)
 	{
-		return vector_float4(std::round(v.x), std::round(v.y), std::round(v.z), std::round(v.w));
+		return vector_float4(roundf(v.x), roundf(v.y), roundf(v.z), roundf(v.w));
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_frac_ps(const vector_float4& v)
 	{
 		float fracX, fracY, fracZ, fracW;
-		std::modf(v.x, &fracX);
-		std::modf(v.y, &fracY);
-		std::modf(v.z, &fracZ);
-		std::modf(v.w, &fracW);
+		modff(v.x, &fracX);
+		modff(v.y, &fracY);
+		modff(v.z, &fracZ);
+		modff(v.w, &fracW);
 		return vector_float4(fracX, fracY, fracZ, fracW);
 	}
 
@@ -358,70 +358,70 @@ namespace hlslpp
 
 	hlslpp_inline vector_float4 _hlslpp_acos_ps(const vector_float4& v)
 	{
-		return vector_float4(std::acos(v.x), std::acos(v.y), std::acos(v.z), std::acos(v.w));
+		return vector_float4(acosf(v.x), acosf(v.y), acosf(v.z), acosf(v.w));
 	}
 
 #define HLSLPP_ASIN_IMPLEMENTATION
 
 	hlslpp_inline vector_float4 _hlslpp_asin_ps(const vector_float4& v)
 	{
-		return vector_float4(std::asin(v.x), std::asin(v.y), std::asin(v.z), std::asin(v.w));
+		return vector_float4(asinf(v.x), asinf(v.y), asinf(v.z), asinf(v.w));
 	}
 
 #define HLSLPP_ATAN_IMPLEMENTATION
 
 	hlslpp_inline vector_float4 _hlslpp_atan_ps(const vector_float4& v)
 	{
-		return vector_float4(std::atan(v.x), std::atan(v.y), std::atan(v.z), std::atan(v.w));
+		return vector_float4(atanf(v.x), atanf(v.y), atanf(v.z), atanf(v.w));
 	}
 
 #define HLSLPP_ATAN2_IMPLEMENTATION
 
 	hlslpp_inline vector_float4 _hlslpp_atan2_ps(const vector_float4& y, const vector_float4& x)
 	{
-		return vector_float4(std::atan2(y.x, x.x), std::atan2(y.y, x.y), std::atan2(y.z, x.z), std::atan2(y.w, x.w));
+		return vector_float4(atan2f(y.x, x.x), atan2f(y.y, x.y), atan2f(y.z, x.z), atan2f(y.w, x.w));
 	}
 
 #define HLSLPP_SIN_IMPLEMENTATION
 
 	hlslpp_inline vector_float4 _hlslpp_sin_ps(const vector_float4& v)
 	{
-		return vector_float4(std::sin(v.x), std::sin(v.y), std::sin(v.z), std::sin(v.w));
+		return vector_float4(sinf(v.x), sinf(v.y), sinf(v.z), sinf(v.w));
 	}
 
 #define HLSLPP_COS_IMPLEMENTATION
 
 	hlslpp_inline vector_float4 _hlslpp_cos_ps(vector_float4 v)
 	{
-		return vector_float4(std::cos(v.x), std::cos(v.y), std::cos(v.z), std::cos(v.w));
+		return vector_float4(cosf(v.x), cosf(v.y), cosf(v.z), cosf(v.w));
 	}
 
 #define HLSLPP_TAN_IMPLEMENTATION
 
 	hlslpp_inline vector_float4 _hlslpp_tan_ps(const vector_float4& v)
 	{
-		return vector_float4(std::tan(v.x), std::tan(v.y), std::tan(v.z), std::tan(v.w));
+		return vector_float4(tanf(v.x), tanf(v.y), tanf(v.z), tanf(v.w));
 	}
 
 #define HLSLPP_SINH_IMPLEMENTATION
 
 	hlslpp_inline vector_float4 _hlslpp_sinh_ps(const vector_float4& v)
 	{
-		return vector_float4(std::sinh(v.x), std::sinh(v.y), std::sinh(v.z), std::sinh(v.w));
+		return vector_float4(sinhf(v.x), sinhf(v.y), sinhf(v.z), sinhf(v.w));
 	}
 
 #define HLSLPP_COSH_IMPLEMENTATION
 
 	hlslpp_inline vector_float4 _hlslpp_cosh_ps(const vector_float4& v)
 	{
-		return vector_float4(std::cosh(v.x), std::cosh(v.y), std::cosh(v.z), std::cosh(v.w));
+		return vector_float4(coshf(v.x), coshf(v.y), coshf(v.z), coshf(v.w));
 	}
 
 #define HLSLPP_TANH_IMPLEMENTATION
 
 	hlslpp_inline vector_float4 _hlslpp_tanh_ps(const vector_float4& v)
 	{
-		return vector_float4(std::tanh(v.x), std::tanh(v.y), std::tanh(v.z), std::tanh(v.w));
+		return vector_float4(tanhf(v.x), tanhf(v.y), tanhf(v.z), tanhf(v.w));
 	}
 
 	//-----------------
@@ -503,7 +503,7 @@ namespace hlslpp
 		return vector_int4(v1.x - v2.x * v3.x, v1.y - v2.y * v3.y, v1.z - v2.z * v3.z, v1.w - v2.w * v3.w);
 	}
 
-	hlslpp_inline vector_int4 _hlslpp_abs_epi32(const vector_int4& v) { return vector_int4(std::abs(v.x), std::abs(v.y), std::abs(v.z), std::abs(v.w)); }
+	hlslpp_inline vector_int4 _hlslpp_abs_epi32(const vector_int4& v) { return vector_int4(labs(v.x), labs(v.y), labs(v.z), labs(v.w)); }
 
 	hlslpp_inline vector_int4 _hlslpp_cmpeq_epi32(const vector_int4& v1, const vector_int4& v2)
 	{
