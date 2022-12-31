@@ -131,20 +131,20 @@ namespace hlslpp
 	hlslpp_inline uint3& operator ++ (uint3& i) { i = i + uint3(1); return i; }
 	hlslpp_inline uint4& operator ++ (uint4& i) { i = i + uint4(1); return i; }
 
-	template<int X> hlslpp_inline uswizzle1<X>& operator ++ (uswizzle1<X>& i) { i = i + uint1(i4_1); return i; }
-	template<int X, int Y> hlslpp_inline uswizzle2<X, Y>& operator ++ (uswizzle2<X, Y>& i) { i = i + uint2(i4_1); return i; }
-	template<int X, int Y, int Z> hlslpp_inline uswizzle3<X, Y, Z>& operator ++ (uswizzle3<X, Y, Z>& i) { i = i + uint3(i4_1); return i; }
-	template<int X, int Y, int Z, int W> hlslpp_inline uswizzle4<X, Y, Z, W>& operator ++ (uswizzle4<X, Y, Z, W>& i) { i = i + uint4(i4_1); return i; }
+	template<int X> hlslpp_inline uswizzle1<X>& operator ++ (uswizzle1<X>& i) { i = i + uint1(u4_1); return i; }
+	template<int X, int Y> hlslpp_inline uswizzle2<X, Y>& operator ++ (uswizzle2<X, Y>& i) { i = i + uint2(u4_1); return i; }
+	template<int X, int Y, int Z> hlslpp_inline uswizzle3<X, Y, Z>& operator ++ (uswizzle3<X, Y, Z>& i) { i = i + uint3(u4_1); return i; }
+	template<int X, int Y, int Z, int W> hlslpp_inline uswizzle4<X, Y, Z, W>& operator ++ (uswizzle4<X, Y, Z, W>& i) { i = i + uint4(u4_1); return i; }
 
 	hlslpp_inline uint1& operator -- (uint1& i) { i = i - uint1(1); return i; }
 	hlslpp_inline uint2& operator -- (uint2& i) { i = i - uint2(1); return i; }
 	hlslpp_inline uint3& operator -- (uint3& i) { i = i - uint3(1); return i; }
 	hlslpp_inline uint4& operator -- (uint4& i) { i = i - uint4(1); return i; }
 
-	template<int X> hlslpp_inline uswizzle1<X>& operator -- (uswizzle1<X>& i) { i = i - uint1(i4_1); return i; }
-	template<int X, int Y> hlslpp_inline uswizzle2<X, Y>& operator -- (uswizzle2<X, Y>& i) { i = i - uint2(i4_1); return i; }
-	template<int X, int Y, int Z> hlslpp_inline uswizzle3<X, Y, Z>& operator -- (uswizzle3<X, Y, Z>& i) { i = i - uint3(i4_1); return i; }
-	template<int X, int Y, int Z, int W> hlslpp_inline uswizzle4<X, Y, Z, W>& operator -- (uswizzle4<X, Y, Z, W>& i) { i = i - uint4(i4_1); return i; }
+	template<int X> hlslpp_inline uswizzle1<X>& operator -- (uswizzle1<X>& i) { i = i - uint1(u4_1); return i; }
+	template<int X, int Y> hlslpp_inline uswizzle2<X, Y>& operator -- (uswizzle2<X, Y>& i) { i = i - uint2(u4_1); return i; }
+	template<int X, int Y, int Z> hlslpp_inline uswizzle3<X, Y, Z>& operator -- (uswizzle3<X, Y, Z>& i) { i = i - uint3(u4_1); return i; }
+	template<int X, int Y, int Z, int W> hlslpp_inline uswizzle4<X, Y, Z, W>& operator -- (uswizzle4<X, Y, Z, W>& i) { i = i - uint4(u4_1); return i; }
 
 	// Post-increment
 
@@ -154,13 +154,13 @@ namespace hlslpp
 	hlslpp_inline uint4 operator ++ (uint4& i, int) { uint4 tmp = i; i = i + uint4(1); return tmp; }
 
 	template<int X>
-	hlslpp_inline uswizzle1<X> operator ++ (uswizzle1<X>& i, int) { uswizzle1<X> tmp = i; i = i + uint1(i4_1); return tmp; }
+	hlslpp_inline uswizzle1<X> operator ++ (uswizzle1<X>& i, int) { uswizzle1<X> tmp = i; i = i + uint1(u4_1); return tmp; }
 	template<int X, int Y>
-	hlslpp_inline uswizzle2<X, Y> operator ++ (uswizzle2<X, Y>& i, int) { uswizzle2<X, Y> tmp = i; i = i + uint2(i4_1); return tmp; }
+	hlslpp_inline uswizzle2<X, Y> operator ++ (uswizzle2<X, Y>& i, int) { uswizzle2<X, Y> tmp = i; i = i + uint2(u4_1); return tmp; }
 	template<int X, int Y, int Z>
-	hlslpp_inline uswizzle3<X, Y, Z> operator ++ (uswizzle3<X, Y, Z>& i, int) { uswizzle3<X, Y, Z> tmp = i; i = i + uint3(i4_1); return tmp; }
+	hlslpp_inline uswizzle3<X, Y, Z> operator ++ (uswizzle3<X, Y, Z>& i, int) { uswizzle3<X, Y, Z> tmp = i; i = i + uint3(u4_1); return tmp; }
 	template<int X, int Y, int Z, int W>
-	hlslpp_inline uswizzle4<X, Y, Z, W> operator ++ (uswizzle4<X, Y, Z, W>& i, int) { uswizzle4<X, Y, Z, W> tmp = i; i = i + uint4(i4_1); return tmp; }
+	hlslpp_inline uswizzle4<X, Y, Z, W> operator ++ (uswizzle4<X, Y, Z, W>& i, int) { uswizzle4<X, Y, Z, W> tmp = i; i = i + uint4(u4_1); return tmp; }
 
 	hlslpp_inline uint1 operator -- (uint1& i, int) { uint1 tmp = i; i = i - uint1(1); return tmp; }
 	hlslpp_inline uint2 operator -- (uint2& i, int) { uint2 tmp = i; i = i - uint2(1); return tmp; }
@@ -168,13 +168,13 @@ namespace hlslpp
 	hlslpp_inline uint4 operator -- (uint4& i, int) { uint4 tmp = i; i = i - uint4(1); return tmp; }
 
 	template<int X>
-	hlslpp_inline uswizzle1<X> operator -- (uswizzle1<X>& i, int) { uswizzle1<X> tmp = i; i = i - uint1(i4_1); return tmp; }
+	hlslpp_inline uswizzle1<X> operator -- (uswizzle1<X>& i, int) { uswizzle1<X> tmp = i; i = i - uint1(u4_1); return tmp; }
 	template<int X, int Y>
-	hlslpp_inline uswizzle2<X, Y> operator -- (uswizzle2<X, Y>& i, int) { uswizzle2<X, Y> tmp = i; i = i - uint2(i4_1); return tmp; }
+	hlslpp_inline uswizzle2<X, Y> operator -- (uswizzle2<X, Y>& i, int) { uswizzle2<X, Y> tmp = i; i = i - uint2(u4_1); return tmp; }
 	template<int X, int Y, int Z>
-	hlslpp_inline uswizzle3<X, Y, Z> operator -- (uswizzle3<X, Y, Z>& i, int) { uswizzle3<X, Y, Z> tmp = i; i = i - uint3(i4_1); return tmp; }
+	hlslpp_inline uswizzle3<X, Y, Z> operator -- (uswizzle3<X, Y, Z>& i, int) { uswizzle3<X, Y, Z> tmp = i; i = i - uint3(u4_1); return tmp; }
 	template<int X, int Y, int Z, int W>
-	hlslpp_inline uswizzle4<X, Y, Z, W> operator -- (uswizzle4<X, Y, Z, W>& i, int) { uswizzle4<X, Y, Z, W> tmp = i; i = i - uint4(i4_1); return tmp; }
+	hlslpp_inline uswizzle4<X, Y, Z, W> operator -- (uswizzle4<X, Y, Z, W>& i, int) { uswizzle4<X, Y, Z, W> tmp = i; i = i - uint4(u4_1); return tmp; }
 
 	//------------------------------------------------------------------------------------------------------------------------//
 	// uint1 and uswizzle1 need special overloads to disambiguate between our operators/functions and built-in float operators //
