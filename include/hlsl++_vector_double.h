@@ -695,8 +695,6 @@ namespace hlslpp
 	template<int X> hlslpp_inline double1 operator * (const dswizzle1<X>& s, const double1& f) { return double1(s) * f; }
 	template<int X> hlslpp_inline double1 operator / (const dswizzle1<X>& s, const double1& f) { return double1(s) / f; }
 
-	template<int X> hlslpp_inline double1 operator - (const dswizzle1<X>& s) { return -double1(s); }
-
 	template<int X>	hlslpp_inline dswizzle1<X>& operator += (dswizzle1<X>& s, const double1& f) { s = double1(s) + f; return s; }
 	template<int X>	hlslpp_inline dswizzle1<X>& operator -= (dswizzle1<X>& s, const double1& f) { s = double1(s) - f; return s; }
 	template<int X>	hlslpp_inline dswizzle1<X>& operator *= (dswizzle1<X>& s, const double1& f) { s = double1(s) * f; return s; }
