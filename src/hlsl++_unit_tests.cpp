@@ -637,6 +637,8 @@ void RunPerformanceTests()
 	float4 v4_3(f3);
 	float4 v4_4(f4);
 
+	float3x3 m3x3_1(f1, f2, f3, f4, f5, f6, f7, f8, f9);
+
 	float3x4 m3x4_1;
 
 	float4x4 m4x4_1(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16);
@@ -665,9 +667,11 @@ void RunPerformanceTests()
 	float3x3 m = float3x3::rotation_y(3.1415f / 2.0f);
 
 	benchmark<float4x4, iter>("m4x4 add", [&]() -> float4x4 { m4x4_1 = m4x4_1 + m4x4_2; return m4x4_1; });
-	benchmark<quaternion, iter>("rotation_axis", [&]() -> quaternion { q1 = quaternion::rotation_axis(q1.xyz, t1_1); return q1; });
-	benchmark<quaternion, iter>("rotation_axis_cosangle", [&]() -> quaternion { q1 = quaternion::rotation_axis_cosangle(q1.xyz, f1, 1.0f); return q1; });
 	benchmark<quaternion, iter>("rotation_euler_zxy", [&]() -> quaternion { q1 = quaternion::rotation_euler_zxy(q1.xyz); return q1; });
+	benchmark<float3x3, iter>("m3x3 inverse", [&]() -> float3x3 { m3x3_1 = inverse(m3x3_1); return m3x3_1; });
+	benchmark<float4x4, iter>("m4x4 inverse", [&]() -> float4x4 { m4x4_1 = inverse(m4x4_1); return m4x4_1; });
+	benchmark<quaternion, iter>("rotation_axis_cosangle", [&]() -> quaternion { q1 = quaternion::rotation_axis_cosangle(q1.xyz, f1, 1.0f); return q1; });
+	benchmark<quaternion, iter>("rotation_axis", [&]() -> quaternion { q1 = quaternion::rotation_axis(q1.xyz, t1_1); return q1; });
 	benchmark<quaternion, iter>("conjugate", [&]() -> quaternion { q1 = conjugate(q1); return q1; });
 	benchmark<quaternion, iter>("slerp", [&]() -> quaternion { q1 = slerp(q1, q2, t1_1); return q1; });
 	benchmark<quaternion, iter>("quaternion(m3x3)", [&]() -> quaternion { q1 = quaternion(m); return q1; });
@@ -675,7 +679,7 @@ void RunPerformanceTests()
 	benchmark<float4x4, iter>("m4x4 add", [&]() -> float4x4 { m4x4_1 = m4x4_1 + m4x4_2; return m4x4_1; });
 	benchmark<float4x4, iter>("m4x4 div", [&]() -> float4x4 { m4x4_1 = m4x4_1 / m4x4_2; return m4x4_1; });
 	benchmark<float1, iter>("m4x4 det", [&]() -> float1 { v1_1 = determinant(m4x4_1); m4x4_1 = m4x4_1 + v1_1; return v1_1; });
-	benchmark<float4x4, iter>("m4x4 inverse", [&]() -> float4x4 { m4x4_1 = inverse(m4x4_1); return m4x4_1; });
+
 	benchmark<float4x4, iter>("m4x4 transp", [&]() -> float4x4 { m4x4_1 = transpose(m4x4_1); return m4x4_1; });
 	benchmark<float3x4, iter>("mul(m3x4, m4x4)", [&]() -> float3x4 { m3x4_1 = mul(m3x4_1, m4x4_1); return m3x4_1; });
 	benchmark<float4x4, iter>("mul(m4x4, m4x4)", [&]() -> float4x4 { m4x4_1 = mul(m4x4_1, m4x4_2); return m4x4_1; });
