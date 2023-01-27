@@ -107,7 +107,7 @@
 
 #include "stdint.h"
 
-#include <type_traits>
+#include "hlsl++_type_traits.h"
 
 #include "hlsl++_bitmask.h"
 

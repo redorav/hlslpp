@@ -121,38 +121,38 @@ namespace hlslpp
 
 	// Auxiliary templates for disambiguation with standard header functions
 
-	#define hlslpp_enable_if_return(T, R) typename std::enable_if<std::is_arithmetic<T>::value, R>::type
+	#define hlslpp_enable_if_return(T, R) typename hlslpp::enable_if<hlslpp::is_arithmetic<T>::value, R>::type
 	
-	#define hlslpp_enable_if_number(T) typename std::enable_if<std::is_arithmetic<T>::value, void*>::type = nullptr
+	#define hlslpp_enable_if_number(T) typename hlslpp::enable_if<hlslpp::is_arithmetic<T>::value, void*>::type = nullptr
 	
 	#define hlslpp_enable_if_number_2(T1, T2) \
-			typename std::enable_if< \
-			std::is_arithmetic<T1>::value * \
-			std::is_arithmetic<T2>::value, void*>::type = nullptr
+			typename hlslpp::enable_if< \
+			hlslpp::is_arithmetic<T1>::value * \
+			hlslpp::is_arithmetic<T2>::value, void*>::type = nullptr
 	
 	#define hlslpp_enable_if_number_3(T1, T2, T3) \
-			typename std::enable_if< \
-			std::is_arithmetic<T1>::value * \
-			std::is_arithmetic<T2>::value * \
-			std::is_arithmetic<T3>::value, void*>::type = nullptr
+			typename hlslpp::enable_if< \
+			hlslpp::is_arithmetic<T1>::value * \
+			hlslpp::is_arithmetic<T2>::value * \
+			hlslpp::is_arithmetic<T3>::value, void*>::type = nullptr
 	
 	#define hlslpp_enable_if_number_4(T1, T2, T3, T4) \
-			typename std::enable_if< \
-			std::is_arithmetic<T1>::value * \
-			std::is_arithmetic<T2>::value * \
-			std::is_arithmetic<T3>::value * \
-			std::is_arithmetic<T4>::value, void*>::type = nullptr
+			typename hlslpp::enable_if< \
+			hlslpp::is_arithmetic<T1>::value * \
+			hlslpp::is_arithmetic<T2>::value * \
+			hlslpp::is_arithmetic<T3>::value * \
+			hlslpp::is_arithmetic<T4>::value, void*>::type = nullptr
 
 	#define hlslpp_enable_if_number_8(T1, T2, T3, T4, T5, T6, T7, T8) \
-			typename std::enable_if< \
-			std::is_arithmetic<T1>::value * \
-			std::is_arithmetic<T2>::value * \
-			std::is_arithmetic<T3>::value * \
-			std::is_arithmetic<T4>::value * \
-			std::is_arithmetic<T5>::value * \
-			std::is_arithmetic<T6>::value * \
-			std::is_arithmetic<T7>::value * \
-			std::is_arithmetic<T8>::value, void*>::type = nullptr
+			typename hlslpp::enable_if< \
+			hlslpp::is_arithmetic<T1>::value * \
+			hlslpp::is_arithmetic<T2>::value * \
+			hlslpp::is_arithmetic<T3>::value * \
+			hlslpp::is_arithmetic<T4>::value * \
+			hlslpp::is_arithmetic<T5>::value * \
+			hlslpp::is_arithmetic<T6>::value * \
+			hlslpp::is_arithmetic<T7>::value * \
+			hlslpp::is_arithmetic<T8>::value, void*>::type = nullptr
 
 	// Helper intrinsics
 
