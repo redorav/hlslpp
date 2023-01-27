@@ -1286,6 +1286,11 @@ namespace hlslpp
 	// in the global namespace. Due to implicit conversions, we need to clarify to the compiler which functions it needs to use.
 	//--------------------------------------------------------------------------------------------------------------------------
 
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator == (const double1& f1, T f2) { return f1 == double1(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator == (T f1, const double1& f2) { return double1(f1) == f2; }
+
+	template<int X> hlslpp_inline double1 operator - (const dswizzle1<X>& s) { return -double1(s); }
+
 	template<int X> hlslpp_inline double1 abs(const dswizzle1<X>& s) { return abs(double1(s)); }
 
 	template<int X> hlslpp_inline double1 ceil(const dswizzle1<X>& s) { return ceil(double1(s)); }

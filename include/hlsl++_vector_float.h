@@ -1108,6 +1108,9 @@ namespace hlslpp
 	// in the global namespace. Due to implicit conversions, we need to clarify to the compiler which functions it needs to use.
 	//--------------------------------------------------------------------------------------------------------------------------
 
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator == (const float1& f1, T f2) { return f1 == float1(f2); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator == (T f1, const float1& f2) { return float1(f1) == f2; }
+
 	template<int X> hlslpp_inline float1 operator - (const swizzle1<X>& s) { return -float1(s); }
 
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) fmod(const float1& f1, T f2) { return fmod(f1, float1(f2)); }

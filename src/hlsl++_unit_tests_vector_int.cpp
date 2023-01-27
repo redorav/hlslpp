@@ -306,10 +306,16 @@ void RunUnitTestsVectorInt()
 	vint.r = vint2.x;
 
     // Division
-    int1 ivdiv1 = ivfoo1 / ivbar1;  eq(ivdiv1, (int32_t)ivfoo1.x / (int32_t)ivbar1.x);
-    int2 ivdiv2 = ivfoo2 / ivbar2;  eq(ivdiv2, (int32_t)ivfoo2.x / (int32_t)ivbar2.x, (int32_t)ivfoo2.y / (int32_t)ivbar2.y);
-    int3 ivdiv3 = ivfoo3 / ivbar3;  eq(ivdiv3, (int32_t)ivfoo3.x / (int32_t)ivbar3.x, (int32_t)ivfoo3.y / (int32_t)ivbar3.y, (int32_t)ivfoo3.z / (int32_t)ivbar3.z);
-    int4 ivdiv4 = ivfoo4 / ivbar4;  eq(ivdiv4, (int32_t)ivfoo4.x / (int32_t)ivbar4.x, (int32_t)ivfoo4.y / (int32_t)ivbar4.y, (int32_t)ivfoo4.z / (int32_t)ivbar4.z, (int32_t)ivfoo4.w / (int32_t)ivbar4.w);
+
+	int1 ivdivbar1 = select(ivbar1 == 0, 1, ivbar1);
+	int2 ivdivbar2 = select(ivbar2 == 0, 1, ivbar2);
+	int3 ivdivbar3 = select(ivbar3 == 0, 1, ivbar3);
+	int4 ivdivbar4 = select(ivbar4 == 0, 1, ivbar4);
+
+	int1 ivdiv1 = ivfoo1 / ivdivbar1;  eq(ivdiv1, (int32_t)ivfoo1.x / (int32_t)ivdivbar1.x);
+	int2 ivdiv2 = ivfoo2 / ivdivbar2;  eq(ivdiv2, (int32_t)ivfoo2.x / (int32_t)ivdivbar2.x, (int32_t)ivfoo2.y / (int32_t)ivdivbar2.y);
+	int3 ivdiv3 = ivfoo3 / ivdivbar3;  eq(ivdiv3, (int32_t)ivfoo3.x / (int32_t)ivdivbar3.x, (int32_t)ivfoo3.y / (int32_t)ivdivbar3.y, (int32_t)ivfoo3.z / (int32_t)ivdivbar3.z);
+	int4 ivdiv4 = ivfoo4 / ivdivbar4;  eq(ivdiv4, (int32_t)ivfoo4.x / (int32_t)ivdivbar4.x, (int32_t)ivfoo4.y / (int32_t)ivdivbar4.y, (int32_t)ivfoo4.z / (int32_t)ivdivbar4.z, (int32_t)ivfoo4.w / (int32_t)ivdivbar4.w);
 
     int1 ivdiv_f_1 = ivfoo1 / 1;    eq(ivdiv_f_1, (int32_t)ivfoo1.x / 1);
     int2 ivdiv_f_2 = ivfoo2 / 2;    eq(ivdiv_f_2, (int32_t)ivfoo2.x / 2, (int32_t)ivfoo2.y / 2);
