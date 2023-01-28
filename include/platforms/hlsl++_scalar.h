@@ -29,6 +29,9 @@ namespace hlslpp
 
 	struct vector_int4
 	{
+		static const int32_t Max =  2147483647;
+		static const int32_t Min = -2147483647 - 1;
+
 		hlslpp_inline vector_int4() {}
 		hlslpp_inline vector_int4(int32_t i) : x(i), y(i), z(i), w(i) {}
 		hlslpp_inline vector_int4(int32_t i1, int32_t i2, int32_t i3, int32_t i4) : x(i1), y(i2), z(i3), w(i4) {}
@@ -46,6 +49,8 @@ namespace hlslpp
 
 	struct vector_uint4
 	{
+		static const uint32_t Max = 4294967295;
+
 		hlslpp_inline vector_uint4() {}
 		hlslpp_inline vector_uint4(uint32_t i) : x(i), y(i), z(i), w(i) {}
 		hlslpp_inline vector_uint4(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4) : x(i1), y(i2), z(i3), w(i4) {}
@@ -484,7 +489,16 @@ namespace hlslpp
 
 	hlslpp_inline vector_int4 _hlslpp_mul_epi32(const vector_int4& v1, const vector_int4& v2) { return vector_int4(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z, v1.w * v2.w); }
 
-	hlslpp_inline vector_int4 _hlslpp_div_epi32(const vector_int4& v1, const vector_int4& v2) { return vector_int4(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z, v1.w / v2.w); }
+	hlslpp_inline vector_int4 _hlslpp_div_epi32(const vector_int4& v1, const vector_int4& v2)
+	{
+		return vector_int4
+		(
+			v2.x != 0 ? v1.x / v2.x : (v1.x > 0 ? v1.Max : v1.Min),
+			v2.y != 0 ? v1.y / v2.y : (v1.y > 0 ? v1.Max : v1.Min),
+			v2.z != 0 ? v1.z / v2.z : (v1.z > 0 ? v1.Max : v1.Min),
+			v2.w != 0 ? v1.w / v2.w : (v1.w > 0 ? v1.Max : v1.Min)
+		);
+	}
 
 	hlslpp_inline vector_int4 _hlslpp_neg_epi32(const vector_int4& v) { return vector_int4(-v.x, -v.y, -v.z, -v.w); }
 
@@ -720,7 +734,13 @@ namespace hlslpp
 
 	hlslpp_inline vector_uint4 _hlslpp_div_epu32(const vector_uint4& v1, const vector_uint4& v2)
 	{
-		return vector_uint4(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z, v1.w / v2.w);
+		return vector_uint4
+		(
+			v2.x != 0 ? v1.x / v2.x : v1.Max,
+			v2.y != 0 ? v1.y / v2.y : v1.Max,
+			v2.z != 0 ? v1.z / v2.z : v1.Max,
+			v2.w != 0 ? v1.w / v2.w : v1.Max
+		);
 	}
 
 	hlslpp_inline vector_uint4 _hlslpp_madd_epu32(const vector_uint4& v1, const vector_uint4& v2, const vector_uint4& v3)
