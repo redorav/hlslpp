@@ -3,6 +3,9 @@
 // Hacky but needs FLOAT64
 #include "hlsl++_unit_tests.h"
 
+// For strcmp
+#include <string.h>
+
 const float deg2rad = 3.14159265f / 180.0f;
 
 namespace hlslpp_unit
