@@ -17,6 +17,10 @@
 #include <chrono>
 #endif
 
+// For the test messages
+#include <string>
+#include <vector>
+
 // Force hlslpp and std to live in the same namespace to account for name clashes and ambiguities
 using namespace std;
 using namespace hlslpp;
@@ -62,6 +66,62 @@ namespace hlslpp
 namespace hlslpp_unit
 {
 	using namespace hlslpp;
+
+	struct Config
+	{
+		Config()
+			: appveyor(false)
+			, anyTestFailed(false)
+		{}
+
+		bool appveyor;
+		bool anyTestFailed;
+	};
+
+	struct CurrentTest
+	{
+		CurrentTest()
+			: testRunning(false)
+			, testPassed(false)
+		{}
+
+		std::string filename;
+		std::string name;
+		bool testRunning;
+		bool testPassed;
+
+		std::vector<std::string> testFailureMessages;
+		std::vector<std::string> testSuccessMessages;
+		std::string scratchAppveyorCommand;
+	};
+
+	struct CurrentTestCase
+	{
+		const char* testString;
+		const char* filename;
+		int lineNumber;
+		bool passed;
+		std::string testFailureMessage;
+	};
+
+	extern Config UnitTestConfig;
+	extern CurrentTest TestState;
+	extern CurrentTestCase TestCaseState;
+
+	#define hlslpp_check(x) \
+		BeginTestCase(#x, __LINE__, __FILE__); \
+		TestCaseState.passed = x; \
+		EndTestCase();
+
+	#define BeginTest(x) BeginTestImpl(x, __FILE__)
+
+	void BeginTestImpl(const char* testName, const char* filename);
+
+	void EndTest();
+
+	void BeginTestCase(const char* testString, int lineNumber, const char* filename);
+
+	void EndTestCase();
 
 	// Copied from https://randomascii.wordpress.com/2014/01/27/theres-only-four-billion-floatsso-test-them-all/
 	union float_t
@@ -111,88 +171,88 @@ namespace hlslpp_unit
 		}
 	};
 
-	void eq(float a, float b, float tolerance = 0.0f);
+	bool eq(float a, float b, float tolerance = 0.0f);
 
-	void eq(const float2& v, float x, float y, float tolerance = 0.0f);
+	bool eq(const float2& v, float x, float y, float tolerance = 0.0f);
 
-	void eq(const float3& v, float x, float y, float z, float tolerance = 0.0f);
+	bool eq(const float3& v, float x, float y, float z, float tolerance = 0.0f);
 
-	void eq(const float4& v, float x, float y, float z, float w, float tolerance = 0.0f);
+	bool eq(const float4& v, float x, float y, float z, float w, float tolerance = 0.0f);
 
 #if defined(HLSLPP_FLOAT8)
 
-	void eq(const float8& v, float x, float y, float z, float w, float a, float b, float c, float d, float tolerance = 0.0f);
+	bool eq(const float8& v, float x, float y, float z, float w, float a, float b, float c, float d, float tolerance = 0.0f);
 
 #endif
 
-	void eq(double a, double b, double tolerance = 0.0);
+	bool eq(double a, double b, double tolerance = 0.0);
 
 #if defined(HLSLPP_DOUBLE)
 
-	void eq(const double2& v, double x, double y, double tolerance = 0.0);
+	bool eq(const double2& v, double x, double y, double tolerance = 0.0);
 
-	void eq(const double3& v, double x, double y, double z, double tolerance = 0.0);
+	bool eq(const double3& v, double x, double y, double z, double tolerance = 0.0);
 
-	void eq(const double4& v, double x, double y, double z, double w, double tolerance = 0.0);
+	bool eq(const double4& v, double x, double y, double z, double w, double tolerance = 0.0);
 
 #endif
 
-	void eq(const float1x1& m, float m00, float tolerance = 0.0f);
+	bool eq(const float1x1& m, float m00, float tolerance = 0.0f);
 
-	void eq(const float1x2& m, float m00, float m01, float tolerance = 0.0f);
+	bool eq(const float1x2& m, float m00, float m01, float tolerance = 0.0f);
 
-	void eq(const float1x3& m, float m00, float m01, float m02, float tolerance = 0.0f);
+	bool eq(const float1x3& m, float m00, float m01, float m02, float tolerance = 0.0f);
 
-	void eq(const float1x4& m, float m00, float m01, float m02, float m03, float tolerance = 0.0f);
+	bool eq(const float1x4& m, float m00, float m01, float m02, float m03, float tolerance = 0.0f);
 
-	void eq(const float2x1& m, float m00, float m01, float tolerance = 0.0f);
+	bool eq(const float2x1& m, float m00, float m01, float tolerance = 0.0f);
 
-	void eq(const float2x2& m,
+	bool eq(const float2x2& m,
 		float m00, float m01,
 		float m10, float m11, float tolerance = 0.0f);
 
-	void eq(const float2x3& m,
+	bool eq(const float2x3& m,
 		float m00, float m01, float m02,
 		float m10, float m11, float m12, float tolerance = 0.0f);
 
-	void eq(const float2x4& m,
+	bool eq(const float2x4& m,
 		float m00, float m01, float m02, float m03,
 		float m10, float m11, float m12, float m13, float tolerance = 0.0f);
 
-	void eq(const float3x1& m, float m00, float m01, float m02, float tolerance = 0.0f);
+	bool eq(const float3x1& m, float m00, float m01, float m02, float tolerance = 0.0f);
 
-	void eq(const float3x2& m, 
-		float m00, float m01, 
+	bool eq(const float3x2& m,
+		float m00, float m01,
 		float m10, float m11,
 		float m20, float m21, float tolerance = 0.0f);
 
-	void eq(const float3x3& m,
+	bool eq(const float3x3& m,
 		float m00, float m01, float m02,
 		float m10, float m11, float m12,
 		float m20, float m21, float m22, float tolerance = 0.0f);
 
-	void eq(const float3x4& m,
+	bool eq(const float3x4& m,
 		float m00, float m01, float m02, float m03,
 		float m10, float m11, float m12, float m13,
 		float m20, float m21, float m22, float m23, 
 		float tolerance = 0.0f);
 
-	void eq(const float4x1& m, float m00, float m01, float m02, float m03, float tolerance = 0.0f);
+	bool eq(const float4x1& m, float m00, float m01, float m02, float m03, float tolerance = 0.0f);
 
-	void eq(const float4x2& m, 
+	bool eq(const float4x2& m,
 		float m00, float m01,
 		float m10, float m11,
 		float m20, float m21,
 		float m30, float m31, float tolerance = 0.0f);
 
-	void eq(const float4x3& m,
+	bool eq(const float4x3& m,
 		float m00, float m01, float m02,
 		float m10, float m11, float m12,
 		float m20, float m21, float m22,
 		float m30, float m31, float m32, 
 		float tolerance = 0.0f);
 
-	void eq(const float4x4& m,
+	bool eq(const float4x4& m,
 		float m00, float m01, float m02, float m03,
 		float m10, float m11, float m12, float m13,
 		float m20, float m21, float m22, float m23,
@@ -203,31 +263,31 @@ namespace hlslpp_unit
 
 	double div(double a, double b);
 
-	void eq(bool a, bool c);
+	bool eq(bool a, bool c);
 
-	void eq(float a, bool c);
+	bool eq(float a, bool c);
 
-	void eq(const float2& v, bool x, bool y);
+	bool eq(const float2& v, bool x, bool y);
 
-	void eq(const float3& v, bool x, bool y, bool z);
+	bool eq(const float3& v, bool x, bool y, bool z);
 
-	void eq(const float4& v, bool x, bool y, bool z, bool w);
+	bool eq(const float4& v, bool x, bool y, bool z, bool w);
 
-	void eq(int32_t a, int32_t b);
+	bool eq(int32_t a, int32_t b);
 
-	void eq(const int2& v, int32_t x, int32_t y);
+	bool eq(const int2& v, int32_t x, int32_t y);
 
-	void eq(const int3& v, int32_t x, int32_t y, int32_t z);
+	bool eq(const int3& v, int32_t x, int32_t y, int32_t z);
 
-	void eq(const int4& v, int32_t x, int32_t y, int32_t z, int32_t w);
+	bool eq(const int4& v, int32_t x, int32_t y, int32_t z, int32_t w);
 
-    void eq(uint32_t a, uint32_t b);
+	bool eq(uint32_t a, uint32_t b);
 
-    void eq(const uint2& v, uint32_t x, uint32_t y);
+	bool eq(const uint2& v, uint32_t x, uint32_t y);
 
-    void eq(const uint3& v, uint32_t x, uint32_t y, uint32_t z);
+	bool eq(const uint3& v, uint32_t x, uint32_t y, uint32_t z);
 
-    void eq(const uint4& v, uint32_t x, uint32_t y, uint32_t z, uint32_t w);
+	bool eq(const uint4& v, uint32_t x, uint32_t y, uint32_t z, uint32_t w);
 
 	int32_t shift_left(int32_t a, int32_t b);
 

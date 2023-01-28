@@ -112,6 +112,14 @@ build_script:
         xcodebuild build -project unit_tests.xcodeproj -configuration Release;
         popd; fi;
 
+test_script:
+  - cmd: if not "%PLATFORM%"=="Android ARM"
+         if not "%PLATFORM%"=="Android ARM64"
+         if not "%PLATFORM%"=="MSVC ARM"
+         if not "%PLATFORM%"=="MSVC ARM64"
+         if not "%PLATFORM%"=="MSVC ARM"
+         "workspace/vs%vsversion%/bin/%PLATFORM%/%CONFIGURATION%/unit_tests.exe" "unit_tests" "appveyor"
+
 #matrix:
 #  exclude:
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
