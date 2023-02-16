@@ -1165,6 +1165,13 @@ namespace hlslpp
 	template<int X, int Y, int Z, int W> hlslpp_inline float4 isinf(const swizzle4<X, Y, Z, W>& s) { return isinf(float4(s)); }
 	template<int X, int Y, int Z, int W> hlslpp_inline float4 isnan(const swizzle4<X, Y, Z, W>& s) { return isnan(float4(s)); }
 
+	template<int X, int Y> hlslpp_inline float1 operator == (const swizzle1<X>& f1, const swizzle1<Y>& f2) { return float1(f1) == float1(f2); }
+	template<int X, int Y> hlslpp_inline float1 operator != (const swizzle1<X>& f1, const swizzle1<Y>& f2) { return float1(f1) != float1(f2); }
+	template<int X, int Y> hlslpp_inline float1 operator >  (const swizzle1<X>& f1, const swizzle1<Y>& f2) { return float1(f1) >  float1(f2); }
+	template<int X, int Y> hlslpp_inline float1 operator >= (const swizzle1<X>& f1, const swizzle1<Y>& f2) { return float1(f1) >= float1(f2); }
+	template<int X, int Y> hlslpp_inline float1 operator <  (const swizzle1<X>& f1, const swizzle1<Y>& f2) { return float1(f1) <  float1(f2); }
+	template<int X, int Y> hlslpp_inline float1 operator <= (const swizzle1<X>& f1, const swizzle1<Y>& f2) { return float1(f1) <= float1(f2); }
+
 	template<int X>
 	swizzle1<X>& swizzle1<X>::operator = (const float1& f)
 	{

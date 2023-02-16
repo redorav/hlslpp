@@ -355,11 +355,17 @@ void RunUnitTestsVectorInt()
 		int3 iveq3 = ivfoo3 == ivfoo3;  hlslpp_check(eq(all(iveq3), true));
 		int4 iveq4 = ivfoo4 == ivfoo4;  hlslpp_check(eq(all(iveq4), true));
 
+		// Equality
+		int1 ivneq1 = ivfoo1 != ivfoo1;  hlslpp_check(eq(any(ivneq1), false));
+		int2 ivneq2 = ivfoo2 != ivfoo2;  hlslpp_check(eq(any(ivneq2), false));
+		int3 ivneq3 = ivfoo3 != ivfoo3;  hlslpp_check(eq(any(ivneq3), false));
+		int4 ivneq4 = ivfoo4 != ivfoo4;  hlslpp_check(eq(any(ivneq4), false));
+
 		// Less
-		int1 ivls1 = ivfoo1 < (ivfoo1 + int1(1));           hlslpp_check(eq(all(ivls1), true));
-		int2 ivls2 = ivfoo2 < (ivfoo2 + int2(1, 1));        hlslpp_check(eq(all(ivls2), true));
-		int3 ivls3 = ivfoo3 < (ivfoo3 + int3(1, 1, 1));     hlslpp_check(eq(all(ivls3), true));
-		int4 ivls4 = ivfoo4 < (ivfoo4 + int4(1, 1, 1, 1));  hlslpp_check(eq(all(ivls4), true));
+		int1 ivlt1 = ivfoo1 < (ivfoo1 + int1(1));           hlslpp_check(eq(all(ivlt1), true));
+		int2 ivlt2 = ivfoo2 < (ivfoo2 + int2(1, 1));        hlslpp_check(eq(all(ivlt2), true));
+		int3 ivlt3 = ivfoo3 < (ivfoo3 + int3(1, 1, 1));     hlslpp_check(eq(all(ivlt3), true));
+		int4 ivlt4 = ivfoo4 < (ivfoo4 + int4(1, 1, 1, 1));  hlslpp_check(eq(all(ivlt4), true));
 
 		// Less or equal
 		int1 ivle1 = ivfoo1 <= (ivfoo1 + int1(0));           hlslpp_check(eq(all(ivle1), true));
@@ -378,6 +384,11 @@ void RunUnitTestsVectorInt()
 		int2 ivge2 = ivfoo2 >= (ivfoo2 - int2(1, 0));        hlslpp_check(eq(all(ivge2), true));
 		int3 ivge3 = ivfoo3 >= (ivfoo3 - int3(0, 1, 0));     hlslpp_check(eq(all(ivge3), true));
 		int4 ivge4 = ivfoo4 >= (ivfoo4 - int4(1, 0, 1, 0));  hlslpp_check(eq(all(ivge4), true));
+
+		// Checking that swizzle1 comparison operators are correctly overloaded
+		if (iveq1.x == ivlt1.x)
+		{
+		}
 	}
 	hlslpp_unit::EndTest();
 

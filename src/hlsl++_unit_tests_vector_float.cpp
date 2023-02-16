@@ -402,6 +402,16 @@ void RunUnitTestsVectorFloat()
 
 	hlslpp_unit::BeginTest("Float Comparison");
 	{
+		float1 veq1 = vfoo1 == vbar1;			hlslpp_check(eq(veq1, (float)vfoo1.x == (float)vbar1.x));
+		float2 veq2 = vfoo2 == vbar2;			hlslpp_check(eq(veq2, (float)vfoo2.x == (float)vbar2.x, (float)vfoo2.y == (float)vbar2.y));
+		float3 veq3 = vfoo3 == vbar3;			hlslpp_check(eq(veq3, (float)vfoo3.x == (float)vbar3.x, (float)vfoo3.y == (float)vbar3.y, (float)vfoo3.z == (float)vbar3.z));
+		float4 veq4 = vfoo4 == vbar4;			hlslpp_check(eq(veq4, (float)vfoo4.x == (float)vbar4.x, (float)vfoo4.y == (float)vbar4.y, (float)vfoo4.z == (float)vbar4.z, (float)vfoo4.w == (float)vbar4.w));
+
+		float1 vneq1 = vfoo1 != vbar1;			hlslpp_check(eq(vneq1, (float)vfoo1.x != (float)vbar1.x));
+		float2 vneq2 = vfoo2 != vbar2;			hlslpp_check(eq(vneq2, (float)vfoo2.x != (float)vbar2.x, (float)vfoo2.y != (float)vbar2.y));
+		float3 vneq3 = vfoo3 != vbar3;			hlslpp_check(eq(vneq3, (float)vfoo3.x != (float)vbar3.x, (float)vfoo3.y != (float)vbar3.y, (float)vfoo3.z != (float)vbar3.z));
+		float4 vneq4 = vfoo4 != vbar4;			hlslpp_check(eq(vneq4, (float)vfoo4.x != (float)vbar4.x, (float)vfoo4.y != (float)vbar4.y, (float)vfoo4.z != (float)vbar4.z, (float)vfoo4.w != (float)vbar4.w));
+
 		float1 vgt1 = vfoo1 > vbar1;			hlslpp_check(eq(vgt1, (float)vfoo1.x > (float)vbar1.x));
 		float2 vgt2 = vfoo2 > vbar2;			hlslpp_check(eq(vgt2, (float)vfoo2.x > (float)vbar2.x, (float)vfoo2.y > (float)vbar2.y));
 		float3 vgt3 = vfoo3 > vbar3;			hlslpp_check(eq(vgt3, (float)vfoo3.x > (float)vbar3.x, (float)vfoo3.y > (float)vbar3.y, (float)vfoo3.z > (float)vbar3.z));
@@ -422,15 +432,10 @@ void RunUnitTestsVectorFloat()
 		float3 vle3 = vfoo3 <= vbar3;			hlslpp_check(eq(vle3, (float)vfoo3.x <= (float)vbar3.x, (float)vfoo3.y <= (float)vbar3.y, (float)vfoo3.z <= (float)vbar3.z));
 		float4 vle4 = vfoo4 <= vbar4;			hlslpp_check(eq(vle4, (float)vfoo4.x <= (float)vbar4.x, (float)vfoo4.y <= (float)vbar4.y, (float)vfoo4.z <= (float)vbar4.z, (float)vfoo4.w <= (float)vbar4.w));
 
-		float1 veq1 = vfoo1 == vbar1;			hlslpp_check(eq(veq1, (float)vfoo1.x == (float)vbar1.x));
-		float2 veq2 = vfoo2 == vbar2;			hlslpp_check(eq(veq2, (float)vfoo2.x == (float)vbar2.x, (float)vfoo2.y == (float)vbar2.y));
-		float3 veq3 = vfoo3 == vbar3;			hlslpp_check(eq(veq3, (float)vfoo3.x == (float)vbar3.x, (float)vfoo3.y == (float)vbar3.y, (float)vfoo3.z == (float)vbar3.z));
-		float4 veq4 = vfoo4 == vbar4;			hlslpp_check(eq(veq4, (float)vfoo4.x == (float)vbar4.x, (float)vfoo4.y == (float)vbar4.y, (float)vfoo4.z == (float)vbar4.z, (float)vfoo4.w == (float)vbar4.w));
-
-		float1 vneq1 = vfoo1 != vbar1;			hlslpp_check(eq(vneq1, (float)vfoo1.x != (float)vbar1.x));
-		float2 vneq2 = vfoo2 != vbar2;			hlslpp_check(eq(vneq2, (float)vfoo2.x != (float)vbar2.x, (float)vfoo2.y != (float)vbar2.y));
-		float3 vneq3 = vfoo3 != vbar3;			hlslpp_check(eq(vneq3, (float)vfoo3.x != (float)vbar3.x, (float)vfoo3.y != (float)vbar3.y, (float)vfoo3.z != (float)vbar3.z));
-		float4 vneq4 = vfoo4 != vbar4;			hlslpp_check(eq(vneq4, (float)vfoo4.x != (float)vbar4.x, (float)vfoo4.y != (float)vbar4.y, (float)vfoo4.z != (float)vbar4.z, (float)vfoo4.w != (float)vbar4.w));
+		// Checking that swizzle1 comparison operators are correctly overloaded
+		if (vgt1.x == vlt1.x)
+		{
+		}
 	}
 	hlslpp_unit::EndTest();
 

@@ -431,6 +431,13 @@ namespace hlslpp
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator == (const uint1& f1, T f2) { return f1 == uint1(f2); }
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator == (T f1, const uint1& f2) { return uint1(f1) == f2; }
 
+	template<int X, int Y> hlslpp_inline uint1 operator == (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) == uint1(i2); }
+	template<int X, int Y> hlslpp_inline uint1 operator != (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) != uint1(i2); }
+	template<int X, int Y> hlslpp_inline uint1 operator >  (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) >  uint1(i2); }
+	template<int X, int Y> hlslpp_inline uint1 operator >= (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) >= uint1(i2); }
+	template<int X, int Y> hlslpp_inline uint1 operator <  (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) <  uint1(i2); }
+	template<int X, int Y> hlslpp_inline uint1 operator <= (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) <= uint1(i2); }
+
 	template<int X>
 	uswizzle1<X>& uswizzle1<X>::operator = (const uint1& i)
 	{

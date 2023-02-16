@@ -433,6 +433,13 @@ namespace hlslpp
 
 	template<int X> hlslpp_inline int1 abs(const iswizzle1<X>& s) { return abs(int1(s)); }
 
+	template<int X, int Y> hlslpp_inline int1 operator == (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) == int1(i2); }
+	template<int X, int Y> hlslpp_inline int1 operator != (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) != int1(i2); }
+	template<int X, int Y> hlslpp_inline int1 operator >  (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) >  int1(i2); }
+	template<int X, int Y> hlslpp_inline int1 operator >= (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) >= int1(i2); }
+	template<int X, int Y> hlslpp_inline int1 operator <  (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) <  int1(i2); }
+	template<int X, int Y> hlslpp_inline int1 operator <= (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) <= int1(i2); }
+
 	template<int X>
 	iswizzle1<X>& iswizzle1<X>::operator = (const int1& i)
 	{
