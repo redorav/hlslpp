@@ -107,7 +107,7 @@ namespace hlslpp
 
 		hlslpp_inline float1x3& operator = (const float1x3& m) hlslpp_noexcept { vec = m.vec; return *this; }
 
-		hlslpp_inline float1x3(float2x1&& m) hlslpp_noexcept : vec(m.vec) {}
+		hlslpp_inline float1x3(float1x3&& m) hlslpp_noexcept : vec(m.vec) {}
 		hlslpp_inline float1x3& operator = (float1x3&& m) hlslpp_noexcept { vec = m.vec; return *this; }
 
 		union
