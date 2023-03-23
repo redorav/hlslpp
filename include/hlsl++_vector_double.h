@@ -1,10 +1,10 @@
 #pragma once
 
+#include "hlsl++_common.h"
+
 //---------------//
 // Double Vector //
 //---------------//
-
-#include "hlsl++_common.h"
 
 #if defined(HLSLPP_DOUBLE)
 

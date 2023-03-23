@@ -443,14 +443,14 @@ namespace hlslpp
 	template<int X>
 	iswizzle1<X>& iswizzle1<X>::operator = (const int1& i)
 	{
-		vec = _hlslpp_blend_epi32(vec, (swizzle<0, X>(i.vec)), HLSLPP_COMPONENT_X(X)); return *this;
+		vec = _hlslpp_blend_epi32(vec, hlslpp_iswizzle1_swizzle(0, X, i.vec), HLSLPP_COMPONENT_X(X)); return *this;
 	}
 
 	template<int X, int Y>
 	iswizzle2<X, Y>& iswizzle2<X, Y>::operator = (const int2& i)
 	{
 		staticAsserts();
-		vec = blend(vec, swizzle<0, 1, X, Y>(i.vec));
+		vec = hlslpp_iswizzle2_blend(vec, hlslpp_iswizzle2_swizzle(0, 1, X, Y, i.vec));
 		return *this;
 	}
 
@@ -458,7 +458,7 @@ namespace hlslpp
 	iswizzle3<X, Y, Z>& iswizzle3<X, Y, Z>::operator = (const int3& i)
 	{
 		staticAsserts();
-		vec = blend(vec, swizzle<0, 1, 2, X, Y, Z>(i.vec));
+		vec = hlslpp_iswizzle3_blend(vec, hlslpp_iswizzle3_swizzle(0, 1, 2, X, Y, Z, i.vec));
 		return *this;
 	}
 
@@ -466,7 +466,7 @@ namespace hlslpp
 	iswizzle4<X, Y, Z, W>& iswizzle4<X, Y, Z, W>::operator = (const int4& i)
 	{
 		staticAsserts();
-		vec = swizzle<0, 1, 2, 3, X, Y, Z, W>(i.vec);
+		vec = hlslpp_iswizzle4_swizzle(0, 1, 2, 3, X, Y, Z, W, i.vec);
 		return *this;
 	}
 

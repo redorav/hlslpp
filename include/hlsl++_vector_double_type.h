@@ -32,7 +32,7 @@ namespace hlslpp
 			vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], _hlslpp_set1_pd(f), HLSLPP_COMPONENT_X(X % 2));
 			return *this;
 		}
-		
+
 		// Revise these functions. Can I not do with swizzle?
 
 		template<int A>
@@ -288,7 +288,7 @@ namespace hlslpp
 		{
 			static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
 		}
-		
+
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
 		template<int SrcA, int SrcB, int SrcC, int SrcD>
@@ -336,13 +336,6 @@ namespace hlslpp
 		{
 			staticAsserts();
 			swizzle_all<A, B, C, D>(s);
-			return *this;
-		}
-
-		hlslpp_inline dswizzle4& operator = (const dswizzle4<X, Y, Z, W>& s)
-		{
-			staticAsserts();
-			swizzle_all<X, Y, Z, W>(s);
 			return *this;
 		}
 		

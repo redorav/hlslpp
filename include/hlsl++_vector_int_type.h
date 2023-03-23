@@ -13,21 +13,8 @@ namespace hlslpp
 	
 		hlslpp_inline operator int32_t() const { return i32[X]; }
 	
-		// Helper
-	
-		template<int E, int A>
-		static hlslpp_inline n128i swizzle(n128i v)
-		{
-			const int finalMask = (((IdentityMask >> 2 * E) & 3) << 2 * A) | (IdentityMask & ~((3 << 2 * A)));
-			return _hlslpp_perm_epi32(v, finalMask);
-		}
-	
-		template<int E, int A>
-		hlslpp_inline n128i swizzle() const
-		{
-			return swizzle<E, A>(vec);
-		}
-	
+		#define hlslpp_iswizzle1_swizzle(E, A, v) _hlslpp_perm_epi32(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | (IdentityMask & ~((3 << 2 * A))))
+
 		// Assignment
 
 		hlslpp_inline iswizzle1& operator = (int32_t i)
@@ -37,7 +24,7 @@ namespace hlslpp
 		}
 
 		// Revise these functions. Can I not do with swizzle?
-	
+
 		template<int A>
 		hlslpp_inline iswizzle1& operator = (const iswizzle1<A>& s)
 		{
@@ -52,10 +39,9 @@ namespace hlslpp
 			vec = _hlslpp_blend_epi32(vec, t, HLSLPP_COMPONENT_X(X));
 			return *this;
 		}
-	
+
 		hlslpp_inline iswizzle1& operator = (const int1& i);
-	
-	private:
+
 		union
 		{
 			n128i vec;
@@ -74,26 +60,13 @@ namespace hlslpp
 			static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
 		}
 
-		static hlslpp_inline n128i blend(n128i x, n128i y)
-		{
-			return _hlslpp_blend_epi32(x, y, HLSLPP_COMPONENT_XY(X, Y)); // Select based on property mask
-		}
+		#define hlslpp_iswizzle2_swizzle(E, F, A, B, v) \
+			_hlslpp_perm_epi32(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | \
+			                      (((IdentityMask >> 2 * F) & 3) << 2 * B) | \
+			                      (IdentityMask & ~((3 << 2 * A) | (3 << 2 * B))))
 
-		template<int E, int F, int A, int B>
-		static hlslpp_inline n128i swizzle(n128i v)
-		{
-			const int finalMask =
-				(((IdentityMask >> 2 * E) & 3) << 2 * A) |
-				(((IdentityMask >> 2 * F) & 3) << 2 * B) |
-				(IdentityMask & ~((3 << 2 * A) | (3 << 2 * B)));
-			return _hlslpp_perm_epi32(v, finalMask);
-		}
-
-		template<int E, int F, int A, int B>
-		hlslpp_inline n128i swizzle() const
-		{
-			return swizzle<E, F, A, B>(vec);
-		}
+		// Select based on property mask
+		#define hlslpp_iswizzle2_blend(x, y) _hlslpp_blend_epi32(x, y, HLSLPP_COMPONENT_XY(X, Y))
 
 		// Assignment
 
@@ -101,25 +74,20 @@ namespace hlslpp
 		hlslpp_inline iswizzle2& operator = (const iswizzle2<A, B>& s)
 		{
 			staticAsserts();
-			vec = blend(vec, s.template swizzle<A, B, X, Y>());
+			vec = hlslpp_iswizzle2_blend(vec, hlslpp_iswizzle2_swizzle(A, B, X, Y, s.vec));
 			return *this;
 		}
 
 		hlslpp_inline iswizzle2& operator = (const iswizzle2<X, Y>& s)
 		{
 			staticAsserts();
-			vec = blend(vec, s.template swizzle<X, Y, X, Y>());
+			vec = hlslpp_iswizzle2_blend(vec, hlslpp_iswizzle2_swizzle(X, Y, X, Y, s.vec));
 			return *this;
 		}
 
 		hlslpp_inline iswizzle2& operator = (const int2& i);
 
-	private:
-		union
-		{
-			n128i vec;
-			int32_t i32[4];
-		};
+		n128i vec;
 	};
 
 	template<int X, int Y, int Z>
@@ -132,27 +100,14 @@ namespace hlslpp
 			static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
 		}
 
-		static hlslpp_inline n128i blend(n128i x, n128i y)
-		{
-			return _hlslpp_blend_epi32(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z)); // Select based on property mask
-		}
+		#define hlslpp_iswizzle3_swizzle(E, F, G, A, B, C, v) \
+			_hlslpp_perm_epi32(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | \
+			                      (((IdentityMask >> 2 * F) & 3) << 2 * B) | \
+			                      (((IdentityMask >> 2 * G) & 3) << 2 * C) | \
+			                      (IdentityMask & ~((3 << 2 * A) | (3 << 2 * B) | (3 << 2 * C))))
 
-		template<int E, int F, int G, int A, int B, int C>
-		static hlslpp_inline n128i swizzle(n128i v)
-		{
-			const int finalMask =
-				(((IdentityMask >> 2 * E) & 3) << 2 * A) |
-				(((IdentityMask >> 2 * F) & 3) << 2 * B) |
-				(((IdentityMask >> 2 * G) & 3) << 2 * C) |
-				(IdentityMask & ~((3 << 2 * A) | (3 << 2 * B) | (3 << 2 * C)));
-			return _hlslpp_perm_epi32(v, finalMask);
-		}
-
-		template<int E, int F, int G, int A, int B, int C>
-		hlslpp_inline n128i swizzle() const
-		{
-			return swizzle<E, F, G, A, B, C>(vec);
-		}
+		// Select based on property mask
+		#define hlslpp_iswizzle3_blend(x, y) _hlslpp_blend_epi32(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z))
 
 		// Assignment
 
@@ -160,25 +115,20 @@ namespace hlslpp
 		hlslpp_inline iswizzle3& operator = (const iswizzle3<A, B, C>& s)
 		{
 			staticAsserts();
-			vec = blend(vec, s.template swizzle<A, B, C, X, Y, Z>());
+			vec = hlslpp_iswizzle3_blend(vec, hlslpp_iswizzle3_swizzle(A, B, C, X, Y, Z, s.vec));
 			return *this;
 		}
 
 		hlslpp_inline iswizzle3& operator = (const iswizzle3<X, Y, Z>& s)
 		{
 			staticAsserts();
-			vec = blend(vec, s.template swizzle<X, Y, Z, X, Y, Z>());
+			vec = hlslpp_iswizzle3_blend(vec, hlslpp_iswizzle3_swizzle(X, Y, Z, X, Y, Z, s.vec));
 			return *this;
 		}
 
 		hlslpp_inline iswizzle3& operator = (const int3& i);
 
-	private:
-		union
-		{
-			n128i vec;
-			int32_t i32[4];
-		};
+		n128i vec;
 	};
 
 	template<int X, int Y, int Z, int W>
@@ -191,23 +141,11 @@ namespace hlslpp
 			static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
 		}
 
-		template<int E, int F, int G, int H, int A, int B, int C, int D>
-		static hlslpp_inline n128i swizzle(n128i v)
-		{
-			const int finalMask =
-				(((IdentityMask >> 2 * E) & 3) << (2 * A)) |
-				(((IdentityMask >> 2 * F) & 3) << (2 * B)) |
-				(((IdentityMask >> 2 * G) & 3) << (2 * C)) |
-				(((IdentityMask >> 2 * H) & 3) << (2 * D));
-
-			return _hlslpp_perm_epi32(v, finalMask);
-		}
-
-		template<int E, int F, int G, int H, int A, int B, int C, int D>
-		hlslpp_inline n128i swizzle() const
-		{
-			return swizzle<E, F, G, H, A, B, C, D>(vec);
-		}
+		#define hlslpp_iswizzle4_swizzle(E, F, G, H, A, B, C, D, v) \
+			_hlslpp_perm_epi32(v, (((IdentityMask >> 2 * E) & 3) << (2 * A)) | \
+			                      (((IdentityMask >> 2 * F) & 3) << (2 * B)) | \
+			                      (((IdentityMask >> 2 * G) & 3) << (2 * C)) | \
+			                      (((IdentityMask >> 2 * H) & 3) << (2 * D)))
 
 		// Assignment
 
@@ -215,25 +153,13 @@ namespace hlslpp
 		hlslpp_inline iswizzle4& operator = (const iswizzle4<A, B, C, D>& s)
 		{
 			staticAsserts();
-			vec = s.template swizzle<A, B, C, D, X, Y, Z, W>();
-			return *this;
-		}
-
-		hlslpp_inline iswizzle4& operator = (const iswizzle4<X, Y, Z, W>& s)
-		{
-			staticAsserts();
-			vec = s.template swizzle<X, Y, Z, W, X, Y, Z, W>();
+			vec = hlslpp_iswizzle4_swizzle(A, B, C, D, X, Y, Z, W, s.vec);
 			return *this;
 		}
 
 		hlslpp_inline iswizzle4& operator = (const int4& i);
 
-	private:
-		union
-		{
-			n128i vec;
-			int32_t i32[4];
-		};
+		n128i vec;
 	};
 
 	struct hlslpp_nodiscard int1
@@ -245,7 +171,8 @@ namespace hlslpp
 		template<typename T>
 		hlslpp_inline int1(T i, hlslpp_enable_if_number(T)) hlslpp_noexcept : vec(_hlslpp_set_epi32((int)i, 0, 0, 0)) {}
 
-		template<int X> hlslpp_inline int1(const iswizzle1<X>& s) hlslpp_noexcept : vec(s.template swizzle<X, 0>()) {}
+		template<int X> hlslpp_inline int1(const iswizzle1<X>& s) hlslpp_noexcept
+			: vec(hlslpp_iswizzle1_swizzle(X, 0, s.vec)) {}
 
 		hlslpp_inline int1(const float1& f) hlslpp_noexcept;
 
@@ -293,7 +220,8 @@ namespace hlslpp
 
 		hlslpp_inline int2(const int1& i1, const int1& i2) hlslpp_noexcept { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
 		
-		template<int X, int Y> hlslpp_inline int2(const iswizzle2<X, Y>& s) hlslpp_noexcept : vec(s.template swizzle<X, Y, 0, 1>()) {}
+		template<int X, int Y> hlslpp_inline int2(const iswizzle2<X, Y>& s) hlslpp_noexcept
+			: vec(hlslpp_iswizzle2_swizzle(X, Y, 0, 1, s.vec)) {}
 
 		hlslpp_inline int2(const float2& f) hlslpp_noexcept;
 
@@ -344,7 +272,8 @@ namespace hlslpp
 		hlslpp_inline int3(const int1& i1, const int2& i2) hlslpp_noexcept { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxyx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
 
 		template<int X, int Y, int Z>
-		hlslpp_inline int3(const iswizzle3<X, Y, Z>& s) hlslpp_noexcept : vec(s.template swizzle<X, Y, Z, 0, 1, 2>()) {}
+		hlslpp_inline int3(const iswizzle3<X, Y, Z>& s) hlslpp_noexcept
+			: vec(hlslpp_iswizzle3_swizzle(X, Y, Z, 0, 1, 2, s.vec)) {}
 
 		hlslpp_inline int3(const float3& f) hlslpp_noexcept;
 
@@ -406,7 +335,8 @@ namespace hlslpp
 		hlslpp_inline int4(const int3& i1, const int1& i2) hlslpp_noexcept { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
 
 		template<int X, int Y, int Z, int W>
-		hlslpp_inline int4(const iswizzle4<X, Y, Z, W>& s) hlslpp_noexcept : vec(s.template swizzle<X, Y, Z, W, 0, 1, 2, 3>()) {}
+		hlslpp_inline int4(const iswizzle4<X, Y, Z, W>& s) hlslpp_noexcept
+			: vec(hlslpp_iswizzle4_swizzle(X, Y, Z, W, 0, 1, 2, 3, s.vec)) {}
 
 		hlslpp_inline int4(const float4& f) hlslpp_noexcept;
 
