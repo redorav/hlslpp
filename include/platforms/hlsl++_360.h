@@ -101,7 +101,7 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_sel_ps(x, y, mask)				__vsel((x), (y), (mask))
 
-#define _hlslpp_blend_ps(x, y, mask)			__vsel((x), (y), __vset(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)))
+#define _hlslpp_blend_ps(x, y, mask)			__vsel((x), (y), __vset(~(((mask) & 1) * 0xffffffff), ~((((mask) >> 1) & 1) * 0xffffffff), ~((((mask) >> 2) & 1) * 0xffffffff), ~((((mask) >> 3) & 1) * 0xffffffff)))
 
 #define _hlslpp_trunc_ps(x)						__vrfiz((x))
 #define _hlslpp_floor_ps(x)						__vrfim((x))
@@ -123,8 +123,8 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_movehl_ps(x, y)					__vperm((y), (x), __vset(2, 3, 2, 3))
 #define _hlslpp_movehdup_ps(x)					__vpermwi((x), VPERMWI_CONST(1, 1, 3, 3))
 
-#define _hlslpp_perm_ps(x, mask)				__vpermwi((x), mask)
-#define _hlslpp_shuffle_ps(x, y, mask)			__vperm((x), (y), __vset(mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3))
+#define _hlslpp_perm_ps(x, mask)				__vpermwi((x), (mask))
+#define _hlslpp_shuffle_ps(x, y, mask)			__vperm((x), (y), __vset((mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3))
 
 #define _hlslpp_unpacklo_ps(x, y)				__vmrghw((x), (y))
 #define _hlslpp_unpackhi_ps(x, y)				__vmrglw((x), (y))
@@ -251,8 +251,8 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 {
 	n128i mask = __vcmpgtsw(__vzero(), x);
-	n128i sum = __vaddsws(x, mask);
-	return __vxor(sum, mask);
+	n128i sum = __vaddsws(x, (mask));
+	return __vxor(sum, (mask));
 }
 
 #define _hlslpp_cmpeq_epi32(x, y)				__vcmpequw((x), (y))
@@ -280,8 +280,8 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 #define _hlslpp_or_si128(x, y)					__vor((x), (y))
 #define _hlslpp_xor_si128(x, y)					__vxor((x), (y))
 
-#define _hlslpp_perm_epi32(x, mask)				__vpermwi((x), mask)
-#define _hlslpp_shuffle_epi32(x, y, mask)		__vperm((x), (y), __vset(mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3))
+#define _hlslpp_perm_epi32(x, mask)				__vpermwi((x), (mask))
+#define _hlslpp_shuffle_epi32(x, y, mask)		__vperm((x), (y), __vset((mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3))
 
 // There are no intrinsics to reinterpret cast like these do as integer and float are all in the same __vector4 structure
 #define _hlslpp_castps_si128(x)					((x))

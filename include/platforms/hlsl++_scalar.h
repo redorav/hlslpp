@@ -180,7 +180,7 @@ namespace hlslpp
 		return vector_float4(A == 1 ? v2.m[0] : v1.m[0], B == 1 ? v2.m[1] : v1.m[1], C == 1 ? v2.m[2] : v1.m[2], D == 1 ? v2.m[3] : v1.m[3]);
 	}
 
-#define _hlslpp_blend_ps(x, y, msk)				blend4<msk & 1, (msk >> 1) & 1, (msk >> 2) & 1, (msk >> 3) & 1>((x), (y))
+#define _hlslpp_blend_ps(x, y, msk)				blend4<(msk) & 1, ((msk) >> 1) & 1, ((msk) >> 2) & 1, ((msk) >> 3) & 1>((x), (y))
 
 	hlslpp_inline vector_float4 _hlslpp_trunc_ps(const vector_float4& v)
 	{
@@ -298,8 +298,8 @@ namespace hlslpp
 		return vector_float4(v1.m[A], v1.m[B], v2.m[C], v2.m[D]);
 	}
 
-#define _hlslpp_perm_ps(x, msk)					perm4<msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3>((x))
-#define _hlslpp_shuffle_ps(x, y, msk)			shuf4<msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3>((x), (y))
+#define _hlslpp_perm_ps(x, msk)					perm4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x))
+#define _hlslpp_shuffle_ps(x, y, msk)			shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y))
 
 	hlslpp_inline vector_float4 _hlslpp_unpacklo_ps(const vector_float4& v1, const vector_float4& v2)
 	{
@@ -613,8 +613,8 @@ namespace hlslpp
 	}
 
 	// https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epi32(x, msk)				perm4<msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3>((x))
-#define _hlslpp_shuffle_epi32(x, y, msk)		shuf4<msk & 3, (msk >> 2) & 3, (msk >> 4) & 3, (msk >> 6) & 3>((x), (y))
+#define _hlslpp_perm_epi32(x, msk)				perm4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x))
+#define _hlslpp_shuffle_epi32(x, y, msk)		shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y))
 
 	hlslpp_inline vector_int4 select4(const vector_int4& v1, const vector_int4& v2, const vector_int4& msk)
 	{
@@ -630,7 +630,7 @@ namespace hlslpp
 		return vector_int4(A == 1 ? v2.m[0] : v1.m[0], B == 1 ? v2.m[1] : v1.m[1], C == 1 ? v2.m[2] : v1.m[2], D == 1 ? v2.m[3] : v1.m[3]);
 	}
 
-#define _hlslpp_blend_epi32(x, y, msk)			blend4<msk & 1, (msk >> 1) & 1, (msk >> 2) & 1, (msk >> 3) & 1>((x), (y))
+#define _hlslpp_blend_epi32(x, y, msk)			blend4<(msk) & 1, ((msk) >> 1) & 1, ((msk) >> 2) & 1, ((msk) >> 3) & 1>((x), (y))
 
 	hlslpp_inline vector_int4 _hlslpp_castps_si128(const vector_float4& v)
 	{
@@ -858,7 +858,7 @@ namespace hlslpp
 		return vector_uint4(msk.x == 0 ? v1.x : v2.x, msk.y == 0 ? v1.y : v2.y, msk.z == 0 ? v1.z : v2.z, msk.w == 0 ? v1.w : v2.w);
 	}
 
-#define _hlslpp_blend_epu32(x, y, msk)			blend4<msk & 1, (msk >> 1) & 1, (msk >> 2) & 1, (msk >> 3) & 1>((x), (y))
+#define _hlslpp_blend_epu32(x, y, msk)			blend4<(msk) & 1, ((msk) >> 1) & 1, ((msk) >> 2) & 1, ((msk) >> 3) & 1>((x), (y))
 
 	template<int A, int B, int C, int D>
 	hlslpp_inline vector_uint4 blend4(const vector_uint4& v1, const vector_uint4& v2)

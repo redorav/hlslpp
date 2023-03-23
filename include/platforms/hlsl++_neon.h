@@ -347,7 +347,7 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 
 // We decompose the mask and turn it into 4 floats
 // The input mask follows the format for SSE
-#define _hlslpp_blend_ps(x, y, mask)			vbslq_f32(vmov4q_n_u32((mask & 1) * 0xffffffff, ((mask >> 1) & 1) * 0xffffffff, ((mask >> 2) & 1) * 0xffffffff, ((mask >> 3) & 1) * 0xffffffff), (y), (x))
+#define _hlslpp_blend_ps(x, y, mask)			vbslq_f32(vmov4q_n_u32(((mask) & 1) * 0xffffffff, (((mask) >> 1) & 1) * 0xffffffff, (((mask) >> 2) & 1) * 0xffffffff, (((mask) >> 3) & 1) * 0xffffffff), (y), (x))
 
 #define _hlslpp_trunc_ps(x)						vcvtq_f32_s32(vcvtq_s32_f32(x))
 #define _hlslpp_floor_ps(x)						vrndmq_f32((x))
@@ -375,8 +375,8 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 // SSE: Duplicate odd-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst.
 #define _hlslpp_movehdup_ps(x)					vcombine_f32(vdup_lane_f32(vget_low_f32(x), 1), vdup_lane_f32(vget_high_f32(x), 1))
 
-#define _hlslpp_perm_ps(x, mask)				vpermq_f32((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
-#define _hlslpp_shuffle_ps(x, y, mask)			vshufq_f32((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
+#define _hlslpp_perm_ps(x, mask)				vpermq_f32((x), (mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3)
+#define _hlslpp_shuffle_ps(x, y, mask)			vshufq_f32((x), (y), (mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3)
 
 #define _hlslpp_unpacklo_ps(x, y)				vzipq_f32(x, y).val[0]
 #define _hlslpp_unpackhi_ps(x, y)				vzipq_f32(x, y).val[1]
@@ -515,7 +515,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_min_epi32(x, y)					vminq_s32((x), (y))
 
 #define _hlslpp_sel_epi32(x, y, mask)			vbslq_s32((mask), (y), (x))
-#define _hlslpp_blend_epi32(x, y, mask)			vbslq_s32(vmov4q_n_u32(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)), (x), (y))
+#define _hlslpp_blend_epi32(x, y, mask)			vbslq_s32(vmov4q_n_u32(~(((mask) & 1) * 0xffffffff), ~((((mask) >> 1) & 1) * 0xffffffff), ~((((mask) >> 2) & 1) * 0xffffffff), ~((((mask) >> 3) & 1) * 0xffffffff)), (x), (y))
 
 #define _hlslpp_clamp_epi32(x, minx, maxx)		vmaxq_s32(vminq_s32((x), (maxx)), (minx))
 #define _hlslpp_sat_epi32(x)					vmaxq_s32(vminq_s32((x), i4_1), i4_0)
@@ -526,8 +526,8 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_or_si128(x, y)					vorrq_s32((x), (y))
 #define _hlslpp_xor_si128(x, y)					veorq_s32((x), (y))
 
-#define _hlslpp_perm_epi32(x, mask)				vpermq_s32((x), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
-#define _hlslpp_shuffle_epi32(x, y, mask)		vshufq_s32((x), (y), mask & 3, (mask >> 2) & 3, (mask >> 4) & 3, (mask >> 6) & 3)
+#define _hlslpp_perm_epi32(x, mask)				vpermq_s32((x), (mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3)
+#define _hlslpp_shuffle_epi32(x, y, mask)		vshufq_s32((x), (y), (mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3)
 
 #define _hlslpp_castps_si128(x)					vreinterpretq_s32_f32((x))
 #define _hlslpp_castsi128_ps(x)					vreinterpretq_f32_s32((x))
@@ -684,7 +684,7 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 #define _hlslpp_min_epu32(x, y)					vminq_u32((x), (y))
 
 #define _hlslpp_sel_epu32(x, y, mask)			vbslq_u32((mask), (y), (x))
-#define _hlslpp_blend_epu32(x, y, mask)			vbslq_u32(vmov4q_n_u32(~((mask & 1) * 0xffffffff), ~(((mask >> 1) & 1) * 0xffffffff), ~(((mask >> 2) & 1) * 0xffffffff), ~(((mask >> 3) & 1) * 0xffffffff)), (x), (y))
+#define _hlslpp_blend_epu32(x, y, mask)			vbslq_u32(vmov4q_n_u32(~(((mask) & 1) * 0xffffffff), ~((((mask) >> 1) & 1) * 0xffffffff), ~((((mask) >> 2) & 1) * 0xffffffff), ~((((mask) >> 3) & 1) * 0xffffffff)), (x), (y))
 
 #define _hlslpp_clamp_epu32(x, minx, maxx)		vmaxq_u32(vminq_u32((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					vmaxq_u32(vminq_u32((x), i4_1), i4_0)
@@ -874,13 +874,13 @@ hlslpp_inline float64x2_t vrsqrtq_f64(float64x2_t x)
 #define _hlslpp_or_pd(x, y)						vreinterpretq_f64_u64(vorrq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
 #define _hlslpp_xor_pd(x, y)					vreinterpretq_f64_u64(veorq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
 
-#define _hlslpp_perm_pd(x, mask)				vpermq_f64((x), mask & 1, (mask >> 1) & 1)
-#define _hlslpp_shuffle_pd(x, y, mask)			vshufq_f64((x), (y), mask & 1, (mask >> 1) & 1)
+#define _hlslpp_perm_pd(x, mask)				vpermq_f64((x), (mask) & 1, ((mask) >> 1) & 1)
+#define _hlslpp_shuffle_pd(x, y, mask)			vshufq_f64((x), (y), (mask) & 1, ((mask) >> 1) & 1)
 
 // Bit-select x and y based on the contents of the mask
 #define _hlslpp_sel_pd(x, y, mask)				vbslq_f64((mask), (y), (x))
 
-#define _hlslpp_blend_pd(x, y, mask)			vbslq_f64(vmov2q_n_u64((mask & 1) * 0xffffffffffffffff, ((mask >> 1) & 1) * 0xffffffffffffffff), (y), (x))
+#define _hlslpp_blend_pd(x, y, mask)			vbslq_f64(vmov2q_n_u64(((mask) & 1) * 0xffffffffffffffff, (((mask) >> 1) & 1) * 0xffffffffffffffff), (y), (x))
 
 hlslpp_inline bool _hlslpp_any1_pd(n128d x)
 {

@@ -936,7 +936,7 @@ hlslpp_inline n256i _hlslpp256_or_si128(n256i x, n256i y)
 //#define _hlslpp256_perm_epi32(x, mask)				_mm_shuffle_epi32((x), (mask))
 //#define _hlslpp256_shuffle_epi32(x, y, mask)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), (mask)))
 
-#define _hlslpp256_blend_epi32(x, y, mask)				_mm256_blend_epi32((x), (y), mask)
+#define _hlslpp256_blend_epi32(x, y, mask)				_mm256_blend_epi32((x), (y), (mask))
 
 #define _hlslpp256_castps_si256(x)						_mm256_castps_si256((x))
 #define _hlslpp256_castsi256_ps(x)						_mm256_castsi256_ps((x))
@@ -1028,7 +1028,7 @@ hlslpp_inline n128i _hlslpp_min_epu32(n128u x, n128u y)
 #endif
 
 #define _hlslpp_sel_epu32(x, y, mask)			_hlslpp_sel_epi32((x), (y), (mask))
-#define _hlslpp_blend_epu32(x, y, mask)			_hlslpp_blend_epi32((x), (y), mask)
+#define _hlslpp_blend_epu32(x, y, mask)			_hlslpp_blend_epi32((x), (y), (mask))
 
 #define _hlslpp_clamp_epu32(x, minx, maxx)		_hlslpp_max_epu32(_hlslpp_min_epu32((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					_hlslpp_max_epu32(_hlslpp_min_epu32((x), i4_1), i4_0)
@@ -1129,7 +1129,7 @@ hlslpp_inline void _hlslpp_load4_epu32(uint32_t* p, n128u& x) { _hlslpp_load4_ep
 
 hlslpp_inline n128d _hlslpp_blend_pd(n128d x, n128d y, int mask)
 {
-	n128d mask128 = _mm_castsi128_pd(_mm_set_epi64x(((mask >> 1) & 1) * 0xffffffffffffffff, (mask & 1) * 0xffffffffffffffff));
+	n128d mask128 = _mm_castsi128_pd(_mm_set_epi64x((((mask) >> 1) & 1) * 0xffffffffffffffff, ((mask) & 1) * 0xffffffffffffffff));
 	return _hlslpp_sel_pd(x, y, mask128);
 }
 
