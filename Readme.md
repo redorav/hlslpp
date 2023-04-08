@@ -55,10 +55,10 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 #include "hlsl++_quaternion_type.h"
 ```
 
-* Remember to add an include path to "hlslpp/include"
+* Remember to add an include path to ```"hlslpp/include"```
 * Windows has defines for min and max so if you're using this library and the <windows.h> header remember to #define NOMINMAX before including it.
-* To force the scalar version of the library, define HLSLPP_SCALAR globally
-* To enable the transforms feature, define HLSLPP_FEATURE_TRANSFORM globally
+* To force the scalar version of the library, define ```HLSLPP_SCALAR``` globally
+* To enable the transforms feature, define ```HLSLPP_FEATURE_TRANSFORM``` globally
 * The f32 members of float4 and the [ ] operators make use of the union directly, so the generated code is up to the compiler. Use with care
 
 ## Features
