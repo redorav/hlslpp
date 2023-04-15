@@ -111,7 +111,7 @@ namespace hlslpp
 	}
 
 	// http://d.hatena.ne.jp/ohtorii/20150424/p1
-	hlslpp_inline n128 _hlslpp_quat_euler_zxy_ps(const n128 angles)
+	inline n128 _hlslpp_quat_euler_zxy_ps(const n128 angles)
 	{
 		n128 angles05 = _hlslpp_mul_ps(angles, f4_05);
 		n128 sin = _hlslpp_sin_ps(angles05);
@@ -135,28 +135,64 @@ namespace hlslpp
 		return result;
 	}
 
+	// Quaternion interpolation functions
 	// Assume input quaternions are normalized
 	// Assume t is in the x component
-	hlslpp_inline n128 _hlslpp_quat_slerp_ps(const n128 q0, const n128 q1, const n128 t)
+	
+	// Spherical interpolation
+	// - Non-commutative
+	// - Constant velocity
+	inline n128 _hlslpp_quat_slerp_ps(const n128 q0, const n128 q1, const n128 t)
 	{
-		n128 cosHalfTheta		= _hlslpp_dot4_ps(q0, q1);
-		n128 halfTheta			= _hlslpp_acos_ps(cosHalfTheta);
+		n128 cosHalfTheta       = _hlslpp_dot4_ps(q0, q1);
 
-		n128 t4					= _hlslpp_shuf_xxxx_ps(t, f4_1);	// Contains t, t, 1, unused
-		n128 oneMinusT			= _hlslpp_sub_ps(f4_1, t4);			// Contains 1 - t, 1 - t, 0, unused
-		n128 lerpFactors		= _hlslpp_blend_ps(oneMinusT, t4, HLSLPP_BLEND_MASK(1, 0, 0, 1));	// Contains (1 - t), t, 1, unused
-		n128 tTheta				= _hlslpp_mul_ps(lerpFactors, _hlslpp_perm_xxxx_ps(halfTheta));		// Contains (1 - t) * theta, t * theta, theta
-		n128 sinVec				= _hlslpp_sin_ps(tTheta);											// Contains sin((1 - t) * theta), sin(t * theta), sin(theta)
+		// Small imprecisions in the incoming quaternions can cause the dot product to be very slightly larger than 1 which will cause a nan in acos
+		cosHalfTheta            = _hlslpp_clamp_ps(cosHalfTheta, f4_minus1, f4_1);
+
+		n128 t4 = _hlslpp_shuf_xxxx_ps(t, f4_1); // Contains t, t, 1, unused
+		n128 oneMinusT = _hlslpp_sub_ps(f4_1, t4);      // Contains 1 - t, 1 - t, 0, unused
+		n128 lerpFactors = _hlslpp_blend_ps(oneMinusT, t4, HLSLPP_BLEND_MASK(1, 0, 0, 1)); // Contains (1 - t), t, 1, unused
+
+		n128 halfTheta          = _hlslpp_acos_ps(cosHalfTheta);
 		
-		n128 sinTheta4			= _hlslpp_perm_zzzz_ps(sinVec);
-		n128 sinVecDiv			= _hlslpp_div_ps(sinVec, sinTheta4);
+		n128 tTheta             = _hlslpp_mul_ps(lerpFactors, _hlslpp_perm_xxxx_ps(halfTheta));   // Contains (1 - t) * theta, t * theta, theta, unused
+		n128 sinVec             = _hlslpp_sin_ps(tTheta);                                         // Contains sin((1 - t) * theta), sin(t * theta), sin(theta), unused
+		
+		n128 sinTheta4          = _hlslpp_perm_zzzz_ps(sinVec);
+		n128 sinVecDiv          = _hlslpp_div_ps(sinVec, sinTheta4);
 
-		n128 mul0				= _hlslpp_mul_ps(q0, _hlslpp_perm_xxxx_ps(sinVecDiv));
-		n128 mul1				= _hlslpp_mul_ps(q1, _hlslpp_perm_yyyy_ps(sinVecDiv));
+		// If theta -> 0, the result converges to lerp(q0, q1, t). As there is a division by 0 in this case, 
+		// we can select between those two in the case where sinTheta4 is 0 or some threshold
+		sinVecDiv = _hlslpp_sel_ps(sinVecDiv, lerpFactors, _hlslpp_cmpeq_ps(sinTheta4, _hlslpp_setzero_ps()));
 
-		n128 result				= _hlslpp_add_ps(mul0, mul1);
+		n128 q1_minus_q0 = _hlslpp_sub_ps(q1, q0); // q1 - q0
+		n128 result      = _hlslpp_madd_ps(_hlslpp_perm_xxxx_ps(sinVecDiv), q1_minus_q0, q0); // q0 * (1 - t) + q1 * t
 
 		return result;
+	}
+
+	// Linear interpolation followed by normalization
+	// - Commutative
+	// - Non-constant velocity
+	inline n128 _hlslpp_quat_nlerp_ps(const n128 q0, const n128 q1, const n128 t)
+	{
+		n128 t4         = _hlslpp_perm_xxxx_ps(t); // Contains t, t, t, t
+
+		n128 q1_minus_q0 = _hlslpp_sub_ps(q1, q0); // q1 - q0
+		n128 lerp        = _hlslpp_madd_ps(t, q1_minus_q0, q0); // q0 * (1 - t) + q1 * t
+
+		n128 result = _hlslpp_mul_ps(lerp, _hlslpp_rsqrt_ps(_hlslpp_dot4_ps(lerp, lerp)));
+
+		return result;
+	}
+
+	// Simple interpolation
+	// - Likely returns a non-normalized quaternion
+	hlslpp_inline n128 _hlslpp_quat_lerp_ps(const n128 q0, const n128 q1, const n128 t)
+	{
+		n128 t4 = _hlslpp_perm_xxxx_ps(t);           // Contains t, t, t, t
+		n128 q1_minus_q0 = _hlslpp_sub_ps(q1, q0);   // q1 - q0
+		return _hlslpp_madd_ps(t4, q1_minus_q0, q0); // q0 * (1 - t) + q1 * t
 	}
 
 	// https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
@@ -315,9 +351,10 @@ namespace hlslpp
 	hlslpp_inline float4		isinf(const quaternion& q) { return float4(_hlslpp_and_ps(_hlslpp_isinf_ps(q.vec), f4_1)); }
 	hlslpp_inline float4		isnan(const quaternion& q) { return float4(_hlslpp_and_ps(_hlslpp_isnan_ps(q.vec), f4_1)); }
 	hlslpp_inline float1		length(const quaternion& q) { return float1(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(q.vec, q.vec))); }
-	hlslpp_inline quaternion	lerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_lerp_ps(q1.vec, q2.vec, _hlslpp_perm_xxxx_ps(a.vec))); }
 
-	hlslpp_inline quaternion	slerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_slerp_ps(q1.vec, q2.vec, _hlslpp_perm_xxxx_ps(a.vec))); }
+	hlslpp_inline quaternion	lerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_lerp_ps(q1.vec, q2.vec, a.vec)); }
+	hlslpp_inline quaternion	nlerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_nlerp_ps(q1.vec, q2.vec, a.vec)); }
+	hlslpp_inline quaternion	slerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_slerp_ps(q1.vec, q2.vec, a.vec)); }
 
 	//hlslpp_inline quaternion log(const quaternion& q) { return quaternion(_hlslpp_log_ps(q._vec)); }
 	hlslpp_inline quaternion	min(const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_min_ps(q1.vec, q2.vec)); }

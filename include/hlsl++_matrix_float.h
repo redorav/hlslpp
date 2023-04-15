@@ -1513,7 +1513,7 @@ namespace hlslpp
 		return float3x3(vec0, vec1, vec2);
 	}
 
-	hlslpp_inline float3x4 mul(const float3x4& m1, const float4x4& m2)
+	inline float3x4 mul(const float3x4& m1, const float4x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
@@ -1574,7 +1574,7 @@ namespace hlslpp
 		return float4x3(vec0, vec1, vec2);
 	}
 
-	hlslpp_inline float4x4 mul(const float4x3& m1, const float3x4& m2)
+	inline float4x4 mul(const float4x3& m1, const float3x4& m2)
 	{
 		// First row
 		n128 mul0x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec0), m2.vec0);
@@ -1608,7 +1608,7 @@ namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float4x1 mul(const float4x4& m1, const float4x1& m2)
+	inline float4x1 mul(const float4x4& m1, const float4x1& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
@@ -1636,7 +1636,7 @@ namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float4x2 mul(const float4x4& m1, const float4x2& m2)
+	inline float4x2 mul(const float4x4& m1, const float4x2& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
@@ -1682,7 +1682,7 @@ namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float4x3 mul(const float4x4& m1, const float4x3& m2)
+	inline float4x3 mul(const float4x4& m1, const float4x3& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
@@ -1743,7 +1743,7 @@ namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float4x4 mul(const float4x4& m1, const float4x4& m2)
+	inline float4x4 mul(const float4x4& m1, const float4x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
@@ -2272,7 +2272,7 @@ namespace hlslpp
 		return float1(_hlslpp_trace_3x3_ps(m.vec0, m.vec1, m.vec2));
 	}
 
-	hlslpp_inline float1 trace(const float4x4& m)
+	inline float1 trace(const float4x4& m)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
@@ -2309,7 +2309,7 @@ namespace hlslpp
 		return float3x3(vec0, vec1, vec2);
 	}
 
-	hlslpp_inline float4x4 transpose(const float4x4& m)
+	inline float4x4 transpose(const float4x4& m)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 

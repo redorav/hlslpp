@@ -76,10 +76,10 @@ namespace hlslpp
 	}
 
 	// Follows fxc in order of operations (a * (y - x) + x)
-	hlslpp_inline n128 _hlslpp_lerp_ps(n128 x, n128 y, n128 a)
+	hlslpp_inline n128 _hlslpp_lerp_ps(n128 x, n128 y, n128 t)
 	{
 		n128 y_minus_x = _hlslpp_sub_ps(y, x);
-		n128 result = _hlslpp_madd_ps(a, y_minus_x, x);
+		n128 result = _hlslpp_madd_ps(t, y_minus_x, x);
 		return result;
 	}
 
