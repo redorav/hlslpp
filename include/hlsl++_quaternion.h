@@ -179,7 +179,7 @@ namespace hlslpp
 		n128 t4         = _hlslpp_perm_xxxx_ps(t); // Contains t, t, t, t
 
 		n128 q1_minus_q0 = _hlslpp_sub_ps(q1, q0); // q1 - q0
-		n128 lerp        = _hlslpp_madd_ps(t, q1_minus_q0, q0); // q0 * (1 - t) + q1 * t
+		n128 lerp        = _hlslpp_madd_ps(t4, q1_minus_q0, q0); // q0 * (1 - t) + q1 * t
 
 		n128 result = _hlslpp_mul_ps(lerp, _hlslpp_rsqrt_ps(_hlslpp_dot4_ps(lerp, lerp)));
 
