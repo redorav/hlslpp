@@ -76,10 +76,10 @@ namespace hlslpp
 #elif defined(__GNUC__)
 
 	#define HLSLPP_UNIT_UNUSED_VARIABLE_BEGIN \
-		_Pragma("gcc diagnostic push") \
-		_Pragma("gcc diagnostic ignored \"-Wunused-variable\"")
+		_Pragma("GCC diagnostic push") \
+		_Pragma("GCC diagnostic ignored \"-Wunused-variable\"")
 
-	#define HLSLPP_UNIT_UNUSED_VARIABLE_END _Pragma("gcc diagnostic pop")
+	#define HLSLPP_UNIT_UNUSED_VARIABLE_END _Pragma("GCC diagnostic pop")
 
 #elif defined(_MSC_VER)
 
