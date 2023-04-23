@@ -4,8 +4,6 @@
 
 #include "hlsl++_unit_tests.h"
 
-const float deg2rad = 3.14159265f / 180.0f;
-
 void RunUnitTestsVectorInt()
 {
 	using namespace hlslpp_unit;
@@ -291,21 +289,21 @@ void RunUnitTestsVectorInt()
 		ivmul_f_3.z *= 3;												hlslpp_check(eq(ivmul_f_3, (int32_t)ivfoo3.x * 3 * 3, (int32_t)ivfoo3.y * 3 * 3, (int32_t)ivfoo3.z * 3 * 3 * 3));
 		ivmul_f_4.w *= 4;												hlslpp_check(eq(ivmul_f_4, (int32_t)ivfoo4.x * 4 * 4, (int32_t)ivfoo4.y * 4 * 4, (int32_t)ivfoo4.z * 4 * 4, (int32_t)ivfoo4.w * 4 * 4 * 4));
 
-		int1 ivmul_swiz_a_1 = ivfoo1 * ivbar1.x;
-		int1 ivmul_swiz_b_1 = ivfoo1.r * ivbar1.x;
-		int1 ivmul_swiz_c_1 = ivfoo1.r * ivbar1;
+		int1 ivmul_swiz_a_1 = ivfoo1 * ivbar1.x;   hlslpp_unit_unused(ivmul_swiz_a_1);
+		int1 ivmul_swiz_b_1 = ivfoo1.r * ivbar1.x; hlslpp_unit_unused(ivmul_swiz_b_1);
+		int1 ivmul_swiz_c_1 = ivfoo1.r * ivbar1;   hlslpp_unit_unused(ivmul_swiz_c_1);
 
-		int2 ivmul_swiz_a_2 = ivfoo2 * ivbar2.yx;
-		int2 ivmul_swiz_b_2 = ivfoo2.gr * ivbar2.yx;
-		int2 ivmul_swiz_c_2 = ivfoo2.rg * ivbar2;
+		int2 ivmul_swiz_a_2 = ivfoo2 * ivbar2.yx;    hlslpp_unit_unused(ivmul_swiz_a_2);
+		int2 ivmul_swiz_b_2 = ivfoo2.gr * ivbar2.yx; hlslpp_unit_unused(ivmul_swiz_b_2);
+		int2 ivmul_swiz_c_2 = ivfoo2.rg * ivbar2;    hlslpp_unit_unused(ivmul_swiz_c_2);
 
-		int3 ivmul_swiz_a_3 = ivfoo3 * ivbar3.yxz;
-		int3 ivmul_swiz_b_3 = ivfoo3.rgb * ivbar3.xyz;
-		int3 ivmul_swiz_c_3 = ivfoo3.bgr * ivbar3;
+		int3 ivmul_swiz_a_3 = ivfoo3 * ivbar3.yxz;     hlslpp_unit_unused(ivmul_swiz_a_3);
+		int3 ivmul_swiz_b_3 = ivfoo3.rgb * ivbar3.xyz; hlslpp_unit_unused(ivmul_swiz_b_3);
+		int3 ivmul_swiz_c_3 = ivfoo3.bgr * ivbar3;     hlslpp_unit_unused(ivmul_swiz_c_3);
 
-		int4 ivmul_swiz_a_4 = ivfoo4 * ivbar4.yxzw;
-		int4 ivmul_swiz_b_4 = ivfoo4.bgra * ivbar4.yxzw;
-		int4 ivmul_swiz_c_4 = ivfoo4.bgra * ivbar4;
+		int4 ivmul_swiz_a_4 = ivfoo4 * ivbar4.yxzw;      hlslpp_unit_unused(ivmul_swiz_a_4);
+		int4 ivmul_swiz_b_4 = ivfoo4.bgra * ivbar4.yxzw; hlslpp_unit_unused(ivmul_swiz_b_4);
+		int4 ivmul_swiz_c_4 = ivfoo4.bgra * ivbar4;      hlslpp_unit_unused(ivmul_swiz_c_4);
 
 		ivmul_swiz_a_2 *= ivfoo2;
 		ivmul_swiz_b_2 *= ivfoo2.xy;
@@ -314,7 +312,7 @@ void RunUnitTestsVectorInt()
 
 		int1 vint = int1(1);
 		int1 vint2 = int1(2);
-		int1 vint3 = vint.r + vint2;
+		int1 vint3 = vint.r + vint2; hlslpp_unit_unused(vint3);
 		vint.r = vint2.x;
 	}
 	hlslpp_unit::EndTest();
@@ -404,10 +402,10 @@ void RunUnitTestsVectorInt()
 	fcastfooi_3 = ivfoo3;
 	fcastfooi_4 = ivfoo4;
 
-	float1 fcastbari_1 = ivfoo1;
-	float2 fcastbari_2 = ivfoo2;
-	float3 fcastbari_3 = ivfoo3;
-	float4 fcastbari_4 = ivfoo4;
+	float1 fcastbari_1 = ivfoo1; hlslpp_check(eq(fcastbari_1, (float)fcastfooi_1.x));
+	float2 fcastbari_2 = ivfoo2; hlslpp_check(eq(fcastbari_2, (float)fcastfooi_2.x, (float)fcastfooi_2.y));
+	float3 fcastbari_3 = ivfoo3; hlslpp_check(eq(fcastbari_3, (float)fcastfooi_3.x, (float)fcastfooi_3.y, (float)fcastfooi_3.z));
+	float4 fcastbari_4 = ivfoo4; hlslpp_check(eq(fcastbari_4, (float)fcastfooi_4.x, (float)fcastfooi_4.y, (float)fcastfooi_4.z, (float)fcastfooi_4.w));
 
 	hlslpp_unit::BeginTest("Integer-Float Reinterpret");
 	{

@@ -19,8 +19,6 @@ void RunUnitTestsQuaternion()
 	float3 y_axis = float3(0.0f, 1.0f, 0.0f);
 	float3 z_axis = float3(0.0f, 0.0f, 1.0f);
 
-	quaternion q_v  = quaternion(z_axis, 0.0f);
-
 	float r_x = f1;
 	float r_y = f2;
 	float r_z = f3;
@@ -125,11 +123,11 @@ void RunUnitTestsQuaternion()
 		quaternion q_x_axis      = quaternion::rotation_axis(x_axis, angle);
 		quaternion q_z_axis      = quaternion::rotation_axis(z_axis, angle);
 		quaternion q_xz_combined = mul(q_x_axis, q_z_axis);
-		float3 v_q_xz_combined   = mul(test_vector, q_xz_combined);
+		float3 v_q_xz_combined   = mul(test_vector, q_xz_combined); hlslpp_unit_unused(v_q_xz_combined);
 
 		float3x3 m_x_axis = float3x3::rotation_axis(x_axis, angle);
 		float3x3 m_z_axis = float3x3::rotation_axis(z_axis, angle);
 		float3x3 m_xz_combined = mul(m_z_axis, m_x_axis);
-		float3 v_m_xz_combined = mul(test_vector, m_xz_combined);
+		float3 v_m_xz_combined = mul(test_vector, m_xz_combined); hlslpp_unit_unused(v_m_xz_combined);
 	}
 }
