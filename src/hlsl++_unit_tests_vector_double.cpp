@@ -420,40 +420,40 @@ void RunUnitTestsVectorDouble()
 		double3 dvfloor_swiz_3 = floor(dvfoo3.xxy);		hlslpp_check(eq(dvfloor_swiz_3, floor((double)dvfoo3.x), floor((double)dvfoo3.x), floor((double)dvfoo3.y)));
 		double4 dvfloor_swiz_4 = floor(dvfoo4.wwxy);	hlslpp_check(eq(dvfloor_swiz_4, floor((double)dvfoo4.w), floor((double)dvfoo4.w), floor((double)dvfoo4.x), floor((double)dvfoo4.y)));
 
-		double1 dvfmod1 = fmod(dvfoo1, dvbar1);
-		double2 dvfmod2 = fmod(dvfoo2, dvbar2);
-		double3 dvfmod3 = fmod(dvfoo3, dvbar3);
-		double4 dvfmod4 = fmod(dvfoo4, dvbar4);
+		double1 dvfmod1 = fmod(dvfoo1, dvbar1); hlslpp_unit_unused(dvfmod1);
+		double2 dvfmod2 = fmod(dvfoo2, dvbar2); hlslpp_unit_unused(dvfmod2);
+		double3 dvfmod3 = fmod(dvfoo3, dvbar3); hlslpp_unit_unused(dvfmod3);
+		double4 dvfmod4 = fmod(dvfoo4, dvbar4); hlslpp_unit_unused(dvfmod4);
 
-		double1 dvdot2 = dot(dvfoo2, dvbar2);
-		double1 dvdot2_a = dot(dvfoo2, dvbar2.yx);
-		double1 dvdot2_b = dot(dvfoo2.rg, dvbar2);
-		double1 dvdot2_c = dot(dvfoo2.gr, dvbar2.yx);
+		double1 dvdot2 = dot(dvfoo2, dvbar2);         hlslpp_unit_unused(dvdot2);
+		double1 dvdot2_a = dot(dvfoo2, dvbar2.yx);    hlslpp_unit_unused(dvdot2_a);
+		double1 dvdot2_b = dot(dvfoo2.rg, dvbar2);    hlslpp_unit_unused(dvdot2_b);
+		double1 dvdot2_c = dot(dvfoo2.gr, dvbar2.yx); hlslpp_unit_unused(dvdot2_c);
 
-		double1 dvdot3 = dot(dvfoo3, dvbar3);
-		double1 dvdot3_a = dot(dvfoo3, dvbar3.bgr);
-		double1 dvdot3_b = dot(dvfoo3.rrg, dvbar3);
-		double1 dvdot3_c = dot(dvfoo3.rrg, dvbar3);
+		double1 dvdot3 = dot(dvfoo3, dvbar3);       hlslpp_unit_unused(dvdot3);
+		double1 dvdot3_a = dot(dvfoo3, dvbar3.bgr); hlslpp_unit_unused(dvdot3_a);
+		double1 dvdot3_b = dot(dvfoo3.rrg, dvbar3); hlslpp_unit_unused(dvdot3_b);
+		double1 dvdot3_c = dot(dvfoo3.rrg, dvbar3); hlslpp_unit_unused(dvdot3_c);
 
-		double1 dvdot4 = dot(dvfoo4, dvbar4);
-		double1 dvdot4_a = dot(dvfoo4, dvbar4.bgra);
-		double1 dvdot4_b = dot(dvfoo4.rrgb, dvbar4);
-		double1 dvdot4_c = dot(dvfoo4.rrgg, dvbar4);
+		double1 dvdot4 = dot(dvfoo4, dvbar4);        hlslpp_unit_unused(dvdot4);
+		double1 dvdot4_a = dot(dvfoo4, dvbar4.bgra); hlslpp_unit_unused(dvdot4_a);
+		double1 dvdot4_b = dot(dvfoo4.rrgb, dvbar4); hlslpp_unit_unused(dvdot4_b);
+		double1 dvdot4_c = dot(dvfoo4.rrgg, dvbar4); hlslpp_unit_unused(dvdot4_c);
 
 		double1 dvselect1 = select(dvbaz1, dvfoo1, dvbar1);	hlslpp_check(eq(dvselect1, dvbaz1.x != 0.0 ? dvfoo1.x : dvbar1.x));
 		double2 dvselect2 = select(dvbaz2, dvfoo2, dvbar2);	hlslpp_check(eq(dvselect2, dvbaz2.x != 0.0 ? dvfoo2.x : dvbar2.x, dvbaz2.y != 0.0 ? dvfoo2.y : dvbar2.y));
 		double3 dvselect3 = select(dvbaz3, dvfoo3, dvbar3);	hlslpp_check(eq(dvselect3, dvbaz3.x != 0.0 ? dvfoo3.x : dvbar3.x, dvbaz3.y != 0.0 ? dvfoo3.y : dvbar3.y, dvbaz3.z != 0.0 ? dvfoo3.z : dvbar3.z));
 		double4 dvselect4 = select(dvbaz4, dvfoo4, dvbar4);	hlslpp_check(eq(dvselect4, dvbaz4.x != 0.0 ? dvfoo4.x : dvbar4.x, dvbaz4.y != 0.0 ? dvfoo4.y : dvbar4.y, dvbaz4.z != 0.0 ? dvfoo4.z : dvbar4.z, dvbaz4.w != 0.0 ? dvfoo4.w : dvbar4.w));
 
-		double1 dvsqrt1 = sqrt(dvfoo1);
-		double2 dvsqrt2 = sqrt(dvfoo2);
-		double3 dvsqrt3 = sqrt(dvfoo3);
-		double4 dvsqrt4 = sqrt(dvfoo4);
+		double1 dvsqrt1 = sqrt(dvfoo1); hlslpp_unit_unused(dvsqrt1);
+		double2 dvsqrt2 = sqrt(dvfoo2); hlslpp_unit_unused(dvsqrt2);
+		double3 dvsqrt3 = sqrt(dvfoo3); hlslpp_unit_unused(dvsqrt3);
+		double4 dvsqrt4 = sqrt(dvfoo4); hlslpp_unit_unused(dvsqrt4);
 
-		double1 dvsqrt_swiz_1 = sqrt(dvfoo1.r);
-		double2 dvsqrt_swiz_2 = sqrt(dvfoo2.rr);
-		double3 dvsqrt_swiz_3 = sqrt(dvfoo3.yyy);
-		double4 dvsqrt_swiz_4 = sqrt(dvfoo4.wwwx);
+		double1 dvsqrt_swiz_1 = sqrt(dvfoo1.r);    hlslpp_unit_unused(dvsqrt_swiz_1);
+		double2 dvsqrt_swiz_2 = sqrt(dvfoo2.rr);   hlslpp_unit_unused(dvsqrt_swiz_2);
+		double3 dvsqrt_swiz_3 = sqrt(dvfoo3.yyy);  hlslpp_unit_unused(dvsqrt_swiz_3);
+		double4 dvsqrt_swiz_4 = sqrt(dvfoo4.wwwx); hlslpp_unit_unused(dvsqrt_swiz_4);
 	}
 	hlslpp_unit::EndTest();
 
