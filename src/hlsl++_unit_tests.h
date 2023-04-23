@@ -65,6 +65,21 @@ namespace hlslpp
 
 #define hlslpp_unit_unused(x) (void)x
 
+#if defined(_MSC_VER)
+
+	#define HLSLPP_UNIT_UNUSED_VARIABLE_BEGIN  \
+		__pragma(warning(push)) \
+		__pragma(warning(disable : 4189))
+
+	#define HLSLPP_UNIT_UNUSED_VARIABLE_END __pragma(warning(pop))
+
+#else
+
+	#define HLSLPP_UNIT_UNUSED_VARIABLE_BEGIN
+	#define HLSLPP_UNIT_UNUSED_VARIABLE_END
+
+#endif
+
 namespace hlslpp_unit
 {
 	using namespace hlslpp;
