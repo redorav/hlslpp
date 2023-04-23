@@ -382,9 +382,9 @@ namespace hlslpp_unit
 
 	bool eq(const float3x2& m, float m00, float m01, float m10, float m11, float m20, float m21, float tolerance /*= 0.0f*/)
 	{
-		return eq(m.f32_0[0], m00, tolerance); eq(m.f32_1[0], m01, tolerance)
-			&& eq(m.f32_0[1], m10, tolerance); eq(m.f32_1[1], m11, tolerance)
-			&& eq(m.f32_0[2], m20, tolerance); eq(m.f32_1[2], m21, tolerance);
+		return eq(m.f32_0[0], m00, tolerance) && eq(m.f32_1[0], m01, tolerance)
+			&& eq(m.f32_0[1], m10, tolerance) && eq(m.f32_1[1], m11, tolerance)
+			&& eq(m.f32_0[2], m20, tolerance) && eq(m.f32_1[2], m21, tolerance);
 	}
 
 	bool eq(const float3x3& m, float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22, float tolerance /*= 0.0f*/)
@@ -515,7 +515,7 @@ namespace hlslpp_unit
 		int32_t posRangeStart = std::max<int32_t>(0, rangeStart_t.i);
 		int32_t posRangeEnd = std::max<int32_t>(0, rangeEnd_t.i);
 
-		for (uint64_t i = posRangeStart; i < posRangeEnd; ++i)
+		for (int32_t i = posRangeStart; i < posRangeEnd; ++i)
 		{
 			float_t input;
 			input.i = (int32_t)i;
@@ -549,6 +549,7 @@ namespace hlslpp_unit
 
 }
 
+HLSLPP_UNIT_UNUSED_VARIABLE_BEGIN
 void RunExperiments()
 {
 	printf("1) Experiments started\n");
@@ -639,28 +640,9 @@ void RunExperiments()
 
 	float3 intTexCoord = float3(1, 2, 3);
 
-	const float M = 10.0f;
-
-	float4 pato = float4(10.0f, 5.0f, 0.5f, 4.0f);
-
-	//pato.zw += pato.yx;
-
-	//pato.z = 1.0f / pato.z;
-
-	float1 integerPart, fracPart;
-
-	fracPart = modf(-testq.y, integerPart);
-
-	//float checker = fmod(float1(10.0f), float1(3.0f)) > 0.5f;// ^ fmod(intTexCoord.y * M, 1.0f) > 0.5f;
-	//
-	//float checker2 = max(intTexCoord.x * M, 1.0f);// > 0.5f ^ fmod(intTexCoord.y * M, 1.0f) > 0.5f;
-
-	//float2 p = (float2) q1.xyzw;
-
-	//printf("%f %f %f %f\n", q3.x, q3.y, q3.z, q3.w);
-
 	printf("Experiments completed\n\n");
 }
+HLSLPP_UNIT_UNUSED_VARIABLE_END
 
 void RunUnitTestsMatrixFloat();
 
