@@ -11,6 +11,12 @@
 
 const float deg2rad = 3.14159265f / 180.0f;
 
+#if defined(_MSC_VER)
+	#define sprintf_safe(dst, dst_size, format, ...) sprintf_s(dst, dst_size, format, __VA_ARGS__)
+#else
+	#define sprintf_safe(dst, dst_size, format) snprintf(dst, dst_size, format)
+#endif
+
 namespace hlslpp_unit
 {
 	using namespace hlslpp;
@@ -115,7 +121,7 @@ namespace hlslpp_unit
 				TestState.testPassed = false;
 
 				char functionLine[512] = {};
-				sprintf(functionLine, "%s %s(%d)", TestCaseState.testString, TestCaseState.filename, TestCaseState.lineNumber);
+				sprintf_safe(functionLine, sizeof(functionLine), "%s %s(%d)", TestCaseState.testString, TestCaseState.filename, TestCaseState.lineNumber);
 
 				TestState.testFailureMessages.push_back(functionLine);
 				TestState.testFailureMessages.push_back(TestCaseState.testFailureMessage);
@@ -149,7 +155,7 @@ namespace hlslpp_unit
 		if (!withinTolerance)
 		{
 			char assertMessage[512] = {};
-			sprintf(assertMessage, "Assertion failed! Values are not equal: a = %f, b = %f, tolerance = %f", a, b, tolerance);
+			sprintf_safe(assertMessage, sizeof(assertMessage), "Assertion failed! Values are not equal: a = %f, b = %f, tolerance = %f", a, b, tolerance);
 			TestCaseState.testFailureMessage += assertMessage;
 		}
 
