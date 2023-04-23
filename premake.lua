@@ -50,6 +50,15 @@ premake.override(premake.vstudio.vc2010.elements, "clCompile", function(oldfn, c
   return calls
 end)
 
+function handleAndroidWarnings()
+
+	buildoptions
+	{
+		"-Wno-error=macro-redefined"
+	}
+
+end
+
 workspace("hlsl++")
 	configurations { "Debug", "Release" }
 	location (Workspace)
@@ -195,14 +204,14 @@ workspace("hlsl++")
 		filter { "platforms:"..PlatformAndroidARM }
 			system("android")
 			architecture("arm")
-			vectorextensions("neon")
 			linkoptions { "-lm" } -- Link against the standard math library
+			handleAndroidWarnings()
 			
 		filter { "platforms:"..PlatformAndroidARM64 }
 			system("android")
 			architecture("arm64")
-			vectorextensions("neon")
 			linkoptions { "-lm" } -- Link against the standard math library
+			handleAndroidWarnings()
 			
 		filter { "platforms:"..Platform360 }
 			system("xbox360")
