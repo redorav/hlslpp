@@ -65,7 +65,23 @@ namespace hlslpp
 
 #define hlslpp_unit_unused(x) (void)x
 
-#if defined(_MSC_VER)
+#if defined(__clang__)
+
+	#define HLSLPP_UNIT_UNUSED_VARIABLE_BEGIN \
+		_Pragma("clang diagnostic push") \
+		_Pragma("clang diagnostic ignored \"-Wunused-variable\"")
+
+	#define HLSLPP_UNIT_UNUSED_VARIABLE_END _Pragma("clang diagnostic pop")
+
+#elif defined(__GNUC__)
+
+	#define HLSLPP_UNIT_UNUSED_VARIABLE_BEGIN \
+		_Pragma("gcc diagnostic push") \
+		_Pragma("gcc diagnostic ignored \"-Wunused-variable\"")
+
+	#define HLSLPP_UNIT_UNUSED_VARIABLE_END _Pragma("gcc diagnostic pop")
+
+#elif defined(_MSC_VER)
 
 	#define HLSLPP_UNIT_UNUSED_VARIABLE_BEGIN  \
 		__pragma(warning(push)) \
