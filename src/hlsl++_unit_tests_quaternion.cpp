@@ -130,4 +130,17 @@ void RunUnitTestsQuaternion()
 		float3x3 m_xz_combined = mul(m_z_axis, m_x_axis);
 		float3 v_m_xz_combined = mul(test_vector, m_xz_combined); hlslpp_unit_unused(v_m_xz_combined);
 	}
+
+	// Quaternion tests
+	{
+		quaternion q1 = quaternion::identity();
+		quaternion q2 = quaternion(0.0f, 1.0f, 1.0f, 1.0f);
+
+		quaternion slerp1 = slerp(q1, q2, 0.0f); hlslpp_unit_unused(slerp1);
+		quaternion slerp2 = slerp(q1, q2, 1.0f); hlslpp_unit_unused(slerp2);
+		quaternion slerp3 = slerp(q1, q2, 0.5f); hlslpp_unit_unused(slerp3);
+
+		float3x3 mat3x3FromQuat = float3x3(q1); hlslpp_unit_unused(mat3x3FromQuat);
+		float4x4 mat4x4FromQuat = float4x4(q1); hlslpp_unit_unused(mat4x4FromQuat);
+	}
 }

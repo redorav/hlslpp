@@ -11,10 +11,10 @@ void RunUnitTestsMatrixFloat()
 	// Matrices
 	//---------
 
-	float f1 = (rand() % 1000) / 100.0f; float f5 = (rand() % 1000) / 100.0f; float f9 = (rand() % 1000) / 100.0f; float f13 = (rand() % 1000) / 100.0f; float f17 = (rand() % 1000) / 100.0f;
-	float f2 = (rand() % 1000) / 100.0f; float f6 = (rand() % 1000) / 100.0f; float f10 = (rand() % 1000) / 100.0f; float f14 = (rand() % 1000) / 100.0f; float f18 = (rand() % 1000) / 100.0f;
-	float f3 = (rand() % 1000) / 100.0f; float f7 = (rand() % 1000) / 100.0f; float f11 = (rand() % 1000) / 100.0f; float f15 = (rand() % 1000) / 100.0f; float f19 = (rand() % 1000) / 100.0f;
-	float f4 = (rand() % 1000) / 100.0f; float f8 = (rand() % 1000) / 100.0f; float f12 = (rand() % 1000) / 100.0f; float f16 = (rand() % 1000) / 100.0f; float f20 = (rand() % 1000) / 100.0f;
+	float f1 = (rand() % 1000) / 100.0f; float f5 = (rand() % 1000) / 100.0f; float f9 = (rand() % 1000) / 100.0f; float f13 = (rand() % 1000) / 100.0f;
+	float f2 = (rand() % 1000) / 100.0f; float f6 = (rand() % 1000) / 100.0f; float f10 = (rand() % 1000) / 100.0f; float f14 = (rand() % 1000) / 100.0f;
+	float f3 = (rand() % 1000) / 100.0f; float f7 = (rand() % 1000) / 100.0f; float f11 = (rand() % 1000) / 100.0f; float f15 = (rand() % 1000) / 100.0f;
+	float f4 = (rand() % 1000) / 100.0f; float f8 = (rand() % 1000) / 100.0f; float f12 = (rand() % 1000) / 100.0f; float f16 = (rand() % 1000) / 100.0f;
 
 	hlslpp_unit::BeginTest("Float Matrix Initialization");
 
@@ -695,21 +695,21 @@ void RunUnitTestsMatrixFloat()
 
 	hlslpp_unit::BeginTest("Float Matrix Transposition");
 	{
-		float1x1 mat_transp_1x1 = transpose(mat_foo_1x1);
+		float1x1 mat_transp_1x1 = transpose(mat_foo_1x1); hlslpp_unit_unused(mat_transp_1x1);
 
-		float1x2 mat_transp_1x2 = transpose(mat_foo_2x1);
-		float2x2 mat_transp_2x2 = transpose(mat_foo_2x2);
-		float3x2 mat_transp_3x2 = transpose(mat_foo_2x3);
-		float4x2 mat_transp_4x2 = transpose(mat_foo_2x4);
+		float1x2 mat_transp_1x2 = transpose(mat_foo_2x1); hlslpp_unit_unused(mat_transp_1x2);
+		float2x2 mat_transp_2x2 = transpose(mat_foo_2x2); hlslpp_unit_unused(mat_transp_2x2);
+		float3x2 mat_transp_3x2 = transpose(mat_foo_2x3); hlslpp_unit_unused(mat_transp_3x2);
+		float4x2 mat_transp_4x2 = transpose(mat_foo_2x4); hlslpp_unit_unused(mat_transp_4x2);
 
-		float1x3 mat_transp_1x3 = transpose(mat_foo_3x1);
-		float2x3 mat_transp_2x3 = transpose(mat_foo_3x2);
-		float3x3 mat_transp_3x3 = transpose(mat_foo_3x3);
-		float4x3 mat_transp_4x3 = transpose(mat_foo_3x4);
+		float1x3 mat_transp_1x3 = transpose(mat_foo_3x1); hlslpp_unit_unused(mat_transp_1x3);
+		float2x3 mat_transp_2x3 = transpose(mat_foo_3x2); hlslpp_unit_unused(mat_transp_2x3);
+		float3x3 mat_transp_3x3 = transpose(mat_foo_3x3); hlslpp_unit_unused(mat_transp_3x3);
+		float4x3 mat_transp_4x3 = transpose(mat_foo_3x4); hlslpp_unit_unused(mat_transp_4x3);
 
-		float1x4 mat_transp_1x4 = transpose(mat_foo_4x1);
-		float2x4 mat_transp_2x4 = transpose(mat_foo_4x2);
-		float3x4 mat_transp_3x4 = transpose(mat_foo_4x3);
+		float1x4 mat_transp_1x4 = transpose(mat_foo_4x1); hlslpp_unit_unused(mat_transp_1x4);
+		float2x4 mat_transp_2x4 = transpose(mat_foo_4x2); hlslpp_unit_unused(mat_transp_2x4);
+		float3x4 mat_transp_3x4 = transpose(mat_foo_4x3); hlslpp_unit_unused(mat_transp_3x4);
 
 		float4x4 mat_transp_4x4 = transpose(mat_foo_4x4);
 		hlslpp_check(eq(mat_transp_4x4,

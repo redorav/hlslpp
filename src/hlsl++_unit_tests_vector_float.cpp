@@ -1028,6 +1028,13 @@ void RunUnitTestsVectorFloat()
 	// Float8
 	//-------
 
+	float f21 = GetRandomFloat();
+	float f22 = GetRandomFloat();
+	float f23 = GetRandomFloat();
+	float f24 = GetRandomFloat();
+	float f25 = GetRandomFloat();
+	float f26 = GetRandomFloat();
+
 	hlslpp_unit::BeginTest("Float8 Initialization");
 
 	float8 vfoo8 = float8(f11, f12, f13, f14, f15, f16, f17, f18);	hlslpp_check(eq(vfoo8, f11, f12, f13, f14, f15, f16, f17, f18));

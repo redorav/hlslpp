@@ -185,7 +185,7 @@ void RunUnitTestsVectorDouble()
 		double4 dvadd4 = dvfoo4 + dvbar4;										hlslpp_check(eq(dvadd4, (double)dvfoo4.x + (double)dvbar4.x, (double)dvfoo4.y + (double)dvbar4.y, (double)dvfoo4.z + (double)dvbar4.z, (double)dvfoo4.w + (double)dvbar4.w));
 
 		double1 dvadd_f_1 = dvfoo1 + 0.1;										hlslpp_check(eq(dvadd_f_1, (double)dvfoo1.x + 0.1));
-		double1 dvadd_f_1_b = 0.1 + dvfoo1;										hlslpp_check(eq(dvadd_f_1, 0.1 + (double)dvfoo1.x));
+		double1 dvadd_f_1_b = 0.1 + dvfoo1;										hlslpp_check(eq(dvadd_f_1_b, 0.1 + (double)dvfoo1.x));
 		double2 dvadd_f_2 = dvfoo2 + 0.2;										hlslpp_check(eq(dvadd_f_2, (double)dvfoo2.x + 0.2, (double)dvfoo2.y + 0.2));
 		double3 dvadd_f_3 = dvfoo3 + 0.3;										hlslpp_check(eq(dvadd_f_3, (double)dvfoo3.x + 0.3, (double)dvfoo3.y + 0.3, (double)dvfoo3.z + 0.3));
 		double4 dvadd_f_4 = dvfoo4 + 0.4;										hlslpp_check(eq(dvadd_f_4, (double)dvfoo4.x + 0.4, (double)dvfoo4.y + 0.4, (double)dvfoo4.z + 0.4, (double)dvfoo4.w + 0.4));
