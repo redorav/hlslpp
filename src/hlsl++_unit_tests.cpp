@@ -96,7 +96,8 @@ namespace hlslpp_unit
 			TestState.scratchAppveyorCommand += " } \"";
 
 			printf("%s\n", TestState.scratchAppveyorCommand.c_str());
-			std::system(TestState.scratchAppveyorCommand.c_str());
+			int result = std::system(TestState.scratchAppveyorCommand.c_str());
+			hlslpp_unit_unused(result);
 		}
 	}
 
