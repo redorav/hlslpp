@@ -66,20 +66,23 @@ workspace("hlsl++")
 	
 	vectorextensions ("sse4.1")
 	cppdialect("c++11")
+	defines { "HLSLPP_FEATURE_TRANSFORM" }
+	warnings('extra')
+	flags { 'fatalcompilewarnings' }
 		
 	if(isMacBuild) then
 	
 		platforms { PlatformOSX64 }
 		toolset("clang")
 		architecture("x64")
-		buildoptions { "-std=c++11 -msse4.1 -Wno-unused-variable" }
+		buildoptions { "-std=c++11" }
 		linkoptions { "-stdlib=libc++" }
 		
 	elseif(isLinuxBuild) then
 	
 		platforms { PlatformLinux64_GCC, PlatformLinux64_Clang }
 		architecture("x64")
-		buildoptions { "-std=c++11 -msse4.1 -Wno-unused-variable" }
+		buildoptions { "-std=c++11 -msse4.1" }
 		
 		filter { "platforms:"..PlatformLinux64_GCC }
 			toolset("gcc")
@@ -164,14 +167,14 @@ workspace("hlsl++")
 			toolset(llvmToolset)
 			architecture("x64")
 			vectorextensions("avx")
-			buildoptions { "-Wno-unused-variable -mavx" }
+			buildoptions { "-mavx" }
 			
 		filter { "platforms:"..PlatformLLVM64SSE41 }
 			toolset(llvmToolset)
 			architecture("x64")
 			vectorextensions("sse4.1")
 			defines { "__SSE4_1__" }
-			buildoptions { "-Wno-unused-variable -msse4.1" }
+			buildoptions { "-msse4.1" }
 			
 		filter { "platforms:"..PlatformLLVM64SSE2 }
 			toolset(llvmToolset)
@@ -180,7 +183,6 @@ workspace("hlsl++")
 			
 		filter { "platforms:"..PlatformLLVM32SSE2 }
 			toolset(llvmToolset)
-			buildoptions { "-Wno-unused-variable" }
 			
 		filter { "platforms:"..PlatformARM }
 			architecture("arm")
@@ -194,14 +196,12 @@ workspace("hlsl++")
 			system("android")
 			architecture("arm")
 			vectorextensions("neon")
-			buildoptions { "-Wno-unused-variable" }
 			linkoptions { "-lm" } -- Link against the standard math library
 			
 		filter { "platforms:"..PlatformAndroidARM64 }
 			system("android")
 			architecture("arm64")
 			vectorextensions("neon")
-			buildoptions { "-Wno-unused-variable" }
 			linkoptions { "-lm" } -- Link against the standard math library
 			
 		filter { "platforms:"..Platform360 }
@@ -240,8 +240,6 @@ project (UnitTestProject)
 		srcDir.."/*.cpp",
 		srcDir.."/*.h",
 	}
-	
-	defines { "HLSLPP_FEATURE_TRANSFORM" }
 	
 	filter { "platforms:"..PlatformAndroidARM.." or ".. PlatformAndroidARM64}
 		kind("sharedlib")
