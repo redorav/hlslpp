@@ -90,7 +90,7 @@ namespace hlslpp_unit
 			TestState.scratchAppveyorCommand += " } \"";
 
 			printf("%s\n", TestState.scratchAppveyorCommand.c_str());
-			int result = std::system(TestState.scratchAppveyorCommand.c_str());
+			std::system(TestState.scratchAppveyorCommand.c_str());
 		}
 	}
 
@@ -677,26 +677,6 @@ void RunUnitTests()
 
 	RunUnitTestsMatrixTransform();
 
-	// Quaternion tests
-
-	quaternion q1 = quaternion::identity();
-	quaternion q2 = quaternion(0.0f, 1.0f, 1.0f, 1.0f);
-
-	quaternion qeuler1 = quaternion::rotation_euler_zxy(float3(90.0f * deg2rad, 45.0f * deg2rad, 0.0f * deg2rad));
-	quaternion qeuler2 = quaternion::rotation_euler_zxy(float3(180.0f * deg2rad, 0.0f * deg2rad, 0.0f * deg2rad));
-
-	quaternion qaxisangle = quaternion::rotation_axis(float3(0.0f, 1.0f, 0.0f), 1.57f);
-
-	quaternion slerp1 = slerp(q1, q2, 0.0f);
-	quaternion slerp2 = slerp(q1, q2, 1.0f);
-	
-	quaternion slerp3 = slerp(q1, q2, 0.5f);
-	
-	quaternion testq = quaternion(0.66519f, 0.1881441f, 0.282216f, 0.665190f);
-
-	float3x3 mat3x3FromQuat = float3x3(q1);
-	float4x4 mat4x4FromQuat = float4x4(q1);
-
 	printf("Unit tests completed\n\n");
 }
 
@@ -750,23 +730,10 @@ void RunPerformanceTests()
 	float4x4 m4x4_1(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16);
 	float4x4 m4x4_2(f2);
 
-	const float2x4 m2x4_1 = float2x4(1, 2, 3, 4, 5, 6, 7, 8);
-	const float4x4 m2 = float4x4(
-		1, 2, 3, 4,
-		5, 6, 7, 8,
-		9, 10, 11, 12,
-		13, 14, 15, 16);
-
-	const float2x4 m3 = mul(m2x4_1, m2);
-
-	bool b1 = false;
-
 	quaternion q1 = quaternion(f1, f2, f3, f4);
 	quaternion q2 = quaternion(f4, f1, f3, f2);
 
 	float1 t1_1 = f1;
-	float1 t1_2 = f2;
-	float1 t1_3 = f3;
 
 	const long int iter = 100000000;
 
