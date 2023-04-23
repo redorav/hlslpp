@@ -15,6 +15,8 @@ namespace hlslpp
 
 		#define hlslpp_swizzle1_swizzle(E, A, v) _hlslpp_perm_ps(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | (IdentityMask & ~((3 << 2 * A))))
 
+		swizzle1(const swizzle1& s) : vec(_hlslpp_blend_ps(vec, _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(X, X, X, X)), HLSLPP_COMPONENT_X(X))) {}		
+
 		// Assignment
 
 		hlslpp_inline swizzle1& operator = (float f)
@@ -33,7 +35,7 @@ namespace hlslpp
 			return *this;
 		}
 
-		hlslpp_inline swizzle1& operator = (const swizzle1<X>& s)
+		hlslpp_inline swizzle1& operator = (const swizzle1& s)
 		{
 			n128 t = _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(X, X, X, X));
 			vec = _hlslpp_blend_ps(vec, t, HLSLPP_COMPONENT_X(X));
@@ -66,6 +68,8 @@ namespace hlslpp
 
 		#define hlslpp_swizzle2_blend(x, y) _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XY(X, Y))
 
+		hlslpp_inline swizzle2(const swizzle2& s) : vec(hlslpp_swizzle2_blend(vec, hlslpp_swizzle2_swizzle(X, Y, X, Y, s.vec))) {}
+
 		template<int A, int B>
 		hlslpp_inline swizzle2& operator = (const swizzle2<A, B>& s)
 		{
@@ -74,7 +78,7 @@ namespace hlslpp
 			return *this;
 		}
 
-		hlslpp_inline swizzle2& operator = (const swizzle2<X, Y>& s)
+		hlslpp_inline swizzle2& operator = (const swizzle2& s)
 		{
 			staticAsserts();
 			vec = hlslpp_swizzle2_blend(vec, hlslpp_swizzle2_swizzle(X, Y, X, Y, s.vec));
@@ -102,6 +106,8 @@ namespace hlslpp
 
 		#define hlslpp_swizzle3_blend(x, y) _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z))
 
+		hlslpp_inline swizzle3(const swizzle3& s) : vec(hlslpp_swizzle3_blend(vec, hlslpp_swizzle3_swizzle(X, Y, Z, X, Y, Z, s.vec))) {}
+
 		template<int A, int B, int C>
 		hlslpp_inline swizzle3& operator = (const swizzle3<A, B, C>& s)
 		{
@@ -110,9 +116,8 @@ namespace hlslpp
 			return *this;
 		}
 
-		hlslpp_inline swizzle3& operator = (const swizzle3<X, Y, Z>& s)
+		hlslpp_inline swizzle3& operator = (const swizzle3& s)
 		{
-			staticAsserts();
 			vec = hlslpp_swizzle3_blend(vec, hlslpp_swizzle3_swizzle(X, Y, Z, X, Y, Z, s.vec));
 			return *this;
 		}
@@ -135,7 +140,7 @@ namespace hlslpp
 			                   (((IdentityMask >> 2 * F) & 3) << (2 * B)) | \
 			                   (((IdentityMask >> 2 * G) & 3) << (2 * C)) | \
 			                   (((IdentityMask >> 2 * H) & 3) << (2 * D)))
-
+		
 		// Assignment
 
 		template<int A, int B, int C, int D>
