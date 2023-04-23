@@ -992,7 +992,10 @@ void RunUnitTestsVectorFloat()
 	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);	hlslpp_check(eq(vtrunc_swiz_3, truncf((float)vfoo3.z), truncf((float)vfoo3.z), truncf((float)vfoo3.z)));
 	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);	hlslpp_check(eq(vtrunc_swiz_4, truncf((float)vfoo4.w), truncf((float)vfoo4.w), truncf((float)vfoo4.z), truncf((float)vfoo4.w)));
 
+	vtrunc_swiz_1.x--;
+	vtrunc_swiz_2.xy--;
 	vtrunc_swiz_3.zxy--;
+	vtrunc_swiz_4.zxyw--;
 	
 	vtrunc_swiz_4++;
 
