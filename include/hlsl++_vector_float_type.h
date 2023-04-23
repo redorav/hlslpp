@@ -15,7 +15,7 @@ namespace hlslpp
 
 		#define hlslpp_swizzle1_swizzle(E, A, v) _hlslpp_perm_ps(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | (IdentityMask & ~((3 << 2 * A))))
 
-		swizzle1(const swizzle1& s) : vec(_hlslpp_blend_ps(vec, _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(X, X, X, X)), HLSLPP_COMPONENT_X(X))) {}		
+		swizzle1(const swizzle1& s) : vec(s.vec) {}
 
 		// Assignment
 
@@ -68,7 +68,7 @@ namespace hlslpp
 
 		#define hlslpp_swizzle2_blend(x, y) _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XY(X, Y))
 
-		hlslpp_inline swizzle2(const swizzle2& s) : vec(hlslpp_swizzle2_blend(vec, hlslpp_swizzle2_swizzle(X, Y, X, Y, s.vec))) {}
+		hlslpp_inline swizzle2(const swizzle2& s) : vec(s.vec) {}
 
 		template<int A, int B>
 		hlslpp_inline swizzle2& operator = (const swizzle2<A, B>& s)
@@ -106,7 +106,7 @@ namespace hlslpp
 
 		#define hlslpp_swizzle3_blend(x, y) _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z))
 
-		hlslpp_inline swizzle3(const swizzle3& s) : vec(hlslpp_swizzle3_blend(vec, hlslpp_swizzle3_swizzle(X, Y, Z, X, Y, Z, s.vec))) {}
+		hlslpp_inline swizzle3(const swizzle3& s) : vec(s.vec) {}
 
 		template<int A, int B, int C>
 		hlslpp_inline swizzle3& operator = (const swizzle3<A, B, C>& s)
