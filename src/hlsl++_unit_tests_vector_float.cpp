@@ -1039,7 +1039,7 @@ void RunUnitTestsVectorFloat()
 
 	float8 vfoo8 = float8(f11, f12, f13, f14, f15, f16, f17, f18);	hlslpp_check(eq(vfoo8, f11, f12, f13, f14, f15, f16, f17, f18));
 
-	float8 vfoo_dc_8;
+	float8 vfoo_dc_8; hlslpp_unit_unused(vfoo_dc_8);
 
 	vfoo8 = float8(f11, f12, f13, f14, f15, f16, f17, f18);	hlslpp_check(eq(vfoo8, f11, f12, f13, f14, f15, f16, f17, f18));
 
@@ -1077,7 +1077,7 @@ void RunUnitTestsVectorFloat()
 
 	// Addition
 
-	float8 vadd8 = vfoo8 + vbar8;
+	float8 vadd8 = vfoo8 + vbar8; hlslpp_unit_unused(vadd8);
 	//eq(vadd8,
 	//	(float)vfoo8.x + (float)vbar8.x, (float)vfoo8.y + (float)vbar8.y, (float)vfoo8.z + (float)vbar8.z, (float)vfoo8.w + (float)vbar8.w,	
 	//	(float)vfoo8.x + (float)vbar8.x, (float)vfoo8.y + (float)vbar8.y, (float)vfoo8.z + (float)vbar8.z, (float)vfoo8.w + (float)vbar8.w);
@@ -1088,7 +1088,7 @@ void RunUnitTestsVectorFloat()
 	
 	// Subtraction
 
-	float8 vsub8 = vfoo8 - vbar8;											//eq(vsub4, (float)vfoo8.x - (float)vbar8.x, (float)vfoo8.y - (float)vbar8.y, (float)vfoo8.z - (float)vbar8.z, (float)vfoo8.w - (float)vbar8.w);
+	float8 vsub8 = vfoo8 - vbar8; hlslpp_unit_unused(vsub8); //eq(vsub4, (float)vfoo8.x - (float)vbar8.x, (float)vfoo8.y - (float)vbar8.y, (float)vfoo8.z - (float)vbar8.z, (float)vfoo8.w - (float)vbar8.w);
 
 	float8 vsub_f_8 = vfoo8 - 0.4f;											//eq(vsub_f_4, (float)vfoo8.x - 0.4f, (float)vfoo8.y - 0.4f, (float)vfoo8.z - 0.4f, (float)vfoo8.w - 0.4f);
 
@@ -1096,7 +1096,7 @@ void RunUnitTestsVectorFloat()
 
 	// Multiplication
 
-	float8 vmul8 = vfoo8 * vbar8;						//eq(vmul4, (float)vfoo8.x * (float)vbar8.x, (float)vfoo8.y * (float)vbar8.y, (float)vfoo8.z * (float)vbar8.z, (float)vfoo8.w * (float)vbar8.w);
+	float8 vmul8 = vfoo8 * vbar8; hlslpp_unit_unused(vmul8); //eq(vmul4, (float)vfoo8.x * (float)vbar8.x, (float)vfoo8.y * (float)vbar8.y, (float)vfoo8.z * (float)vbar8.z, (float)vfoo8.w * (float)vbar8.w);
 
 	float8 vmul_f_8 = vfoo8 * 0.4f;						//eq(vmul_f_4, (float)vfoo8.x * 0.4f, (float)vfoo8.y * 0.4f, (float)vfoo8.z * 0.4f, (float)vfoo8.w * 0.4f);
 
@@ -1104,7 +1104,7 @@ void RunUnitTestsVectorFloat()
 	
 	// Division
 
-	float8 vdiv8 = vfoo8 / vbar8;						//eq(vdiv4, div(vfoo8.x, vbar8.x), div(vfoo8.y, vbar8.y), div(vfoo8.z, vbar8.z), div(vfoo8.w, vbar8.w), tolDiv);
+	float8 vdiv8 = vfoo8 / vbar8; hlslpp_unit_unused(vdiv8); //eq(vdiv4, div(vfoo8.x, vbar8.x), div(vfoo8.y, vbar8.y), div(vfoo8.z, vbar8.z), div(vfoo8.w, vbar8.w), tolDiv);
 
 	float8 vdiv_f_8 = vfoo8 / 0.4f;						//eq(vdiv_f_4, div(vfoo8.x, 0.4f), div(vfoo8.y, 0.4f), div(vfoo8.z, 0.4f), div(vfoo8.w, 0.4f), tolDiv);
 
@@ -1112,109 +1112,109 @@ void RunUnitTestsVectorFloat()
 	
 	// Comparison
 
-	float8 vgt8 = vfoo8 > vbar8;							//eq(vgt4, (float)vfoo8.x > (float)vbar8.x, (float)vfoo8.y > (float)vbar8.y, (float)vfoo8.z > (float)vbar8.z, (float)vfoo8.w > (float)vbar8.w);
+	float8 vgt8 = vfoo8 > vbar8; hlslpp_unit_unused(vgt8); //eq(vgt4, (float)vfoo8.x > (float)vbar8.x, (float)vfoo8.y > (float)vbar8.y, (float)vfoo8.z > (float)vbar8.z, (float)vfoo8.w > (float)vbar8.w);
 
-	float8 vlt8 = vfoo8 < vbar8;							//eq(vlt4, (float)vfoo8.x < (float)vbar8.x, (float)vfoo8.y < (float)vbar8.y, (float)vfoo8.z < (float)vbar8.z, (float)vfoo8.w < (float)vbar8.w);
+	float8 vlt8 = vfoo8 < vbar8; hlslpp_unit_unused(vlt8); //eq(vlt4, (float)vfoo8.x < (float)vbar8.x, (float)vfoo8.y < (float)vbar8.y, (float)vfoo8.z < (float)vbar8.z, (float)vfoo8.w < (float)vbar8.w);
 
-	float8 vge8 = vfoo8 >= vbar8;							//eq(vge4, (float)vfoo8.x >= (float)vbar8.x, (float)vfoo8.y >= (float)vbar8.y, (float)vfoo8.z >= (float)vbar8.z, (float)vfoo8.w >= (float)vbar8.w);
+	float8 vge8 = vfoo8 >= vbar8; hlslpp_unit_unused(vge8); //eq(vge4, (float)vfoo8.x >= (float)vbar8.x, (float)vfoo8.y >= (float)vbar8.y, (float)vfoo8.z >= (float)vbar8.z, (float)vfoo8.w >= (float)vbar8.w);
 
-	float8 vle8 = vfoo8 <= vbar8;							//eq(vle4, (float)vfoo8.x <= (float)vbar8.x, (float)vfoo8.y <= (float)vbar8.y, (float)vfoo8.z <= (float)vbar8.z, (float)vfoo8.w <= (float)vbar8.w);
+	float8 vle8 = vfoo8 <= vbar8; hlslpp_unit_unused(vle8); //eq(vle4, (float)vfoo8.x <= (float)vbar8.x, (float)vfoo8.y <= (float)vbar8.y, (float)vfoo8.z <= (float)vbar8.z, (float)vfoo8.w <= (float)vbar8.w);
 
-	float8 veq8 = vfoo8 == vbar8;							//eq(veq4, (float)vfoo8.x == (float)vbar8.x, (float)vfoo8.y == (float)vbar8.y, (float)vfoo8.z == (float)vbar8.z, (float)vfoo8.w == (float)vbar8.w);
+	float8 veq8 = vfoo8 == vbar8; hlslpp_unit_unused(veq8); //eq(veq4, (float)vfoo8.x == (float)vbar8.x, (float)vfoo8.y == (float)vbar8.y, (float)vfoo8.z == (float)vbar8.z, (float)vfoo8.w == (float)vbar8.w);
 
-	float8 vneq8 = vfoo8 != vbar8;							//eq(vneq4, (float)vfoo8.x != (float)vbar8.x, (float)vfoo8.y != (float)vbar8.y, (float)vfoo8.z != (float)vbar8.z, (float)vfoo8.w != (float)vbar8.w);
+	float8 vneq8 = vfoo8 != vbar8; hlslpp_unit_unused(vneq8); //eq(vneq4, (float)vfoo8.x != (float)vbar8.x, (float)vfoo8.y != (float)vbar8.y, (float)vfoo8.z != (float)vbar8.z, (float)vfoo8.w != (float)vbar8.w);
 
-	float8 vabs8 = abs(vfoo8);								//eq(vabs4, abs((float)vfoo8.x), abs((float)vfoo8.y), abs((float)vfoo8.z), abs((float)vfoo8.w));
+	float8 vabs8 = abs(vfoo8); hlslpp_unit_unused(vabs8); //eq(vabs4, abs((float)vfoo8.x), abs((float)vfoo8.y), abs((float)vfoo8.z), abs((float)vfoo8.w));
 
-	float8 vabsneg_8 = abs(-vfoo8);							//eq(vabsneg_4, abs((float)-vfoo8.x), abs((float)-vfoo8.y), abs((float)-vfoo8.z), abs((float)-vfoo8.w));
+	float8 vabsneg_8 = abs(-vfoo8); hlslpp_unit_unused(vabsneg_8); //eq(vabsneg_4, abs((float)-vfoo8.x), abs((float)-vfoo8.y), abs((float)-vfoo8.z), abs((float)-vfoo8.w));
 
-	bool vall8 = all(vfoo8);				//eq(vall4, vfoo8.x != 0.0f && vfoo8.y != 0.0f && vfoo8.z != 0.0f && vfoo8.w != 0.0f);
+	bool vall8 = all(vfoo8); hlslpp_unit_unused(vall8); //eq(vall4, vfoo8.x != 0.0f && vfoo8.y != 0.0f && vfoo8.z != 0.0f && vfoo8.w != 0.0f);
 
-	bool vany8 = any(vfoo8);				//eq(vany4, vfoo8.x != 0.0f || vfoo8.y != 0.0f || vfoo8.z != 0.0f || vfoo8.w != 0.0f);
+	bool vany8 = any(vfoo8); hlslpp_unit_unused(vany8); //eq(vany4, vfoo8.x != 0.0f || vfoo8.y != 0.0f || vfoo8.z != 0.0f || vfoo8.w != 0.0f);
 
-	float8 vacos8 = acos(vfoo8);
+	float8 vacos8 = acos(vfoo8); hlslpp_unit_unused(vacos8);
 
-	float8 vasin8 = asin(vfoo8);
+	float8 vasin8 = asin(vfoo8); hlslpp_unit_unused(vasin8);
 
-	float8 vatan8 = atan(vfoo8);
+	float8 vatan8 = atan(vfoo8); hlslpp_unit_unused(vatan8);
 
-	float8 vceil8 = ceil(vfoo8);							//eq(vceil4, ceil((float)vfoo8.x), ceil((float)vfoo8.y), ceil((float)vfoo8.z), ceil((float)vfoo8.w));
+	float8 vceil8 = ceil(vceil8); hlslpp_unit_unused(vceil8); //eq(vceil4, ceil((float)vfoo8.x), ceil((float)vfoo8.y), ceil((float)vfoo8.z), ceil((float)vfoo8.w));
 
-	float8 vclamp8 = clamp(vfoo8, vbar8, vbaz8);
+	float8 vclamp8 = clamp(vfoo8, vbar8, vbaz8); hlslpp_unit_unused(vclamp8);
 
-	float8 vcos8 = cos(vfoo8);
+	float8 vcos8 = cos(vfoo8); hlslpp_unit_unused(vcos8);
 
-	float8 vcosh8 = cosh(vfoo8);
+	float8 vcosh8 = cosh(vfoo8); hlslpp_unit_unused(vcosh8);
 
-	float1 vdot8 = dot(vfoo8, vbar8);
+	float1 vdot8 = dot(vfoo8, vbar8); hlslpp_unit_unused(vdot8);
 
-	float8 vfloor8 = floor(vfoo8);					//eq(vfloor4, floor((float)vfoo8.x), floor((float)vfoo8.y), floor((float)vfoo8.z), floor((float)vfoo8.w));
+	float8 vfloor8 = floor(vfloor8); hlslpp_unit_unused(vfloor8); //eq(vfloor4, floor((float)vfoo8.x), floor((float)vfoo8.y), floor((float)vfoo8.z), floor((float)vfoo8.w));
 	
-	float8 vfmod8 = fmod(vfoo8, vbar8);
+	float8 vfmod8 = fmod(vfoo8, vbar8); hlslpp_unit_unused(vfmod8);
 
-	float8 vfrac8 = frac(vfoo8);
+	float8 vfrac8 = frac(vfoo8); hlslpp_unit_unused(vfrac8);
 
-	float8 vexp8 = exp(vfoo8);
+	float8 vexp8 = exp(vfoo8); hlslpp_unit_unused(vexp8);
 
-	float8 vexp2_8 = exp2(vfoo8);
+	float8 vexp2_8 = exp2(vfoo8); hlslpp_unit_unused(vexp2_8);
 
-	float8 visfinite_8 = isfinite(vfoo8);
+	float8 visfinite_8 = isfinite(vfoo8); hlslpp_unit_unused(visfinite_8);
 
-	float8 visinf_8 = isinf(vfoo8);
+	float8 visinf_8 = isinf(vfoo8); hlslpp_unit_unused(visinf_8);
 
-	float8 visnan_8 = isnan(vfoo8);
+	float8 visnan_8 = isnan(vfoo8); hlslpp_unit_unused(visnan_8);
 
-	float1 vlength_8 = length(vfoo8);
+	float1 vlength_8 = length(vfoo8); hlslpp_unit_unused(vlength_8);
 
-	float8 vlerp8 = lerp(vfoo8, vbar8, vbaz8);					//eq(vlerp4, lerpf(vfoo8.r, vbar8.r, vbaz8.r), lerpf(vfoo8.g, vbar8.g, vbaz8.g), lerpf(vfoo8.b, vbar8.b, vbaz8.b), lerpf(vfoo8.a, vbar8.a, vbaz8.a));
+	float8 vlerp8 = lerp(vfoo8, vbar8, vbaz8); hlslpp_unit_unused(vlerp8); //eq(vlerp4, lerpf(vfoo8.r, vbar8.r, vbaz8.r), lerpf(vfoo8.g, vbar8.g, vbaz8.g), lerpf(vfoo8.b, vbar8.b, vbaz8.b), lerpf(vfoo8.a, vbar8.a, vbaz8.a));
 
-	float8 vlerpf_8 = lerp(vfoo8, vbar8, 0.7f);					//eq(vlerpf_4, lerpf(vfoo8.r, vbar8.r, 0.7f), lerpf(vfoo8.g, vbar8.g, 0.7f), lerpf(vfoo8.b, vbar8.b, 0.7f), lerpf(vfoo8.a, vbar8.a, 0.7f));
+	float8 vlerpf_8 = lerp(vfoo8, vbar8, 0.7f); hlslpp_unit_unused(vlerpf_8); //eq(vlerpf_4, lerpf(vfoo8.r, vbar8.r, 0.7f), lerpf(vfoo8.g, vbar8.g, 0.7f), lerpf(vfoo8.b, vbar8.b, 0.7f), lerpf(vfoo8.a, vbar8.a, 0.7f));
 
-	float8 vlog8 = log(vfoo8);
+	float8 vlog8 = log(vfoo8); hlslpp_unit_unused(vlog8);
 
-	float8 vlog2_8 = log2(vfoo8);
+	float8 vlog2_8 = log2(vfoo8); hlslpp_unit_unused(vlog2_8);
 
-	float8 vlog10_8 = log10(vfoo8);
+	float8 vlog10_8 = log10(vfoo8); hlslpp_unit_unused(vlog10_8);
 
-	float8 vmin_8 = min(vfoo8, vbar8);
+	float8 vmin_8 = min(vfoo8, vbar8); hlslpp_unit_unused(vmin_8);
 
-	float8 vmax_8 = max(vfoo8, vbar8);
+	float8 vmax_8 = max(vfoo8, vbar8); hlslpp_unit_unused(vmax_8);
 
-	float8 vnormalize_foo_8 = normalize(vfoo8);
+	float8 vnormalize_foo_8 = normalize(vfoo8); hlslpp_unit_unused(vnormalize_foo_8);
 
-	float8 vnormalize_bar_8 = normalize(vbar8);
+	float8 vnormalize_bar_8 = normalize(vbar8); hlslpp_unit_unused(vnormalize_bar_8);
 
-	float8 vpow_8 = pow(vfoo8, vbar8);
+	float8 vpow_8 = pow(vfoo8, vbar8); hlslpp_unit_unused(vpow_8);
 
-	float8 vradians8 = radians(vfoo8);
+	float8 vradians8 = radians(vfoo8); hlslpp_unit_unused(vradians8);
 
-	float8 vreflect8 = reflect(vfoo8, vbar8);
+	float8 vreflect8 = reflect(vfoo8, vbar8); hlslpp_unit_unused(vreflect8);
 
-	float8 vrefract8 = refract(vnormalize_foo_8, vnormalize_bar_8, float1(0.1f));
+	float8 vrefract8 = refract(vnormalize_foo_8, vnormalize_bar_8, float1(0.1f)); hlslpp_unit_unused(vrefract8);
 
-	float8 vrsqrt8 = rsqrt(vfoo8);
+	float8 vrsqrt8 = rsqrt(vfoo8); hlslpp_unit_unused(vrsqrt8);
 
-	float8 vround8 = round(vfoo8);
+	float8 vround8 = round(vfoo8); hlslpp_unit_unused(vround8);
 
-	float8 vsaturate8 = saturate(vfoo8);
+	float8 vsaturate8 = saturate(vfoo8); hlslpp_unit_unused(vsaturate8);
 
-	float8 vsign8 = sign(vfoo8);
+	float8 vsign8 = sign(vfoo8); hlslpp_unit_unused(vsign8);
 
-	float8 vsin8 = sin(vfoo8);
+	float8 vsin8 = sin(vfoo8); hlslpp_unit_unused(vsign8);
 
-	float8 vsinh8 = sinh(vfoo8);
+	float8 vsinh8 = sinh(vfoo8); hlslpp_unit_unused(vsign8);
 
-	float8 vsmoothstep_8 = smoothstep(vfoo8, vfoo8 + 3.0f, vbar8);
+	float8 vsmoothstep_8 = smoothstep(vfoo8, vfoo8 + 3.0f, vbar8); hlslpp_unit_unused(vsign8);
 
-	float8 vsqrt8 = sqrt(vfoo8);
+	float8 vsqrt8 = sqrt(vfoo8); hlslpp_unit_unused(vsign8);
 
-	float8 vstep8 = step(vfoo8, vbar8);
+	float8 vstep8 = step(vfoo8, vbar8); hlslpp_unit_unused(vsign8);
 
-	float8 vtan8 = tan(vfoo8);
+	float8 vtan8 = tan(vfoo8); hlslpp_unit_unused(vsign8);
 
-	float8 vtanh8 = tanh(vfoo8);
+	float8 vtanh8 = tanh(vfoo8); hlslpp_unit_unused(vsign8);
 
-	float8 vtrunc8 = trunc(vfoo8);
+	float8 vtrunc8 = trunc(vfoo8); hlslpp_unit_unused(vsign8);
 
 	hlslpp_unit::BeginTest("Float8 Storage and Loading");
 	{
