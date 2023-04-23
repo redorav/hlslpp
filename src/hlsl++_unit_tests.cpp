@@ -14,7 +14,7 @@ const float deg2rad = 3.14159265f / 180.0f;
 #if defined(_MSC_VER)
 	#define sprintf_safe(dst, dst_size, format, ...) sprintf_s(dst, dst_size, format, __VA_ARGS__)
 #else
-	#define sprintf_safe(dst, dst_size, format) snprintf(dst, dst_size, format)
+	#define sprintf_safe(dst, dst_size, format, ...) snprintf(dst, dst_size, format, __VA_ARGS__)
 #endif
 
 namespace hlslpp_unit
