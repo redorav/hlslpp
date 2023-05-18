@@ -1,3 +1,2 @@
 @echo off
-start /B /W premake/win/premake5 --file=premake.lua vs2015
-pause
+start /B /W premake/win/premake5 --file=hlsl++.lua vs2015

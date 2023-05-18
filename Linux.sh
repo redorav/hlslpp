@@ -1,1 +1,1 @@
-./premake/linux/premake5 --file=premake.lua gmake2
+./premake/linux/premake5 --file=hlsl++.lua gmake2

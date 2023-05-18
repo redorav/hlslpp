@@ -81,13 +81,13 @@ environment:
 
 install:
   - cmd: if %vsversion%==2015
-         start /B /W premake/win/premake5 --file=premake.lua vs2015
+         "Visual Studio 2015.bat"
   - cmd: if %vsversion%==2017
-         start /B /W premake/win/premake5 --file=premake.lua vs2017
+         "Visual Studio 2017.bat"
   - cmd: if %vsversion%==2019
-         start /B /W premake/win/premake5 --file=premake.lua vs2019
-  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = Ubuntu ]]; then ./premake/linux/premake5 --file=premake.lua gmake2; fi;
-  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = macOS ]]; then ./premake/osx/premake5 --file=premake.lua xcode4; fi;
+         "Visual Studio 2019.bat"
+  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = Ubuntu ]]; then ./Linux.sh; fi;
+  - sh: if [[ $APPVEYOR_BUILD_WORKER_IMAGE = macOS ]]; then ./Xcode.sh; fi;
 
 build_script:
   - cmd: if %vsversion%==2015

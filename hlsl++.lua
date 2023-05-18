@@ -77,8 +77,8 @@ workspace("hlsl++")
 	cppdialect("c++11")
 	defines { "HLSLPP_FEATURE_TRANSFORM" }
 	warnings('extra')
-	--flags { 'fatalcompilewarnings' }
-		
+	flags { 'fatalcompilewarnings' }
+	
 	if(isMacBuild) then
 	
 		platforms { PlatformOSX64 }
@@ -260,6 +260,21 @@ project (UnitTestProject)
 		
 	filter{}
 	
+	includedirs
+	{
+		srcDir.."/**.h"
+	}
+
+project ("Compile Times")
+
+	kind("staticlib")
+
+	files
+	{
+		srcDir.."/compiles/*.cpp",
+		srcDir.."/compiles/*.h",
+	}
+
 	includedirs
 	{
 		srcDir.."/**.h"
