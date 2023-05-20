@@ -11,6 +11,7 @@ namespace hlslpp
 		hlslpp_inline vector_float4(float f) : x(f), y(f), z(f), w(f) {}
 		hlslpp_inline vector_float4(float f1, float f2, float f3, float f4) : x(f1), y(f2), z(f3), w(f4) {}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			struct
@@ -25,6 +26,7 @@ namespace hlslpp
 
 			float m[4];
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct vector_int4
@@ -36,6 +38,7 @@ namespace hlslpp
 		hlslpp_inline vector_int4(int32_t i) : x(i), y(i), z(i), w(i) {}
 		hlslpp_inline vector_int4(int32_t i1, int32_t i2, int32_t i3, int32_t i4) : x(i1), y(i2), z(i3), w(i4) {}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			struct
@@ -45,6 +48,7 @@ namespace hlslpp
 
 			int32_t m[4];
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct vector_uint4
@@ -55,6 +59,7 @@ namespace hlslpp
 		hlslpp_inline vector_uint4(uint32_t i) : x(i), y(i), z(i), w(i) {}
 		hlslpp_inline vector_uint4(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4) : x(i1), y(i2), z(i3), w(i4) {}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			struct
@@ -64,6 +69,7 @@ namespace hlslpp
 
 			uint32_t m[4];
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	typedef vector_float4 n128;
