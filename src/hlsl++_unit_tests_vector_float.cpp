@@ -1203,21 +1203,21 @@ void RunUnitTestsVectorFloat()
 
 	float8 vsign8 = sign(vfoo8); hlslpp_unit_unused(vsign8);
 
-	float8 vsin8 = sin(vfoo8); hlslpp_unit_unused(vsign8);
+	float8 vsin8 = sin(vfoo8); hlslpp_unit_unused(vsin8);
 
-	float8 vsinh8 = sinh(vfoo8); hlslpp_unit_unused(vsign8);
+	float8 vsinh8 = sinh(vfoo8); hlslpp_unit_unused(vsinh8);
 
-	float8 vsmoothstep_8 = smoothstep(vfoo8, vfoo8 + 3.0f, vbar8); hlslpp_unit_unused(vsign8);
+	float8 vsmoothstep_8 = smoothstep(vfoo8, vfoo8 + 3.0f, vbar8); hlslpp_unit_unused(vsmoothstep_8);
 
-	float8 vsqrt8 = sqrt(vfoo8); hlslpp_unit_unused(vsign8);
+	float8 vsqrt8 = sqrt(vfoo8); hlslpp_unit_unused(vsqrt8);
 
-	float8 vstep8 = step(vfoo8, vbar8); hlslpp_unit_unused(vsign8);
+	float8 vstep8 = step(vfoo8, vbar8); hlslpp_unit_unused(vstep8);
 
-	float8 vtan8 = tan(vfoo8); hlslpp_unit_unused(vsign8);
+	float8 vtan8 = tan(vfoo8); hlslpp_unit_unused(vtan8);
 
-	float8 vtanh8 = tanh(vfoo8); hlslpp_unit_unused(vsign8);
+	float8 vtanh8 = tanh(vfoo8); hlslpp_unit_unused(vtanh8);
 
-	float8 vtrunc8 = trunc(vfoo8); hlslpp_unit_unused(vsign8);
+	float8 vtrunc8 = trunc(vfoo8); hlslpp_unit_unused(vtrunc8);
 
 	hlslpp_unit::BeginTest("Float8 Storage and Loading");
 	{
