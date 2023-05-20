@@ -409,59 +409,70 @@ void RunUnitTestsVectorInt()
 
 	hlslpp_unit::BeginTest("Integer-Float Reinterpret");
 	{
-		float fval[4] = { 1.0f, 2.0f, 3.0f, 4.0f };
+		union fint
+		{
+			explicit fint(float f) : f(f) {}
+			explicit fint(uint32_t u) : u(u) {}
+			explicit fint(int32_t i) : i(i) {}
 
-		uint1 uiasfloat_1((uint32_t&)fval[0]);
-		float1 fuiasfloat_1 = asfloat(uiasfloat_1); hlslpp_check(eq(fuiasfloat_1, fval[0]));
+			float f;
+			uint32_t u;
+			int32_t i;
+		};
 
-		uint2 uiasfloat_2 = uint2((uint32_t&)fval[0], (uint32_t&)fval[1]);
-		float2 fuiasfloat_2 = asfloat(uiasfloat_2); hlslpp_check(eq(fuiasfloat_2, fval[0], fval[1]));
+		fint fval[4] = { fint(1.0f), fint(2.0f), fint(3.0f), fint(4.0f) };
 
-		uint3 uiasfloat_3 = uint3((uint32_t&)fval[0], (uint32_t&)fval[1], (uint32_t&)fval[2]);
-		float3 fuiasfloat_3 = asfloat(uiasfloat_3); hlslpp_check(eq(fuiasfloat_3, fval[0], fval[1], fval[2]));
+		uint1 uiasfloat_1(fval[0].u);
+		float1 fuiasfloat_1 = asfloat(uiasfloat_1); hlslpp_check(eq(fuiasfloat_1, fval[0].f));
 
-		uint4 uiasfloat_4 = uint4((uint32_t&)fval[0], (uint32_t&)fval[1], (uint32_t&)fval[2], (uint32_t&)fval[3]);
-		float4 fuiasfloat_4 = asfloat(uiasfloat_4); hlslpp_check(eq(fuiasfloat_4, fval[0], fval[1], fval[2], fval[3]));
+		uint2 uiasfloat_2 = uint2(fval[0].u, fval[1].u);
+		float2 fuiasfloat_2 = asfloat(uiasfloat_2); hlslpp_check(eq(fuiasfloat_2, fval[0].f, fval[1].f));
 
-		int1 iasfloat_1((int32_t&)fval[0]);
-		float1 fiasfloat_1 = asfloat(iasfloat_1); hlslpp_check(eq(fiasfloat_1, fval[0]));
+		uint3 uiasfloat_3 = uint3(fval[0].u, fval[1].u, fval[2].u);
+		float3 fuiasfloat_3 = asfloat(uiasfloat_3); hlslpp_check(eq(fuiasfloat_3, fval[0].f, fval[1].f, fval[2].f));
 
-		int2 iasfloat_2((int32_t&)fval[0], (int32_t&)fval[1]);
-		float2 fiasfloat_2 = asfloat(iasfloat_2); hlslpp_check(eq(fiasfloat_2, fval[0], fval[1]));
+		uint4 uiasfloat_4 = uint4(fval[0].u,fval[1].u, fval[2].u, fval[3].u);
+		float4 fuiasfloat_4 = asfloat(uiasfloat_4); hlslpp_check(eq(fuiasfloat_4, fval[0].f, fval[1].f, fval[2].f, fval[3].f));
 
-		int3 iasfloat_3((int32_t&)fval[0], (int32_t&)fval[1], (int32_t&)fval[2]);
-		float3 fiasfloat_3 = asfloat(iasfloat_3); hlslpp_check(eq(fiasfloat_3, fval[0], fval[1], fval[2]));
+		int1 iasfloat_1(fval[0].i);
+		float1 fiasfloat_1 = asfloat(iasfloat_1); hlslpp_check(eq(fiasfloat_1, fval[0].f));
 
-		int4 iasfloat_4((int32_t&)fval[0], (int32_t&)fval[1], (int32_t&)fval[2], (int32_t&)fval[3]);
-		float4 fiasfloat_4 = asfloat(iasfloat_4); hlslpp_check(eq(fiasfloat_4, fval[0], fval[1], fval[2], fval[3]));
+		int2 iasfloat_2(fval[0].i, fval[1].i);
+		float2 fiasfloat_2 = asfloat(iasfloat_2); hlslpp_check(eq(fiasfloat_2, fval[0].f, fval[1].f));
 
-		uint32_t uival[4] = { 7, 8, 9, 10 };
+		int3 iasfloat_3(fval[0].i, fval[1].i, fval[2].i);
+		float3 fiasfloat_3 = asfloat(iasfloat_3); hlslpp_check(eq(fiasfloat_3, fval[0].f, fval[1].f, fval[2].f));
 
-		float1 fasuint_1((float&)uival[0]);
-		uint1 uisuint_1 = asuint(fasuint_1); hlslpp_check(eq(uisuint_1, uival[0]));
+		int4 iasfloat_4(fval[0].i, fval[1].i, fval[2].i, fval[3].i);
+		float4 fiasfloat_4 = asfloat(iasfloat_4); hlslpp_check(eq(fiasfloat_4, fval[0].f, fval[1].f, fval[2].f, fval[3].f));
 
-		float2 fasuint_2((float&)uival[0], (float&)uival[1]);
-		uint2 uisuint_2 = asuint(fasuint_2); hlslpp_check(eq(uisuint_2, uival[0], uival[1]));
+		fint uival[4] = { fint(7u), fint(8u), fint(9u), fint(10u) };
 
-		float3 fasuint_3((float&)uival[0], (float&)uival[1], *(float*)&uival[2]);
-		uint3 uisuint_3 = asuint(fasuint_3); hlslpp_check(eq(uisuint_3, uival[0], uival[1], uival[2]));
+		float1 fasuint_1(uival[0].f);
+		uint1 uisuint_1 = asuint(fasuint_1); hlslpp_check(eq(uisuint_1, uival[0].u));
 
-		float4 fasuint_4(*(float*)&uival[0], *(float*)&uival[1], *(float*)&uival[2], *(float*)&uival[3]);
-		uint4 uisuint_4 = asuint(fasuint_4); hlslpp_check(eq(uisuint_4, uival[0], uival[1], uival[2], uival[3]));
+		float2 fasuint_2(uival[0].f, uival[1].f);
+		uint2 uisuint_2 = asuint(fasuint_2); hlslpp_check(eq(uisuint_2, uival[0].u, uival[1].u));
 
-		int32_t ival[4] = { 11, 12, 13, 14 };
+		float3 fasuint_3(uival[0].f, uival[1].f, uival[2].f);
+		uint3 uisuint_3 = asuint(fasuint_3); hlslpp_check(eq(uisuint_3, uival[0].u, uival[1].u, uival[2].u));
 
-		float1 fasint_1(*(float*)&ival[0]);
-		int1 isuint_1 = asint(fasint_1); hlslpp_check(eq(isuint_1, ival[0]));
+		float4 fasuint_4(uival[0].f, uival[1].f, uival[2].f, uival[3].f);
+		uint4 uisuint_4 = asuint(fasuint_4); hlslpp_check(eq(uisuint_4, uival[0].u, uival[1].u, uival[2].u, uival[3].u));
 
-		float2 fasint_2(*(float*)&ival[0], *(float*)&ival[1]);
-		int2 isuint_2 = asint(fasint_2); hlslpp_check(eq(isuint_2, ival[0], ival[1]));
+		fint ival[4] = { fint(11), fint(12), fint(13), fint(14) };
 
-		float3 fasint_3(*(float*)&ival[0], *(float*)&ival[1], *(float*)&ival[2]);
-		int3 isuint_3 = asint(fasint_3); hlslpp_check(eq(isuint_3, ival[0], ival[1], ival[2]));
+		float1 fasint_1(ival[0].f);
+		int1 isuint_1 = asint(fasint_1); hlslpp_check(eq(isuint_1, ival[0].i));
 
-		float4 fasint_4(*(float*)&ival[0], *(float*)&ival[1], *(float*)&ival[2], *(float*)&ival[3]);
-		int4 isuint_4 = asint(fasint_4); hlslpp_check(eq(isuint_4, ival[0], ival[1], ival[2], ival[3]));
+		float2 fasint_2(ival[0].f, ival[1].f);
+		int2 isuint_2 = asint(fasint_2); hlslpp_check(eq(isuint_2, ival[0].i, ival[1].i));
+
+		float3 fasint_3(ival[0].f, ival[1].f, ival[2].f);
+		int3 isuint_3 = asint(fasint_3); hlslpp_check(eq(isuint_3, ival[0].i, ival[1].i, ival[2].i));
+
+		float4 fasint_4(ival[0].f, ival[1].f, ival[2].f, ival[3].f);
+		int4 isuint_4 = asint(fasint_4); hlslpp_check(eq(isuint_4, ival[0].i, ival[1].i, ival[2].i, ival[3].i));
 	}
 	hlslpp_unit::EndTest();
 
