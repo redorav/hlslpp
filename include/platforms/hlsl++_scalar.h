@@ -87,12 +87,18 @@ namespace hlslpp
 	hlslpp_inline vector_float4 _hlslpp_add_ps(const vector_float4& v1, const vector_float4& v2) { return vector_float4(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w); }
 	hlslpp_inline vector_float4 _hlslpp_sub_ps(const vector_float4& v1, const vector_float4& v2) { return vector_float4(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z, v1.w - v2.w); }
 	hlslpp_inline vector_float4 _hlslpp_mul_ps(const vector_float4& v1, const vector_float4& v2) { return vector_float4(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z, v1.w * v2.w); }
+
+HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_BEGIN
 	hlslpp_inline vector_float4 _hlslpp_div_ps(const vector_float4& v1, const vector_float4& v2) { return vector_float4(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z, v1.w / v2.w); }
+HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 
 	hlslpp_inline vector_float4 _hlslpp_add_ss(const vector_float4& v1, const vector_float4& v2) { return vector_float4(v1.x + v2.x, v1.y, v1.z, v1.w); }
 	hlslpp_inline vector_float4 _hlslpp_sub_ss(const vector_float4& v1, const vector_float4& v2) { return vector_float4(v1.x - v2.x, v1.y, v1.z, v1.w); }
 	hlslpp_inline vector_float4 _hlslpp_mul_ss(const vector_float4& v1, const vector_float4& v2) { return vector_float4(v1.x * v2.x, v1.y, v1.z, v1.w); }
+
+HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_BEGIN
 	hlslpp_inline vector_float4 _hlslpp_div_ss(const vector_float4& v1, const vector_float4& v2) { return vector_float4(v1.x / v2.x, v1.y, v1.z, v1.w); }
+HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 
 	hlslpp_inline vector_float4 _hlslpp_rcp_ps(const vector_float4& v) { return vector_float4(1.0f / v.x, 1.0f / v.y, 1.0f / v.z, 1.0f / v.w); }
 
