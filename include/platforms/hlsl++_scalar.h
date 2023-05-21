@@ -304,8 +304,8 @@ namespace hlslpp
 		return vector_float4(v1.m[A], v1.m[B], v2.m[C], v2.m[D]);
 	}
 
-#define _hlslpp_perm_ps(x, msk)					perm4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x))
-#define _hlslpp_shuffle_ps(x, y, msk)			shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y))
+#define _hlslpp_perm_ps(x, msk)					(perm4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x)))
+#define _hlslpp_shuffle_ps(x, y, msk)			(shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y)))
 
 	hlslpp_inline vector_float4 _hlslpp_unpacklo_ps(const vector_float4& v1, const vector_float4& v2)
 	{
@@ -619,8 +619,8 @@ namespace hlslpp
 	}
 
 	// https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epi32(x, msk)				perm4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x))
-#define _hlslpp_shuffle_epi32(x, y, msk)		shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y))
+#define _hlslpp_perm_epi32(x, msk)				(perm4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x)))
+#define _hlslpp_shuffle_epi32(x, y, msk)		(shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y)))
 
 	hlslpp_inline vector_int4 select4(const vector_int4& v1, const vector_int4& v2, const vector_int4& msk)
 	{
