@@ -7,6 +7,9 @@
 	#define HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 	#define HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 
+	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_BEGIN
+	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
+
 #elif defined(_MSC_VER)
 
 	#define hlslpp_inline __forceinline
@@ -16,6 +19,12 @@
 	__pragma(warning(disable : 4201))
 
 	#define HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END __pragma(warning(pop))
+
+	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_BEGIN \
+	__pragma(warning(push)) \
+	__pragma(warning(disable : 4723))
+
+	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END __pragma(warning(pop))
 
 #else
 
