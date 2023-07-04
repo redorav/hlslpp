@@ -414,12 +414,14 @@ namespace hlslpp
 
 		operator double() const { return f64[0]; }
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128d vec;
 			double f64[2];
 			#include "swizzle/hlsl++_vector_double_x.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard double2
@@ -445,6 +447,7 @@ namespace hlslpp
 
 		hlslpp_inline double2& operator = (const double2& f) { vec = f.vec; return *this; }
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128d vec;
@@ -452,6 +455,7 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_double_x.h"
 			#include "swizzle/hlsl++_vector_double_y.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard double3
@@ -535,6 +539,7 @@ namespace hlslpp
 		
 		//float3(const int3& i);
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
@@ -558,6 +563,7 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_double_y.h"
 			#include "swizzle/hlsl++_vector_double_z.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard double4
@@ -679,6 +685,7 @@ namespace hlslpp
 
 		//double4(const int4& i);
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
@@ -700,6 +707,7 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_double_z.h"
 			#include "swizzle/hlsl++_vector_double_w.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 };
 

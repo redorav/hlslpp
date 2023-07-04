@@ -194,12 +194,14 @@ namespace hlslpp
 			return u32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128u vec;
 			uint32_t u32[1];
 			#include "swizzle/hlsl++_vector_uint_x.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard uint2
@@ -240,6 +242,7 @@ namespace hlslpp
 			return u32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128u vec;
@@ -247,6 +250,7 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_uint_x.h"
 			#include "swizzle/hlsl++_vector_uint_y.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 	
 	struct hlslpp_nodiscard uint3
@@ -293,6 +297,7 @@ namespace hlslpp
 			return u32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128u vec;
@@ -301,6 +306,7 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_uint_y.h"
 			#include "swizzle/hlsl++_vector_uint_z.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard uint4
@@ -356,6 +362,7 @@ namespace hlslpp
 			return u32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128u vec;
@@ -365,5 +372,6 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_uint_z.h"
 			#include "swizzle/hlsl++_vector_uint_w.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 };

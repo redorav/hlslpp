@@ -30,12 +30,14 @@ namespace hlslpp
 		hlslpp_inline float1x1(float1x1&& m) hlslpp_noexcept : vec(m.vec) {}
 		hlslpp_inline float1x1& operator = (float1x1&& m) hlslpp_noexcept { vec = m.vec; return *this; }
     
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128 vec;
 			float f32[4];
 			#include "swizzle/hlsl++_matrix_row0_1.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard float1x2
@@ -57,12 +59,14 @@ namespace hlslpp
 		hlslpp_inline float1x2(float1x2&& m) hlslpp_noexcept : vec(m.vec) {}
 		hlslpp_inline float1x2& operator = (float1x2&& m) hlslpp_noexcept { vec = m.vec; return *this; }
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128 vec;
 			float f32[4];
 			#include "swizzle/hlsl++_matrix_row0_2.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard float2x1
@@ -397,11 +401,11 @@ namespace hlslpp
 			return *(&reinterpret_cast<const float3&>(vec0) + N);
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128 vec0;
 			float f32_0[3];
-			//float3 row0;
 			#include "swizzle/hlsl++_matrix_row0_1.h"
 			#include "swizzle/hlsl++_matrix_row0_2.h"
 			#include "swizzle/hlsl++_matrix_row0_3.h"
@@ -424,6 +428,7 @@ namespace hlslpp
 			#include "swizzle/hlsl++_matrix_row2_2.h"
 			#include "swizzle/hlsl++_matrix_row2_3.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard float3x4
@@ -683,6 +688,7 @@ namespace hlslpp
 			return *(&reinterpret_cast<const float4&>(vec0) + N);
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128 vec0;
@@ -722,6 +728,7 @@ namespace hlslpp
 			#include "swizzle/hlsl++_matrix_row3_3.h"
 			#include "swizzle/hlsl++_matrix_row3_4.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 #endif
 
 		// Conversion from lower-dimension matrices

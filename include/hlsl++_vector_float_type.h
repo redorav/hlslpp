@@ -15,8 +15,6 @@ namespace hlslpp
 
 		#define hlslpp_swizzle1_swizzle(E, A, v) _hlslpp_perm_ps(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | (IdentityMask & ~((3 << 2 * A))))
 
-		swizzle1(const swizzle1& s) : vec(s.vec) {}
-
 		// Assignment
 
 		hlslpp_inline swizzle1& operator = (float f)
@@ -68,8 +66,6 @@ namespace hlslpp
 
 		#define hlslpp_swizzle2_blend(x, y) _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XY(X, Y))
 
-		hlslpp_inline swizzle2(const swizzle2& s) : vec(s.vec) {}
-
 		template<int A, int B>
 		hlslpp_inline swizzle2& operator = (const swizzle2<A, B>& s)
 		{
@@ -105,8 +101,6 @@ namespace hlslpp
 			                   (IdentityMask & ~((3 << 2 * A) | (3 << 2 * B) | (3 << 2 * C))))
 
 		#define hlslpp_swizzle3_blend(x, y) _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z))
-
-		hlslpp_inline swizzle3(const swizzle3& s) : vec(s.vec) {}
 
 		template<int A, int B, int C>
 		hlslpp_inline swizzle3& operator = (const swizzle3<A, B, C>& s)
@@ -191,12 +185,14 @@ namespace hlslpp
 			return f32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128 vec;
 			float f32[1];
 			#include "swizzle/hlsl++_vector_float_x.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard	float2
@@ -238,6 +234,7 @@ namespace hlslpp
 			return f32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128 vec;
@@ -245,6 +242,7 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_float_x.h"
 			#include "swizzle/hlsl++_vector_float_y.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard	float3
@@ -291,6 +289,7 @@ namespace hlslpp
 			return f32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128 vec;
@@ -299,6 +298,7 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_float_y.h"
 			#include "swizzle/hlsl++_vector_float_z.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard	float4
@@ -356,6 +356,7 @@ namespace hlslpp
 			return f32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128 vec;
@@ -365,5 +366,6 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_float_z.h"
 			#include "swizzle/hlsl++_vector_float_w.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 };

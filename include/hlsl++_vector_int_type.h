@@ -195,12 +195,14 @@ namespace hlslpp
 			return i32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128i vec;
 			int32_t i32[1];
 			#include "swizzle/hlsl++_vector_int_x.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	
@@ -242,6 +244,7 @@ namespace hlslpp
 			return i32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128i vec;
@@ -249,6 +252,7 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_int_x.h"
 			#include "swizzle/hlsl++_vector_int_y.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard int3
@@ -294,6 +298,7 @@ namespace hlslpp
 			return i32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128i vec;
@@ -302,6 +307,7 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_int_y.h"
 			#include "swizzle/hlsl++_vector_int_z.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
 	struct hlslpp_nodiscard int4
@@ -357,6 +363,7 @@ namespace hlslpp
 			return i32[N];
 		}
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128i vec;
@@ -366,5 +373,6 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_int_z.h"
 			#include "swizzle/hlsl++_vector_int_w.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 };

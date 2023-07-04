@@ -54,6 +54,7 @@ namespace hlslpp
 
 		static quaternion rotation_euler_zxy(const float3& angles);
 
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
 			n128 vec;
@@ -63,5 +64,6 @@ namespace hlslpp
 			#include "swizzle/hlsl++_vector_float_z.h"
 			#include "swizzle/hlsl++_vector_float_w.h"
 		};
+		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 };
