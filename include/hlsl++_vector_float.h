@@ -669,13 +669,13 @@ namespace hlslpp
 	hlslpp_inline float4 operator ++ (float4& f, int) { float4 tmp = f; f = f + float4(f4_1); return tmp; }
 
 	template<int X>
-	hlslpp_inline swizzle1<X> operator ++ (swizzle1<X>& f, int) { swizzle1<X> tmp = f; f = f + float1(f4_1); return tmp; }
+	hlslpp_inline swizzle1<X> operator ++ (swizzle1<X>& f, int) { swizzle1<X> tmp; tmp.vec = f.vec; f = f + float1(f4_1); return tmp; }
 	template<int X, int Y>
-	hlslpp_inline swizzle2<X, Y> operator ++ (swizzle2<X, Y>& f, int) { swizzle2<X, Y> tmp = f; f = f + float2(f4_1); return tmp; }
+	hlslpp_inline swizzle2<X, Y> operator ++ (swizzle2<X, Y>& f, int) { swizzle2<X, Y> tmp; tmp.vec = f.vec; f = f + float2(f4_1); return tmp; }
 	template<int X, int Y, int Z>
-	hlslpp_inline swizzle3<X, Y, Z> operator ++ (swizzle3<X, Y, Z>& f, int) { swizzle3<X, Y, Z> tmp = f; f = f + float3(f4_1); return tmp; }
+	hlslpp_inline swizzle3<X, Y, Z> operator ++ (swizzle3<X, Y, Z>& f, int) { swizzle3<X, Y, Z> tmp; tmp.vec = f.vec; f = f + float3(f4_1); return tmp; }
 	template<int X, int Y, int Z, int W>
-	hlslpp_inline swizzle4<X, Y, Z, W> operator ++ (swizzle4<X, Y, Z, W>& f, int) { swizzle4<X, Y, Z, W> tmp = f; f = f + float4(f4_1); return tmp; }
+	hlslpp_inline swizzle4<X, Y, Z, W> operator ++ (swizzle4<X, Y, Z, W>& f, int) { swizzle4<X, Y, Z, W> tmp = f.vec; f = f + float4(f4_1); return tmp; }
 
 	hlslpp_inline float1 operator -- (float1& f, int) { float1 tmp = f; f = f - float1(f4_1); return tmp; }
 	hlslpp_inline float2 operator -- (float2& f, int) { float2 tmp = f; f = f - float2(f4_1); return tmp; }
@@ -683,13 +683,13 @@ namespace hlslpp
 	hlslpp_inline float4 operator -- (float4& f, int) { float4 tmp = f; f = f - float4(f4_1); return tmp; }
 
 	template<int X>
-	hlslpp_inline swizzle1<X> operator -- (swizzle1<X>& f, int) { swizzle1<X> tmp = f; f = f - float1(f4_1); return tmp; }
+	hlslpp_inline swizzle1<X> operator -- (swizzle1<X>& f, int) { swizzle1<X> tmp; tmp.vec = f.vec; f = f - float1(f4_1); return tmp; }
 	template<int X, int Y>
-	hlslpp_inline swizzle2<X, Y> operator -- (swizzle2<X, Y>& f, int) { swizzle2<X, Y> tmp = f; f = f - float2(f4_1); return tmp; }
+	hlslpp_inline swizzle2<X, Y> operator -- (swizzle2<X, Y>& f, int) { swizzle2<X, Y> tmp; tmp.vec = f.vec; f = f - float2(f4_1); return tmp; }
 	template<int X, int Y, int Z>
-	hlslpp_inline swizzle3<X, Y, Z> operator -- (swizzle3<X, Y, Z>& f, int) { swizzle3<X, Y, Z> tmp = f; f = f - float3(f4_1); return tmp; }
+	hlslpp_inline swizzle3<X, Y, Z> operator -- (swizzle3<X, Y, Z>& f, int) { swizzle3<X, Y, Z> tmp; tmp.vec = f.vec; f = f - float3(f4_1); return tmp; }
 	template<int X, int Y, int Z, int W>
-	hlslpp_inline swizzle4<X, Y, Z, W> operator -- (swizzle4<X, Y, Z, W>& f, int) { swizzle4<X, Y, Z, W> tmp = f; f = f - float4(f4_1); return tmp; }
+	hlslpp_inline swizzle4<X, Y, Z, W> operator -- (swizzle4<X, Y, Z, W>& f, int) { swizzle4<X, Y, Z, W> tmp; tmp.vec = f.vec; f = f - float4(f4_1); return tmp; }
 
 	//------------------------------------------------------------------------------------------------------------------------
 	// float1 and swizzle1 need special overloads to disambiguate between our operators/functions and built-in float operators
