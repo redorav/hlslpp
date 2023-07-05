@@ -2,6 +2,8 @@
 
 #include "hlsl++_common.h"
 
+HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
+
 namespace hlslpp
 {
 	template<int X>
@@ -375,3 +377,5 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 };
+
+HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
