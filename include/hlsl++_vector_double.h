@@ -583,6 +583,8 @@ namespace hlslpp
 	hlslpp_inline double3& operator %= (double3& f1, const double3& f2) { f1 = f1 % f2; return f1; }
 	hlslpp_inline double4& operator %= (double4& f1, const double4& f2) { f1 = f1 % f2; return f1; }
 
+HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
+
 	// Pre-increment
 
 	hlslpp_inline double1& operator ++ (double1& f) { f = f + double1(1.0); return f; }
@@ -634,6 +636,8 @@ namespace hlslpp
 	hlslpp_inline dswizzle3<X, Y, Z> operator -- (dswizzle3<X, Y, Z>& f, int) { dswizzle3<X, Y, Z> tmp = f; f = f - double3(1.0); return tmp; }
 	template<int X, int Y, int Z, int W>
 	hlslpp_inline dswizzle4<X, Y, Z, W> operator -- (dswizzle4<X, Y, Z, W>& f, int) { dswizzle4<X, Y, Z, W> tmp = f; f = f - double4(1.0); return tmp; }
+
+HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 
 	//--------------------------------------------------------------------------------------------------------------------
 	// double1 and dswizzle1 need special overloads to disambiguate between our operators/functions and built-in operators

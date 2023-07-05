@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(__clang__) || defined(__GNUG__)
+#if defined(__clang__)
 
 	#define hlslpp_inline inline __attribute__((always_inline))
 
@@ -9,6 +9,30 @@
 
 	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_BEGIN
 	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
+
+	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN \
+		_Pragma("clang diagnostic push") \
+		_Pragma("clang diagnostic ignored \"-Wdeprecated-copy-with-user-provided-copy\"")
+
+	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END \
+		_Pragma("clang diagnostic pop")
+
+#elif defined(__GNUG__)
+
+	#define hlslpp_inline inline __attribute__((always_inline))
+
+	#define HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
+	#define HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
+
+	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_BEGIN
+	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
+
+	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN \
+	    _Pragma("GCC diagnostic push") \
+		_Pragma("GCC diagnostic ignored \"-Wdeprecated-copy\"")
+
+	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END \
+		_Pragma("GCC diagnostic pop")
 
 #elif defined(_MSC_VER)
 
@@ -25,6 +49,9 @@
 	__pragma(warning(disable : 4723))
 
 	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END __pragma(warning(pop))
+
+	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
+	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 
 #else
 

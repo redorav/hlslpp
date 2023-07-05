@@ -112,6 +112,8 @@ namespace hlslpp
 	hlslpp_inline int3 operator / (const int3& i1, const int3& i2) { return int3(_hlslpp_div_epi32(i1.vec, i2.vec)); }
 	hlslpp_inline int4 operator / (const int4& i1, const int4& i2) { return int4(_hlslpp_div_epi32(i1.vec, i2.vec)); }
 
+HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
+
 	// Pre-increment
 
 	hlslpp_inline int1& operator ++ (int1& i) { i = i + int1(i4_1); return i; }
@@ -163,6 +165,8 @@ namespace hlslpp
 	hlslpp_inline iswizzle3<X, Y, Z> operator -- (iswizzle3<X, Y, Z>& i, int) { iswizzle3<X, Y, Z> tmp = i; i = i - int3(i4_1); return tmp; }
 	template<int X, int Y, int Z, int W>
 	hlslpp_inline iswizzle4<X, Y, Z, W> operator -- (iswizzle4<X, Y, Z, W>& i, int) { iswizzle4<X, Y, Z, W> tmp = i; i = i - int4(i4_1); return tmp; }
+
+HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 
 	//------------------------------------------------------------------------------------------------------------------------//
 	// int1 and iswizzle1 need special overloads to disambiguate between our operators/functions and built-in float operators //
