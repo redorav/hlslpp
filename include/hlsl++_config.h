@@ -12,9 +12,7 @@
 
 	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN \
 		_Pragma("clang diagnostic push") \
-		_Pragma("clang diagnostic ignored \"-Wunknown-pragma\"") \
-		_Pragma("clang diagnostic ignored \"-Wunknown-warning-option\"") \
-		_Pragma("clang diagnostic ignored \"-Wdeprecated-copy-with-user-provided-copy\"")
+		_Pragma("clang diagnostic ignored \"-Wdeprecated\"")
 
 	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END \
 		_Pragma("clang diagnostic pop")
