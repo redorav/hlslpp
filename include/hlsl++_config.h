@@ -1,5 +1,11 @@
 #pragma once
 
+// Note: The HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN warning behaves differently
+// between GCC and Clang. In GCC, we need to apply the warning to the call site, i.e.
+// wherever we call the copy constructor. In Clang, we need to apply it to the class
+// itself. This means we seem to add the same warning suppression to multiple places,
+// where in reality it only applies once per compiler
+
 #if defined(__clang__)
 
 	#define hlslpp_inline inline __attribute__((always_inline))
