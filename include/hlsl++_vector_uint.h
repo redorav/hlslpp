@@ -387,6 +387,11 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	hlslpp_inline bool any(const uint3& f) { return _hlslpp_any3_epu32(f.vec); }
 	hlslpp_inline bool any(const uint4& f) { return _hlslpp_any4_epu32(f.vec); }
 
+	hlslpp_inline uint1 clamp(const uint1& i, const uint1& mini, const uint1& maxi) { return uint1(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline uint2 clamp(const uint2& i, const uint2& mini, const uint2& maxi) { return uint2(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline uint3 clamp(const uint3& i, const uint3& mini, const uint3& maxi) { return uint3(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline uint4 clamp(const uint4& i, const uint4& mini, const uint4& maxi) { return uint4(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
+
 	hlslpp_inline uint1 countbits(const uint1& i) { return uint1(_hlslpp_countbits_epu32(i.vec)); }
 	hlslpp_inline uint2 countbits(const uint2& i) { return uint2(_hlslpp_countbits_epu32(i.vec)); }
 	hlslpp_inline uint3 countbits(const uint3& i) { return uint3(_hlslpp_countbits_epu32(i.vec)); }

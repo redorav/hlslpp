@@ -375,15 +375,20 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	hlslpp_inline int3 abs(const int3& i) { return int3(_hlslpp_abs_epi32(i.vec)); }
 	hlslpp_inline int4 abs(const int4& i) { return int4(_hlslpp_abs_epi32(i.vec)); }
 
-	hlslpp_inline bool all(const int1& f) { return _hlslpp_all1_epi32(f.vec); }
-	hlslpp_inline bool all(const int2& f) { return _hlslpp_all2_epi32(f.vec); }
-	hlslpp_inline bool all(const int3& f) { return _hlslpp_all3_epi32(f.vec); }
-	hlslpp_inline bool all(const int4& f) { return _hlslpp_all4_epi32(f.vec); }
+	hlslpp_inline bool all(const int1& i) { return _hlslpp_all1_epi32(i.vec); }
+	hlslpp_inline bool all(const int2& i) { return _hlslpp_all2_epi32(i.vec); }
+	hlslpp_inline bool all(const int3& i) { return _hlslpp_all3_epi32(i.vec); }
+	hlslpp_inline bool all(const int4& i) { return _hlslpp_all4_epi32(i.vec); }
 
-	hlslpp_inline bool any(const int1& f) { return _hlslpp_any1_epi32(f.vec); }
-	hlslpp_inline bool any(const int2& f) { return _hlslpp_any2_epi32(f.vec); }
-	hlslpp_inline bool any(const int3& f) { return _hlslpp_any3_epi32(f.vec); }
-	hlslpp_inline bool any(const int4& f) { return _hlslpp_any4_epi32(f.vec); }
+	hlslpp_inline bool any(const int1& i) { return _hlslpp_any1_epi32(i.vec); }
+	hlslpp_inline bool any(const int2& i) { return _hlslpp_any2_epi32(i.vec); }
+	hlslpp_inline bool any(const int3& i) { return _hlslpp_any3_epi32(i.vec); }
+	hlslpp_inline bool any(const int4& i) { return _hlslpp_any4_epi32(i.vec); }
+
+	hlslpp_inline int1 clamp(const int1& i, const int1& mini, const int1& maxi) { return int1(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline int2 clamp(const int2& i, const int2& mini, const int2& maxi) { return int2(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline int3 clamp(const int3& i, const int3& mini, const int3& maxi) { return int3(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline int4 clamp(const int4& i, const int4& mini, const int4& maxi) { return int4(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
 
 	hlslpp_inline int1 countbits(const int1& i) { return int1(_hlslpp_countbits_epi32(i.vec)); }
 	hlslpp_inline int2 countbits(const int2& i) { return int2(_hlslpp_countbits_epi32(i.vec)); }
