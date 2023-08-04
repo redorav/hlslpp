@@ -333,6 +333,12 @@ namespace hlslpp_unit
 
 	float lerpf(float x, float y, float a);
 
+	// Some old platforms don't define these so make sure they're available for unit testing
+
+	float round_f(float x);
+
+	float trunc_f(float x);
+
 	typedef float4(*Vec4Func)(const float4&);
 	typedef float(*ScalarFunc)(float);
 

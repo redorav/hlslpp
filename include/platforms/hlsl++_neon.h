@@ -352,7 +352,7 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_trunc_ps(x)						vcvtq_f32_s32(vcvtq_s32_f32(x))
 #define _hlslpp_floor_ps(x)						vrndmq_f32((x))
 #define _hlslpp_ceil_ps(x)						vrndpq_f32((x))
-#define _hlslpp_round_ps(x)						vrndq_f32((x))
+#define _hlslpp_round_ps(x)						vrndnq_f32((x))
 
 #define _hlslpp_frac_ps(x)						vsubq_f32((x), vrndmq_f32(x))
 

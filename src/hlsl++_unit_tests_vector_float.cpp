@@ -872,15 +872,15 @@ void RunUnitTestsVectorFloat()
 	float3 vrsqrt_swiz_3 = rsqrt(vfoo3.bgr);  hlslpp_unit_unused(vrsqrt_swiz_3);
 	float4 vrsqrt_swiz_4 = rsqrt(vfoo4.yyxw); hlslpp_unit_unused(vrsqrt_swiz_4);
 
-	float1 vround1 = round(vfoo1); hlslpp_unit_unused(vround1);
-	float2 vround2 = round(vfoo2); hlslpp_unit_unused(vround2);
-	float3 vround3 = round(vfoo3); hlslpp_unit_unused(vround3);
-	float4 vround4 = round(vfoo4); hlslpp_unit_unused(vround4);
+	float1 vround1 = round(vfoo1); hlslpp_check(eq(vround1, round_f(vfoo1.x)));
+	float2 vround2 = round(vfoo2); hlslpp_check(eq(vround2, round_f(vfoo2.x), round_f(vfoo2.y)));
+	float3 vround3 = round(vfoo3); hlslpp_check(eq(vround3, round_f(vfoo3.x), round_f(vfoo3.y), round_f(vfoo3.z)));
+	float4 vround4 = round(vfoo4); hlslpp_check(eq(vround4, round_f(vfoo4.x), round_f(vfoo4.y), round_f(vfoo4.z), round_f(vfoo4.w)));
 
-	float1 vround_swiz_1 = round(vfoo1.r);	  hlslpp_unit_unused(vround_swiz_1);
-	float2 vround_swiz_2 = round(vfoo2.gr);	  hlslpp_unit_unused(vround_swiz_2);
-	float3 vround_swiz_3 = round(vfoo3.yyx);  hlslpp_unit_unused(vround_swiz_3);
-	float4 vround_swiz_4 = round(vfoo4.wwyx); hlslpp_unit_unused(vround_swiz_4);
+	float1 vround_swiz_1 = round(vfoo1.r);	  hlslpp_check(eq(vround_swiz_1, round_f(vfoo1.r)));
+	float2 vround_swiz_2 = round(vfoo2.gr);	  hlslpp_check(eq(vround_swiz_2, round_f(vfoo2.g), round_f(vfoo2.r)));
+	float3 vround_swiz_3 = round(vfoo3.yyx);  hlslpp_check(eq(vround_swiz_3, round_f(vfoo3.y), round_f(vfoo3.y), round_f(vfoo3.x)));
+	float4 vround_swiz_4 = round(vfoo4.wwyx); hlslpp_check(eq(vround_swiz_4, round_f(vfoo4.w), round_f(vfoo4.w), round_f(vfoo4.y), round_f(vfoo4.x)));
 
 	float1 vsaturate1 = saturate(vfoo1); hlslpp_unit_unused(vsaturate1);
 	float2 vsaturate2 = saturate(vfoo2); hlslpp_unit_unused(vsaturate2);
@@ -982,15 +982,15 @@ void RunUnitTestsVectorFloat()
 	float3 vtanh_swiz_3 = tanh(vfoo3.zzz);  hlslpp_unit_unused(vtanh_swiz_3);
 	float4 vtanh_swiz_4 = tanh(vfoo4.wwzw); hlslpp_unit_unused(vtanh_swiz_4);
 
-	float1 vtrunc1 = trunc(vfoo1);				hlslpp_check(eq(vtrunc1, truncf((float)vfoo1.x)));
-	float2 vtrunc2 = trunc(vfoo2);				hlslpp_check(eq(vtrunc2, truncf((float)vfoo2.x), truncf((float)vfoo2.y)));
-	float3 vtrunc3 = trunc(vfoo3);				hlslpp_check(eq(vtrunc3, truncf((float)vfoo3.x), truncf((float)vfoo3.y), truncf((float)vfoo3.z)));
-	float4 vtrunc4 = trunc(vfoo4);				hlslpp_check(eq(vtrunc4, truncf((float)vfoo4.x), truncf((float)vfoo4.y), truncf((float)vfoo4.z), truncf((float)vfoo4.w)));
+	float1 vtrunc1 = trunc(vfoo1);				hlslpp_check(eq(vtrunc1, trunc_f((float)vfoo1.x)));
+	float2 vtrunc2 = trunc(vfoo2);				hlslpp_check(eq(vtrunc2, trunc_f((float)vfoo2.x), trunc_f((float)vfoo2.y)));
+	float3 vtrunc3 = trunc(vfoo3);				hlslpp_check(eq(vtrunc3, trunc_f((float)vfoo3.x), trunc_f((float)vfoo3.y), trunc_f((float)vfoo3.z)));
+	float4 vtrunc4 = trunc(vfoo4);				hlslpp_check(eq(vtrunc4, trunc_f((float)vfoo4.x), trunc_f((float)vfoo4.y), trunc_f((float)vfoo4.z), trunc_f((float)vfoo4.w)));
 
-	float1 vtrunc_swiz_1 = trunc(vfoo1.r);		hlslpp_check(eq(vtrunc_swiz_1, truncf((float)vfoo1.r)));
-	float2 vtrunc_swiz_2 = trunc(vfoo2.yy);		hlslpp_check(eq(vtrunc_swiz_2, truncf((float)vfoo2.y), truncf((float)vfoo2.y)));
-	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);	hlslpp_check(eq(vtrunc_swiz_3, truncf((float)vfoo3.z), truncf((float)vfoo3.z), truncf((float)vfoo3.z)));
-	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);	hlslpp_check(eq(vtrunc_swiz_4, truncf((float)vfoo4.w), truncf((float)vfoo4.w), truncf((float)vfoo4.z), truncf((float)vfoo4.w)));
+	float1 vtrunc_swiz_1 = trunc(vfoo1.r);		hlslpp_check(eq(vtrunc_swiz_1, trunc_f((float)vfoo1.r)));
+	float2 vtrunc_swiz_2 = trunc(vfoo2.yy);		hlslpp_check(eq(vtrunc_swiz_2, trunc_f((float)vfoo2.y), trunc_f((float)vfoo2.y)));
+	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);	hlslpp_check(eq(vtrunc_swiz_3, trunc_f((float)vfoo3.z), trunc_f((float)vfoo3.z), trunc_f((float)vfoo3.z)));
+	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);	hlslpp_check(eq(vtrunc_swiz_4, trunc_f((float)vfoo4.w), trunc_f((float)vfoo4.w), trunc_f((float)vfoo4.z), trunc_f((float)vfoo4.w)));
 
 	vtrunc_swiz_1.x--;
 	vtrunc_swiz_2.xy--;

@@ -469,6 +469,16 @@ namespace hlslpp_unit
 		return x + (y - x) * a;
 	}
 
+	float round_f(float x)
+	{
+		return x >= 0.0f ? floorf(x + 0.5f) : ceilf(x - 0.5f);
+	}
+
+	float trunc_f(float x)
+	{
+		return (float)((int)x);
+	}
+
 	void maxErrorExhaustive(Vec4Func vectorFunction, ScalarFunc scalarFunction, const char* funcName, float rangeStart, float rangeEnd)
 	{
 		struct ErrorInfo
