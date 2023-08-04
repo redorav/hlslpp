@@ -62,7 +62,7 @@ typedef __m256i n256i;
 // Float
 //------
 
-#define _hlslpp_set1_ps(x)						_mm_set1_ps((x))
+#define _hlslpp_set1_ps(x)						_mm_set_ps1((x))
 #define _hlslpp_set_ps(x, y, z, w)				_mm_set_ps((w), (z), (y), (x))
 #define _hlslpp_setzero_ps()					_mm_setzero_ps()
 
@@ -663,8 +663,8 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 
 #endif
 
-#define _hlslpp_clamp_epi32(x, minx, maxx)		_mm_max_epi32(_mm_min_epi32((x), (maxx)), (minx))
-#define _hlslpp_sat_epi32(x)					_mm_max_epi32(_mm_min_epi32((x), i4_1), i4_0)
+#define _hlslpp_clamp_epi32(x, minx, maxx)		_hlslpp_max_epi32(_hlslpp_min_epi32((x), (maxx)), (minx))
+#define _hlslpp_sat_epi32(x)					_hlslpp_max_epi32(_hlslpp_min_epi32((x), i4_1), i4_0)
 
 #define _hlslpp_and_si128(x, y)					_mm_and_si128((x), (y))
 #define _hlslpp_andnot_si128(x, y)				_mm_andnot_si128((x), (y))
