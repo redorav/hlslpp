@@ -312,7 +312,7 @@ void RunUnitTestsVectorDouble()
 	}
 	hlslpp_unit::EndTest();
 
-	hlslpp_unit::BeginTest("Float Division");
+	hlslpp_unit::BeginTest("Double Division");
 	{
 		double dtolDiv = 1e-2;
 

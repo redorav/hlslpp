@@ -642,6 +642,8 @@ void RunUnitTestsVectorFloat()
 	float3 vfloor3 = floor(vfoo3); hlslpp_check(eq(vfloor3, floor((float)vfoo3.x), floor((float)vfoo3.y), floor((float)vfoo3.z)));
 	float4 vfloor4 = floor(vfoo4); hlslpp_check(eq(vfloor4, floor((float)vfoo4.x), floor((float)vfoo4.y), floor((float)vfoo4.z), floor((float)vfoo4.w)));
 
+	float4 vfloor4_edge_a = floor(float4(-2.5f, -2.0f, 2.0f, 2.5f)); hlslpp_check(eq(vfloor4_edge_a, -3.0f, -2.0f, 2.0f, 2.0f));
+
 	float1 vfloor_swiz_1 = floor(vfoo1.r);    hlslpp_check(eq(vfloor_swiz_1, floor((float)vfoo1.r)));
 	float2 vfloor_swiz_2 = floor(vfoo2.yx);   hlslpp_check(eq(vfloor_swiz_2, floor((float)vfoo2.y), floor((float)vfoo2.x)));
 	float3 vfloor_swiz_3 = floor(vfoo3.xxy);  hlslpp_check(eq(vfloor_swiz_3, floor((float)vfoo3.x), floor((float)vfoo3.x), floor((float)vfoo3.y)));
@@ -876,6 +878,9 @@ void RunUnitTestsVectorFloat()
 	float2 vround2 = round(vfoo2); hlslpp_check(eq(vround2, round_f(vfoo2.x), round_f(vfoo2.y)));
 	float3 vround3 = round(vfoo3); hlslpp_check(eq(vround3, round_f(vfoo3.x), round_f(vfoo3.y), round_f(vfoo3.z)));
 	float4 vround4 = round(vfoo4); hlslpp_check(eq(vround4, round_f(vfoo4.x), round_f(vfoo4.y), round_f(vfoo4.z), round_f(vfoo4.w)));
+
+	float4 vround4_edge_a = round(float4(-2.5f, -1.1f, 1.1f, 2.5f)); hlslpp_check(eq(vround4_edge_a, -2.0f, -1.0f, 1.0f, 2.0f));
+	float4 vround4_edge_b = round(float4(-2.5001f, -3.5001f, 3.5001f, 2.5001f)); hlslpp_check(eq(vround4_edge_b, -3.0f, -4.0f, 4.0f, 3.0f));
 
 	float1 vround_swiz_1 = round(vfoo1.r);	  hlslpp_check(eq(vround_swiz_1, round_f(vfoo1.r)));
 	float2 vround_swiz_2 = round(vfoo2.gr);	  hlslpp_check(eq(vround_swiz_2, round_f(vfoo2.g), round_f(vfoo2.r)));

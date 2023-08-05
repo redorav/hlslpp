@@ -98,7 +98,7 @@ typedef __m256i n256i;
 #endif
 
 // Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
-#define _hlslpp_abs_ps(x)						_mm_and_ps(f4absMask, (x))
+#define _hlslpp_abs_ps(x)						_mm_and_ps(_mm_castsi128_ps(_mm_set1_epi32(0x7fffffff)), (x))
 
 #define _hlslpp_sqrt_ps(x)						_mm_sqrt_ps((x))
 #define _hlslpp_rsqrt_ps(x)						_mm_rsqrt_ps((x))
@@ -148,29 +148,32 @@ hlslpp_inline n128 _hlslpp_blend_ps(n128 x, n128 y, int mask)
 
 #define _hlslpp_trunc_ps(x)						_mm_cvtepi32_ps(_mm_cvttps_epi32(x))
 
+// http://dss.stephanierct.com/DevBlog/?p=8
+
 hlslpp_inline n128 _hlslpp_floor_ps(n128 x)
 {
-	n128  trnc   = _mm_cvtepi32_ps(_mm_cvttps_epi32(x));	 // Truncate
-	n128  gt     = _mm_cmpgt_ps(trnc, x);					 // Check if truncation was greater or smaller (i.e. was negative or positive number)
-	n128i shr    = _mm_srli_epi32(_mm_castps_si128(gt), 31); // Shift right to leave a 1 or a 0
-	n128  result = _mm_sub_ps(trnc, _mm_cvtepi32_ps(shr));	 // Subtract from truncated value
-	return result;
+	n128 ones = _mm_set_ps1(1.0f);
+	n128 trnc = _mm_cvtepi32_ps(_mm_cvttps_epi32(x)); // Truncate 
+	n128 igx  = _mm_cmpgt_ps(trnc, x);
+	return _mm_sub_ps(trnc, _mm_and_ps(igx, ones));
 }
 
 hlslpp_inline n128 _hlslpp_ceil_ps(n128 x)
 {
-	n128  trnc   = _mm_cvtepi32_ps(_mm_cvttps_epi32(x));	 // Truncate
-	n128  gt     = _mm_cmpgt_ps(x, trnc);					 // Check if truncation was greater or smaller (i.e. was negative or positive number)
-	n128i shr    = _mm_srli_epi32(_mm_castps_si128(gt), 31); // Shift right to leave a 1 or a 0
-	n128  result = _mm_add_ps(trnc, _mm_cvtepi32_ps(shr));	 // Subtract from truncated value
-	return result;
+	n128 ones = _mm_set_ps1(1.0f);
+	n128 trnc = _mm_cvtepi32_ps(_mm_cvttps_epi32(x)); // Truncate 
+	n128 igx  = _mm_cmplt_ps(trnc, x);
+	return _mm_add_ps(trnc, _mm_and_ps(igx, ones));
 }
 
 hlslpp_inline n128 _hlslpp_round_ps(n128 x)
 {
-	n128 add     = _mm_add_ps(x, _mm_set1_ps(0.5f));		// Add 0.5
-	n128 frc_add = _mm_sub_ps(add, _hlslpp_floor_ps(add));	// Get the fractional part
-	n128 result  = _mm_sub_ps(add, frc_add);				// Subtract from result
+	n128 near_2     = _mm_set_ps1(1.99999988f);
+	n128 trnc       = _mm_cvtepi32_ps(_mm_cvttps_epi32(x)); // Truncate 
+	n128 frac       = _mm_sub_ps(x, trnc);                  // Get fractional part
+	n128 frac2      = _mm_mul_ps(frac, near_2);             // Fractional part by near 2
+	n128 frac2Trunc = _mm_cvtepi32_ps(_mm_cvttps_epi32(frac2));
+	n128 result     = _mm_add_ps(trnc, frac2Trunc);
 	return result;
 }
 
