@@ -223,36 +223,37 @@ hlslpp_inline float32x4_t vrsqrtq_f32(float32x4_t x)
 
 #if (__ARM_ARCH <= 7)
 
+// http://dss.stephanierct.com/DevBlog/?p=8
+
 #if !defined(vrndmq_f32)
-// Source https://github.com/andrepuschmann/math-neon/blob/master/src/math_floorf.c
 hlslpp_inline float32x4_t vrndmq_f32(float32x4_t x)
 {
-	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
-	float32x4_t gt = vcgtq_f32(trnc, x);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
-	uint32x4_t shr = vshrq_n_u32(vreinterpretq_u32_f32(gt), 31);	// Shift to leave a 1 or a 0
-	float32x4_t result = vsubq_f32(trnc, vcvtq_f32_u32(shr));		// Subtract from truncated value
-	return result;
+	float32x4_t ones = vmovq_n_f32(1.0f);
+	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x)); // Truncate
+	float32x4_t tgtx = vcgtq_f32(trnc, x);
+	return vsubq_f32(trnc, vandq_u32(tgtx, ones)); // Subtract one if trnc greater than x
 }
 #endif
 
 #if !defined(vrndpq_f32)
-// Source https://github.com/andrepuschmann/math-neon/blob/master/src/math_ceilf.c
 hlslpp_inline float32x4_t vrndpq_f32(float32x4_t x)
 {
-	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x));				// Truncate
-	float32x4_t gt = vcgtq_f32(x, trnc);							// Check if truncation was greater or smaller (i.e. was negative or positive number)
-	uint32x4_t shr = vshrq_n_u32(vreinterpretq_u32_f32(gt), 31);	// Shift to leave a 1 or a 0
-	float32x4_t result = vaddq_f32(trnc, vcvtq_f32_u32(shr));		// Add to truncated value
-	return result;
+	float32x4_t ones = vmovq_n_f32(1.0f);
+	float32x4_t trnc = vcvtq_f32_s32(vcvtq_s32_f32(x)); // Truncate
+	float32x4_t tgtx = vcltq_f32(trnc, x);
+	return vaddq_f32(trnc, vandq_u32(tgtx, ones)); // Subtract one if trnc greater than x
 }
 #endif
 
-#if !defined(vrndq_f32)
-hlslpp_inline float32x4_t vrndq_f32(float32x4_t x)
+#if !defined(vrndnq_f32)
+hlslpp_inline float32x4_t vrndnq_f32(float32x4_t x)
 {
-	float32x4_t add = vaddq_f32(x, vmovq_n_f32(0.5f));				// Add 0.5
-	float32x4_t frc_add = vsubq_f32(add, vrndmq_f32(add));			// Get the fractional part
-	float32x4_t result = vsubq_f32(add, frc_add);					// Subtract from result
+	float32x4_t near_2    = vmovq_n_f32(1.99999988f);
+	float32x4_t trnc      = vcvtq_f32_s32(vcvtq_s32_f32(x)); // Truncate 
+	float32x4_t frac      = vsubq_f32(x, trnc);              // Get fractional part
+	float32x4_t frac2     = vmulq_f32(frac, near_2);         // Fractional part by near 2
+	float32x4_t frac2trnc = vcvtq_f32_s32(vcvtq_s32_f32(frac2));
+	float32x4_t result    = vaddq_f32(trnc, frac2trnc);
 	return result;
 }
 #endif

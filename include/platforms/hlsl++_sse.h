@@ -150,30 +150,30 @@ hlslpp_inline n128 _hlslpp_blend_ps(n128 x, n128 y, int mask)
 
 // http://dss.stephanierct.com/DevBlog/?p=8
 
-hlslpp_inline n128 _hlslpp_floor_ps(n128 x)
+hlslpp_inline __m128 _hlslpp_floor_ps(__m128 x)
 {
-	n128 ones = _mm_set_ps1(1.0f);
-	n128 trnc = _mm_cvtepi32_ps(_mm_cvttps_epi32(x)); // Truncate 
-	n128 igx  = _mm_cmpgt_ps(trnc, x);
-	return _mm_sub_ps(trnc, _mm_and_ps(igx, ones));
+	__m128 ones = _mm_set_ps1(1.0f);
+	__m128 trnc = _mm_cvtepi32_ps(_mm_cvttps_epi32(x)); // Truncate 
+	__m128 tgtx = _mm_cmpgt_ps(trnc, x);
+	return _mm_sub_ps(trnc, _mm_and_ps(tgtx, ones)); // Subtract one if trnc greater than x
 }
 
-hlslpp_inline n128 _hlslpp_ceil_ps(n128 x)
+hlslpp_inline __m128 _hlslpp_ceil_ps(__m128 x)
 {
-	n128 ones = _mm_set_ps1(1.0f);
-	n128 trnc = _mm_cvtepi32_ps(_mm_cvttps_epi32(x)); // Truncate 
-	n128 igx  = _mm_cmplt_ps(trnc, x);
-	return _mm_add_ps(trnc, _mm_and_ps(igx, ones));
+	__m128 ones = _mm_set_ps1(1.0f);
+	__m128 trnc = _mm_cvtepi32_ps(_mm_cvttps_epi32(x)); // Truncate 
+	__m128 tgtx = _mm_cmplt_ps(trnc, x);
+	return _mm_add_ps(trnc, _mm_and_ps(tgtx, ones)); // Add one if trnc greater than x
 }
 
-hlslpp_inline n128 _hlslpp_round_ps(n128 x)
+hlslpp_inline __m128 _hlslpp_round_ps(__m128 x)
 {
-	n128 near_2     = _mm_set_ps1(1.99999988f);
-	n128 trnc       = _mm_cvtepi32_ps(_mm_cvttps_epi32(x)); // Truncate 
-	n128 frac       = _mm_sub_ps(x, trnc);                  // Get fractional part
-	n128 frac2      = _mm_mul_ps(frac, near_2);             // Fractional part by near 2
-	n128 frac2Trunc = _mm_cvtepi32_ps(_mm_cvttps_epi32(frac2));
-	n128 result     = _mm_add_ps(trnc, frac2Trunc);
+	__m128 near_2    = _mm_set_ps1(1.99999988f);
+	__m128 trnc      = _mm_cvtepi32_ps(_mm_cvttps_epi32(x)); // Truncate 
+	__m128 frac      = _mm_sub_ps(x, trnc);                  // Get fractional part
+	__m128 frac2     = _mm_mul_ps(frac, near_2);             // Fractional part by near 2
+	__m128 frac2trnc = _mm_cvtepi32_ps(_mm_cvttps_epi32(frac2));
+	__m128 result    = _mm_add_ps(trnc, frac2trnc);
 	return result;
 }
 

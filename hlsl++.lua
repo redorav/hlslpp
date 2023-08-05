@@ -265,21 +265,6 @@ project (UnitTestProject)
 		srcDir.."/**.h"
 	}
 
-project ("Compile Times")
-
-	kind("staticlib")
-
-	files
-	{
-		srcDir.."/compiles/*.cpp",
-		srcDir.."/compiles/*.h",
-	}
-
-	includedirs
-	{
-		srcDir.."/**.h"
-	}
-
 if (supportsARMBuild) then
 
 project (AndroidProject)
