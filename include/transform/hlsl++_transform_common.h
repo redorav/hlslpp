@@ -93,6 +93,24 @@ namespace hlslpp
 			minus_one // Clip points with z < -1 in projection coordinates (e.g. OpenGL)
 		};
 	}
+	
+	namespace zdirection
+	{
+		enum t
+		{
+			forward, // Near plane maps to 0, far plane maps to 1
+			reverse  // Near plane maps to 1, far plane maps to 0
+		};
+	};
+
+	namespace zplane
+	{
+		enum t
+		{
+			finite,  // Far plane is at value specified by the frustum
+			infinite // Far plane is at +infinity
+		};
+	};
 
 	struct frustum
 	{
@@ -136,9 +154,14 @@ namespace hlslpp
 	{
 		frustum  frustum_planes;
 		zclip::t z_clip;
+		zdirection::t z_direction;
+		zplane::t z_plane;
 
 		projection(const frustum& frustum_planes, zclip::t z_clip)
-			: frustum_planes(frustum_planes), z_clip(z_clip) {}
+			: frustum_planes(frustum_planes), z_clip(z_clip), z_direction(zdirection::forward), z_plane(zplane::finite) {}
+		
+		projection(const frustum& frustum_planes, zclip::t z_clip, zdirection::t z_direction, zplane::t z_plane)
+			: frustum_planes(frustum_planes), z_clip(z_clip), z_direction(z_direction), z_plane(z_plane) {}
 	};
 }
 

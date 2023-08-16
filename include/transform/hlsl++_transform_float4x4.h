@@ -59,13 +59,61 @@ static hlslpp_inline float4x4 perspective(const projection& proj)
 
 	if (proj.z_clip == zclip::zero)
 	{
-		m22 = s * f / (f - n);
-		m32 = -n * f / (f - n);
+		if (proj.z_direction == zdirection::forward)
+		{
+			if (proj.z_plane == zplane::finite)
+			{
+				m22 = s * f / (f - n);
+				m32 = -n * f / (f - n);
+			}
+			else
+			{
+				m22 = s;
+				m32 = -n;
+			}
+		}
+		else
+		{
+			if (proj.z_plane == zplane::finite)
+			{
+				m22 = s * n / (n - f);
+				m32 = -f * n / (n - f);
+			}
+			else
+			{
+				m22 = 0.0f;
+				m32 = 0.0f;
+			}
+		}
 	}
 	else
 	{
-		m22 = s * (f + n) / (f - n);
-		m32 = -2.0f * f * n / (f - n);
+		if (proj.z_direction == zdirection::forward)
+		{
+			if (proj.z_plane == zplane::finite)
+			{
+				m22 = s * (f + n) / (f - n);
+				m32 = -2.0f * f * n / (f - n);
+			}
+			else
+			{
+				m22 = s;
+				m32 = -2.0f * n;
+			}
+		}
+		else
+		{
+			if (proj.z_plane == zplane::finite)
+			{
+				m22 = s * (n + f) / (n - f);
+				m32 = -2.0f * n * f / (n - f);
+			}
+			else
+			{
+				m22 = -s;
+				m32 = 2.0f * n;
+			}
+		}
 	}
 
 #if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
@@ -105,15 +153,33 @@ static hlslpp_inline float4x4 orthographic(const projection& proj)
 	float m22 = 0.0f;
 	float m32 = 0.0f;
 
+	// There's no real concept of infinite far plane for an orthographic
+	// projection matrix because we are subdividing the depth plane linearly
 	if (proj.z_clip == zclip::zero)
 	{
-		m22 = s / (f - n);
-		m32 = -n / (f - n);
+		if (proj.z_direction == zdirection::forward)
+		{
+			m22 = s / (f - n);
+			m32 = -n / (f - n);
+		}
+		else
+		{
+			m22 = s / (n - f);
+			m32 = -f / (n - f);
+		}
 	}
 	else
 	{
-		m22 = s * 2.0f / (f - n);
-		m32 = -(f + n) / (f - n);
+		if (proj.z_direction == zdirection::forward)
+		{
+			m22 = s * 2.0f / (f - n);
+			m32 = -(f + n) / (f - n);
+		}
+		else
+		{
+			m22 = s * 2.0f / (n - f);
+			m32 = -(n + f) / (n - f);
+		}
 	}
 
 #if HLSLPP_LOGICAL_LAYOUT == HLSLPP_LOGICAL_LAYOUT_ROW_MAJOR
