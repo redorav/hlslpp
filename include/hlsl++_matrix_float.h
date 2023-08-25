@@ -244,6 +244,9 @@ namespace hlslpp
 		    float f10, float f11, float f12) hlslpp_noexcept 
 			: vec0(_hlslpp_set_ps(f00, f01, f02, 0.0f)), vec1(_hlslpp_set_ps(f10, f11, f12, 0.0f)) {}
 
+		// Construct matrix with two float3 interpreted as rows
+		hlslpp_inline float2x3(const float3& f1, const float3& f2) hlslpp_noexcept : vec0(f1.vec), vec1(f2.vec) {}
+
 		hlslpp_inline float2x3& operator = (const float2x3& m) hlslpp_noexcept { vec0 = m.vec0; vec1 = m.vec1; return *this; }
 
 		hlslpp_inline float2x3(float2x3&& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1) {}
@@ -271,9 +274,14 @@ namespace hlslpp
 
 		explicit hlslpp_inline float3x2(float f) hlslpp_noexcept : vec0(_hlslpp_set_ps(f, f, f, 0.0f)), vec1(_hlslpp_set_ps(f, f, f, 0.0f)) {}
 
-		explicit hlslpp_inline float3x2(float f00, float f01,
-		                  float f10, float f11,
-		                  float f20, float f21) hlslpp_noexcept : vec0(_hlslpp_set_ps(f00, f10, f20, 0.0f)), vec1(_hlslpp_set_ps(f01, f11, f21, 0.0f)) {}
+		explicit hlslpp_inline float3x2(
+		    float f00, float f01,
+		    float f10, float f11,
+		    float f20, float f21) hlslpp_noexcept 
+			: vec0(_hlslpp_set_ps(f00, f10, f20, 0.0f)), vec1(_hlslpp_set_ps(f01, f11, f21, 0.0f)) {}
+
+		// Construct matrix with two float3 interpreted as columns
+		hlslpp_inline float3x2(const float3& f1, const float3& f2) hlslpp_noexcept : vec0(f1.vec), vec1(f2.vec) {}
 
 		hlslpp_inline float3x2& operator = (const float3x2& m) hlslpp_noexcept { vec0 = m.vec0; vec1 = m.vec1; return *this; }
 
@@ -306,6 +314,9 @@ namespace hlslpp
 			hlslpp_noexcept : vec0(_hlslpp_set_ps(f00, f01, f02, f03)), vec1(_hlslpp_set_ps(f10, f11, f12, f13)) {}
 
 		explicit hlslpp_inline float2x4(float f) hlslpp_noexcept : vec0(_hlslpp_set_ps(f, f, f, f)), vec1(_hlslpp_set_ps(f, f, f, f)) {}
+
+		// Construct matrix with two float3 interpreted as rows
+		hlslpp_inline float2x4(const float4& f1, const float4& f2) hlslpp_noexcept : vec0(f1.vec), vec1(f2.vec) {}
 
 		hlslpp_inline float2x4& operator = (const float2x4& m) hlslpp_noexcept { vec0 = m.vec0; vec1 = m.vec1; return *this; }
 
@@ -340,6 +351,9 @@ namespace hlslpp
 
 		explicit hlslpp_inline float4x2(float f) hlslpp_noexcept : vec0(_hlslpp_set_ps(f, f, f, f)), vec1(_hlslpp_set_ps(f, f, f, f)) {}
 
+		// Construct matrix with two float3 interpreted as columns
+		hlslpp_inline float4x2(const float4& f1, const float4& f2) hlslpp_noexcept : vec0(f1.vec), vec1(f2.vec) {}
+
 		hlslpp_inline float4x2& operator = (const float4x2& m) hlslpp_noexcept { vec0 = m.vec0; vec1 = m.vec1; return *this; }
 
 		hlslpp_inline float4x2(float4x2&& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1) {}
@@ -368,9 +382,9 @@ namespace hlslpp
 		explicit hlslpp_inline float3x3(const n128 vec0, const n128 vec1, const n128 vec2) hlslpp_noexcept : vec0(vec0), vec1(vec1), vec2(vec2) {}
 
 		explicit hlslpp_inline float3x3(
-			              float f00, float f01, float f02,
-		                  float f10, float f11, float f12,
-		                  float f20, float f21, float f22)
+		    float f00, float f01, float f02,
+		    float f10, float f11, float f12,
+		    float f20, float f21, float f22)
 			hlslpp_noexcept : vec0(_hlslpp_set_ps(f00, f01, f02, 0.0f)), vec1(_hlslpp_set_ps(f10, f11, f12, 0.0f)), vec2(_hlslpp_set_ps(f20, f21, f22, 0.0f)) {}
 
 		explicit hlslpp_inline float3x3(const quaternion& q) hlslpp_noexcept;
@@ -445,6 +459,9 @@ namespace hlslpp
 
 		explicit hlslpp_inline float3x4(float f) hlslpp_noexcept : vec0(_hlslpp_set1_ps(f)), vec1(_hlslpp_set1_ps(f)), vec2(_hlslpp_set1_ps(f)) {}
 
+		// Construct matrix with two float3 interpreted as rows
+		hlslpp_inline float3x4(const float4& f1, const float4& f2, const float4& f3) hlslpp_noexcept : vec0(f1.vec), vec1(f2.vec), vec2(f3.vec) {}
+
 		hlslpp_inline float3x4& operator = (const float3x4& m) hlslpp_noexcept { vec0 = m.vec0; vec1 = m.vec1; vec2 = m.vec2; return *this; }
 
 		hlslpp_inline float3x4(float3x4&& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1), vec2(m.vec2) {}
@@ -484,6 +501,9 @@ namespace hlslpp
 
 		explicit hlslpp_inline float4x3(float f) hlslpp_noexcept : vec0(_hlslpp_set1_ps(f)), vec1(_hlslpp_set1_ps(f)), vec2(_hlslpp_set1_ps(f)) {}
 		
+		// Construct matrix with two float3 interpreted as columns
+		hlslpp_inline float4x3(const float4& f1, const float4& f2, const float4& f3) hlslpp_noexcept : vec0(f1.vec), vec1(f2.vec), vec2(f3.vec) {}
+
 		hlslpp_inline float4x3& operator = (const float4x3& m) hlslpp_noexcept { vec0 = m.vec0; vec1 = m.vec1; vec2 = m.vec2; return *this; }
 
 		hlslpp_inline float4x3(float4x3&& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1), vec2(m.vec2) {}
