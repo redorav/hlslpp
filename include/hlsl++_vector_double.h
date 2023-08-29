@@ -1074,6 +1074,34 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
+	hlslpp_inline double1 normalize(const double1&/* f*/) { return double1(1.0f); }
+	hlslpp_inline double2 normalize(const double2& f) { return double2(_hlslpp_div_pd(f.vec, _hlslpp_perm_xx_pd(_hlslpp_sqrt_pd(_hlslpp_dot2_pd(f.vec, f.vec))))); }
+	hlslpp_inline double3 normalize(const double3& f)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)		
+		n128d dot3 = _hlslpp256_dot3_pd(f.vec, f.vec);
+		return double3(_hlslpp256_div_pd(f.vec, _hlslpp256_perm_xxxx_pd(_hlslpp256_sqrt_pd(_hlslpp256_set128_pd(dot3, dot3)))));
+#else
+		return double3(
+			_hlslpp_div_pd(f.vec0, _hlslpp_perm_xx_pd(_hlslpp_sqrt_pd(_hlslpp_dot3_pd(f.vec0, f.vec1, f.vec0, f.vec1)))),
+			_hlslpp_div_pd(f.vec1, _hlslpp_perm_xx_pd(_hlslpp_sqrt_pd(_hlslpp_dot3_pd(f.vec0, f.vec1, f.vec0, f.vec1))))
+		);
+#endif
+	}
+
+	hlslpp_inline double4 normalize(const double4& f)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		n128d dot4 = _hlslpp256_dot4_pd(f.vec, f.vec);
+		return double4(_hlslpp256_div_pd(f.vec, _hlslpp256_perm_xxxx_pd(_hlslpp256_sqrt_pd(_hlslpp256_set128_pd(dot4, dot4)))));
+#else
+		return double4(
+			_hlslpp_div_pd(f.vec0, _hlslpp_perm_xx_pd(_hlslpp_sqrt_pd(_hlslpp_dot4_pd(f.vec0, f.vec1, f.vec0, f.vec1)))),
+			_hlslpp_div_pd(f.vec1, _hlslpp_perm_xx_pd(_hlslpp_sqrt_pd(_hlslpp_dot4_pd(f.vec0, f.vec1, f.vec0, f.vec1))))
+		);
+#endif
+	}
+
 	hlslpp_inline double1 select(const double1& condition, const double1& f1, const double1& f2) { return double1(_hlslpp_sel_pd(f1.vec, f2.vec, _hlslpp_cmpeq_pd(condition.vec, _hlslpp_setzero_pd()))); }
 	hlslpp_inline double2 select(const double2& condition, const double2& f1, const double2& f2) { return double2(_hlslpp_sel_pd(f1.vec, f2.vec, _hlslpp_cmpeq_pd(condition.vec, _hlslpp_setzero_pd()))); }
 
