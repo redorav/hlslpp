@@ -202,7 +202,18 @@ hlslpp_inline __m128 _hlslpp_round_ps(__m128 x)
 #if defined(__AVX__)
 #define _hlslpp_perm_ps(x, mask)				_mm_permute_ps((x), (mask))
 #else
-#define _hlslpp_perm_ps(x, mask)				_mm_shuffle_ps((x), (x), (mask))
+
+namespace hlslpp
+{
+	template<unsigned int mask>
+	hlslpp_inline __m128 permute(__m128 x)
+	{
+		return _mm_shuffle_ps(x, x, mask);
+	}
+};
+
+#define _hlslpp_perm_ps(x, mask)				hlslpp::permute<mask>(x)
+
 #endif
 
 #define _hlslpp_shuffle_ps(x, y, mask)			_mm_shuffle_ps((x), (y), (mask))
