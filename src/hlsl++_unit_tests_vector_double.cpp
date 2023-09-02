@@ -410,6 +410,14 @@ void RunUnitTestsVectorDouble()
 		double3 dvceil_swiz_3 = ceil(dvfoo3.rrg);		hlslpp_check(eq(dvceil_swiz_3, ceil((double)dvfoo3.r), ceil((double)dvfoo3.r), ceil((double)dvfoo3.g)));
 		double4 dvceil_swiz_4 = ceil(dvfoo4.yzwx);		hlslpp_check(eq(dvceil_swiz_4, ceil((double)dvfoo4.y), ceil((double)dvfoo4.z), ceil((double)dvfoo4.w), ceil((double)dvfoo4.x)));
 
+		double1 dvdistance1 = distance(dvfoo1, dvbar1); hlslpp_check(eq(dvdistance1, abs((double)dvbar1.x - (double)dvfoo1.x)));
+		double2 dvdistance2_delta = dvbar2 - dvfoo2;
+		double1 dvdistance2 = distance(dvfoo2, dvbar2); hlslpp_check(eq(dvdistance2, sqrt((double)dvdistance2_delta.x * (double)dvdistance2_delta.x + (double)dvdistance2_delta.y * (double)dvdistance2_delta.y), 0.00000001));
+		double3 dvdistance3_delta = dvbar3 - dvfoo3;
+		double1 dvdistance3 = distance(dvfoo3, dvbar3); hlslpp_check(eq(dvdistance3, sqrt((double)dvdistance3_delta.x * (double)dvdistance3_delta.x + (double)dvdistance3_delta.y * (double)dvdistance3_delta.y + (double)dvdistance3_delta.z * (double)dvdistance3_delta.z), 0.00000001));
+		double4 dvdistance4_delta = dvbar4 - dvfoo4;
+		double1 dvdistance4 = distance(dvfoo4, dvbar4); hlslpp_check(eq(dvdistance4, sqrt((double)dvdistance4_delta.x * (double)dvdistance4_delta.x + (double)dvdistance4_delta.y * (double)dvdistance4_delta.y + (double)dvdistance4_delta.z * (double)dvdistance4_delta.z + (double)dvdistance4_delta.w * (double)dvdistance4_delta.w), 0.00000001));
+
 		double1 dvfloor1 = floor(dvfoo1);				hlslpp_check(eq(dvfloor1, floor((double)dvfoo1.x)));
 		double2 dvfloor2 = floor(dvfoo2);				hlslpp_check(eq(dvfloor2, floor((double)dvfoo2.x), floor((double)dvfoo2.y)));
 		double3 dvfloor3 = floor(dvfoo3);				hlslpp_check(eq(dvfloor3, floor((double)dvfoo3.x), floor((double)dvfoo3.y), floor((double)dvfoo3.z)));

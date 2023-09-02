@@ -887,6 +887,11 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	hlslpp_inline float3 degrees(const float3& f) { return float3(_hlslpp_mul_ps(f.vec, f4_rad2deg)); }
 	hlslpp_inline float4 degrees(const float4& f) { return float4(_hlslpp_mul_ps(f.vec, f4_rad2deg)); }
 
+	hlslpp_inline float1 distance(const float1& f1, const float1& f2) { return float1(_hlslpp_abs_ps(_hlslpp_sub_ps(f2.vec, f1.vec))); }
+	hlslpp_inline float1 distance(const float2& f1, const float2& f2) { n128 delta = _hlslpp_sub_ps(f2.vec, f1.vec); return float1(_hlslpp_sqrt_ps(_hlslpp_dot2_ps(delta, delta))); }
+	hlslpp_inline float1 distance(const float3& f1, const float3& f2) { n128 delta = _hlslpp_sub_ps(f2.vec, f1.vec); return float1(_hlslpp_sqrt_ps(_hlslpp_dot3_ps(delta, delta))); }
+	hlslpp_inline float1 distance(const float4& f1, const float4& f2) { n128 delta = _hlslpp_sub_ps(f2.vec, f1.vec); return float1(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(delta, delta))); }
+
 	hlslpp_inline float1 dot(const float1& f1, const float1& f2) { return f1 * f2; }
 	hlslpp_inline float1 dot(const float2& f1, const float2& f2) { return float1(_hlslpp_dot2_ps(f1.vec, f2.vec)); }
 	hlslpp_inline float1 dot(const float3& f1, const float3& f2) { return float1(_hlslpp_dot3_ps(f1.vec, f2.vec)); }

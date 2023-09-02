@@ -622,6 +622,14 @@ void RunUnitTestsVectorFloat()
 	float3 vcross_swiz_3_b = cross(vfoo3.xyz, vbar3);     hlslpp_unit_unused(vcross_swiz_3_b);
 	float3 vcross_swiz_3_c = cross(vfoo3.yzx, vbar3.yyx); hlslpp_unit_unused(vcross_swiz_3_c);
 
+	float1 vdistance1 = distance(vfoo1, vbar1); hlslpp_check(eq(vdistance1, abs((float)vbar1.x - (float)vfoo1.x)));
+	float2 vdistance2_delta = vbar2 - vfoo2;
+	float1 vdistance2 = distance(vfoo2, vbar2); hlslpp_check(eq(vdistance2, sqrtf((float)vdistance2_delta.x* (float)vdistance2_delta.x + (float)vdistance2_delta.y * (float)vdistance2_delta.y), 0.00000001f));
+	float3 vdistance3_delta = vbar3 - vfoo3;
+	float1 vdistance3 = distance(vfoo3, vbar3); hlslpp_check(eq(vdistance3, sqrtf((float)vdistance3_delta.x* (float)vdistance3_delta.x + (float)vdistance3_delta.y * (float)vdistance3_delta.y + (float)vdistance3_delta.z * (float)vdistance3_delta.z), 0.00000001f));
+	float4 vdistance4_delta = vbar4 - vfoo4;
+	float1 vdistance4 = distance(vfoo4, vbar4); hlslpp_check(eq(vdistance4, sqrtf((float)vdistance4_delta.x* (float)vdistance4_delta.x + (float)vdistance4_delta.y * (float)vdistance4_delta.y + (float)vdistance4_delta.z * (float)vdistance4_delta.z + (float)vdistance4_delta.w * (float)vdistance4_delta.w), 0.00000001f));
+
 	float1 vdot2 = dot(vfoo2, vbar2);         hlslpp_unit_unused(vdot2);
 	float1 vdot2_a = dot(vfoo2, vbar2.yx);    hlslpp_unit_unused(vdot2_a);
 	float1 vdot2_b = dot(vfoo2.rg, vbar2);    hlslpp_unit_unused(vdot2_b);

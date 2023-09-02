@@ -842,6 +842,37 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
+	hlslpp_inline double1 distance(const double1& f1, const double1& f2) { return double1(_hlslpp_abs_pd(_hlslpp_sub_pd(f2.vec, f1.vec))); }
+	hlslpp_inline double1 distance(const double2& f1, const double2& f2)
+	{
+		n128d delta = _hlslpp_sub_pd(f2.vec, f1.vec);
+		return double1(_hlslpp_sqrt_pd(_hlslpp_dot2_pd(delta, delta)));
+	}
+
+	hlslpp_inline double1 distance(const double3& f1, const double3& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		n256d delta = _hlslpp256_sub_pd(f2.vec, f1.vec);
+		return double1(_hlslpp_sqrt_pd(_hlslpp256_dot3_pd(delta, delta)));
+#else
+		n128d delta0 = _hlslpp_sub_pd(f2.vec0, f1.vec0);
+		n128d delta1 = _hlslpp_sub_pd(f2.vec1, f1.vec1);
+		return double1(_hlslpp_sqrt_pd(_hlslpp_dot3_pd(delta0, delta1, delta0, delta1)));
+#endif
+	}
+
+	hlslpp_inline double1 distance(const double4& f1, const double4& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		n256d delta = _hlslpp256_sub_pd(f2.vec, f1.vec);
+		return double1(_hlslpp_sqrt_pd(_hlslpp256_dot4_pd(delta, delta)));
+#else
+		n128d delta0 = _hlslpp_sub_pd(f2.vec0, f1.vec0);
+		n128d delta1 = _hlslpp_sub_pd(f2.vec1, f1.vec1);
+		return double1(_hlslpp_sqrt_pd(_hlslpp_dot4_pd(delta0, delta1, delta0, delta1)));
+#endif
+	}
+
 	hlslpp_inline double1 dot(const double1& f1, const double1& f2) { return f1 * f2; }
 	hlslpp_inline double1 dot(const double2& f1, const double2& f2) { return double1(_hlslpp_dot2_pd(f1.vec, f2.vec)); }
 	hlslpp_inline double1 dot(const double3& f1, const double3& f2)
