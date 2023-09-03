@@ -137,7 +137,7 @@
 
 	#define HLSLPP_360
 
-#elif !defined(HLSLPP_SSE) && (defined(__SSE__) || (_M_IX86_FP > 0) || defined(_M_AMD64) || defined(_M_X64))
+#elif !defined(HLSLPP_SSE) && (defined(__SSE__) || (defined(_M_IX86_FP) && _M_IX86_FP > 0) || defined(_M_AMD64) || defined(_M_X64))
 
 	#define HLSLPP_SSE
 
