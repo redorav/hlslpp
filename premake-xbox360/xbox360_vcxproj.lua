@@ -240,7 +240,10 @@
 	
 	-- If any value is specified it confuses Visual Studio into thinking it's not an Xbox 360 project
 	premake.override(vc2010, "platformToolset", function(oldfn, cfg)
-		if cfg.system ~= premake.XBOX360 then
+		if cfg.system == premake.XBOX360 then			
+			-- This was the last version of the Xbox 360 SDK. Not sure if other versions would be present
+			vc2010.element("PlatformToolset", nil, "2010-01")
+		else
 			return oldfn(cfg)
 		end
 	end)
@@ -388,7 +391,7 @@
 				vc200x.VCResourceCompilerTool,
 				vc200x.VCPreLinkEventTool,
 				vc200x.VCLinkerTool,
-				vc200x.VCALinkTool,				
+				vc200x.VCALinkTool,
 				vc200x.VCBscMakeTool,
 				vc200x.VCPostBuildEventTool,
 				vc200x.DebuggerTool,
