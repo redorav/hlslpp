@@ -77,6 +77,8 @@ namespace hlslpp
 	#define _hlslpp256_perm_zzzz_pd(x)			_hlslpp256_perm_pd((x), MaskZ, MaskZ, MaskZ, MaskZ)
 	#define _hlslpp256_perm_wwww_pd(x)			_hlslpp256_perm_pd((x), MaskW, MaskW, MaskW, MaskW)
 
+	#define _hlslpp256_perm_yzxx_pd(x)			_hlslpp256_perm_pd((x), MaskY, MaskZ, MaskX, MaskX)
+
 	#define _hlslpp256_cmpneq1_pd(val1, val2)	_hlslpp256_and_pd(_hlslpp256_cmpneq_pd((val1), (val2)), d4_1)
 	#define _hlslpp256_cmpeq1_pd(val1, val2)	_hlslpp256_and_pd(_hlslpp256_cmpeq_pd((val1), (val2)), d4_1)
 	
@@ -93,29 +95,6 @@ namespace hlslpp
 		n128d multi = _hlslpp_mul_pd(x, y); // Multiply components
 		n128d shuf = _hlslpp_perm_yy_pd(multi); // Shuffle y
 		return _hlslpp_add_pd(multi, shuf);
-	}
-
-	hlslpp_inline n128d _hlslpp_dot3_pd(const n128d& x0, const n128d& x1, const n128d& y0, const n128d& y1)
-	{
-		n128d multi0 = _hlslpp_mul_pd(x0, y0); // Multiply components
-		n128d multi1 = _hlslpp_mul_pd(x1, y1);
-		n128d shuf0 = _hlslpp_perm_yy_pd(multi0); // Shuffle y and w
-		n128d add0 = _hlslpp_add_pd(shuf0, multi0);  // Contains x+y, _
-		return _hlslpp_add_pd(add0, multi1);
-	}
-
-	hlslpp_inline n128d _hlslpp_dot4_pd(const n128d& x0, const n128d& x1, const n128d& y0, const n128d& y1)
-	{
-		n128d multi0 = _hlslpp_mul_pd(x0, y0); // Multiply components
-		n128d multi1 = _hlslpp_mul_pd(x1, y1);
-
-		n128d shuf0 = _hlslpp_perm_yy_pd(multi0); // Shuffle y and w
-		n128d shuf1 = _hlslpp_perm_yy_pd(multi1);
-
-		n128d add0 = _hlslpp_add_pd(shuf0, multi0);  // Contains x+y, _
-		n128d add1 = _hlslpp_add_pd(shuf1, multi1);  // Contains z+w, _
-
-		return _hlslpp_add_pd(add0, add1);
 	}
 
 	// See http://http.developer.nvidia.com/Cg/fmod.html for reference
@@ -157,6 +136,13 @@ namespace hlslpp
 	}
 
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+
+	hlslpp_inline n256d _hlslpp256_cross_pd(n256d x, n256d y)
+	{
+		n256d x_yzx = _hlslpp256_perm_yzxx_pd(x);
+		n256d y_yzx = _hlslpp256_perm_yzxx_pd(y);
+		return _hlslpp256_perm_yzxx_pd(_hlslpp256_msub_pd(x, y_yzx, _hlslpp256_mul_pd(x_yzx, y)));
+	}
 
 	hlslpp_inline n128d _hlslpp256_dot3_pd(const n256d& x, const n256d& y)
 	{
@@ -214,6 +200,46 @@ namespace hlslpp
 	hlslpp_inline n256d _hlslpp256_step_pd(n256d x, n256d y)
 	{
 		return _hlslpp256_cmpge1_pd(x, y);
+	}
+
+#else
+
+	hlslpp_inline void _hlslpp_cross_pd(n128d x0, n128d x1, n128d y0, n128d y1, n128d& r0, n128d& r1)
+	{
+		n128d x_yz = _hlslpp_shuf_yx_pd(x0, x1);
+		n128d y_yz = _hlslpp_shuf_yx_pd(y0, y1);
+
+		n128d multi0 = _hlslpp_mul_pd(x_yz, y0);
+		n128d multi1 = _hlslpp_mul_pd(x0, y1);
+
+		n128d msub0 = _hlslpp_msub_pd(x0, y_yz, multi0);
+		n128d msub1 = _hlslpp_msub_pd(x1, y0, multi1);
+
+		r0 = _hlslpp_shuf_yx_pd(msub0, msub1);
+		r1 = msub0;
+	}
+
+	hlslpp_inline n128d _hlslpp_dot3_pd(n128d x0, n128d x1, n128d y0, n128d y1)
+	{
+		n128d multi0 = _hlslpp_mul_pd(x0, y0); // Multiply components
+		n128d multi1 = _hlslpp_mul_pd(x1, y1);
+		n128d shuf0 = _hlslpp_perm_yy_pd(multi0); // Shuffle y and w
+		n128d add0 = _hlslpp_add_pd(shuf0, multi0);  // Contains x+y, _
+		return _hlslpp_add_pd(add0, multi1);
+	}
+
+	hlslpp_inline n128d _hlslpp_dot4_pd(n128d x0, n128d x1, n128d y0, n128d y1)
+	{
+		n128d multi0 = _hlslpp_mul_pd(x0, y0); // Multiply components
+		n128d multi1 = _hlslpp_mul_pd(x1, y1);
+
+		n128d shuf0 = _hlslpp_perm_yy_pd(multi0); // Shuffle y and w
+		n128d shuf1 = _hlslpp_perm_yy_pd(multi1);
+
+		n128d add0 = _hlslpp_add_pd(shuf0, multi0);  // Contains x+y, _
+		n128d add1 = _hlslpp_add_pd(shuf1, multi1);  // Contains z+w, _
+
+		return _hlslpp_add_pd(add0, add1);
 	}
 
 #endif
@@ -820,6 +846,17 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 		return double4(_hlslpp256_clamp_pd(f.vec, minf.vec, maxf.vec));
 #else
 		return double4(_hlslpp_clamp_pd(f.vec0, minf.vec0, maxf.vec0), _hlslpp_clamp_pd(f.vec1, minf.vec1, maxf.vec1));
+#endif
+	}
+
+	hlslpp_inline double3 cross(const double3& f1, const double3& f2)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		return double3(_hlslpp256_cross_pd(f1.vec, f2.vec));
+#else
+		n128d r0, r1;
+		_hlslpp_cross_pd(f1.vec0, f1.vec1, f2.vec0, f2.vec1, r0, r1);
+		return double3(r0, r1);
 #endif
 	}
 

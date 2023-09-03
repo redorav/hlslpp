@@ -410,6 +410,8 @@ void RunUnitTestsVectorDouble()
 		double3 dvceil_swiz_3 = ceil(dvfoo3.rrg);		hlslpp_check(eq(dvceil_swiz_3, ceil((double)dvfoo3.r), ceil((double)dvfoo3.r), ceil((double)dvfoo3.g)));
 		double4 dvceil_swiz_4 = ceil(dvfoo4.yzwx);		hlslpp_check(eq(dvceil_swiz_4, ceil((double)dvfoo4.y), ceil((double)dvfoo4.z), ceil((double)dvfoo4.w), ceil((double)dvfoo4.x)));
 
+		double3 dvcross3 = cross(dvfoo3, dvbar3);       hlslpp_unit_unused(dvcross3);
+
 		double1 dvdistance1 = distance(dvfoo1, dvbar1); hlslpp_check(eq(dvdistance1, abs((double)dvbar1.x - (double)dvfoo1.x)));
 		double2 dvdistance2_delta = dvbar2 - dvfoo2;
 		double1 dvdistance2 = distance(dvfoo2, dvbar2); hlslpp_check(eq(dvdistance2, sqrt((double)dvdistance2_delta.x * (double)dvdistance2_delta.x + (double)dvdistance2_delta.y * (double)dvdistance2_delta.y), 0.00000001));
