@@ -182,11 +182,11 @@ hlslpp_inline __m128 _hlslpp_round_ps(__m128 x)
 #define _hlslpp_frac_ps(x)						_mm_sub_ps((x), _hlslpp_floor_ps(x))
 
 #define _hlslpp_clamp_ps(x, minx, maxx)			_mm_max_ps(_mm_min_ps((x), (maxx)), (minx))
-#define _hlslpp_sat_ps(x)						_mm_max_ps(_mm_min_ps((x), f4_1), f4_0)
+#define _hlslpp_sat_ps(x)						_mm_max_ps(_mm_min_ps((x), _mm_set1_ps(1.0f)), _mm_setzero_ps())
 
 #define _hlslpp_and_ps(x, y)					_mm_and_ps((x), (y))
 #define _hlslpp_andnot_ps(x, y)					_mm_andnot_ps((x), (y))
-#define _hlslpp_not_ps(x, y)					_mm_andnot_ps((x), f4_fff)
+#define _hlslpp_not_ps(x)						_mm_andnot_ps((x), f4_fff)
 #define _hlslpp_or_ps(x, y)						_mm_or_ps((x), (y))
 #define _hlslpp_xor_ps(x, y)					_mm_xor_ps((x), (y))
 
