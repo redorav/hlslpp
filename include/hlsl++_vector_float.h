@@ -13,9 +13,9 @@ namespace hlslpp
 	// Measured to be marginally faster than the 4-shuffle
 	hlslpp_inline n128 _hlslpp_cross_ps(n128 x, n128 y)
 	{
-		n128 yzx_0 = _hlslpp_perm_yzxx_ps(x);
-		n128 yzx_1 = _hlslpp_perm_yzxx_ps(y);
-		return _hlslpp_perm_yzxx_ps(_hlslpp_msub_ps(x, yzx_1, _hlslpp_mul_ps(yzx_0, y)));
+		n128 x_yzx = _hlslpp_perm_yzxx_ps(x);
+		n128 y_yzx = _hlslpp_perm_yzxx_ps(y);
+		return _hlslpp_perm_yzxx_ps(_hlslpp_msub_ps(x, y_yzx, _hlslpp_mul_ps(x_yzx, y)));
 	}
 
 	hlslpp_inline n128 _hlslpp_dot2_ps(n128 x, n128 y)
