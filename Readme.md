@@ -56,8 +56,8 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 ```
 
 * Remember to add an include path to ```"hlslpp/include"```
-* Windows has defines for min and max so if you're using this library and the <windows.h> header remember to #define NOMINMAX before including it.
-* To force the scalar version of the library, define ```HLSLPP_SCALAR``` globally
+* Windows has defines for min and max so if you're using this library and the <windows.h> header remember to #define NOMINMAX before including it
+* To force the scalar version of the library, define ```HLSLPP_SCALAR``` globally. The scalar library is only different from the SIMD version in its use of regular floats to represent vectors. It should only be used if your platform (e.g. embedded) does not have native SIMD support. It can also be used to compare performance
 * To enable the transforms feature, define ```HLSLPP_FEATURE_TRANSFORM``` globally
 * The f32 members of float4 and the [ ] operators make use of the union directly, so the generated code is up to the compiler. Use with care
 
