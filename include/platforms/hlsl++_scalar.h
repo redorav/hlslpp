@@ -218,7 +218,7 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 			float trunc = (float)(int)f;
 			float frac = f - trunc;
 			float abs_frac = frac >= 0.0f ? frac : -frac;
-			return abs_frac <= 0.5f ? trunc : trunc > 0.0f ? trunc + 1.0f : trunc - 1.0f;
+			return abs_frac <= 0.5f ? trunc : trunc >= 0.0f ? trunc + 1.0f : trunc - 1.0f;
 		}
 	};
 
