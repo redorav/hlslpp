@@ -474,7 +474,7 @@ namespace hlslpp_unit
 		float t = trunc_f(x);
 		float frac = x - t;
 		float abs_frac = frac >= 0.0f ? frac : -frac;
-		return abs_frac <= 0.5f ? t : t >= 0.0f ? t + 1.0f : t - 1.0f;
+		return abs_frac <= 0.5f ? t : x >= 0.0f ? t + 1.0f : t - 1.0f;
 	}
 
 	float trunc_f(float x)
