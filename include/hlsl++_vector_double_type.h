@@ -384,9 +384,9 @@ namespace hlslpp
 		hlslpp_inline double3(const dswizzle3<X, Y, Z>& s)
 		{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
-			dswizzle3<X, Y, Z>::swizzle<X, Y, Z>(s.vec, vec);
+			dswizzle3<X, Y, Z>::template swizzle<X, Y, Z>(s.vec, vec);
 #else
-			dswizzle3<X, Y, Z>::swizzle<X, Y, Z>(s.vec[0], s.vec[1], vec0, vec1);
+			dswizzle3<X, Y, Z>::template swizzle<X, Y, Z>(s.vec[0], s.vec[1], vec0, vec1);
 #endif
 		}
 		
@@ -530,9 +530,9 @@ namespace hlslpp
 		hlslpp_inline double4(const dswizzle4<X, Y, Z, W>& s)
 		{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
-			dswizzle4<X, Y, Z, W>::swizzle<X, Y, Z, W, 0, 1, 2, 3>(s.vec, vec);
+			dswizzle4<X, Y, Z, W>::template swizzle<X, Y, Z, W, 0, 1, 2, 3>(s.vec, vec);
 #else
-			dswizzle4<X, Y, Z, W>::swizzle<X, Y, Z, W, 0, 1, 2, 3>(s.vec[0], s.vec[1], vec[0], vec[1]);
+			dswizzle4<X, Y, Z, W>::template swizzle<X, Y, Z, W, 0, 1, 2, 3>(s.vec[0], s.vec[1], vec[0], vec[1]);
 #endif
 		}
 
