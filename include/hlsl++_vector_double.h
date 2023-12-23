@@ -1396,17 +1396,60 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	template<int X> hlslpp_inline double1 sqrt(const dswizzle1<X>& s) { return sqrt(double1(s)); }
 
 	template<int X>
-	dswizzle1<X>& dswizzle1<X>::operator = (const double1& f)
+	hlslpp_inline dswizzle1<X>& dswizzle1<X>::operator = (double f)
+	{
+		vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], _hlslpp_set1_pd(f), HLSLPP_COMPONENT_X(X % 2));
+		return *this;
+	}
+
+	// Revise these functions. Can I not do with swizzle?
+
+	template<int X>
+	template<int A>
+	hlslpp_inline dswizzle1<X>& dswizzle1<X>::operator = (const dswizzle1<A>& s)
+	{
+		n128d t = _hlslpp_shuffle_pd(s.vec[A / 2], s.vec[A / 2], HLSLPP_SHUFFLE_MASK_PD(A % 2, A % 2));
+		vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], t, HLSLPP_COMPONENT_X(X % 2));
+		return *this;
+	}
+
+	template<int X>
+	hlslpp_inline dswizzle1<X>& dswizzle1<X>::operator = (const dswizzle1<X>& s)
+	{
+		n128d t = _hlslpp_shuffle_pd(s.vec[X / 2], s.vec[X / 2], HLSLPP_SHUFFLE_MASK_PD(X % 2, X % 2));
+		vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], t, HLSLPP_COMPONENT_X(X % 2));
+		return *this;
+	}
+
+	template<int X>
+	hlslpp_inline dswizzle1<X>& dswizzle1<X>::operator = (const double1& f)
 	{
 		vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], _hlslpp_perm_xx_pd(f.vec), HLSLPP_COMPONENT_X(X));
 		return *this;
 	}
 
 	template<int X, int Y>
+	template<int E, int F>
+	hlslpp_inline dswizzle2<X, Y>& dswizzle2<X, Y>::operator = (const dswizzle2<E, F>& s)
+	{
+		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
+		swizzle_all<E, F>(s);
+		return *this;
+	}
+
+	template<int X, int Y>
+	hlslpp_inline dswizzle2<X, Y>& dswizzle2<X, Y>::operator = (const dswizzle2<X, Y>& s)
+	{
+		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
+		swizzle_all<X, Y>(s);
+		return *this;
+	}
+
+	template<int X, int Y>
 	dswizzle2<X, Y>& dswizzle2<X, Y>::operator = (const double2& f)
 	{
-		staticAsserts();
-		
+		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
+
 		HLSLPP_CONSTEXPR_IF((X < 2 && Y < 2) || (X >= 2 && Y >= 2))
 		{
 			vec[(X < 2 && Y < 2) ? 0 : 1] = _hlslpp_perm_pd(f.vec, HLSLPP_SHUFFLE_MASK_PD((X % 2) == 0 ? 0 : 1, (Y % 2) == 0 ? 0 : 1));
@@ -1427,9 +1470,26 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	}
 
 	template<int X, int Y, int Z>
+	template<int A, int B, int C>
+	hlslpp_inline dswizzle3<X, Y, Z>& dswizzle3<X, Y, Z>::operator = (const dswizzle3<A, B, C>& s)
+	{
+		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
+		swizzle_all<A, B, C>(s);
+		return *this;
+	}
+
+	template<int X, int Y, int Z>
+	hlslpp_inline dswizzle3<X, Y, Z>& dswizzle3<X, Y, Z>::operator = (const dswizzle3<X, Y, Z>& s)
+	{
+		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
+		swizzle_all<X, Y, Z>(s);
+		return *this;
+	}
+
+	template<int X, int Y, int Z>
 	dswizzle3<X, Y, Z>& dswizzle3<X, Y, Z>::operator = (const double3& f)
 	{
-		staticAsserts();
+		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 		swizzleblend<0, 1, 2, X, Y, Z>(f.vec, vec);
 #else
@@ -1439,9 +1499,22 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	}
 
 	template<int X, int Y, int Z, int W>
+	template<int A, int B, int C, int D>
+	hlslpp_inline dswizzle4<X, Y, Z, W>& dswizzle4<X, Y, Z, W>::operator = (const dswizzle4<A, B, C, D>& s)
+	{
+		static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
+#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+		swizzle<A, B, C, D, X, Y, Z, W>(s.vec, vec);
+#else
+		swizzle<A, B, C, D, X, Y, Z, W>(s.vec[0], s.vec[1], vec[0], vec[1]);
+#endif
+		return *this;
+	}
+
+	template<int X, int Y, int Z, int W>
 	dswizzle4<X, Y, Z, W>& dswizzle4<X, Y, Z, W>::operator = (const double4& f)
 	{
-		staticAsserts();
+		static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 		swizzle<0, 1, 2, 3, X, Y, Z, W>(f.vec, vec);
 #else

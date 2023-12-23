@@ -29,28 +29,12 @@ namespace hlslpp
 
 		// Assignment
 
-		hlslpp_inline dswizzle1& operator = (double f)
-		{
-			vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], _hlslpp_set1_pd(f), HLSLPP_COMPONENT_X(X % 2));
-			return *this;
-		}
-
-		// Revise these functions. Can I not do with swizzle?
+		hlslpp_inline dswizzle1& operator = (double f);
 
 		template<int A>
-		hlslpp_inline dswizzle1& operator = (const dswizzle1<A>& s)
-		{
-			n128d t = _hlslpp_shuffle_pd(s.vec[A / 2], s.vec[A / 2], HLSLPP_SHUFFLE_MASK_PD(A % 2, A % 2));
-			vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], t, HLSLPP_COMPONENT_X(X % 2));
-			return *this;
-		}
+		hlslpp_inline dswizzle1& operator = (const dswizzle1<A>& s);
 
-		hlslpp_inline dswizzle1& operator = (const dswizzle1<X>& s)
-		{
-			n128d t = _hlslpp_shuffle_pd(s.vec[X / 2], s.vec[X / 2], HLSLPP_SHUFFLE_MASK_PD(X % 2, X % 2));
-			vec[X / 2] = _hlslpp_blend_pd(vec[X / 2], t, HLSLPP_COMPONENT_X(X % 2));
-			return *this;
-		}
+		hlslpp_inline dswizzle1& operator = (const dswizzle1<X>& s);
 
 		hlslpp_inline dswizzle1& operator = (const double1& f);
 
@@ -66,11 +50,6 @@ namespace hlslpp
 	template<int X, int Y>
 	struct hlslpp_nodiscard dswizzle2
 	{
-		void staticAsserts()
-		{
-			static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
-		}
-
 		template<int SrcA, int SrcB, int DstA, int DstB>
 		static hlslpp_inline n128d swizzle(n128d vec0, n128d vec1)
 		{
@@ -113,23 +92,12 @@ namespace hlslpp
 		// Assignment
 	
 		template<int E, int F>
-		hlslpp_inline dswizzle2& operator = (const dswizzle2<E, F>& s)
-		{
-			staticAsserts();
-			swizzle_all<E, F>(s);
-			return *this;
-		}
+		hlslpp_inline dswizzle2& operator = (const dswizzle2<E, F>& s);
 
-		hlslpp_inline dswizzle2& operator = (const dswizzle2<X, Y>& s)
-		{
-			staticAsserts();
-			swizzle_all<X, Y>(s);
-			return *this;
-		}
+		hlslpp_inline dswizzle2& operator = (const dswizzle2<X, Y>& s);
 	
 		hlslpp_inline dswizzle2& operator = (const double2& f);
 	
-	private:
 		union
 		{
 			n128d vec[(X < 2 && Y < 2) ? 1 : 2];
@@ -140,78 +108,25 @@ namespace hlslpp
 	template<int X, int Y, int Z>
 	struct hlslpp_nodiscard dswizzle3
 	{
-		void staticAsserts()
-		{
-			static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
-		}
-
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
-
-		template<int SrcA, int SrcB, int SrcC>
-		hlslpp_inline void swizzle(n256d& ovec) const
-		{
-			swizzle<SrcA, SrcB, SrcC>(vec, ovec);
-		}
-
-		template<int SrcA, int SrcB, int SrcC, int DstA, int DstB, int DstC>
-		hlslpp_inline void swizzleblend(n256d& ovec) const
-		{
-			swizzleblend<SrcA, SrcB, SrcC, DstA, DstB, DstC>(vec, ovec);
-		}
-
-#else
-
-		template<int SrcA, int SrcB>
-		hlslpp_inline n128d swizzle() const
-		{
-			return swizzle<SrcA, SrcB>(vec[0], vec[1]);
-		}
-
-		template<int SrcA, int SrcB, int SrcC>
-		hlslpp_inline void swizzle(n128d& ovec0, n128d& ovec1) const
-		{
-			ovec0 = swizzle<SrcA, SrcB>();
-			ovec1 = swizzle<SrcC, 0   >();
-		}
-
-		template<int SrcA, int SrcB, int SrcC, int DstA, int DstB, int DstC>
-		hlslpp_inline void swizzleblend(n128d& ovec0, n128d& ovec1) const
-		{
-			swizzleblend<SrcA, SrcB, SrcC, DstA, DstB, DstC>(vec[0], vec[1], ovec0, ovec1);
-		}
-
-#endif
-
 		template<int A, int B, int C>
 		hlslpp_inline void swizzle_all(const dswizzle3<A, B, C>& s)
 		{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
-			s.template swizzleblend<A, B, C, X, Y, Z>(vec);
+			swizzleblend<A, B, C, X, Y, Z>(s.vec, vec);
 #else
-			s.template swizzleblend<A, B, C, X, Y, Z>(vec[0], vec[1]);
+			swizzleblend<A, B, C, X, Y, Z>(s.vec[0], s.vec[1], vec[0], vec[1]);
 #endif
 		}
 
 		// Assignment
 
 		template<int A, int B, int C>
-		hlslpp_inline dswizzle3& operator = (const dswizzle3<A, B, C>& s)
-		{
-			staticAsserts();
-			swizzle_all<A, B, C>(s);
-			return *this;
-		}
+		hlslpp_inline dswizzle3& operator = (const dswizzle3<A, B, C>& s);
 
-		hlslpp_inline dswizzle3& operator = (const dswizzle3<X, Y, Z>& s)
-		{
-			staticAsserts();
-			swizzle_all<X, Y, Z>(s);
-			return *this;
-		}
+		hlslpp_inline dswizzle3& operator = (const dswizzle3<X, Y, Z>& s);
 
 		hlslpp_inline dswizzle3& operator = (const double3& f);
 
-	private:
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
 
 		// Swizzles SrcA into 0, SrcB into 1 and SrcC into 2
@@ -286,73 +201,12 @@ namespace hlslpp
 	template<int X, int Y, int Z, int W>
 	struct hlslpp_nodiscard dswizzle4
 	{
-		void staticAsserts()
-		{
-			static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
-		}
-
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
-
-		template<int SrcA, int SrcB, int SrcC, int SrcD>
-		hlslpp_inline void swizzle(n256d& ovec) const
-		{
-			swizzle<SrcA, SrcB, SrcC, SrcD>(vec, ovec);
-		}
-
-		template<int SrcA, int SrcB, int SrcC, int SrcD, int DstA, int DstB, int DstC, int DstD>
-		hlslpp_inline void swizzle(n256d& ovec) const
-		{
-			swizzle<SrcA, SrcB, SrcC, SrcD, DstA, DstB, DstC, DstD>(vec, ovec);
-		}
-
-#else
-
-		template<int SrcA, int SrcB>
-		hlslpp_inline n128d swizzle() const
-		{
-			return swizzle<SrcA, SrcB>(vec[0], vec[1]);
-		}
-
-		template<int SrcA, int SrcB, int SrcC, int SrcD, int DstA, int DstB, int DstC, int DstD>
-		hlslpp_inline void swizzle(n128d& ovec0, n128d& ovec1) const
-		{
-			swizzle<SrcA, SrcB, SrcC, SrcD, DstA, DstB, DstC, DstD>(vec[0], vec[1], ovec0, ovec1);
-		}
-
-#endif
-
 		template<int A, int B, int C, int D>
-		hlslpp_inline void swizzle_all(const dswizzle4<A, B, C, D>& s)
-		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
-			s. template swizzle<A, B, C, D, X, Y, Z, W>(vec);
-#else
-			s. template swizzle<A, B, C, D, X, Y, Z, W>(vec[0], vec[1]);
-#endif
-		}
-
-		// Assignment
-		
-		template<int A, int B, int C, int D>
-		hlslpp_inline dswizzle4& operator = (const dswizzle4<A, B, C, D>& s)
-		{
-			staticAsserts();
-			swizzle_all<A, B, C, D>(s);
-			return *this;
-		}
+		hlslpp_inline dswizzle4& operator = (const dswizzle4<A, B, C, D>& s);
 		
 		hlslpp_inline dswizzle4& operator = (const double4& f);
 
-	private:
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
-
-		// Swizzles SrcA into 0, SrcB into 1 and SrcC into 2
-		// This version doesn't blend so only works for dswizzle3 -> double3 conversions
-		template<int SrcA, int SrcB, int SrcC, int SrcD>
-		static hlslpp_inline void swizzle(n256d vec, n256d& ovec)
-		{
-			ovec = _hlslpp256_perm_pd(vec, SrcA, SrcB, SrcC, SrcD);
-		}
 
 		// Swizzles SrcA, SrcB, SrcC into DstA, DstB, DstC
 		template<int SrcA, int SrcB, int SrcC, int SrcD, int DstA, int DstB, int DstC, int DstD>
@@ -365,19 +219,16 @@ namespace hlslpp
 
 #else
 
-		template<int SrcA, int SrcB>
-		static hlslpp_inline n128d swizzle(n128d vec0, n128d vec1)
-		{
-			return _hlslpp_shuffle_pd(SrcA < 2 ? vec0 : vec1, SrcB < 2 ? vec0 : vec1, HLSLPP_SHUFFLE_MASK_PD(SrcA % 2, SrcB % 2));
-		}
-
 		template<int SrcA, int SrcB, int SrcC, int SrcD, int DstA, int DstB, int DstC, int DstD>
 		static hlslpp_inline void swizzle(n128d vec0, n128d vec1, n128d& ovec0, n128d& ovec1)
 		{
-			#define HLSLPP_SELECT(x) DstA == x ? SrcA : (DstB == x ? SrcB : (DstC == x ? SrcC : SrcD))
+			#define HLSLPP_SELECT(x) (DstA == x ? SrcA : (DstB == x ? SrcB : (DstC == x ? SrcC : SrcD)))
 
-			ovec0 = swizzle<HLSLPP_SELECT(0), HLSLPP_SELECT(1)>(vec0, vec1);
-			ovec1 = swizzle<HLSLPP_SELECT(2), HLSLPP_SELECT(3)>(vec0, vec1);
+			#define hlslpp_dswizzle4_swizzle2(SrcA, SrcB, vec0, vec1) \
+				_hlslpp_shuffle_pd((SrcA) < 2 ? vec0 : vec1, (SrcB) < 2 ? vec0 : vec1, HLSLPP_SHUFFLE_MASK_PD((SrcA) % 2, (SrcB) % 2))
+
+			ovec0 = hlslpp_dswizzle4_swizzle2(HLSLPP_SELECT(0), HLSLPP_SELECT(1), vec0, vec1);
+			ovec1 = hlslpp_dswizzle4_swizzle2(HLSLPP_SELECT(2), HLSLPP_SELECT(3), vec0, vec1);
 
 			#undef HLSLPP_SELECT
 		}
@@ -533,9 +384,9 @@ namespace hlslpp
 		hlslpp_inline double3(const dswizzle3<X, Y, Z>& s)
 		{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
-			s.template swizzle<X, Y, Z>(vec);
+			dswizzle3<X, Y, Z>::swizzle<X, Y, Z>(s.vec, vec);
 #else
-			s.template swizzle<X, Y, Z>(vec0, vec1);
+			dswizzle3<X, Y, Z>::swizzle<X, Y, Z>(s.vec[0], s.vec[1], vec0, vec1);
 #endif
 		}
 		
@@ -679,9 +530,9 @@ namespace hlslpp
 		hlslpp_inline double4(const dswizzle4<X, Y, Z, W>& s)
 		{
 #if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
-			s.template swizzle<X, Y, Z, W, 0, 1, 2, 3>(vec);
+			dswizzle4<X, Y, Z, W>::swizzle<X, Y, Z, W, 0, 1, 2, 3>(s.vec, vec);
 #else
-			s.template swizzle<X, Y, Z, W, 0, 1, 2, 3>(vec0, vec1);
+			dswizzle4<X, Y, Z, W>::swizzle<X, Y, Z, W, 0, 1, 2, 3>(s.vec[0], s.vec[1], vec[0], vec[1]);
 #endif
 		}
 
