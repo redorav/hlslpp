@@ -17,30 +17,14 @@ namespace hlslpp
 
 		#define hlslpp_swizzle1_swizzle(E, A, v) _hlslpp_perm_ps(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | (IdentityMask & ~((3 << 2 * A))))
 
-		// Assignment
-
-		hlslpp_inline swizzle1& operator = (float f)
-		{
-			vec = _hlslpp_blend_ps(vec, _hlslpp_set1_ps(f), HLSLPP_COMPONENT_X(X));
-			return *this;
-		}
+		hlslpp_inline swizzle1& operator = (float f);
 
 		// Revise these functions. Can I not do with swizzle?
 
 		template<int A>
-		hlslpp_inline swizzle1& operator = (const swizzle1<A>& s)
-		{
-			n128 t = _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
-			vec = _hlslpp_blend_ps(vec, t, HLSLPP_COMPONENT_X(X));
-			return *this;
-		}
+		hlslpp_inline swizzle1& operator = (const swizzle1<A>& s);
 
-		hlslpp_inline swizzle1& operator = (const swizzle1& s)
-		{
-			n128 t = _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(X, X, X, X));
-			vec = _hlslpp_blend_ps(vec, t, HLSLPP_COMPONENT_X(X));
-			return *this;
-		}
+		hlslpp_inline swizzle1& operator = (const swizzle1& s);
 
 		hlslpp_inline swizzle1& operator = (const float1& f);
 
@@ -54,13 +38,6 @@ namespace hlslpp
 	template<int X, int Y>
 	struct hlslpp_nodiscard	swizzle2
 	{
-		// Helper
-
-		void staticAsserts()
-		{
-			static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
-		}
-
 		#define hlslpp_swizzle2_swizzle(E, F, A, B, v) \
 			_hlslpp_perm_ps(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | \
 			                   (((IdentityMask >> 2 * F) & 3) << 2 * B) | \
@@ -69,19 +46,9 @@ namespace hlslpp
 		#define hlslpp_swizzle2_blend(x, y) _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XY(X, Y))
 
 		template<int A, int B>
-		hlslpp_inline swizzle2& operator = (const swizzle2<A, B>& s)
-		{
-			staticAsserts();
-			vec = hlslpp_swizzle2_blend(vec, hlslpp_swizzle2_swizzle(A, B, X, Y, s.vec));
-			return *this;
-		}
+		hlslpp_inline swizzle2& operator = (const swizzle2<A, B>& s);
 
-		hlslpp_inline swizzle2& operator = (const swizzle2& s)
-		{
-			staticAsserts();
-			vec = hlslpp_swizzle2_blend(vec, hlslpp_swizzle2_swizzle(X, Y, X, Y, s.vec));
-			return *this;
-		}
+		hlslpp_inline swizzle2& operator = (const swizzle2& s);
 
 		hlslpp_inline swizzle2& operator = (const float2& f);
 
@@ -91,11 +58,6 @@ namespace hlslpp
 	template<int X, int Y, int Z>
 	struct hlslpp_nodiscard	swizzle3
 	{
-		void staticAsserts()
-		{
-			static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
-		}
-
 		#define hlslpp_swizzle3_swizzle(E, F, G, A, B, C, v) \
 			_hlslpp_perm_ps(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | \
 			                   (((IdentityMask >> 2 * F) & 3) << 2 * B) | \
@@ -105,18 +67,9 @@ namespace hlslpp
 		#define hlslpp_swizzle3_blend(x, y) _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z))
 
 		template<int A, int B, int C>
-		hlslpp_inline swizzle3& operator = (const swizzle3<A, B, C>& s)
-		{
-			staticAsserts();
-			vec = hlslpp_swizzle3_blend(vec, hlslpp_swizzle3_swizzle(A, B, C, X, Y, Z, s.vec));
-			return *this;
-		}
+		hlslpp_inline swizzle3& operator = (const swizzle3<A, B, C>& s);
 
-		hlslpp_inline swizzle3& operator = (const swizzle3& s)
-		{
-			vec = hlslpp_swizzle3_blend(vec, hlslpp_swizzle3_swizzle(X, Y, Z, X, Y, Z, s.vec));
-			return *this;
-		}
+		hlslpp_inline swizzle3& operator = (const swizzle3& s);
 
 		hlslpp_inline swizzle3& operator = (const float3& f);
 
@@ -126,26 +79,14 @@ namespace hlslpp
 	template<int X, int Y, int Z, int W>
 	struct hlslpp_nodiscard swizzle4
 	{
-		void staticAsserts()
-		{
-			static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
-		}
-
 		#define hlslpp_swizzle4_swizzle(E, F, G, H, A, B, C, D, v) \
 			_hlslpp_perm_ps(v, (((IdentityMask >> 2 * E) & 3) << (2 * A)) | \
 			                   (((IdentityMask >> 2 * F) & 3) << (2 * B)) | \
 			                   (((IdentityMask >> 2 * G) & 3) << (2 * C)) | \
 			                   (((IdentityMask >> 2 * H) & 3) << (2 * D)))
 		
-		// Assignment
-
 		template<int A, int B, int C, int D>
-		hlslpp_inline swizzle4& operator = (const swizzle4<A, B, C, D>& s)
-		{
-			staticAsserts();
-			vec = hlslpp_swizzle4_swizzle(A, B, C, D, X, Y, Z, W, s.vec);
-			return *this;
-		}
+		hlslpp_inline swizzle4& operator = (const swizzle4<A, B, C, D>& s);
 
 		hlslpp_inline swizzle4& operator = (const float4& f);
 

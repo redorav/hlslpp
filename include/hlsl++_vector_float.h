@@ -1182,31 +1182,100 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	template<int X, int Y> hlslpp_inline float1 operator <= (const swizzle1<X>& f1, const swizzle1<Y>& f2) { return float1(f1) <= float1(f2); }
 
 	template<int X>
+	hlslpp_inline swizzle1<X>& swizzle1<X>::operator = (float f)
+	{
+		vec = _hlslpp_blend_ps(vec, _hlslpp_set1_ps(f), HLSLPP_COMPONENT_X(X));
+		return *this;
+	}
+
+	// Revise these functions. Can I not do with swizzle?
+
+	template<int X>
+	template<int A>
+	hlslpp_inline swizzle1<X>& swizzle1<X>::operator = (const swizzle1<A>& s)
+	{
+		n128 t = _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
+		vec = _hlslpp_blend_ps(vec, t, HLSLPP_COMPONENT_X(X));
+		return *this;
+	}
+
+	template<int X>
+	hlslpp_inline swizzle1<X>& swizzle1<X>::operator = (const swizzle1<X>& s)
+	{
+		n128 t = _hlslpp_shuffle_ps(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(X, X, X, X));
+		vec = _hlslpp_blend_ps(vec, t, HLSLPP_COMPONENT_X(X));
+		return *this;
+	}
+
+	template<int X>
 	swizzle1<X>& swizzle1<X>::operator = (const float1& f)
 	{
 		vec = _hlslpp_blend_ps(vec, hlslpp_swizzle1_swizzle(0, X, f.vec), HLSLPP_COMPONENT_X(X)); return *this;
 	}
 
 	template<int X, int Y>
+	template<int A, int B>
+	hlslpp_inline swizzle2<X, Y>& swizzle2<X, Y>::operator = (const swizzle2<A, B>& s)
+	{
+		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
+		vec = hlslpp_swizzle2_blend(vec, hlslpp_swizzle2_swizzle(A, B, X, Y, s.vec));
+		return *this;
+	}
+
+	template<int X, int Y>
+	hlslpp_inline swizzle2<X, Y>& swizzle2<X, Y>::operator = (const swizzle2<X, Y>& s)
+	{
+		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
+		vec = hlslpp_swizzle2_blend(vec, hlslpp_swizzle2_swizzle(X, Y, X, Y, s.vec));
+		return *this;
+	}
+
+	template<int X, int Y>
 	swizzle2<X, Y>& swizzle2<X, Y>::operator = (const float2& f)
 	{
-		staticAsserts();
+		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
 		vec = hlslpp_swizzle2_blend(vec, hlslpp_swizzle2_swizzle(0, 1, X, Y, f.vec));
+		return *this;
+	}
+
+	template<int X, int Y, int Z>
+	template<int A, int B, int C>
+	hlslpp_inline swizzle3<X, Y, Z>& swizzle3<X, Y, Z>::operator = (const swizzle3<A, B, C>& s)
+	{
+		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
+		vec = hlslpp_swizzle3_blend(vec, hlslpp_swizzle3_swizzle(A, B, C, X, Y, Z, s.vec));
+		return *this;
+	}
+
+	template<int X, int Y, int Z>
+	hlslpp_inline swizzle3<X, Y, Z>& swizzle3<X, Y, Z>::operator = (const swizzle3<X, Y, Z>& s)
+	{
+		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
+		vec = hlslpp_swizzle3_blend(vec, hlslpp_swizzle3_swizzle(X, Y, Z, X, Y, Z, s.vec));
 		return *this;
 	}
 
 	template<int X, int Y, int Z>
 	swizzle3<X, Y, Z>& swizzle3<X, Y, Z>::operator = (const float3& f)
 	{
-		staticAsserts();
+		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
 		vec = hlslpp_swizzle3_blend(vec, hlslpp_swizzle3_swizzle(0, 1, 2, X, Y, Z, f.vec));
+		return *this;
+	}
+
+	template<int X, int Y, int Z, int W>
+	template<int A, int B, int C, int D>
+	hlslpp_inline swizzle4<X, Y, Z, W>& swizzle4<X, Y, Z, W>::operator = (const swizzle4<A, B, C, D>& s)
+	{
+		static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
+		vec = hlslpp_swizzle4_swizzle(A, B, C, D, X, Y, Z, W, s.vec);
 		return *this;
 	}
 
 	template<int X, int Y, int Z, int W>
 	swizzle4<X, Y, Z, W>& swizzle4<X, Y, Z, W>::operator = (const float4& f)
 	{
-		staticAsserts();
+		static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
 		vec = hlslpp_swizzle4_swizzle(0, 1, 2, 3, X, Y, Z, W, f.vec);
 		return *this;
 	}

@@ -450,31 +450,100 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	template<int X, int Y> hlslpp_inline int1 operator <= (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) <= int1(i2); }
 
 	template<int X>
+	hlslpp_inline iswizzle1<X>& iswizzle1<X>::operator = (int32_t i)
+	{
+		vec = _hlslpp_blend_epi32(vec, _hlslpp_set1_epi32(i), HLSLPP_COMPONENT_X(X));
+		return *this;
+	}
+
+	// Revise these functions. Can I not do with swizzle?
+
+	template<int X>
+	template<int A>
+	hlslpp_inline iswizzle1<X>& iswizzle1<X>::operator = (const iswizzle1<A>& s)
+	{
+		n128i t = _hlslpp_shuffle_epi32(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
+		vec = _hlslpp_blend_epi32(vec, t, HLSLPP_COMPONENT_X(X));
+		return *this;
+	}
+
+	template<int X>
+	hlslpp_inline iswizzle1<X>& iswizzle1<X>::operator = (const iswizzle1<X>& s)
+	{
+		n128i t = _hlslpp_shuffle_epi32(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(X, X, X, X));
+		vec = _hlslpp_blend_epi32(vec, t, HLSLPP_COMPONENT_X(X));
+		return *this;
+	}
+
+	template<int X>
 	iswizzle1<X>& iswizzle1<X>::operator = (const int1& i)
 	{
 		vec = _hlslpp_blend_epi32(vec, hlslpp_iswizzle1_swizzle(0, X, i.vec), HLSLPP_COMPONENT_X(X)); return *this;
 	}
 
 	template<int X, int Y>
+	template<int A, int B>
+	hlslpp_inline iswizzle2<X, Y>& iswizzle2<X, Y>::operator = (const iswizzle2<A, B>& s)
+	{
+		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
+		vec = hlslpp_iswizzle2_blend(vec, hlslpp_iswizzle2_swizzle(A, B, X, Y, s.vec));
+		return *this;
+	}
+
+	template<int X, int Y>
+	hlslpp_inline iswizzle2<X, Y>& iswizzle2<X, Y>::operator = (const iswizzle2<X, Y>& s)
+	{
+		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
+		vec = hlslpp_iswizzle2_blend(vec, hlslpp_iswizzle2_swizzle(X, Y, X, Y, s.vec));
+		return *this;
+	}
+
+	template<int X, int Y>
 	iswizzle2<X, Y>& iswizzle2<X, Y>::operator = (const int2& i)
 	{
-		staticAsserts();
+		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
 		vec = hlslpp_iswizzle2_blend(vec, hlslpp_iswizzle2_swizzle(0, 1, X, Y, i.vec));
+		return *this;
+	}
+
+	template<int X, int Y, int Z>
+	template<int A, int B, int C>
+	hlslpp_inline iswizzle3<X, Y, Z>& iswizzle3<X, Y, Z>::operator = (const iswizzle3<A, B, C>& s)
+	{
+		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
+		vec = hlslpp_iswizzle3_blend(vec, hlslpp_iswizzle3_swizzle(A, B, C, X, Y, Z, s.vec));
+		return *this;
+	}
+
+	template<int X, int Y, int Z>
+	hlslpp_inline iswizzle3<X, Y, Z>& iswizzle3<X, Y, Z>::operator = (const iswizzle3<X, Y, Z>& s)
+	{
+		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
+		vec = hlslpp_iswizzle3_blend(vec, hlslpp_iswizzle3_swizzle(X, Y, Z, X, Y, Z, s.vec));
 		return *this;
 	}
 
 	template<int X, int Y, int Z>
 	iswizzle3<X, Y, Z>& iswizzle3<X, Y, Z>::operator = (const int3& i)
 	{
-		staticAsserts();
+		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
 		vec = hlslpp_iswizzle3_blend(vec, hlslpp_iswizzle3_swizzle(0, 1, 2, X, Y, Z, i.vec));
+		return *this;
+	}
+
+	template<int X, int Y, int Z, int W>
+	template<int A, int B, int C, int D>
+	hlslpp_inline iswizzle4<X, Y, Z, W>& iswizzle4<X, Y, Z, W>::operator = (const iswizzle4<A, B, C, D>& s)
+	{
+		static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
+		vec = hlslpp_iswizzle4_swizzle(A, B, C, D, X, Y, Z, W, s.vec);
 		return *this;
 	}
 
 	template<int X, int Y, int Z, int W>
 	iswizzle4<X, Y, Z, W>& iswizzle4<X, Y, Z, W>::operator = (const int4& i)
 	{
-		staticAsserts();
+		static_assert(X != Y && X != Z && X != W && Y != Z && Y != W && Z != W, "\"l-value specifies const object\" No component can be equal for assignment.");
 		vec = hlslpp_iswizzle4_swizzle(0, 1, 2, 3, X, Y, Z, W, i.vec);
 		return *this;
 	}
