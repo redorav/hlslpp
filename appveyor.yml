@@ -8,7 +8,7 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       build: off
-      platform: Linux64 GGC
+      platform: Linux64 GCC
       configuration: Release
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       build: off
@@ -96,7 +96,7 @@ build_script:
          msbuild "C:\projects\hlslpp\workspace\vs2017\hlsl++.sln" /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   - cmd: if %vsversion%==2019
          msbuild "C:\projects\hlslpp\workspace\vs2019\hlsl++.sln" /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-  - sh: if [[ $platform = "Linux64 GGC" ]]; then 
+  - sh: if [[ $platform = "Linux64 GCC" ]]; then 
         pushd workspace/gmake2;
         set -e;
         make all config=release_linux64_gcc;
