@@ -670,9 +670,9 @@ void RunUnitTestsMatrixTransform();
 
 void RunUnitTestsVectorFloat();
 
-void RunUnitTestsVectorInt();
-
 void RunUnitTestsVectorDouble();
+
+void RunUnitTestsVectorInt();
 
 void RunUnitTestsQuaternion();
 
@@ -687,9 +687,9 @@ void RunUnitTests()
 
 	RunUnitTestsVectorFloat();
 
-	RunUnitTestsVectorInt();
-
 	RunUnitTestsVectorDouble();
+
+	RunUnitTestsVectorInt();
 
 	RunUnitTestsMatrixFloat();
 
