@@ -1,3 +1,5 @@
+#if HLSLPP_ENABLE_MATRIX_SWIZZLE_M00
+
 // -------------------------------
 // _mNM
 // -------------------------------
@@ -40,6 +42,10 @@ hlslpp_swizzle_start swizzle4<1, 1, 0, 1> _m11_m11_m10_m11; hlslpp_swizzle_end
 hlslpp_swizzle_start swizzle4<1, 1, 1, 0> _m11_m11_m11_m10; hlslpp_swizzle_end
 hlslpp_swizzle_start swizzle4<1, 1, 1, 1> _m11_m11_m11_m11; hlslpp_swizzle_end
 
+#endif
+
+#if HLSLPP_ENABLE_MATRIX_SWIZZLE_11
+
 // -------------------------------
 // _NM
 // -------------------------------
@@ -81,3 +87,5 @@ hlslpp_swizzle_start swizzle4<1, 1, 0, 1> _22_22_21_22; hlslpp_swizzle_end
 
 hlslpp_swizzle_start swizzle4<1, 1, 1, 0> _22_22_22_21; hlslpp_swizzle_end
 hlslpp_swizzle_start swizzle4<1, 1, 1, 1> _22_22_22_22; hlslpp_swizzle_end
+
+#endif

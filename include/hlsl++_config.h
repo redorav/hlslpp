@@ -173,3 +173,18 @@
 	#include "platforms/hlsl++_360.h"
 
 #endif
+
+// There are two main matrix swizzle formats one where upper left is _m00 and the other where it's indicated as _11
+// We enable _m00 by default and the other one is left as an option
+
+#if !defined(HLSLPP_ENABLE_MATRIX_SWIZZLE_M00)
+
+	#define HLSLPP_ENABLE_MATRIX_SWIZZLE_M00 1
+
+#endif
+
+#if !defined(HLSLPP_ENABLE_MATRIX_SWIZZLE_11)
+
+	#define HLSLPP_ENABLE_MATRIX_SWIZZLE_11 0
+
+#endif
