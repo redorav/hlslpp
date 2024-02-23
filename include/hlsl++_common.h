@@ -323,17 +323,14 @@ namespace hlslpp
 	struct float1x2;
 	struct float1x3;
 	struct float1x4;
-
 	struct float2x1;
 	struct float2x2;
 	struct float2x3;
 	struct float2x4;
-
 	struct float3x1;
 	struct float3x2;
 	struct float3x3;
 	struct float3x4;
-
 	struct float4x1;
 	struct float4x2;
 	struct float4x3;
@@ -366,17 +363,14 @@ namespace hlslpp
 	typedef float1x2 float32_t1x2;
 	typedef float1x3 float32_t1x3;
 	typedef float1x4 float32_t1x4;
-
 	typedef float2x1 float32_t2x1;
 	typedef float2x2 float32_t2x2;
 	typedef float2x3 float32_t2x3;
 	typedef float2x4 float32_t2x4;
-
 	typedef float3x1 float32_t3x1;
 	typedef float3x2 float32_t3x2;
 	typedef float3x3 float32_t3x3;
 	typedef float3x4 float32_t3x4;
-
 	typedef float4x1 float32_t4x1;
 	typedef float4x2 float32_t4x2;
 	typedef float4x3 float32_t4x3;
