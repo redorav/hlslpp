@@ -135,7 +135,7 @@ namespace hlslpp
 			typename hlslpp::enable_if<hlslpp::is_arithmetic4<T1, T2, T3, T4>::value, void*>::type = nullptr
 
 	#define hlslpp_enable_if_number_8(T1, T2, T3, T4, T5, T6, T7, T8) \
-			typename hlslpp::enable_if<hlslpp::is_arithmetic4<T1, T2, T3, T4, T5, T6, T7, T8>::value, void*>::type = nullptr
+			typename hlslpp::enable_if<hlslpp::is_arithmetic8<T1, T2, T3, T4, T5, T6, T7, T8>::value, void*>::type = nullptr
 
 	// Helper intrinsics
 
