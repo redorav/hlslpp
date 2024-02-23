@@ -16,44 +16,51 @@ namespace hlslpp
 	template <typename T> struct remove_cv<volatile T> { typedef T type; };
 	template <typename T> struct remove_cv<const volatile T> { typedef T type; };
 
-	template<typename T, T Value>
-	struct integral_constant { static const T value = Value; };
+	template<typename T> struct is_arithmetic_helper { static const bool value = false; };
 
-	typedef integral_constant<bool, true> true_type;
-	typedef integral_constant<bool, false> false_type;
-
-	template<typename T> struct is_integral_helper : false_type {};
-
-	template<> struct is_integral_helper<bool> : true_type {};
-	template<> struct is_integral_helper<char> : true_type {};
-	template<> struct is_integral_helper<signed char> : true_type {};
-	template<> struct is_integral_helper<unsigned char> : true_type {};
-	template<> struct is_integral_helper<wchar_t> : true_type {};
-	template<> struct is_integral_helper<short> : true_type {};
-	template<> struct is_integral_helper<unsigned short> : true_type {};
-	template<> struct is_integral_helper<int> : true_type {};
-	template<> struct is_integral_helper<unsigned int> : true_type {};
-	template<> struct is_integral_helper<long> : true_type {};
-	template<> struct is_integral_helper<unsigned long> : true_type {};
-	template<> struct is_integral_helper<long long> : true_type {};
-	template<> struct is_integral_helper<unsigned long long> : true_type {};
-	
-	template<typename T>
-	struct is_integral : is_integral_helper<typename remove_cv<T>::type> {};
-
-	template<typename T> struct is_floating_helper : false_type {};
-
-	template<> struct is_floating_helper<float> : true_type {};
-	template<> struct is_floating_helper<double> : true_type {};
-	template<> struct is_floating_helper<long double> : true_type {};
+	template<> struct is_arithmetic_helper<bool> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<char> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<signed char> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<unsigned char> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<wchar_t> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<short> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<unsigned short> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<int> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<unsigned int> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<long> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<unsigned long> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<long long> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<unsigned long long> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<float> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<double> { static const bool value = true; };
+	template<> struct is_arithmetic_helper<long double> { static const bool value = true; };
 
 	template<typename T>
-	struct is_floating_point : is_floating_helper<typename remove_cv<T>::type> {};
+	struct is_arithmetic : is_arithmetic_helper<typename remove_cv<T>::type> {};
 
-	template<bool> struct concat;
-	template<> struct concat<false> : false_type {};
-	template<> struct concat<true> : true_type {};
+	template<typename T1, typename T2>
+	struct is_arithmetic2
+	{
+		static const bool value = is_arithmetic<T1>::value && is_arithmetic<T2>::value;
+	};
 
-	template<class T>
-	struct is_arithmetic : concat<is_integral<T>::value || is_floating_point<T>::value> {};
+	template<typename T1, typename T2, typename T3>
+	struct is_arithmetic3
+	{
+		static const bool value = is_arithmetic<T1>::value && is_arithmetic<T2>::value && is_arithmetic<T3>::value;
+	};
+
+	template<typename T1, typename T2, typename T3, typename T4>
+	struct is_arithmetic4
+	{
+		static const bool value = is_arithmetic<T1>::value && is_arithmetic<T2>::value && is_arithmetic<T3>::value && is_arithmetic<T4>::value;
+	};
+
+	template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+	struct is_arithmetic8
+	{
+		static const bool value = 
+			is_arithmetic<T1>::value && is_arithmetic<T2>::value && is_arithmetic<T3>::value && is_arithmetic<T4>::value &&
+			is_arithmetic<T5>::value && is_arithmetic<T6>::value && is_arithmetic<T7>::value && is_arithmetic<T8>::value;
+	};
 }

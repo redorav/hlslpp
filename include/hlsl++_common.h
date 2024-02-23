@@ -126,33 +126,16 @@ namespace hlslpp
 	#define hlslpp_enable_if_number(T) typename hlslpp::enable_if<hlslpp::is_arithmetic<T>::value, void*>::type = nullptr
 	
 	#define hlslpp_enable_if_number_2(T1, T2) \
-			typename hlslpp::enable_if< \
-			hlslpp::is_arithmetic<T1>::value * \
-			hlslpp::is_arithmetic<T2>::value, void*>::type = nullptr
+			typename hlslpp::enable_if<hlslpp::is_arithmetic2<T1, T2>::value, void*>::type = nullptr
 	
 	#define hlslpp_enable_if_number_3(T1, T2, T3) \
-			typename hlslpp::enable_if< \
-			hlslpp::is_arithmetic<T1>::value * \
-			hlslpp::is_arithmetic<T2>::value * \
-			hlslpp::is_arithmetic<T3>::value, void*>::type = nullptr
+			typename hlslpp::enable_if<hlslpp::is_arithmetic3<T1, T2, T3>::value, void*>::type = nullptr
 	
 	#define hlslpp_enable_if_number_4(T1, T2, T3, T4) \
-			typename hlslpp::enable_if< \
-			hlslpp::is_arithmetic<T1>::value * \
-			hlslpp::is_arithmetic<T2>::value * \
-			hlslpp::is_arithmetic<T3>::value * \
-			hlslpp::is_arithmetic<T4>::value, void*>::type = nullptr
+			typename hlslpp::enable_if<hlslpp::is_arithmetic4<T1, T2, T3, T4>::value, void*>::type = nullptr
 
 	#define hlslpp_enable_if_number_8(T1, T2, T3, T4, T5, T6, T7, T8) \
-			typename hlslpp::enable_if< \
-			hlslpp::is_arithmetic<T1>::value * \
-			hlslpp::is_arithmetic<T2>::value * \
-			hlslpp::is_arithmetic<T3>::value * \
-			hlslpp::is_arithmetic<T4>::value * \
-			hlslpp::is_arithmetic<T5>::value * \
-			hlslpp::is_arithmetic<T6>::value * \
-			hlslpp::is_arithmetic<T7>::value * \
-			hlslpp::is_arithmetic<T8>::value, void*>::type = nullptr
+			typename hlslpp::enable_if<hlslpp::is_arithmetic4<T1, T2, T3, T4, T5, T6, T7, T8>::value, void*>::type = nullptr
 
 	// Helper intrinsics
 
