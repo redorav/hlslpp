@@ -339,6 +339,10 @@ namespace hlslpp_unit
 
 	float trunc_f(float x);
 
+	double round_d(double x);
+
+	double trunc_d(double x);
+
 	typedef float4(*Vec4Func)(const float4&);
 	typedef float(*ScalarFunc)(float);
 

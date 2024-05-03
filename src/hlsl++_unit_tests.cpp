@@ -482,6 +482,19 @@ namespace hlslpp_unit
 		return (float)((int)x);
 	}
 
+	double round_d(double x)
+	{
+		double t = trunc_d(x);
+		double frac = x - t;
+		double abs_frac = frac >= 0.0 ? frac : -frac;
+		return abs_frac <= 0.5 ? t : x >= 0.0 ? t + 1.0 : t - 1.0;
+	}
+
+	double trunc_d(double x)
+	{
+		return (double)((int64_t)x);
+	}
+
 	void maxErrorExhaustive(Vec4Func vectorFunction, ScalarFunc scalarFunction, const char* funcName, float rangeStart, float rangeEnd)
 	{
 		struct ErrorInfo
