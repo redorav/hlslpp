@@ -279,8 +279,8 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 #define _hlslpp_shuffle_epi32(x, y, mask)		__vperm((x), (y), __vset((mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3))
 
 // There are no intrinsics to reinterpret cast like these do as integer and float are all in the same __vector4 structure
-#define _hlslpp_castps_si128(x)					((x))
-#define _hlslpp_castsi128_ps(x)					((x))
+#define _hlslpp_castps_si128(x)					(x)
+#define _hlslpp_castsi128_ps(x)					(x)
 
 #define _hlslpp_cvttps_epi32(x)					__vcfpsxws((x), 0)
 #define _hlslpp_cvtepi32_ps(x)					__vcsxwfp((x), 0)
