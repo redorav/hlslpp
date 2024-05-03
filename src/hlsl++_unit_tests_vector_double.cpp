@@ -469,6 +469,16 @@ void RunUnitTestsVectorDouble()
 		double2 dvsqrt_swiz_2 = sqrt(dvfoo2.rr);   hlslpp_unit_unused(dvsqrt_swiz_2);
 		double3 dvsqrt_swiz_3 = sqrt(dvfoo3.yyy);  hlslpp_unit_unused(dvsqrt_swiz_3);
 		double4 dvsqrt_swiz_4 = sqrt(dvfoo4.wwwx); hlslpp_unit_unused(dvsqrt_swiz_4);
+
+		double1 dvtrunc1 = trunc(dvfoo1);				hlslpp_check(eq(dvtrunc1, trunc_d((double)dvfoo1.x)));
+		double2 dvtrunc2 = trunc(dvfoo2);				hlslpp_check(eq(dvtrunc2, trunc_d((double)dvfoo2.x), trunc_d((double)dvfoo2.y)));
+		double3 dvtrunc3 = trunc(dvfoo3);				hlslpp_check(eq(dvtrunc3, trunc_d((double)dvfoo3.x), trunc_d((double)dvfoo3.y), trunc_d((double)dvfoo3.z)));
+		double4 dvtrunc4 = trunc(dvfoo4);				hlslpp_check(eq(dvtrunc4, trunc_d((double)dvfoo4.x), trunc_d((double)dvfoo4.y), trunc_d((double)dvfoo4.z), trunc_d((double)dvfoo4.w)));
+
+		double1 dvtrunc_swiz_1 = trunc(dvfoo1.r);		hlslpp_check(eq(dvtrunc_swiz_1, trunc_d((double)dvfoo1.r)));
+		double2 dvtrunc_swiz_2 = trunc(dvfoo2.yy);		hlslpp_check(eq(dvtrunc_swiz_2, trunc_d((double)dvfoo2.y), trunc_d((double)dvfoo2.y)));
+		double3 dvtrunc_swiz_3 = trunc(dvfoo3.zzz);		hlslpp_check(eq(dvtrunc_swiz_3, trunc_d((double)dvfoo3.z), trunc_d((double)dvfoo3.z), trunc_d((double)dvfoo3.z)));
+		double4 dvtrunc_swiz_4 = trunc(dvfoo4.wwzw);	hlslpp_check(eq(dvtrunc_swiz_4, trunc_d((double)dvfoo4.w), trunc_d((double)dvfoo4.w), trunc_d((double)dvfoo4.z), trunc_d((double)dvfoo4.w)));
 	}
 	hlslpp_unit::EndTest();
 

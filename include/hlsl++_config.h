@@ -147,7 +147,7 @@
 
 #endif
 
-#include "stdint.h"
+#include <stdint.h>
 
 #include "hlsl++_type_traits.h"
 

@@ -1160,31 +1160,39 @@ hlslpp_inline n128d _hlslpp_blend_pd(n128d x, n128d y, int mask)
 
 #else
 
+// The original version of this used to add and subtract a large double number that would remove the decimals but depends
+// on the rounding mode and to avoid getting and setting it we instead use integer operations
 hlslpp_inline n128d _hlslpp_trunc_pd(n128d x)
 {
-	const n128d k = _mm_set1_pd(4503599627370496.0f);
+	n128i xi = _mm_castpd_si128(x);
 
-	// Cache current rounding mode
-	int prev_csr = _mm_getcsr();
+	// Extract the exponent
+	n128i exponent;
+	exponent = _mm_and_si128(xi, _mm_set1_epi64x(0x7ff0000000000000));
+	exponent = _mm_srli_epi64(exponent, 52);
+	exponent = _mm_sub_epi64(exponent, _mm_set1_epi64x(1023));
 
-	// Set to truncate
-	_mm_setcsr((prev_csr & ~_MM_ROUND_MASK) | (_MM_ROUND_TOWARD_ZERO));
+	// Extract the sign
+	n128i sign = _mm_and_si128(xi, _mm_set1_epi64x(0x8000000000000000));
 
-	// Absolute value
-	n128d absx = _mm_and_pd(_mm_castsi128_pd(_mm_set1_epi64x(0x7fffffffffffffffu)), x);
+	// Subtract the mantissa size of a double from the exponent and extract it to the lower part
+	// as the shift right and left instructions only take the lower integers into account
+	n128i trim_size0 = _mm_sub_epi64(_mm_set1_epi64x(52), exponent);
+	n128i trim_size1 = _mm_unpackhi_epi64(trim_size0, trim_size0);
 
-	// Retrieve sign
-	n128d signx = _mm_and_pd(_mm_castsi128_pd(_mm_set1_epi64x(0x8000000000000000u)), x);
+	// Shift left and right to remove the decimals
+	n128i result_u64_0 = _mm_sll_epi64(_mm_srl_epi64(xi, trim_size0), trim_size0);
+	n128i result_u64_1 = _mm_sll_epi64(_mm_srl_epi64(xi, trim_size1), trim_size1);
 
-	// Add and remove magic number, while also restoring sign
-	n128d truncated = _mm_or_pd(_mm_sub_pd(_mm_add_pd(absx, k), k), signx);
+	// Merge the result back
+	n128d result = _mm_shuffle_pd(_mm_castsi128_pd(result_u64_0), _mm_castsi128_pd(result_u64_1), HLSLPP_SHUFFLE_MASK_PD(HLSLPP_MASK_X, HLSLPP_MASK_Y));
 
-	// If the absolute value of the input was already greater than the constant, we keep the original
-	// input as it's already truncated. Otherwise, we return the truncated value
-	n128d result = _hlslpp_sel_pd(truncated, x, _mm_cmpge_pd(absx, k));
+	n128i exponent_lt_zero = _mm_cmplt_epi32(exponent, _mm_setzero_si128());
+	n128i exponent_ge_52   = _mm_cmpgt_epi32(exponent, _mm_set1_epi64x(51));
 
-	// Restore the rounding mode
-	_mm_setcsr(prev_csr);
+	// Put the sign back in the zero
+	result = _hlslpp_sel_pd(result, _mm_or_pd(_mm_castsi128_pd(sign), _mm_setzero_pd()), _mm_castsi128_pd(exponent_lt_zero));
+	result = _hlslpp_sel_pd(result, x, _mm_castsi128_pd(exponent_ge_52));
 
 	return result;
 }
