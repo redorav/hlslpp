@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdlib.h>
+
 #if defined(__clang__) || defined(__GNUG__)
 
 	#include <x86intrin.h>
@@ -37,7 +39,19 @@
 	// https://github.com/p12tic/libsimdpp/issues/33
 	#include <intrin.h>
 
+	//#include "hlsl++_sse_intrin.h"
+
 #endif
+
+#define _HLSLPP_ROUND_MASK        0x6000
+#define _HLSLPP_ROUND_NEAREST     0x0000
+#define _HLSLPP_ROUND_DOWN        0x2000
+#define _HLSLPP_ROUND_UP          0x4000
+#define _HLSLPP_ROUND_TOWARD_ZERO 0x6000
+
+#define _HLSLPP_FLUSH_ZERO_MASK   0x8000
+#define _HLSLPP_FLUSH_ZERO_ON     0x8000
+#define _HLSLPP_FLUSH_ZERO_OFF    0x0000
 
 #define HLSLPP_DOUBLE
 
@@ -571,7 +585,7 @@ hlslpp_inline n128i _hlslpp_mul_epi32(n128i x, n128i y)
 {
 	n128i tmp1 = _mm_mul_epu32(x, y);
 	n128i tmp2 = _mm_mul_epu32(_mm_srli_si128(x, 4), _mm_srli_si128(y, 4));
-	return _mm_unpacklo_epi32(_mm_shuffle_epi32(tmp1, _MM_SHUFFLE(0, 0, 2, 0)), _mm_shuffle_epi32(tmp2, _MM_SHUFFLE(0, 0, 2, 0)));
+	return _mm_unpacklo_epi32(_mm_shuffle_epi32(tmp1, HLSLPP_SHUFFLE_MASK(0, 0, 2, 0)), _mm_shuffle_epi32(tmp2, HLSLPP_SHUFFLE_MASK(0, 0, 2, 0)));
 }
 
 #endif

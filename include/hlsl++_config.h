@@ -158,19 +158,19 @@
 
 #if defined(HLSLPP_SCALAR)
 
-	#include "platforms/hlsl++_scalar.h"
+	#include "platforms/scalar.h"
 
 #elif defined(HLSLPP_SSE)
 
-	#include "platforms/hlsl++_sse.h"
+	#include "platforms/sse.h"
 
 #elif defined(HLSLPP_ARM)
 
-	#include "platforms/hlsl++_neon.h"
+	#include "platforms/neon.h"
 
 #elif defined(HLSLPP_360)
 
-	#include "platforms/hlsl++_360.h"
+	#include "platforms/xbox360.h"
 
 #endif
 
