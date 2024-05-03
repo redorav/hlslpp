@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdlib.h>
-
 #if defined(__clang__) || defined(__GNUG__)
 
 	#include <x86intrin.h>
