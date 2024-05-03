@@ -225,7 +225,10 @@ namespace hlslpp
 
 #define _hlslpp_shuffle_ps(x, y, mask)			_mm_shuffle_ps((x), (y), (mask))
 
+// Equivalent to shuffle(x, y, X, X, Y, Y)
 #define _hlslpp_unpacklo_ps(x, y)				_mm_unpacklo_ps((x), (y))
+
+// Equivalent to shuffle(x, y, Z, Z, W, W)
 #define _hlslpp_unpackhi_ps(x, y)				_mm_unpackhi_ps((x), (y))
 
 // Inspiration for some bits from https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-float-vector-sum-on-x86
