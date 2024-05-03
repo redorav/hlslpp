@@ -594,19 +594,9 @@ hlslpp_inline n128i _hlslpp_mul_epi32(n128i x, n128i y)
 #define _hlslpp_neg_epi32(x)					_mm_add_epi32(_mm_xor_si128((x), i4fffMask), _mm_set1_epi32(1))
 #endif
 
-#if defined(__SSE4_1__)
-
-#define _hlslpp_madd_epi32(x, y, z)				_mm_add_epi32(_mm_mullo_epi32((x), (y)), (z))
-#define _hlslpp_msub_epi32(x, y, z)				_mm_sub_epi32(_mm_mullo_epi32((x), (y)), (z))
-#define _hlslpp_subm_epi32(x, y, z)				_mm_sub_epi32((x), _mm_mullo_epi32((y), (z)))
-
-#else
-
 #define _hlslpp_madd_epi32(x, y, z)				_mm_add_epi32(_hlslpp_mul_epi32((x), (y)), (z))
 #define _hlslpp_msub_epi32(x, y, z)				_mm_sub_epi32(_hlslpp_mul_epi32((x), (y)), (z))
 #define _hlslpp_subm_epi32(x, y, z)				_mm_sub_epi32((x), _hlslpp_mul_epi32((y), (z)))
-
-#endif
 
 #if defined(__SSSE3__)
 	#define _hlslpp_abs_epi32(x)				_mm_abs_epi32((x))
