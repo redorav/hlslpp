@@ -83,11 +83,6 @@ typedef __m256i n256i;
 #define _hlslpp_mul_ps(x, y)					_mm_mul_ps((x), (y))
 #define _hlslpp_div_ps(x, y)					_mm_div_ps((x), (y))
 
-#define _hlslpp_add_ss(x, y)					_mm_add_ss((x), (y))
-#define _hlslpp_sub_ss(x, y)					_mm_sub_ss((x), (y))
-#define _hlslpp_mul_ss(x, y)					_mm_mul_ss((x), (y))
-#define _hlslpp_div_ss(x, y)					_mm_div_ss((x), (y))
-
 #define _hlslpp_rcp_ps(x)						_mm_rcp_ps((x))
 
 // The following are alternatives but have been measured to be slower

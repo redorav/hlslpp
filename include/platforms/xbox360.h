@@ -68,11 +68,6 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_mul_ps(x, y)					__vmulfp((x), (y))
 #define _hlslpp_div_ps(x, y)					__vmulfp((x), __vrcp(y))
 
-#define _hlslpp_add_ss(x, y)					__vaddfp((x), (y))
-#define _hlslpp_sub_ss(x, y)					__vsubfp((x), (y))
-#define _hlslpp_mul_ss(x, y)					__vmulfp((x), (y))
-#define _hlslpp_div_ss(x, y)					__vmulfp((x), __vrcp(y))
-
 #define _hlslpp_rcp_ps(x)						__vrcp((x))
 
 #define _hlslpp_neg_ps(x)						__vxor((x), __vset1(negMask.f))

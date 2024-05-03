@@ -22,7 +22,7 @@ namespace hlslpp
 	{
 		n128 multi = _hlslpp_mul_ps(x, y);         // Multiply components together
 		n128 shuf1 = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
-		n128 result = _hlslpp_add_ss(shuf1, multi); // Contains x+y, _, _, _
+		n128 result = _hlslpp_add_ps(shuf1, multi); // Contains x+y, _, _, _
 		return result;
 	}
 
@@ -34,7 +34,7 @@ namespace hlslpp
 		n128 shuf1  = _hlslpp_perm_yyyy_ps(multi);  // Move y into x
 		n128 add1   = _hlslpp_add_ps(shuf1, multi); // Contains x+y, _, _, _
 		n128 shuf2  = _hlslpp_perm_zzzz_ps(multi);  // Move z into x
-		n128 result = _hlslpp_add_ss(add1, shuf2);  // Contains x+y+z, _, _, _
+		n128 result = _hlslpp_add_ps(add1, shuf2);  // Contains x+y+z, _, _, _
 		return result;
 	}
 
