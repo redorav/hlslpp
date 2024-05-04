@@ -581,7 +581,7 @@ hlslpp_inline n128i _hlslpp_mul_epi32(n128i x, n128i y)
 {
 	n128i tmp1 = _mm_mul_epu32(x, y);
 	n128i tmp2 = _mm_mul_epu32(_mm_srli_si128(x, 4), _mm_srli_si128(y, 4));
-	return _mm_unpacklo_epi32(_mm_shuffle_epi32(tmp1, HLSLPP_SHUFFLE_MASK(0, 0, 2, 0)), _mm_shuffle_epi32(tmp2, HLSLPP_SHUFFLE_MASK(0, 0, 2, 0)));
+	return _mm_unpacklo_epi32(_mm_shuffle_epi32(tmp1, _MM_SHUFFLE(0, 0, 2, 0)), _mm_shuffle_epi32(tmp2, _MM_SHUFFLE(0, 0, 2, 0)));
 }
 
 #endif
