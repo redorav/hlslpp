@@ -1,5 +1,7 @@
 #pragma once
 
+#include "hlsl++_config.h"
+
 #if defined(__clang__) || defined(__GNUG__)
 
 	#include <x86intrin.h>
@@ -693,10 +695,13 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 #define _hlslpp_castps_si128(x)					_mm_castps_si128((x))
 #define _hlslpp_castsi128_ps(x)					_mm_castsi128_ps((x))
 
+// Converts packed signed 32-bit integers in x to floating point
 #define _hlslpp_cvtepi32_ps(x)					_mm_cvtepi32_ps((x))
+
+// Converts floating point in x to packed 32-bit integers with truncation
 #define _hlslpp_cvttps_epi32(x)					_mm_cvttps_epi32((x))
 
-// Shift left/right while shifting in zeroes
+// Shift left/right by an immediate while shifting in zeroes
 #define _hlslpp_slli_epi32(x, y)				_mm_slli_epi32((x), (y))
 #define _hlslpp_srli_epi32(x, y)				_mm_srli_epi32((x), (y))
 
