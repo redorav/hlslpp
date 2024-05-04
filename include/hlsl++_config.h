@@ -89,6 +89,16 @@
 #define hlslpp_assert(x)
 #endif
 
+#define HLSLPP_MASK_X 0
+#define HLSLPP_MASK_Y 1
+#define HLSLPP_MASK_Z 2
+#define HLSLPP_MASK_W 3
+
+#define HLSLPP_MASK_A 4
+#define HLSLPP_MASK_B 5
+#define HLSLPP_MASK_C 6
+#define HLSLPP_MASK_D 7
+
 #define HLSLPP_SHUFFLE_MASK(X, Y, Z, W)		(((W) << 6) | ((Z) << 4) | ((Y) << 2) | (X))
 #define HLSLPP_SHUFFLE_MASK_PD(X, Y)		(((Y) << 1) | (X))
 
