@@ -48,11 +48,7 @@ typedef __i64x2 n128d;
 
 #define _hlslpp_sel_ps(x, y, mask)				wasm_v128_xor((x), wasm_v128_and(mask, wasm_v128_xor((y), (x))))
 
-hlslpp_inline n128 _hlslpp_blend_ps(n128 x, n128 y, int mask)
-{
-	n128 mask128 = _mm_castsi128_ps(_mm_set_epi32(((mask >> 3) & 1) * 0xffffffff, ((mask >> 2) & 1) * 0xffffffff, ((mask >> 1) & 1) * 0xffffffff, (mask & 1) * 0xffffffff));
-	return _hlslpp_sel_ps(x, y, mask128);
-}
+#define _hlslpp_blend_ps(x, y, mask)			wasm_i32x4_shuffle(x, y, (mask & 1) ? 4 : 0, ((mask >> 1) & 1) ? 5 : 1, ((mask >> 2) & 1) ? 6 : 2, ((mask >> 3) & 1) ? 7 : 3)
 
 #define _hlslpp_trunc_ps(x)						wasm_f32x4_trunc((x))
 #define _hlslpp_floor_ps(x)						wasm_f32x4_floor((x))
@@ -71,28 +67,28 @@ hlslpp_inline n128 _hlslpp_blend_ps(n128 x, n128 y, int mask)
 #define _hlslpp_xor_ps(x, y)					wasm_v128_xor((x), (y))
 
 // Equivalent to shuffle(x, y, X, Y, X, Y)
-#define _hlslpp_movelh_ps(x, y)					wasm_i32x4_shuffle((x), (y), 0, 1, 0, 1)
+#define _hlslpp_movelh_ps(x, y)					wasm_i32x4_shuffle((x), (y), 0, 1, 4, 5)
 
 // Equivalent to shuffle(y, x, Z, W, Z, W)
-#define _hlslpp_movehl_ps(x, y)					wasm_i32x4_shuffle((x), (y), 2, 3, 2, 3)
+#define _hlslpp_movehl_ps(x, y)					wasm_i32x4_shuffle((x), (y), 2, 3, 6, 7)
 
 // Equivalent to shuffle(x, x, Y, Y, W, W)
-#define _hlslpp_movehdup_ps(x)					wasm_i32x4_shuffle((x), (x), 1, 1, 3, 3)
+#define _hlslpp_movehdup_ps(x)					wasm_i32x4_shuffle((x), (x), 1, 1, 7, 7)
 
-#define _hlslpp_perm_ps(x, mask)				wasm_i32x4_shuffle((x), (x), (mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3)
+#define _hlslpp_perm_ps(x, mask)				wasm_i32x4_shuffle((x), (x), (mask) & 3, ((mask) >> 2) & 3, (((mask) >> 4) & 3), (((mask) >> 6) & 3))
 
-#define _hlslpp_shuffle_ps(x, y, mask)			wasm_i32x4_shuffle((x), (y), (mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3)
+#define _hlslpp_shuffle_ps(x, y, mask)			wasm_i32x4_shuffle((x), (y), (mask) & 3, ((mask) >> 2) & 3, 4 + (((mask) >> 4) & 3), 4 + (((mask) >> 6) & 3))
 
-#define _hlslpp_unpacklo_ps(x, y)				wasm_i32x4_shuffle((x), (y), 0, 0, 1, 1)
+#define _hlslpp_unpacklo_ps(x, y)				wasm_i32x4_shuffle((x), (y), 0, 4, 1, 5)
 
-#define _hlslpp_unpackhi_ps(x, y)				wasm_i32x4_shuffle((x), (y), 2, 2, 3, 3)
+#define _hlslpp_unpackhi_ps(x, y)				wasm_i32x4_shuffle((x), (y), 2, 6, 3, 7)
 
 hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
 {
 	n128 mul    = wasm_f32x4_mul(x, y);                      // Multiply components
 	n128 shuf   = wasm_i32x4_shuffle(mul, mul, 1, 0, 3, 0);  // Move y into x, and w into z (ignore the rest)
 	n128 add    = wasm_f32x4_add(shuf, mul);                 // Contains x+y, _, z+w, _
-	shuf        = wasm_i32x4_shuffle(shuf, add, 2, 3, 2, 3); // Move (z + w) into x
+	shuf        = wasm_i32x4_shuffle(shuf, add, 2, 0, 0, 0); // Move (z + w) into x
 	n128 result = wasm_f32x4_add(add, shuf);                 // Contains x+y+z+w, _, _, _
 	return result;
 }
@@ -192,7 +188,7 @@ hlslpp_inline void _hlslpp_load2_ps(float* p, n128& x)
 
 hlslpp_inline void _hlslpp_load3_ps(float* p, n128& x)
 {
-	x = wasm_i32x4_shuffle(wasm_v128_load64_lane(p, x, 0), wasm_v128_load32_lane(p, x, 2), 0, 1, 0, 1);
+	x = wasm_i32x4_shuffle(wasm_v128_load64_lane(p, x, 0), wasm_v128_load32_lane(p + 2, x, 0), 0, 1, 4, 5);
 }
 
 hlslpp_inline void _hlslpp_load4_ps(float* p, n128& x)
@@ -226,9 +222,9 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_add_epi32(x, y)					wasm_i32x4_add((x), (y))
 #define _hlslpp_sub_epi32(x, y)					wasm_i32x4_sub((x), (y))
 #define _hlslpp_mul_epi32(x, y)					wasm_i32x4_mul((x), (y))
-#define _hlslpp_div_epi32(x, y)					_mm_cvttps_epi32(wasm_f32x4_div(wasm_f32x4_convert_i32x4(x), wasm_f32x4_convert_i32x4(y)))
+#define _hlslpp_div_epi32(x, y)					wasm_i32x4_trunc_sat_f32x4(wasm_f32x4_div(wasm_f32x4_convert_i32x4(x), wasm_f32x4_convert_i32x4(y)))
 
-#define _hlslpp_neg_epi32(x)					wasm_i32x4_add(_mm_xor_si128((x), i4fffMask), _mm_set1_epi32(1))
+#define _hlslpp_neg_epi32(x)					wasm_i32x4_add(wasm_v128_xor((x), i4fffMask), wasm_i32x4_const_splat(1))
 
 #define _hlslpp_madd_epi32(x, y, z)				wasm_i32x4_add(wasm_i32x4_mul((x), (y)), (z))
 #define _hlslpp_msub_epi32(x, y, z)				wasm_i32x4_sub(wasm_i32x4_mul((x), (y)), (z))
@@ -250,11 +246,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 
 #define _hlslpp_sel_epi32(x, y, mask)			wasm_v128_xor((x), wasm_v128_and(mask, wasm_v128_xor((y), (x))))
 
-hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
-{
-	n128i mask128 = _mm_set_epi32(((mask >> 3) & 1) * 0xffffffff, ((mask >> 2) & 1) * 0xffffffff, ((mask >> 1) & 1) * 0xffffffff, (mask & 1) * 0xffffffff);
-	return _mm_xor_si128((x), _mm_and_si128(mask128, _mm_xor_si128((y), (x))));
-}
+#define _hlslpp_blend_epi32(x, y, mask)			wasm_i32x4_shuffle(x, y, (mask & 1) ? 4 : 0, ((mask >> 1) & 1) ? 5 : 1, ((mask >> 2) & 1) ? 6 : 2, ((mask >> 3) & 1) ? 7 : 3)
 
 #define _hlslpp_clamp_epi32(x, minx, maxx)		wasm_i32x4_max(wasm_i32x4_min((x), (maxx)), (minx))
 #define _hlslpp_sat_epi32(x)					wasm_i32x4_max(wasm_i32x4_min((x), i4_1), i4_0)
@@ -266,21 +258,21 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 #define _hlslpp_xor_si128(x, y)					wasm_v128_xor((x), (y))
 
 // https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epi32(x, mask)				_mm_shuffle_epi32((x), (mask))
-#define _hlslpp_shuffle_epi32(x, y, mask)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), (mask)))
+#define _hlslpp_perm_epi32(x, mask)				wasm_i32x4_shuffle((x), (x), (mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3)
+#define _hlslpp_shuffle_epi32(x, y, mask)		wasm_i32x4_shuffle((x), (y), (mask) & 3, ((mask) >> 2) & 3, 4 + (((mask) >> 4) & 3), 4 + (((mask) >> 6) & 3))
 
 #define _hlslpp_castps_si128(x)					(x)
 #define _hlslpp_castsi128_ps(x)					(x)
 
 #define _hlslpp_cvtepi32_ps(x)					wasm_f32x4_convert_i32x4((x))
-#define _hlslpp_cvttps_epi32(x)					_mm_cvttps_epi32((x))
+#define _hlslpp_cvttps_epi32(x)					wasm_i32x4_trunc_sat_f32x4((x))
 
 // Shift left/right while shifting in zeroes
 #define _hlslpp_slli_epi32(x, y)				wasm_i32x4_shl((x), (y))
-#define _hlslpp_srli_epi32(x, y)				wasm_u32x4_shr((x), (y))
+#define _hlslpp_srli_epi32(x, y)				wasm_i32x4_shr((x), (y))
 
-#define _hlslpp_sllv_epi32(x, y)				_mm_sllv_epi32((x), (y))
-#define _hlslpp_srlv_epi32(x, y)				_mm_srlv_epi32((x), (y))
+#define _hlslpp_sllv_epi32(x, y)				(x) // _mm_sllv_epi32((x), (y))
+#define _hlslpp_srlv_epi32(x, y)				(x) // _mm_srlv_epi32((x), (y))
 
 hlslpp_inline bool _hlslpp_any1_epi32(n128i x)
 {
@@ -359,10 +351,77 @@ hlslpp_inline void _hlslpp_load2_epi32(int32_t* p, n128i& x)
 
 hlslpp_inline void _hlslpp_load3_epi32(int32_t* p, n128i& x)
 {
-	x = wasm_i32x4_shuffle(wasm_v128_load64_lane(p, x, 0), wasm_v128_load32_lane(p, x, 2), 0, 1, 0, 1);
+	x = wasm_i32x4_shuffle(wasm_v128_load64_lane(p, x, 0), wasm_v128_load32_lane(p, x, 2), 0, 1, 3, 4);
 }
 
 hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 {
 	x = wasm_v128_load(p);
 }
+
+//-----------------
+// Unsigned Integer
+//-----------------
+
+#define _hlslpp_set1_epu32(x)					wasm_u32x4_splat((x))
+#define _hlslpp_set_epu32(x, y, z, w)			wasm_u32x4_make((x), (y), (z), (w))
+#define _hlslpp_setzero_epu32()					wasm_u32x4_const_splat(0)
+
+#define _hlslpp_add_epu32(x, y)					wasm_i32x4_add((x), (y))
+#define _hlslpp_sub_epu32(x, y)					wasm_i32x4_sub((x), (y))
+#define _hlslpp_mul_epu32(x, y)					wasm_i32x4_mul((x), (y))
+#define _hlslpp_div_epu32(x, y)					_hlslpp_div_epi32((x), (y))
+
+#define _hlslpp_madd_epu32(x, y, z)				wasm_i32x4_add(wasm_i32x4_mul((x), (y)), (z))
+#define _hlslpp_msub_epu32(x, y, z)				wasm_i32x4_sub(wasm_i32x4_mul((x), (y)), (z))
+#define _hlslpp_subm_epu32(x, y, z)				wasm_i32x4_sub((x), wasm_i32x4_mul((y), (z)))
+
+#define _hlslpp_cmpeq_epu32(x, y)				wasm_i32x4_eq((x), (y))
+#define _hlslpp_cmpneq_epu32(x, y)				wasm_i32x4_ne((x), (y))
+
+#define _hlslpp_cmpgt_epu32(x, y)				wasm_u32x4_gt((x), (y))
+#define _hlslpp_cmpge_epu32(x, y)				wasm_u32x4_ge((x), (y))
+
+#define _hlslpp_cmplt_epu32(x, y)				wasm_u32x4_lt((x), (y))
+#define _hlslpp_cmple_epu32(x, y)				wasm_u32x4_le((x), (y))
+
+#define _hlslpp_max_epu32(x, y)					wasm_u32x4_max((x), (y))
+#define _hlslpp_min_epu32(x, y)					wasm_u32x4_min((x), (y))
+
+#define _hlslpp_sel_epu32(x, y, mask)			_hlslpp_sel_epi32((x), (y), (mask))
+#define _hlslpp_blend_epu32(x, y, mask)			_hlslpp_blend_epi32((x), (y), (mask))
+
+#define _hlslpp_clamp_epu32(x, minx, maxx)		_hlslpp_max_epu32(_hlslpp_min_epu32((x), (maxx)), (minx))
+#define _hlslpp_sat_epu32(x)					_hlslpp_max_epu32(_hlslpp_min_epu32((x), i4_1), i4_0)
+
+#define _hlslpp_cvttps_epu32(x)					_hlslpp_cvttps_epi32((x))
+#define _hlslpp_cvtepu32_ps(x)					_hlslpp_cvtepi32_ps((x))
+
+#define _hlslpp_slli_epu32(x, y)				_hlslpp_slli_epi32((x), (y))
+#define _hlslpp_srli_epu32(x, y)				_hlslpp_srli_epi32((x), (y))
+
+#define _hlslpp_sllv_epu32(x, y)				_hlslpp_sllv_epi32((x), (y))
+#define _hlslpp_srlv_epu32(x, y)				_hlslpp_srlv_epi32((x), (y))
+
+#define _hlslpp_any1_epu32(x)					_hlslpp_any1_epi32(x)
+#define _hlslpp_any2_epu32(x)					_hlslpp_any2_epi32(x)
+#define _hlslpp_any3_epu32(x)					_hlslpp_any3_epi32(x)
+#define _hlslpp_any4_epu32(x)					_hlslpp_any4_epi32(x)
+
+#define _hlslpp_all1_epu32(x)					_hlslpp_all1_epi32(x)
+#define _hlslpp_all2_epu32(x)					_hlslpp_all2_epi32(x)
+#define _hlslpp_all3_epu32(x)					_hlslpp_all3_epi32(x)
+#define _hlslpp_all4_epu32(x)					_hlslpp_all4_epi32(x)
+
+//----------------------------
+// Unsigned Integer Store/Load
+//----------------------------
+
+hlslpp_inline void _hlslpp_store1_epu32(uint32_t* p, n128u x) { _hlslpp_store1_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_store2_epu32(uint32_t* p, n128u x) { _hlslpp_store2_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_store3_epu32(uint32_t* p, n128u x) { _hlslpp_store3_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_store4_epu32(uint32_t* p, n128u x) { _hlslpp_store4_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_load1_epu32(uint32_t* p, n128u& x) { _hlslpp_load1_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_load2_epu32(uint32_t* p, n128u& x) { _hlslpp_load2_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_load3_epu32(uint32_t* p, n128u& x) { _hlslpp_load3_epi32((int32_t*)p, x); }
+hlslpp_inline void _hlslpp_load4_epu32(uint32_t* p, n128u& x) { _hlslpp_load4_epi32((int32_t*)p, x); }
