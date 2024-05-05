@@ -259,9 +259,9 @@ namespace hlslpp
 	#define _hlslpp_cmplt1_ps(val1, val2)		_hlslpp_and_ps(_hlslpp_cmplt_ps((val1), (val2)), f4_1)
 	#define _hlslpp_cmple1_ps(val1, val2)		_hlslpp_and_ps(_hlslpp_cmple_ps((val1), (val2)), f4_1)
 
-	#define _hlslpp_perm_xxxx_epi32(x)			_hlslpp_perm_epi32((x), HLSLPP_SHUFFLE_MASK(MaskX, MaskX, MaskX, MaskX))
-	#define _hlslpp_perm_xxyx_epi32(x)			_hlslpp_perm_epi32((x), HLSLPP_SHUFFLE_MASK(MaskX, MaskX, MaskY, MaskX))
-	#define _hlslpp_perm_xxyz_epi32(x)			_hlslpp_perm_epi32((x), HLSLPP_SHUFFLE_MASK(MaskX, MaskX, MaskY, MaskZ))
+	#define _hlslpp_perm_xxxx_epi32(x)			_hlslpp_perm_epi32((x), MaskX, MaskX, MaskX, MaskX)
+	#define _hlslpp_perm_xxyx_epi32(x)			_hlslpp_perm_epi32((x), MaskX, MaskX, MaskY, MaskX)
+	#define _hlslpp_perm_xxyz_epi32(x)			_hlslpp_perm_epi32((x), MaskX, MaskX, MaskY, MaskZ)
 
 	#define _hlslpp_shuf_xxxx_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), HLSLPP_SHUFFLE_MASK(MaskX, MaskX, MaskX, MaskX))
 	#define _hlslpp_shuf_xyxx_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), HLSLPP_SHUFFLE_MASK(MaskX, MaskY, MaskX, MaskX))

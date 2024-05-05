@@ -6,6 +6,8 @@ typedef __vector4 n128;
 typedef __vector4 n128i; // Xbox 360 has a __vector4i type but it's not actually backed by hardware
 typedef __vector4 n128u;
 
+#define HLSLPP_XBOX360_SHUFFLE_MASK(X, Y, Z, W) (((X) << 6) | ((Y) << 4) | ((Z) << 2) | (W))
+
 //----------
 // Functions
 //----------
@@ -118,7 +120,7 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_movehl_ps(x, y)					__vperm((y), (x), __vset(2, 3, 2, 3))
 #define _hlslpp_movehdup_ps(x)					__vpermwi((x), VPERMWI_CONST(1, 1, 3, 3))
 
-#define _hlslpp_perm_ps(x, X, Y, Z, W)			__vpermwi((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W))
+#define _hlslpp_perm_ps(x, X, Y, Z, W)			__vpermwi((x), HLSLPP_XBOX360_SHUFFLE_MASK(X, Y, Z, W))
 #define _hlslpp_shuffle_ps(x, y, mask)			__vperm((x), (y), __vset((mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3))
 
 #define _hlslpp_unpacklo_ps(x, y)				__vmrghw((x), (y))
@@ -275,7 +277,7 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 #define _hlslpp_or_si128(x, y)					__vor((x), (y))
 #define _hlslpp_xor_si128(x, y)					__vxor((x), (y))
 
-#define _hlslpp_perm_epi32(x, mask)				__vpermwi((x), (mask))
+#define _hlslpp_perm_epi32(x, X, Y, Z, W)		__vpermwi((x), HLSLPP_XBOX360_SHUFFLE_MASK(X, Y, Z, W))
 #define _hlslpp_shuffle_epi32(x, y, mask)		__vperm((x), (y), __vset((mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3))
 
 // There are no intrinsics to reinterpret cast like these do as integer and float are all in the same __vector4 structure

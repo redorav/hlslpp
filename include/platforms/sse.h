@@ -687,7 +687,7 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 #define _hlslpp_xor_si128(x, y)					_mm_xor_si128((x), (y))
 
 // https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epi32(x, mask)				_mm_shuffle_epi32((x), (mask))
+#define _hlslpp_perm_epi32(x, X, Y, Z, W)		_mm_shuffle_epi32((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W))
 #define _hlslpp_shuffle_epi32(x, y, mask)		_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), (mask)))
 
 #define _hlslpp_castps_si128(x)					_mm_castps_si128((x))
@@ -712,9 +712,9 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 
 inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
 {
-	n128i count1 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(1, 0, 0, 0));
-	n128i count2 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(2, 0, 0, 0));
-	n128i count3 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(3, 0, 0, 0));
+	n128i count1 = _hlslpp_perm_epi32(count, 1, 0, 0, 0);
+	n128i count2 = _hlslpp_perm_epi32(count, 2, 0, 0, 0);
+	n128i count3 = _hlslpp_perm_epi32(count, 3, 0, 0, 0);
 
 	n128i ffMask = _mm_setr_epi32(0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
 
@@ -736,9 +736,9 @@ inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
 
 inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 {
-	n128i count1 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(1, 0, 0, 0));
-	n128i count2 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(2, 0, 0, 0));
-	n128i count3 = _hlslpp_perm_epi32(count, HLSLPP_SHUFFLE_MASK(3, 0, 0, 0));
+	n128i count1 = _hlslpp_perm_epi32(count, 1, 0, 0, 0);
+	n128i count2 = _hlslpp_perm_epi32(count, 2, 0, 0, 0);
+	n128i count3 = _hlslpp_perm_epi32(count, 3, 0, 0, 0);
 
 	n128i ffMask = _mm_setr_epi32(0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
 
@@ -817,7 +817,7 @@ hlslpp_inline void _hlslpp_store2_epi32(int32_t* p, n128i x)
 hlslpp_inline void _hlslpp_store3_epi32(int32_t* p, n128i x)
 {
 	_mm_storel_epi64((__m128i*)p, x);
-	_mm_store_ss((float*)p + 2, _mm_castsi128_ps(_hlslpp_perm_epi32(x, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2))));
+	_mm_store_ss((float*)p + 2, _mm_castsi128_ps(_hlslpp_perm_epi32(x, 2, 2, 2, 2)));
 }
 
 hlslpp_inline void _hlslpp_store4_epi32(int32_t* p, n128i x)

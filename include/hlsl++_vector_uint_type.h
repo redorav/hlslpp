@@ -15,7 +15,7 @@ namespace hlslpp
 	
 		hlslpp_inline operator uint32_t() const { return u32[X]; }
 	
-		#define hlslpp_uswizzle1_swizzle(E, A, v) _hlslpp_perm_epi32(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | (IdentityMask & ~((3 << 2 * A))))
+		#define hlslpp_uswizzle1_swizzle(E, A, v) _hlslpp_perm_epi32(v, A == 0 ? E : 0, A == 1 ? E : 1, A == 2 ? E : 2, A == 3 ? E : 3)
 
 		hlslpp_inline uswizzle1& operator = (uint32_t i);
 
@@ -37,9 +37,10 @@ namespace hlslpp
 	struct hlslpp_nodiscard uswizzle2
 	{
 		#define hlslpp_uswizzle2_swizzle(E, F, A, B, v) \
-			_hlslpp_perm_epi32(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | \
-			                      (((IdentityMask >> 2 * F) & 3) << 2 * B) | \
-			                      (IdentityMask & ~((3 << 2 * A) | (3 << 2 * B))))
+		    _hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : 0, \
+		                          A == 1 ? E : B == 1 ? F : 1, \
+		                          A == 2 ? E : B == 2 ? F : 2, \
+		                          A == 3 ? E : B == 3 ? F : 3)
 
 		// Select based on property mask
 		#define hlslpp_uswizzle2_blend(x, y) _hlslpp_blend_epi32(x, y, HLSLPP_COMPONENT_XY(X, Y))
@@ -58,10 +59,10 @@ namespace hlslpp
 	struct hlslpp_nodiscard uswizzle3
 	{
 		#define hlslpp_uswizzle3_swizzle(E, F, G, A, B, C, v) \
-			_hlslpp_perm_epi32(v, (((IdentityMask >> 2 * E) & 3) << 2 * A) | \
-			                      (((IdentityMask >> 2 * F) & 3) << 2 * B) | \
-			                      (((IdentityMask >> 2 * G) & 3) << 2 * C) | \
-			                      (IdentityMask & ~((3 << 2 * A) | (3 << 2 * B) | (3 << 2 * C))))
+		    _hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : 0, \
+		                          A == 1 ? E : B == 1 ? F : C == 1 ? G : 1, \
+		                          A == 2 ? E : B == 2 ? F : C == 2 ? G : 2, \
+		                          A == 3 ? E : B == 3 ? F : C == 3 ? G : 3)
 
 		// Select based on property mask
 		#define hlslpp_uswizzle3_blend(x, y) _hlslpp_blend_epi32(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z))
@@ -80,10 +81,10 @@ namespace hlslpp
 	struct hlslpp_nodiscard uswizzle4
 	{
 		#define hlslpp_uswizzle4_swizzle(E, F, G, H, A, B, C, D, v) \
-			_hlslpp_perm_epi32(v, (((IdentityMask >> 2 * E) & 3) << (2 * A)) | \
-			                      (((IdentityMask >> 2 * F) & 3) << (2 * B)) | \
-			                      (((IdentityMask >> 2 * G) & 3) << (2 * C)) | \
-			                      (((IdentityMask >> 2 * H) & 3) << (2 * D)))
+		    _hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : D == 0 ? H : 0, \
+		                          A == 1 ? E : B == 1 ? F : C == 1 ? G : D == 1 ? H : 1, \
+		                          A == 2 ? E : B == 2 ? F : C == 2 ? G : D == 2 ? H : 2, \
+		                          A == 3 ? E : B == 3 ? F : C == 3 ? G : D == 3 ? H : 3)
 
 		template<int A, int B, int C, int D>
 		hlslpp_inline uswizzle4& operator = (const uswizzle4<A, B, C, D>& s);

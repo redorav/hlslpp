@@ -645,8 +645,8 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 	}
 
 	// https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epi32(x, msk)				(perm4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x)))
-#define _hlslpp_shuffle_epi32(x, y, msk)		(shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y)))
+	#define _hlslpp_perm_epi32(x, X, Y, Z, W)		perm4<X, Y, Z, W>((x))
+	#define _hlslpp_shuffle_epi32(x, y, msk)		shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y))
 
 	hlslpp_inline vector_int4 select4(const vector_int4& v1, const vector_int4& v2, const vector_int4& msk)
 	{
@@ -654,7 +654,7 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 	}
 
 	// Bit-select val1 and val2 based on the contents of the mask
-#define _hlslpp_sel_epi32(x, y, msk)				select4((x), (y), (msk))
+	#define _hlslpp_sel_epi32(x, y, msk)				select4((x), (y), (msk))
 
 	template<int A, int B, int C, int D>
 	hlslpp_inline vector_int4 blend4(const vector_int4& v1, const vector_int4& v2)
@@ -662,7 +662,7 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 		return vector_int4(A == 1 ? v2.m[0] : v1.m[0], B == 1 ? v2.m[1] : v1.m[1], C == 1 ? v2.m[2] : v1.m[2], D == 1 ? v2.m[3] : v1.m[3]);
 	}
 
-#define _hlslpp_blend_epi32(x, y, msk)			blend4<(msk) & 1, ((msk) >> 1) & 1, ((msk) >> 2) & 1, ((msk) >> 3) & 1>((x), (y))
+	#define _hlslpp_blend_epi32(x, y, msk)			blend4<(msk) & 1, ((msk) >> 1) & 1, ((msk) >> 2) & 1, ((msk) >> 3) & 1>((x), (y))
 
 	hlslpp_inline vector_int4 _hlslpp_castps_si128(const vector_float4& v)
 	{
