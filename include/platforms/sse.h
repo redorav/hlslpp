@@ -466,11 +466,11 @@ hlslpp_inline n256 permute_float(n256 x)
 			"Invalid value for permute indices!");
 
 	// Covers all the cases where XYZW belong to the first vector, and ABCD cover the second vector
-	HLSLPP_CONSTEXPR_IF(X < 4 && Y < 4 && Z < 4 && W < 4 && A >= 4 && B >= 4 && C >= 4 && D >= 4)
+	hlslpp_constexpr_if(X < 4 && Y < 4 && Z < 4 && W < 4 && A >= 4 && B >= 4 && C >= 4 && D >= 4)
 	{
 		return _mm256_permutevar_ps(x, _mm256_setr_epi32(X, Y, Z, W, A, B, C, D));
 	}
-	else HLSLPP_CONSTEXPR_IF(A < 4 && B < 4 && C < 4 && D < 4 && X >= 4 && Y >= 4 && Z >= 4 && W >= 4)
+	else hlslpp_constexpr_if(A < 4 && B < 4 && C < 4 && D < 4 && X >= 4 && Y >= 4 && Z >= 4 && W >= 4)
 	{
 		n256 swap = _mm256_permute2f128_ps(x, x, 0x3); // 0b00110000
 		return _mm256_permutevar_ps(swap, _mm256_setr_epi32(X, Y, Z, W, A, B, C, D));
@@ -1418,7 +1418,7 @@ template<int X, int Y, int Z, int W>
 hlslpp_inline n256d permute_double(n256d x)
 {	
 	// Covers cases like XYZZ, XXZW, YXWZ, etc
-	HLSLPP_CONSTEXPR_IF(X < 2 && Y < 2 && Z >= 2 && W >= 2)
+	hlslpp_constexpr_if(X < 2 && Y < 2 && Z >= 2 && W >= 2)
 	{
 		return _mm256_permute_pd(x, (X == 0 ? 0 : 1) | ((Y == 0 ? 0 : 1) << 1) | ((Z == 2 ? 0 : 1) << 2) | ((W == 2 ? 0 : 1) << 3));
 	}
@@ -1431,13 +1431,13 @@ hlslpp_inline n256d permute_double(n256d x)
 #else
 
 	// Covers cases like ZWYY, WZXY, WWYX
-	else HLSLPP_CONSTEXPR_IF(X >= 2 && Y >= 2 && Z < 2 && W < 2)
+	else hlslpp_constexpr_if(X >= 2 && Y >= 2 && Z < 2 && W < 2)
 	{
 		n256d swap = _mm256_permute2f128_pd(x, x, 0x3); // Reverse components 0b00110000
 		return _mm256_permute_pd(swap, (X == 2 ? 0 : 1) | ((Y == 2 ? 0 : 1) << 1) | ((Z == 0 ? 0 : 1) << 2) | ((W == 0 ? 0 : 1) << 3));
 	}
 	// Covers XXXX, YYYY, ZZZZ, WWWW
-	else HLSLPP_CONSTEXPR_IF(X == Y && X == Z && X == W)
+	else hlslpp_constexpr_if(X == Y && X == Z && X == W)
 	{
 		n256d shuf = _mm256_permute2f128_pd(x, x, (X == 0 || X == 1) ? 0x0 : 0x11); // Select the same component for both
 		return _mm256_permute_pd(shuf, ((X % 2) << 3) | ((X % 2) << 2) | ((X % 2) << 1) | (X % 2));

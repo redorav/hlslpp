@@ -73,7 +73,7 @@ namespace hlslpp
 		template<int E, int F>
 		hlslpp_inline void swizzle_all(const dswizzle2<E, F>& s)
 		{
-			HLSLPP_CONSTEXPR_IF((X < 2 && Y < 2) || (X >= 2 && Y >= 2))
+			hlslpp_constexpr_if((X < 2 && Y < 2) || (X >= 2 && Y >= 2))
 			{
 				vec[(X < 2 && Y < 2) ? 0 : 1] = s.template swizzle<E, F, X, Y>();
 			}

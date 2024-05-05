@@ -1453,7 +1453,7 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	{
 		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
 
-		HLSLPP_CONSTEXPR_IF((X < 2 && Y < 2) || (X >= 2 && Y >= 2))
+		hlslpp_constexpr_if((X < 2 && Y < 2) || (X >= 2 && Y >= 2))
 		{
 			vec[(X < 2 && Y < 2) ? 0 : 1] = _hlslpp_perm_pd(f.vec, HLSLPP_SHUFFLE_MASK_PD((X % 2) == 0 ? 0 : 1, (Y % 2) == 0 ? 0 : 1));
 			//vec[(X < 2 && Y < 2) ? 0 : 1] = swizzle<0, 1, X, Y>(f.vec);
