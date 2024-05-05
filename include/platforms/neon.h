@@ -521,7 +521,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_or_si128(x, y)					vorrq_s32((x), (y))
 #define _hlslpp_xor_si128(x, y)					veorq_s32((x), (y))
 
-#define _hlslpp_perm_epi32(x, mask)				vpermq_s32((x), (mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3)
+#define _hlslpp_perm_epi32(x, X, Y, Z, W)		vpermq_s32((x), X, Y, Z, W)
 #define _hlslpp_shuffle_epi32(x, y, mask)		vshufq_s32((x), (y), (mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3)
 
 #define _hlslpp_castps_si128(x)					vreinterpretq_s32_f32((x))
