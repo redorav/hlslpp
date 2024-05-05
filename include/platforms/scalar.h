@@ -330,8 +330,8 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 		return vector_float4(v1.m[A], v1.m[B], v2.m[C], v2.m[D]);
 	}
 
-#define _hlslpp_perm_ps(x, msk)					(perm4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x)))
-#define _hlslpp_shuffle_ps(x, y, msk)			(shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y)))
+#define _hlslpp_perm_ps(x, X, Y, Z, W)			perm4<X, Y, Z, W>((x))
+#define _hlslpp_shuffle_ps(x, y, msk)			shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y))
 
 	hlslpp_inline vector_float4 _hlslpp_unpacklo_ps(const vector_float4& v1, const vector_float4& v2)
 	{

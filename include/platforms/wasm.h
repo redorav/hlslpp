@@ -75,7 +75,7 @@ typedef __i64x2 n128d;
 // Equivalent to shuffle(x, x, Y, Y, W, W)
 #define _hlslpp_movehdup_ps(x)					wasm_i32x4_shuffle((x), (x), 1, 1, 7, 7)
 
-#define _hlslpp_perm_ps(x, mask)				wasm_i32x4_shuffle((x), (x), (mask) & 3, ((mask) >> 2) & 3, (((mask) >> 4) & 3), (((mask) >> 6) & 3))
+#define _hlslpp_perm_ps(x, X, Y, Z, W)			wasm_i32x4_shuffle((x), (x), X, Y, Z, W)
 
 #define _hlslpp_shuffle_ps(x, y, mask)			wasm_i32x4_shuffle((x), (y), (mask) & 3, ((mask) >> 2) & 3, 4 + (((mask) >> 4) & 3), 4 + (((mask) >> 6) & 3))
 

@@ -284,12 +284,12 @@ namespace hlslpp
 		n128 m21_m02_m10_m21 = _hlslpp_shuffle_ps(m01_m02_m20_m21, m10_m12_m20_m21, HLSLPP_SHUFFLE_MASK(MaskW, MaskY, MaskX, MaskW));
 		n128 s1_s2_s3_s1     = _hlslpp_sub_ps(m12_m20_m01_m12, m21_m02_m10_m21);
 		
-		n128 m20_m12_m12_m20 = _hlslpp_perm_ps(m10_m12_m20_m21, HLSLPP_SHUFFLE_MASK(MaskZ, MaskY, MaskY, MaskZ));
-		n128 m02_m21_m21_m02 = _hlslpp_perm_ps(m01_m02_m20_m21, HLSLPP_SHUFFLE_MASK(MaskY, MaskW, MaskW, MaskY));
+		n128 m20_m12_m12_m20 = _hlslpp_perm_ps(m10_m12_m20_m21, MaskZ, MaskY, MaskY, MaskZ);
+		n128 m02_m21_m21_m02 = _hlslpp_perm_ps(m01_m02_m20_m21, MaskY, MaskW, MaskW, MaskY);
 		n128 a2_a1_a1_s2     = _hlslpp_add_ps(m20_m12_m12_m20, _hlslpp_xor_ps(m02_m21_m21_m02, _hlslpp_set_ps(0.0f, 0.0f, 0.0f, -0.0f)));
 		
-		n128 m01_m01_m20_m01 = _hlslpp_perm_ps(m01_m02_m20_m21, HLSLPP_SHUFFLE_MASK(MaskX, MaskX, MaskZ, MaskX));
-		n128 m10_m10_m02_m10 = _hlslpp_perm_ps(m01_m02_m10_m12, HLSLPP_SHUFFLE_MASK(MaskZ, MaskZ, MaskY, MaskZ));
+		n128 m01_m01_m20_m01 = _hlslpp_perm_ps(m01_m02_m20_m21, MaskX, MaskX, MaskZ, MaskX);
+		n128 m10_m10_m02_m10 = _hlslpp_perm_ps(m01_m02_m10_m12, MaskZ, MaskZ, MaskY, MaskZ);
 		n128 a3_a3_a2_s3     = _hlslpp_add_ps(m01_m01_m20_m01, _hlslpp_xor_ps(m10_m10_m02_m10, _hlslpp_set_ps(0.0f, 0.0f, 0.0f, -0.0f)));
 
 		n128 q_positive = _hlslpp_mul_ps(d_4, d_4);

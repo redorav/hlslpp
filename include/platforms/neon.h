@@ -369,7 +369,8 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 // SSE: Duplicate odd-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst.
 #define _hlslpp_movehdup_ps(x)					vcombine_f32(vdup_lane_f32(vget_low_f32(x), 1), vdup_lane_f32(vget_high_f32(x), 1))
 
-#define _hlslpp_perm_ps(x, mask)				vpermq_f32((x), (mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3)
+#define _hlslpp_perm_ps(x, X, Y, Z, W)			vpermq_f32((x), X, Y, Z, W)
+
 #define _hlslpp_shuffle_ps(x, y, mask)			vshufq_f32((x), (y), (mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3)
 
 #define _hlslpp_unpacklo_ps(x, y)				vzipq_f32(x, y).val[0]

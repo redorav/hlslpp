@@ -207,19 +207,19 @@ hlslpp_inline __m128 _hlslpp_round_ps(__m128 x)
 #define _hlslpp_movehdup_ps(x)					_mm_movehdup_ps((x))
 
 #if defined(__AVX__)
-#define _hlslpp_perm_ps(x, mask)				_mm_permute_ps((x), (mask))
+#define _hlslpp_perm_ps(x, X, Y, Z, W) _mm_permute_ps((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W))
 #else
 
 namespace hlslpp
 {
-	template<unsigned int mask>
+	template<unsigned int X, unsigned int Y, unsigned int Z, unsigned int W>
 	hlslpp_inline __m128 permute(__m128 x)
 	{
-		return _mm_shuffle_ps(x, x, mask);
+		return _mm_shuffle_ps(x, x, HLSLPP_SHUFFLE_MASK(X, Y, Z, W));
 	}
 };
 
-#define _hlslpp_perm_ps(x, mask)				hlslpp::permute<mask>(x)
+#define _hlslpp_perm_ps(x, X, Y, Z, W) hlslpp::permute<X, Y, Z, W>(x)
 
 #endif
 
@@ -246,11 +246,11 @@ hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
 	
 	#else
 	
-		n128 mul    = _mm_mul_ps(x, y);         // Multiply components
-		n128 shuf   = _hlslpp_perm_ps(mul, HLSLPP_SHUFFLE_MASK(1, 0, 3, 0));  // Move y into x, and w into z (ignore the rest)
-		n128 add    = _mm_add_ps(shuf, mul);  // Contains x+y, _, z+w, _
-		shuf        = _mm_movehl_ps(shuf, add); // Move (z + w) into x
-		n128 result = _mm_add_ss(add, shuf);    // Contains x+y+z+w, _, _, _
+		n128 mul    = _mm_mul_ps(x, y);                  // Multiply components
+		n128 shuf   = _hlslpp_perm_ps(mul, 1, 0, 3, 0);  // Move y into x, and w into z (ignore the rest)
+		n128 add    = _mm_add_ps(shuf, mul);             // Contains x+y, _, z+w, _
+		shuf        = _mm_movehl_ps(shuf, add);          // Move (z + w) into x
+		n128 result = _mm_add_ss(add, shuf);             // Contains x+y+z+w, _, _, _
 	
 	#endif
 
@@ -314,7 +314,7 @@ hlslpp_inline void _hlslpp_store2_ps(float* p, n128 x)
 hlslpp_inline void _hlslpp_store3_ps(float* p, n128 x)
 {
 	_mm_storel_epi64((__m128i*)p, *(n128i*)&x);
-	_mm_store_ss(p + 2, _hlslpp_perm_ps(x, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2)));
+	_mm_store_ss(p + 2, _hlslpp_perm_ps(x, 2, 2, 2, 2));
 }
 
 hlslpp_inline void _hlslpp_store4_ps(float* p, n128 x)
@@ -329,7 +329,7 @@ hlslpp_inline void _hlslpp_store3x3_ps(float* p, n128 x0, n128 x1, n128 x2)
 	_mm_storeu_ps(p, x0);
 	_mm_storeu_ps(p + 3, x1);
 	_mm_storel_epi64((__m128i*)(p + 6), *(n128i*)&x2);
-	_mm_store_ss(p + 8, _hlslpp_perm_ps(x2, HLSLPP_SHUFFLE_MASK(2, 2, 2, 2)));
+	_mm_store_ss(p + 8, _hlslpp_perm_ps(x2, 2, 2, 2, 2));
 }
 
 hlslpp_inline void _hlslpp_store4x4_ps(float* p, const n128& x0, const n128& x1, const n128& x2, const n128& x3)
