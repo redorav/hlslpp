@@ -276,12 +276,12 @@ namespace hlslpp
 		// float s2 = m20 - m02; float a2 = m20 + m02;
 		// float s3 = m01 - m10; float a3 = m01 + m10;
 
-		n128 m01_m02_m10_m12 = _hlslpp_shuffle_ps(row0, row1, HLSLPP_SHUFFLE_MASK(MaskY, MaskZ, MaskX, MaskZ));
-		n128 m01_m02_m20_m21 = _hlslpp_shuffle_ps(row0, row2, HLSLPP_SHUFFLE_MASK(MaskY, MaskZ, MaskX, MaskY));
-		n128 m10_m12_m20_m21 = _hlslpp_shuffle_ps(row1, row2, HLSLPP_SHUFFLE_MASK(MaskX, MaskZ, MaskX, MaskY));
+		n128 m01_m02_m10_m12 = _hlslpp_shuffle_ps(row0, row1, MaskY, MaskZ, MaskX, MaskZ);
+		n128 m01_m02_m20_m21 = _hlslpp_shuffle_ps(row0, row2, MaskY, MaskZ, MaskX, MaskY);
+		n128 m10_m12_m20_m21 = _hlslpp_shuffle_ps(row1, row2, MaskX, MaskZ, MaskX, MaskY);
 
-		n128 m12_m20_m01_m12 = _hlslpp_shuffle_ps(m10_m12_m20_m21, m01_m02_m10_m12, HLSLPP_SHUFFLE_MASK(MaskY, MaskZ, MaskX, MaskW));
-		n128 m21_m02_m10_m21 = _hlslpp_shuffle_ps(m01_m02_m20_m21, m10_m12_m20_m21, HLSLPP_SHUFFLE_MASK(MaskW, MaskY, MaskX, MaskW));
+		n128 m12_m20_m01_m12 = _hlslpp_shuffle_ps(m10_m12_m20_m21, m01_m02_m10_m12, MaskY, MaskZ, MaskX, MaskW);
+		n128 m21_m02_m10_m21 = _hlslpp_shuffle_ps(m01_m02_m20_m21, m10_m12_m20_m21, MaskW, MaskY, MaskX, MaskW);
 		n128 s1_s2_s3_s1     = _hlslpp_sub_ps(m12_m20_m01_m12, m21_m02_m10_m21);
 		
 		n128 m20_m12_m12_m20 = _hlslpp_perm_ps(m10_m12_m20_m21, MaskZ, MaskY, MaskY, MaskZ);

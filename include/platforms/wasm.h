@@ -77,7 +77,7 @@ typedef __i64x2 n128d;
 
 #define _hlslpp_perm_ps(x, X, Y, Z, W)			wasm_i32x4_shuffle((x), (x), X, Y, Z, W)
 
-#define _hlslpp_shuffle_ps(x, y, mask)			wasm_i32x4_shuffle((x), (y), (mask) & 3, ((mask) >> 2) & 3, 4 + (((mask) >> 4) & 3), 4 + (((mask) >> 6) & 3))
+#define _hlslpp_shuffle_ps(x, y, X, Y, A, B)	wasm_i32x4_shuffle((x), (y), X, Y, 4 + A, 4 + B)
 
 #define _hlslpp_unpacklo_ps(x, y)				wasm_i32x4_shuffle((x), (y), 0, 4, 1, 5)
 
@@ -257,9 +257,9 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_or_si128(x, y)					wasm_v128_or((x), (y))
 #define _hlslpp_xor_si128(x, y)					wasm_v128_xor((x), (y))
 
-// https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
 #define _hlslpp_perm_epi32(x, X, Y, Z, W)		wasm_i32x4_shuffle((x), (x), X, Y, Z, W)
-#define _hlslpp_shuffle_epi32(x, y, mask)		wasm_i32x4_shuffle((x), (y), (mask) & 3, ((mask) >> 2) & 3, 4 + (((mask) >> 4) & 3), 4 + (((mask) >> 6) & 3))
+
+#define _hlslpp_shuffle_epi32(x, y, mask)		wasm_i32x4_shuffle((x), (y), X, Y, 4 + A, 4 + B)
 
 #define _hlslpp_castps_si128(x)					(x)
 #define _hlslpp_castsi128_ps(x)					(x)

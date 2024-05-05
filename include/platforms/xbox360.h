@@ -6,7 +6,42 @@ typedef __vector4 n128;
 typedef __vector4 n128i; // Xbox 360 has a __vector4i type but it's not actually backed by hardware
 typedef __vector4 n128u;
 
-#define HLSLPP_XBOX360_SHUFFLE_MASK(X, Y, Z, W) (((X) << 6) | ((Y) << 4) | ((Z) << 2) | (W))
+#define HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W) (((X) << 6) | ((Y) << 4) | ((Z) << 2) | (W))
+
+#define HLSLPP_XM_PERMUTE_0X 0x00010203
+#define HLSLPP_XM_PERMUTE_0Y 0x04050607
+#define HLSLPP_XM_PERMUTE_0Z 0x08090A0B
+#define HLSLPP_XM_PERMUTE_0W 0x0C0D0E0F
+#define HLSLPP_XM_PERMUTE_1X 0x10111213
+#define HLSLPP_XM_PERMUTE_1Y 0x14151617
+#define HLSLPP_XM_PERMUTE_1Z 0x18191A1B
+#define HLSLPP_XM_PERMUTE_1W 0x1C1D1E1F
+
+template<int X, int Y, int Z, int W>
+hlslpp_inline __vector4 __vperm_mask()
+{
+	static const unsigned int ControlElement[] =
+	{
+		HLSLPP_XM_PERMUTE_0X,
+		HLSLPP_XM_PERMUTE_0Y,
+		HLSLPP_XM_PERMUTE_0Z,
+		HLSLPP_XM_PERMUTE_0W,
+		HLSLPP_XM_PERMUTE_1X,
+		HLSLPP_XM_PERMUTE_1Y,
+		HLSLPP_XM_PERMUTE_1Z,
+		HLSLPP_XM_PERMUTE_1W
+	};
+
+	__vector4 v_control1 = __lvlx(&ControlElement[X], 0);
+	__vector4 v_control2 = __lvlx(&ControlElement[Y], 0);
+	__vector4 v_control3 = __lvlx(&ControlElement[Z], 0);
+	__vector4 v_control4 = __lvlx(&ControlElement[W], 0);
+	v_control1 = __vrlimi(v_control1, v_control2, 0x4, 3);
+	v_control1 = __vrlimi(v_control1, v_control3, 0x2, 2);
+	v_control1 = __vrlimi(v_control1, v_control4, 0x1, 1);
+
+	return v_control1;
+}
 
 //----------
 // Functions
@@ -120,8 +155,8 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_movehl_ps(x, y)					__vperm((y), (x), __vset(2, 3, 2, 3))
 #define _hlslpp_movehdup_ps(x)					__vpermwi((x), VPERMWI_CONST(1, 1, 3, 3))
 
-#define _hlslpp_perm_ps(x, X, Y, Z, W)			__vpermwi((x), HLSLPP_XBOX360_SHUFFLE_MASK(X, Y, Z, W))
-#define _hlslpp_shuffle_ps(x, y, mask)			__vperm((x), (y), __vset((mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3))
+#define _hlslpp_perm_ps(x, X, Y, Z, W)			__vpermwi((x), HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W))
+#define _hlslpp_shuffle_ps(x, y, X, Y, A, B)	__vperm((x), (y), __vperm_mask<X, Y, 4 + A, 4 + B>())
 
 #define _hlslpp_unpacklo_ps(x, y)				__vmrghw((x), (y))
 #define _hlslpp_unpackhi_ps(x, y)				__vmrglw((x), (y))
@@ -277,8 +312,8 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 #define _hlslpp_or_si128(x, y)					__vor((x), (y))
 #define _hlslpp_xor_si128(x, y)					__vxor((x), (y))
 
-#define _hlslpp_perm_epi32(x, X, Y, Z, W)		__vpermwi((x), HLSLPP_XBOX360_SHUFFLE_MASK(X, Y, Z, W))
-#define _hlslpp_shuffle_epi32(x, y, mask)		__vperm((x), (y), __vset((mask) & 3, ((mask) >> 2) & 3, ((mask) >> 4) & 3, ((mask) >> 6) & 3))
+#define _hlslpp_perm_epi32(x, X, Y, Z, W)		__vpermwi((x), HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W))
+#define _hlslpp_shuffle_epi32(x, y, X, Y, A, B)	__vperm((x), (y), __vperm_mask<X, Y, 4 + A, 4 + B>())
 
 // There are no intrinsics to reinterpret cast like these do as integer and float are all in the same __vector4 structure
 #define _hlslpp_castps_si128(x)					(x)

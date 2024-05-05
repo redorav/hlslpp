@@ -324,14 +324,15 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 		return vector_float4(v.m[A], v.m[B], v.m[C], v.m[D]);
 	}
 
-	template<int A, int B, int C, int D>
+	template<int X, int Y, int A, int B>
 	hlslpp_inline vector_float4 shuf4(const vector_float4& v1, const vector_float4& v2)
 	{
-		return vector_float4(v1.m[A], v1.m[B], v2.m[C], v2.m[D]);
+		return vector_float4(v1.m[X], v1.m[Y], v2.m[A], v2.m[B]);
 	}
 
-#define _hlslpp_perm_ps(x, X, Y, Z, W)			perm4<X, Y, Z, W>((x))
-#define _hlslpp_shuffle_ps(x, y, msk)			shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y))
+	#define _hlslpp_perm_ps(x, X, Y, Z, W)			perm4<X, Y, Z, W>((x))
+
+	#define _hlslpp_shuffle_ps(x, y, X, Y, A, B)	shuf4<X, Y, A, B>((x), (y))
 
 	hlslpp_inline vector_float4 _hlslpp_unpacklo_ps(const vector_float4& v1, const vector_float4& v2)
 	{
@@ -646,7 +647,7 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 
 	// https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
 	#define _hlslpp_perm_epi32(x, X, Y, Z, W)		perm4<X, Y, Z, W>((x))
-	#define _hlslpp_shuffle_epi32(x, y, msk)		shuf4<(msk) & 3, ((msk) >> 2) & 3, ((msk) >> 4) & 3, ((msk) >> 6) & 3>((x), (y))
+	#define _hlslpp_shuffle_epi32(x, y, X, Y, A, B)	shuf4<X, Y, A, B>((x), (y))
 
 	hlslpp_inline vector_int4 select4(const vector_int4& v1, const vector_int4& v2, const vector_int4& msk)
 	{

@@ -458,7 +458,7 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	template<int A>
 	hlslpp_inline uswizzle1<X>& uswizzle1<X>::operator = (const uswizzle1<A>& s)
 	{
-		n128u t = _hlslpp_shuffle_epi32(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(A, A, A, A));
+		n128u t = _hlslpp_perm_epi32(s.vec, A, A, A, A);
 		vec = _hlslpp_blend_epi32(vec, t, HLSLPP_COMPONENT_X(X));
 		return *this;
 	}
@@ -466,7 +466,7 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	template<int X>
 	hlslpp_inline uswizzle1<X>& uswizzle1<X>::operator = (const uswizzle1<X>& s)
 	{
-		n128u t = _hlslpp_shuffle_epi32(s.vec, s.vec, HLSLPP_SHUFFLE_MASK(X, X, X, X));
+		n128u t = _hlslpp_perm_epi32(s.vec, X, X, X, X);
 		vec = _hlslpp_blend_epi32(vec, t, HLSLPP_COMPONENT_X(X));
 		return *this;
 	}
