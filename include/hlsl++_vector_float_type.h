@@ -15,7 +15,7 @@ namespace hlslpp
 
 		hlslpp_inline operator float() const { return f32[X]; }
 
-		#define hlslpp_swizzle1_swizzle(E, A, v) _hlslpp_perm_ps(v, A == 0 ? E : 0, A == 1 ? E : 1, A == 2 ? E : 2, A == 3 ? E : 3)
+		#define hlslpp_swizzle1_swizzle(E, A, v) (_hlslpp_perm_ps(v, A == 0 ? E : 0, A == 1 ? E : 1, A == 2 ? E : 2, A == 3 ? E : 3))
 
 		hlslpp_inline swizzle1& operator = (float f);
 
@@ -39,10 +39,10 @@ namespace hlslpp
 	struct hlslpp_nodiscard	swizzle2
 	{
 		#define hlslpp_swizzle2_swizzle(E, F, A, B, v) \
-		    _hlslpp_perm_ps(v, A == 0 ? E : B == 0 ? F : 0, \
-		                       A == 1 ? E : B == 1 ? F : 1, \
-		                       A == 2 ? E : B == 2 ? F : 2, \
-		                       A == 3 ? E : B == 3 ? F : 3)
+		    (_hlslpp_perm_ps(v, A == 0 ? E : B == 0 ? F : 0, \
+		                        A == 1 ? E : B == 1 ? F : 1, \
+		                        A == 2 ? E : B == 2 ? F : 2, \
+		                        A == 3 ? E : B == 3 ? F : 3))
 
 		#define hlslpp_swizzle2_blend(x, y) _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XY(X, Y))
 
@@ -60,10 +60,10 @@ namespace hlslpp
 	struct hlslpp_nodiscard	swizzle3
 	{
 		#define hlslpp_swizzle3_swizzle(E, F, G, A, B, C, v) \
-		    _hlslpp_perm_ps(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : 0, \
-		                       A == 1 ? E : B == 1 ? F : C == 1 ? G : 1, \
-		                       A == 2 ? E : B == 2 ? F : C == 2 ? G : 2, \
-		                       A == 3 ? E : B == 3 ? F : C == 3 ? G : 3)
+		    (_hlslpp_perm_ps(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : 0, \
+		                        A == 1 ? E : B == 1 ? F : C == 1 ? G : 1, \
+		                        A == 2 ? E : B == 2 ? F : C == 2 ? G : 2, \
+		                        A == 3 ? E : B == 3 ? F : C == 3 ? G : 3))
 
 		#define hlslpp_swizzle3_blend(x, y) _hlslpp_blend_ps(x, y, HLSLPP_COMPONENT_XYZ(X, Y, Z))
 
@@ -81,10 +81,10 @@ namespace hlslpp
 	struct hlslpp_nodiscard swizzle4
 	{
 		#define hlslpp_swizzle4_swizzle(E, F, G, H, A, B, C, D, v) \
-		    _hlslpp_perm_ps(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : D == 0 ? H : 0, \
+		    (_hlslpp_perm_ps(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : D == 0 ? H : 0, \
 		                        A == 1 ? E : B == 1 ? F : C == 1 ? G : D == 1 ? H : 1, \
 		                        A == 2 ? E : B == 2 ? F : C == 2 ? G : D == 2 ? H : 2, \
-		                        A == 3 ? E : B == 3 ? F : C == 3 ? G : D == 3 ? H : 3)
+		                        A == 3 ? E : B == 3 ? F : C == 3 ? G : D == 3 ? H : 3))
 		
 		template<int A, int B, int C, int D>
 		hlslpp_inline swizzle4& operator = (const swizzle4<A, B, C, D>& s);
