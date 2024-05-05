@@ -151,6 +151,10 @@
 
 	#define HLSLPP_SSE
 
+#elif !defined(HLSLPP_WASM) && defined(__wasm_simd128__)
+
+	#define HLSLPP_WASM
+
 #elif !defined(HLSLPP_SCALAR)
 
 	#define HLSLPP_SCALAR
@@ -169,6 +173,10 @@
 #if defined(HLSLPP_SCALAR)
 
 	#include "platforms/scalar.h"
+
+#elif defined(HLSLPP_WASM)
+
+	#include "platforms/wasm.h"
 
 #elif defined(HLSLPP_SSE)
 
