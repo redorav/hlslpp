@@ -7,8 +7,8 @@ Small header-only math library for C++ with the same syntax as the hlsl shading 
 
 ## Platforms
 
-- SSE/AVX/AVX2: x86/x64 devices like PC, Mac, PS4/5, Xbox One/Series
-- NEON: ARM devices like Android, MacOS, iOS, Switch
+- SSE/AVX/AVX2: x86/x64 devices like PC, Intel Mac, PS4/5, Xbox One/Series
+- NEON: ARM devices like Android, Mac M1, iOS, Switch
 - WASM
 
 ## Example
