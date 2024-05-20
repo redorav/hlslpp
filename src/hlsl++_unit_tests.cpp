@@ -773,6 +773,13 @@ void RunPerformanceTests()
 	float3x3 m = float3x3::rotation_y(3.1415f / 2.0f);
 
 	benchmark<float4x4, iter>("m4x4 add", [&]() -> float4x4 { m4x4_1 = m4x4_1 + m4x4_2; return m4x4_1; });
+
+	benchmark<float4, iter>("normalize", [&]() -> float4 { v4_1 = normalize(v4_1); return v4_1; });
+
+	benchmark<float4, iter>("floor", [&]() -> float4 { v4_1 = floor(v4_1); return v4_1; });
+	benchmark<float4, iter>("round", [&]() -> float4 { v4_1 = round(v4_1); return v4_1; });
+	benchmark<float4, iter>("ceil", [&]() -> float4 { v4_1 = ceil(v4_1); return v4_1; });
+
 	benchmark<quaternion, iter>("quaternion slerp", [&]() -> quaternion { q1 = slerp(q1, q2, t1_1); return q1; });
 	benchmark<quaternion, iter>("quaternion nlerp", [&]() -> quaternion { q1 = nlerp(q1, q2, t1_1); return q1; });
 	benchmark<quaternion, iter>("quaternion lerp", [&]() -> quaternion { q1 = lerp(q1, q2, t1_1); return q1; });
