@@ -841,10 +841,10 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 
 	hlslpp_inline vector_uint4 _hlslpp_sat_epu32(const vector_uint4& v1)
 	{
-		return vector_uint4(v1.x > 1 ? 1 : v1.x < 0 ? 0 : v1.x,
-			v1.y > 1 ? 1 : v1.y < 0 ? 0 : v1.y,
-			v1.z > 1 ? 1 : v1.z < 0 ? 0 : v1.z,
-			v1.w > 1 ? 1 : v1.w < 0 ? 0 : v1.w);
+		return vector_uint4(v1.x > 1 ? 1 : v1.x,
+			v1.y > 1 ? 1 : v1.y,
+			v1.z > 1 ? 1 : v1.z,
+			v1.w > 1 ? 1 : v1.w);
 	}
 
 	hlslpp_inline vector_uint4 _hlslpp_and_si128(const vector_uint4& v1, const vector_uint4& v2)
