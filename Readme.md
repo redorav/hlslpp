@@ -52,16 +52,16 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 // The quickest way, expensive in compile times but good for fast iteration
 #include "hlsl++.h"
 
-// If you care about your compile times in your cpp files
-#include "hlsl++_vector_float.h"
-#include "hlsl++_matrix_float.h"
+// If you care about compile times in your cpp files
+#include "hlsl++/vector_float.h"
+#include "hlsl++/matrix_float.h"
 
 // If you only need type information (e.g. in header files) and don't use any functions
-#include "hlsl++_vector_float_type.h"
-#include "hlsl++_quaternion_type.h"
+#include "hlsl++/vector_float_type.h"
+#include "hlsl++/quaternion_type.h"
 ```
 
-* Remember to add an include path to ```"hlslpp/include"```
+* Remember to add an include path to ```"hlslpp/include"```. IMPORTANT NOTE: The include structure has changed to remove prefixes and move towards a sensible folder hierarchy. Compatibility includes will stay around or a bit but
 * Windows has defines for min and max so if you're using this library and the <windows.h> header remember to #define NOMINMAX before including it
 * To force the scalar version of the library, define ```HLSLPP_SCALAR``` globally. The scalar library is only different from the SIMD version in its use of regular floats to represent vectors. It should only be used if your platform (e.g. embedded) does not have native SIMD support. It can also be used to compare performance
 * To enable the transforms feature, define ```HLSLPP_FEATURE_TRANSFORM``` globally
