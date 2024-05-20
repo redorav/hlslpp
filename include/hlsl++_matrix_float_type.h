@@ -4,7 +4,7 @@
 
 #include "hlsl++_vector_float.h"
 
-#include "transform/hlsl++_transform_common.h"
+#include "transform/common.h"
 
 //--------------//
 // Float Matrix //
@@ -222,7 +222,7 @@ namespace hlslpp
 		hlslpp_inline float2x2(float2x2&& m) hlslpp_noexcept : vec(m.vec) {}
 		hlslpp_inline float2x2& operator = (float2x2&& m) hlslpp_noexcept { vec = m.vec; return *this; }
 
-		#include "transform/hlsl++_transform_float2x2.h"
+		#include "transform/float2x2.h"
 
 		union
 		{
@@ -403,7 +403,7 @@ namespace hlslpp
 
 		static const float3x3& identity() { static const float3x3 iden = float3x3(1, 0, 0, 0, 1, 0, 0, 0, 1); return iden; }
 
-		#include "transform/hlsl++_transform_float3x3.h"
+		#include "transform/float3x3.h"
 
 		float3& operator[](int N)
 		{
@@ -768,6 +768,6 @@ namespace hlslpp
 
 		static const float4x4& identity() { static const float4x4 iden = float4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); return iden; };
 
-		#include "transform/hlsl++_transform_float4x4.h"
+		#include "transform/float4x4.h"
 	};
 };
