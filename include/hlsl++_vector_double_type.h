@@ -272,7 +272,7 @@ namespace hlslpp
 		{
 			n128d vec;
 			double f64[2];
-			#include "swizzle/hlsl++_vector_double_x.h"
+			#include "swizzle/vector_double_x.h"
 		};
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
@@ -305,8 +305,8 @@ namespace hlslpp
 		{
 			n128d vec;
 			double f64[2];
-			#include "swizzle/hlsl++_vector_double_x.h"
-			#include "swizzle/hlsl++_vector_double_y.h"
+			#include "swizzle/vector_double_x.h"
+			#include "swizzle/vector_double_y.h"
 		};
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
@@ -412,9 +412,9 @@ namespace hlslpp
 #endif
 
 			double f64[4];
-			#include "swizzle/hlsl++_vector_double_x.h"
-			#include "swizzle/hlsl++_vector_double_y.h"
-			#include "swizzle/hlsl++_vector_double_z.h"
+			#include "swizzle/vector_double_x.h"
+			#include "swizzle/vector_double_y.h"
+			#include "swizzle/vector_double_z.h"
 		};
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
@@ -555,10 +555,10 @@ namespace hlslpp
 			n128d vec[2];
 #endif
 			double f64[4];
-			#include "swizzle/hlsl++_vector_double_x.h"
-			#include "swizzle/hlsl++_vector_double_y.h"
-			#include "swizzle/hlsl++_vector_double_z.h"
-			#include "swizzle/hlsl++_vector_double_w.h"
+			#include "swizzle/vector_double_x.h"
+			#include "swizzle/vector_double_y.h"
+			#include "swizzle/vector_double_z.h"
+			#include "swizzle/vector_double_w.h"
 		};
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};

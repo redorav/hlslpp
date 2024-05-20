@@ -59,10 +59,10 @@ namespace hlslpp
 		{
 			n128 vec;
 			float f32[4];
-			#include "swizzle/hlsl++_vector_float_x.h"
-			#include "swizzle/hlsl++_vector_float_y.h"
-			#include "swizzle/hlsl++_vector_float_z.h"
-			#include "swizzle/hlsl++_vector_float_w.h"
+			#include "swizzle/vector_float_x.h"
+			#include "swizzle/vector_float_y.h"
+			#include "swizzle/vector_float_z.h"
+			#include "swizzle/vector_float_w.h"
 		};
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
