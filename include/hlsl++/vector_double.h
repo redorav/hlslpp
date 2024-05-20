@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hlsl++_common.h"
+#include "hlsl++/common.h"
 
 //---------------//
 // Double Vector //
@@ -245,7 +245,7 @@ namespace hlslpp
 #endif
 }
 
-#include "hlsl++_vector_double_type.h"
+#include "hlsl++/vector_double_type.h"
 
 namespace hlslpp
 {

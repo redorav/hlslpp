@@ -163,9 +163,9 @@
 
 #include <stdint.h>
 
-#include "hlsl++_type_traits.h"
+#include "hlsl++/type_traits.h"
 
-#include "hlsl++_bitmask.h"
+#include "hlsl++/bitmask.h"
 
 // Despite the process above, we can still force the library to behave as scalar by defining the
 // implementation we want.

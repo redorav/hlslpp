@@ -1,8 +1,8 @@
 #pragma once
 
-#include "hlsl++_common.h"
+#include "hlsl++/common.h"
 
-#include "hlsl++_matrix_float_type.h"
+#include "hlsl++/matrix_float_type.h"
 
 //--------------//
 // Float Matrix //

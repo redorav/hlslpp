@@ -2,14 +2,14 @@
 
 #include "math.h"
 
-#include "hlsl++_common.h"
-#include "hlsl++_vector_float.h"
+#include "hlsl++/common.h"
+#include "hlsl++/vector_float.h"
 
 //-----------
 // Quaternion
 //-----------
 
-#include "hlsl++_quaternion_type.h"
+#include "hlsl++/quaternion_type.h"
 
 namespace hlslpp
 {

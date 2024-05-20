@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hlsl++_common.h"
+#include "hlsl++/common.h"
 
 //----------------//
 // Integer Vector //
@@ -93,7 +93,7 @@ namespace hlslpp
 	}
 }
 
-#include "hlsl++_vector_uint_type.h"
+#include "hlsl++/vector_uint_type.h"
 
 namespace hlslpp
 {

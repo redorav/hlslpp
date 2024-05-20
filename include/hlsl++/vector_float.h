@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hlsl++_common.h"
+#include "hlsl++/common.h"
 
 //--------------//
 // Float Vector //
@@ -546,7 +546,7 @@ namespace hlslpp
 	}
 }
 
-#include "hlsl++_vector_float_type.h"
+#include "hlsl++/vector_float_type.h"
 
 namespace hlslpp
 {

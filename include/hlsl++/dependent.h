@@ -1,10 +1,10 @@
 #pragma once
 
-#include "hlsl++_vector_float.h"
-#include "hlsl++_vector_int.h"
-#include "hlsl++_vector_uint.h"
-#include "hlsl++_quaternion.h"
-#include "hlsl++_matrix_float.h"
+#include "hlsl++/vector_float.h"
+#include "hlsl++/vector_int.h"
+#include "hlsl++/vector_uint.h"
+#include "hlsl++/quaternion.h"
+#include "hlsl++/matrix_float.h"
 
 namespace hlslpp
 {

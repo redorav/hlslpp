@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hlsl++_common.h"
+#include "hlsl++/common.h"
 
 HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
 
