@@ -69,7 +69,7 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 
 ## Features
 
-* SSE/AVX/AVX2, NEON, Xbox360, and scalar versions
+* SSE/AVX/AVX2, NEON, Xbox360, WebAssembly and scalar versions
 * float1, float2, float3, float4, float8
 * int1, int2, int3, int4
 * uint1, uint2, uint3, uint4
