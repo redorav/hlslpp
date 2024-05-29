@@ -205,6 +205,16 @@ namespace hlslpp_unit
 		}
 	};
 
+	inline float GetRandomFloat()
+	{
+		return (float)(rand() % 1000) / 100.0f - 5.0f;
+	}
+
+	inline double GetRandomDouble()
+	{
+		return (double)(rand() % 1000) / 100.0 - 5.0;
+	}
+
 	bool eq(float a, float b, float tolerance = 0.0f);
 
 	bool eq(const float2& v, float x, float y, float tolerance = 0.0f);

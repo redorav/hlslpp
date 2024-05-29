@@ -3,11 +3,6 @@
 
 #include "hlsl++_unit_tests.h"
 
-float GetRandomFloat()
-{
-	return (rand() % 1000) / 100.0f - 5.0f;
-}
-
 void RunUnitTestsVectorFloat()
 {
 	using namespace hlslpp_unit;

@@ -631,10 +631,10 @@ void RunExperiments()
 
 	float1 d = determinant(m3);
 
-	float f1 = (rand() % 1000) / 100.0f; 
-	float f2 = (rand() % 1000) / 100.0f;
-	float f3 = (rand() % 1000) / 100.0f;
-	float f4 = (rand() % 1000) / 100.0f;
+	float f1 = (float)(rand() % 1000) / 100.0f; 
+	float f2 = (float)(rand() % 1000) / 100.0f;
+	float f3 = (float)(rand() % 1000) / 100.0f;
+	float f4 = (float)(rand() % 1000) / 100.0f;
 
 	float4 test;
 	float4 testResult;
@@ -719,22 +719,22 @@ void RunPerformanceTests()
 
 	using namespace hlslpp_unit;
 
-	float f1  = (rand() % 1000) / 100.0f;
-	float f2  = (rand() % 1000) / 100.0f;
-	float f3  = (rand() % 1000) / 100.0f;
-	float f4  = (rand() % 1000) / 100.0f;
-	float f5  = (rand() % 1000) / 100.0f;
-	float f6  = (rand() % 1000) / 100.0f;
-	float f7  = (rand() % 1000) / 100.0f;
-	float f8  = (rand() % 1000) / 100.0f;
-	float f9  = (rand() % 1000) / 100.0f;
-	float f10 = (rand() % 1000) / 100.0f;
-	float f11 = (rand() % 1000) / 100.0f;
-	float f12 = (rand() % 1000) / 100.0f;
-	float f13 = (rand() % 1000) / 100.0f;
-	float f14 = (rand() % 1000) / 100.0f;
-	float f15 = (rand() % 1000) / 100.0f;
-	float f16 = (rand() % 1000) / 100.0f;
+	float f1  = (float)(rand() % 1000) / 100.0f;
+	float f2  = (float)(rand() % 1000) / 100.0f;
+	float f3  = (float)(rand() % 1000) / 100.0f;
+	float f4  = (float)(rand() % 1000) / 100.0f;
+	float f5  = (float)(rand() % 1000) / 100.0f;
+	float f6  = (float)(rand() % 1000) / 100.0f;
+	float f7  = (float)(rand() % 1000) / 100.0f;
+	float f8  = (float)(rand() % 1000) / 100.0f;
+	float f9  = (float)(rand() % 1000) / 100.0f;
+	float f10 = (float)(rand() % 1000) / 100.0f;
+	float f11 = (float)(rand() % 1000) / 100.0f;
+	float f12 = (float)(rand() % 1000) / 100.0f;
+	float f13 = (float)(rand() % 1000) / 100.0f;
+	float f14 = (float)(rand() % 1000) / 100.0f;
+	float f15 = (float)(rand() % 1000) / 100.0f;
+	float f16 = (float)(rand() % 1000) / 100.0f;
 
 	float1 v1_1(f1);
 	float1 v1_2(f2);

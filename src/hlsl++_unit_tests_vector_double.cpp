@@ -2,11 +2,6 @@
 
 #include "hlsl++_unit_tests.h"
 
-double GetRandomDouble()
-{
-	return (rand() % 1000) / 100.0 - 5.0;
-}
-
 void RunUnitTestsVectorDouble()
 {
 	using namespace hlslpp_unit;

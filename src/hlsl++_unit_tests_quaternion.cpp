@@ -11,9 +11,11 @@ void RunUnitTestsQuaternion()
 	// Quaternions
 	//------------
 
-	float f1 = (rand() % 1000) / 100.0f; float f2 = (rand() % 1000) / 100.0f; float f3 = (rand() % 1000) / 100.0f;
+	float f1 = (float)(rand() % 1000) / 100.0f;
+	float f2 = (float)(rand() % 1000) / 100.0f;
+	float f3 = (float)(rand() % 1000) / 100.0f;
 
-	float3 test_vector   = normalize(float3(2, 9, 1));
+	float3 test_vector = normalize(float3(2, 9, 1));
 
 	float3 x_axis = float3(1.0f, 0.0f, 0.0f);
 	float3 y_axis = float3(0.0f, 1.0f, 0.0f);
