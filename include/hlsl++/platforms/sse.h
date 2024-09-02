@@ -90,6 +90,11 @@ typedef __m256i n256i;
 // _mm_mul_ps(f4_minus1, x);	// Slower
 #define _hlslpp_neg_ps(x)						_mm_xor_ps((x), f4negativeMask)
 
+// https://wunkolo.github.io/post/2022/10/vfixupimm-signum/
+#if defined(__AVX512F__) && defined(__AVX512VL__)
+#define _hlslpp_sign_ps(x)						_mm_fixupimm_ps((x), (x), _mm_set1_epi32(0xa9a90a00), 0)
+#endif
+
 #if defined(__FMA__)
 
 #define _hlslpp_madd_ps(x, y, z)				_mm_fmadd_ps((x), (y), (z)) // x * y + z
@@ -401,6 +406,11 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 // _mm_sub_ps(f4zero, x);			// Slowest
 // _mm_mul_ps(f4minusOne, x);		// Slower
 #define _hlslpp256_neg_ps(x)						_mm256_xor_ps((x), f8negativeMask)
+
+// https://wunkolo.github.io/post/2022/10/vfixupimm-signum/
+#if defined(__AVX512F__) && defined(__AVX512VL__)
+#define _hlslpp256_sign_ps(x)						_mm256_fixupimm_ps((x), (x), _mm256_set1_epi32(0xa9a90a00), 0)
+#endif
 
 #if defined(__FMA__)
 
