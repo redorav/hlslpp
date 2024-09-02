@@ -349,6 +349,8 @@ namespace hlslpp_unit
 
 	float trunc_f(float x);
 
+	float sign_f(float x);
+
 	double round_d(double x);
 
 	double trunc_d(double x);

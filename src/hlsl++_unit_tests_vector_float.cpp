@@ -902,15 +902,15 @@ void RunUnitTestsVectorFloat()
 	float3 vsaturate_swiz_3 = saturate(vfoo3.ggr);  hlslpp_unit_unused(vsaturate_swiz_3);
 	float4 vsaturate_swiz_4 = saturate(vfoo4.wyyx); hlslpp_unit_unused(vsaturate_swiz_4);
 
-	float1 vsign1 = sign(vfoo1); hlslpp_unit_unused(vsign1);
-	float2 vsign2 = sign(vfoo2); hlslpp_unit_unused(vsign2);
-	float3 vsign3 = sign(vfoo3); hlslpp_unit_unused(vsign3);
-	float4 vsign4 = sign(vfoo4); hlslpp_unit_unused(vsign4);
+	float1 vsign1 = sign(vfoo1); hlslpp_check(eq(vsign1, sign_f(vfoo1.x)));
+	float2 vsign2 = sign(vfoo2); hlslpp_check(eq(vsign2, sign_f(vfoo2.x), sign_f(vfoo2.y)));
+	float3 vsign3 = sign(vfoo3); hlslpp_check(eq(vsign3, sign_f(vfoo3.x), sign_f(vfoo3.y), sign_f(vfoo3.z)));
+	float4 vsign4 = sign(vfoo4); hlslpp_check(eq(vsign4, sign_f(vfoo4.x), sign_f(vfoo4.y), sign_f(vfoo4.z), sign_f(vfoo4.w)));
 
-	float1 vsign_swiz_1 = sign(vfoo1.x);    hlslpp_unit_unused(vsign_swiz_1);
-	float2 vsign_swiz_2 = sign(vfoo2.gg);   hlslpp_unit_unused(vsign_swiz_2);
-	float3 vsign_swiz_3 = sign(vfoo3.bbb);  hlslpp_unit_unused(vsign_swiz_3);
-	float4 vsign_swiz_4 = sign(vfoo4.xxyz); hlslpp_unit_unused(vsign_swiz_4);
+	float1 vsign_swiz_1 = sign(vfoo1.x);    hlslpp_check(eq(vsign_swiz_1, sign_f(vfoo1.x)));
+	float2 vsign_swiz_2 = sign(vfoo2.gg);   hlslpp_check(eq(vsign_swiz_2, sign_f(vfoo2.g), sign_f(vfoo2.g)));
+	float3 vsign_swiz_3 = sign(vfoo3.bbb);  hlslpp_check(eq(vsign_swiz_3, sign_f(vfoo3.b), sign_f(vfoo3.b), sign_f(vfoo3.b)));
+	float4 vsign_swiz_4 = sign(vfoo4.xxyz); hlslpp_check(eq(vsign_swiz_4, sign_f(vfoo4.x), sign_f(vfoo4.x), sign_f(vfoo4.y), sign_f(vfoo4.z)));
 
 	float1 vsin1 = sin(vfoo1); hlslpp_unit_unused(vsin1);
 	float2 vsin2 = sin(vfoo2); hlslpp_unit_unused(vsin2);
@@ -1211,7 +1211,7 @@ void RunUnitTestsVectorFloat()
 
 	float8 vsaturate8 = saturate(vfoo8); hlslpp_unit_unused(vsaturate8);
 
-	float8 vsign8 = sign(vfoo8); hlslpp_unit_unused(vsign8);
+	float8 vsign8 = sign(vfoo8); hlslpp_check(eq(vsign8, sign_f(vfoo8[0]), sign_f(vfoo8[1]), sign_f(vfoo8[2]), sign_f(vfoo8[3]), sign_f(vfoo8[4]), sign_f(vfoo8[5]), sign_f(vfoo8[6]), sign_f(vfoo8[7])));
 
 	float8 vsin8 = sin(vfoo8); hlslpp_unit_unused(vsin8);
 
