@@ -6,6 +6,7 @@ Workspace = "workspace/".._ACTION
 -- Compilers
 
 -- Visual Studio Configs
+PlatformMSVC64AVX512	= "MSVC 64 AVX512"
 PlatformMSVC64AVX2		= "MSVC 64 AVX2"
 PlatformMSVC64AVX		= "MSVC 64 AVX"
 PlatformMSVC64SSE41		= "MSVC 64 SSE 4.1"
@@ -109,6 +110,7 @@ workspace("hlsl++")
 	
 		platforms
 		{
+			PlatformMSVC64AVX512,
 			PlatformMSVC64AVX2,
 			PlatformMSVC64AVX,
 			PlatformMSVC64SSE41,
@@ -150,6 +152,11 @@ workspace("hlsl++")
 		end
 		
 		startproject(UnitTestProject)
+
+		filter { "platforms:"..PlatformMSVC64AVX512 }
+			toolset("msc")
+			architecture("x64")
+			buildoptions { "/arch:AVX512" }
 		
 		filter { "platforms:"..PlatformMSVC64AVX2 }
 			toolset("msc")
