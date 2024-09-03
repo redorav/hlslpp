@@ -482,6 +482,13 @@ namespace hlslpp_unit
 		return (float)((int)x);
 	}
 
+	float sign_f(float x)
+	{
+		if (x > 0.0) return 1.0;
+		if (x < 0.0) return -1.0;
+		return x;
+	}
+
 	double round_d(double x)
 	{
 		double t = trunc_d(x);

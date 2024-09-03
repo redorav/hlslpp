@@ -7,7 +7,7 @@ Small header-only math library for C++ with the same syntax as the hlsl shading 
 
 ## Platforms
 
-- SSE/AVX/AVX2: x86/x64 devices like PC, Intel Mac, PS4/5, Xbox One/Series
+- SSE/AVX/AVX2/AVX512: x86/x64 devices like PC, Intel Mac, PS4/5, Xbox One/Series
 - NEON: ARM devices like Android, Mac M1, iOS, Switch
 - WASM
 
@@ -69,7 +69,7 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 
 ## Features
 
-* SSE/AVX/AVX2, NEON, Xbox360, WebAssembly and scalar versions
+* SSE/AVX/AVX2/AVX512, NEON, Xbox360, WebAssembly and scalar versions
 * float1, float2, float3, float4, float8
 * int1, int2, int3, int4
 * uint1, uint2, uint3, uint4
