@@ -15,11 +15,12 @@ namespace hlslpp
 
 		hlslpp_inline operator float() const { return f32[X]; }
 
+		// Return the address of this float in the same way we return the value
+		hlslpp_inline float* operator&() { return &f32[X]; }
+
 		#define hlslpp_swizzle1_swizzle(E, A, v) (_hlslpp_perm_ps(v, A == 0 ? E : 0, A == 1 ? E : 1, A == 2 ? E : 2, A == 3 ? E : 3))
 
 		hlslpp_inline swizzle1& operator = (float f);
-
-		// Revise these functions. Can I not do with swizzle?
 
 		template<int A>
 		hlslpp_inline swizzle1& operator = (const swizzle1<A>& s);

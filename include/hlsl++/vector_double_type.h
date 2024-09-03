@@ -15,6 +15,9 @@ namespace hlslpp
 
 		hlslpp_inline operator double() const { return f64[X]; }
 
+		// Return the address of this double in the same way we return the value
+		hlslpp_inline double* operator&() { return &f64[X]; }
+
 		template<int E, int A>
 		static hlslpp_inline n128d swizzle(n128d v)
 		{

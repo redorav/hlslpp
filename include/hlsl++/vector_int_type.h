@@ -14,6 +14,9 @@ namespace hlslpp
 		// Cast
 	
 		hlslpp_inline operator int32_t() const { return i32[X]; }
+
+		// Return the address of this int32 in the same way we return the value
+		hlslpp_inline int32_t* operator&() { return &i32[X]; }
 	
 		#define hlslpp_iswizzle1_swizzle(E, A, v) (_hlslpp_perm_epi32(v, A == 0 ? E : 0, A == 1 ? E : 1, A == 2 ? E : 2, A == 3 ? E : 3))
 
