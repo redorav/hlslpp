@@ -247,8 +247,8 @@ namespace hlslpp
 
 #endif
 
-	// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
 #if !defined(_hlslpp_sign_ps)
+	// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
 	#define _hlslpp_sign_ps(val)				_hlslpp_and_ps(_hlslpp_or_ps(_hlslpp_and_ps((val), f4_minus1), f4_1), _hlslpp_cmpneq_ps((val), f4_0))
 #endif
 	
