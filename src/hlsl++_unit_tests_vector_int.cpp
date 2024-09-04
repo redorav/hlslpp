@@ -1,6 +1,6 @@
-#include "hlsl++_vector_int.h"
-#include "hlsl++_vector_uint.h"
-#include "hlsl++_dependent.h"
+#include "hlsl++/vector_int.h"
+#include "hlsl++/vector_uint.h"
+#include "hlsl++/dependent.h"
 
 #include "hlsl++_unit_tests.h"
 

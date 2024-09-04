@@ -1,8 +1,8 @@
-#include "hlsl++_vector_float_type.h"
-#include "hlsl++_vector_int_type.h"
-#include "hlsl++_vector_uint_type.h"
-#include "hlsl++_vector_double_type.h"
-#include "hlsl++_quaternion_type.h"
+#include "hlsl++/vector_float_type.h"
+#include "hlsl++/vector_int_type.h"
+#include "hlsl++/vector_uint_type.h"
+#include "hlsl++/vector_double_type.h"
+#include "hlsl++/quaternion_type.h"
 
 void Declaration()
 {

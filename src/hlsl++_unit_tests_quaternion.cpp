@@ -1,5 +1,5 @@
-#include "hlsl++_quaternion.h"
-#include "hlsl++_dependent.h"
+#include "hlsl++/quaternion.h"
+#include "hlsl++/dependent.h"
 
 #include "hlsl++_unit_tests.h"
 

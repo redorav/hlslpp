@@ -1,5 +1,5 @@
-#include "hlsl++_matrix_float.h"
-#include "hlsl++_dependent.h"
+#include "hlsl++/matrix_float.h"
+#include "hlsl++/dependent.h"
 
 #include "hlsl++_unit_tests.h"
 
