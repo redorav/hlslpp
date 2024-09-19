@@ -869,7 +869,7 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 #define _hlslpp256_set1_epi32(x)						_mm256_set1_epi32((x))
 #define _hlslpp256_set_epi32(x, y, z, w, a, b, c, d)	_mm256_set_epi32(d, c, b, a, w, z, y, x)
 #define _hlslpp256_setzero_si256()						_mm256_setzero_si256()
-#define _hlslpp256_set128_epi32(lo, hi)					_mm256_set_m128i(hi, lo)
+#define _hlslpp256_set128_epi32(lo, hi)					_mm256_insertf128_si256(_mm256_castsi128_si256(lo), (hi), 0x1)
 
 #define _hlslpp256_low_epi32(x)							_mm256_castsi256_si128((x))
 #define _hlslpp256_high_epi32(x)						_mm256_extractf128_si256((x), 1)
