@@ -153,8 +153,8 @@ hlslpp_inline n128 _hlslpp_blend_ps(n128 x, n128 y, int mask)
 #if defined(__SSE4_1__)
 
 #define _hlslpp_trunc_ps(x)						_mm_round_ps((x), _MM_FROUND_TRUNC)
-#define _hlslpp_floor_ps(x)						_mm_floor_ps((x))
-#define _hlslpp_ceil_ps(x)						_mm_ceil_ps((x))
+#define _hlslpp_floor_ps(x)						_mm_round_ps((x), _MM_FROUND_FLOOR)
+#define _hlslpp_ceil_ps(x)						_mm_round_ps((x), _MM_FROUND_CEIL)
 
 // _MM_FROUND_TO_NEAREST_INT to match fxc behavior
 #define _hlslpp_round_ps(x)						_mm_round_ps((x), _MM_FROUND_TO_NEAREST_INT)
@@ -396,7 +396,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp256_set_ps(x, y, z, w, a, b, c, d)	_mm256_set_ps((d), (c), (b), (a), (w), (z), (y), (x))
 #define _hlslpp256_setzero_ps()						_mm256_setzero_ps()
 
-#define _hlslpp256_set128_ps(lo, hi)				_mm256_set_m128(hi, lo)
+#define _hlslpp256_set128_ps(lo, hi)				_mm256_insertf128_ps(_mm256_castps128_ps256(lo), (hi), 0x1)
 
 #define _hlslpp256_add_ps(x, y)						_mm256_add_ps((x), (y))
 #define _hlslpp256_sub_ps(x, y)						_mm256_sub_ps((x), (y))
@@ -448,14 +448,14 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp256_min_ps(x, y)						_mm256_min_ps((x), (y))
 
 #define _hlslpp256_trunc_ps(x)						_mm256_round_ps((x), _MM_FROUND_TRUNC)
-#define _hlslpp256_floor_ps(x)						_mm256_floor_ps((x))
-#define _hlslpp256_ceil_ps(x)						_mm256_ceil_ps((x))
+#define _hlslpp256_floor_ps(x)						_mm256_round_ps((x), _MM_FROUND_FLOOR)
+#define _hlslpp256_ceil_ps(x)						_mm256_round_ps((x), _MM_FROUND_CEIL)
 
 
 // _MM_FROUND_TO_NEAREST_INT to match fxc behavior
 #define _hlslpp256_round_ps(x)						_mm256_round_ps((x), _MM_FROUND_TO_NEAREST_INT)
 
-#define _hlslpp256_frac_ps(x)						_mm256_sub_ps((x), _mm256_floor_ps(x))
+#define _hlslpp256_frac_ps(x)						_mm256_sub_ps((x), _hlslpp256_floor_ps(x))
 
 #define _hlslpp256_clamp_ps(x, minx, maxx)			_mm256_max_ps(_mm256_min_ps((x), (maxx)), (minx))
 #define _hlslpp256_sat_ps(x)						_mm256_max_ps(_mm256_min_ps((x), f8_1), f8_0)
