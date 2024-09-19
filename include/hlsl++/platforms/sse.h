@@ -1356,7 +1356,7 @@ hlslpp_inline void _hlslpp_load4_pd(double* p, n128d& x0, n128d& x1)
 #define _hlslpp256_set1_pd(x)					_mm256_set1_pd((x))
 #define _hlslpp256_set_pd(x, y, z, w)			_mm256_set_pd((w), (z), (y), (x))
 #define _hlslpp256_setzero_pd()					_mm256_setzero_pd()
-#define _hlslpp256_set128_pd(lo, hi)			_mm256_set_m128d(hi, lo)
+#define _hlslpp256_set128_pd(lo, hi)			_mm256_insertf128_pd(_mm256_castpd128_pd256(lo), (hi), 0x1)
 
 #define _hlslpp256_add_pd(x, y)					_mm256_add_pd((x), (y))
 #define _hlslpp256_sub_pd(x, y)					_mm256_sub_pd((x), (y))
