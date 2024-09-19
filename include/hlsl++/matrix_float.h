@@ -494,7 +494,7 @@ namespace hlslpp
 
 	hlslpp_inline float4x4 mul(const float4x1& m1, const float1x4& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n256 m1_m1 = _hlslpp256_set128_ps(m1.vec, m1.vec);
 		n256 m2_m2 = _hlslpp256_set128_ps(m2.vec, m2.vec);
@@ -542,7 +542,7 @@ namespace hlslpp
 
 	hlslpp_inline float1x4 mul(const float1x4& m1, const float4x4& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n256 m1_m1 = _hlslpp256_set128_ps(m1.vec, m1.vec);
 		n256 mul0 = _hlslpp256_mul_ps(m2.vec0, _hlslpp256_perm_xxxx_bbbb_ps(m1_m1));
@@ -619,7 +619,7 @@ namespace hlslpp
 
 	hlslpp_inline float4x4 mul(const float4x2& m1, const float2x4& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n256 m2_vec0 = _hlslpp256_set128_ps(m2.vec0, m2.vec0);
 		n256 m2_vec1 = _hlslpp256_set128_ps(m2.vec1, m2.vec1);
@@ -694,7 +694,7 @@ namespace hlslpp
 
 	hlslpp_inline float2x4 mul(const float2x4& m1, const float4x4& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n256 m1_vec0 = _hlslpp256_set128_ps(m1.vec0, m1.vec0);
 		n256 m1_vec1 = _hlslpp256_set128_ps(m1.vec1, m1.vec1);
@@ -785,7 +785,7 @@ namespace hlslpp
 
 	inline float3x4 mul(const float3x4& m1, const float4x4& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n128 m2_vec0 = _hlslpp256_low_ps(m2.vec0);
 		n128 m2_vec1 = _hlslpp256_high_ps(m2.vec0);
@@ -867,7 +867,7 @@ namespace hlslpp
 		n128 row2 = _hlslpp_madd_ps(_hlslpp_perm_zzzz_ps(m1.vec2), m2.vec2, mad2y);
 		n128 row3 = _hlslpp_madd_ps(_hlslpp_perm_wwww_ps(m1.vec2), m2.vec2, mad3y);
 
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		return float4x4(_hlslpp256_set128_ps(row0, row1), _hlslpp256_set128_ps(row2, row3));
 
@@ -880,7 +880,7 @@ namespace hlslpp
 
 	inline float4x1 mul(const float4x4& m1, const float4x1& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n256 m2_vec = _hlslpp256_set128_ps(m2.vec, m2.vec);
 
@@ -908,7 +908,7 @@ namespace hlslpp
 
 	inline float4x2 mul(const float4x4& m1, const float4x2& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n256 m2_vec0 = _hlslpp256_set128_ps(m2.vec0, m2.vec0);
 
@@ -954,7 +954,7 @@ namespace hlslpp
 
 	inline float4x3 mul(const float4x4& m1, const float4x3& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n256 m2_vec0 = _hlslpp256_set128_ps(m2.vec0, m2.vec0);
 
@@ -1015,7 +1015,7 @@ namespace hlslpp
 
 	inline float4x4 mul(const float4x4& m1, const float4x4& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n256 m2_vec0_high_low = _hlslpp256_high_low_ps(m2.vec0, m2.vec0);
 		n256 m2_vec1_high_low = _hlslpp256_high_low_ps(m2.vec1, m2.vec1);
@@ -1114,7 +1114,7 @@ namespace hlslpp
 	hlslpp_inline float4x3 operator + (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1), _hlslpp_add_ps(m1.vec2, m2.vec2)); }
 	hlslpp_inline float4x4 operator + (const float4x4& m1, const float4x4& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return float4x4(_hlslpp256_add_ps(m1.vec0, m2.vec0), _hlslpp256_add_ps(m1.vec1, m2.vec1));
 #else
 		return float4x4(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1), _hlslpp_add_ps(m1.vec2, m2.vec2), _hlslpp_add_ps(m1.vec3, m2.vec3));
@@ -1155,7 +1155,7 @@ namespace hlslpp
 	hlslpp_inline float4x3 operator - (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1), _hlslpp_sub_ps(m1.vec2, m2.vec2)); }
 	hlslpp_inline float4x4 operator - (const float4x4& m1, const float4x4& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return float4x4(_hlslpp256_sub_ps(m1.vec0, m2.vec0), _hlslpp256_sub_ps(m1.vec1, m2.vec1));
 #else
 		return float4x4(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1), _hlslpp_sub_ps(m1.vec2, m2.vec2), _hlslpp_sub_ps(m1.vec3, m2.vec3));
@@ -1196,7 +1196,7 @@ namespace hlslpp
 	hlslpp_inline float4x3 operator * (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1), _hlslpp_mul_ps(m1.vec2, m2.vec2)); }
 	hlslpp_inline float4x4 operator * (const float4x4& m1, const float4x4& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return float4x4(_hlslpp256_mul_ps(m1.vec0, m2.vec0), _hlslpp256_mul_ps(m1.vec1, m2.vec1));
 #else
 		return float4x4(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1), _hlslpp_mul_ps(m1.vec2, m2.vec2), _hlslpp_mul_ps(m1.vec3, m2.vec3));
@@ -1237,7 +1237,7 @@ namespace hlslpp
 	hlslpp_inline float4x3 operator / (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1), _hlslpp_div_ps(m1.vec2, m2.vec2)); }
 	hlslpp_inline float4x4 operator / (const float4x4& m1, const float4x4& m2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return float4x4(_hlslpp256_div_ps(m1.vec0, m2.vec0), _hlslpp256_div_ps(m1.vec1, m2.vec1));
 #else
 		return float4x4(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1), _hlslpp_div_ps(m1.vec2, m2.vec2), _hlslpp_div_ps(m1.vec3, m2.vec3));
@@ -1280,7 +1280,7 @@ namespace hlslpp
 	hlslpp_inline float4x3 operator + (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm), _hlslpp_add_ps(m.vec2, perm)); }
 	hlslpp_inline float4x4 operator + (const float4x4& m, const float1& f)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		n128 perm128 = _hlslpp_perm_xxxx_ps(f.vec);
 		n256 perm = _hlslpp256_set128_ps(perm128, perm128);
 		return float4x4(_hlslpp256_add_ps(m.vec0, perm), _hlslpp256_add_ps(m.vec1, perm));
@@ -1307,7 +1307,7 @@ namespace hlslpp
 	hlslpp_inline float4x3 operator - (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm), _hlslpp_sub_ps(m.vec2, perm)); }
 	hlslpp_inline float4x4 operator - (const float4x4& m, const float1& f)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		n128 perm128 = _hlslpp_perm_xxxx_ps(f.vec);
 		n256 perm = _hlslpp256_set128_ps(perm128, perm128);
 		return float4x4(_hlslpp256_sub_ps(m.vec0, perm), _hlslpp256_sub_ps(m.vec1, perm));
@@ -1334,7 +1334,7 @@ namespace hlslpp
 	hlslpp_inline float4x3 operator * (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm), _hlslpp_mul_ps(m.vec2, perm)); }
 	hlslpp_inline float4x4 operator * (const float4x4& m, const float1& f)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		n128 perm128 = _hlslpp_perm_xxxx_ps(f.vec);
 		n256 perm = _hlslpp256_set128_ps(perm128, perm128);
 		return float4x4(_hlslpp256_mul_ps(m.vec0, perm), _hlslpp256_mul_ps(m.vec1, perm));
@@ -1361,7 +1361,7 @@ namespace hlslpp
 	hlslpp_inline float4x3 operator / (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm), _hlslpp_div_ps(m.vec2, perm)); }
 	hlslpp_inline float4x4 operator / (const float4x4& m, const float1& f)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		n128 perm128 = _hlslpp_perm_xxxx_ps(f.vec);
 		n256 perm = _hlslpp256_set128_ps(perm128, perm128);
 		return float4x4(_hlslpp256_div_ps(m.vec0, perm), _hlslpp256_div_ps(m.vec1, perm));
@@ -1388,7 +1388,7 @@ namespace hlslpp
 	hlslpp_inline float4x3 operator - (const float4x3& m) { return float4x3(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2)); }
 	hlslpp_inline float4x4 operator - (const float4x4& m)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return float4x4(_hlslpp256_neg_ps(m.vec0), _hlslpp256_neg_ps(m.vec1));
 #else
 		return float4x4(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2), _hlslpp_neg_ps(m.vec3));
@@ -1471,7 +1471,7 @@ namespace hlslpp
 	hlslpp_inline float3x3 operator == (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpeq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpeq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpeq1_ps(f1.vec2, f2.vec2)); }
 	hlslpp_inline float4x4 operator == (const float4x4& f1, const float4x4& f2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return float4x4(_hlslpp256_cmpeq1_ps(f1.vec0, f2.vec0), _hlslpp256_cmpeq1_ps(f1.vec1, f2.vec1));
 #else
 		return float4x4(_hlslpp_cmpeq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpeq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpeq1_ps(f1.vec2, f2.vec2), _hlslpp_cmpeq1_ps(f1.vec3, f2.vec3));
@@ -1482,7 +1482,7 @@ namespace hlslpp
 	hlslpp_inline float3x3 operator != (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpneq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpneq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpneq1_ps(f1.vec2, f2.vec2)); }
 	hlslpp_inline float4x4 operator != (const float4x4& f1, const float4x4& f2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return float4x4(_hlslpp256_cmpneq1_ps(f1.vec0, f2.vec0), _hlslpp256_cmpneq1_ps(f1.vec1, f2.vec1));
 #else
 		return float4x4(_hlslpp_cmpneq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpneq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpneq1_ps(f1.vec2, f2.vec2), _hlslpp_cmpneq1_ps(f1.vec3, f2.vec3));
@@ -1493,7 +1493,7 @@ namespace hlslpp
 	hlslpp_inline float3x3 operator > (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpgt1_ps(f1.vec0, f2.vec0), _hlslpp_cmpgt1_ps(f1.vec1, f2.vec1), _hlslpp_cmpgt1_ps(f1.vec2, f2.vec2)); }
 	hlslpp_inline float4x4 operator > (const float4x4& f1, const float4x4& f2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return float4x4(_hlslpp256_cmpgt1_ps(f1.vec0, f2.vec0), _hlslpp256_cmpgt1_ps(f1.vec1, f2.vec1));
 #else
 		return float4x4(_hlslpp_cmpgt1_ps(f1.vec0, f2.vec0), _hlslpp_cmpgt1_ps(f1.vec1, f2.vec1), _hlslpp_cmpgt1_ps(f1.vec2, f2.vec2), _hlslpp_cmpgt1_ps(f1.vec3, f2.vec3));
@@ -1504,7 +1504,7 @@ namespace hlslpp
 	hlslpp_inline float3x3 operator >= (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpge1_ps(f1.vec0, f2.vec0), _hlslpp_cmpge1_ps(f1.vec1, f2.vec1), _hlslpp_cmpge1_ps(f1.vec2, f2.vec2)); }
 	hlslpp_inline float4x4 operator >= (const float4x4& f1, const float4x4& f2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return float4x4(_hlslpp256_cmpge1_ps(f1.vec0, f2.vec0), _hlslpp256_cmpge1_ps(f1.vec1, f2.vec1));
 #else
 		return float4x4(_hlslpp_cmpge1_ps(f1.vec0, f2.vec0), _hlslpp_cmpge1_ps(f1.vec1, f2.vec1), _hlslpp_cmpge1_ps(f1.vec2, f2.vec2), _hlslpp_cmpge1_ps(f1.vec3, f2.vec3));
@@ -1515,7 +1515,7 @@ namespace hlslpp
 	hlslpp_inline float3x3 operator < (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmplt1_ps(f1.vec0, f2.vec0), _hlslpp_cmplt1_ps(f1.vec1, f2.vec1), _hlslpp_cmplt1_ps(f1.vec2, f2.vec2)); }
 	hlslpp_inline float4x4 operator < (const float4x4& f1, const float4x4& f2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return float4x4(_hlslpp256_cmplt1_ps(f1.vec0, f2.vec0), _hlslpp256_cmplt1_ps(f1.vec1, f2.vec1));
 #else
 		return float4x4(_hlslpp_cmplt1_ps(f1.vec0, f2.vec0), _hlslpp_cmplt1_ps(f1.vec1, f2.vec1), _hlslpp_cmplt1_ps(f1.vec2, f2.vec2), _hlslpp_cmplt1_ps(f1.vec3, f2.vec3));
@@ -1526,7 +1526,7 @@ namespace hlslpp
 	hlslpp_inline float3x3 operator <= (const float3x3& f1, const float3x3& f2)	{ return float3x3(_hlslpp_cmple1_ps(f1.vec0, f2.vec0), _hlslpp_cmple1_ps(f1.vec1, f2.vec1), _hlslpp_cmple1_ps(f1.vec2, f2.vec2)); }
 	hlslpp_inline float4x4 operator <= (const float4x4& f1, const float4x4& f2)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return float4x4(_hlslpp256_cmple1_ps(f1.vec0, f2.vec0), _hlslpp256_cmple1_ps(f1.vec1, f2.vec1));
 #else
 		return float4x4(_hlslpp_cmple1_ps(f1.vec0, f2.vec0), _hlslpp_cmple1_ps(f1.vec1, f2.vec1), _hlslpp_cmple1_ps(f1.vec2, f2.vec2), _hlslpp_cmple1_ps(f1.vec3, f2.vec3));
@@ -1537,7 +1537,7 @@ namespace hlslpp
 	hlslpp_inline bool all(const float3x3& f) { return _hlslpp_all3_ps(f.vec0) && _hlslpp_all3_ps(f.vec1) && _hlslpp_all3_ps(f.vec2); }
 	hlslpp_inline bool all(const float4x4& f)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return _hlslpp256_all8_ps(f.vec0) && _hlslpp256_all8_ps(f.vec1);
 #else
 		return _hlslpp_all4_ps(f.vec0) && _hlslpp_all4_ps(f.vec1) && _hlslpp_all4_ps(f.vec2) && _hlslpp_all4_ps(f.vec3);
@@ -1548,7 +1548,7 @@ namespace hlslpp
 	hlslpp_inline bool any(const float3x3& f) { return _hlslpp_any3_ps(f.vec0) || _hlslpp_any3_ps(f.vec1) || _hlslpp_any3_ps(f.vec2); }
 	hlslpp_inline bool any(const float4x4& f)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		return _hlslpp256_any8_ps(f.vec0) || _hlslpp256_any8_ps(f.vec1);
 #else
 		return _hlslpp_any4_ps(f.vec0) || _hlslpp_any4_ps(f.vec1) || _hlslpp_any4_ps(f.vec2) || _hlslpp_any4_ps(f.vec3);
@@ -1567,7 +1567,7 @@ namespace hlslpp
 
 	inline float1 trace(const float4x4& m)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n128 m_vec0 = _hlslpp256_low_ps(m.vec0);
 		n128 m_vec1 = _hlslpp256_high_ps(m.vec0);
@@ -1604,7 +1604,7 @@ namespace hlslpp
 
 	inline float4x4 transpose(const float4x4& m)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n256 unpacklo = _hlslpp256_unpacklo_ps(m.vec0, m.vec1);
 		n256 perm1_1  = _hlslpp256_perm_ps(unpacklo, 0, 2, 1, 3, 4, 6, 5, 7);
@@ -1677,7 +1677,7 @@ namespace hlslpp
 		// 3x3 determinants and then doing a dot product. https://www.geometrictools.com/Documentation/LaplaceExpansionTheorem.pdf
 		// Note that the AVX version isn't faster or slower, it comes out roughly the same cost as SSE in tests.
 
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		// Extract low and high parts into n256 vectors
 		n256 vec0_low  = _hlslpp256_low_low_ps(m.vec0, m.vec0);
@@ -1787,7 +1787,7 @@ namespace hlslpp
 		// that result in a slower algorithm. In fact, this straightforward approach is actually faster than
 		// SSE if AVX is enabled.
 
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n128 m_vec0 = _hlslpp256_low_ps(m.vec0);
 		n128 m_vec1 = _hlslpp256_high_ps(m.vec0);
@@ -1806,7 +1806,7 @@ namespace hlslpp
 		n128 vec0, vec1, vec2, vec3;
 		_hlslpp_inv_4x4_ps(m_vec0, m_vec1, m_vec2, m_vec3, vec0, vec1, vec2, vec3);
 
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		return float4x4(_hlslpp256_set128_ps(vec0, vec1), _hlslpp256_set128_ps(vec2, vec3));
 
@@ -1875,7 +1875,7 @@ namespace hlslpp
 
 	hlslpp_inline void store(const float4x4& m, float* f)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		_hlslpp256_store4x4_ps(f, m.vec0, m.vec1);
 #else
 		_hlslpp_store4x4_ps(f, m.vec0, m.vec1, m.vec2, m.vec3);
@@ -1889,7 +1889,7 @@ namespace hlslpp
 
 	hlslpp_inline void load(float4x4& m, float* f)
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		_hlslpp256_load4x4_ps(f, m.vec0, m.vec1);
 #else
 		_hlslpp_load4x4_ps(f, m.vec0, m.vec1, m.vec2, m.vec3);

@@ -45,7 +45,7 @@ namespace hlslpp
 
 	hlslpp_inline float3x3::float3x3(const float4x4& m) hlslpp_noexcept
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 		vec0 = _hlslpp256_high_ps(m.vec0);
 		vec1 = _hlslpp256_low_ps(m.vec0);
 		vec2 = _hlslpp256_high_ps(m.vec1);
@@ -58,7 +58,7 @@ namespace hlslpp
 
 	hlslpp_inline float4x4::float4x4(const quaternion& q) hlslpp_noexcept
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		n128 temp_vec0, temp_vec1, temp_vec2;
 

@@ -114,7 +114,7 @@ namespace hlslpp
 		template<int A, int B, int C>
 		hlslpp_inline void swizzle_all(const dswizzle3<A, B, C>& s)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			swizzleblend<A, B, C, X, Y, Z>(s.vec, vec);
 #else
 			swizzleblend<A, B, C, X, Y, Z>(s.vec[0], s.vec[1], vec[0], vec[1]);
@@ -130,7 +130,7 @@ namespace hlslpp
 
 		hlslpp_inline dswizzle3& operator = (const double3& f);
 
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		// Swizzles SrcA into 0, SrcB into 1 and SrcC into 2
 		// This version doesn't blend so only works for dswizzle3 -> double3 conversions
@@ -192,7 +192,7 @@ namespace hlslpp
 
 		union
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			n256d vec;
 #else
 			n128d vec[2];
@@ -209,7 +209,7 @@ namespace hlslpp
 		
 		hlslpp_inline dswizzle4& operator = (const double4& f);
 
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		// Swizzles SrcA, SrcB, SrcC into DstA, DstB, DstC
 		template<int SrcA, int SrcB, int SrcC, int SrcD, int DstA, int DstB, int DstC, int DstD>
@@ -240,7 +240,7 @@ namespace hlslpp
 
 		union
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			n256d vec;
 #else
 			n128d vec[2];
@@ -318,7 +318,7 @@ namespace hlslpp
 	{
 		// Constructors
 
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		hlslpp_inline double3() : vec(_hlslpp256_setzero_pd()) {}
 		hlslpp_inline double3(const double3& f) : vec(f.vec) {}
@@ -352,7 +352,7 @@ namespace hlslpp
 
 		hlslpp_inline double3(const double1& f1, const double1& f2, const double1& f3)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			n128d f1f2 = _hlslpp_shuf_xx_pd(f1.vec, f2.vec);
 			vec = _hlslpp256_set128_pd(f1f2, f3.vec);
 #else
@@ -363,7 +363,7 @@ namespace hlslpp
 
 		hlslpp_inline double3(const double2& f1, const double1& f2)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			vec = _hlslpp256_set128_pd(f1.vec, f2.vec);
 #else
 			vec0 = f1.vec;
@@ -373,7 +373,7 @@ namespace hlslpp
 
 		hlslpp_inline double3(const double1& f1, const double2& f2)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			n128d f1f2x = _hlslpp_shuf_xx_pd(f1.vec, f2.vec);
 			n128d f2y = _hlslpp_perm_yx_pd(f2.vec);
 			vec = _hlslpp256_set128_pd(f1f2x, f2y);
@@ -386,7 +386,7 @@ namespace hlslpp
 		template<int X, int Y, int Z>
 		hlslpp_inline double3(const dswizzle3<X, Y, Z>& s)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			dswizzle3<X, Y, Z>::template swizzle<X, Y, Z>(s.vec, vec);
 #else
 			dswizzle3<X, Y, Z>::template swizzle<X, Y, Z>(s.vec[0], s.vec[1], vec0, vec1);
@@ -398,7 +398,7 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 			n256d vec;
 
@@ -424,7 +424,7 @@ namespace hlslpp
 
 	struct hlslpp_nodiscard double4
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		hlslpp_inline double4() : vec(_hlslpp256_setzero_pd()) {}
 		hlslpp_inline double4(const double4& f) : vec(f.vec) {}
@@ -458,7 +458,7 @@ namespace hlslpp
 
 		hlslpp_inline double4(const double1& f1, const double1& f2, const double1& f3, const double1& f4)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			n128d f1f2 = _hlslpp_shuf_xx_pd(f1.vec, f2.vec);
 			n128d f3f4 = _hlslpp_shuf_xx_pd(f3.vec, f4.vec);
 			vec = _hlslpp256_set128_pd(f1f2, f3f4);
@@ -470,7 +470,7 @@ namespace hlslpp
 
 		hlslpp_inline double4(const double2& f1, const double1& f2, const double1& f3)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			vec = _hlslpp256_set128_pd(f1.vec, _hlslpp_shuf_xx_pd(f2.vec, f3.vec));
 #else
 			vec0 = f1.vec;
@@ -480,7 +480,7 @@ namespace hlslpp
 
 		hlslpp_inline double4(const double1& f1, const double2& f2, const double1& f3)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			vec = _hlslpp256_set128_pd(_hlslpp_shuf_xx_pd(f1.vec, f2.vec), _hlslpp_shuf_yx_pd(f2.vec, f3.vec));
 #else
 			vec0 = _hlslpp_shuf_xx_pd(f1.vec, f2.vec);
@@ -490,7 +490,7 @@ namespace hlslpp
 
 		hlslpp_inline double4(const double1& f1, const double1& f2, const double2& f3)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			vec = _hlslpp256_set128_pd(_hlslpp_shuf_xx_pd(f1.vec, f2.vec), f3.vec);
 #else
 			vec0 = _hlslpp_shuf_xx_pd(f1.vec, f2.vec);
@@ -500,7 +500,7 @@ namespace hlslpp
 
 		hlslpp_inline double4(const double2& f1, const double2& f2)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			vec = _hlslpp256_set128_pd(f1.vec, f2.vec);
 #else
 			vec0 = f1.vec;
@@ -510,7 +510,7 @@ namespace hlslpp
 
 		hlslpp_inline double4(const double1& f1, const double3& f2)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			vec = _hlslpp256_set128_pd(_hlslpp_shuf_xx_pd(f1.vec, _hlslpp256_low_pd(f2.vec)), _hlslpp_shuf_yx_pd(_hlslpp256_low_pd(f2.vec), _hlslpp256_high_pd(f2.vec)));
 #else
 			vec0 = _hlslpp_shuf_xx_pd(f1.vec, f2.vec0);
@@ -520,7 +520,7 @@ namespace hlslpp
 
 		hlslpp_inline double4(const double3& f1, const double1& f2)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 			vec = _hlslpp256_set128_pd(_hlslpp256_low_pd(f1.vec), _hlslpp_shuf_xx_pd(_hlslpp256_high_pd(f1.vec), f2.vec));
 #else
@@ -532,7 +532,7 @@ namespace hlslpp
 		template<int X, int Y, int Z, int W>
 		hlslpp_inline double4(const dswizzle4<X, Y, Z, W>& s)
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			dswizzle4<X, Y, Z, W>::template swizzle<X, Y, Z, W, 0, 1, 2, 3>(s.vec, vec);
 #else
 			dswizzle4<X, Y, Z, W>::template swizzle<X, Y, Z, W, 0, 1, 2, 3>(s.vec[0], s.vec[1], vec[0], vec[1]);
@@ -544,7 +544,7 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 		union
 		{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 			n256d vec;
 #else
 			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN

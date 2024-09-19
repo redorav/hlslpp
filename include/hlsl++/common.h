@@ -62,7 +62,7 @@ namespace hlslpp
 	const n128u u4_0           = _hlslpp_set1_epu32(0);
 	const n128u u4_1           = _hlslpp_set1_epu32(1);
 
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 	const n256 f8_0           = _hlslpp256_set1_ps(0.0f);
 	const n256 f8_1           = _hlslpp256_set1_ps(1.0f);

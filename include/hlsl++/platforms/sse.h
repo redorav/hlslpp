@@ -61,8 +61,11 @@ typedef __m128d n128d;
 
 #if defined(__AVX__)
 
+// Whether the float8 type is available
 #define HLSLPP_FLOAT8
-#define HLSLPP_SIMD_REGISTER_FLOAT8
+
+// Whether this configuration has a 256-wide register
+#define HLSLPP_SIMD_REGISTER_256
 
 typedef __m256  n256;
 typedef __m256d n256d;

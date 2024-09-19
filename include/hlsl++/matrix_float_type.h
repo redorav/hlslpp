@@ -536,7 +536,7 @@ namespace hlslpp
 
 	struct hlslpp_nodiscard float4x4
 	{
-#if defined(HLSLPP_SIMD_REGISTER_FLOAT8)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 		hlslpp_inline float4x4() hlslpp_noexcept : vec0(_hlslpp256_setzero_ps()), vec1(_hlslpp256_setzero_ps()) {}
 		hlslpp_inline float4x4(const float4x4& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1) {}
