@@ -1,13 +1,22 @@
 #include "hlsl++.h"
 
 // Hacky but needs FLOAT64
-#include "hlsl++_unit_tests.h"
+#include "unit_tests.h"
 
 // For strcmp
 #include <string.h>
 
 // For std::system
 #include <cstdlib>
+
+//#define NOMINMAX
+//#include <windows.h>
+
+extern "C"
+{
+	long IsDebuggerPresent(void);
+	void Sleep(unsigned long dwMilliseconds);
+}
 
 const float deg2rad = 3.14159265f / 180.0f;
 
@@ -594,10 +603,12 @@ void RunExperiments()
 {
 	printf("1) Experiments started\n");
 
+	float4x4 testm = float4x4::rotation_axis(normalize(float3(1, 2, 3)), 30.0f * 3.1415f / 180.0f);
+
 	float4x4 m1 = float4x4(
-		1, 2, 3, 4, 
-		5, 6, 7, 8, 
-		9, 10, 11, 12, 
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 10, 11, 12,
 		13, 14, 15, 16);
 
 	float4x4 m2 = float4x4(
@@ -710,6 +721,19 @@ void RunUnitTests()
 	RunUnitTestsVectorDouble();
 
 	RunUnitTestsVectorInt();
+
+	//n128 a = _hlslpp_set_ps(1, 2, 3, 4);
+	//n128 b = _hlslpp_set_ps(5, 6, 7, 8);
+	//n128 c = _hlslpp_set_ps(9, 10, 11, 12);
+	//n128 d = _hlslpp_set_ps(13, 14, 15, 16);
+	//
+	//n512 v = _hlslpp512_set128_ps(a, b, c, d);
+
+	//printf("%f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f",
+	//	v.m512_f32[0], v.m512_f32[1], v.m512_f32[2], v.m512_f32[3],
+	//	v.m512_f32[4], v.m512_f32[5], v.m512_f32[6], v.m512_f32[7],
+	//	v.m512_f32[8], v.m512_f32[9], v.m512_f32[10], v.m512_f32[11],
+	//	v.m512_f32[12], v.m512_f32[13], v.m512_f32[14], v.m512_f32[15]);
 
 	RunUnitTestsMatrixFloat();
 

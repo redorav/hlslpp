@@ -46,7 +46,7 @@ isVisualStudioBuild = not isXCodeBuild and not isLinuxMakeBuild
 supportsARMBuild = _ACTION == "vs2017" or _ACTION == "vs2019" or _ACTION == "vs2022"
 
 -- Directories
-srcDir = "src"
+unitTestDir = "unit_tests"
 includeDir = "include"
 
 premake.override(premake.vstudio.vc2010.elements, "clCompile", function(oldfn, cfg)
@@ -280,23 +280,23 @@ project (UnitTestProject)
 	--links { "hlsl++" }
 	files
 	{
-		srcDir.."/*.cpp",
-		srcDir.."/*.h",
+		unitTestDir.."/*.cpp",
+		unitTestDir.."/*.h",
 	}
 	
 	filter { "platforms:"..PlatformAndroidARM.." or ".. PlatformAndroidARM64}
 		kind("sharedlib")
 		files
 		{
-			"src/android/android_native_app_glue.h",
-			"src/android/android_native_app_glue.c",
+			unitTestDir.."/android/android_native_app_glue.h",
+			unitTestDir.."/android/android_native_app_glue.c",
 		}
 		
 	filter{}
 	
 	includedirs
 	{
-		srcDir.."/**.h"
+		unitTestDir.."/**.h"
 	}
 
 if (supportsARMBuild) then
@@ -309,9 +309,9 @@ project (AndroidProject)
 	androidapplibname(UnitTestProject)
 	files
 	{
-		"src/android/AndroidManifest.xml",
-		"src/android/build.xml",
-		"src/android/project.properties",
-		"src/android/res/values/strings.xml",
+		unitTestDir.."/android/AndroidManifest.xml",
+		unitTestDir.."/android/build.xml",
+		unitTestDir.."/android/project.properties",
+		unitTestDir.."/android/res/values/strings.xml",
 	}
 end

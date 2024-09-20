@@ -2,7 +2,7 @@
 #include "hlsl++/vector_uint.h"
 #include "hlsl++/dependent.h"
 
-#include "hlsl++_unit_tests.h"
+#include "unit_tests.h"
 
 void RunUnitTestsVectorInt()
 {
