@@ -1,21 +1,11 @@
 #include "hlsl++/vector_float.h"
 #include "hlsl++/vector_float8.h"
 
-#include "hlsl++/vector_float_pack.h"
-
 #include "unit_tests.h"
 
 void RunUnitTestsVectorFloat()
 {
 	using namespace hlslpp_unit;
-
-	//n128i k = _hlslpp_set_epi8(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
-
-	//n128i k2 = _hlslpp_perm_epi8(k, _hlslpp_set1_epi32(HLSLPP_PERM_MASK_EPI8(0, 1, 2, 3)));
-
-	//float4 hello(0.3f, 0.4f, 0.5f, 0.25f);
-
-	//uint32_t kk = pack_float_rgb10a2_unorm(hello); (kk);
 
 	//------
 	// Float
