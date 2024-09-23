@@ -46,9 +46,9 @@ namespace hlslpp
 	hlslpp_inline float3x3::float3x3(const float4x4& m) hlslpp_noexcept
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
-		vec0 = _hlslpp256_high_ps(m.vec0);
-		vec1 = _hlslpp256_low_ps(m.vec0);
-		vec2 = _hlslpp256_high_ps(m.vec1);
+		vec0 = _hlslpp256_low_ps(m.vec0);
+		vec1 = _hlslpp256_high_ps(m.vec0);
+		vec2 = _hlslpp256_low_ps(m.vec1);
 #else
 		vec0 = m.vec0;
 		vec1 = m.vec1;
