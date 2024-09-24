@@ -4,13 +4,13 @@
 
 #include "hlsl++/vector_float.h"
 
-#include "transform/common.h"
+#include "hlsl++/transform/common.h"
 
 //--------------//
 // Float Matrix //
 //--------------//
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	struct hlslpp_nodiscard float1x1
 	{
