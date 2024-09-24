@@ -2,7 +2,7 @@
 
 #include "hlsl++/common.h"
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	struct hlslpp_nodiscard quaternion
 	{

@@ -2,7 +2,7 @@
 
 #include "hlsl++/config.h"
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	//----------------
 	// Float Constants

@@ -8,7 +8,7 @@
 
 #if defined(HLSLPP_DOUBLE)
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	union BitMaskDouble
 	{
@@ -247,7 +247,7 @@ namespace hlslpp
 
 #include "hlsl++/vector_double_type.h"
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	// Addition
 

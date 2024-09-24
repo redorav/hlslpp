@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stdint.h"
+#include "hlsl++/config.h"
 
 namespace hlslpp
 {

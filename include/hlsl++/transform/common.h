@@ -34,7 +34,11 @@
 // because those do not get reversed
 //------------------------------------------------------------------
 
-#include "math.h"
+#if defined(HLSLPP_MODULE_DECLARATION)
+import <math.h>;
+#else
+#include <math.h>
+#endif
 
 // Row-Major logical layout (default)
 // assumes "vector-row(N) * matrix(NxM)" multiplication order
@@ -83,7 +87,7 @@
 
 #if defined(HLSLPP_FEATURE_TRANSFORM)
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	namespace zclip
 	{

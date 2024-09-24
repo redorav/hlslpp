@@ -89,6 +89,16 @@
 #define hlslpp_assert(x)
 #endif
 
+#if defined(HLSLPP_MODULE_DECLARATION)
+
+#define hlslpp_module_export export
+
+#else
+
+#define hlslpp_module_export
+
+#endif
+
 #define HLSLPP_MASK_X 0
 #define HLSLPP_MASK_Y 1
 #define HLSLPP_MASK_Z 2
@@ -161,7 +171,11 @@
 
 #endif
 
+#if defined(HLSLPP_MODULE_DECLARATION)
+import "stdint.h";
+#else
 #include <stdint.h>
+#endif
 
 #include "hlsl++/type_traits.h"
 

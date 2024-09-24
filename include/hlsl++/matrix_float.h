@@ -8,7 +8,7 @@
 // Float Matrix //
 //--------------//
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	//-----------------
 	// Matrix functions

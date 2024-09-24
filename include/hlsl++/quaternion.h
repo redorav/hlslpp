@@ -1,9 +1,13 @@
 #pragma once
 
-#include "math.h"
-
 #include "hlsl++/common.h"
 #include "hlsl++/vector_float.h"
+
+#if defined(HLSLPP_MODULE_DECLARATION)
+import <math.h>;
+#else
+#include <math.h>
+#endif
 
 //-----------
 // Quaternion
@@ -11,7 +15,7 @@
 
 #include "hlsl++/quaternion_type.h"
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	// https://proofwiki.org/wiki/Quaternion_Multiplication
 	hlslpp_inline n128 _hlslpp_quat_mul_ps(const n128 q0, const n128 q1)

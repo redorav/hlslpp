@@ -6,7 +6,7 @@
 // Float Vector //
 //--------------//
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	// Cross product for 3-component vectors
 	// http://threadlocalmutex.com/?p=8
@@ -548,7 +548,7 @@ namespace hlslpp
 
 #include "hlsl++/vector_float_type.h"
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	// Operators
 

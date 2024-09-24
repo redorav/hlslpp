@@ -6,7 +6,7 @@
 
 HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	template<int X>
 	struct hlslpp_nodiscard dswizzle1

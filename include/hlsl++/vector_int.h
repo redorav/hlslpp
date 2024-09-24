@@ -6,7 +6,7 @@
 // Integer Vector //
 //----------------//
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	const n128i i4_0x55555555 = _hlslpp_set1_epi32(0x55555555);
 	const n128i i4_0x33333333 = _hlslpp_set1_epi32(0x33333333);
@@ -88,7 +88,7 @@ namespace hlslpp
 
 #include "hlsl++/vector_int_type.h"
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	// Operators
 

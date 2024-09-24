@@ -35,7 +35,11 @@
 	#endif
 
 	// https://github.com/p12tic/libsimdpp/issues/33
+	#if defined(HLSLPP_MODULE_DECLARATION)
+	import <intrin.h>;
+	#else	
 	#include <intrin.h>
+	#endif
 
 	//#include "hlsl++_sse_intrin.h"
 

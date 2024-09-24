@@ -8,7 +8,7 @@
 
 #if defined(HLSLPP_FLOAT8)
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	// See http://http.developer.nvidia.com/Cg/fmod.html for reference
 	// This implementation does not follow the reference

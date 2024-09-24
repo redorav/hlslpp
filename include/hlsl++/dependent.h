@@ -6,7 +6,7 @@
 #include "hlsl++/quaternion.h"
 #include "hlsl++/matrix_float.h"
 
-namespace hlslpp
+hlslpp_module_export namespace hlslpp
 {
 	float1::float1(const int1& i) hlslpp_noexcept : vec(_hlslpp_cvtepi32_ps(i.vec)) {}
 	float2::float2(const int2& i) hlslpp_noexcept : vec(_hlslpp_cvtepi32_ps(i.vec)) {}
