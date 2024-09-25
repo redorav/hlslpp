@@ -144,7 +144,7 @@ typedef __m256i n256i;
 
 #else
 
-#define _hlslpp_sel_ps(x, y, mask)				_mm_xor_ps((x), _mm_and_ps(mask, _mm_xor_ps((y), (x))))
+#define _hlslpp_sel_ps(x, y, mask)				_mm_xor_ps((x), _mm_and_ps((mask), _mm_xor_ps((y), (x))))
 
 hlslpp_inline n128 _hlslpp_blend_ps(n128 x, n128 y, int mask)
 {
