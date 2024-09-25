@@ -149,7 +149,7 @@
 // We try to auto detect any vector libraries available to the system.
 // If we don't find any, fall back to scalar.
 
-#if !defined(HLSLPP_ARM) && (defined(_M_ARM) || defined(__arm__) || defined(_M_ARM64) || defined(__aarch64__))
+#if !defined(HLSLPP_ARM) && (defined(_M_ARM) || defined(__arm__) || defined(_M_ARM64) || defined(__aarch64__) || defined(_M_ARM64EC))
 
 	#define HLSLPP_ARM
 
