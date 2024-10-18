@@ -379,4 +379,11 @@ hlslpp_module_export namespace hlslpp
 	typedef float4x2 float32_t4x2;
 	typedef float4x3 float32_t4x3;
 	typedef float4x4 float32_t4x4;
+
+	// Typedefs for common hlsl types
+
+	typedef uint32_t uint;
+
+	// HLSL assumes certain sizes of types
+	static_assert(sizeof(int) == 4, "Size of integer must be 4 bytes");
 }
