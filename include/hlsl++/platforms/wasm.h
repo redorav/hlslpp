@@ -259,7 +259,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 
 #define _hlslpp_perm_epi32(x, X, Y, Z, W)		wasm_i32x4_shuffle((x), (x), X, Y, Z, W)
 
-#define _hlslpp_shuffle_epi32(x, y, mask)		wasm_i32x4_shuffle((x), (y), X, Y, 4 + A, 4 + B)
+#define _hlslpp_shuffle_epi32(x, y, X, Y, A, B)	wasm_i32x4_shuffle((x), (y), X, Y, 4 + A, 4 + B)
 
 #define _hlslpp_castps_si128(x)					(x)
 #define _hlslpp_castsi128_ps(x)					(x)
