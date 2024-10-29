@@ -82,6 +82,12 @@
 	#define hlslpp_swizzle_end
 #endif
 
+#if defined(__cpp_user_defined_literals)
+
+	#define HLSLPP_USER_DEFINED_LITERALS
+
+#endif
+
 #if defined(HLSLPP_ASSERT)
 #include <assert.h>
 #define hlslpp_assert(x) assert(x)
