@@ -89,6 +89,11 @@ hlslpp_module_export namespace hlslpp
 		_hlslpp_3x3_to_quat_ps(m.vec0, m.vec1, m.vec2, vec);
 	}
 
+	hlslpp_inline float1 ldexp(const float1& f, const int1& e) { return float1(_hlslpp_ldexp_ps(f.vec, e.vec)); }
+	hlslpp_inline float2 ldexp(const float2& f, const int2& e) { return float2(_hlslpp_ldexp_ps(f.vec, e.vec)); }
+	hlslpp_inline float3 ldexp(const float3& f, const int3& e) { return float3(_hlslpp_ldexp_ps(f.vec, e.vec)); }
+	hlslpp_inline float4 ldexp(const float4& f, const int4& e) { return float4(_hlslpp_ldexp_ps(f.vec, e.vec)); }
+
 	//----------------
 	// asfloat, asuint, asint
 	//----------------

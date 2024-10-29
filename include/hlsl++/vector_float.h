@@ -75,6 +75,17 @@ hlslpp_module_export namespace hlslpp
 		return _hlslpp_cmpneq_ps(x, x);
 	}
 
+	// https://stackoverflow.com/questions/57454416/sse-integer-2n-powers-of-2-for-32-bit-integers-without-avx2
+	// This function is different from the hlsl version in that we'll only accept integer operands. The reason
+	// is that exp2 already exists but is slower in order to compute the floating point version. This version
+	// assumes (like its C++ counterpart) that the exponent is an integer
+	hlslpp_inline n128 _hlslpp_ldexp_ps(n128 x, n128i exponent)
+	{
+		n128i exponent2 = _hlslpp_add_epi32(exponent, _hlslpp_set1_epi32(127));
+		n128 exponentf = _hlslpp_castsi128_ps(_hlslpp_slli_epi32(exponent2, 23));
+		return _hlslpp_mul_ps(x, exponentf);
+	}
+
 	// Follows fxc in order of operations (a * (y - x) + x)
 	hlslpp_inline n128 _hlslpp_lerp_ps(n128 x, n128 y, n128 t)
 	{
