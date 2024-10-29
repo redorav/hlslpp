@@ -52,12 +52,12 @@ namespace hlslpp
 		return float_bits(result).f;
 	}
 
-	uint32_t f32tof16(float f)
+	hlslpp_inline uint32_t f32tof16(float f)
 	{
 		return (uint32_t)float2half(f);
 	}
 
-	float f16tof32(uint32_t h)
+	hlslpp_inline float f16tof32(uint32_t h)
 	{
 		return half2float((uint16_t)h);
 	}
