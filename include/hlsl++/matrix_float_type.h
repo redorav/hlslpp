@@ -564,11 +564,11 @@ hlslpp_module_export namespace hlslpp
 		{
 			vec0 = _hlslpp256_and_ps(
 				_hlslpp256_set128_ps(m.vec0, m.vec1),
-				_hlslpp256_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f, fffMask.f, fffMask.f, fffMask.f, 0.0f));
+				_hlslpp256_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
 
 			vec1 = _hlslpp256_and_ps(
 				_hlslpp256_set128_ps(m.vec2, v.vec),
-				_hlslpp256_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f, fffMask.f, fffMask.f, fffMask.f, fffMask.f));
+				_hlslpp256_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, fffMask._f32, fffMask._f32, fffMask._f32, fffMask._f32));
 		}
 
 		hlslpp_inline void build(const float3x4& m, const float4& v) hlslpp_noexcept
@@ -682,9 +682,9 @@ hlslpp_module_export namespace hlslpp
 
 		hlslpp_inline void build(const float3x3& m, const float4& v) hlslpp_noexcept
 		{
-			vec0 = _hlslpp_and_ps(m.vec0, _hlslpp_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f));
-			vec1 = _hlslpp_and_ps(m.vec1, _hlslpp_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f));
-			vec2 = _hlslpp_and_ps(m.vec2, _hlslpp_set_ps(fffMask.f, fffMask.f, fffMask.f, 0.0f));
+			vec0 = _hlslpp_and_ps(m.vec0, _hlslpp_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
+			vec1 = _hlslpp_and_ps(m.vec1, _hlslpp_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
+			vec2 = _hlslpp_and_ps(m.vec2, _hlslpp_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
 			vec3 = v.vec;
 		}
 

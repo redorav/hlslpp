@@ -144,17 +144,17 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 
 	hlslpp_inline vector_float4 _hlslpp_cmpge_ps(const vector_float4& v1, const vector_float4& v2)
 	{
-		return vector_float4(v1.x >= v2.x ? fffMask.f : 0, v1.y >= v2.y ? fffMask.f : 0, v1.z >= v2.z ? fffMask.f : 0, v1.w >= v2.w ? fffMask.f : 0);
+		return vector_float4(v1.x >= v2.x ? fffMask._f32 : 0, v1.y >= v2.y ? fffMask._f32 : 0, v1.z >= v2.z ? fffMask._f32 : 0, v1.w >= v2.w ? fffMask._f32 : 0);
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_cmplt_ps(const vector_float4& v1, const vector_float4& v2)
 	{
-		return vector_float4(v1.x < v2.x ? fffMask.f : 0, v1.y < v2.y ? fffMask.f : 0, v1.z < v2.z ? fffMask.f : 0, v1.w < v2.w ? fffMask.f : 0);
+		return vector_float4(v1.x < v2.x ? fffMask._f32 : 0, v1.y < v2.y ? fffMask._f32 : 0, v1.z < v2.z ? fffMask._f32 : 0, v1.w < v2.w ? fffMask._f32 : 0);
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_cmple_ps(const vector_float4& v1, const vector_float4& v2)
 	{
-		return vector_float4(v1.x <= v2.x ? fffMask.f : 0, v1.y <= v2.y ? fffMask.f : 0, v1.z <= v2.z ? fffMask.f : 0, v1.w <= v2.w ? fffMask.f : 0);
+		return vector_float4(v1.x <= v2.x ? fffMask._f32 : 0, v1.y <= v2.y ? fffMask._f32 : 0, v1.z <= v2.z ? fffMask._f32 : 0, v1.w <= v2.w ? fffMask._f32 : 0);
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_max_ps(const vector_float4& v1, const vector_float4& v2)
