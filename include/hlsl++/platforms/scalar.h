@@ -981,17 +981,17 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 	{
 		vector_float4 v255f = vector_float4(v.x * 255.0f + 0.5f, v.y * 255.0f + 0.5f, v.z * 255.0f + 0.5f, v.w * 255.0f + 0.5f);
 		detail::packed_union packed;
-		packed.c[0] = (uint8_t)v255f.x;
-		packed.c[1] = (uint8_t)v255f.y;
-		packed.c[2] = (uint8_t)v255f.z;
-		packed.c[3] = (uint8_t)v255f.w;
-		return packed.u32;
+		packed._u8[0] = (uint8_t)v255f.x;
+		packed._u8[1] = (uint8_t)v255f.y;
+		packed._u8[2] = (uint8_t)v255f.z;
+		packed._u8[3] = (uint8_t)v255f.w;
+		return packed._u32;
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_unpack_rgba8_unorm_epu32(uint32_t p)
 	{
 		detail::packed_union packed(p);
-		return vector_float4(packed.u8[0] / 255.0f, packed.u8[1] / 255.0f, packed.u8[2] / 255.0f, packed.u8[3] / 255.0f);
+		return vector_float4(packed._u8[0] / 255.0f, packed._u8[1] / 255.0f, packed._u8[2] / 255.0f, packed._u8[3] / 255.0f);
 	}
 
 	hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_snorm(vector_float4 v)
@@ -1005,16 +1005,16 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 		);
 
 		detail::packed_union packed;
-		packed.c[0] = (char)v127f.x;
-		packed.c[1] = (char)v127f.y;
-		packed.c[2] = (char)v127f.z;
-		packed.c[3] = (char)v127f.w;
-		return packed.u32;
+		packed._c[0] = (char)v127f.x;
+		packed._c[1] = (char)v127f.y;
+		packed._c[2] = (char)v127f.z;
+		packed._c[3] = (char)v127f.w;
+		return packed._u32;
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_unpack_rgba8_snorm_epu32(uint32_t p)
 	{
 		detail::packed_union packed(p);
-		return vector_float4(packed.c[0] / 127.0f, packed.c[1] / 127.0f, packed.c[2] / 127.0f, packed.c[3] / 127.0f);
+		return vector_float4(packed._c[0] / 127.0f, packed._c[1] / 127.0f, packed._c[2] / 127.0f, packed._c[3] / 127.0f);
 	}
 }
