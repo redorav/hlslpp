@@ -175,7 +175,7 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_rcp_ps(x)						__vrcp((x))
 
-#define _hlslpp_neg_ps(x)						__vxor((x), __vset1(negMask.f))
+#define _hlslpp_neg_ps(x)						__vxor((x), __vset1(negMask._f32))
 
 #define _hlslpp_madd_ps(x, y, z)				__vmaddfp((x), (y), (z)) // x * y + z
 #define _hlslpp_msub_ps(x, y, z)				_hlslpp_neg_ps(__vnmsubfp((x), (y), (z))) // Negate because __vnmsubfp does -(x * y - z)
@@ -187,7 +187,7 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_sqrt_ps(x)						__vsqrt(x)
 
 #define _hlslpp_cmpeq_ps(x, y)					__vcmpeqfp((x), (y))
-#define _hlslpp_cmpneq_ps(x, y)					__vxor(__vcmpeqfp((x), (y)), __vset1(fffMask.f))
+#define _hlslpp_cmpneq_ps(x, y)					__vxor(__vcmpeqfp((x), (y)), __vset1(fffMask._f32))
 
 #define _hlslpp_cmpgt_ps(x, y)					__vcmpgtfp((x), (y))
 #define _hlslpp_cmpge_ps(x, y)					__vcmpgefp((x), (y))
@@ -356,7 +356,7 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 }
 
 #define _hlslpp_cmpeq_epi32(x, y)				__vcmpequw((x), (y))
-#define _hlslpp_cmpneq_epi32(x, y)				__vxor(__vcmpequw((x), (y)), __vset1(fffMask.f))
+#define _hlslpp_cmpneq_epi32(x, y)				__vxor(__vcmpequw((x), (y)), __vset1(fffMask._f32))
 
 #define _hlslpp_cmpgt_epi32(x, y)				__vcmpgtsw((x), (y))
 #define _hlslpp_cmpge_epi32(x, y)				__vor(__vcmpgtsw((x), (y)), __vcmpequw((x), (y)))
@@ -474,7 +474,7 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 #define _hlslpp_subm_epu32(x, y, z)				__vcfpuxws(__vnmsubfp(__vcuxwfp((z), 0), __vcuxwfp((x), 0), __vcuxwfp((y), 0)))
 
 #define _hlslpp_cmpeq_epu32(x, y)				__vcmpequw((x), (y))
-#define _hlslpp_cmpneq_epu32(x, y)				__vxor(__vcmpequw((x), (y)), __vset1(fffMask.f))
+#define _hlslpp_cmpneq_epu32(x, y)				__vxor(__vcmpequw((x), (y)), __vset1(fffMask._f32))
 
 #define _hlslpp_cmpgt_epu32(x, y)				__vcmpgtuw((x), (y))
 #define _hlslpp_cmpge_epu32(x, y)				__vor(__vcmpgtuw((x), (y)), __vcmpequw((x), (y)))

@@ -94,41 +94,41 @@ hlslpp_module_export namespace hlslpp
 	hlslpp_inline float3 ldexp(const float3& f, const int3& e) { return float3(_hlslpp_ldexp_ps(f.vec, e.vec)); }
 	hlslpp_inline float4 ldexp(const float4& f, const int4& e) { return float4(_hlslpp_ldexp_ps(f.vec, e.vec)); }
 
-	//----------------
+	//-----------------------
 	// asfloat, asuint, asint
-	//----------------
+	//-----------------------
 
-	hlslpp_inline float asfloat(const uint v) { return (float&)v; }
+	hlslpp_inline float asfloat(const uint v) { return detail::packed_union(v)._f32; }
 	hlslpp_inline float1 asfloat(const uint1& v) { return (float1&)v; }
 	hlslpp_inline float2 asfloat(const uint2& v) { return (float2&)v; }
 	hlslpp_inline float3 asfloat(const uint3& v) { return (float3&)v; }
 	hlslpp_inline float4 asfloat(const uint4& v) { return (float4&)v; }
 
-	hlslpp_inline float asfloat(const int v) { return (float&)v; }
+	hlslpp_inline float asfloat(const int v) { return detail::packed_union(v)._f32; }
 	hlslpp_inline float1 asfloat(const int1& v) { return (float1&)v; }
 	hlslpp_inline float2 asfloat(const int2& v) { return (float2&)v; }
 	hlslpp_inline float3 asfloat(const int3& v) { return (float3&)v; }
 	hlslpp_inline float4 asfloat(const int4& v) { return (float4&)v; }
 
-	hlslpp_inline uint asuint(const int v) { return (uint&)v; }
+	hlslpp_inline uint asuint(const int v) { return detail::packed_union(v)._u32; }
 	hlslpp_inline uint1 asuint(const int1& v) { return (uint1&)v; }
 	hlslpp_inline uint2 asuint(const int2& v) { return (uint2&)v; }
 	hlslpp_inline uint3 asuint(const int3& v) { return (uint3&)v; }
 	hlslpp_inline uint4 asuint(const int4& v) { return (uint4&)v; }
 
-	hlslpp_inline uint asuint(const float v) { return (uint&)v; }
+	hlslpp_inline uint asuint(const float v) { return detail::packed_union(v)._u32; }
 	hlslpp_inline uint1 asuint(const float1& v) { return (uint1&)v; }
 	hlslpp_inline uint2 asuint(const float2& v) { return (uint2&)v; }
 	hlslpp_inline uint3 asuint(const float3& v) { return (uint3&)v; }
 	hlslpp_inline uint4 asuint(const float4& v) { return (uint4&)v; }
 
-	hlslpp_inline int asint(const uint v) { return (int&)v; }
+	hlslpp_inline int asint(const uint v) { return detail::packed_union(v)._i32; }
 	hlslpp_inline int1 asint(const uint1& v) { return (int1&)v; }
 	hlslpp_inline int2 asint(const uint2& v) { return (int2&)v; }
 	hlslpp_inline int3 asint(const uint3& v) { return (int3&)v; }
 	hlslpp_inline int4 asint(const uint4& v) { return (int4&)v; }
 
-	hlslpp_inline int asint(const float v) { return (int&)v; }
+	hlslpp_inline int asint(const float v) { return detail::packed_union(v)._i32; }
 	hlslpp_inline int1 asint(const float1& v) { return (int1&)v; }
 	hlslpp_inline int2 asint(const float2& v) { return (int2&)v; }
 	hlslpp_inline int3 asint(const float3& v) { return (int3&)v; }

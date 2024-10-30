@@ -37,16 +37,16 @@ hlslpp_module_export namespace hlslpp
 	const n128 f4_pi4         = _hlslpp_set1_ps(0.78539816f);  // pi / 4
 	const n128 f4_minusPi4    = _hlslpp_set1_ps(-0.78539816f); // -pi / 4
 
-	const n128 f4_NaN         = _hlslpp_set1_ps(nanMask.f);      // Quiet NaN
-	const n128 f4_inf         = _hlslpp_set1_ps(infMask.f);      // Infinity
-	const n128 f4_minusinf    = _hlslpp_set1_ps(minusinfMask.f); // -Infinity
-	const n128 f4_fff         = _hlslpp_set1_ps(fffMask.f);      // 0xffffffff
+	const n128 f4_NaN         = _hlslpp_set1_ps(nanMask._f32);      // Quiet NaN
+	const n128 f4_inf         = _hlslpp_set1_ps(infMask._f32);      // Infinity
+	const n128 f4_minusinf    = _hlslpp_set1_ps(minusinfMask._f32); // -Infinity
+	const n128 f4_fff         = _hlslpp_set1_ps(fffMask._f32);      // 0xffffffff
 
 	const n128 f4_rad2deg     = _hlslpp_set1_ps(180.0f / 3.14159265f);
 	const n128 f4_deg2rad     = _hlslpp_set1_ps(3.14159265f / 180.f);
 
-	const n128 f4negativeMask = _hlslpp_set1_ps(negMask.f);
-	const n128 f4absMask      = _hlslpp_set1_ps(absMask.f);
+	const n128 f4negativeMask = _hlslpp_set1_ps(negMask._f32);
+	const n128 f4absMask      = _hlslpp_set1_ps(absMask._f32);
 
 	//------------------
 	// Integer Constants
@@ -55,9 +55,9 @@ hlslpp_module_export namespace hlslpp
 	const n128i i4_0           = _hlslpp_set1_epi32(0);
 	const n128i i4_1           = _hlslpp_set1_epi32(1);
 
-	const n128i i4negativeMask = _hlslpp_set1_epi32(negMask.i);
-	const n128i i4fffMask      = _hlslpp_set1_epi32(fffMask.i);
-	const n128i i4negMask      = _hlslpp_set1_epi32(negMask.i);
+	const n128i i4negativeMask = _hlslpp_set1_epi32(negMask._i32);
+	const n128i i4fffMask      = _hlslpp_set1_epi32(fffMask._i32);
+	const n128i i4negMask      = _hlslpp_set1_epi32(negMask._i32);
 
 	const n128u u4_0           = _hlslpp_set1_epu32(0);
 	const n128u u4_1           = _hlslpp_set1_epu32(1);
@@ -93,16 +93,16 @@ hlslpp_module_export namespace hlslpp
 	const n256 f8_pi4         = _hlslpp256_set1_ps(0.78539816f);  // pi / 4
 	const n256 f8_minusPi4    = _hlslpp256_set1_ps(-0.78539816f); // -pi / 4
 
-	const n256 f8_NaN         = _hlslpp256_set1_ps(nanMask.f);      // Quiet NaN
-	const n256 f8_inf         = _hlslpp256_set1_ps(infMask.f);      // Infinity
-	const n256 f8_minusinf    = _hlslpp256_set1_ps(minusinfMask.f); // -Infinity
-	const n256 f8_fff         = _hlslpp256_set1_ps(fffMask.f);      // 0xffffffff
+	const n256 f8_NaN         = _hlslpp256_set1_ps(nanMask._f32);      // Quiet NaN
+	const n256 f8_inf         = _hlslpp256_set1_ps(infMask._f32);      // Infinity
+	const n256 f8_minusinf    = _hlslpp256_set1_ps(minusinfMask._f32); // -Infinity
+	const n256 f8_fff         = _hlslpp256_set1_ps(fffMask._f32);      // 0xffffffff
 
 	const n256 f8_rad2deg     = _hlslpp256_set1_ps(180.0f / 3.14159265f);
 	const n256 f8_deg2rad     = _hlslpp256_set1_ps(3.14159265f / 180.f);
 
-	const n256 f8negativeMask = _hlslpp256_set1_ps(negMask.f);
-	const n256 f8absMask      = _hlslpp256_set1_ps(absMask.f);
+	const n256 f8negativeMask = _hlslpp256_set1_ps(negMask._f32);
+	const n256 f8absMask      = _hlslpp256_set1_ps(absMask._f32);
 
 #endif
 

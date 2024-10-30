@@ -129,17 +129,17 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 
 	hlslpp_inline vector_float4 _hlslpp_cmpeq_ps(const vector_float4& v1, const vector_float4& v2)
 	{
-		return vector_float4(v1.x == v2.x ? fffMask.f : 0, v1.y == v2.y ? fffMask.f : 0, v1.z == v2.z ? fffMask.f : 0, v1.w == v2.w ? fffMask.f : 0);
+		return vector_float4(v1.x == v2.x ? fffMask._f32 : 0, v1.y == v2.y ? fffMask._f32 : 0, v1.z == v2.z ? fffMask._f32 : 0, v1.w == v2.w ? fffMask._f32 : 0);
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_cmpneq_ps(const vector_float4& v1, const vector_float4& v2)
 	{
-		return vector_float4(v1.x != v2.x ? fffMask.f : 0, v1.y != v2.y ? fffMask.f : 0, v1.z != v2.z ? fffMask.f : 0, v1.w != v2.w ? fffMask.f : 0);
+		return vector_float4(v1.x != v2.x ? fffMask._f32 : 0, v1.y != v2.y ? fffMask._f32 : 0, v1.z != v2.z ? fffMask._f32 : 0, v1.w != v2.w ? fffMask._f32 : 0);
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_cmpgt_ps(const vector_float4& v1, const vector_float4& v2)
 	{
-		return vector_float4(v1.x > v2.x ? fffMask.f : 0, v1.y > v2.y ? fffMask.f : 0, v1.z > v2.z ? fffMask.f : 0, v1.w > v2.w ? fffMask.f : 0);
+		return vector_float4(v1.x > v2.x ? fffMask._f32 : 0, v1.y > v2.y ? fffMask._f32 : 0, v1.z > v2.z ? fffMask._f32 : 0, v1.w > v2.w ? fffMask._f32 : 0);
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_cmpge_ps(const vector_float4& v1, const vector_float4& v2)
@@ -976,19 +976,6 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 	//-------------
 	// Data Packing
 	//-------------
-
-	namespace detail
-	{
-		union packed_union
-		{
-			packed_union() {}
-			packed_union(uint32_t u32) : u32(u32) {}
-
-			uint32_t u32;
-			uint8_t u8[4];
-			char c[4];
-		};
-	};
 
 	hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_unorm(vector_float4 v)
 	{
