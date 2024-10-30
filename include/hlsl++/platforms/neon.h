@@ -299,6 +299,12 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 	return vmulq_f32(rcpx_e, vrecpsq_f32(x, rcpx_e));		// Refine
 }
 
+#define vandq_f32(x, y) vreinterpretq_f32_u32(vandq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
+#define vbicq_f32(x, y) vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32((y)), vreinterpretq_u32_f32((x))))
+#define vmvnq_f32(x)    vreinterpretq_f32_u32(vmvnq_u32(vreinterpretq_u32_f32((x))))
+#define vorrq_f32(x, y) vreinterpretq_f32_u32(vorrq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
+#define veorq_f32(x, y) vreinterpretq_f32_u32(veorq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
+
 //------
 // Float
 //------
@@ -354,11 +360,11 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_sat_ps(x)						vmaxq_f32(vminq_f32((x), f4_1), f4_0)
 
 // http://codesuppository.blogspot.co.uk/2015/02/sse2neonh-porting-guide-and-header-file.html
-#define _hlslpp_and_ps(x, y)					vreinterpretq_f32_u32(vandq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
-#define _hlslpp_andnot_ps(x, y)					vreinterpretq_f32_u32(vbicq_u32(vreinterpretq_u32_f32((y)), vreinterpretq_u32_f32((x))))
-#define _hlslpp_not_ps(x)						vreinterpretq_f32_u32(vmvnq_u32(vreinterpretq_u32_f32((x))))
-#define _hlslpp_or_ps(x, y)						vreinterpretq_f32_u32(vorrq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
-#define _hlslpp_xor_ps(x, y)					vreinterpretq_f32_u32(veorq_u32(vreinterpretq_u32_f32((x)), vreinterpretq_u32_f32((y))))
+#define _hlslpp_and_ps(x, y)					vandq_f32((x), (y))
+#define _hlslpp_andnot_ps(x, y)					vbicq_f32((y), (x))
+#define _hlslpp_not_ps(x)						vmvnq_f32((x))
+#define _hlslpp_or_ps(x, y)						vorrq_f32((x), (y))
+#define _hlslpp_xor_ps(x, y)					veorq_f32((x), (y))
 
 // SSE: Move the lower 2 single-precision (32-bit) floating-point elements from b to the upper 2 elements of dst, and copy the lower 2 elements from a to the lower 2 elements of dst.
 #define _hlslpp_movelh_ps(x, y)					vcombine_f32(vget_low_f32(x), vget_low_f32(y))
@@ -966,3 +972,45 @@ hlslpp_inline void _hlslpp_load4_pd(double* p, n128d& x0, n128d& x1)
 }
 
 #endif
+
+//-------------
+// Data Packing
+//-------------
+
+hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_unorm(float32x4_t v)
+{
+	float32x4_t v255f = vmlaq_f32(vmovq_n_f32(0.5f), v, vmovq_n_f32(255.0f));
+	uint32x4_t v255i = vcvtq_u32_f32(v255f);
+	uint16x4_t conv16 = vqmovun_s32(v255i);
+	uint8x8_t conv8 = vqmovn_u16(vcombine_u16(conv16, conv16));
+	return vget_lane_u32(vget_low_u32(vreinterpretq_u32_u8(vcombine_u8(conv8, conv8))), 0);
+}
+
+hlslpp_inline float32x4_t _hlslpp_unpack_rgba8_unorm_epu32(uint32_t p)
+{
+	uint8x16_t packed8 = vmovq_n_u32(p);
+	uint16x8_t packed16 = vmovl_u8(vget_low_u8(packed8));
+	uint32x4_t packed32 = vmovl_u16(vget_low_u16(packed16));
+	float32x4_t t = vcvtq_f32_s32(packed32);
+	return vmulq_f32(t, vmovq_n_f32(1.0f / 255.0f));
+}
+
+hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_snorm(float32x4_t v)
+{
+	// Copy sign from x to 0.5
+	float32x4_t vbias = vorrq_f32(vmovq_n_f32(0.5f), vandq_f32(v, vreinterpretq_u32_f32(vmovq_n_s32(0x80000000u))));
+	float32x4_t v127f = vmlaq_f32(vbias, v, vmovq_n_f32(127.0f));
+	int32x4_t v127i = vcvtq_s32_f32(v127f);
+	int16x4_t conv16 = vqmovn_s32(v127i);
+	int8x8_t conv8 = vqmovn_s16(vcombine_s16(conv16, conv16));
+	return vget_lane_s32(vget_low_s32(vreinterpretq_s32_s8(vcombine_s8(conv8, conv8))), 0);
+}
+
+hlslpp_inline float32x4_t _hlslpp_unpack_rgba8_snorm_epu32(uint32_t p)
+{
+	int8x16_t packed8 = vmovq_n_s32(p);
+	int16x8_t packed16 = vmovl_s8(vget_low_s8(packed8));
+	int32x4_t packed32 = vmovl_s16(vget_low_s16(packed16));
+	float32x4_t t = vcvtq_f32_s32(packed32);
+	return vmulq_f32(t, vmovq_n_f32(1.0f / 127.0f));
+}

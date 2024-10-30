@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math.h"
-#include "stdint.h"
+#include <math.h>
+#include <stdint.h>
 
 namespace hlslpp
 {
@@ -972,4 +972,62 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 	hlslpp_inline void _hlslpp_load2_epu32(uint32_t* p, vector_uint4& v) { v.x = p[0]; v.y = p[1]; }
 	hlslpp_inline void _hlslpp_load3_epu32(uint32_t* p, vector_uint4& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; }
 	hlslpp_inline void _hlslpp_load4_epu32(uint32_t* p, vector_uint4& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; v.w = p[3]; }
+
+	//-------------
+	// Data Packing
+	//-------------
+
+	namespace detail
+	{
+		union packed_union
+		{
+			packed_union() {}
+			packed_union(uint32_t u32) : u32(u32) {}
+
+			uint32_t u32;
+			uint8_t u8[4];
+			char c[4];
+		};
+	};
+
+	hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_unorm(vector_float4 v)
+	{
+		vector_float4 v255f = vector_float4(v.x * 255.0f + 0.5f, v.y * 255.0f + 0.5f, v.z * 255.0f + 0.5f, v.w * 255.0f + 0.5f);
+		detail::packed_union packed;
+		packed.c[0] = (uint8_t)v255f.x;
+		packed.c[1] = (uint8_t)v255f.y;
+		packed.c[2] = (uint8_t)v255f.z;
+		packed.c[3] = (uint8_t)v255f.w;
+		return packed.u32;
+	}
+
+	hlslpp_inline vector_float4 _hlslpp_unpack_rgba8_unorm_epu32(uint32_t p)
+	{
+		detail::packed_union packed(p);
+		return vector_float4(packed.u8[0] / 255.0f, packed.u8[1] / 255.0f, packed.u8[2] / 255.0f, packed.u8[3] / 255.0f);
+	}
+
+	hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_snorm(vector_float4 v)
+	{
+		vector_float4 v127f = vector_float4
+		(
+			v.x * 127.0f + (v.x > 0.0f ? 0.5f : -0.5f),
+			v.y * 127.0f + (v.y > 0.0f ? 0.5f : -0.5f),
+			v.z * 127.0f + (v.z > 0.0f ? 0.5f : -0.5f),
+			v.w * 127.0f + (v.w > 0.0f ? 0.5f : -0.5f)
+		);
+
+		detail::packed_union packed;
+		packed.c[0] = (char)v127f.x;
+		packed.c[1] = (char)v127f.y;
+		packed.c[2] = (char)v127f.z;
+		packed.c[3] = (char)v127f.w;
+		return packed.u32;
+	}
+
+	hlslpp_inline vector_float4 _hlslpp_unpack_rgba8_snorm_epu32(uint32_t p)
+	{
+		detail::packed_union packed(p);
+		return vector_float4(packed.c[0] / 127.0f, packed.c[1] / 127.0f, packed.c[2] / 127.0f, packed.c[3] / 127.0f);
+	}
 }

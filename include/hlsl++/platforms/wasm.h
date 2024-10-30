@@ -425,3 +425,37 @@ hlslpp_inline void _hlslpp_load1_epu32(uint32_t* p, n128u& x) { _hlslpp_load1_ep
 hlslpp_inline void _hlslpp_load2_epu32(uint32_t* p, n128u& x) { _hlslpp_load2_epi32((int32_t*)p, x); }
 hlslpp_inline void _hlslpp_load3_epu32(uint32_t* p, n128u& x) { _hlslpp_load3_epi32((int32_t*)p, x); }
 hlslpp_inline void _hlslpp_load4_epu32(uint32_t* p, n128u& x) { _hlslpp_load4_epi32((int32_t*)p, x); }
+
+//-------------
+// Data Packing
+//-------------
+
+hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_unorm(__f32x4 v)
+{
+	__f32x4 v255f = _hlslpp_madd_ps(v, wasm_f32x4_const_splat(255.0f), wasm_f32x4_const_splat(0.5f));
+	__i32x4 v255i = wasm_i32x4_trunc_sat_f32x4(v255f);
+	return wasm_i8x16_shuffle(v255i, v255i, 0, 4, 8, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)[0];
+}
+
+hlslpp_inline __f32x4 _hlslpp_unpack_rgba8_unorm_epu32(uint32_t p)
+{
+	__i32x4 i = wasm_u32x4_splat(p);
+	__f32x4 t = wasm_f32x4_convert_u32x4(wasm_u32x4_extend_low_u16x8(wasm_u16x8_extend_low_u8x16(i)));
+	return wasm_f32x4_mul(t, wasm_f32x4_const_splat(1.0f / 255.0f));
+}
+
+inline uint32_t _hlslpp_pack_epu32_rgba8_snorm(__f32x4 v)
+{
+	// Copy sign from x to 0.5
+	__f32x4 vbias = wasm_v128_or(wasm_f32x4_const_splat(0.5f), wasm_v128_and(v, wasm_i32x4_const_splat(0x80000000u)));
+	__f32x4 v127f = _hlslpp_madd_ps(v, wasm_f32x4_const_splat(127.0f), vbias);
+	__i32x4 v127i = wasm_i32x4_trunc_sat_f32x4(v127f);
+	return wasm_i8x16_shuffle(v127i, v127i, 0, 4, 8, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)[0];
+}
+
+inline __f32x4 _hlslpp_unpack_rgba8_snorm_epu32(uint32_t p)
+{
+	__i32x4 i = wasm_u32x4_splat(p);
+	__f32x4 t = wasm_f32x4_convert_i32x4(wasm_i32x4_extend_low_i16x8(wasm_i16x8_extend_low_i8x16(i)));
+	return wasm_f32x4_mul(t, wasm_f32x4_const_splat(1.0f / 127.0f));
+}

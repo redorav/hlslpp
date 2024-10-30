@@ -4,7 +4,6 @@ export module hlslpp;
 
 #include "hlsl++/vector_float.h"
 #include "hlsl++/vector_float8.h"
-#include "hlsl++/vector_float_pack.h"
 
 #include "hlsl++/vector_int.h"
 #include "hlsl++/vector_uint.h"
@@ -14,3 +13,5 @@ export module hlslpp;
 
 #include "hlsl++/quaternion.h"
 #include "hlsl++/dependent.h"
+
+#include "hlsl++/data_packing.h"
