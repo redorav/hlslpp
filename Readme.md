@@ -3,7 +3,7 @@
 
 # HLSL++
 
-Small header-only math library for C++ with the same syntax as the hlsl shading language. It features swizzling and all the operators and functions from the [hlsl documentation](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reference). The library is aimed mainly at game developers as it's meant to ease the C++ to shader bridge by providing common syntax, but can be used for any application requiring fast, portable math. It also adds some functionality that hlsl doesn't natively provide, such as convenient matrix functions, quaternions and extended vectors such as float8 (8-component float) that take advantage of wide SIMD registers.
+Small header-only math library for C++ with the same syntax as the hlsl shading language. It features swizzling and all the operators and functions from the [hlsl documentation](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reference). The library is aimed mainly at game developers as it's meant to ease the C++ to shader bridge by providing common syntax, but can be used for any application requiring fast, portable math. It also adds some functionality that hlsl doesn't natively provide, such as convenient matrix functions, quaternions, data packing functions and extended vectors such as float8 (8-component float) that take advantage of wide SIMD registers.
 
 ## Platforms
 
@@ -16,24 +16,45 @@ Small header-only math library for C++ with the same syntax as the hlsl shading 
 hlsl++ allows you to be as expressive in C++ as when programming in the shader language. Constructs such as the following are possible.
 
 ```hlsl
+// Native types
 float4 foo4 = float4(1, 2, 3, 4);
+
+// Swizzling
 float3 bar3 = foo4.xzy;
+
+// HLSL functions
 float2 logFoo2 = log(bar3.xz);
+
+// Swizzle of swizzle
 foo4.wx = logFoo2.yx;
+
+// Combined constructors
 float4 baz4 = float4(logFoo2, foo4.zz);
+
+// Matrices
 float4x4 fooMatrix4x4 = float4x4( 1, 2, 3, 4,
                                   5, 6, 7, 8,
                                   8, 7, 6, 5,
                                   4, 3, 2, 1);
+
+// Matrix transformations
 float4 myTransformedVector = mul(fooMatrix4x4, baz4);
+
+// Integer operations
 int2 ifoo2 = int2(1, 2);
 int4 ifoo4 = int4(1, 2, 3, 4) + ifoo2.xyxy;
+
+// Casts
 float4 fooCast4 = ifoo4.wwyx;
 
+// Float8
 float8 foo8 = float8(1, 2, 3, 4, 5, 6, 7, 8);
 float8 bar8 = float8(1, 2, 3, 4, 5, 6, 7, 8);
 float8 add8 = foo8 + bar8;
 
+// Data packing
+uint rgba8Packed     = pack_float4_rgba8_unorm(foo4);
+float4 rgba8Unpacked = unpack_rgba8_unorm_float4(rgba8Packed);
 ```
 
 The natvis files provided for Visual Studio debugging allow you to see both vectors and the result of the swizzling in the debugging window in a programmer-friendly way.
@@ -84,6 +105,7 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 * hlsl vector functions: abs, acos, all, any, asin, atan, atan2, ceil, clamp, cos, cosh, cross, degrees, distance, dot, floor, fmod, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, max, mad, min, modf, normalize, pow, radians, reflect, refract, round, rsqrt, saturate, sign, sin, sincos, sinh, smoothstep, sqrt, step, trunc, tan, tanh
 * Additional matrix functions: determinant, transpose, inverse (not in hlsl but very useful)
 * Matrix multiplication for all NxM matrix combinations
+* Data packing functions such as pack_float4_rgba8_unorm or pack_float3_rg11b10f
 * Transformation matrices for scale, rotation and translation, as well as world-to-view look_at and view-to-projection orthographic/perspective coordinate transformations. These static functions are optionally available for matrix types float2x2, float3x3, float4x4 when hlsl++.h is compiled with HLSLPP_FEATURE_TRANSFORM definition.
 * Native visualizers for Visual Studio (.natvis files) which correctly parse with both MSVC and Clang in Windows
 
