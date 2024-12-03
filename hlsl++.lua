@@ -84,7 +84,7 @@ workspace("hlsl++")
 	cppdialect("c++11")
 	defines { "HLSLPP_FEATURE_TRANSFORM" }
 	warnings('extra')
-	fatalwarnings { 'compile' }
+	flags { 'fatalcompilewarnings' }
 	
 	if(isXCodeBuild) then
 	
