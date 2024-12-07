@@ -316,7 +316,7 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	static_assert(alignof(int4) == 16, "Mismatched alignment");
+	static_assert(hlslpp_alignof(int4) == 16, "Mismatched alignment");
 };
 
 HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
