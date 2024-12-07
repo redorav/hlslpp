@@ -76,10 +76,18 @@
 	#define hlslpp_noexcept
 	#define hlslpp_swizzle_start struct {
 	#define hlslpp_swizzle_end };
+
+	#define hlslpp_alignas(x) __declspec(align(x))
+	#define hlslpp_alignof(T) __alignof(T)
+
 #else
 	#define hlslpp_noexcept noexcept
 	#define hlslpp_swizzle_start
 	#define hlslpp_swizzle_end
+
+	#define hlslpp_alignas(x) alignas(x)
+	#define hlslpp_alignof(T) alignof(T)
+	
 #endif
 
 #if defined(__cpp_user_defined_literals)
