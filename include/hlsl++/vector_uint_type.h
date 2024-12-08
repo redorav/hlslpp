@@ -97,7 +97,7 @@ namespace hlslpp
 		n128u vec;
 	};
 	
-	struct hlslpp_nodiscard uint1
+	struct hlslpp_nodiscard hlslpp_alignas(16) uint1
 	{
 		hlslpp_inline uint1() hlslpp_noexcept : vec(_hlslpp_setzero_epu32()) {}
 		hlslpp_inline uint1(const uint1& i) hlslpp_noexcept : vec(i.vec) {}
@@ -140,7 +140,7 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard uint2
+	struct hlslpp_nodiscard hlslpp_alignas(16) uint2
 	{
 		// Constructors
 
@@ -189,7 +189,7 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 	
-	struct hlslpp_nodiscard uint3
+	struct hlslpp_nodiscard hlslpp_alignas(16) uint3
 	{
 		// Constructors
 
@@ -245,7 +245,7 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard uint4
+	struct hlslpp_nodiscard hlslpp_alignas(16) uint4
 	{
 		hlslpp_inline uint4() hlslpp_noexcept : vec(_hlslpp_setzero_epu32()) {}
 		hlslpp_inline uint4(const uint4& i) hlslpp_noexcept : vec(i.vec) {}

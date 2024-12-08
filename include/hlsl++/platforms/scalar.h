@@ -5,7 +5,7 @@
 
 namespace hlslpp
 {
-	struct hlslpp_alignas(16) vector_float4
+	struct vector_float4
 	{
 		hlslpp_inline vector_float4() {}
 		hlslpp_inline vector_float4(float f) : x(f), y(f), z(f), w(f) {}
@@ -29,7 +29,7 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_alignas(16) vector_int4
+	struct vector_int4
 	{
 		static const int32_t Max =  2147483647;
 		static const int32_t Min = -2147483647 - 1;
@@ -51,7 +51,7 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_alignas(16) vector_uint4
+	struct vector_uint4
 	{
 		static const uint32_t Max = 4294967295;
 
