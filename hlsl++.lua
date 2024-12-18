@@ -303,6 +303,7 @@ if (supportsARMBuild) then
 
 project (AndroidProject)
 	removeplatforms("*")
+	system('android')
 	platforms { PlatformAndroidARM, PlatformAndroidARM64 }
 	kind("Packaging") -- This type of project builds the apk
 	links (UnitTestProject) -- Android needs to link to the main project which was built as a dynamic library
