@@ -1,18 +1,19 @@
 #pragma once
 
-#if defined(_M_ARM64) || defined(__aarch64__)
+#if defined(_M_ARM64) || defined(_M_ARM64EC) || defined(__aarch64__)
 
 	#define HLSLPP_ARM64
 	#define HLSLPP_DOUBLE
 
 #endif
 
-#if defined(_M_ARM64)
+// Before VS2019 MSVC didn't handle arm_neon.h properly which is the standard
+// way of including the NEON header. Many intrinsics were poorly mapped there
+// too so we keep this compatibility layer. Later VS versions handle it properly
+#if defined(_M_ARM64) && (_MSC_VER < 1920)
 
-	// The Microsoft ARM64 header is named differently
 	#include <arm64_neon.h>
 
-	// The Microsoft ARM64 headers don't define these
 #if !defined(vmaxvq_u32)
 	#define vmaxvq_u32(x) neon_umaxvq32(x)
 #endif
