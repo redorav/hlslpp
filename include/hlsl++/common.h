@@ -179,7 +179,17 @@ hlslpp_module_export namespace hlslpp
 	#define _hlslpp_perm_zyzx_ps(x)		_hlslpp_perm_ps((x), MaskZ, MaskY, MaskZ, MaskX)
 	#define _hlslpp_perm_wwwx_ps(x)		_hlslpp_perm_ps((x), MaskW, MaskW, MaskW, MaskX)
 	#define _hlslpp_perm_wxyz_ps(x)		_hlslpp_perm_ps((x), MaskW, MaskX, MaskY, MaskZ)
+
+	#define _hlslpp_perm_xxxx_epi32(x)		_hlslpp_perm_epi32((x), MaskX, MaskX, MaskX, MaskX)
+	#define _hlslpp_perm_yyyy_epi32(x)		_hlslpp_perm_epi32((x), MaskY, MaskY, MaskY, MaskY)
+	#define _hlslpp_perm_zzzz_epi32(x)		_hlslpp_perm_epi32((x), MaskZ, MaskZ, MaskZ, MaskZ)
+	#define _hlslpp_perm_wwww_epi32(x)		_hlslpp_perm_epi32((x), MaskW, MaskW, MaskW, MaskW)
 	
+	#define _hlslpp_perm_xxxx_epu32(x)		_hlslpp_perm_epu32((x), MaskX, MaskX, MaskX, MaskX)
+	#define _hlslpp_perm_yyyy_epu32(x)		_hlslpp_perm_epu32((x), MaskY, MaskY, MaskY, MaskY)
+	#define _hlslpp_perm_zzzz_epu32(x)		_hlslpp_perm_epu32((x), MaskZ, MaskZ, MaskZ, MaskZ)
+	#define _hlslpp_perm_wwww_epu32(x)		_hlslpp_perm_epu32((x), MaskW, MaskW, MaskW, MaskW)
+
 	#define _hlslpp_shuf_xxxx_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskX, MaskX, MaskX, MaskX)
 	#define _hlslpp_shuf_xxxy_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskX, MaskX, MaskX, MaskY)
 	#define _hlslpp_shuf_xyxx_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskX, MaskY, MaskX, MaskX)

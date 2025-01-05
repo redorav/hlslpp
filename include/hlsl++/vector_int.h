@@ -30,6 +30,34 @@ hlslpp_module_export namespace hlslpp
 		return i;
 	}
 
+	hlslpp_inline n128i _hlslpp_dot2_epi32(n128i x, n128i y)
+	{
+		n128i multi  = _hlslpp_mul_epi32(x, y); // Multiply components together
+		n128i shuf1  = _hlslpp_perm_epi32(multi, MaskY, MaskY, MaskY, MaskY); // Move y into x
+		n128i result = _hlslpp_add_epi32(shuf1, multi); // Contains x+y, _, _, _
+		return result;
+	}
+
+	hlslpp_inline n128i _hlslpp_dot3_epi32(n128i x, n128i y)
+	{
+		n128i multi  = _hlslpp_mul_epi32(x, y);         // Multiply components together
+		n128i shuf1  = _hlslpp_perm_yyyy_epi32(multi);  // Move y into x
+		n128i add1   = _hlslpp_add_epi32(shuf1, multi); // Contains x+y, _, _, _
+		n128i shuf2  = _hlslpp_perm_zzzz_epi32(multi);  // Move z into x
+		n128i result = _hlslpp_add_epi32(add1, shuf2);  // Contains x+y+z, _, _, _
+		return result;
+	}
+
+	hlslpp_inline n128i _hlslpp_dot4_epi32(n128i x, n128i y)
+	{
+		n128i multi  = _hlslpp_mul_epi32(x, y);         // Multiply components together
+		n128i shuf1  = _hlslpp_perm_epi32(multi, MaskY, MaskX, MaskW, MaskX);  // Move y into x and w into z (ignore the rest)
+		n128i add1   = _hlslpp_add_epi32(shuf1, multi); // Contains x+y, _, z+w, _
+		n128i shuf2  = _hlslpp_perm_zzzz_epi32(multi);  // Move z+w into x
+		n128i result = _hlslpp_add_epi32(add1, shuf2);  // Contains x+y+z+w, _, _, _
+		return result;
+	}
+
 	// https://stackoverflow.com/questions/10439242/count-leading-zeroes-in-an-int32
 	hlslpp_inline n128i _hlslpp_firstbithigh_epi32(const n128i i)
 	{
@@ -394,6 +422,11 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	hlslpp_inline int2 countbits(const int2& i) { return int2(_hlslpp_countbits_epi32(i.vec)); }
 	hlslpp_inline int3 countbits(const int3& i) { return int3(_hlslpp_countbits_epi32(i.vec)); }
 	hlslpp_inline int4 countbits(const int4& i) { return int4(_hlslpp_countbits_epi32(i.vec)); }
+
+	hlslpp_inline int1 dot(const int1& i1, const int1& i2) { return int1(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline int1 dot(const int2& i1, const int2& i2) { return int1(_hlslpp_dot2_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline int1 dot(const int3& i1, const int3& i2) { return int1(_hlslpp_dot3_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline int1 dot(const int4& i1, const int4& i2) { return int1(_hlslpp_dot4_epi32(i1.vec, i2.vec)); }
 
 	hlslpp_inline int1 firstbithigh(const int1& i) { return int1(_hlslpp_firstbithigh_epi32(i.vec)); }
 	hlslpp_inline int2 firstbithigh(const int2& i) { return int2(_hlslpp_firstbithigh_epi32(i.vec)); }

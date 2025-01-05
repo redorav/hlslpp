@@ -150,17 +150,23 @@ hlslpp_inline uint32x4_t vmov4q_n_u32(const uint32_t x, const uint32_t y, const 
 	return vld1q_u32(values);
 }
 
+namespace hlslpp
+{
+	const uint32_t ControlMask[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle x, swizzle y, swizzle z, swizzle w
+
+	const uint32_t ControlMaskX[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0,
+	const uint32_t ControlMaskY[4] = { 0x13121110, 0x17161514, 0x1B1A1918, 0x1F1E1D1C }; // Swizzle X1, swizzle Y1, swizzle Z1, swizzle W1
+};
+
 // Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
 hlslpp_inline float32x4_t vpermq_f32(const float32x4_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
 {
-	static const uint32_t ControlMask[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle x, swizzle y, swizzle z, swizzle w
-
 	uint8x8x2_t tbl = { { vget_low_f32(x), vget_high_f32(x) } }; // Get floats
 
-	const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMask[X]) | (((uint64_t)ControlMask[Y]) << 32));
+	const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMask[X]) | (((uint64_t)hlslpp::ControlMask[Y]) << 32));
 	const uint8x8_t rL = vtbl2_u8(tbl, idxL);
 
-	const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMask[Z]) | (((uint64_t)ControlMask[W]) << 32));
+	const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMask[Z]) | (((uint64_t)hlslpp::ControlMask[W]) << 32));
 	const uint8x8_t rH = vtbl2_u8(tbl, idxH);
 
 	return vcombine_f32(rL, rH);
@@ -168,15 +174,12 @@ hlslpp_inline float32x4_t vpermq_f32(const float32x4_t x, const uint32_t X, cons
 
 hlslpp_inline float32x4_t vshufq_f32(const float32x4_t x, const float32x4_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
 {
-	static const uint32_t ControlMaskX[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0,
-	static const uint32_t ControlMaskY[4] = { 0x13121110, 0x17161514, 0x1B1A1918, 0x1F1E1D1C }; // Swizzle X1, swizzle Y1, swizzle Z1, swizzle W1
-
 	uint8x8x4_t tbl = { { vget_low_f32(x), vget_high_f32(x), vget_low_f32(y), vget_high_f32(y) } };
 
-	const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMaskX[X0]) | (((uint64_t)ControlMaskX[Y0]) << 32));
+	const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMaskX[X0]) | (((uint64_t)hlslpp::ControlMaskX[Y0]) << 32));
 	const uint8x8_t rL = vtbl4_u8(tbl, idxL);
 
-	const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMaskY[X1]) | (((uint64_t)ControlMaskY[Y1]) << 32));
+	const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMaskY[X1]) | (((uint64_t)hlslpp::ControlMaskY[Y1]) << 32));
 	const uint8x8_t rH = vtbl4_u8(tbl, idxH);
 
 	return vcombine_f32(rL, rH);
@@ -185,14 +188,12 @@ hlslpp_inline float32x4_t vshufq_f32(const float32x4_t x, const float32x4_t y, c
 // Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
 hlslpp_inline int32x4_t vpermq_s32(const int32x4_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
 {
-	static const uint32_t ControlMask[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle x, swizzle y, swizzle z, swizzle w
-
 	uint8x8x2_t tbl = { { vget_low_s32(x), vget_high_s32(x) } }; // Get ints
 
-	const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMask[X]) | (((uint64_t)ControlMask[Y]) << 32));
+	const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMask[X]) | (((uint64_t)hlslpp::ControlMask[Y]) << 32));
 	const uint8x8_t rL = vtbl2_u8(tbl, idxL);
 
-	const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMask[Z]) | (((uint64_t)ControlMask[W]) << 32));
+	const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMask[Z]) | (((uint64_t)hlslpp::ControlMask[W]) << 32));
 	const uint8x8_t rH = vtbl2_u8(tbl, idxH);
 
 	return vcombine_s32(rL, rH);
@@ -200,15 +201,39 @@ hlslpp_inline int32x4_t vpermq_s32(const int32x4_t x, const uint32_t X, const ui
 
 hlslpp_inline int32x4_t vshufq_s32(const int32x4_t x, const int32x4_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
 {
-	static const uint32_t ControlMaskX[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0,
-	static const uint32_t ControlMaskY[4] = { 0x13121110, 0x17161514, 0x1B1A1918, 0x1F1E1D1C }; // Swizzle X1, swizzle Y1, swizzle Z1, swizzle W1
-
 	uint8x8x4_t tbl = { { vget_low_s32(x), vget_high_s32(x), vget_low_s32(y), vget_high_s32(y) } };
 
-	const uint8x8_t idxL = vcreate_u8(((uint64_t)ControlMaskX[X0]) | (((uint64_t)ControlMaskX[Y0]) << 32));
+	const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMaskX[X0]) | (((uint64_t)hlslpp::ControlMaskX[Y0]) << 32));
 	const uint8x8_t rL = vtbl4_u8(tbl, idxL);
 
-	const uint8x8_t idxH = vcreate_u8(((uint64_t)ControlMaskY[X1]) | (((uint64_t)ControlMaskY[Y1]) << 32));
+	const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMaskY[X1]) | (((uint64_t)hlslpp::ControlMaskY[Y1]) << 32));
+	const uint8x8_t rH = vtbl4_u8(tbl, idxH);
+
+	return vcombine_s32(rL, rH);
+}
+
+// Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
+hlslpp_inline uint32x4_t vpermq_u32(const uint32x4_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
+{
+	uint8x8x2_t tbl = { { vget_low_u32(x), vget_high_u32(x) } }; // Get ints
+
+	const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMask[X]) | (((uint64_t)hlslpp::ControlMask[Y]) << 32));
+	const uint8x8_t rL = vtbl2_u8(tbl, idxL);
+
+	const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMask[Z]) | (((uint64_t)hlslpp::ControlMask[W]) << 32));
+	const uint8x8_t rH = vtbl2_u8(tbl, idxH);
+
+	return vcombine_u32(rL, rH);
+}
+
+hlslpp_inline uint32x4_t vshufq_u32(const uint32x4_t x, const int32x4_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
+{
+	uint8x8x4_t tbl = { { vget_low_u32(x), vget_high_u32(x), vget_low_u32(y), vget_high_u32(y) } };
+
+	const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMaskX[X0]) | (((uint64_t)hlslpp::ControlMaskX[Y0]) << 32));
+	const uint8x8_t rL = vtbl4_u8(tbl, idxL);
+
+	const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMaskY[X1]) | (((uint64_t)hlslpp::ControlMaskY[Y1]) << 32));
 	const uint8x8_t rH = vtbl4_u8(tbl, idxH);
 
 	return vcombine_s32(rL, rH);
@@ -690,6 +715,9 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 
 #define _hlslpp_clamp_epu32(x, minx, maxx)		vmaxq_u32(vminq_u32((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					vmaxq_u32(vminq_u32((x), i4_1), i4_0)
+
+#define _hlslpp_perm_epu32(x, X, Y, Z, W)		vpermq_u32((x), X, Y, Z, W)
+#define _hlslpp_shuffle_epu32(x, y, X, Y, A, B)	vshufq_u32((x), (y), X, Y, A, B)
 
 #define _hlslpp_cvttps_epu32(x)					vcvtq_u32_f32((x))
 #define _hlslpp_cvtepu32_ps(x)					vcvtq_f32_u32((x))

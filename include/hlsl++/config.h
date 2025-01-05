@@ -73,6 +73,7 @@
 
 // Versions previous to VS2015 need special attention
 #if defined(_MSC_VER) && _MSC_VER < 1900
+
 	#define hlslpp_noexcept
 	#define hlslpp_swizzle_start struct {
 	#define hlslpp_swizzle_end };
@@ -81,6 +82,7 @@
 	#define hlslpp_alignof(T) __alignof(T)
 
 #else
+
 	#define hlslpp_noexcept noexcept
 	#define hlslpp_swizzle_start
 	#define hlslpp_swizzle_end

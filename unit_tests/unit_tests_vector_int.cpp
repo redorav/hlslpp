@@ -540,6 +540,21 @@ void RunUnitTestsVectorInt()
 		int3 ivabs_swiz_3 = abs(ivfoo3.bgr);					hlslpp_check(eq(ivabs_swiz_3, abs((int32_t)ivfoo3.b), abs((int32_t)ivfoo3.g), abs((int32_t)ivfoo3.r)));
 		int4 ivabs_swiz_4 = abs(ivfoo4.wwww);					hlslpp_check(eq(ivabs_swiz_4, abs((int32_t)ivfoo4.a), abs((int32_t)ivfoo4.a), abs((int32_t)ivfoo4.a), abs((int32_t)ivfoo4.a)));
 
+		int1 ivdot2   = dot(ivfoo2, ivbar2);       hlslpp_unit_unused(ivdot2);
+		int1 ivdot2_a = dot(ivfoo2, ivbar2.yx);    hlslpp_unit_unused(ivdot2_a);
+		int1 ivdot2_b = dot(ivfoo2.rg, ivbar2);    hlslpp_unit_unused(ivdot2_b);
+		int1 ivdot2_c = dot(ivfoo2.gr, ivbar2.yx); hlslpp_unit_unused(ivdot2_c);
+
+		int1 ivdot3   = dot(ivfoo3, ivbar3);     hlslpp_unit_unused(ivdot3);
+		int1 ivdot3_a = dot(ivfoo3, ivbar3.bgr); hlslpp_unit_unused(ivdot3_a);
+		int1 ivdot3_b = dot(ivfoo3.rrg, ivbar3); hlslpp_unit_unused(ivdot3_b);
+		int1 ivdot3_c = dot(ivfoo3.rrg, ivbar3); hlslpp_unit_unused(ivdot3_c);
+
+		int1 ivdot4   = dot(ivfoo4, ivbar4);      hlslpp_unit_unused(ivdot4);
+		int1 ivdot4_a = dot(ivfoo4, ivbar4.bgra); hlslpp_unit_unused(ivdot4_a);
+		int1 ivdot4_b = dot(ivfoo4.rrgb, ivbar4); hlslpp_unit_unused(ivdot4_b);
+		int1 ivdot4_c = dot(ivfoo4.rrgg, ivbar4); hlslpp_unit_unused(ivdot4_c);
+
 		int1 ivselect1 = select(ivbaz1, ivfoo1, ivbar1);		hlslpp_check(eq(ivselect1, ivbaz1.x != 0 ? ivfoo1.x : ivbar1.x));
 		int2 ivselect2 = select(ivbaz2, ivfoo2, ivbar2);		hlslpp_check(eq(ivselect2, ivbaz2.x != 0 ? ivfoo2.x : ivbar2.x, ivbaz2.y != 0 ? ivfoo2.y : ivbar2.y));
 		int3 ivselect3 = select(ivbaz3, ivfoo3, ivbar3);		hlslpp_check(eq(ivselect3, ivbaz3.x != 0 ? ivfoo3.x : ivbar3.x, ivbaz3.y != 0 ? ivfoo3.y : ivbar3.y, ivbaz3.z != 0 ? ivfoo3.z : ivbar3.z));

@@ -491,6 +491,9 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 #define _hlslpp_clamp_epu32(x, minx, maxx)		__vmaxuw(__vminuw((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					__vmaxuw(__vminuw((x), i4_1), i4_0)
 
+#define _hlslpp_perm_epu32(x, X, Y, Z, W)		__vpermwi((x), HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W))
+#define _hlslpp_shuffle_epu32(x, y, X, Y, A, B)	__vperm((x), (y), __vperm_mask<X, Y, 4 + A, 4 + B>())
+
 #define _hlslpp_cvttps_epu32(x)					__vcfpuxws((x), 0)
 #define _hlslpp_cvtepu32_ps(x)					__vcuxwfp((x), 0)
 

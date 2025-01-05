@@ -258,7 +258,6 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 #define _hlslpp_xor_si128(x, y)					wasm_v128_xor((x), (y))
 
 #define _hlslpp_perm_epi32(x, X, Y, Z, W)		wasm_i32x4_shuffle((x), (x), X, Y, Z, W)
-
 #define _hlslpp_shuffle_epi32(x, y, X, Y, A, B)	wasm_i32x4_shuffle((x), (y), X, Y, 4 + A, 4 + B)
 
 #define _hlslpp_castps_si128(x)					(x)
@@ -393,6 +392,9 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 
 #define _hlslpp_clamp_epu32(x, minx, maxx)		_hlslpp_max_epu32(_hlslpp_min_epu32((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					_hlslpp_max_epu32(_hlslpp_min_epu32((x), i4_1), i4_0)
+
+#define _hlslpp_perm_epu32(x, X, Y, Z, W)		_hlslpp_perm_epi32((x), X, Y, Z, W)
+#define _hlslpp_shuffle_epu32(x, y, X, Y, A, B)	_hlslpp_shuffle_epi32((x), (y), X, Y, A, B)
 
 #define _hlslpp_cvttps_epu32(x)					_hlslpp_cvttps_epi32((x))
 #define _hlslpp_cvtepu32_ps(x)					_hlslpp_cvtepi32_ps((x))
