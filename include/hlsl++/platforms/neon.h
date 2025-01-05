@@ -236,7 +236,7 @@ hlslpp_inline uint32x4_t vshufq_u32(const uint32x4_t x, const int32x4_t y, const
 	const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMaskY[X1]) | (((uint64_t)hlslpp::ControlMaskY[Y1]) << 32));
 	const uint8x8_t rH = vtbl4_u8(tbl, idxH);
 
-	return vcombine_s32(rL, rH);
+	return vcombine_u32(rL, rH);
 }
 
 hlslpp_inline float32x4_t vrsqrtq_f32(float32x4_t x)
