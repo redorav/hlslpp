@@ -651,6 +651,8 @@ hlslpp_module_export namespace hlslpp
 
 	hlslpp_inline float8 clamp(const float8& f, const float8& minf, const float8& maxf) { return float8(_hlslpp256_clamp_ps(f.vec, minf.vec, maxf.vec)); }
 
+	hlslpp_inline float8 copysign(const float8& from, const float8& to) { return float8(_hlslpp256_copysign_ps(from.vec, to.vec)); }
+
 	hlslpp_inline float8 cos(const float8& f) { return float8(_hlslpp256_cos_ps(f.vec)); }
 
 	hlslpp_inline float8 cosh(const float8& f) { return float8(_hlslpp256_cosh_ps(f.vec)); }

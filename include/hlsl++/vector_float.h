@@ -881,6 +881,11 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 	hlslpp_inline float3 clamp(const float3& f, const float3& minf, const float3& maxf) { return float3(_hlslpp_clamp_ps(f.vec, minf.vec, maxf.vec)); }
 	hlslpp_inline float4 clamp(const float4& f, const float4& minf, const float4& maxf) { return float4(_hlslpp_clamp_ps(f.vec, minf.vec, maxf.vec)); }
 
+	hlslpp_inline float1 copysign(const float1& from, const float1& to) { return float1(_hlslpp_copysign_ps(from.vec, to.vec)); }
+	hlslpp_inline float2 copysign(const float2& from, const float2& to) { return float2(_hlslpp_copysign_ps(from.vec, to.vec)); }
+	hlslpp_inline float3 copysign(const float3& from, const float3& to) { return float3(_hlslpp_copysign_ps(from.vec, to.vec)); }
+	hlslpp_inline float4 copysign(const float4& from, const float4& to) { return float4(_hlslpp_copysign_ps(from.vec, to.vec)); }
+
 	hlslpp_inline float1 cos(const float1& f) { return float1(_hlslpp_cos_ps(f.vec)); }
 	hlslpp_inline float2 cos(const float2& f) { return float2(_hlslpp_cos_ps(f.vec)); }
 	hlslpp_inline float3 cos(const float3& f) { return float3(_hlslpp_cos_ps(f.vec)); }

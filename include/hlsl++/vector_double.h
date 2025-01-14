@@ -121,12 +121,6 @@ hlslpp_module_export namespace hlslpp
 		return result;
 	}
 
-	// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
-	hlslpp_inline n128d _hlslpp_sign_pd(n128d x)
-	{
-		return _hlslpp_and_pd(_hlslpp_or_pd(_hlslpp_and_pd(x, d2minusOne), d2_1), _hlslpp_cmpneq_pd(x, _hlslpp_setzero_pd()));
-	}
-
 	// Hlsl, glsl and Cg behavior is to swap the operands.
 	// http://http.developer.nvidia.com/Cg/step.html
 	// https://www.opengl.org/sdk/docs/man/html/step.xhtml
@@ -186,12 +180,6 @@ hlslpp_module_export namespace hlslpp
 		n256d x_one_minus_a = _hlslpp256_msub_pd(x, x, a); // x * (1 - a)
 		n256d result = _hlslpp256_madd_pd(y, a, x_one_minus_a);
 		return result;
-	}
-
-	// Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
-	hlslpp_inline n256d _hlslpp256_sign_pd(n256d x)
-	{
-		return _hlslpp256_and_pd(_hlslpp256_or_pd(_hlslpp256_and_pd(x, d4minusOne), d4_1), _hlslpp256_cmpneq_pd(x, _hlslpp256_setzero_pd()));
 	}
 	
 	// Hlsl, glsl and Cg behavior is to swap the operands.
@@ -846,6 +834,34 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
 		return double4(_hlslpp256_clamp_pd(f.vec, minf.vec, maxf.vec));
 #else
 		return double4(_hlslpp_clamp_pd(f.vec0, minf.vec0, maxf.vec0), _hlslpp_clamp_pd(f.vec1, minf.vec1, maxf.vec1));
+#endif
+	}
+
+	hlslpp_inline double1 copysign(const double1& from, const double1& to)
+	{
+		return double1(_hlslpp_copysign_pd(from.vec, to.vec));
+	}
+
+	hlslpp_inline double2 copysign(const double2& from, const double2& to)
+	{
+		return double2(_hlslpp_copysign_pd(from.vec, to.vec));
+	}
+
+	hlslpp_inline double3 copysign(const double3& from, const double3& to)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_256)
+		return double3(_hlslpp256_copysign_pd(from.vec, to.vec));
+#else
+		return double3(_hlslpp_copysign_pd(from.vec0, to.vec0), _hlslpp_copysign_pd(from.vec0, to.vec1));
+#endif
+	}
+
+	hlslpp_inline double4 copysign(const double4& from, const double4& to)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_256)
+		return double4(_hlslpp256_copysign_pd(from.vec, to.vec));
+#else
+		return double4(_hlslpp_copysign_pd(from.vec0, to.vec0), _hlslpp_copysign_pd(from.vec0, to.vec1));
 #endif
 	}
 
