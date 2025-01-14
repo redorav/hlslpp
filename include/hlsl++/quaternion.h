@@ -153,9 +153,9 @@ hlslpp_module_export namespace hlslpp
 		// Small imprecisions in the incoming quaternions can cause the dot product to be very slightly larger than 1 which will cause a nan in acos
 		cosHalfTheta            = _hlslpp_clamp_ps(cosHalfTheta, f4_minus1, f4_1);
 
-		n128 t4 = _hlslpp_shuf_xxxx_ps(t, f4_1); // Contains t, t, 1, unused
-		n128 oneMinusT = _hlslpp_sub_ps(f4_1, t4);      // Contains 1 - t, 1 - t, 0, unused
-		n128 lerpFactors = _hlslpp_blend_ps(oneMinusT, t4, HLSLPP_BLEND_MASK(1, 0, 0, 1)); // Contains (1 - t), t, 1, unused
+		n128 t4                 = _hlslpp_shuf_xxxx_ps(t, f4_1); // Contains t, t, 1, unused
+		n128 oneMinusT          = _hlslpp_sub_ps(f4_1, t4);      // Contains 1 - t, 1 - t, 0, unused
+		n128 lerpFactors        = _hlslpp_blend_ps(oneMinusT, t4, HLSLPP_BLEND_MASK(1, 0, 0, 1)); // Contains (1 - t), t, 1, unused
 
 		n128 halfTheta          = _hlslpp_acos_ps(cosHalfTheta);
 		
@@ -167,10 +167,10 @@ hlslpp_module_export namespace hlslpp
 
 		// If theta -> 0, the result converges to lerp(q0, q1, t). As there is a division by 0 in this case, 
 		// we can select between those two in the case where sinTheta4 is 0 or some threshold
-		sinVecDiv = _hlslpp_sel_ps(sinVecDiv, lerpFactors, _hlslpp_cmpeq_ps(sinTheta4, _hlslpp_setzero_ps()));
+		sinVecDiv        = _hlslpp_sel_ps(sinVecDiv, lerpFactors, _hlslpp_cmpeq_ps(sinTheta4, _hlslpp_setzero_ps()));
 
-		n128 q1_minus_q0 = _hlslpp_sub_ps(q1, q0); // q1 - q0
-		n128 result      = _hlslpp_madd_ps(_hlslpp_perm_xxxx_ps(sinVecDiv), q1_minus_q0, q0); // q0 * (1 - t) + q1 * t
+		n128 q0_sinTheta = _hlslpp_mul_ps(q0, _hlslpp_perm_xxxx_ps(sinVecDiv));
+		n128 result      = _hlslpp_madd_ps(_hlslpp_perm_yyyy_ps(sinVecDiv), q1, q0_sinTheta);
 
 		return result;
 	}
