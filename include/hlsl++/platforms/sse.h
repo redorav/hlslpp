@@ -609,7 +609,7 @@ hlslpp_inline n128i _hlslpp_mul_epi32(n128i x, n128i y)
 #if defined(__SSSE3__)
 #define _hlslpp_neg_epi32(x)					_mm_sign_epi32((x), _mm_set1_epi32(-1))
 #else
-#define _hlslpp_neg_epi32(x)					_mm_add_epi32(_mm_xor_si128((x), i4fffMask), _mm_set1_epi32(1))
+#define _hlslpp_neg_epi32(x)					_mm_sub_epi32(_mm_setzero_si128(), (x))
 #endif
 
 #define _hlslpp_madd_epi32(x, y, z)				_mm_add_epi32(_hlslpp_mul_epi32((x), (y)), (z))
