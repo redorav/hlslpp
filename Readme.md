@@ -103,7 +103,7 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 * Basic operators +, *, -, / for all vector and matrix types
 * Per-component comparison operators ==, !=, >, <, >=, <= (no ternary operator as overloading is disallowed in C++)
 * HLSL float functions: abs, acos, all, any, asin, atan, atan2, ceil, clamp, cos, cosh, cross, degrees, distance, dot, exp, exp2, floor, fmod, frac, isfinite, isinf, isnan, length, lerp, log, log2, log10, mad, max, min, modf, normalize, pow, radians, rcp, reflect, refract, round, rsqrt, saturate, select, sign, sin, sincos, sinh, smoothstep, sqrt, step, tan, tanh, trunc
-* HLSL int/uint functions: countbits, firstbithigh, firstbitlow, 
+* HLSL int/uint functions: countbits, firstbithigh, firstbitlow, reversebits
 * Additional functions not in HLSL: copysign
 * Additional matrix functions: determinant, transpose, inverse, adjoint
 * Matrix multiplication for all NxM matrix combinations
