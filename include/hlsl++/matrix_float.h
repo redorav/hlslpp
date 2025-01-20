@@ -107,7 +107,6 @@ hlslpp_module_export namespace hlslpp
 		n128 njfb = _hlslpp_shuf_wyyw_ps(ijmn, efab);
 		n128 okgc = _hlslpp_shuf_zxxz_ps(klop, ghcd);
 		n128 plhd = _hlslpp_shuf_wyyw_ps(klop, ghcd);
-		n128 aeim = _hlslpp_shuf_zxxz_ps(efab, ijmn);
 
 		n128 inner12_23 = _hlslpp_sub_ps(_hlslpp_mul_ps(fgbc, klop), _hlslpp_mul_ps(jkno, ghcd));
 		n128 inner02_13 = _hlslpp_sub_ps(_hlslpp_mul_ps(efab, klop), _hlslpp_mul_ps(ijmn, ghcd));
