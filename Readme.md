@@ -102,8 +102,10 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 * Efficient swizzling for all vector types
 * Basic operators +, *, -, / for all vector and matrix types
 * Per-component comparison operators ==, !=, >, <, >=, <= (no ternary operator as overloading is disallowed in C++)
-* hlsl vector functions: abs, acos, all, any, asin, atan, atan2, ceil, clamp, cos, cosh, cross, degrees, distance, dot, floor, fmod, frac, exp, exp2, isfinite, isinf, isnan, length, lerp, log, log2, log10, max, mad, min, modf, normalize, pow, radians, reflect, refract, round, rsqrt, saturate, sign, sin, sincos, sinh, smoothstep, sqrt, step, trunc, tan, tanh
-* Additional matrix functions: determinant, transpose, inverse (not in hlsl but very useful)
+* HLSL float functions: abs, acos, all, any, asin, atan, atan2, ceil, clamp, cos, cosh, cross, degrees, distance, dot, exp, exp2, floor, fmod, frac, isfinite, isinf, isnan, length, lerp, log, log2, log10, mad, max, min, modf, normalize, pow, radians, rcp, reflect, refract, round, rsqrt, saturate, select, sign, sin, sincos, sinh, smoothstep, sqrt, step, tan, tanh, trunc
+* HLSL int/uint functions: countbits, firstbithigh, firstbitlow, 
+* Additional functions not in HLSL: copysign
+* Additional matrix functions: determinant, transpose, inverse, adjoint
 * Matrix multiplication for all NxM matrix combinations
 * Data packing functions such as pack_float4_rgba8_unorm or pack_float3_rg11b10f
 * Transformation matrices for scale, rotation and translation, as well as world-to-view look_at and view-to-projection orthographic/perspective coordinate transformations. These static functions are optionally available for matrix types float2x2, float3x3, float4x4 when hlsl++.h is compiled with HLSLPP_FEATURE_TRANSFORM definition.
