@@ -55,6 +55,83 @@ hlslpp_module_export namespace hlslpp
 		return result;
 	}
 
+	inline n128 _hlslpp_adjoint_2x2_ps(n128 m)
+	{
+		return _hlslpp_xor_ps(_hlslpp_perm_wyzx_ps(m), _hlslpp_set_ps(0.0f, -0.0f, -0.0f, 0.0f));
+	}
+
+	// | a b c |
+	// | d e f |
+	// | g h i |
+	inline void _hlslpp_adjoint_3x3_ps(const n128& vec0, const n128& vec1, const n128& vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
+	{
+		n128 bca = _hlslpp_perm_yzxw_ps(vec0);
+		n128 cab = _hlslpp_perm_zxyw_ps(vec0);
+		n128 efd = _hlslpp_perm_yzxw_ps(vec1);
+		n128 fde = _hlslpp_perm_zxyw_ps(vec1);
+		n128 hig = _hlslpp_perm_yzxw_ps(vec2);
+		n128 igh = _hlslpp_perm_zxyw_ps(vec2);
+
+		// Compute the adjoint matrix directly with 2x2 determinants
+		n128 row_0 = _hlslpp_msub_ps(efd, igh, _hlslpp_mul_ps(fde, hig));
+		n128 row_1 = _hlslpp_msub_ps(cab, hig, _hlslpp_mul_ps(bca, igh));
+		n128 row_2 = _hlslpp_msub_ps(bca, fde, _hlslpp_mul_ps(cab, efd));
+
+		// Transpose the matrix
+		n128 shuf_0 = _hlslpp_shuf_xyxy_ps(row_0, row_1);
+		n128 shuf_1 = _hlslpp_shuf_yzyz_ps(row_0, row_1);
+
+		o_vec0 = _hlslpp_shuf_xzxw_ps(shuf_0, row_2);
+		o_vec1 = _hlslpp_shuf_ywyw_ps(shuf_0, row_2);
+		o_vec2 = _hlslpp_shuf_ywzw_ps(shuf_1, row_2);
+	}
+
+	// https://gist.github.com/runestubbe/466ffdde670e6a697affe4a899bcf3a3
+	// | a b c d |
+	// | e f g h |
+	// | i j k l |
+	// | m n o p |
+	inline void _hlslpp_adjoint_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
+	{
+		n128 efab = _hlslpp_movelh_ps(vec1, vec0);
+		n128 ijmn = _hlslpp_movelh_ps(vec2, vec3);
+		n128 ghcd = _hlslpp_movehl_ps(vec0, vec1);
+		n128 klop = _hlslpp_movehl_ps(vec3, vec2);
+
+		n128 fgbc = _hlslpp_shuf_yzyz_ps(vec1, vec0);
+		n128 jkno = _hlslpp_shuf_yzyz_ps(vec2, vec3);
+		n128 heda = _hlslpp_shuf_wxwx_ps(vec1, vec0);
+		n128 lipm = _hlslpp_shuf_wxwx_ps(vec2, vec3);
+
+		n128 miea = _hlslpp_shuf_zxxz_ps(ijmn, efab);
+		n128 njfb = _hlslpp_shuf_wyyw_ps(ijmn, efab);
+		n128 okgc = _hlslpp_shuf_zxxz_ps(klop, ghcd);
+		n128 plhd = _hlslpp_shuf_wyyw_ps(klop, ghcd);
+		n128 aeim = _hlslpp_shuf_zxxz_ps(efab, ijmn);
+
+		n128 inner12_23 = _hlslpp_sub_ps(_hlslpp_mul_ps(fgbc, klop), _hlslpp_mul_ps(jkno, ghcd));
+		n128 inner02_13 = _hlslpp_sub_ps(_hlslpp_mul_ps(efab, klop), _hlslpp_mul_ps(ijmn, ghcd));
+		n128 inner30_01 = _hlslpp_sub_ps(_hlslpp_mul_ps(lipm, efab), _hlslpp_mul_ps(heda, ijmn));
+
+		n128 inner12 = _hlslpp_shuf_xzzx_ps(inner12_23, inner12_23);
+		n128 inner23 = _hlslpp_shuf_ywwy_ps(inner12_23, inner12_23);
+
+		n128 inner02 = _hlslpp_shuf_xzzx_ps(inner02_13, inner02_13);
+		n128 inner13 = _hlslpp_shuf_ywwy_ps(inner02_13, inner02_13);
+		n128 inner30 = _hlslpp_shuf_xzzx_ps(inner30_01, inner30_01);
+		n128 inner01 = _hlslpp_shuf_ywwy_ps(inner30_01, inner30_01);
+
+		n128 minors0 = _hlslpp_add_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(plhd, inner12), _hlslpp_mul_ps(okgc, inner13)), _hlslpp_mul_ps(njfb, inner23));
+		n128 minors1 = _hlslpp_sub_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(okgc, inner30), _hlslpp_mul_ps(miea, inner23)), _hlslpp_mul_ps(plhd, inner02));
+		n128 minors2 = _hlslpp_sub_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(miea, inner13), _hlslpp_mul_ps(njfb, inner30)), _hlslpp_mul_ps(plhd, inner01));
+		n128 minors3 = _hlslpp_add_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(njfb, inner02), _hlslpp_mul_ps(miea, inner12)), _hlslpp_mul_ps(okgc, inner01));
+
+		o_vec0 = _hlslpp_xor_ps(minors0, _hlslpp_set_ps(0.0f, 0.0f, -0.0f, -0.0f));
+		o_vec1 = _hlslpp_xor_ps(minors1, _hlslpp_set_ps(0.0f, 0.0f, -0.0f, -0.0f));
+		o_vec2 = _hlslpp_xor_ps(minors2, _hlslpp_set_ps(0.0f, 0.0f, -0.0f, -0.0f));
+		o_vec3 = _hlslpp_xor_ps(minors3, _hlslpp_set_ps(0.0f, 0.0f, -0.0f, -0.0f));
+	}
+
 	inline n128 _hlslpp_inv_2x2_ps(n128 m)
 	{
 		n128 det = _hlslpp_perm_xxxx_ps(_hlslpp_det_2x2_ps(m));
@@ -64,29 +141,29 @@ hlslpp_module_export namespace hlslpp
 
 	inline void _hlslpp_inv_3x3_ps(const n128& vec0, const n128& vec1, const n128& vec2, n128& o_vec0, n128& o_vec1, n128& o_vec2)
 	{
-		n128 tmp_shuf_yzx_0 = _hlslpp_perm_yzxw_ps(vec0);
-		n128 tmp_shuf_zxy_0 = _hlslpp_perm_zxyw_ps(vec0);
-		n128 tmp_shuf_yzx_1 = _hlslpp_perm_yzxw_ps(vec1);
-		n128 tmp_shuf_zxy_1 = _hlslpp_perm_zxyw_ps(vec1);
-		n128 tmp_shuf_yzx_2 = _hlslpp_perm_yzxw_ps(vec2);
-		n128 tmp_shuf_zxy_2 = _hlslpp_perm_zxyw_ps(vec2);
+		n128 bca = _hlslpp_perm_yzxw_ps(vec0);
+		n128 cab = _hlslpp_perm_zxyw_ps(vec0);
+		n128 efd = _hlslpp_perm_yzxw_ps(vec1);
+		n128 fde = _hlslpp_perm_zxyw_ps(vec1);
+		n128 hig = _hlslpp_perm_yzxw_ps(vec2);
+		n128 igh = _hlslpp_perm_zxyw_ps(vec2);
 
 		// Compute the adjoint matrix directly with 2x2 determinants
-		n128 tmp_row_0 = _hlslpp_msub_ps(tmp_shuf_yzx_1, tmp_shuf_zxy_2, _hlslpp_mul_ps(tmp_shuf_zxy_1, tmp_shuf_yzx_2));
-		n128 tmp_row_1 = _hlslpp_msub_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_2, _hlslpp_mul_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_2));
-		n128 tmp_row_2 = _hlslpp_msub_ps(tmp_shuf_yzx_0, tmp_shuf_zxy_1, _hlslpp_mul_ps(tmp_shuf_zxy_0, tmp_shuf_yzx_1));
+		n128 row_0 = _hlslpp_msub_ps(efd, igh, _hlslpp_mul_ps(fde, hig));
+		n128 row_1 = _hlslpp_msub_ps(cab, hig, _hlslpp_mul_ps(bca, igh));
+		n128 row_2 = _hlslpp_msub_ps(bca, fde, _hlslpp_mul_ps(cab, efd));
 
 		// Transpose the matrix
-		n128 shuf_tmp_0 = _hlslpp_shuf_xyxy_ps(tmp_row_0, tmp_row_1);
-		n128 shuf_tmp_1 = _hlslpp_shuf_yzyz_ps(tmp_row_0, tmp_row_1);
+		n128 shuf_0 = _hlslpp_shuf_xyxy_ps(row_0, row_1);
+		n128 shuf_1 = _hlslpp_shuf_yzyz_ps(row_0, row_1);
 
-		n128 transp_row_0 = _hlslpp_shuf_xzxw_ps(shuf_tmp_0, tmp_row_2);
-		n128 transp_row_1 = _hlslpp_shuf_ywyw_ps(shuf_tmp_0, tmp_row_2);
-		n128 transp_row_2 = _hlslpp_shuf_ywzw_ps(shuf_tmp_1, tmp_row_2);
+		n128 transp_row_0 = _hlslpp_shuf_xzxw_ps(shuf_0, row_2);
+		n128 transp_row_1 = _hlslpp_shuf_ywyw_ps(shuf_0, row_2);
+		n128 transp_row_2 = _hlslpp_shuf_ywzw_ps(shuf_1, row_2);
 
 		// Compute the determinant and divide all results by it
-		n128 prod = _hlslpp_mul_ps(tmp_shuf_yzx_1, vec2);
-		n128 sub = _hlslpp_msub_ps(vec1, tmp_shuf_yzx_2, prod);
+		n128 prod = _hlslpp_mul_ps(efd, vec2);
+		n128 sub = _hlslpp_msub_ps(vec1, hig, prod);
 
 		n128 det = _hlslpp_perm_xxxx_ps(_hlslpp_dot3_ps(vec0, _hlslpp_perm_yzxw_ps(sub)));
 		n128 invDet = _hlslpp_div_ps(f4_1, det);
@@ -99,52 +176,47 @@ hlslpp_module_export namespace hlslpp
 	// https://gist.github.com/runestubbe/466ffdde670e6a697affe4a899bcf3a3
 	inline void _hlslpp_inv_4x4_ps(const n128& vec0, const n128& vec1, const n128& vec2, const n128& vec3, n128& o_vec0, n128& o_vec1, n128& o_vec2, n128& o_vec3)
 	{
-		n128 r0y_r1y_r0x_r1x = _hlslpp_movelh_ps(vec1, vec0);
-		n128 r0z_r1z_r0w_r1w = _hlslpp_movelh_ps(vec2, vec3);
-		n128 r2y_r3y_r2x_r3x = _hlslpp_movehl_ps(vec0, vec1);
-		n128 r2z_r3z_r2w_r3w = _hlslpp_movehl_ps(vec3, vec2);
+		n128 efab = _hlslpp_movelh_ps(vec1, vec0);
+		n128 ijmn = _hlslpp_movelh_ps(vec2, vec3);
+		n128 ghcd = _hlslpp_movehl_ps(vec0, vec1);
+		n128 klop = _hlslpp_movehl_ps(vec3, vec2);
 
-		n128 r1y_r2y_r1x_r2x = _hlslpp_shuf_yzyz_ps(vec1, vec0);
-		n128 r1z_r2z_r1w_r2w = _hlslpp_shuf_yzyz_ps(vec2, vec3);
-		n128 r3y_r0y_r3x_r0x = _hlslpp_shuf_wxwx_ps(vec1, vec0);
-		n128 r3z_r0z_r3w_r0w = _hlslpp_shuf_wxwx_ps(vec2, vec3);
+		n128 fgbc = _hlslpp_shuf_yzyz_ps(vec1, vec0);
+		n128 jkno = _hlslpp_shuf_yzyz_ps(vec2, vec3);
+		n128 heda = _hlslpp_shuf_wxwx_ps(vec1, vec0);
+		n128 lipm = _hlslpp_shuf_wxwx_ps(vec2, vec3);
 
-		n128 r0_wzyx = _hlslpp_shuf_zxxz_ps(r0z_r1z_r0w_r1w, r0y_r1y_r0x_r1x);
-		n128 r1_wzyx = _hlslpp_shuf_wyyw_ps(r0z_r1z_r0w_r1w, r0y_r1y_r0x_r1x);
-		n128 r2_wzyx = _hlslpp_shuf_zxxz_ps(r2z_r3z_r2w_r3w, r2y_r3y_r2x_r3x);
-		n128 r3_wzyx = _hlslpp_shuf_wyyw_ps(r2z_r3z_r2w_r3w, r2y_r3y_r2x_r3x);
-		n128 r0_xyzw = _hlslpp_shuf_zxxz_ps(r0y_r1y_r0x_r1x, r0z_r1z_r0w_r1w);
+		n128 miea = _hlslpp_shuf_zxxz_ps(ijmn, efab);
+		n128 njfb = _hlslpp_shuf_wyyw_ps(ijmn, efab);
+		n128 okgc = _hlslpp_shuf_zxxz_ps(klop, ghcd);
+		n128 plhd = _hlslpp_shuf_wyyw_ps(klop, ghcd);
+		n128 aeim = _hlslpp_shuf_zxxz_ps(efab, ijmn);
 
-		n128 inner12_23 = _hlslpp_sub_ps(_hlslpp_mul_ps(r1y_r2y_r1x_r2x, r2z_r3z_r2w_r3w), _hlslpp_mul_ps(r1z_r2z_r1w_r2w, r2y_r3y_r2x_r3x));
-		n128 inner02_13 = _hlslpp_sub_ps(_hlslpp_mul_ps(r0y_r1y_r0x_r1x, r2z_r3z_r2w_r3w), _hlslpp_mul_ps(r0z_r1z_r0w_r1w, r2y_r3y_r2x_r3x));
-		n128 inner30_01 = _hlslpp_sub_ps(_hlslpp_mul_ps(r3z_r0z_r3w_r0w, r0y_r1y_r0x_r1x), _hlslpp_mul_ps(r3y_r0y_r3x_r0x, r0z_r1z_r0w_r1w));
+		n128 inner12_23 = _hlslpp_sub_ps(_hlslpp_mul_ps(fgbc, klop), _hlslpp_mul_ps(jkno, ghcd));
+		n128 inner02_13 = _hlslpp_sub_ps(_hlslpp_mul_ps(efab, klop), _hlslpp_mul_ps(ijmn, ghcd));
+		n128 inner30_01 = _hlslpp_sub_ps(_hlslpp_mul_ps(lipm, efab), _hlslpp_mul_ps(heda, ijmn));
 
 		n128 inner12 = _hlslpp_shuf_xzzx_ps(inner12_23, inner12_23);
 		n128 inner23 = _hlslpp_shuf_ywwy_ps(inner12_23, inner12_23);
 
 		n128 inner02 = _hlslpp_shuf_xzzx_ps(inner02_13, inner02_13);
 		n128 inner13 = _hlslpp_shuf_ywwy_ps(inner02_13, inner02_13);
-
-		n128 minors0 = _hlslpp_add_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(r3_wzyx, inner12), _hlslpp_mul_ps(r2_wzyx, inner13)), _hlslpp_mul_ps(r1_wzyx, inner23));
-
-		n128 denom = _hlslpp_mul_ps(r0_xyzw, minors0);
-
-		denom = _hlslpp_add_ps(denom, _hlslpp_shuf_yxwz_ps(denom, denom));	// x+y		x+y			z+w			z+w
-		denom = _hlslpp_sub_ps(denom, _hlslpp_shuf_zzxx_ps(denom, denom));	// x+y-z-w  x+y-z-w		z+w-x-y		z+w-x-y
-
-		n128 rcp_denom_ppnn = _hlslpp_div_ps(f4_1, denom);
-		o_vec0 = _hlslpp_mul_ps(minors0, rcp_denom_ppnn);
-
 		n128 inner30 = _hlslpp_shuf_xzzx_ps(inner30_01, inner30_01);
 		n128 inner01 = _hlslpp_shuf_ywwy_ps(inner30_01, inner30_01);
 
-		n128 minors1 = _hlslpp_sub_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(r2_wzyx, inner30), _hlslpp_mul_ps(r0_wzyx, inner23)), _hlslpp_mul_ps(r3_wzyx, inner02));
+		n128 minors0 = _hlslpp_add_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(plhd, inner12), _hlslpp_mul_ps(okgc, inner13)), _hlslpp_mul_ps(njfb, inner23));
+		n128 minors1 = _hlslpp_sub_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(okgc, inner30), _hlslpp_mul_ps(miea, inner23)), _hlslpp_mul_ps(plhd, inner02));
+		n128 minors2 = _hlslpp_sub_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(miea, inner13), _hlslpp_mul_ps(njfb, inner30)), _hlslpp_mul_ps(plhd, inner01));
+		n128 minors3 = _hlslpp_add_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(njfb, inner02), _hlslpp_mul_ps(miea, inner12)), _hlslpp_mul_ps(okgc, inner01));
+
+		n128 denom = _hlslpp_mul_ps(aeim, minors0);
+		denom = _hlslpp_add_ps(denom, _hlslpp_shuf_yxwz_ps(denom, denom));	// x+y		x+y			z+w			z+w
+		denom = _hlslpp_sub_ps(denom, _hlslpp_shuf_zzxx_ps(denom, denom));	// x+y-z-w  x+y-z-w		z+w-x-y		z+w-x-y
+		n128 rcp_denom_ppnn = _hlslpp_div_ps(f4_1, denom);
+
+		o_vec0 = _hlslpp_mul_ps(minors0, rcp_denom_ppnn);
 		o_vec1 = _hlslpp_mul_ps(minors1, rcp_denom_ppnn);
-
-		n128 minors2 = _hlslpp_sub_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(r0_wzyx, inner13), _hlslpp_mul_ps(r1_wzyx, inner30)), _hlslpp_mul_ps(r3_wzyx, inner01));
 		o_vec2 = _hlslpp_mul_ps(minors2, rcp_denom_ppnn);
-
-		n128 minors3 = _hlslpp_add_ps(_hlslpp_sub_ps(_hlslpp_mul_ps(r1_wzyx, inner02), _hlslpp_mul_ps(r0_wzyx, inner12)), _hlslpp_mul_ps(r2_wzyx, inner01));
 		o_vec3 = _hlslpp_mul_ps(minors3, rcp_denom_ppnn);
 	}
 
@@ -1533,25 +1605,44 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline bool all(const float2x2& f) { return _hlslpp_all4_ps(f.vec); }
-	hlslpp_inline bool all(const float3x3& f) { return _hlslpp_all3_ps(f.vec0) && _hlslpp_all3_ps(f.vec1) && _hlslpp_all3_ps(f.vec2); }
-	hlslpp_inline bool all(const float4x4& f)
+	hlslpp_inline float2x2 adjoint(const float2x2& m)
+	{
+		return float2x2(_hlslpp_adjoint_2x2_ps(m.vec));
+	}
+
+	hlslpp_inline float3x3 adjoint(const float3x3& m)
+	{
+		n128 vec0, vec1, vec2;
+		_hlslpp_adjoint_3x3_ps(m.vec0, m.vec1, m.vec2, vec0, vec1, vec2);
+		return float3x3(vec0, vec1, vec2);
+	}
+
+	hlslpp_inline float4x4 adjoint(const float4x4& m)
+	{
+		n128 vec0, vec1, vec2, vec3;
+		_hlslpp_adjoint_4x4_ps(m.vec0, m.vec1, m.vec2, m.vec3, vec0, vec1, vec2, vec3);
+		return float4x4(vec0, vec1, vec2, vec3);
+	}
+
+	hlslpp_inline bool all(const float2x2& m) { return _hlslpp_all4_ps(m.vec); }
+	hlslpp_inline bool all(const float3x3& m) { return _hlslpp_all3_ps(m.vec0) && _hlslpp_all3_ps(m.vec1) && _hlslpp_all3_ps(m.vec2); }
+	hlslpp_inline bool all(const float4x4& m)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
-		return _hlslpp256_all8_ps(f.vec0) && _hlslpp256_all8_ps(f.vec1);
+		return _hlslpp256_all8_ps(m.vec0) && _hlslpp256_all8_ps(m.vec1);
 #else
-		return _hlslpp_all4_ps(f.vec0) && _hlslpp_all4_ps(f.vec1) && _hlslpp_all4_ps(f.vec2) && _hlslpp_all4_ps(f.vec3);
+		return _hlslpp_all4_ps(m.vec0) && _hlslpp_all4_ps(m.vec1) && _hlslpp_all4_ps(m.vec2) && _hlslpp_all4_ps(m.vec3);
 #endif
 	}
 
-	hlslpp_inline bool any(const float2x2& f) { return _hlslpp_any4_ps(f.vec); }
-	hlslpp_inline bool any(const float3x3& f) { return _hlslpp_any3_ps(f.vec0) || _hlslpp_any3_ps(f.vec1) || _hlslpp_any3_ps(f.vec2); }
-	hlslpp_inline bool any(const float4x4& f)
+	hlslpp_inline bool any(const float2x2& m) { return _hlslpp_any4_ps(m.vec); }
+	hlslpp_inline bool any(const float3x3& m) { return _hlslpp_any3_ps(m.vec0) || _hlslpp_any3_ps(m.vec1) || _hlslpp_any3_ps(m.vec2); }
+	hlslpp_inline bool any(const float4x4& m)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
-		return _hlslpp256_any8_ps(f.vec0) || _hlslpp256_any8_ps(f.vec1);
+		return _hlslpp256_any8_ps(m.vec0) || _hlslpp256_any8_ps(m.vec1);
 #else
-		return _hlslpp_any4_ps(f.vec0) || _hlslpp_any4_ps(f.vec1) || _hlslpp_any4_ps(f.vec2) || _hlslpp_any4_ps(f.vec3);
+		return _hlslpp_any4_ps(m.vec0) || _hlslpp_any4_ps(m.vec1) || _hlslpp_any4_ps(m.vec2) || _hlslpp_any4_ps(m.vec3);
 #endif
 	}
 

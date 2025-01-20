@@ -711,7 +711,7 @@ void RunUnitTestsMatrixFloat()
 	}
 	hlslpp_unit::EndTest();
 
-	hlslpp_unit::BeginTest("Float Matrix Transposition");
+	hlslpp_unit::BeginTest("Float Matrix Transpose");
 	{
 		float1x1 mat_transp_1x1 = transpose(mat_foo_1x1); hlslpp_unit_unused(mat_transp_1x1);
 
@@ -770,6 +770,37 @@ void RunUnitTestsMatrixFloat()
 		);
 
 		hlslpp_check(eq(mat_det_4x4, -1032.1171482186170986f, 0.001f));
+	}
+	hlslpp_unit::EndTest();
+
+	hlslpp_unit::BeginTest("Float Matrix Adjoint");
+	{
+		float2x2 matrix2x2 = float2x2(1, 2, 35, 43);
+		float2x2 adjointMatrix2x2 = adjoint(matrix2x2);
+
+		hlslpp_check(eq(adjointMatrix2x2,
+			-43.0f, -2.0f, 
+			-35.0f, 1.0f
+		));
+
+		float3x3 matrix3x3 = float3x3(1, 2, 35, 43, 56, 68, 7, 82, 96);
+		float3x3 adjointMatrix3x3 = adjoint(matrix3x3);
+
+		hlslpp_check(eq(adjointMatrix3x3,
+			-200.0f, 2678.0f, -1824.0f,
+			-3652.0f, -149.0f, 1437.0f,
+			3134.0f, -68.0f, -30.0f
+		));
+
+		float4x4 matrix4x4 = float4x4(1, 2, 35, 59, 43, 56, 68, 32, 7, 82, 96, 76, 3, 53, 25, 78);
+		float4x4 adjointMatrix4x4 = adjoint(matrix4x4);
+
+		hlslpp_check(eq(adjointMatrix4x4,
+			-9286.0f, 211439.0f, -147877.0f, 5734.0f,
+			-278420.0f, -11627.0f, 107491.0f, 8648.0f,
+			230050.0f, -5600.0f, 8074.0f, -15256.0f,
+			115806.0f, 1563.0f, -69939.0f, 102186.0f
+		));
 	}
 	hlslpp_unit::EndTest();
 
