@@ -61,6 +61,8 @@ namespace hlslpp
 	struct double2;
 	struct double3;
 	struct double4;
+
+	struct quaternion;
 };
 
 #define hlslpp_unit_unused(x) (void)x
@@ -222,6 +224,8 @@ namespace hlslpp_unit
 	bool eq(const float3& v, float x, float y, float z, float tolerance = 0.0f);
 
 	bool eq(const float4& v, float x, float y, float z, float w, float tolerance = 0.0f);
+
+	bool eq(const quaternion& v1, const quaternion& v2, float tolerance = 0.0f);
 
 #if defined(HLSLPP_FLOAT8)
 
