@@ -1619,8 +1619,30 @@ hlslpp_module_export namespace hlslpp
 	hlslpp_inline float4x4 adjoint(const float4x4& m)
 	{
 		n128 vec0, vec1, vec2, vec3;
-		_hlslpp_adjoint_4x4_ps(m.vec0, m.vec1, m.vec2, m.vec3, vec0, vec1, vec2, vec3);
+
+#if defined(HLSLPP_SIMD_REGISTER_256)
+
+		n128 mvec0 = _hlslpp256_low_ps(m.vec0);
+		n128 mvec1 = _hlslpp256_high_ps(m.vec0);
+		n128 mvec2 = _hlslpp256_low_ps(m.vec1);
+		n128 mvec3 = _hlslpp256_high_ps(m.vec1);
+
+#else
+
+		n128 mvec0 = m.vec0;
+		n128 mvec1 = m.vec1;
+		n128 mvec2 = m.vec2;
+		n128 mvec3 = m.vec3;
+
+#endif
+
+		_hlslpp_adjoint_4x4_ps(mvec0, mvec1, mvec2, mvec3, vec0, vec1, vec2, vec3);
+
+#if defined(HLSLPP_SIMD_REGISTER_256)
+		return float4x4(_hlslpp256_set128_ps(vec0, vec1), _hlslpp256_set128_ps(vec2, vec3));
+#else
 		return float4x4(vec0, vec1, vec2, vec3);
+#endif
 	}
 
 	hlslpp_inline bool all(const float2x2& m) { return _hlslpp_all4_ps(m.vec); }
@@ -1659,22 +1681,22 @@ hlslpp_module_export namespace hlslpp
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 
-		n128 m_vec0 = _hlslpp256_low_ps(m.vec0);
-		n128 m_vec1 = _hlslpp256_high_ps(m.vec0);
-		n128 m_vec2 = _hlslpp256_low_ps(m.vec1);
-		n128 m_vec3 = _hlslpp256_high_ps(m.vec1);
+		n128 mvec0 = _hlslpp256_low_ps(m.vec0);
+		n128 mvec1 = _hlslpp256_high_ps(m.vec0);
+		n128 mvec2 = _hlslpp256_low_ps(m.vec1);
+		n128 mvec3 = _hlslpp256_high_ps(m.vec1);
 
 #else
 
-		n128 m_vec0 = m.vec0;
-		n128 m_vec1 = m.vec1;
-		n128 m_vec2 = m.vec2;
-		n128 m_vec3 = m.vec3;
+		n128 mvec0 = m.vec0;
+		n128 mvec1 = m.vec1;
+		n128 mvec2 = m.vec2;
+		n128 mvec3 = m.vec3;
 
 #endif
 
-		n128 shuf1 = _hlslpp_shuf_xyxx_ps(m_vec0, m_vec1); // x, y
-		n128 shuf2 = _hlslpp_shuf_zwxx_ps(m_vec2, m_vec3); // 
+		n128 shuf1 = _hlslpp_shuf_xyxx_ps(mvec0, mvec1); // x, y
+		n128 shuf2 = _hlslpp_shuf_zwxx_ps(mvec2, mvec3); // 
 		n128 sum1 = _hlslpp_add_ps(shuf1, shuf2); // x + z, y + w, _, _
 		n128 t = _hlslpp_add_ps(sum1, _hlslpp_perm_yyyy_ps(sum1)); // x + y + z + w, _, _, _
 		return float1(t);
@@ -1879,31 +1901,27 @@ hlslpp_module_export namespace hlslpp
 
 #if defined(HLSLPP_SIMD_REGISTER_256)
 
-		n128 m_vec0 = _hlslpp256_low_ps(m.vec0);
-		n128 m_vec1 = _hlslpp256_high_ps(m.vec0);
-		n128 m_vec2 = _hlslpp256_low_ps(m.vec1);
-		n128 m_vec3 = _hlslpp256_high_ps(m.vec1);
+		n128 mvec0 = _hlslpp256_low_ps(m.vec0);
+		n128 mvec1 = _hlslpp256_high_ps(m.vec0);
+		n128 mvec2 = _hlslpp256_low_ps(m.vec1);
+		n128 mvec3 = _hlslpp256_high_ps(m.vec1);
 
 #else
 
-		n128 m_vec0 = m.vec0;
-		n128 m_vec1 = m.vec1;
-		n128 m_vec2 = m.vec2;
-		n128 m_vec3 = m.vec3;
+		n128 mvec0 = m.vec0;
+		n128 mvec1 = m.vec1;
+		n128 mvec2 = m.vec2;
+		n128 mvec3 = m.vec3;
 
 #endif
 
 		n128 vec0, vec1, vec2, vec3;
-		_hlslpp_inv_4x4_ps(m_vec0, m_vec1, m_vec2, m_vec3, vec0, vec1, vec2, vec3);
+		_hlslpp_inv_4x4_ps(mvec0, mvec1, mvec2, mvec3, vec0, vec1, vec2, vec3);
 
 #if defined(HLSLPP_SIMD_REGISTER_256)
-
 		return float4x4(_hlslpp256_set128_ps(vec0, vec1), _hlslpp256_set128_ps(vec2, vec3));
-
 #else
-
 		return float4x4(vec0, vec1, vec2, vec3);
-
 #endif
 	}
 
