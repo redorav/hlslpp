@@ -193,6 +193,14 @@ namespace hlslpp_unit
 			&& eq(v.w, w, tolerance);
 	}
 
+	bool eq(const quaternion& q1, const quaternion& q2, float tolerance /*= 0.0f*/)
+	{
+		return eq(q1.x, q2.x, tolerance)
+			&& eq(q1.y, q2.y, tolerance)
+			&& eq(q1.z, q2.z, tolerance)
+			&& eq(q1.w, q2.w, tolerance);
+	}
+
 #if defined(HLSLPP_FLOAT8)
 
 	bool eq(const float8& v, float x, float y, float z, float w, float a, float b, float c, float d, float tolerance /*= 0.0f*/)
