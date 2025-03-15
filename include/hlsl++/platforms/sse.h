@@ -117,7 +117,11 @@ typedef __m256i n256i;
 #endif
 
 // Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
+#if defined(__AVX512F__) && defined(__AVX512VL__)
+#define _hlslpp_abs_ps(x)						_mm_range_ps((x), (x), 0b1000)
+#else
 #define _hlslpp_abs_ps(x)						_mm_and_ps(_mm_castsi128_ps(_mm_set1_epi32(0x7fffffff)), (x))
+#endif
 
 #define _hlslpp_sqrt_ps(x)						_mm_sqrt_ps((x))
 #define _hlslpp_rsqrt_ps(x)						_mm_rsqrt_ps((x))
@@ -1157,7 +1161,11 @@ hlslpp_inline void _hlslpp_load4_epu32(uint32_t* p, n128u& x) { _hlslpp_load4_ep
 #endif
 
 // Reference http://www.liranuna.com/sse-intrinsics-optimizations-in-popular-compilers/
+#if defined(__AVX512F__) && defined(__AVX512VL__)
+#define _hlslpp_abs_pd(x)						_mm_range_pd((x), (x), 0b1000)
+#else
 #define _hlslpp_abs_pd(x)						_mm_and_pd(d2absMask, (x))
+#endif
 
 #define _hlslpp_sqrt_pd(x)						_mm_sqrt_pd((x))
 #define _hlslpp_rsqrt_pd(x)						_mm_div_pd(d2_1, _mm_sqrt_pd((x)))
