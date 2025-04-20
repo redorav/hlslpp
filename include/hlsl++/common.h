@@ -425,4 +425,41 @@ hlslpp_module_export namespace hlslpp
 
 	// HLSL assumes certain sizes of types
 	static_assert(sizeof(int) == 4, "Size of integer must be 4 bytes");
+
+	// Disambiguate when we want to use builtin types. We need to be careful with this. <cmath> includes identical functions
+	// in the global namespace. However, the results returned from the standard functions do not match hlsl++. Ideally functions
+	// taking a float return the same value as when using float4. The downside is naming collisions with the globally defined
+	// functions if exposing the hlslpp namespace via the using directive. The real downside is that I need to provide the full
+	// replacement for cmath as we're not allowed to mix and match. These replacements can then be used in the SCALAR version
+	// of the library
+
+	hlslpp_inline float min(float f1, float f2) { return f1 < f2 ? f1 : f2; }
+	hlslpp_inline double min(double f1, double f2) { return f1 < f2 ? f1 : f2; }
+	
+	hlslpp_inline int8_t min(int8_t i1, int8_t i2) { return i1 < i2 ? i1 : i2; }
+	hlslpp_inline uint8_t min(uint8_t i1, uint8_t i2) { return i1 < i2 ? i1 : i2; }
+	
+	hlslpp_inline int16_t min(int16_t i1, int16_t i2) { return i1 < i2 ? i1 : i2; }
+	hlslpp_inline uint16_t min(uint16_t i1, uint16_t i2) { return i1 < i2 ? i1 : i2; }
+	
+	hlslpp_inline int32_t min(int32_t i1, int32_t i2) { return i1 < i2 ? i1 : i2; }
+	hlslpp_inline uint32_t min(uint32_t i1, uint32_t i2) { return i1 < i2 ? i1 : i2; }
+	
+	hlslpp_inline int64_t min(int64_t i1, int64_t i2) { return i1 < i2 ? i1 : i2; }
+	hlslpp_inline uint64_t min(uint64_t i1, uint64_t i2) { return i1 < i2 ? i1 : i2; }
+	
+	hlslpp_inline float max(float f1, float f2) { return f1 > f2 ? f1 : f2; }
+	hlslpp_inline double max(double f1, double f2) { return f1 > f2 ? f1 : f2; }
+	
+	hlslpp_inline int8_t max(int8_t i1, int8_t i2) { return i1 > i2 ? i1 : i2; }
+	hlslpp_inline uint8_t max(uint8_t i1, uint8_t i2) { return i1 > i2 ? i1 : i2; }
+	
+	hlslpp_inline int16_t max(int16_t i1, int16_t i2) { return i1 > i2 ? i1 : i2; }
+	hlslpp_inline uint16_t max(uint16_t i1, uint16_t i2) { return i1 > i2 ? i1 : i2; }
+	
+	hlslpp_inline int32_t max(int32_t i1, int32_t i2) { return i1 > i2 ? i1 : i2; }
+	hlslpp_inline uint32_t max(uint32_t i1, uint32_t i2) { return i1 > i2 ? i1 : i2; }
+	
+	hlslpp_inline int64_t max(int64_t i1, int64_t i2) { return i1 > i2 ? i1 : i2; }
+	hlslpp_inline uint64_t max(uint64_t i1, uint64_t i2) { return i1 > i2 ? i1 : i2; }
 }
