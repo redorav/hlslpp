@@ -26,7 +26,7 @@ hlslpp_module_export namespace hlslpp
 		// q0.y * q1.x + q0.x * q1.w, q0.z * q1.x + q0.y * q1.w, q0.z * q1.w + q0.x * q1.y, q0.y * q1.y + q0.x * q1.x
 		n128 tmp_mad_1 = _hlslpp_madd_ps(_hlslpp_perm_yzzy_ps(q0), _hlslpp_perm_zxwy_ps(q1), tmp_mul_0);
 
-		const n128i signMask = _hlslpp_set_epi32(0, 0, 0, 0x80000000);
+		const n128i signMask = _hlslpp_set_epi32(0, 0, 0, (int)0x80000000);
 		n128 tmp_sign = _hlslpp_xor_ps(tmp_mad_1, _hlslpp_castsi128_ps(signMask)); // Flip the sign from the last row (w)
 
 		// q0.w * q1.x + q0.y * q1.x + q0.x * q1.w, 
@@ -45,7 +45,7 @@ hlslpp_module_export namespace hlslpp
 
 	hlslpp_inline n128 _hlslpp_quat_conjugate_ps(const n128 q)
 	{
-		static const n128i signMask = _hlslpp_set_epi32(0x80000000, 0x80000000, 0x80000000, 0);
+		static const n128i signMask = _hlslpp_set_epi32((int)0x80000000, (int)0x80000000, (int)0x80000000, 0);
 		return _hlslpp_xor_ps(q, _hlslpp_castsi128_ps(signMask)); // Flip the sign bits of the vector part of the quaternion
 	}
 
@@ -132,7 +132,7 @@ hlslpp_module_export namespace hlslpp
 		n128 CzSzCzSz	= _hlslpp_blend_ps(_hlslpp_perm_zzzz_ps(sin), _hlslpp_perm_zzzz_ps(cos), HLSLPP_BLEND_MASK(0, 1, 0, 1));
 
 		n128 term2		= _hlslpp_mul_ps(SxSxSxSx, _hlslpp_mul_ps(CyCySySy, CzSzCzSz));
-		const n128i signMask = _hlslpp_set_epi32(0, 0x80000000, 0x80000000, 0);
+		const n128i signMask = _hlslpp_set_epi32(0, (int)0x80000000, (int)0x80000000, 0);
 		term2			= _hlslpp_xor_ps(term2, _hlslpp_castsi128_ps(signMask)); // Flip the sign bits
 
 		n128 result		= _hlslpp_add_ps(term1, term2);
@@ -247,7 +247,7 @@ hlslpp_module_export namespace hlslpp
 	hlslpp_inline void _hlslpp_quat_to_4x4_ps(const n128 q, n128& row0, n128& row1, n128& row2, n128& row3)
 	{
 		_hlslpp_quat_to_3x3_ps(q, row0, row1, row2);
-		const n128 zeroLast = _hlslpp_castsi128_ps(_hlslpp_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0));
+		const n128 zeroLast = _hlslpp_castsi128_ps(_hlslpp_set_epi32((int)0xffffffff, (int)0xffffffff, (int)0xffffffff, 0));
 		row0 = _hlslpp_and_ps(row0, zeroLast);
 		row1 = _hlslpp_and_ps(row1, zeroLast);
 		row2 = _hlslpp_and_ps(row2, zeroLast);

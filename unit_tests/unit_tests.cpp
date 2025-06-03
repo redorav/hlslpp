@@ -721,7 +721,7 @@ void RunUnitTests()
 
 	using namespace hlslpp_unit;
 
-	int seed = 0;// (int)time(NULL);
+	unsigned int seed = 0;// (int)time(NULL);
 	srand(seed);
 
 	RunUnitTestsVectorFloat();

@@ -1154,7 +1154,7 @@ void RunUnitTestsVectorFloat()
 
 	float8 vatan8 = atan(vfoo8); hlslpp_unit_unused(vatan8);
 
-	float8 vceil8 = ceil(vceil8); hlslpp_unit_unused(vceil8); //eq(vceil4, ceil((float)vfoo8.x), ceil((float)vfoo8.y), ceil((float)vfoo8.z), ceil((float)vfoo8.w));
+	float8 vceil8 = ceil(vfoo8); hlslpp_unit_unused(vceil8); //eq(vceil4, ceil((float)vfoo8.x), ceil((float)vfoo8.y), ceil((float)vfoo8.z), ceil((float)vfoo8.w));
 
 	float8 vclamp8 = clamp(vfoo8, vbar8, vbaz8); hlslpp_unit_unused(vclamp8);
 
@@ -1164,7 +1164,7 @@ void RunUnitTestsVectorFloat()
 
 	float1 vdot8 = dot(vfoo8, vbar8); hlslpp_unit_unused(vdot8);
 
-	float8 vfloor8 = floor(vfloor8); hlslpp_unit_unused(vfloor8); //eq(vfloor4, floor((float)vfoo8.x), floor((float)vfoo8.y), floor((float)vfoo8.z), floor((float)vfoo8.w));
+	float8 vfloor8 = floor(vfoo8); hlslpp_unit_unused(vfloor8); //eq(vfloor4, floor((float)vfoo8.x), floor((float)vfoo8.y), floor((float)vfoo8.z), floor((float)vfoo8.w));
 	
 	float8 vfmod8 = fmod(vfoo8, vbar8); hlslpp_unit_unused(vfmod8);
 

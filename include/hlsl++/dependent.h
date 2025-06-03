@@ -75,7 +75,7 @@ hlslpp_module_export namespace hlslpp
 #else
 
 		_hlslpp_quat_to_3x3_ps(q.vec, vec0, vec1, vec2);
-		const n128 zeroLast = _hlslpp_castsi128_ps(_hlslpp_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0));
+		const n128 zeroLast = _hlslpp_castsi128_ps(_hlslpp_set_epi32((int)0xffffffff, (int)0xffffffff, (int)0xffffffff, 0));
 		vec0 = _hlslpp_and_ps(vec0, zeroLast);
 		vec1 = _hlslpp_and_ps(vec1, zeroLast);
 		vec2 = _hlslpp_and_ps(vec2, zeroLast);

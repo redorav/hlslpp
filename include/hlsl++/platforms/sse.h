@@ -148,7 +148,7 @@ typedef __m256i n256i;
 
 hlslpp_inline n128 _hlslpp_blend_ps(n128 x, n128 y, int mask)
 {
-	n128 mask128 = _mm_castsi128_ps(_mm_set_epi32(((mask >> 3) & 1) * 0xffffffff, ((mask >> 2) & 1) * 0xffffffff, ((mask >> 1) & 1) * 0xffffffff, (mask & 1) * 0xffffffff));
+	n128 mask128 = _mm_castsi128_ps(_mm_set_epi32(int(((mask >> 3) & 1) * 0xffffffff), int(((mask >> 2) & 1) * 0xffffffff), int(((mask >> 1) & 1) * 0xffffffff), int((mask & 1) * 0xffffffff)));
 	return _hlslpp_sel_ps(x, y, mask128);
 }
 
@@ -689,7 +689,7 @@ hlslpp_inline n128i _hlslpp_min_epi32(n128i x, n128i y)
 
 hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 {
-	n128i mask128 = _mm_set_epi32(((mask >> 3) & 1) * 0xffffffff, ((mask >> 2) & 1) * 0xffffffff, ((mask >> 1) & 1) * 0xffffffff, (mask & 1) * 0xffffffff);
+	n128i mask128 = _mm_set_epi32(int(((mask >> 3) & 1) * 0xffffffff), int(((mask >> 2) & 1) * 0xffffffff), int(((mask >> 1) & 1) * 0xffffffff), int((mask & 1) * 0xffffffff));
 	return _mm_xor_si128((x), _mm_and_si128(mask128, _mm_xor_si128((y), (x))));
 }
 
@@ -755,7 +755,7 @@ inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
 	n128i count2 = _hlslpp_perm_epi32(count, 2, 0, 0, 0);
 	n128i count3 = _hlslpp_perm_epi32(count, 3, 0, 0, 0);
 
-	n128i ffMask = _mm_setr_epi32(0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
+	n128i ffMask = _mm_setr_epi32((int)0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
 
 	n128i imask0 = _mm_and_si128(count, ffMask);
 	n128i imask1 = _mm_and_si128(count1, ffMask);
@@ -779,7 +779,7 @@ inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 	n128i count2 = _hlslpp_perm_epi32(count, 2, 0, 0, 0);
 	n128i count3 = _hlslpp_perm_epi32(count, 3, 0, 0, 0);
 
-	n128i ffMask = _mm_setr_epi32(0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
+	n128i ffMask = _mm_setr_epi32((int)0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
 
 	n128i imask0 = _mm_and_si128(count, ffMask);
 	n128i imask1 = _mm_and_si128(count1, ffMask);
@@ -1018,8 +1018,8 @@ hlslpp_inline n256i _hlslpp256_or_si128(n256i x, n256i y)
 // Unsigned Integer
 //-----------------
 
-#define _hlslpp_set1_epu32(x)					_hlslpp_set1_epi32((x))
-#define _hlslpp_set_epu32(x, y, z, w)			_hlslpp_set_epi32((x), (y), (z), (w))
+#define _hlslpp_set1_epu32(x)					_hlslpp_set1_epi32(int(x))
+#define _hlslpp_set_epu32(x, y, z, w)			_hlslpp_set_epi32(int(x), int(y), int(z), int(w))
 #define _hlslpp_setzero_epu32()					_hlslpp_setzero_epi32()
 
 #define _hlslpp_add_epu32(x, y)					_hlslpp_add_epi32((x), (y))
@@ -1038,28 +1038,28 @@ hlslpp_inline n256i _hlslpp256_or_si128(n256i x, n256i y)
 
 hlslpp_inline n128u _hlslpp_cmpgt_epu32(n128u x, n128u y)
 {
-	return _mm_xor_si128(_mm_cmpgt_epi32(_mm_xor_si128(x, _mm_set1_epi32(0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32(0xf0000000))), _mm_set1_epi32(0xf0000000));
+	return _mm_xor_si128(_mm_cmpgt_epi32(_mm_xor_si128(x, _mm_set1_epi32((int)0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32((int)0xf0000000))), _mm_set1_epi32((int)0xf0000000));
 }
 
 hlslpp_inline n128i _hlslpp_cmpge_epu32(n128i x, n128i y)
 {
-	n128i xor_x = _mm_xor_si128(x, _mm_set1_epi32(0xf0000000));
-	n128i xor_y = _mm_xor_si128(y, _mm_set1_epi32(0xf0000000));
+	n128i xor_x = _mm_xor_si128(x, _mm_set1_epi32((int)0xf0000000));
+	n128i xor_y = _mm_xor_si128(y, _mm_set1_epi32((int)0xf0000000));
 
-	return _mm_xor_si128(_mm_or_si128(_mm_cmpgt_epi32(xor_x, xor_y), _mm_cmpeq_epi32(xor_x, xor_y)), _mm_set1_epi32(0xf0000000));
+	return _mm_xor_si128(_mm_or_si128(_mm_cmpgt_epi32(xor_x, xor_y), _mm_cmpeq_epi32(xor_x, xor_y)), _mm_set1_epi32((int)0xf0000000));
 }
 
 hlslpp_inline n128u _hlslpp_cmplt_epu32(n128u x, n128u y)
 {
-	return _mm_xor_si128(_mm_cmplt_epi32(_mm_xor_si128(x, _mm_set1_epi32(0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32(0xf0000000))), _mm_set1_epi32(0xf0000000));
+	return _mm_xor_si128(_mm_cmplt_epi32(_mm_xor_si128(x, _mm_set1_epi32((int)0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32((int)0xf0000000))), _mm_set1_epi32((int)0xf0000000));
 }
 
 hlslpp_inline n128i _hlslpp_cmple_epu32(n128i x, n128i y)
 {
-	n128i xor_x = _mm_xor_si128(x, _mm_set1_epi32(0xf0000000));
-	n128i xor_y = _mm_xor_si128(y, _mm_set1_epi32(0xf0000000));
+	n128i xor_x = _mm_xor_si128(x, _mm_set1_epi32((int)0xf0000000));
+	n128i xor_y = _mm_xor_si128(y, _mm_set1_epi32((int)0xf0000000));
 
-	return _mm_xor_si128(_mm_or_si128(_mm_cmplt_epi32(xor_x, xor_y), _mm_cmpeq_epi32(xor_x, xor_y)), _mm_set1_epi32(0xf0000000));
+	return _mm_xor_si128(_mm_or_si128(_mm_cmplt_epi32(xor_x, xor_y), _mm_cmpeq_epi32(xor_x, xor_y)), _mm_set1_epi32((int)0xf0000000));
 }
 
 #if defined(__SSE4_1__)
@@ -1073,12 +1073,12 @@ hlslpp_inline n128i _hlslpp_cmple_epu32(n128i x, n128i y)
 
 hlslpp_inline n128i _hlslpp_max_epu32(n128u x, n128u y)
 {
-	return _mm_xor_si128(_hlslpp_max_epi32(_mm_xor_si128(x, _mm_set1_epi32(0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32(0xf0000000))), _mm_set1_epi32(0xf0000000));
+	return _mm_xor_si128(_hlslpp_max_epi32(_mm_xor_si128(x, _mm_set1_epi32((int)0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32((int)0xf0000000))), _mm_set1_epi32((int)0xf0000000));
 }
 
 hlslpp_inline n128i _hlslpp_min_epu32(n128u x, n128u y)
 {
-	return _mm_xor_si128(_hlslpp_min_epi32(_mm_xor_si128(x, _mm_set1_epi32(0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32(0xf0000000))), _mm_set1_epi32(0xf0000000));
+	return _mm_xor_si128(_hlslpp_min_epi32(_mm_xor_si128(x, _mm_set1_epi32((int)0xf0000000)), _mm_xor_si128(y, _mm_set1_epi32((int)0xf0000000))), _mm_set1_epi32((int)0xf0000000));
 }
 
 #endif
@@ -1189,7 +1189,7 @@ hlslpp_inline void _hlslpp_load4_epu32(uint32_t* p, n128u& x) { _hlslpp_load4_ep
 
 hlslpp_inline n128d _hlslpp_blend_pd(n128d x, n128d y, int mask)
 {
-	n128d mask128 = _mm_castsi128_pd(_mm_set_epi64x((((mask) >> 1) & 1) * 0xffffffffffffffff, ((mask) & 1) * 0xffffffffffffffff));
+	n128d mask128 = _mm_castsi128_pd(_mm_set_epi64x(int64_t((((mask) >> 1) & 1) * 0xffffffffffffffff), int64_t(((mask) & 1) * 0xffffffffffffffff)));
 	return _hlslpp_sel_pd(x, y, mask128);
 }
 
@@ -1219,7 +1219,7 @@ hlslpp_inline n128d _hlslpp_trunc_pd(n128d x)
 	exponent = _mm_sub_epi64(exponent, _mm_set1_epi64x(1023));
 
 	// Extract the sign
-	n128i sign = _mm_and_si128(xi, _mm_set1_epi64x(0x8000000000000000));
+	n128i sign = _mm_and_si128(xi, _mm_set1_epi64x((int64_t)0x8000000000000000));
 
 	// Subtract the mantissa size of a double from the exponent and extract it to the lower part
 	// as the shift right and left instructions only take the lower integers into account
@@ -1567,12 +1567,12 @@ hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_unorm(__m128 v)
 	__m128i packed8 = _mm_packus_epi16(packed16, packed16);
 #endif
 
-	return _mm_cvtsi128_si32(packed8);
+	return (uint32_t)_mm_cvtsi128_si32(packed8);
 }
 
 hlslpp_inline __m128 _hlslpp_unpack_rgba8_unorm_epu32(uint32_t p)
 {
-	__m128i i = _mm_set1_epi32(p);
+	__m128i i = _mm_set1_epi32((int)p);
 	__m128 t = _mm_cvtepi32_ps(_hlslpp_cvtepi8_epi32(i));
 	return _mm_mul_ps(t, _hlslpp_set1_ps(1.0f / 255.0f));
 }
@@ -1580,7 +1580,7 @@ hlslpp_inline __m128 _hlslpp_unpack_rgba8_unorm_epu32(uint32_t p)
 hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_snorm(__m128 v)
 {
 	// Copy sign from x to 0.5
-	__m128 vbias = _mm_or_ps(_mm_set1_ps(0.5f), _mm_and_ps(v, _mm_castsi128_ps(_mm_set1_epi32(0x80000000u))));
+	__m128 vbias = _mm_or_ps(_mm_set1_ps(0.5f), _mm_and_ps(v, _mm_castsi128_ps(_mm_set1_epi32((int)0x80000000u))));
 	__m128 v127f = _hlslpp_madd_ps(v, _mm_set1_ps(127.0f), vbias);
 	__m128i v127i = _mm_cvttps_epi32(v127f);
 #if defined(__SSSE3__)
@@ -1589,12 +1589,12 @@ hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_snorm(__m128 v)
 	__m128i packed16 = _mm_packs_epi16(v127i, v127i);
 	__m128i packed8 = _mm_packs_epi16(packed16, packed16);
 #endif
-	return _mm_cvtsi128_si32(packed8);
+	return (uint32_t)_mm_cvtsi128_si32(packed8);
 }
 
 hlslpp_inline __m128 _hlslpp_unpack_rgba8_snorm_epu32(uint32_t p)
 {
-	__m128i i = _mm_set1_epi32(p);
+	__m128i i = _mm_set1_epi32((int)p);
 	__m128 t = _mm_cvtepi32_ps(_hlslpp_cvtepi8_epi32(i));
 	return _mm_mul_ps(t, _hlslpp_set1_ps(1.0f / 127.0f));
 }

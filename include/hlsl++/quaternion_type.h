@@ -31,7 +31,7 @@ hlslpp_module_export namespace hlslpp
 		quaternion(const float1& f1, const float3& f2) hlslpp_noexcept { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxyz_ps(f2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 0)); }
 		quaternion(const float3& f1, const float1& f2) hlslpp_noexcept { vec = _hlslpp_blend_ps(f1.vec, _hlslpp_perm_xxxx_ps(f2.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
 
-		explicit quaternion(const float3& f) hlslpp_noexcept { vec = _hlslpp_and_ps(f.vec, _hlslpp_castsi128_ps(_hlslpp_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0))); }
+		explicit quaternion(const float3& f) hlslpp_noexcept { vec = _hlslpp_and_ps(f.vec, _hlslpp_castsi128_ps(_hlslpp_set_epi32((int)0xffffffff, (int)0xffffffff, (int)0xffffffff, 0))); }
 
 		explicit quaternion(const float4& f) hlslpp_noexcept { vec = f.vec; }
 		//quaternion(const float1x4& q) { vec = q.vec; }

@@ -8,18 +8,18 @@
 
 hlslpp_module_export namespace hlslpp
 {
-	const n128i i4_0x55555555 = _hlslpp_set1_epi32(0x55555555);
-	const n128i i4_0x33333333 = _hlslpp_set1_epi32(0x33333333);
-	const n128i i4_0x0f0f0f0f = _hlslpp_set1_epi32(0x0f0f0f0f);
-	const n128i i4_0x01010101 = _hlslpp_set1_epi32(0x01010101);
-	const n128i i4_0x0000003f = _hlslpp_set1_epi32(0x0000003f);
-	const n128i i4_0xaaaaaaaa = _hlslpp_set1_epi32(0xaaaaaaaa);
-	const n128i i4_0xcccccccc = _hlslpp_set1_epi32(0xcccccccc);
-	const n128i i4_0xf0f0f0f0 = _hlslpp_set1_epi32(0xf0f0f0f0);
-	const n128i i4_0x00ff00ff = _hlslpp_set1_epi32(0x00ff00ff);
-	const n128i i4_0xff00ff00 = _hlslpp_set1_epi32(0xff00ff00);
-	const n128i i4_0x0000ffff = _hlslpp_set1_epi32(0x0000ffff);
-	const n128i i4_0xffff0000 = _hlslpp_set1_epi32(0xffff0000);
+	const n128i i4_0x55555555 = _hlslpp_set1_epi32((int)0x55555555);
+	const n128i i4_0x33333333 = _hlslpp_set1_epi32((int)0x33333333);
+	const n128i i4_0x0f0f0f0f = _hlslpp_set1_epi32((int)0x0f0f0f0f);
+	const n128i i4_0x01010101 = _hlslpp_set1_epi32((int)0x01010101);
+	const n128i i4_0x0000003f = _hlslpp_set1_epi32((int)0x0000003f);
+	const n128i i4_0xaaaaaaaa = _hlslpp_set1_epi32((int)0xaaaaaaaa);
+	const n128i i4_0xcccccccc = _hlslpp_set1_epi32((int)0xcccccccc);
+	const n128i i4_0xf0f0f0f0 = _hlslpp_set1_epi32((int)0xf0f0f0f0);
+	const n128i i4_0x00ff00ff = _hlslpp_set1_epi32((int)0x00ff00ff);
+	const n128i i4_0xff00ff00 = _hlslpp_set1_epi32((int)0xff00ff00);
+	const n128i i4_0x0000ffff = _hlslpp_set1_epi32((int)0x0000ffff);
+	const n128i i4_0xffff0000 = _hlslpp_set1_epi32((int)0xffff0000);
 
 	// https://stackoverflow.com/questions/109023/how-to-count-the-number-of-set-bits-in-a-32-bit-integer
 	hlslpp_inline n128i _hlslpp_countbits_epi32(n128i i)
