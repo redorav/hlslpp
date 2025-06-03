@@ -393,7 +393,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 // Float 256
 //----------
 
-#if defined(__AVX__)
+#if defined(HLSLPP_SIMD_REGISTER_256)
 
 #define _hlslpp256_set1_ps(x)						_mm256_set1_ps((x))
 
@@ -472,25 +472,48 @@ hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n1
 
 #define _hlslpp256_movehdup_ps(x)					_mm256_movehdup_ps((x))
 
+// We could make these functions use SFINAE and other template magic to select the appropriate implementation, but it makes it really hard to read
+// and debug. On older platforms without if constexpr the debug versions will incur in some overhead, on release it optimizes properly since these
+// are all compile time constants
 template<int X, int Y, int Z, int W, int A, int B, int C, int D>
 hlslpp_inline n256 permute_float(n256 x)
 {
-	// We need to statically assert for now until the permutes can cover more cases
 	static_assert
-		(
-			X >= 0 && X < 8 && Y >= 0 && Y < 8 && Z >= 0 && Z < 8 && W >= 0 && W < 8 &&
-			A >= 0 && A < 8 && B >= 0 && B < 8 && C >= 0 && C < 8 && D >= 0 && D < 8,
-			"Invalid value for permute indices!");
+	(
+		X >= 0 && X < 8 && Y >= 0 && Y < 8 && Z >= 0 && Z < 8 && W >= 0 && W < 8 &&
+		A >= 0 && A < 8 && B >= 0 && B < 8 && C >= 0 && C < 8 && D >= 0 && D < 8,
+		"Invalid value for permute indices!"
+	);
 
-	// Covers all the cases where XYZW belong to the first vector, and ABCD cover the second vector
+	// Covers cases where XYZW belong to the first vector, and ABCD cover the second vector
 	hlslpp_constexpr_if(X < 4 && Y < 4 && Z < 4 && W < 4 && A >= 4 && B >= 4 && C >= 4 && D >= 4)
 	{
-		return _mm256_permutevar_ps(x, _mm256_setr_epi32(X, Y, Z, W, A, B, C, D));
+		hlslpp_constexpr_if(X == (A - 4) && Y == (B - 4) && Z == (C - 4) && W == (D - 4))
+		{
+			HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN
+			return _mm256_permute_ps(x, HLSLPP_SHUFFLE_MASK(X, Y, Z, W));
+			HLSLPP_WARNINGS_INVALID_SHUFFLE_END
+		}
+		else
+		{
+			return _mm256_permutevar_ps(x, _mm256_setr_epi32(X, Y, Z, W, A, B, C, D));
+		}
 	}
+	// Covers cases where ABCD belong to the first vector, and XYZW cover the second vector
 	else hlslpp_constexpr_if(A < 4 && B < 4 && C < 4 && D < 4 && X >= 4 && Y >= 4 && Z >= 4 && W >= 4)
 	{
 		n256 swap = _mm256_permute2f128_ps(x, x, 0x3); // 0b00110000
-		return _mm256_permutevar_ps(swap, _mm256_setr_epi32(X, Y, Z, W, A, B, C, D));
+	
+		hlslpp_constexpr_if(A == (X - 4) && B == (Y - 4) && C == (Z - 4) && D == (W - 4))
+		{
+			HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN
+			return _mm256_permute_ps(x, HLSLPP_SHUFFLE_MASK(A, B, C, D));
+			HLSLPP_WARNINGS_INVALID_SHUFFLE_END
+		}
+		else
+		{
+			return _mm256_permutevar_ps(swap, _mm256_setr_epi32(X, Y, Z, W, A, B, C, D));
+		}
 	}
 	else
 	{
