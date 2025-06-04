@@ -23,6 +23,9 @@
 	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END \
 		_Pragma("clang diagnostic pop")
 
+	#define HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN
+	#define HLSLPP_WARNINGS_INVALID_SHUFFLE_END
+
 #elif defined(__GNUG__)
 
 	#define hlslpp_inline inline __attribute__((always_inline))
@@ -39,6 +42,9 @@
 
 	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END \
 		_Pragma("GCC diagnostic pop")
+
+	#define HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN
+	#define HLSLPP_WARNINGS_INVALID_SHUFFLE_END
 
 #elif defined(_MSC_VER)
 
@@ -58,6 +64,23 @@
 
 	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
 	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
+
+	// If we have constexpr if the invalid condition won't be evaluated, so only disable it
+	// in older versions where it gets evaluated at compile time even though it would never
+	// actually run
+	#if defined(__cpp_if_constexpr)
+
+		#define HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN
+		#define HLSLPP_WARNINGS_INVALID_SHUFFLE_END
+
+	#else
+
+		#define HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN \
+			__pragma(warning(push)) \
+			__pragma(warning(disable : 4556))
+		#define HLSLPP_WARNINGS_INVALID_SHUFFLE_END __pragma(warning(pop))
+
+	#endif
 
 #else
 
