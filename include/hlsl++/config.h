@@ -1,6 +1,6 @@
 #pragma once
 
-// Note: The HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN warning behaves differently
+// Note: The HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN warning behaves differently
 // between GCC and Clang. In GCC, we need to apply the warning to the call site, i.e.
 // wherever we call the copy constructor. In Clang, we need to apply it to the class
 // itself. This means we seem to add the same warning suppression to multiple places,
@@ -16,15 +16,18 @@
 	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_BEGIN
 	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 
-	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN \
+	#define HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN \
 		_Pragma("clang diagnostic push") \
 		_Pragma("clang diagnostic ignored \"-Wdeprecated\"")
 
-	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END \
+	#define HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END \
 		_Pragma("clang diagnostic pop")
 
-	#define HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN
-	#define HLSLPP_WARNINGS_INVALID_SHUFFLE_END
+	#define HLSLPP_WARNING_PADDING_BEGIN
+	#define HLSLPP_WARNING_PADDING_END
+
+	#define HLSLPP_WARNING_INVALID_SHUFFLE_BEGIN
+	#define HLSLPP_WARNING_INVALID_SHUFFLE_END
 
 #elif defined(__GNUG__)
 
@@ -36,15 +39,18 @@
 	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_BEGIN
 	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 
-	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN \
+	#define HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN \
 	    _Pragma("GCC diagnostic push") \
 		_Pragma("GCC diagnostic ignored \"-Wdeprecated-copy\"")
 
-	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END \
+	#define HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END \
 		_Pragma("GCC diagnostic pop")
 
-	#define HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN
-	#define HLSLPP_WARNINGS_INVALID_SHUFFLE_END
+	#define HLSLPP_WARNING_PADDING_BEGIN
+	#define HLSLPP_WARNING_PADDING_END
+
+	#define HLSLPP_WARNING_INVALID_SHUFFLE_BEGIN
+	#define HLSLPP_WARNING_INVALID_SHUFFLE_END
 
 #elif defined(_MSC_VER)
 
@@ -62,23 +68,28 @@
 
 	#define HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END __pragma(warning(pop))
 
-	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
-	#define HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
+	#define HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
+	#define HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
+
+	#define HLSLPP_WARNING_PADDING_BEGIN  \
+			__pragma(warning(push)) \
+			__pragma(warning(disable : 4324))
+
+	#define HLSLPP_WARNING_PADDING_END __pragma(warning(pop))
 
 	// If we have constexpr if the invalid condition won't be evaluated, so only disable it
-	// in older versions where it gets evaluated at compile time even though it would never
-	// actually run
+	// in older versions where it gets compile time validated even though it won't ever run
 	#if defined(__cpp_if_constexpr)
 
-		#define HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN
-		#define HLSLPP_WARNINGS_INVALID_SHUFFLE_END
+	#define HLSLPP_WARNING_INVALID_SHUFFLE_BEGIN
+	#define HLSLPP_WARNING_INVALID_SHUFFLE_END
 
 	#else
 
-		#define HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN \
+		#define HLSLPP_WARNING_INVALID_SHUFFLE_BEGIN \
 			__pragma(warning(push)) \
 			__pragma(warning(disable : 4556))
-		#define HLSLPP_WARNINGS_INVALID_SHUFFLE_END __pragma(warning(pop))
+		#define HLSLPP_WARNING_INVALID_SHUFFLE_END __pragma(warning(pop))
 
 	#endif
 

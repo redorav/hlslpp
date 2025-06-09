@@ -2,7 +2,7 @@
 
 #include "hlsl++/common.h"
 
-HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
+HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
 
 namespace hlslpp
 {
@@ -314,4 +314,4 @@ namespace hlslpp
 	static_assert(hlslpp_alignof(uint4) == 16, "Mismatched alignment");
 };
 
-HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
+HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END

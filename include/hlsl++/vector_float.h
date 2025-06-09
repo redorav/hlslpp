@@ -650,7 +650,7 @@ hlslpp_module_export namespace hlslpp
 	hlslpp_inline float3& operator %= (float3& f1, const float3& f2) { f1 = f1 % f2; return f1; }
 	hlslpp_inline float4& operator %= (float4& f1, const float4& f2) { f1 = f1 % f2; return f1; }
 
-HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
+HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
 
 	// Pre-increment
 
@@ -704,7 +704,7 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
 	template<int X, int Y, int Z, int W>
 	hlslpp_inline swizzle4<X, Y, Z, W> operator -- (swizzle4<X, Y, Z, W>& f, int) { swizzle4<X, Y, Z, W> tmp = f; f = f - float4(f4_1); return tmp; }
 
-HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
+HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 
 	//------------------------------------------------------------------------------------------------------------------------
 	// float1 and swizzle1 need special overloads to disambiguate between our operators/functions and built-in float operators

@@ -152,7 +152,7 @@ hlslpp_module_export namespace hlslpp
 	//hlslpp_inline uint3 operator % (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_imod_epi32(i1.vec, i2.vec)); }
 	//hlslpp_inline uint4 operator % (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_imod_epi32(i1.vec, i2.vec)); }
 
-HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
+HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
 
 	// Pre-increment
 
@@ -206,7 +206,7 @@ HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_BEGIN
 	template<int X, int Y, int Z, int W>
 	hlslpp_inline uswizzle4<X, Y, Z, W> operator -- (uswizzle4<X, Y, Z, W>& i, int) { uswizzle4<X, Y, Z, W> tmp = i; i = i - uint4(u4_1); return tmp; }
 
-HLSLPP_WARNINGS_IMPLICIT_CONSTRUCTOR_END
+HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 
 	//------------------------------------------------------------------------------------------------------------------------//
 	// uint1 and uswizzle1 need special overloads to disambiguate between our operators/functions and built-in float operators //
