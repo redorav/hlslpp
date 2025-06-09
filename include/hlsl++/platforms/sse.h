@@ -490,9 +490,9 @@ hlslpp_inline n256 permute_float(n256 x)
 	{
 		hlslpp_constexpr_if(X == (A - 4) && Y == (B - 4) && Z == (C - 4) && W == (D - 4))
 		{
-			HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN
+			HLSLPP_WARNING_INVALID_SHUFFLE_BEGIN
 			return _mm256_permute_ps(x, HLSLPP_SHUFFLE_MASK(X, Y, Z, W));
-			HLSLPP_WARNINGS_INVALID_SHUFFLE_END
+			HLSLPP_WARNING_INVALID_SHUFFLE_END
 		}
 		else
 		{
@@ -506,9 +506,9 @@ hlslpp_inline n256 permute_float(n256 x)
 	
 		hlslpp_constexpr_if(A == (X - 4) && B == (Y - 4) && C == (Z - 4) && D == (W - 4))
 		{
-			HLSLPP_WARNINGS_INVALID_SHUFFLE_BEGIN
+			HLSLPP_WARNING_INVALID_SHUFFLE_BEGIN
 			return _mm256_permute_ps(x, HLSLPP_SHUFFLE_MASK(A, B, C, D));
-			HLSLPP_WARNINGS_INVALID_SHUFFLE_END
+			HLSLPP_WARNING_INVALID_SHUFFLE_END
 		}
 		else
 		{
