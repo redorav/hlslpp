@@ -1924,5 +1924,4 @@ hlslpp_module_export namespace hlslpp
 		return float4x4(vec0, vec1, vec2, vec3);
 #endif
 	}
-#endif
 }
