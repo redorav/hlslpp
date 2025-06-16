@@ -89,6 +89,20 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 * The [ ] operators make use of the union directly, so the generated code is up to the compiler. Use with care
 * Individual swizzle members (such as .x, .y) have the & operator overridden to take the address of the individual component. This is very useful to pass to libraries that expect data pointers like imgui
 
+## Interoperability
+
+This section mainly applies to shaders. As HLSL++'s internal types are SIMD vectors, care has to be taken when uploading or copying the memory around for systems that expect different data layouts. Shader metadata can be used to create C++ structs to make it convenient to upload to the GPU, so we allow for a subset of HLSL++ to be declared in a way that will be compatible with constant buffers. The interop namespace provides alternate classes that can copy from the SIMD vectors, and don't assume anything about alignment. For example, a struct declared in this way
+```cpp
+struct alignas(16) MyData
+{
+  hlslpp::interop::float4 data0;
+  hlslpp::interop::float3 data1;
+  float data2;
+  hlslpp::interop::float3x4 data3;
+};
+```
+will work correctly between C++ and shaders as the packing rules are compatible, whereas with the non-interop versions of these classes this would have been an error. As always, be careful to add the necessary padding between types and align as necessary. A reflection system should be able to align structs appropriately (e.g. for constant buffers) and ensure sizes are respected. For many more details on data layout rules for HLSL read [this](https://maraneshi.github.io/HLSL-ConstantBufferLayoutVisualizer).
+
 ## Features
 
 * SSE/AVX/AVX2/AVX512, NEON, Xbox360, WebAssembly and scalar versions
