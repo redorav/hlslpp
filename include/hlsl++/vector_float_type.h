@@ -314,6 +314,72 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
+	hlslpp_inline void store(const float1& v, float* f)
+	{
+		_hlslpp_store1_ps(f, v.vec);
+	}
+
+	hlslpp_inline void store(const float2& v, float* f)
+	{
+		_hlslpp_store2_ps(f, v.vec);
+	}
+
+	hlslpp_inline void store(const float3& v, float* f)
+	{
+		_hlslpp_store3_ps(f, v.vec);
+	}
+
+	hlslpp_inline void store(const float4& v, float* f)
+	{
+		_hlslpp_store4_ps(f, v.vec);
+	}
+
+	hlslpp_inline void load(float1& v, float* f)
+	{
+		_hlslpp_load1_ps(f, v.vec);
+	}
+
+	hlslpp_inline void load(float2& v, float* f)
+	{
+		_hlslpp_load2_ps(f, v.vec);
+	}
+
+	hlslpp_inline void load(float3& v, float* f)
+	{
+		_hlslpp_load3_ps(f, v.vec);
+	}
+
+	hlslpp_inline void load(float4& v, float* f)
+	{
+		_hlslpp_load4_ps(f, v.vec);
+	}
+
+	namespace interop
+	{
+		struct float4
+		{
+			float4() = default;
+			float4(hlslpp::float4 f) { hlslpp::store(f, &x); }
+			float x, y, z, w;
+		};
+
+		struct float3
+		{
+			float3() = default;
+			float3(hlslpp::float3 f) { hlslpp::store(f, &x); }
+			float x, y, z;
+		};
+
+		struct float2
+		{
+			float2() = default;
+			float2(hlslpp::float2 f) { hlslpp::store(f, &x); }
+			float x, y;
+		};
+
+		typedef float float1;
+	};
+
 	static_assert(hlslpp_alignof(float4) == 16, "Mismatched alignment");
 };
 

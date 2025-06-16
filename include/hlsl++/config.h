@@ -1,5 +1,17 @@
 #pragma once
 
+// C++ Version
+
+#if defined(_MSVC_LANG)
+
+	#define HLSLPP_CPPVERSION _MSVC_LANG
+
+#elif defined(__cplusplus)
+
+	#define HLSLPP_CPPVERSION __cplusplus
+
+#endif
+
 // Note: The HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN warning behaves differently
 // between GCC and Clang. In GCC, we need to apply the warning to the call site, i.e.
 // wherever we call the copy constructor. In Clang, we need to apply it to the class
@@ -99,10 +111,16 @@
 
 #endif
 
-#if (__cplusplus >= 201702L) || (_MSVC_LANG >= 201702L)
+#if HLSLPP_CPPVERSION >= 201702L
 	#define hlslpp_nodiscard [[nodiscard]]
 #else
 	#define hlslpp_nodiscard
+#endif
+
+#if HLSLPP_CPPVERSION >= 201103L
+	#define hlslpp_constructor_delete = delete
+#else
+	#define hlslpp_constructor_delete
 #endif
 
 // Versions previous to VS2015 need special attention

@@ -311,6 +311,72 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
+	hlslpp_inline void store(const uint1& v, uint32_t* i)
+	{
+		_hlslpp_store1_epu32(i, v.vec);
+	}
+
+	hlslpp_inline void store(const uint2& v, uint32_t* i)
+	{
+		_hlslpp_store2_epu32(i, v.vec);
+	}
+
+	hlslpp_inline void store(const uint3& v, uint32_t* i)
+	{
+		_hlslpp_store3_epu32(i, v.vec);
+	}
+
+	hlslpp_inline void store(const uint4& v, uint32_t* i)
+	{
+		_hlslpp_store4_epu32(i, v.vec);
+	}
+
+	hlslpp_inline void load(uint1& v, uint32_t* i)
+	{
+		_hlslpp_load1_epu32(i, v.vec);
+	}
+
+	hlslpp_inline void load(uint2& v, uint32_t* i)
+	{
+		_hlslpp_load2_epu32(i, v.vec);
+	}
+
+	hlslpp_inline void load(uint3& v, uint32_t* i)
+	{
+		_hlslpp_load3_epu32(i, v.vec);
+	}
+
+	hlslpp_inline void load(uint4& v, uint32_t* i)
+	{
+		_hlslpp_load4_epu32(i, v.vec);
+	}
+
+	namespace interop
+	{
+		struct uint4
+		{
+			uint4() = default;
+			uint4(hlslpp::uint4 f) { hlslpp::store(f, &x); }
+			uint32_t x, y, z, w;
+		};
+
+		struct uint3
+		{
+			uint3() = default;
+			uint3(hlslpp::uint3 f) { hlslpp::store(f, &x); }
+			uint32_t x, y, z;
+		};
+
+		struct uint2
+		{
+			uint2() = default;
+			uint2(hlslpp::uint2 f) { hlslpp::store(f, &x); }
+			uint32_t x, y;
+		};
+
+		typedef uint32_t uint1;
+	};
+
 	static_assert(hlslpp_alignof(uint4) == 16, "Mismatched alignment");
 };
 

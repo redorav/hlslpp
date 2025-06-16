@@ -565,6 +565,88 @@ hlslpp_module_export namespace hlslpp
 		};
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
+
+	hlslpp_inline void store(const double1& v, double* f)
+	{
+		_hlslpp_store1_pd(f, v.vec);
+	}
+
+	hlslpp_inline void store(const double2& v, double* f)
+	{
+		_hlslpp_store2_pd(f, v.vec);
+	}
+
+	hlslpp_inline void store(const double3& v, double* f)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_256)
+		_hlslpp256_store3_pd(f, v.vec);
+#else
+		_hlslpp_store3_pd(f, v.vec0, v.vec1);
+#endif
+	}
+
+	hlslpp_inline void store(const double4& v, double* f)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_256)
+		_hlslpp256_store4_pd(f, v.vec);
+#else
+		_hlslpp_store4_pd(f, v.vec0, v.vec1);
+#endif
+	}
+
+	hlslpp_inline void load(double1& v, double* f)
+	{
+		_hlslpp_load1_pd(f, v.vec);
+	}
+
+	hlslpp_inline void load(double2& v, double* f)
+	{
+		_hlslpp_load2_pd(f, v.vec);
+	}
+
+	hlslpp_inline void load(double3& v, double* f)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_256)
+		_hlslpp256_load3_pd(f, v.vec);
+#else
+		_hlslpp_load3_pd(f, v.vec0, v.vec1);
+#endif
+	}
+
+	hlslpp_inline void load(double4& v, double* f)
+	{
+#if defined(HLSLPP_SIMD_REGISTER_256)
+		_hlslpp256_load4_pd(f, v.vec);
+#else
+		_hlslpp_load4_pd(f, v.vec0, v.vec1);
+#endif
+	}
+
+	namespace interop
+	{
+		struct double4
+		{
+			double4() = default;
+			double4(hlslpp::double4 f) { hlslpp::store(f, &x); }
+			double x, y, z, w;
+		};
+
+		struct double3
+		{
+			double3() = default;
+			double3(hlslpp::double3 f) { hlslpp::store(f, &x); }
+			double x, y, z;
+		};
+
+		struct double2
+		{
+			double2() = default;
+			double2(hlslpp::double2 f) { hlslpp::store(f, &x); }
+			double x, y;
+		};
+
+		typedef double double1;
+	};
 };
 
 HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
