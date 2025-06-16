@@ -86,8 +86,8 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 * Windows has defines for min and max so if you're using this library and the <windows.h> header remember to #define NOMINMAX before including it
 * To force the scalar version of the library, define ```HLSLPP_SCALAR``` globally. The scalar library is only different from the SIMD version in its use of regular floats to represent vectors. It should only be used if your platform (e.g. embedded) does not have native SIMD support. It can also be used to compare performance
 * To enable the transforms feature, define ```HLSLPP_FEATURE_TRANSFORM``` globally
-* The f32 members of floatN (and other types) and the [ ] operators make use of the union directly, so the generated code is up to the compiler. Use with care
-* The f32 members of floatN (and other types) have the & operator overridden to take the address of the individual float. This is very useful to pass to libraries that expect data pointers like imgui
+* The [ ] operators make use of the union directly, so the generated code is up to the compiler. Use with care
+* Individual swizzle members (such as .x, .y) have the & operator overridden to take the address of the individual component. This is very useful to pass to libraries that expect data pointers like imgui
 
 ## Features
 
