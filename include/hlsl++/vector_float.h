@@ -658,6 +658,26 @@ hlslpp_module_export namespace hlslpp
 	hlslpp_inline float3& operator %= (float3& f1, const float3& f2) { f1 = f1 % f2; return f1; }
 	hlslpp_inline float4& operator %= (float4& f1, const float4& f2) { f1 = f1 % f2; return f1; }
 
+	hlslpp_inline float2& operator += (float2& f1, const float1& f2) { f1 = f1 + float2(f2.vec); return f1; }
+	hlslpp_inline float3& operator += (float3& f1, const float1& f2) { f1 = f1 + float3(f2.vec); return f1; }
+	hlslpp_inline float4& operator += (float4& f1, const float1& f2) { f1 = f1 + float4(f2.vec); return f1; }
+
+	hlslpp_inline float2& operator -= (float2& f1, const float1& f2) { f1 = f1 - float2(f2.vec); return f1; }
+	hlslpp_inline float3& operator -= (float3& f1, const float1& f2) { f1 = f1 - float3(f2.vec); return f1; }
+	hlslpp_inline float4& operator -= (float4& f1, const float1& f2) { f1 = f1 - float4(f2.vec); return f1; }
+
+	hlslpp_inline float2& operator *= (float2& f1, const float1& f2) { f1 = f1 * float2(f2.vec); return f1; }
+	hlslpp_inline float3& operator *= (float3& f1, const float1& f2) { f1 = f1 * float3(f2.vec); return f1; }
+	hlslpp_inline float4& operator *= (float4& f1, const float1& f2) { f1 = f1 * float4(f2.vec); return f1; }
+
+	hlslpp_inline float2& operator /= (float2& f1, const float1& f2) { f1 = f1 / float2(f2.vec); return f1; }
+	hlslpp_inline float3& operator /= (float3& f1, const float1& f2) { f1 = f1 / float3(f2.vec); return f1; }
+	hlslpp_inline float4& operator /= (float4& f1, const float1& f2) { f1 = f1 / float4(f2.vec); return f1; }
+
+	hlslpp_inline float2& operator %= (float2& f1, const float1& f2) { f1 = f1 % float2(f2.vec); return f1; }
+	hlslpp_inline float3& operator %= (float3& f1, const float1& f2) { f1 = f1 % float3(f2.vec); return f1; }
+	hlslpp_inline float4& operator %= (float4& f1, const float1& f2) { f1 = f1 % float4(f2.vec); return f1; }
+
 HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
 
 	// Pre-increment
@@ -769,30 +789,30 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) operator % (T f1, const float3& f2) { return float3(f1) % f2; }
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) operator % (T f1, const float4& f2) { return float4(f1) % f2; }
 
-	template<typename T> hlslpp_inline float1& operator += (float1& f1, T f2) { f1 = f1 + float1(f2); return f1; }
-	template<typename T> hlslpp_inline float2& operator += (float2& f1, T f2) { f1 = f1 + float2(f2); return f1; }
-	template<typename T> hlslpp_inline float3& operator += (float3& f1, T f2) { f1 = f1 + float3(f2); return f1; }
-	template<typename T> hlslpp_inline float4& operator += (float4& f1, T f2) { f1 = f1 + float4(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1&) operator += (float1& f1, T f2) { f1 = f1 + float1(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2&) operator += (float2& f1, T f2) { f1 = f1 + float2(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3&) operator += (float3& f1, T f2) { f1 = f1 + float3(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4&) operator += (float4& f1, T f2) { f1 = f1 + float4(f2); return f1; }
 
-	template<typename T> hlslpp_inline float1& operator -= (float1& f1, T f2) { f1 = f1 - float1(f2); return f1; }
-	template<typename T> hlslpp_inline float2& operator -= (float2& f1, T f2) { f1 = f1 - float2(f2); return f1; }
-	template<typename T> hlslpp_inline float3& operator -= (float3& f1, T f2) { f1 = f1 - float3(f2); return f1; }
-	template<typename T> hlslpp_inline float4& operator -= (float4& f1, T f2) { f1 = f1 - float4(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1&) operator -= (float1& f1, T f2) { f1 = f1 - float1(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2&) operator -= (float2& f1, T f2) { f1 = f1 - float2(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3&) operator -= (float3& f1, T f2) { f1 = f1 - float3(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4&) operator -= (float4& f1, T f2) { f1 = f1 - float4(f2); return f1; }
 
-	template<typename T> hlslpp_inline float1& operator *= (float1& f1, T f2) { f1 = f1 * float1(f2); return f1; }
-	template<typename T> hlslpp_inline float2& operator *= (float2& f1, T f2) { f1 = f1 * float2(f2); return f1; }
-	template<typename T> hlslpp_inline float3& operator *= (float3& f1, T f2) { f1 = f1 * float3(f2); return f1; }
-	template<typename T> hlslpp_inline float4& operator *= (float4& f1, T f2) { f1 = f1 * float4(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1&) operator *= (float1& f1, T f2) { f1 = f1 * float1(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2&) operator *= (float2& f1, T f2) { f1 = f1 * float2(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3&) operator *= (float3& f1, T f2) { f1 = f1 * float3(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4&) operator *= (float4& f1, T f2) { f1 = f1 * float4(f2); return f1; }
 
-	template<typename T> hlslpp_inline float1& operator /= (float1& f1, T f2) { f1 = f1 / float1(f2); return f1; }
-	template<typename T> hlslpp_inline float2& operator /= (float2& f1, T f2) { f1 = f1 / float2(f2); return f1; }
-	template<typename T> hlslpp_inline float3& operator /= (float3& f1, T f2) { f1 = f1 / float3(f2); return f1; }
-	template<typename T> hlslpp_inline float4& operator /= (float4& f1, T f2) { f1 = f1 / float4(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1&) operator /= (float1& f1, T f2) { f1 = f1 / float1(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2&) operator /= (float2& f1, T f2) { f1 = f1 / float2(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3&) operator /= (float3& f1, T f2) { f1 = f1 / float3(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4&) operator /= (float4& f1, T f2) { f1 = f1 / float4(f2); return f1; }
 
-	template<typename T> hlslpp_inline float1& operator %= (float1& f1, T f2) { f1 = f1 % float1(f2); return f1; }
-	template<typename T> hlslpp_inline float2& operator %= (float2& f1, T f2) { f1 = f1 % float2(f2); return f1; }
-	template<typename T> hlslpp_inline float3& operator %= (float3& f1, T f2) { f1 = f1 % float3(f2); return f1; }
-	template<typename T> hlslpp_inline float4& operator %= (float4& f1, T f2) { f1 = f1 % float4(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1&) operator %= (float1& f1, T f2) { f1 = f1 % float1(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2&) operator %= (float2& f1, T f2) { f1 = f1 % float2(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3&) operator %= (float3& f1, T f2) { f1 = f1 % float3(f2); return f1; }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4&) operator %= (float4& f1, T f2) { f1 = f1 % float4(f2); return f1; }
 
 	template<int X, typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator + (const swizzle1<X>& f1, T f2) { return float1(f1) + float1(f2); }
 	template<int X, typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) operator + (T f1, const swizzle1<X>& f2) { return float1(f1) + float1(f2); }
