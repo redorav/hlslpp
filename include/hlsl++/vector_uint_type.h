@@ -356,21 +356,21 @@ namespace hlslpp
 		struct uint4
 		{
 			uint4() = default;
-			uint4(hlslpp::uint4 f) { hlslpp::store(f, &x); }
+			uint4(const hlslpp::uint4& f) { hlslpp::store(f, &x); }
 			uint32_t x, y, z, w;
 		};
 
 		struct uint3
 		{
 			uint3() = default;
-			uint3(hlslpp::uint3 f) { hlslpp::store(f, &x); }
+			uint3(const hlslpp::uint3& f) { hlslpp::store(f, &x); }
 			uint32_t x, y, z;
 		};
 
 		struct uint2
 		{
 			uint2() = default;
-			uint2(hlslpp::uint2 f) { hlslpp::store(f, &x); }
+			uint2(const hlslpp::uint2& f) { hlslpp::store(f, &x); }
 			uint32_t x, y;
 		};
 

@@ -627,21 +627,21 @@ hlslpp_module_export namespace hlslpp
 		struct double4
 		{
 			double4() = default;
-			double4(hlslpp::double4 f) { hlslpp::store(f, &x); }
+			double4(const hlslpp::double4& f) { hlslpp::store(f, &x); }
 			double x, y, z, w;
 		};
 
 		struct double3
 		{
 			double3() = default;
-			double3(hlslpp::double3 f) { hlslpp::store(f, &x); }
+			double3(const hlslpp::double3& f) { hlslpp::store(f, &x); }
 			double x, y, z;
 		};
 
 		struct double2
 		{
 			double2() = default;
-			double2(hlslpp::double2 f) { hlslpp::store(f, &x); }
+			double2(const hlslpp::double2& f) { hlslpp::store(f, &x); }
 			double x, y;
 		};
 

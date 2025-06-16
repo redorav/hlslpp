@@ -361,21 +361,21 @@ hlslpp_module_export namespace hlslpp
 		struct int4
 		{
 			int4() = default;
-			int4(hlslpp::int4 f) { hlslpp::store(f, &x); }
+			int4(const hlslpp::int4& f) { hlslpp::store(f, &x); }
 			int32_t x, y, z, w;
 		};
 
 		struct int3
 		{
 			int3() = default;
-			int3(hlslpp::int3 f) { hlslpp::store(f, &x); }
+			int3(const hlslpp::int3& f) { hlslpp::store(f, &x); }
 			int32_t x, y, z;
 		};
 
 		struct int2
 		{
 			int2() = default;
-			int2(hlslpp::int2 f) { hlslpp::store(f, &x); }
+			int2(const hlslpp::int2& f) { hlslpp::store(f, &x); }
 			int32_t x, y;
 		};
 

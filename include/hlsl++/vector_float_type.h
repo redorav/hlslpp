@@ -359,21 +359,21 @@ hlslpp_module_export namespace hlslpp
 		struct float4
 		{
 			float4() = default;
-			float4(hlslpp::float4 f) { hlslpp::store(f, &x); }
+			float4(const hlslpp::float4& f) { hlslpp::store(f, &x); }
 			float x, y, z, w;
 		};
 
 		struct float3
 		{
 			float3() = default;
-			float3(hlslpp::float3 f) { hlslpp::store(f, &x); }
+			float3(const hlslpp::float3& f) { hlslpp::store(f, &x); }
 			float x, y, z;
 		};
 
 		struct float2
 		{
 			float2() = default;
-			float2(hlslpp::float2 f) { hlslpp::store(f, &x); }
+			float2(const hlslpp::float2& f) { hlslpp::store(f, &x); }
 			float x, y;
 		};
 

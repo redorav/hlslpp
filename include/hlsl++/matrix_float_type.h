@@ -879,10 +879,10 @@ hlslpp_module_export namespace hlslpp
 		{
 			float4x3() = default;
 #if defined(HLSLPP_INTEROP_PHYSICAL_LAYOUT_COLUMN_MAJOR)
-			float4x3(hlslpp::float4x3 m) { hlslpp::store(m, &m00); }
+			float4x3(const hlslpp::float4x3& m) { hlslpp::store(m, &m00); }
 #else
 			// Function not available
-			float4x3(hlslpp::float4x3 m) hlslpp_constructor_delete;
+			float4x3(const hlslpp::float4x3& m) hlslpp_constructor_delete;
 #endif
 			float m00, m01, m02, m03,
 			      m10, m11, m12, m13,
@@ -894,9 +894,9 @@ hlslpp_module_export namespace hlslpp
 			float3x4() = default;
 #if defined(HLSLPP_INTEROP_PHYSICAL_LAYOUT_COLUMN_MAJOR)
 			// Function not available
-			float3x4(hlslpp::float3x4 m) hlslpp_constructor_delete;
+			float3x4(const hlslpp::float3x4& m) hlslpp_constructor_delete;
 #else
-			float3x4(hlslpp::float3x4 m) { hlslpp::store(m, &m00); }
+			float3x4(const hlslpp::float3x4& m) { hlslpp::store(m, &m00); }
 #endif
 			float m00, m01, m02, m03,
 			      m10, m11, m12, m13,
@@ -907,9 +907,9 @@ hlslpp_module_export namespace hlslpp
 		{
 			float4x4() = default;
 #if defined(HLSLPP_INTEROP_PHYSICAL_LAYOUT_COLUMN_MAJOR)
-			float4x4(hlslpp::float4x4 m) { hlslpp::store_transposed(m, &m00); }
+			float4x4(const hlslpp::float4x4& m) { hlslpp::store_transposed(m, &m00); }
 #else
-			float4x4(hlslpp::float4x4 m) { hlslpp::store(m, &m00); }
+			float4x4(const hlslpp::float4x4& m) { hlslpp::store(m, &m00); }
 #endif
 			float m00, m01, m02, m03,
 			      m10, m11, m12, m13,
