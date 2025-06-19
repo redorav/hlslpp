@@ -694,12 +694,6 @@ void RunExperiments()
 
 	float4 p = rcp(test);
 
-	float2 a;
-
-	float3 lorry(1, 2, 3);
-
-	float3 intTexCoord = float3(1, 2, 3);
-
 	printf("Experiments completed\n\n");
 }
 HLSLPP_UNIT_UNUSED_VARIABLE_END
