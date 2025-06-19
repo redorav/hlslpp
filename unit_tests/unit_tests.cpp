@@ -811,6 +811,20 @@ void RunPerformanceTests()
 
 	float3x3 m = float3x3::rotation_y(3.1415f / 2.0f);
 
+	benchmark<float4, iter>("packing unpacking rgba8_unorm", [&]() -> float4
+	{
+		uint32_t rgba_unorm = pack_float4_rgba8_unorm(v4_1);
+		v4_1 = unpack_rgba8_unorm_float4(rgba_unorm);
+		return v4_1;
+	});
+
+	benchmark<float4, iter>("packing unpacking rgba8_snorm", [&]() -> float4
+	{
+		uint32_t rgba_snorm = pack_float4_rgba8_snorm(v4_1);
+		v4_1 = unpack_rgba8_snorm_float4(rgba_snorm);
+		return v4_1;
+	});
+
 	benchmark<float4x4, iter>("m4x4 add", [&]() -> float4x4 { m4x4_1 = m4x4_1 + m4x4_2; return m4x4_1; });
 
 	benchmark<float4, iter>("normalize", [&]() -> float4 { v4_1 = normalize(v4_1); return v4_1; });
