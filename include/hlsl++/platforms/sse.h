@@ -598,6 +598,15 @@ hlslpp_inline void _hlslpp256_load4x4_ps(float* p, n256& x0, n256& x1)
 	x1 = _mm256_loadu_ps(p + 8);
 }
 
+hlslpp_inline void _hlslpp256_transpose4x4_ps(const n256& x0, const n256& x1, n256& o0, n256& o1)
+{
+	n256 unpacklo = _mm256_unpacklo_ps(x0, x1);
+	n256 unpackhi = _mm256_unpackhi_ps(x0, x1);
+
+	o0 = _mm256_permutevar8x32_ps(unpacklo, _mm256_setr_epi32(0, 4, 1, 5, 2, 6, 3, 7));
+	o1 = _mm256_permutevar8x32_ps(unpackhi, _mm256_setr_epi32(0, 4, 1, 5, 2, 6, 3, 7));
+}
+
 #endif
 
 //--------

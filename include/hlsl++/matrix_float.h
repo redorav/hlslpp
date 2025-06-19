@@ -1718,19 +1718,9 @@ hlslpp_module_export namespace hlslpp
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 
-		n256 unpacklo = _hlslpp256_unpacklo_ps(m.vec0, m.vec1);
-		n256 perm1_1  = _hlslpp256_perm_ps(unpacklo, 0, 2, 1, 3, 4, 6, 5, 7);
-		n256 rev1_1   = _hlslpp256_high_low_ps(perm1_1, perm1_1);
-		n256 perm1_2  = _hlslpp256_perm_ps(rev1_1, 1, 0, 3, 2, 5, 4, 7, 6);
-		n256 row1     = _hlslpp256_blend_ps(perm1_1, perm1_2, 0x5A); // 0b01011010
-
-		n256 unpackhi = _hlslpp256_unpackhi_ps(m.vec0, m.vec1);
-		n256 perm2_1  = _hlslpp256_perm_ps(unpackhi, 0, 2, 1, 3, 4, 6, 5, 7);
-		n256 rev2_1   = _hlslpp256_high_low_ps(perm2_1, perm2_1);
-		n256 perm2_2  = _hlslpp256_perm_ps(rev2_1, 1, 0, 3, 2, 5, 4, 7, 6);
-		n256 row2     = _hlslpp256_blend_ps(perm2_1, perm2_2, 0x5A); // 0b01011010
-
-		return float4x4(row1, row2);
+		n256 o_vec0, o_vec1;
+		_hlslpp256_transpose4x4_ps(m.vec0, m.vec1, o_vec0, o_vec1);
+		return float4x4(o_vec0, o_vec1);
 
 #else
 
