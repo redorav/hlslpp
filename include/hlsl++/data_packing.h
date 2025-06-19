@@ -78,7 +78,7 @@ hlslpp_module_export namespace hlslpp
 		float bias = asfloat(biasu);
 
 		float3 clampedBiased = clampedValue + bias;
-		uint3 rgb = (uint3&)(clampedBiased);
+		uint3 rgb = asuint(clampedBiased);
 
 		return exponent | rgb.z << 18 | rgb.y << 9 | (rgb.x & 0x1ff);
 	}
