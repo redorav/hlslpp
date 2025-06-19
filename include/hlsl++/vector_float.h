@@ -1250,6 +1250,8 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	template<int X, int Y> hlslpp_inline float1 operator <  (const swizzle1<X>& f1, const swizzle1<Y>& f2) { return float1(f1) <  float1(f2); }
 	template<int X, int Y> hlslpp_inline float1 operator <= (const swizzle1<X>& f1, const swizzle1<Y>& f2) { return float1(f1) <= float1(f2); }
 
+	HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
+
 	template<int X>
 	hlslpp_inline swizzle1<X>& swizzle1<X>::operator = (float f)
 	{
@@ -1348,4 +1350,6 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 		vec = hlslpp_swizzle4_swizzle(0, 1, 2, 3, X, Y, Z, W, f.vec);
 		return *this;
 	}
+
+	HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 }
