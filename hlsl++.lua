@@ -69,6 +69,7 @@ end
 workspace("hlsl++")
 	configurations { "Debug", "Release" }
 	location (Workspace)
+	targetdir ("%{wks.location}/bin/%{cfg.platform}/%{cfg.buildcfg}")
 	
 	flags
 	{
