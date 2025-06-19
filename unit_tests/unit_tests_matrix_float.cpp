@@ -313,8 +313,8 @@ void RunUnitTestsMatrixFloat()
 		hlslpp_check(eq(mat_all_f_3x3, f1 != 0.0f && f2 != 0.0f && f3 != 0.0f && f4 != 0.0f && f5 != 0.0f && f6 != 0.0f && f7 != 0.0f && f8 != 0.0f && f9 != 0.0f));
 
 		bool mat_all_f_4x4 = all(float4x4(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16));
-		eq(mat_all_f_4x4, f1 != 0.0f && f2 != 0.0f && f3 != 0.0f && f4 != 0.0f && f5 != 0.0f && f6 != 0.0f && f7 != 0.0f && f8 != 0.0f &&
-			f9 != 0.0f && f10 != 0.0f && f11 != 0.0f && f12 != 0.0f && f13 != 0.0f && f14 != 0.0f && f15 != 0.0f && f16 != 0.0f);
+		hlslpp_check(eq(mat_all_f_4x4, f1 != 0.0f && f2 != 0.0f && f3 != 0.0f && f4 != 0.0f && f5 != 0.0f && f6 != 0.0f && f7 != 0.0f && f8 != 0.0f &&
+			f9 != 0.0f && f10 != 0.0f && f11 != 0.0f && f12 != 0.0f && f13 != 0.0f && f14 != 0.0f && f15 != 0.0f && f16 != 0.0f));
 
 		bool mat_any_f_2x2 = any(float2x2(f1, f2, f3, f4));
 		hlslpp_check(eq(mat_any_f_2x2, f1 != 0.0f || f2 != 0.0f || f3 != 0.0f || f4 != 0.0f));
@@ -323,8 +323,8 @@ void RunUnitTestsMatrixFloat()
 		hlslpp_check(eq(mat_any_f_3x3, f1 != 0.0f || f2 != 0.0f || f3 != 0.0f || f4 != 0.0f || f5 != 0.0f || f6 != 0.0f || f7 != 0.0f || f8 != 0.0f || f9 != 0.0f));
 
 		bool mat_any_f_4x4 = any(float4x4(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16));
-		eq(mat_any_f_4x4, f1 != 0.0f || f2 != 0.0f || f3 != 0.0f || f4 != 0.0f || f5 != 0.0f || f6 != 0.0f || f7 != 0.0f || f8 != 0.0f ||
-			f9 != 0.0f || f10 != 0.0f || f11 != 0.0f || f12 != 0.0f || f13 != 0.0f || f14 != 0.0f || f15 != 0.0f || f16 != 0.0f);
+		hlslpp_check(eq(mat_any_f_4x4, f1 != 0.0f || f2 != 0.0f || f3 != 0.0f || f4 != 0.0f || f5 != 0.0f || f6 != 0.0f || f7 != 0.0f || f8 != 0.0f ||
+			f9 != 0.0f || f10 != 0.0f || f11 != 0.0f || f12 != 0.0f || f13 != 0.0f || f14 != 0.0f || f15 != 0.0f || f16 != 0.0f));
 	}
 	hlslpp_unit::EndTest();
 
@@ -352,57 +352,57 @@ void RunUnitTestsMatrixFloat()
 		hlslpp_check(eq(mat_mmul_2x1_1x3, 1.11000001f, 2.15000010f, 1.43000007f, 2.22000003f, 4.30000019f, 2.86000013f));
 
 		float2x4 mat_mmul_2x1_1x4 = mul(mat_bar_2x1, mat_foo_1x4);
-		eq(mat_mmul_2x1_1x4,
+		hlslpp_check(eq(mat_mmul_2x1_1x4,
 			7.40999985f, 0.325000018f, 0.075000003f, 0.188000008f,
-			14.8199997f, 0.650000036f, 0.150000006f, 0.376000017f);
+			14.8199997f, 0.650000036f, 0.150000006f, 0.376000017f));
 
 		float3x1 mat_mmul_3x1_1x1 = mul(mat_bar_3x1, mat_foo_1x1);
 		hlslpp_check(eq(mat_mmul_3x1_1x1, 4.20000029f, 8.40000057f, 12.6000004f));
 
 		float3x2 mat_mmul_3x1_1x2 = mul(mat_bar_3x1, mat_foo_1x2);
-		eq(mat_mmul_3x1_1x2,
+		hlslpp_check(eq(mat_mmul_3x1_1x2,
 			3.25999999f, 1.21000004f,
 			6.51999998f, 2.42000008f,
-			9.77999973f, 3.63000035f);
+			9.77999973f, 3.63000035f));
 
 		float3x3 mat_mmul_3x1_1x3 = mul(mat_bar_3x1, mat_foo_1x3);
-		eq(mat_mmul_3x1_1x3,
+		hlslpp_check(eq(mat_mmul_3x1_1x3,
 			1.11000004f, 2.22000003f, 3.33000016f,
 			2.15000010f, 4.30000019f, 6.45000029f,
-			1.43000007f, 2.86000013f, 4.29000044f);
+			1.43000007f, 2.86000013f, 4.29000044f));
 
 		float3x4 mat_mmul_3x1_1x4 = mul(mat_bar_3x1, mat_foo_1x4);
-		eq(mat_mmul_3x1_1x4,
+		hlslpp_check(eq(mat_mmul_3x1_1x4,
 			7.40999985f, 0.325000018f, 0.075000003f, 0.188000008f,
 			14.8199997f, 0.650000036f, 0.150000006f, 0.376000017f,
-			22.2299995f, 0.975000024f, 0.225000009f, 0.564000010f);
+			22.2299995f, 0.975000024f, 0.225000009f, 0.564000010f));
 
 		float4x1 mat_mmul_4x1_1x1 = mul(mat_bar_4x1, mat_foo_1x1);
 		hlslpp_check(eq(mat_mmul_4x1_1x1, 4.20000029f, 8.40000057f, 12.6000004f, 16.8000011f));
 
 		float4x2 mat_mmul_4x1_1x2 = mul(mat_bar_4x1, mat_foo_1x2);
-		eq(mat_mmul_4x1_1x2,
+		hlslpp_check(eq(mat_mmul_4x1_1x2,
 			3.25999999f, 1.21000004f,
 			6.51999998f, 2.42000008f,
 			9.77999973f, 3.63000035f,
 			13.0400000f, 4.84000015f
-		);
+		));
 
 		float4x3 mat_mmul_4x1_1x3 = mul(mat_bar_4x1, mat_foo_1x3);
-		eq(mat_mmul_4x1_1x3,
+		hlslpp_check(eq(mat_mmul_4x1_1x3,
 			1.11000001f, 2.15000010f, 1.43000007f,
 			2.22000003f, 4.30000019f, 2.86000013f,
 			3.33000016f, 6.45000029f, 4.29000044f,
 			4.44000006f, 8.60000038f, 5.72000027f
-		);
+		));
 
 		float4x4 mat_mmul_4x1_1x4 = mul(mat_bar_4x1, mat_foo_1x4);
-		eq(mat_mmul_4x1_1x4,
+		hlslpp_check(eq(mat_mmul_4x1_1x4,
 			7.40999985f, 0.325000018f, 0.075000003f, 0.188000008f,
 			14.8199997f, 0.650000036f, 0.150000006f, 0.376000017f,
 			22.2299995f, 0.975000024f, 0.225000009f, 0.564000010f,
 			29.6399994f, 1.300000070f, 0.300000012f, 0.752000034f
-		);
+		));
 
 		float1x1 mat_mmul_1x2_2x1 = mul(mat_bar_1x2, mat_foo_2x1);
 		hlslpp_check(eq(mat_mmul_1x2_2x1, 0.5f));
@@ -451,67 +451,67 @@ void RunUnitTestsMatrixFloat()
 		hlslpp_check(eq(mat_mmul_2x2_2x2, 3698.37f, 2790.54f, 558.285034f, 99.345f));
 
 		float2x3 mat_mmul_2x2_2x3 = mul(mat_bar_2x2, mat_foo_2x3);
-		eq(mat_mmul_2x2_2x3,
+		hlslpp_check(eq(mat_mmul_2x2_2x3,
 			0.900000036f, 1.20000005f, 1.50000000f,
 			1.90000010f, 2.59999990f, 3.30000019f
-		);
+		));
 
 		float2x4 mat_mmul_2x2_2x4 = mul(mat_bar_2x2, mat_foo_2x4);
-		eq(mat_mmul_2x2_2x4,
+		hlslpp_check(eq(mat_mmul_2x2_2x4,
 			1.10000002f, 1.40000010f, 1.70000005f, 2.00000000f,
 			2.29999995f, 3.00000000f, 3.70000005f, 4.40000010f
-		);
+		));
 
 		float3x1 mat_mmul_3x2_2x1 = mul(mat_bar_3x2, mat_foo_2x1);
 		hlslpp_check(eq(mat_mmul_3x2_2x1, 0.5f, 1.10000002f, 1.70000005f));
 
 		float3x2 mat_mmul_3x2_2x2 = mul(mat_bar_3x2, mat_foo_2x2);
-		eq(mat_mmul_3x2_2x2,
+		hlslpp_check(eq(mat_mmul_3x2_2x2,
 			0.700000048f, 1.00000000f,
 			1.50000000f, 2.20000005f,
 			2.30000019f, 3.40000010f
-		);
+		));
 
 		float3x3 mat_mmul_3x2_2x3 = mul(mat_bar_3x2, mat_foo_2x3);
-		eq(mat_mmul_3x2_2x3,
+		hlslpp_check(eq(mat_mmul_3x2_2x3,
 			0.900000036f, 1.20000005f, 1.50000000f,
 			1.90000010f, 2.59999990f, 3.30000019f,
 			2.90000010f, 4.00000000f, 5.10000038f
-		);
+		));
 
 		float3x4 mat_mmul_3x2_2x4 = mul(mat_bar_3x2, mat_foo_2x4);
-		eq(mat_mmul_3x2_2x4,
+		hlslpp_check(eq(mat_mmul_3x2_2x4,
 			1.10000002f, 1.40000010f, 1.70000005f, 2.00000000f,
 			2.29999995f, 3.00000000f, 3.70000005f, 4.40000010f,
 			3.50000000f, 4.60000038f, 5.70000029f, 6.80000019f
-		);
+		));
 
 		float4x1 mat_mmul_4x2_2x1 = mul(mat_bar_4x2, mat_foo_2x1);
 		hlslpp_check(eq(mat_mmul_4x2_2x1, 0.500000000f, 1.10000002f, 1.70000005f, 2.29999995f));
 
 		float4x2 mat_mmul_4x2_2x2 = mul(mat_bar_4x2, mat_foo_2x2);
-		eq(mat_mmul_4x2_2x2,
+		hlslpp_check(eq(mat_mmul_4x2_2x2,
 			0.700000048f, 1.00000000f,
 			1.50000000f, 2.20000005f,
 			2.30000019f, 3.40000010f,
 			3.10000014f, 4.59999990f
-		);
+		));
 
 		float4x3 mat_mmul_4x2_2x3 = mul(mat_bar_4x2, mat_foo_2x3);
-		eq(mat_mmul_4x2_2x3,
+		hlslpp_check(eq(mat_mmul_4x2_2x3,
 			0.900000036f, 1.20000005f, 1.50000000f,
 			1.90000010f, 2.59999990f, 3.30000019f,
 			2.90000010f, 4.00000000f, 5.10000038f,
 			3.90000010f, 5.40000010f, 6.90000010f
-		);
+		));
 
 		float4x4 mat_mmul_4x2_2x4 = mul(mat_bar_4x2, mat_foo_2x4);
-		eq(mat_mmul_4x2_2x4,
+		hlslpp_check(eq(mat_mmul_4x2_2x4,
 			1.10000002f, 1.40000010f, 1.70000005f, 2.00000000f,
 			2.29999995f, 3.00000000f, 3.70000005f, 4.40000010f,
 			3.50000000f, 4.60000038f, 5.70000029f, 6.80000019f,
 			4.69999981f, 6.20000029f, 7.69999981f, 9.19999981f
-		);
+		));
 
 		float2x1 mat_mmul_2x3_3x1 = mul(mat_bar_2x3, mat_foo_3x1);
 		hlslpp_check(eq(mat_mmul_2x3_3x1, 1.40000010f, 3.20000005f));
@@ -520,16 +520,16 @@ void RunUnitTestsMatrixFloat()
 		hlslpp_check(eq(mat_mmul_2x3_3x2, 2.20000005f, 2.80000019f, 4.90000010f, 6.40000010f));
 
 		float2x3 mat_mmul_2x3_3x3 = mul(mat_bar_2x3, mat_foo_3x3);
-		eq(mat_mmul_2x3_3x3,
+		hlslpp_check(eq(mat_mmul_2x3_3x3,
 			3.00000024f, 3.60000014f, 4.19999981f,
 			6.60000038f, 8.10000038f, 9.60000038f
-		);
+		));
 
 		float2x4 mat_mmul_2x3_3x4 = mul(mat_bar_2x3, mat_foo_3x4);
-		eq(mat_mmul_2x3_3x4,
+		hlslpp_check(eq(mat_mmul_2x3_3x4,
 			3.80000019f, 4.40000010f, 5.00000000f, 5.60000038f,
 			8.30000019f, 9.80000019f, 11.3000002f, 12.8000002f
-		);
+		));
 
 		float2x1 mat_mmul_2x4_4x1 = mul(mat_bar_2x4, mat_foo_4x1);
 		hlslpp_check(eq(mat_mmul_2x4_4x1, 3.00000000f, 7.00000000f));
@@ -538,19 +538,19 @@ void RunUnitTestsMatrixFloat()
 		hlslpp_check(eq(mat_mmul_2x4_4x2, 5.00000000f, 6.00000000f, 11.4000006f, 14.0000000f));
 
 		float2x3 mat_mmul_2x4_4x3 = mul(mat_bar_2x4, mat_foo_4x3);
-		eq(mat_mmul_2x4_4x3,
+		hlslpp_check(eq(mat_mmul_2x4_4x3,
 			7.00000048f, 8.00000000f, 9.00000000f,
 			15.7999992f, 18.3999996f, 21.0000000f
-		);
+		));
 
 		// TODO Revisit this unit test. Using AVX vs SSE gives very slightly different results.
 		// We would like them to be identical if possible
 		float2x4 mat_mmul_2x4_4x4 = mul(mat_bar_2x4, mat_foo_4x4);
-		eq(mat_mmul_2x4_4x4,
+		hlslpp_check(eq(mat_mmul_2x4_4x4,
 			9.00000000f, 10.0000000f, 11.0000000f, 12.0000000f,
 			20.2000008f, 22.7999992f, 25.3999996f, 28.0000000f,
 			0.00001f
-		);
+		));
 
 		float3x1 mat_mmul_3x3_3x1 = mul(mat_bar_3x3, mat_foo_3x1);
 		hlslpp_check(eq(mat_mmul_3x3_3x1, 1.40000010f, 3.20000005f, 5.00000000f));
