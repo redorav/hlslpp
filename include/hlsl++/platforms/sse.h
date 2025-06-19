@@ -535,7 +535,6 @@ hlslpp_inline n256 permute_float<0, 1, 2, 3, 4, 5, 6, 7>(n256 x)
 }
 
 #define _hlslpp256_perm_ps(x, X, Y, Z, W, A, B, C, D)	permute_float<X, Y, Z, W, A, B, C, D>(x)
-//#define _hlslpp256_shuffle_ps(x, y, mask)			_mm256_shuffle_ps((x), (y), (mask))
 
 #define _hlslpp256_unpacklo_ps(x, y)				_mm256_unpacklo_ps(x, y)
 #define _hlslpp256_unpackhi_ps(x, y)				_mm256_unpackhi_ps(x, y)
@@ -603,8 +602,21 @@ hlslpp_inline void _hlslpp256_transpose4x4_ps(const n256& x0, const n256& x1, n2
 	n256 unpacklo = _mm256_unpacklo_ps(x0, x1);
 	n256 unpackhi = _mm256_unpackhi_ps(x0, x1);
 
+#if defined(__AVX2__)
 	o0 = _mm256_permutevar8x32_ps(unpacklo, _mm256_setr_epi32(0, 4, 1, 5, 2, 6, 3, 7));
 	o1 = _mm256_permutevar8x32_ps(unpackhi, _mm256_setr_epi32(0, 4, 1, 5, 2, 6, 3, 7));
+#else
+	n256 unpacklo_rev = _mm256_permute2f128_ps(unpacklo, unpacklo, 0x1);
+	n256 unpackhi_rev = _mm256_permute2f128_ps(unpackhi, unpackhi, 0x1);
+
+	n256 unpacklo_perm0 = _mm256_unpacklo_ps(unpacklo, unpacklo_rev);
+	n256 unpacklo_perm1 = _mm256_unpackhi_ps(unpacklo_rev, unpacklo);
+	o0 = _mm256_blend_ps(unpacklo_perm0, unpacklo_perm1, 0xf0);
+
+	n256 unpackhi_perm0 = _mm256_unpacklo_ps(unpackhi, unpackhi_rev);
+	n256 unpackhi_perm1 = _mm256_unpackhi_ps(unpackhi_rev, unpackhi);
+	o1 = _mm256_blend_ps(unpackhi_perm0, unpackhi_perm1, 0xf0);
+#endif
 }
 
 #endif
