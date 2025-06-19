@@ -1,4 +1,5 @@
 #include "hlsl++.h"
+#include "hlsl++/data_packing.h"
 
 // Hacky but needs FLOAT64
 #include "unit_tests.h"
