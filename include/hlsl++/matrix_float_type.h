@@ -536,7 +536,104 @@ hlslpp_module_export namespace hlslpp
 
 	struct hlslpp_nodiscard float4x4
 	{
-#if defined(HLSLPP_SIMD_REGISTER_256)
+#if defined(HLSLPP_SIMD_REGISTER_512)
+
+		hlslpp_inline float4x4() hlslpp_noexcept : vec(_hlslpp512_setzero_ps()) {}
+		hlslpp_inline float4x4(const float4x4& m) hlslpp_noexcept : vec(m.vec) {}
+		explicit hlslpp_inline float4x4(const n512& vec) hlslpp_noexcept : vec(vec) {}
+
+		explicit hlslpp_inline float4x4(
+			float f00, float f01, float f02, float f03,
+			float f10, float f11, float f12, float f13,
+			float f20, float f21, float f22, float f23,
+			float f30, float f31, float f32, float f33)
+			hlslpp_noexcept : vec(_hlslpp512_set_ps(f00, f01, f02, f03, f10, f11, f12, f13, f20, f21, f22, f23, f30, f31, f32, f33)) {}
+
+		explicit hlslpp_inline float4x4(float f) hlslpp_noexcept : vec(_hlslpp512_set1_ps(f)) {}
+
+		hlslpp_inline float4x4(const float4& f1, const float4& f2, const float4& f3, const float4& f4)
+			hlslpp_noexcept : vec(_hlslpp512_set128_ps(f1.vec, f2.vec, f3.vec, f4.vec)) {}
+
+		hlslpp_inline float4x4& operator = (const float4x4& m) hlslpp_noexcept { vec = m.vec; return *this; }
+
+		hlslpp_inline float4x4(float4x4&& m) hlslpp_noexcept : vec(m.vec) {}
+		hlslpp_inline float4x4& operator = (float4x4&& m) hlslpp_noexcept { vec = m.vec; return *this; }
+
+		hlslpp_inline void build(const float3x3& m, const float4& v) hlslpp_noexcept
+		{
+			vec = _hlslpp512_and_ps(_hlslpp512_set128_ps(m.vec0, m.vec1, m.vec2, v.vec),
+				_hlslpp512_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, 
+								  fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
+		}
+
+		hlslpp_inline void build(const float3x4& m, const float4& v) hlslpp_noexcept
+		{
+			vec = _hlslpp512_set128_ps(m.vec0, m.vec1, m.vec2, v.vec);
+		}
+
+		hlslpp_inline void build(const float4x3& m, const float4& v) hlslpp_noexcept
+		{
+			vec = _hlslpp512_set128_ps(m.vec0, m.vec1, m.vec2, v.vec);
+			*this = transpose(*this); // Copy over as rows, then transpose
+		}
+
+		float4& operator[](int N)
+		{
+			hlslpp_assert(N >= 0 && N <= 3);
+			return *(&row + N);
+		}
+
+		const float4& operator[](int N) const
+		{
+			hlslpp_assert(N >= 0 && N <= 3);
+			return *(&row + N);
+		}
+
+		union
+		{
+			n512 vec;
+			float f32_512[16];
+			float4 row;
+
+			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
+			struct
+			{
+				union 
+				{
+					#include "swizzle/matrix_row0_1.h"
+					#include "swizzle/matrix_row0_2.h"
+					#include "swizzle/matrix_row0_3.h"
+					#include "swizzle/matrix_row0_4.h"
+				};
+			
+				union
+				{
+					#include "swizzle/matrix_row1_1.h"
+					#include "swizzle/matrix_row1_2.h"
+					#include "swizzle/matrix_row1_3.h"
+					#include "swizzle/matrix_row1_4.h"
+				};
+
+				union
+				{
+					#include "swizzle/matrix_row2_1.h"
+					#include "swizzle/matrix_row2_2.h"
+					#include "swizzle/matrix_row2_3.h"
+					#include "swizzle/matrix_row2_4.h"
+				};
+
+				union
+				{
+					#include "swizzle/matrix_row3_1.h"
+					#include "swizzle/matrix_row3_2.h"
+					#include "swizzle/matrix_row3_3.h"
+					#include "swizzle/matrix_row3_4.h"
+				};
+			};
+			HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
+		};
+
+#elif defined(HLSLPP_SIMD_REGISTER_256)
 
 		hlslpp_inline float4x4() hlslpp_noexcept : vec0(_hlslpp256_setzero_ps()), vec1(_hlslpp256_setzero_ps()) {}
 		hlslpp_inline float4x4(const float4x4& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1) {}

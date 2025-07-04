@@ -106,8 +106,14 @@ hlslpp_module_export namespace hlslpp
 
 #endif
 
-	static const int IdentityMask  = ((3 << 6) | (2 << 4) | (1 << 2) | 0);
-	static const int IdentityMask2 = (1 << 1) | 0;
+#if defined(HLSLPP_SIMD_REGISTER_512)
+
+	const n512 f512_1 = _hlslpp512_set1_ps(1.0f);
+
+#endif
+
+	const int IdentityMask  = ((3 << 6) | (2 << 4) | (1 << 2) | 0);
+	const int IdentityMask2 = (1 << 1) | 0;
 
 	const uint32_t MaskX = 0;
 	const uint32_t MaskY = 1;
@@ -339,6 +345,15 @@ hlslpp_module_export namespace hlslpp
 	#endif
 
 #endif
+
+	#define _hlslpp512_cmpneq1_ps(val1, val2)	_hlslpp512_and_ps(_hlslpp512_cmpneq_ps((val1), (val2)), f512_1)
+	#define _hlslpp512_cmpeq1_ps(val1, val2)	_hlslpp512_and_ps(_hlslpp512_cmpeq_ps((val1), (val2)), f512_1)
+
+	#define _hlslpp512_cmpgt1_ps(val1, val2)	_hlslpp512_and_ps(_hlslpp512_cmpgt_ps((val1), (val2)), f512_1)
+	#define _hlslpp512_cmpge1_ps(val1, val2)	_hlslpp512_and_ps(_hlslpp512_cmpge_ps((val1), (val2)), f512_1)
+
+	#define _hlslpp512_cmplt1_ps(val1, val2)	_hlslpp512_and_ps(_hlslpp512_cmplt_ps((val1), (val2)), f512_1)
+	#define _hlslpp512_cmple1_ps(val1, val2)	_hlslpp512_and_ps(_hlslpp512_cmple_ps((val1), (val2)), f512_1)
 
 	// Forward declarations
 

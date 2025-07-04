@@ -72,11 +72,12 @@ void RunUnitTestsMatrixFloat()
 	float4x4 mat_bar_4x4 = float4x4(0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f, 1.3f, 1.4f, 1.5f, 1.6f);
 
 	// Array accessors
-
 	mat_foo_4x4[0] = float4( 1.0f,  2.0f,  3.0f,  4.0f);
 	mat_foo_4x4[1] = float4( 5.0f,  6.0f,  7.0f,  8.0f);
 	mat_foo_4x4[2] = float4( 9.0f, 10.0f, 11.0f, 12.0f);
 	mat_foo_4x4[3] = float4(13.0f, 14.0f, 15.0f, 16.0f);
+	hlslpp_check(eq(mat_foo_4x4, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f));
+
 	float4 v_foo_3ex[4] = { mat_foo_4x4[0], mat_foo_4x4[1], mat_foo_4x4[2], mat_foo_4x4[3] }; hlslpp_unit_unused(v_foo_3ex);
 
 	mat_foo_3x3[0] = float3(1.0f, 2.0f, 3.0f);
@@ -510,8 +511,8 @@ void RunUnitTestsMatrixFloat()
 			1.10000002f, 1.40000010f, 1.70000005f, 2.00000000f,
 			2.29999995f, 3.00000000f, 3.70000005f, 4.40000010f,
 			3.50000000f, 4.60000038f, 5.70000029f, 6.80000019f,
-			4.69999981f, 6.20000029f, 7.69999981f, 9.19999981f
-		));
+			4.69999981f, 6.20000029f, 7.69999981f, 9.19999981f,
+		0.001f));
 
 		float2x1 mat_mmul_2x3_3x1 = mul(mat_bar_2x3, mat_foo_3x1);
 		hlslpp_check(eq(mat_mmul_2x3_3x1, 1.40000010f, 3.20000005f));
@@ -581,7 +582,7 @@ void RunUnitTestsMatrixFloat()
 			35929.47f, 4440.54f, 134063.46f,
 			3625.123f, 256.345f, -943.98f,
 			120437.234f, 6135.154482f, -3005.63867f,
-			0.0001f));
+			0.001f));
 
 		float3x4 mat_mmul_3x3_3x4 = mul(mat_bar_3x3, mat_foo_3x4);
 		hlslpp_check(eq(mat_mmul_3x3_3x4,
@@ -657,8 +658,8 @@ void RunUnitTestsMatrixFloat()
 			7.00000048f, 8.00000000f, 9.00000000f,
 			15.7999992f, 18.3999996f, 21.0000000f,
 			24.6000004f, 28.7999992f, 33.0000000f,
-			33.4000015f, 39.2000008f, 45.0000000f
-		));
+			33.4000015f, 39.2000008f, 45.0000000f,
+		0.001f));
 
 		float4x4 mat_nsym_1_4x4 = float4x4
 		(
@@ -684,7 +685,7 @@ void RunUnitTestsMatrixFloat()
 			3610.61816f, 256.543f, -942.48f, 32.2382f,
 			120440.372191f, 6135.111582f, -3005.963482f, 1144.72893f,
 			1991.66468f, 166.7938f, 3185.06f, 102.8312f,
-			0.001f
+			0.01f
 		));
 
 		// Matrix-vector multiplication

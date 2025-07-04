@@ -147,6 +147,11 @@
 			<Synthetic Name ="row2" Optional="true"><DisplayString>{f32_256_0[4]}, {f32_256_0[5]}, {f32_256_0[6]}, {f32_256_0[7]}</DisplayString></Synthetic>
 			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32_256_1[0]}, {f32_256_1[1]}, {f32_256_1[2]}, {f32_256_1[3]}</DisplayString></Synthetic>
 			<Synthetic Name ="row3" Optional="true"><DisplayString>{f32_256_1[4]}, {f32_256_1[5]}, {f32_256_1[6]}, {f32_256_1[7]}</DisplayString></Synthetic>
+			
+			<Synthetic Name ="row0" Optional="true"><DisplayString>{f32_512[0]}, {f32_512[1]}, {f32_512[2]}, {f32_512[3]}</DisplayString></Synthetic>
+			<Synthetic Name ="row2" Optional="true"><DisplayString>{f32_512[4]}, {f32_512[5]}, {f32_512[6]}, {f32_512[7]}</DisplayString></Synthetic>
+			<Synthetic Name ="row1" Optional="true"><DisplayString>{f32_512[8]}, {f32_512[9]}, {f32_512[10]}, {f32_512[11]}</DisplayString></Synthetic>
+			<Synthetic Name ="row3" Optional="true"><DisplayString>{f32_512[12]}, {f32_512[13]}, {f32_512[14]}, {f32_512[15]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
 
