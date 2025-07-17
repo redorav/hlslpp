@@ -2090,7 +2090,7 @@ hlslpp_module_export namespace hlslpp
 		return float2x2(_hlslpp_inv_2x2_ps(m.vec));
 	}
 
-	hlslpp_inline  float3x3 inverse(const float3x3& m)
+	hlslpp_inline float3x3 inverse(const float3x3& m)
 	{
 		n128 vec0, vec1, vec2;
 		_hlslpp_inv_3x3_ps(m.vec0, m.vec1, m.vec2, vec0, vec1, vec2);
