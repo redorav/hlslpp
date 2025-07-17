@@ -966,8 +966,6 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	#define HLSLPP_INTEROP_PHYSICAL_LAYOUT_COLUMN_MAJOR
-
 	HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_BEGIN
 	HLSLPP_WARNING_PADDING_BEGIN
 	namespace interop
