@@ -1784,25 +1784,25 @@ hlslpp_inline bool _hlslpp256_all4_pd(n256d x)
 	return (_mm256_movemask_pd(_hlslpp256_cmpeq_pd(x, _mm256_setzero_pd())) == 0);
 }
 
-hlslpp_inline void _hlslpp256_store3_pd(double* p, n256d x)
+hlslpp_inline void _hlslpp256_store3_pd(double* dst, n256d src)
 {
-	_mm_storeu_pd(p, _hlslpp256_low_pd(x)); // Store bottom two
-	_mm_store_sd(p + 2, _hlslpp256_high_pd(x));
+	_mm_storeu_pd(dst, _hlslpp256_low_pd(src)); // Store bottom two
+	_mm_store_sd(dst + 2, _hlslpp256_high_pd(src));
 }
 
-hlslpp_inline void _hlslpp256_store4_pd(double* p, n256d x)
+hlslpp_inline void _hlslpp256_store4_pd(double* dst, n256d src)
 {
-	_mm256_storeu_pd(p, x);
+	_mm256_storeu_pd(dst, src);
 }
 
-hlslpp_inline void _hlslpp256_load3_pd(double* p, n256d& x)
+hlslpp_inline void _hlslpp256_load3_pd(n256d& dst, const double* src)
 {
-	x = _mm256_loadu_pd(p);
+	dst = _mm256_loadu_pd(src);
 }
 
-hlslpp_inline void _hlslpp256_load4_pd(double* p, n256d& x)
+hlslpp_inline void _hlslpp256_load4_pd(n256d& dst, const double* src)
 {
-	x = _mm256_loadu_pd(p);
+	dst = _mm256_loadu_pd(src);
 }
 
 #endif
