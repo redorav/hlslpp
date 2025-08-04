@@ -422,13 +422,13 @@ hlslpp_module_export namespace hlslpp
 		return quaternion(0.0f, 0.0f, sinf(angle_rad * 0.5f), cosf(angle_rad * 0.5f));
 	}
 
-	hlslpp_inline void store(const quaternion& v, float* f)
+	hlslpp_inline void store(float* dst, const quaternion& src)
 	{
-		_hlslpp_store4_ps(f, v.vec);
+		_hlslpp_store4_ps(dst, src.vec);
 	}
 
-	hlslpp_inline void load(quaternion& v, float* f)
+	hlslpp_inline void load(quaternion& dst, const float* src)
 	{
-		_hlslpp_load4_ps(f, v.vec);
+		_hlslpp_load4_ps(dst.vec, src);
 	}
 }

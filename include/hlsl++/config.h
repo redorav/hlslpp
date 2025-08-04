@@ -119,8 +119,10 @@
 
 #if HLSLPP_CPPVERSION >= 201103L
 	#define hlslpp_constructor_delete = delete
+	#define hlslpp_constructor_default = default
 #else
 	#define hlslpp_constructor_delete
+	#define hlslpp_constructor_default {}
 #endif
 
 // Versions previous to VS2015 need special attention

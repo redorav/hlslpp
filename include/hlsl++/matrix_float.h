@@ -1910,7 +1910,7 @@ hlslpp_module_export namespace hlslpp
 #elif defined(HLSLPP_SIMD_REGISTER_256)
 
 		n256 o_vec0, o_vec1;
-		_hlslpp256_transpose4x4_ps(m.vec0, m.vec1, o_vec0, o_vec1);
+		_hlslpp256_transpose4x4_ps(o_vec0, o_vec1, m.vec0, m.vec1);
 		return float4x4(o_vec0, o_vec1);
 
 #else

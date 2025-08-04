@@ -1021,10 +1021,10 @@ void RunUnitTestsVectorFloat()
 		float vstore3[3];
 		float vstore4[4];
 
-		store(vfoo1, vstore1);			hlslpp_check(eq(vfoo1, vstore1[0]));
-		store(vfoo2, vstore2);			hlslpp_check(eq(vfoo2, vstore2[0], vstore2[1]));
-		store(vfoo3, vstore3);			hlslpp_check(eq(vfoo3, vstore3[0], vstore3[1], vstore3[2]));
-		store(vfoo4, vstore4);			hlslpp_check(eq(vfoo4, vstore4[0], vstore4[1], vstore4[2], vstore4[3]));
+		store(vstore1, vfoo1);			hlslpp_check(eq(vfoo1, vstore1[0]));
+		store(vstore2, vfoo2);			hlslpp_check(eq(vfoo2, vstore2[0], vstore2[1]));
+		store(vstore3, vfoo3);			hlslpp_check(eq(vfoo3, vstore3[0], vstore3[1], vstore3[2]));
+		store(vstore4, vfoo4);			hlslpp_check(eq(vfoo4, vstore4[0], vstore4[1], vstore4[2], vstore4[3]));
 
 		float vload1[1] = { f10 };
 		float vload2[2] = { f11, f12 };
@@ -1235,7 +1235,7 @@ void RunUnitTestsVectorFloat()
 	hlslpp_unit::BeginTest("Float8 Storage and Loading");
 	{
 		float vstore8[8];
-		store(vfoo8, vstore8);			hlslpp_check(eq(vfoo8, vstore8[0], vstore8[1], vstore8[2], vstore8[3], vstore8[4], vstore8[5], vstore8[6], vstore8[7]));
+		store(vstore8, vfoo8);			hlslpp_check(eq(vfoo8, vstore8[0], vstore8[1], vstore8[2], vstore8[3], vstore8[4], vstore8[5], vstore8[6], vstore8[7]));
 
 		float vload8[8] = { f16, f17, f18, f19, f20, f21, f22, f23 };
 		load(vfoo8, vload8);			hlslpp_check(eq(vfoo8, vload8[0], vload8[1], vload8[2], vload8[3], vload8[4], vload8[5], vload8[6], vload8[7]));

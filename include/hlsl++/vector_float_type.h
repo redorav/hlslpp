@@ -314,66 +314,66 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	hlslpp_inline void store(const float1& v, float* f)
+	hlslpp_inline void store(float* dst, const float1& src)
 	{
-		_hlslpp_store1_ps(f, v.vec);
+		_hlslpp_store1_ps(dst, src.vec);
 	}
 
-	hlslpp_inline void store(const float2& v, float* f)
+	hlslpp_inline void store(float* dst, const float2& src)
 	{
-		_hlslpp_store2_ps(f, v.vec);
+		_hlslpp_store2_ps(dst, src.vec);
 	}
 
-	hlslpp_inline void store(const float3& v, float* f)
+	hlslpp_inline void store(float* dst, const float3& src)
 	{
-		_hlslpp_store3_ps(f, v.vec);
+		_hlslpp_store3_ps(dst, src.vec);
 	}
 
-	hlslpp_inline void store(const float4& v, float* f)
+	hlslpp_inline void store(float* dst, const float4& src)
 	{
-		_hlslpp_store4_ps(f, v.vec);
+		_hlslpp_store4_ps(dst, src.vec);
 	}
 
-	hlslpp_inline void load(float1& v, float* f)
+	hlslpp_inline void load(float1& dst, const float* src)
 	{
-		_hlslpp_load1_ps(f, v.vec);
+		_hlslpp_load1_ps(dst.vec, src);
 	}
 
-	hlslpp_inline void load(float2& v, float* f)
+	hlslpp_inline void load(float2& dst, const float* src)
 	{
-		_hlslpp_load2_ps(f, v.vec);
+		_hlslpp_load2_ps(dst.vec, src);
 	}
 
-	hlslpp_inline void load(float3& v, float* f)
+	hlslpp_inline void load(float3& dst, const float* src)
 	{
-		_hlslpp_load3_ps(f, v.vec);
+		_hlslpp_load3_ps(dst.vec, src);
 	}
 
-	hlslpp_inline void load(float4& v, float* f)
+	hlslpp_inline void load(float4& dst, const float* src)
 	{
-		_hlslpp_load4_ps(f, v.vec);
+		_hlslpp_load4_ps(dst.vec, src);
 	}
 
 	namespace interop
 	{
 		struct float4
 		{
-			float4() = default;
-			float4(const hlslpp::float4& f) { hlslpp::store(f, &x); }
+			float4() hlslpp_constructor_default;
+			float4(const hlslpp::float4& f) { hlslpp::store(&x, f); }
 			float x, y, z, w;
 		};
 
 		struct float3
 		{
-			float3() = default;
-			float3(const hlslpp::float3& f) { hlslpp::store(f, &x); }
+			float3() hlslpp_constructor_default;
+			float3(const hlslpp::float3& f) { hlslpp::store(&x, f); }
 			float x, y, z;
 		};
 
 		struct float2
 		{
-			float2() = default;
-			float2(const hlslpp::float2& f) { hlslpp::store(f, &x); }
+			float2() hlslpp_constructor_default;
+			float2(const hlslpp::float2& f) { hlslpp::store(&x, f); }
 			float x, y;
 		};
 

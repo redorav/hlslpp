@@ -311,66 +311,66 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	hlslpp_inline void store(const uint1& v, uint32_t* i)
+	hlslpp_inline void store(uint32_t* dst, const uint1& src)
 	{
-		_hlslpp_store1_epu32(i, v.vec);
+		_hlslpp_store1_epu32(dst, src.vec);
 	}
 
-	hlslpp_inline void store(const uint2& v, uint32_t* i)
+	hlslpp_inline void store(uint32_t* dst, const uint2& src)
 	{
-		_hlslpp_store2_epu32(i, v.vec);
+		_hlslpp_store2_epu32(dst, src.vec);
 	}
 
-	hlslpp_inline void store(const uint3& v, uint32_t* i)
+	hlslpp_inline void store(uint32_t* dst, const uint3& src)
 	{
-		_hlslpp_store3_epu32(i, v.vec);
+		_hlslpp_store3_epu32(dst, src.vec);
 	}
 
-	hlslpp_inline void store(const uint4& v, uint32_t* i)
+	hlslpp_inline void store(uint32_t* dst, const uint4& src)
 	{
-		_hlslpp_store4_epu32(i, v.vec);
+		_hlslpp_store4_epu32(dst, src.vec);
 	}
 
-	hlslpp_inline void load(uint1& v, uint32_t* i)
+	hlslpp_inline void load(uint1& dst, const uint32_t* src)
 	{
-		_hlslpp_load1_epu32(i, v.vec);
+		_hlslpp_load1_epu32(dst.vec, src);
 	}
 
-	hlslpp_inline void load(uint2& v, uint32_t* i)
+	hlslpp_inline void load(uint2& dst, const uint32_t* src)
 	{
-		_hlslpp_load2_epu32(i, v.vec);
+		_hlslpp_load2_epu32(dst.vec, src);
 	}
 
-	hlslpp_inline void load(uint3& v, uint32_t* i)
+	hlslpp_inline void load(uint3& dst, const uint32_t* src)
 	{
-		_hlslpp_load3_epu32(i, v.vec);
+		_hlslpp_load3_epu32(dst.vec, src);
 	}
 
-	hlslpp_inline void load(uint4& v, uint32_t* i)
+	hlslpp_inline void load(uint4& dst, const uint32_t* src)
 	{
-		_hlslpp_load4_epu32(i, v.vec);
+		_hlslpp_load4_epu32(dst.vec, src);
 	}
 
 	namespace interop
 	{
 		struct uint4
 		{
-			uint4() = default;
-			uint4(const hlslpp::uint4& f) { hlslpp::store(f, &x); }
+			uint4() hlslpp_constructor_default;
+			uint4(const hlslpp::uint4& f) { hlslpp::store(&x, f); }
 			uint32_t x, y, z, w;
 		};
 
 		struct uint3
 		{
-			uint3() = default;
-			uint3(const hlslpp::uint3& f) { hlslpp::store(f, &x); }
+			uint3() hlslpp_constructor_default;
+			uint3(const hlslpp::uint3& f) { hlslpp::store(&x, f); }
 			uint32_t x, y, z;
 		};
 
 		struct uint2
 		{
-			uint2() = default;
-			uint2(const hlslpp::uint2& f) { hlslpp::store(f, &x); }
+			uint2() hlslpp_constructor_default;
+			uint2(const hlslpp::uint2& f) { hlslpp::store(&x, f); }
 			uint32_t x, y;
 		};
 

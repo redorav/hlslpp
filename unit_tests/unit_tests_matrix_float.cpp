@@ -859,16 +859,16 @@ void RunUnitTestsMatrixFloat()
 		float mat_store_4x3[12];
 		float mat_store_4x4[16];
 
-		store(mat_foo_3x3, mat_store_3x3);
+		store(mat_store_3x3, mat_foo_3x3);
 		hlslpp_check(eq(mat_foo_3x3,
 			mat_store_3x3[0], mat_store_3x3[1], mat_store_3x3[2],
 			mat_store_3x3[3], mat_store_3x3[4], mat_store_3x3[5],
 			mat_store_3x3[6], mat_store_3x3[7], mat_store_3x3[8]));
 
-		store(mat_foo_3x4, mat_store_3x4);
-		store(mat_foo_4x3, mat_store_4x3);
+		store(mat_store_3x4, mat_foo_3x4);
+		store(mat_store_4x3, mat_foo_4x3);
 
-		store(mat_foo_4x4, mat_store_4x4);
+		store(mat_store_4x4, mat_foo_4x4);
 		hlslpp_check(eq(mat_foo_4x4,
 			mat_store_4x4[0], mat_store_4x4[1], mat_store_4x4[2], mat_store_4x4[3],
 			mat_store_4x4[4], mat_store_4x4[5], mat_store_4x4[6], mat_store_4x4[7],

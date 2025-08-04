@@ -868,101 +868,101 @@ hlslpp_module_export namespace hlslpp
 		#include "hlsl++/transform/float4x4.h"
 	};
 
-	hlslpp_inline void store(const float1x1& m, float* f) { _hlslpp_store1_ps(f, m.vec); }
-	hlslpp_inline void store(const float1x2& m, float* f) { _hlslpp_store2_ps(f, m.vec); }
-	hlslpp_inline void store(const float2x1& m, float* f) { _hlslpp_store2_ps(f, m.vec); }
-	hlslpp_inline void store(const float1x3& m, float* f) { _hlslpp_store3_ps(f, m.vec); }
-	hlslpp_inline void store(const float3x1& m, float* f) { _hlslpp_store3_ps(f, m.vec); }
-	hlslpp_inline void store(const float1x4& m, float* f) { _hlslpp_store4_ps(f, m.vec); }
-	hlslpp_inline void store(const float4x1& m, float* f) { _hlslpp_store4_ps(f, m.vec); }
+	hlslpp_inline void store(float* dst, const float1x1& src) { _hlslpp_store1_ps(dst, src.vec); }
+	hlslpp_inline void store(float* dst, const float1x2& src) { _hlslpp_store2_ps(dst, src.vec); }
+	hlslpp_inline void store(float* dst, const float2x1& src) { _hlslpp_store2_ps(dst, src.vec); }
+	hlslpp_inline void store(float* dst, const float1x3& src) { _hlslpp_store3_ps(dst, src.vec); }
+	hlslpp_inline void store(float* dst, const float3x1& src) { _hlslpp_store3_ps(dst, src.vec); }
+	hlslpp_inline void store(float* dst, const float1x4& src) { _hlslpp_store4_ps(dst, src.vec); }
+	hlslpp_inline void store(float* dst, const float4x1& src) { _hlslpp_store4_ps(dst, src.vec); }
 
-	hlslpp_inline void store(const float2x2& m, float* f) { _hlslpp_store4_ps(f, m.vec); }
-	hlslpp_inline void store(const float2x3& m, float* f)
+	hlslpp_inline void store(float* dst, const float2x2& src) { _hlslpp_store4_ps(dst, src.vec); }
+	hlslpp_inline void store(float* dst, const float2x3& src)
 	{
-		_hlslpp_store3_ps(f + 0, m.vec0);
-		_hlslpp_store3_ps(f + 3, m.vec1);
+		_hlslpp_store3_ps(dst + 0, src.vec0);
+		_hlslpp_store3_ps(dst + 3, src.vec1);
 	}
 
-	hlslpp_inline void store(const float2x4& m, float* f)
+	hlslpp_inline void store(float* dst, const float2x4& src)
 	{
-		_hlslpp_store4_ps(f + 0, m.vec0);
-		_hlslpp_store4_ps(f + 4, m.vec1);
+		_hlslpp_store4_ps(dst + 0, src.vec0);
+		_hlslpp_store4_ps(dst + 4, src.vec1);
 	}
 
-	hlslpp_inline void store(const float3x2& m, float* f)
+	hlslpp_inline void store(float* dst, const float3x2& src)
 	{
-		_hlslpp_store4_ps(f, _hlslpp_unpacklo_ps(m.vec0, m.vec1));
-		_hlslpp_store2_ps(f, _hlslpp_unpackhi_ps(m.vec0, m.vec1));
+		_hlslpp_store4_ps(dst, _hlslpp_unpacklo_ps(src.vec0, src.vec1));
+		_hlslpp_store2_ps(dst, _hlslpp_unpackhi_ps(src.vec0, src.vec1));
 	}
 
-	hlslpp_inline void store(const float4x2& m, float* f)
+	hlslpp_inline void store(float* dst, const float4x2& src)
 	{
-		_hlslpp_store4_ps(f, _hlslpp_unpacklo_ps(m.vec0, m.vec1));
-		_hlslpp_store4_ps(f, _hlslpp_unpackhi_ps(m.vec0, m.vec1));
+		_hlslpp_store4_ps(dst, _hlslpp_unpacklo_ps(src.vec0, src.vec1));
+		_hlslpp_store4_ps(dst, _hlslpp_unpackhi_ps(src.vec0, src.vec1));
 	}
 
-	hlslpp_inline void store(const float3x3& m, float* f)
+	hlslpp_inline void store(float* dst, const float3x3& src)
 	{
-		_hlslpp_store3x3_ps(f, m.vec0, m.vec1, m.vec2);
+		_hlslpp_store3x3_ps(dst, src.vec0, src.vec1, src.vec2);
 	}
 
-	hlslpp_inline void store(const float3x4& m, float* f)
+	hlslpp_inline void store(float* dst, const float3x4& src)
 	{
-		_hlslpp_store4_ps(f, m.vec0);
-		_hlslpp_store4_ps(f + 4, m.vec1);
-		_hlslpp_store4_ps(f + 8, m.vec2);
+		_hlslpp_store4_ps(dst, src.vec0);
+		_hlslpp_store4_ps(dst + 4, src.vec1);
+		_hlslpp_store4_ps(dst + 8, src.vec2);
 	}
 
-	hlslpp_inline void store(const float4x3& m, float* f)
+	hlslpp_inline void store(float* dst, const float4x3& src)
 	{
 		float tmp[12];
-		_hlslpp_store4_ps(tmp + 0, m.vec0);
-		_hlslpp_store4_ps(tmp + 4, m.vec1);
-		_hlslpp_store4_ps(tmp + 8, m.vec2);
-		f[0] = tmp[0]; f[ 1] = tmp[4]; f[ 2] = tmp[8];
-		f[3] = tmp[1]; f[ 4] = tmp[5]; f[ 5] = tmp[9];
-		f[6] = tmp[2]; f[ 7] = tmp[6]; f[ 8] = tmp[10];
-		f[9] = tmp[3]; f[10] = tmp[7]; f[11] = tmp[11];
+		_hlslpp_store4_ps(tmp + 0, src.vec0);
+		_hlslpp_store4_ps(tmp + 4, src.vec1);
+		_hlslpp_store4_ps(tmp + 8, src.vec2);
+		dst[0] = tmp[0]; dst[ 1] = tmp[4]; dst[ 2] = tmp[8];
+		dst[3] = tmp[1]; dst[ 4] = tmp[5]; dst[ 5] = tmp[9];
+		dst[6] = tmp[2]; dst[ 7] = tmp[6]; dst[ 8] = tmp[10];
+		dst[9] = tmp[3]; dst[10] = tmp[7]; dst[11] = tmp[11];
 	}
 
-	hlslpp_inline void store(const float4x4& m, float* f)
+	hlslpp_inline void store(float* dst, const float4x4& src)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
-		_hlslpp512_store4x4_ps(f, m.vec);
+		_hlslpp512_store4x4_ps(dst, src.vec);
 #elif defined(HLSLPP_SIMD_REGISTER_256)
-		_hlslpp256_store4x4_ps(f, m.vec0, m.vec1);
+		_hlslpp256_store4x4_ps(dst, src.vec0, src.vec1);
 #else
-		_hlslpp_store4x4_ps(f, m.vec0, m.vec1, m.vec2, m.vec3);
+		_hlslpp_store4x4_ps(dst, src.vec0, src.vec1, src.vec2, src.vec3);
 #endif
 	}
 
-	hlslpp_inline void store_transposed(const float4x4& m, float* f)
+	hlslpp_inline void store_transposed(float* dst, const float4x4& src)
 	{
 		// TODO Create optimized functions for storing transposed matrix
-		float4x4 tm = transpose(m);
+		float4x4 tsrc = transpose(src);
 
 #if defined(HLSLPP_SIMD_REGISTER_512)
-		_hlslpp512_store4x4_ps(f, tm.vec);
+		_hlslpp512_store4x4_ps(dst, tsrc.vec);
 #elif defined(HLSLPP_SIMD_REGISTER_256)
-		_hlslpp256_store4x4_ps(f, tm.vec0, tm.vec1);
+		_hlslpp256_store4x4_ps(dst, tsrc.vec0, tsrc.vec1);
 #else
-		_hlslpp_store4x4_ps(f, tm.vec0, tm.vec1, tm.vec2, tm.vec3);
+		_hlslpp_store4x4_ps(dst, tsrc.vec0, tsrc.vec1, tsrc.vec2, tsrc.vec3);
 #endif
 	}
 
-	hlslpp_inline void load(float3x3& m, float* f)
+	hlslpp_inline void load(float3x3& dst, const float* src)
 	{
-		_hlslpp_load3x3_ps(f, m.vec0, m.vec1, m.vec2);
+		_hlslpp_load3x3_ps(dst.vec0, dst.vec1, dst.vec2, src);
 	}
 
-	hlslpp_inline void load(float4x4& m, float* f)
+	hlslpp_inline void load(float4x4& dst, const float* src)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
-		_hlslpp512_load4x4_ps(f, m.vec);
+		_hlslpp512_load4x4_ps(dst.vec, src);
 #elif defined(HLSLPP_SIMD_REGISTER_256)
-		_hlslpp256_load4x4_ps(f, m.vec0, m.vec1);
+		_hlslpp256_load4x4_ps(dst.vec0, dst.vec1, src);
 #else
-		_hlslpp_load4x4_ps(f, m.vec0, m.vec1, m.vec2, m.vec3);
+		_hlslpp_load4x4_ps(dst.vec0, dst.vec1, dst.vec2, dst.vec3, src);
 #endif
 	}
 
@@ -972,9 +972,9 @@ hlslpp_module_export namespace hlslpp
 	{
 		struct float4x3
 		{
-			float4x3() = default;
+			float4x3() hlslpp_constructor_default;
 #if defined(HLSLPP_INTEROP_PHYSICAL_LAYOUT_COLUMN_MAJOR)
-			float4x3(const hlslpp::float4x3& m) { hlslpp::store(m, &m00); }
+			float4x3(const hlslpp::float4x3& m) { hlslpp::store(&m00, m); }
 #else
 			// Function not available
 			float4x3(const hlslpp::float4x3& m) hlslpp_constructor_delete;
@@ -986,12 +986,12 @@ hlslpp_module_export namespace hlslpp
 
 		struct float3x4
 		{
-			float3x4() = default;
+			float3x4() hlslpp_constructor_default;
 #if defined(HLSLPP_INTEROP_PHYSICAL_LAYOUT_COLUMN_MAJOR)
 			// Function not available
 			float3x4(const hlslpp::float3x4& m) hlslpp_constructor_delete;
 #else
-			float3x4(const hlslpp::float3x4& m) { hlslpp::store(m, &m00); }
+			float3x4(const hlslpp::float3x4& m) { hlslpp::store(&m00, m); }
 #endif
 			float m00, m01, m02, m03,
 			      m10, m11, m12, m13,
@@ -1000,11 +1000,11 @@ hlslpp_module_export namespace hlslpp
 
 		struct float4x4
 		{
-			float4x4() = default;
+			float4x4() hlslpp_constructor_default;
 #if defined(HLSLPP_INTEROP_PHYSICAL_LAYOUT_COLUMN_MAJOR)
-			float4x4(const hlslpp::float4x4& m) { hlslpp::store_transposed(m, &m00); }
+			float4x4(const hlslpp::float4x4& m) { hlslpp::store_transposed(&m00, m); }
 #else
-			float4x4(const hlslpp::float4x4& m) { hlslpp::store(m, &m00); }
+			float4x4(const hlslpp::float4x4& m) { hlslpp::store(&m00, m); }
 #endif
 			float m00, m01, m02, m03,
 			      m10, m11, m12, m13,

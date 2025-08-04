@@ -484,10 +484,10 @@ void RunUnitTestsVectorDouble()
 		double dvstore3[3];
 		double dvstore4[4];
 
-		store(dvfoo1, dvstore1); hlslpp_check(eq(dvfoo1, dvstore1[0]));
-		store(dvfoo2, dvstore2); hlslpp_check(eq(dvfoo2, dvstore2[0], dvstore2[1]));
-		store(dvfoo3, dvstore3); hlslpp_check(eq(dvfoo3, dvstore3[0], dvstore3[1], dvstore3[2]));
-		store(dvfoo4, dvstore4); hlslpp_check(eq(dvfoo4, dvstore4[0], dvstore4[1], dvstore4[2], dvstore4[3]));
+		store(dvstore1, dvfoo1); hlslpp_check(eq(dvfoo1, dvstore1[0]));
+		store(dvstore2, dvfoo2); hlslpp_check(eq(dvfoo2, dvstore2[0], dvstore2[1]));
+		store(dvstore3, dvfoo3); hlslpp_check(eq(dvfoo3, dvstore3[0], dvstore3[1], dvstore3[2]));
+		store(dvstore4, dvfoo4); hlslpp_check(eq(dvfoo4, dvstore4[0], dvstore4[1], dvstore4[2], dvstore4[3]));
 
 		double dvload1[1] = { df10 };
 		double dvload2[2] = { df11, df12 };

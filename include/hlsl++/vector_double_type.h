@@ -566,59 +566,59 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	hlslpp_inline void store(const double1& v, double* f)
+	hlslpp_inline void store(double* dst, const double1& src)
 	{
-		_hlslpp_store1_pd(f, v.vec);
+		_hlslpp_store1_pd(dst, src.vec);
 	}
 
-	hlslpp_inline void store(const double2& v, double* f)
+	hlslpp_inline void store(double* dst, const double2& sc)
 	{
-		_hlslpp_store2_pd(f, v.vec);
+		_hlslpp_store2_pd(dst, sc.vec);
 	}
 
-	hlslpp_inline void store(const double3& v, double* f)
+	hlslpp_inline void store(double* dst, const double3& src)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
-		_hlslpp256_store3_pd(f, v.vec);
+		_hlslpp256_store3_pd(dst, src.vec);
 #else
-		_hlslpp_store3_pd(f, v.vec0, v.vec1);
+		_hlslpp_store3_pd(dst, src.vec0, src.vec1);
 #endif
 	}
 
-	hlslpp_inline void store(const double4& v, double* f)
+	hlslpp_inline void store(double* dst, const double4& src)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
-		_hlslpp256_store4_pd(f, v.vec);
+		_hlslpp256_store4_pd(dst, src.vec);
 #else
-		_hlslpp_store4_pd(f, v.vec0, v.vec1);
+		_hlslpp_store4_pd(dst, src.vec0, src.vec1);
 #endif
 	}
 
-	hlslpp_inline void load(double1& v, double* f)
+	hlslpp_inline void load(double1& dst, const double* src)
 	{
-		_hlslpp_load1_pd(f, v.vec);
+		_hlslpp_load1_pd(dst.vec, src);
 	}
 
-	hlslpp_inline void load(double2& v, double* f)
+	hlslpp_inline void load(double2& dst, const double* src)
 	{
-		_hlslpp_load2_pd(f, v.vec);
+		_hlslpp_load2_pd(dst.vec, src);
 	}
 
-	hlslpp_inline void load(double3& v, double* f)
+	hlslpp_inline void load(double3& dst, const double* src)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
-		_hlslpp256_load3_pd(f, v.vec);
+		_hlslpp256_load3_pd(dst.vec, src);
 #else
-		_hlslpp_load3_pd(f, v.vec0, v.vec1);
+		_hlslpp_load3_pd(dst.vec0, dst.vec1, src);
 #endif
 	}
 
-	hlslpp_inline void load(double4& v, double* f)
+	hlslpp_inline void load(double4& dst, const double* src)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
-		_hlslpp256_load4_pd(f, v.vec);
+		_hlslpp256_load4_pd(dst.vec, src);
 #else
-		_hlslpp_load4_pd(f, v.vec0, v.vec1);
+		_hlslpp_load4_pd(dst.vec0, dst.vec1, src);
 #endif
 	}
 
@@ -626,22 +626,22 @@ hlslpp_module_export namespace hlslpp
 	{
 		struct double4
 		{
-			double4() = default;
-			double4(const hlslpp::double4& f) { hlslpp::store(f, &x); }
+			double4() hlslpp_constructor_default;
+			double4(const hlslpp::double4& f) { hlslpp::store(&x, f); }
 			double x, y, z, w;
 		};
 
 		struct double3
 		{
-			double3() = default;
-			double3(const hlslpp::double3& f) { hlslpp::store(f, &x); }
+			double3() hlslpp_constructor_default;
+			double3(const hlslpp::double3& f) { hlslpp::store(&x, f); }
 			double x, y, z;
 		};
 
 		struct double2
 		{
-			double2() = default;
-			double2(const hlslpp::double2& f) { hlslpp::store(f, &x); }
+			double2() hlslpp_constructor_default;
+			double2(const hlslpp::double2& f) { hlslpp::store(&x, f); }
 			double x, y;
 		};
 

@@ -739,14 +739,14 @@ hlslpp_module_export namespace hlslpp
 
 	hlslpp_inline float8 trunc(const float8& f) { return float8(_hlslpp256_trunc_ps(f.vec)); }
 
-	hlslpp_inline void store(const float8& v, float* f)
+	hlslpp_inline void store(float* dst, const float8& src)
 	{
-		_hlslpp256_store8_ps(f, v.vec);
+		_hlslpp256_store8_ps(dst, src.vec);
 	}
 
-	hlslpp_inline void load(float8& v, float* f)
+	hlslpp_inline void load(float8& dst, const float* src)
 	{
-		_hlslpp256_load8_ps(f, v.vec);
+		_hlslpp256_load8_ps(dst.vec, src);
 	}
 }
 

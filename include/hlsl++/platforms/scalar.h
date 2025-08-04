@@ -466,44 +466,44 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 	// Float Store/Load
 	//-----------------
 
-	hlslpp_inline void _hlslpp_store1_ps(float* p, const vector_float4& v) { p[0] = v.x; }
-	hlslpp_inline void _hlslpp_store2_ps(float* p, const vector_float4& v) { p[0] = v.x; p[1] = v.y; }
-	hlslpp_inline void _hlslpp_store3_ps(float* p, const vector_float4& v) { p[0] = v.x; p[1] = v.y; p[2] = v.z; }
-	hlslpp_inline void _hlslpp_store4_ps(float* p, const vector_float4& v) { p[0] = v.x; p[1] = v.y; p[2] = v.z; p[3] = v.w; }
+	hlslpp_inline void _hlslpp_store1_ps(float* dst, const vector_float4& src) { dst[0] = src.x; }
+	hlslpp_inline void _hlslpp_store2_ps(float* dst, const vector_float4& src) { dst[0] = src.x; dst[1] = src.y; }
+	hlslpp_inline void _hlslpp_store3_ps(float* dst, const vector_float4& src) { dst[0] = src.x; dst[1] = src.y; dst[2] = src.z; }
+	hlslpp_inline void _hlslpp_store4_ps(float* dst, const vector_float4& src) { dst[0] = src.x; dst[1] = src.y; dst[2] = src.z; dst[3] = src.w; }
 
-	hlslpp_inline void _hlslpp_store3x3_ps(float* p, const vector_float4& v1, const vector_float4& v2, const vector_float4& v3)
+	hlslpp_inline void _hlslpp_store3x3_ps(float* dst, const vector_float4& src0, const vector_float4& src1, const vector_float4& src2)
 	{
-		p[0] = v1.x; p[1] = v1.y; p[2] = v1.z;
-		p[3] = v2.x; p[4] = v2.y; p[5] = v2.z;
-		p[6] = v3.x; p[7] = v3.y; p[8] = v3.z;
+		dst[0] = src0.x; dst[1] = src0.y; dst[2] = src0.z;
+		dst[3] = src1.x; dst[4] = src1.y; dst[5] = src1.z;
+		dst[6] = src2.x; dst[7] = src2.y; dst[8] = src2.z;
 	}
 
-	hlslpp_inline void _hlslpp_store4x4_ps(float* p, const vector_float4& v1, const vector_float4& v2, const vector_float4& v3, const vector_float4& v4)
+	hlslpp_inline void _hlslpp_store4x4_ps(float* dst, const vector_float4& src0, const vector_float4& src1, const vector_float4& src2, const vector_float4& src3)
 	{
-		p[0] = v1.x; p[1] = v1.y; p[2] = v1.z; p[3] = v1.w;
-		p[4] = v2.x; p[5] = v2.y; p[6] = v2.z; p[7] = v2.w;
-		p[8] = v3.x; p[9] = v3.y; p[10] = v3.z; p[11] = v3.w;
-		p[12] = v4.x; p[13] = v4.y; p[14] = v4.z; p[15] = v4.w;
+		dst[0] = src0.x;  dst[1] = src0.y;  dst[2]  = src0.z; dst[3]  = src0.w;
+		dst[4] = src1.x;  dst[5] = src1.y;  dst[6]  = src1.z; dst[7]  = src1.w;
+		dst[8] = src2.x;  dst[9] = src2.y;  dst[10] = src2.z; dst[11] = src2.w;
+		dst[12] = src3.x; dst[13] = src3.y; dst[14] = src3.z; dst[15] = src3.w;
 	}
 
-	hlslpp_inline void _hlslpp_load1_ps(float* p, n128& v) { v.x = p[0]; }
-	hlslpp_inline void _hlslpp_load2_ps(float* p, n128& v) { v.x = p[0]; v.y = p[1]; }
-	hlslpp_inline void _hlslpp_load3_ps(float* p, n128& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; }
-	hlslpp_inline void _hlslpp_load4_ps(float* p, n128& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; v.w = p[3]; }
+	hlslpp_inline void _hlslpp_load1_ps(n128& dst, const float* src) { dst.x = src[0]; }
+	hlslpp_inline void _hlslpp_load2_ps(n128& dst, const float* src) { dst.x = src[0]; dst.y = src[1]; }
+	hlslpp_inline void _hlslpp_load3_ps(n128& dst, const float* src) { dst.x = src[0]; dst.y = src[1]; dst.z = src[2]; }
+	hlslpp_inline void _hlslpp_load4_ps(n128& dst, const float* src) { dst.x = src[0]; dst.y = src[1]; dst.z = src[2]; dst.w = src[3]; }
 
-	hlslpp_inline void _hlslpp_load3x3_ps(float* p, n128& v1, n128& v2, n128& v3)
+	hlslpp_inline void _hlslpp_load3x3_ps(n128& dst0, n128& dst1, n128& dst2, const float* src)
 	{
-		v1.x = p[0]; v1.y = p[1]; v1.z = p[2];
-		v2.x = p[3]; v2.y = p[4]; v2.z = p[5];
-		v3.x = p[6]; v3.y = p[7]; v3.z = p[8];
+		dst0.x = src[0]; dst0.y = src[1]; dst0.z = src[2];
+		dst1.x = src[3]; dst1.y = src[4]; dst1.z = src[5];
+		dst2.x = src[6]; dst2.y = src[7]; dst2.z = src[8];
 	}
 
-	hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& v1, n128& v2, n128& v3, n128& v4)
+	hlslpp_inline void _hlslpp_load4x4_ps(n128& dst0, n128& dst1, n128& dst2, n128& dst3, const float* src)
 	{
-		v1.x = p[0];  v1.y = p[1];  v1.z = p[2];  v1.w = p[3];
-		v2.x = p[4];  v2.y = p[5];  v2.z = p[6];  v2.w = p[7];
-		v3.x = p[8];  v3.y = p[9];  v3.z = p[10]; v3.w = p[11];
-		v4.x = p[12]; v4.y = p[13]; v4.z = p[14]; v4.w = p[15];
+		dst0.x = src[0];  dst0.y = src[1];  dst0.z = src[2];  dst0.w = src[3];
+		dst1.x = src[4];  dst1.y = src[5];  dst1.z = src[6];  dst1.w = src[7];
+		dst2.x = src[8];  dst2.y = src[9];  dst2.z = src[10]; dst2.w = src[11];
+		dst3.x = src[12]; dst3.y = src[13]; dst3.z = src[14]; dst3.w = src[15];
 	}
 
 	//--------
@@ -730,15 +730,15 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 	// Integer Store/Load
 	//-------------------
 
-	hlslpp_inline void _hlslpp_store1_epi32(int32_t* p, const vector_int4& v) { p[0] = v.x; }
-	hlslpp_inline void _hlslpp_store2_epi32(int32_t* p, const vector_int4& v) { p[0] = v.x; p[1] = v.y; }
-	hlslpp_inline void _hlslpp_store3_epi32(int32_t* p, const vector_int4& v) { p[0] = v.x; p[1] = v.y; p[2] = v.z; }
-	hlslpp_inline void _hlslpp_store4_epi32(int32_t* p, const vector_int4& v) { p[0] = v.x; p[1] = v.y; p[2] = v.z; p[3] = v.w; }
+	hlslpp_inline void _hlslpp_store1_epi32(int32_t* dst, const vector_int4& src) { dst[0] = src.x; }
+	hlslpp_inline void _hlslpp_store2_epi32(int32_t* dst, const vector_int4& src) { dst[0] = src.x; dst[1] = src.y; }
+	hlslpp_inline void _hlslpp_store3_epi32(int32_t* dst, const vector_int4& src) { dst[0] = src.x; dst[1] = src.y; dst[2] = src.z; }
+	hlslpp_inline void _hlslpp_store4_epi32(int32_t* dst, const vector_int4& src) { dst[0] = src.x; dst[1] = src.y; dst[2] = src.z; dst[3] = src.w; }
 
-	hlslpp_inline void _hlslpp_load1_epi32(int32_t* p, vector_int4& v) { v.x = p[0]; }
-	hlslpp_inline void _hlslpp_load2_epi32(int32_t* p, vector_int4& v) { v.x = p[0]; v.y = p[1]; }
-	hlslpp_inline void _hlslpp_load3_epi32(int32_t* p, vector_int4& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; }
-	hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, vector_int4& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; v.w = p[3]; }
+	hlslpp_inline void _hlslpp_load1_epi32(vector_int4& dst, const int32_t* src) { dst.x = src[0]; }
+	hlslpp_inline void _hlslpp_load2_epi32(vector_int4& dst, const int32_t* src) { dst.x = src[0]; dst.y = src[1]; }
+	hlslpp_inline void _hlslpp_load3_epi32(vector_int4& dst, const int32_t* src) { dst.x = src[0]; dst.y = src[1]; dst.z = src[2]; }
+	hlslpp_inline void _hlslpp_load4_epi32(vector_int4& dst, const int32_t* src) { dst.x = src[0]; dst.y = src[1]; dst.z = src[2]; dst.w = src[3]; }
 
 	//-----------------
 	// Unsigned Integer
@@ -967,15 +967,15 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 	// Unsigned Integer Store/Load
 	//----------------------------
 
-	hlslpp_inline void _hlslpp_store1_epu32(uint32_t* p, const vector_uint4& v) { p[0] = v.x; }
-	hlslpp_inline void _hlslpp_store2_epu32(uint32_t* p, const vector_uint4& v) { p[0] = v.x; p[1] = v.y; }
-	hlslpp_inline void _hlslpp_store3_epu32(uint32_t* p, const vector_uint4& v) { p[0] = v.x; p[1] = v.y; p[2] = v.z; }
-	hlslpp_inline void _hlslpp_store4_epu32(uint32_t* p, const vector_uint4& v) { p[0] = v.x; p[1] = v.y; p[2] = v.z; p[3] = v.w; }
+	hlslpp_inline void _hlslpp_store1_epu32(uint32_t* dst, const vector_uint4& src) { dst[0] = src.x; }
+	hlslpp_inline void _hlslpp_store2_epu32(uint32_t* dst, const vector_uint4& src) { dst[0] = src.x; dst[1] = src.y; }
+	hlslpp_inline void _hlslpp_store3_epu32(uint32_t* dst, const vector_uint4& src) { dst[0] = src.x; dst[1] = src.y; dst[2] = src.z; }
+	hlslpp_inline void _hlslpp_store4_epu32(uint32_t* dst, const vector_uint4& src) { dst[0] = src.x; dst[1] = src.y; dst[2] = src.z; dst[3] = src.w; }
 
-	hlslpp_inline void _hlslpp_load1_epu32(uint32_t* p, vector_uint4& v) { v.x = p[0]; }
-	hlslpp_inline void _hlslpp_load2_epu32(uint32_t* p, vector_uint4& v) { v.x = p[0]; v.y = p[1]; }
-	hlslpp_inline void _hlslpp_load3_epu32(uint32_t* p, vector_uint4& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; }
-	hlslpp_inline void _hlslpp_load4_epu32(uint32_t* p, vector_uint4& v) { v.x = p[0]; v.y = p[1]; v.z = p[2]; v.w = p[3]; }
+	hlslpp_inline void _hlslpp_load1_epu32(vector_uint4& dst, const uint32_t* src) { dst.x = src[0]; }
+	hlslpp_inline void _hlslpp_load2_epu32(vector_uint4& dst, const uint32_t* src) { dst.x = src[0]; dst.y = src[1]; }
+	hlslpp_inline void _hlslpp_load3_epu32(vector_uint4& dst, const uint32_t* src) { dst.x = src[0]; dst.y = src[1]; dst.z = src[2]; }
+	hlslpp_inline void _hlslpp_load4_epu32(vector_uint4& dst, const uint32_t* src) { dst.x = src[0]; dst.y = src[1]; dst.z = src[2]; dst.w = src[3]; }
 
 	//-------------
 	// Data Packing

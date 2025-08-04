@@ -137,78 +137,78 @@ hlslpp_inline bool _hlslpp_all4_ps(n128 x)
 // Float Store/Load
 //-----------------
 
-hlslpp_inline void _hlslpp_store1_ps(float* p, n128 x)
+hlslpp_inline void _hlslpp_store1_ps(float* dst, n128 src)
 {
-	wasm_v128_store32_lane(p, x, 0);
+	wasm_v128_store32_lane(dst, src, 0);
 }
 
-hlslpp_inline void _hlslpp_store2_ps(float* p, n128 x)
+hlslpp_inline void _hlslpp_store2_ps(float* dst, n128 src)
 {
-	wasm_v128_store64_lane(p, x, 0);
+	wasm_v128_store64_lane(dst, src, 0);
 }
 
-hlslpp_inline void _hlslpp_store3_ps(float* p, n128 x)
+hlslpp_inline void _hlslpp_store3_ps(float* dst, n128 src)
 {
-	wasm_v128_store64_lane(p, x, 0);
-	wasm_v128_store32_lane(p + 2, x, 2);
+	wasm_v128_store64_lane(dst, src, 0);
+	wasm_v128_store32_lane(dst + 2, src, 2);
 }
 
-hlslpp_inline void _hlslpp_store4_ps(float* p, n128 x)
+hlslpp_inline void _hlslpp_store4_ps(float* dst, n128 src)
 {
-	wasm_v128_store(p, x);
+	wasm_v128_store(dst, src);
 }
 
 // Store first 3, store second 3, store last 2 and then the last one
 // We need to do it this way to avoid stomping memory outside the provided buffer
-hlslpp_inline void _hlslpp_store3x3_ps(float* p, n128 x0, n128 x1, n128 x2)
+hlslpp_inline void _hlslpp_store3x3_ps(float* dst, n128 src0, n128 src1, n128 src2)
 {
-	wasm_v128_store(p, x0);
-	wasm_v128_store(p + 3, x1);
-	wasm_v128_store64_lane(p + 6, x2, 0);
-	wasm_v128_store32_lane(p + 8, x2, 2);
+	wasm_v128_store(dst, src0);
+	wasm_v128_store(dst + 3, src1);
+	wasm_v128_store64_lane(dst + 6, src2, 0);
+	wasm_v128_store32_lane(dst + 8, src2, 2);
 }
 
-hlslpp_inline void _hlslpp_store4x4_ps(float* p, const n128& x0, const n128& x1, const n128& x2, const n128& x3)
+hlslpp_inline void _hlslpp_store4x4_ps(float* dst, const n128& src0, const n128& src1, const n128& src2, const n128& src3)
 {
-	wasm_v128_store(p, x0);
-	wasm_v128_store(p + 4, x1);
-	wasm_v128_store(p + 8, x2);
-	wasm_v128_store(p + 12, x3);
+	wasm_v128_store(dst, src0);
+	wasm_v128_store(dst + 4, src1);
+	wasm_v128_store(dst + 8, src2);
+	wasm_v128_store(dst + 12, src3);
 }
 
-hlslpp_inline void _hlslpp_load1_ps(float* p, n128& x)
+hlslpp_inline void _hlslpp_load1_ps(n128& dst, const float* src)
 {
-	x = wasm_v128_load32_lane(p, x, 0);
+	dst = wasm_v128_load32_lane(src, dst, 0);
 }
 
-hlslpp_inline void _hlslpp_load2_ps(float* p, n128& x)
+hlslpp_inline void _hlslpp_load2_ps(n128& dst, const float* src)
 {
-	x = wasm_v128_load64_lane(p, x, 0);
+	dst = wasm_v128_load64_lane(src, dst, 0);
 }
 
-hlslpp_inline void _hlslpp_load3_ps(float* p, n128& x)
+hlslpp_inline void _hlslpp_load3_ps(n128& dst, const float* src)
 {
-	x = wasm_i32x4_shuffle(wasm_v128_load64_lane(p, x, 0), wasm_v128_load32_lane(p + 2, x, 0), 0, 1, 4, 5);
+	dst = wasm_i32x4_shuffle(wasm_v128_load64_lane(src, dst, 0), wasm_v128_load32_lane(src + 2, dst, 0), 0, 1, 4, 5);
 }
 
-hlslpp_inline void _hlslpp_load4_ps(float* p, n128& x)
+hlslpp_inline void _hlslpp_load4_ps(n128& dst, const float* src)
 {
-	x = wasm_v128_load(p);
+	dst = wasm_v128_load(src);
 }
 
-hlslpp_inline void _hlslpp_load3x3_ps(float* p, n128& x0, n128& x1, n128& x2)
+hlslpp_inline void _hlslpp_load3x3_ps(n128& dst0, n128& dst1, n128& dst2, const float* src)
 {
-	x0 = wasm_v128_load(p);
-	x1 = wasm_v128_load(p + 3);
-	x2 = wasm_v128_load(p + 6);
+	dst0 = wasm_v128_load(src);
+	dst1 = wasm_v128_load(src + 3);
+	dst2 = wasm_v128_load(src + 6);
 }
 
-hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n128& x3)
+hlslpp_inline void _hlslpp_load4x4_ps(n128& dst0, n128& dst1, n128& dst2, n128& dst3, const float* src)
 {
-	x0 = wasm_v128_load(p);
-	x1 = wasm_v128_load(p + 4);
-	x2 = wasm_v128_load(p + 8);
-	x3 = wasm_v128_load(p + 12);
+	dst0 = wasm_v128_load(src);
+	dst1 = wasm_v128_load(src + 4);
+	dst2 = wasm_v128_load(src + 8);
+	dst3 = wasm_v128_load(src + 12);
 }
 
 //--------

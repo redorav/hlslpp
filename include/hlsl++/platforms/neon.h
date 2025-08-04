@@ -433,79 +433,79 @@ hlslpp_inline n128 _hlslpp_dot4_ps(n128 x, n128 y)
 // Float Store/Load
 //-----------------
 
-hlslpp_inline void _hlslpp_store1_ps(float* p, n128 x)
+hlslpp_inline void _hlslpp_store1_ps(float* dst, n128 src)
 {
-	vst1q_lane_f32(p, x, 0);
+	vst1q_lane_f32(dst, src, 0);
 }
 
-hlslpp_inline void _hlslpp_store2_ps(float* p, n128 x)
+hlslpp_inline void _hlslpp_store2_ps(float* dst, n128 src)
 {
-	vst1_f32(p, vget_low_f32(x));
+	vst1_f32(dst, vget_low_f32(src));
 }
 
-hlslpp_inline void _hlslpp_store3_ps(float* p, n128 x)
+hlslpp_inline void _hlslpp_store3_ps(float* dst, n128 src)
 {
-	vst1_f32(p, vget_low_f32(x));
-	vst1q_lane_f32(p + 2, x, 2);
+	vst1_f32(dst, vget_low_f32(src));
+	vst1q_lane_f32(dst + 2, src, 2);
 }
 
-hlslpp_inline void _hlslpp_store4_ps(float* p, n128 x)
+hlslpp_inline void _hlslpp_store4_ps(float* dst, n128 src)
 {
-	vst1q_f32(p, x);
+	vst1q_f32(dst, src);
 }
 
-hlslpp_inline void _hlslpp_store3x3_ps(float* p, n128 x0, n128 x1, n128 x2)
+hlslpp_inline void _hlslpp_store3x3_ps(float* dst, n128 src0, n128 src1, n128 src2)
 {
-	vst1q_f32(p, x0);
-	vst1q_f32(p + 3, x1);
-	vst1_f32(p + 6, vget_low_f32(x2));
-	vst1q_lane_f32(p + 8, x2, 2);
+	vst1q_f32(dst, src0);
+	vst1q_f32(dst + 3, src1);
+	vst1_f32(dst + 6, vget_low_f32(src2));
+	vst1q_lane_f32(dst + 8, src2, 2);
 }
 
-hlslpp_inline void _hlslpp_store4x4_ps(float* p, n128 x0, n128 x1, n128 x2, n128 x3)
+hlslpp_inline void _hlslpp_store4x4_ps(float* dst, n128 src0, n128 src1, n128 src2, n128 src3)
 {
-	vst1q_f32(p, x0);
-	vst1q_f32(p + 4, x1);
-	vst1q_f32(p + 8, x2);
-	vst1q_f32(p + 12, x3);
+	vst1q_f32(dst, src0);
+	vst1q_f32(dst + 4, src1);
+	vst1q_f32(dst + 8, src2);
+	vst1q_f32(dst + 12, src3);
 }
 
-hlslpp_inline void _hlslpp_load1_ps(float* p, n128& x)
+hlslpp_inline void _hlslpp_load1_ps(n128& dst, const float* src)
 {
-	x = vld1q_lane_f32(p, x, 0);
+	dst = vld1q_lane_f32(src, dst, 0);
 }
 
-hlslpp_inline void _hlslpp_load2_ps(float* p, n128& x)
+hlslpp_inline void _hlslpp_load2_ps(n128& dst, const float* src)
 {
-	float32x2_t t = vld1_f32(p); // Load the two values
-	x = vcombine_f32(t, t); // Replicate in the other two to create a float32x4_t
+	float32x2_t t = vld1_f32(src); // Load the two values
+	dst = vcombine_f32(t, t); // Replicate in the other two to create a float32x4_t
 }
 
-hlslpp_inline void _hlslpp_load3_ps(float* p, n128& x)
+hlslpp_inline void _hlslpp_load3_ps(n128& dst, const float* src)
 {
-	float32x2_t t = vld1_f32(p); // Load the two values
-	x = vcombine_f32(t, t); // Replicate in the other two to create a float32x4_t
-	x = vld1q_lane_f32(p + 2, x, 2);
+	float32x2_t t = vld1_f32(src); // Load the two values
+	dst = vcombine_f32(t, t); // Replicate in the other two to create a float32x4_t
+	dst = vld1q_lane_f32(src + 2, dst, 2);
 }
 
-hlslpp_inline void _hlslpp_load4_ps(float* p, n128& x)
+hlslpp_inline void _hlslpp_load4_ps(n128& dst, const float* src)
 {
-	x = vld1q_f32(p);
+	dst = vld1q_f32(src);
 }
 
-hlslpp_inline void _hlslpp_load3x3_ps(float* p, n128& x0, n128& x1, n128& x2)
+hlslpp_inline void _hlslpp_load3x3_ps(n128& dst0, n128& dst1, n128& dst2, const float* src)
 {
-	x0 = vld1q_f32(p);
-	x1 = vld1q_f32(p + 3);
-	x2 = vld1q_f32(p + 6);
+	dst0 = vld1q_f32(src);
+	dst1 = vld1q_f32(src + 3);
+	dst2 = vld1q_f32(src + 6);
 }
 
-hlslpp_inline void _hlslpp_load4x4_ps(float* p, n128& x0, n128& x1, n128& x2, n128& x3)
+hlslpp_inline void _hlslpp_load4x4_ps(n128& dst0, n128& dst1, n128& dst2, n128& dst3, const float* src)
 {
-	x0 = vld1q_f32(p);
-	x1 = vld1q_f32(p + 4);
-	x2 = vld1q_f32(p + 8);
-	x3 = vld1q_f32(p + 12);
+	dst0 = vld1q_f32(src);
+	dst1 = vld1q_f32(src + 4);
+	dst2 = vld1q_f32(src + 8);
+	dst3 = vld1q_f32(src + 12);
 }
 
 //--------
@@ -637,48 +637,48 @@ hlslpp_inline bool _hlslpp_all4_epi32(n128i x)
 // Integer Store/Load
 //-------------------
 
-hlslpp_inline void _hlslpp_store1_epi32(int32_t* p, n128i x)
+hlslpp_inline void _hlslpp_store1_epi32(int32_t* dst, n128i src)
 {
-	vst1q_lane_s32(p, x, 0);
+	vst1q_lane_s32(dst, src, 0);
 }
 
-hlslpp_inline void _hlslpp_store2_epi32(int32_t* p, n128i x)
+hlslpp_inline void _hlslpp_store2_epi32(int32_t* dst, n128i src)
 {
-	vst1_s32(p, vget_low_s32(x));
+	vst1_s32(dst, vget_low_s32(src));
 }
 
-hlslpp_inline void _hlslpp_store3_epi32(int32_t* p, n128i x)
+hlslpp_inline void _hlslpp_store3_epi32(int32_t* dst, n128i src)
 {
-	vst1_s32(p, vget_low_s32(x));
-	vst1q_lane_s32(p + 2, x, 2);
+	vst1_s32(dst, vget_low_s32(src));
+	vst1q_lane_s32(dst + 2, src, 2);
 }
 
-hlslpp_inline void _hlslpp_store4_epi32(int32_t* p, n128i x)
+hlslpp_inline void _hlslpp_store4_epi32(int32_t* dst, n128i src)
 {
-	vst1q_s32(p, x);
+	vst1q_s32(dst, src);
 }
 
-hlslpp_inline void _hlslpp_load1_epi32(int32_t* p, n128i& x)
+hlslpp_inline void _hlslpp_load1_epi32(n128i& dst, const int32_t* src)
 {
-	x = vld1q_lane_s32(p, x, 0);
+	dst = vld1q_lane_s32(src, dst, 0);
 }
 
-hlslpp_inline void _hlslpp_load2_epi32(int32_t* p, n128i& x)
+hlslpp_inline void _hlslpp_load2_epi32(n128i& dst, const int32_t* src)
 {
-	int32x2_t t = vld1_s32(p); // Load the two values
-	x = vcombine_s32(t, t); // Replicate in the other two to create a float32x4_t
+	int32x2_t t = vld1_s32(src); // Load the two values
+	dst = vcombine_s32(t, t); // Replicate in the other two to create a float32x4_t
 }
 
-hlslpp_inline void _hlslpp_load3_epi32(int32_t* p, n128i& x)
+hlslpp_inline void _hlslpp_load3_epi32(n128i& dst, const int32_t* src)
 {
-	int32x2_t t = vld1_s32(p); // Load the two values
-	x = vcombine_s32(t, t); // Replicate in the other two to create a float32x4_t
-	x = vld1q_lane_s32(p + 2, x, 2);
+	int32x2_t t = vld1_s32(src); // Load the two values
+	dst = vcombine_s32(t, t); // Replicate in the other two to create a float32x4_t
+	dst = vld1q_lane_s32(src + 2, dst, 2);
 }
 
-hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
+hlslpp_inline void _hlslpp_load4_epi32(n128i& dst, const int32_t* src)
 {
-	x = vld1q_s32(p);
+	dst = vld1q_s32(src);
 }
 
 //-----------------
@@ -744,48 +744,48 @@ hlslpp_inline void _hlslpp_load4_epi32(int32_t* p, n128i& x)
 //----------------------------
 
 
-hlslpp_inline void _hlslpp_store1_epu32(uint32_t* p, n128u x)
+hlslpp_inline void _hlslpp_store1_epu32(uint32_t* dst, n128u src)
 {
-	vst1q_lane_u32(p, x, 0);
+	vst1q_lane_u32(dst, src, 0);
 }
 
-hlslpp_inline void _hlslpp_store2_epu32(uint32_t* p, n128u x)
+hlslpp_inline void _hlslpp_store2_epu32(uint32_t* dst, n128u src)
 {
-	vst1_u32(p, vget_low_u32(x));
+	vst1_u32(dst, vget_low_u32(src));
 }
 
-hlslpp_inline void _hlslpp_store3_epu32(uint32_t* p, n128u x)
+hlslpp_inline void _hlslpp_store3_epu32(uint32_t* dst, n128u src)
 {
-	vst1_u32(p, vget_low_u32(x));
-	vst1q_lane_u32(p + 2, x, 2);
+	vst1_u32(dst, vget_low_u32(src));
+	vst1q_lane_u32(dst + 2, src, 2);
 }
 
-hlslpp_inline void _hlslpp_store4_epu32(uint32_t* p, n128u x)
+hlslpp_inline void _hlslpp_store4_epu32(uint32_t* dst, n128u src)
 {
-	vst1q_u32(p, x);
+	vst1q_u32(dst, src);
 }
 
-hlslpp_inline void _hlslpp_load1_epu32(uint32_t* p, n128u& x)
+hlslpp_inline void _hlslpp_load1_epu32(n128u& dst, const uint32_t* src)
 {
-	x = vld1q_lane_u32(p, x, 0);
+	dst = vld1q_lane_u32(src, dst, 0);
 }
 
-hlslpp_inline void _hlslpp_load2_epu32(uint32_t* p, n128u& x)
+hlslpp_inline void _hlslpp_load2_epu32(n128u& dst, const uint32_t* src)
 {
-	int32x2_t t = vld1_u32(p); // Load the two values
-	x = vcombine_u32(t, t); // Replicate in the other two to create a float32x4_t
+	int32x2_t t = vld1_u32(src); // Load the two values
+	dst = vcombine_u32(t, t); // Replicate in the other two to create a float32x4_t
 }
 
-hlslpp_inline void _hlslpp_load3_epu32(uint32_t* p, n128u& x)
+hlslpp_inline void _hlslpp_load3_epu32(n128u& dst, const uint32_t* src)
 {
-	int32x2_t t = vld1_u32(p); // Load the two values
-	x = vcombine_u32(t, t); // Replicate in the other two to create a float32x4_t
-	x = vld1q_lane_u32(p + 2, x, 2);
+	int32x2_t t = vld1_u32(src); // Load the two values
+	dst = vcombine_u32(t, t); // Replicate in the other two to create a float32x4_t
+	dst = vld1q_lane_u32(src + 2, dst, 2);
 }
 
-hlslpp_inline void _hlslpp_load4_epu32(uint32_t* p, n128u& x)
+hlslpp_inline void _hlslpp_load4_epu32(n128u& dst, const uint32_t* src)
 {
-	x = vld1q_u32(p);
+	dst = vld1q_u32(src);
 }
 
 #if defined(HLSLPP_DOUBLE)
@@ -956,48 +956,48 @@ hlslpp_inline bool _hlslpp_all4_pd(n128d x0, n128d x1)
 // Double Store/Load
 //------------------
 
-hlslpp_inline void _hlslpp_store1_pd(double* p, n128d x)
+hlslpp_inline void _hlslpp_store1_pd(double* dst, n128d src)
 {
-	vst1q_lane_f64(p, x, 0);
+	vst1q_lane_f64(dst, src, 0);
 }
 
-hlslpp_inline void _hlslpp_store2_pd(double* p, n128d x)
+hlslpp_inline void _hlslpp_store2_pd(double* dst, n128d src)
 {
-	vst1q_f64(p, x);
+	vst1q_f64(dst, src);
 }
 
-hlslpp_inline void _hlslpp_store3_pd(double* p, n128d x0, n128d x1)
+hlslpp_inline void _hlslpp_store3_pd(double* dst, n128d src0, n128d src1)
 {
-	vst1q_f64(p, x0);
-	vst1q_lane_f64(p + 2, x1, 0);
+	vst1q_f64(dst, src0);
+	vst1q_lane_f64(dst + 2, src1, 0);
 }
 
-hlslpp_inline void _hlslpp_store4_pd(double* p, n128d x0, n128d x1)
+hlslpp_inline void _hlslpp_store4_pd(double* dst, n128d src0, n128d src1)
 {
-	vst1q_f64(p, x0);
-	vst1q_f64(p + 2, x1);
+	vst1q_f64(dst, src0);
+	vst1q_f64(dst + 2, src1);
 }
 
-hlslpp_inline void _hlslpp_load1_pd(double* p, n128d& x)
+hlslpp_inline void _hlslpp_load1_pd(n128d& dst, const double* src)
 {
-	x = vld1q_lane_f64(p, x, 0);
+	dst = vld1q_lane_f64(src, dst, 0);
 }
 
-hlslpp_inline void _hlslpp_load2_pd(double* p, n128d& x)
+hlslpp_inline void _hlslpp_load2_pd(n128d& dst, const double* src)
 {
-	x = vld1q_f64(p);
+	dst = vld1q_f64(src);
 }
 
-hlslpp_inline void _hlslpp_load3_pd(double* p, n128d& x0, n128d& x1)
+hlslpp_inline void _hlslpp_load3_pd(n128d& dst0, n128d& dst1, const double* src)
 {
-	x0 = vld1q_f64(p);
-	x1 = vld1q_lane_f64(p + 2, x1, 0);
+	dst0 = vld1q_f64(src);
+	dst1 = vld1q_lane_f64(src + 2, dst1, 0);
 }
 
-hlslpp_inline void _hlslpp_load4_pd(double* p, n128d& x0, n128d& x1)
+hlslpp_inline void _hlslpp_load4_pd(n128d& dst0, n128d& dst1, const double* src)
 {
-	x0 = vld1q_f64(p);
-	x1 = vld1q_f64(p + 2);
+	dst0 = vld1q_f64(src);
+	dst1 = vld1q_f64(src + 2);
 }
 
 #endif

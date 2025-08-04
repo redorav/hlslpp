@@ -316,66 +316,66 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	hlslpp_inline void store(const int1& v, int32_t* i)
+	hlslpp_inline void store(int32_t* dst, const int1& src)
 	{
-		_hlslpp_store1_epi32(i, v.vec);
+		_hlslpp_store1_epi32(dst, src.vec);
 	}
 
-	hlslpp_inline void store(const int2& v, int32_t* i)
+	hlslpp_inline void store(int32_t* dst, const int2& src)
 	{
-		_hlslpp_store2_epi32(i, v.vec);
+		_hlslpp_store2_epi32(dst, src.vec);
 	}
 
-	hlslpp_inline void store(const int3& v, int32_t* i)
+	hlslpp_inline void store(int32_t* dst, const int3& src)
 	{
-		_hlslpp_store3_epi32(i, v.vec);
+		_hlslpp_store3_epi32(dst, src.vec);
 	}
 
-	hlslpp_inline void store(const int4& v, int32_t* i)
+	hlslpp_inline void store(int32_t* dst, const int4& src)
 	{
-		_hlslpp_store4_epi32(i, v.vec);
+		_hlslpp_store4_epi32(dst, src.vec);
 	}
 
-	hlslpp_inline void load(int1& v, int32_t* i)
+	hlslpp_inline void load(int1& dst, const int32_t* src)
 	{
-		_hlslpp_load1_epi32(i, v.vec);
+		_hlslpp_load1_epi32(dst.vec, src);
 	}
 
-	hlslpp_inline void load(int2& v, int32_t* i)
+	hlslpp_inline void load(int2& dst, const int32_t* src)
 	{
-		_hlslpp_load2_epi32(i, v.vec);
+		_hlslpp_load2_epi32(dst.vec, src);
 	}
 
-	hlslpp_inline void load(int3& v, int32_t* i)
+	hlslpp_inline void load(int3& dst, const int32_t* src)
 	{
-		_hlslpp_load3_epi32(i, v.vec);
+		_hlslpp_load3_epi32(dst.vec, src);
 	}
 
-	hlslpp_inline void load(int4& v, int32_t* i)
+	hlslpp_inline void load(int4& dst, const int32_t* src)
 	{
-		_hlslpp_load4_epi32(i, v.vec);
+		_hlslpp_load4_epi32(dst.vec, src);
 	}
 
 	namespace interop
 	{
 		struct int4
 		{
-			int4() = default;
-			int4(const hlslpp::int4& f) { hlslpp::store(f, &x); }
+			int4() hlslpp_constructor_default;
+			int4(const hlslpp::int4& f) { hlslpp::store(&x, f); }
 			int32_t x, y, z, w;
 		};
 
 		struct int3
 		{
-			int3() = default;
-			int3(const hlslpp::int3& f) { hlslpp::store(f, &x); }
+			int3() hlslpp_constructor_default;
+			int3(const hlslpp::int3& f) { hlslpp::store(&x, f); }
 			int32_t x, y, z;
 		};
 
 		struct int2
 		{
-			int2() = default;
-			int2(const hlslpp::int2& f) { hlslpp::store(f, &x); }
+			int2() hlslpp_constructor_default;
+			int2(const hlslpp::int2& f) { hlslpp::store(&x, f); }
 			int32_t x, y;
 		};
 
