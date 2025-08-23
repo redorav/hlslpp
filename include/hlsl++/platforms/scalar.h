@@ -186,7 +186,7 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 
 #define _hlslpp_blend_ps(x, y, msk)				blend4<(msk) & 1, ((msk) >> 1) & 1, ((msk) >> 2) & 1, ((msk) >> 3) & 1>((x), (y))
 
-	namespace internal
+	namespace detail
 	{
 		hlslpp_inline float trunc_float(float f)
 		{
@@ -216,22 +216,22 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 
 	hlslpp_inline vector_float4 _hlslpp_trunc_ps(const vector_float4& v)
 	{
-		return vector_float4(internal::trunc_float(v.x), internal::trunc_float(v.y), internal::trunc_float(v.z), internal::trunc_float(v.w));
+		return vector_float4(detail::trunc_float(v.x), detail::trunc_float(v.y), detail::trunc_float(v.z), detail::trunc_float(v.w));
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_floor_ps(const vector_float4& v)
 	{
-		return vector_float4(internal::floor_float(v.x), internal::floor_float(v.y), internal::floor_float(v.z), internal::floor_float(v.w));
+		return vector_float4(detail::floor_float(v.x), detail::floor_float(v.y), detail::floor_float(v.z), detail::floor_float(v.w));
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_ceil_ps(const vector_float4& v)
 	{
-		return vector_float4(internal::ceil_float(v.x), internal::ceil_float(v.y), internal::ceil_float(v.z), internal::ceil_float(v.w));
+		return vector_float4(detail::ceil_float(v.x), detail::ceil_float(v.y), detail::ceil_float(v.z), detail::ceil_float(v.w));
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_round_ps(const vector_float4& v)
 	{
-		return vector_float4(internal::round_float(v.x), internal::round_float(v.y), internal::round_float(v.z), internal::round_float(v.w));
+		return vector_float4(detail::round_float(v.x), detail::round_float(v.y), detail::round_float(v.z), detail::round_float(v.w));
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_frac_ps(const vector_float4& v)
