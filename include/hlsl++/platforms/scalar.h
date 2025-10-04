@@ -236,11 +236,10 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 
 	hlslpp_inline vector_float4 _hlslpp_frac_ps(const vector_float4& v)
 	{
-		float fracX, fracY, fracZ, fracW;
-		modff(v.x, &fracX);
-		modff(v.y, &fracY);
-		modff(v.z, &fracZ);
-		modff(v.w, &fracW);
+		float fracX = v.x - detail::floor_float(v.x);
+		float fracY = v.y - detail::floor_float(v.y);
+		float fracZ = v.z - detail::floor_float(v.z);
+		float fracW = v.w - detail::floor_float(v.w);
 		return vector_float4(fracX, fracY, fracZ, fracW);
 	}
 
