@@ -996,6 +996,7 @@ namespace hlslpp
 #if defined(__SSE4_1__)
 
 #define _hlslpp_cvtepi8_epi32(x)				_mm_cvtepi8_epi32(x)
+#define _hlslpp_cvtepu8_epi32(x)				_mm_cvtepu8_epi32(x)
 
 #else
 
@@ -1010,6 +1011,13 @@ hlslpp_inline __m128i _hlslpp_cvtepi8_epi32(__m128i v)
 	__m128i shift_1    = _mm_slli_epi32(andnot, 1);
 	__m128i result     = _mm_add_epi32(unpacked16, shift_1);
 	return result;
+}
+
+hlslpp_inline __m128i _hlslpp_cvtepu8_epi32(__m128i v)
+{
+	__m128i zero = _mm_setzero_si128();
+	__m128i unpacked8 = _mm_unpacklo_epi8(v, zero);
+	return _mm_unpacklo_epi16(unpacked8, zero);
 }
 
 #endif
@@ -1849,7 +1857,7 @@ hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_unorm(__m128 v)
 hlslpp_inline __m128 _hlslpp_unpack_rgba8_unorm_epu32(uint32_t p)
 {
 	__m128i i = _mm_set1_epi32((int)p);
-	__m128 t = _mm_cvtepi32_ps(_hlslpp_cvtepi8_epi32(i));
+	__m128 t = _mm_cvtepi32_ps(_hlslpp_cvtepu8_epi32(i));
 	return _mm_mul_ps(t, _hlslpp_set1_ps(1.0f / 255.0f));
 }
 
