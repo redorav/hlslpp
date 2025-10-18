@@ -228,22 +228,27 @@ hlslpp_inline __m128 _hlslpp_round_ps(__m128 x)
 // Equivalent to shuffle(x, x, Y, Y, W, W)
 #define _hlslpp_movehdup_ps(x)					_mm_movehdup_ps((x))
 
-#if defined(__AVX__)
-#define _hlslpp_perm_ps(x, X, Y, Z, W) _mm_permute_ps((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W))
-#else
-
 namespace hlslpp
 {
-	template<unsigned int X, unsigned int Y, unsigned int Z, unsigned int W>
+	template<int X, int Y, int Z, int W>
 	hlslpp_inline __m128 permute(__m128 x)
 	{
+#if defined(__AVX__)
+		return _mm_permute_ps((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W));
+		
+#else
 		return _mm_shuffle_ps(x, x, HLSLPP_SHUFFLE_MASK(X, Y, Z, W));
+#endif
+	}
+
+	template<>
+	hlslpp_inline __m128 permute<0, 1, 2, 3>(__m128 x)
+	{
+		return x;
 	}
 };
 
-#define _hlslpp_perm_ps(x, X, Y, Z, W) hlslpp::permute<X, Y, Z, W>(x)
-
-#endif
+#define _hlslpp_perm_ps(x, X, Y, Z, W) (hlslpp::permute<X, Y, Z, W>(x))
 
 // Follows the semantics of _mm_shuffle_ps, in that it selects two components from x and two from y
 #define _hlslpp_shuffle_ps(x, y, X, Y, A, B)	_mm_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(X, Y, A, B))
@@ -951,6 +956,21 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 
 #endif
 
+namespace hlslpp
+{
+	template<unsigned int X, unsigned int Y, unsigned int Z, unsigned int W>
+	hlslpp_inline __m128i permute(__m128i x)
+	{
+		return _mm_shuffle_epi32((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W));
+	}
+
+	template<>
+	hlslpp_inline __m128i permute<0, 1, 2, 3>(__m128i x)
+	{
+		return x;
+	}
+}
+
 #define _hlslpp_clamp_epi32(x, minx, maxx)		_hlslpp_max_epi32(_hlslpp_min_epi32((x), (maxx)), (minx))
 #define _hlslpp_sat_epi32(x)					_hlslpp_max_epi32(_hlslpp_min_epi32((x), i4_1), i4_0)
 
@@ -961,7 +981,7 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 #define _hlslpp_xor_si128(x, y)					_mm_xor_si128((x), (y))
 
 // https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epi32(x, X, Y, Z, W)		_mm_shuffle_epi32((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W))
+#define _hlslpp_perm_epi32(x, X, Y, Z, W)		hlslpp::permute<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_epi32(x, y, X, Y, A, B)	_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), HLSLPP_SHUFFLE_MASK(X, Y, A, B)))
 
 #define _hlslpp_castps_si128(x)					_mm_castps_si128((x))
@@ -1346,7 +1366,7 @@ hlslpp_inline n128i _hlslpp_min_epu32(n128u x, n128u y)
 #define _hlslpp_sat_epu32(x)					_hlslpp_max_epu32(_hlslpp_min_epu32((x), i4_1), i4_0)
 
 // https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epu32(x, X, Y, Z, W)		_mm_shuffle_epi32((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W))
+#define _hlslpp_perm_epu32(x, X, Y, Z, W)		hlslpp::permute<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_epu32(x, y, X, Y, A, B)	_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), HLSLPP_SHUFFLE_MASK(X, Y, A, B)))
 
 #define _hlslpp_cvttps_epu32(x)					_hlslpp_cvttps_epi32((x))

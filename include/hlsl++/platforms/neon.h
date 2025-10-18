@@ -156,21 +156,68 @@ namespace hlslpp
 
 	const uint32_t ControlMaskX[4] = { 0x03020100, 0x07060504, 0x0B0A0908, 0x0F0E0D0C }; // Swizzle X0, swizzle Y0, swizzle Z0, swizzle W0,
 	const uint32_t ControlMaskY[4] = { 0x13121110, 0x17161514, 0x1B1A1918, 0x1F1E1D1C }; // Swizzle X1, swizzle Y1, swizzle Z1, swizzle W1
+
+	// Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
+	template<int X, int Y, int Z, int W>
+	hlslpp_inline float32x4_t permute_float(const float32x4_t x)
+	{
+		uint8x8x2_t tbl = { { vget_low_f32(x), vget_high_f32(x) } }; // Get floats
+
+		const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMask[X]) | (((uint64_t)hlslpp::ControlMask[Y]) << 32));
+		const uint8x8_t rL = vtbl2_u8(tbl, idxL);
+
+		const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMask[Z]) | (((uint64_t)hlslpp::ControlMask[W]) << 32));
+		const uint8x8_t rH = vtbl2_u8(tbl, idxH);
+
+		return vcombine_f32(rL, rH);
+	}
+
+	template<>
+	hlslpp_inline float32x4_t permute_float<0, 1, 2, 3>(const float32x4_t x)
+	{
+		return x;
+	}
+
+	template<int X, int Y, int Z, int W>
+	hlslpp_inline int32x4_t permute_int(const int32x4_t x)
+	{
+		uint8x8x2_t tbl = { { vget_low_s32(x), vget_high_s32(x) } }; // Get ints
+
+		const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMask[X]) | (((uint64_t)hlslpp::ControlMask[Y]) << 32));
+		const uint8x8_t rL = vtbl2_u8(tbl, idxL);
+
+		const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMask[Z]) | (((uint64_t)hlslpp::ControlMask[W]) << 32));
+		const uint8x8_t rH = vtbl2_u8(tbl, idxH);
+
+		return vcombine_s32(rL, rH);
+	}
+
+	template<>
+	hlslpp_inline int32x4_t permute_int<0, 1, 2, 3>(const int32x4_t x)
+	{
+		return x;
+	}
+
+	template<int X, int Y, int Z, int W>
+	hlslpp_inline uint32x4_t permute_uint(const uint32x4_t x)
+	{
+		uint8x8x2_t tbl = { { vget_low_u32(x), vget_high_u32(x) } }; // Get ints
+
+		const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMask[X]) | (((uint64_t)hlslpp::ControlMask[Y]) << 32));
+		const uint8x8_t rL = vtbl2_u8(tbl, idxL);
+
+		const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMask[Z]) | (((uint64_t)hlslpp::ControlMask[W]) << 32));
+		const uint8x8_t rH = vtbl2_u8(tbl, idxH);
+
+		return vcombine_u32(rL, rH);
+	}
+
+	template<>
+	hlslpp_inline uint32x4_t permute_uint<0, 1, 2, 3>(const uint32x4_t x)
+	{
+		return x;
+	}
 };
-
-// Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
-hlslpp_inline float32x4_t vpermq_f32(const float32x4_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
-{
-	uint8x8x2_t tbl = { { vget_low_f32(x), vget_high_f32(x) } }; // Get floats
-
-	const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMask[X]) | (((uint64_t)hlslpp::ControlMask[Y]) << 32));
-	const uint8x8_t rL = vtbl2_u8(tbl, idxL);
-
-	const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMask[Z]) | (((uint64_t)hlslpp::ControlMask[W]) << 32));
-	const uint8x8_t rH = vtbl2_u8(tbl, idxH);
-
-	return vcombine_f32(rL, rH);
-}
 
 hlslpp_inline float32x4_t vshufq_f32(const float32x4_t x, const float32x4_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
 {
@@ -183,20 +230,6 @@ hlslpp_inline float32x4_t vshufq_f32(const float32x4_t x, const float32x4_t y, c
 	const uint8x8_t rH = vtbl4_u8(tbl, idxH);
 
 	return vcombine_f32(rL, rH);
-}
-
-// Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
-hlslpp_inline int32x4_t vpermq_s32(const int32x4_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
-{
-	uint8x8x2_t tbl = { { vget_low_s32(x), vget_high_s32(x) } }; // Get ints
-
-	const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMask[X]) | (((uint64_t)hlslpp::ControlMask[Y]) << 32));
-	const uint8x8_t rL = vtbl2_u8(tbl, idxL);
-
-	const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMask[Z]) | (((uint64_t)hlslpp::ControlMask[W]) << 32));
-	const uint8x8_t rH = vtbl2_u8(tbl, idxH);
-
-	return vcombine_s32(rL, rH);
 }
 
 hlslpp_inline int32x4_t vshufq_s32(const int32x4_t x, const int32x4_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
@@ -212,20 +245,6 @@ hlslpp_inline int32x4_t vshufq_s32(const int32x4_t x, const int32x4_t y, const u
 	return vcombine_s32(rL, rH);
 }
 
-// Source http://stackoverflow.com/questions/32536265/how-to-convert-mm-shuffle-ps-sse-intrinsic-to-neon-intrinsic
-hlslpp_inline uint32x4_t vpermq_u32(const uint32x4_t x, const uint32_t X, const uint32_t Y, const uint32_t Z, const uint32_t W)
-{
-	uint8x8x2_t tbl = { { vget_low_u32(x), vget_high_u32(x) } }; // Get ints
-
-	const uint8x8_t idxL = vcreate_u8(((uint64_t)hlslpp::ControlMask[X]) | (((uint64_t)hlslpp::ControlMask[Y]) << 32));
-	const uint8x8_t rL = vtbl2_u8(tbl, idxL);
-
-	const uint8x8_t idxH = vcreate_u8(((uint64_t)hlslpp::ControlMask[Z]) | (((uint64_t)hlslpp::ControlMask[W]) << 32));
-	const uint8x8_t rH = vtbl2_u8(tbl, idxH);
-
-	return vcombine_u32(rL, rH);
-}
-
 hlslpp_inline uint32x4_t vshufq_u32(const uint32x4_t x, const int32x4_t y, const uint32_t X0, const uint32_t Y0, const uint32_t X1, const uint32_t Y1)
 {
 	uint8x8x4_t tbl = { { vget_low_u32(x), vget_high_u32(x), vget_low_u32(y), vget_high_u32(y) } };
@@ -238,6 +257,7 @@ hlslpp_inline uint32x4_t vshufq_u32(const uint32x4_t x, const int32x4_t y, const
 
 	return vcombine_u32(rL, rH);
 }
+
 
 hlslpp_inline float32x4_t vrsqrtq_f32(float32x4_t x)
 {
@@ -342,7 +362,7 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 #define _hlslpp_add_ps(x, y)					vaddq_f32((x), (y))
 #define _hlslpp_sub_ps(x, y)					vsubq_f32((x), (y))
 #define _hlslpp_mul_ps(x, y)					vmulq_f32((x), (y))
-#define _hlslpp_div_ps(x, y)					vdivq_f32(x, y)
+#define _hlslpp_div_ps(x, y)					vdivq_f32((x), (y))
 
 #define _hlslpp_rcp_ps(x)						vrcpq_f32((x))
 
@@ -401,7 +421,7 @@ hlslpp_inline float32x4_t vrcpq_f32(float32x4_t x)
 // SSE: Duplicate odd-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst.
 #define _hlslpp_movehdup_ps(x)					vcombine_f32(vdup_lane_f32(vget_low_f32(x), 1), vdup_lane_f32(vget_high_f32(x), 1))
 
-#define _hlslpp_perm_ps(x, X, Y, Z, W)			vpermq_f32((x), X, Y, Z, W)
+#define _hlslpp_perm_ps(x, X, Y, Z, W)			hlslpp::permute_float<X, Y, Z, W>(x)
 
 #define _hlslpp_shuffle_ps(x, y, X, Y, A, B)	vshufq_f32((x), (y), X, Y, A, B)
 
@@ -521,7 +541,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(n128& dst0, n128& dst1, n128& dst2, n128& 
 #define _hlslpp_mul_epi32(x, y)					vmulq_s32((x), (y))
 #define _hlslpp_div_epi32(x, y)					vdivq_s32((x), (y))
 
-#define _hlslpp_neg_epi32(x)					vaddq_s32(veorq_u32(vreinterpretq_u32_s32(x), vmovq_n_u32(0xffffffffu)), vmovq_n_u32(1))
+#define _hlslpp_neg_epi32(x)					vaddq_s32(veorq_u32(vreinterpretq_u32_s32((x)), vmovq_n_u32(0xffffffffu)), vmovq_n_u32(1))
 
 #define _hlslpp_madd_epi32(x, y, z)				vmlaq_s32((z), (x), (y))
 #define _hlslpp_msub_epi32(x, y, z)				_hlslpp_neg_epi32(vmlsq_s32((z), (x), (y))) // Negate because vmlsq_u32 does z - x * y and we want x * y - z
@@ -553,7 +573,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(n128& dst0, n128& dst1, n128& dst2, n128& 
 #define _hlslpp_or_si128(x, y)					vorrq_s32((x), (y))
 #define _hlslpp_xor_si128(x, y)					veorq_s32((x), (y))
 
-#define _hlslpp_perm_epi32(x, X, Y, Z, W)		vpermq_s32((x), X, Y, Z, W)
+#define _hlslpp_perm_epi32(x, X, Y, Z, W)		hlslpp::permute_int<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_epi32(x, y, X, Y, A, B)	vshufq_s32((x), (y), X, Y, A, B)
 
 #define _hlslpp_castps_si128(x)					vreinterpretq_s32_f32((x))
@@ -567,7 +587,7 @@ hlslpp_inline void _hlslpp_load4x4_ps(n128& dst0, n128& dst1, n128& dst2, n128& 
 
 // From the documentation of vshlq_s32: Vector shift left: Vr[i] := Va[i] << Vb[i] (negative values shift right)
 #define _hlslpp_sllv_epi32(x, y)				vshlq_s32((x), (y))
-#define _hlslpp_srlv_epi32(x, y)				vshlq_s32((x), _hlslpp_neg_epi32(y))
+#define _hlslpp_srlv_epi32(x, y)				vshlq_s32((x), _hlslpp_neg_epi32((y)))
 
 hlslpp_inline bool _hlslpp_any1_epi32(n128i x)
 {
@@ -716,7 +736,7 @@ hlslpp_inline void _hlslpp_load4_epi32(n128i& dst, const int32_t* src)
 #define _hlslpp_clamp_epu32(x, minx, maxx)		vmaxq_u32(vminq_u32((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					vmaxq_u32(vminq_u32((x), i4_1), i4_0)
 
-#define _hlslpp_perm_epu32(x, X, Y, Z, W)		vpermq_u32((x), X, Y, Z, W)
+#define _hlslpp_perm_epu32(x, X, Y, Z, W)		hlslpp::permute_uint<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_epu32(x, y, X, Y, A, B)	vshufq_u32((x), (y), X, Y, A, B)
 
 #define _hlslpp_cvttps_epu32(x)					vcvtq_u32_f32((x))
@@ -727,7 +747,7 @@ hlslpp_inline void _hlslpp_load4_epi32(n128i& dst, const int32_t* src)
 
 // From the documentation of vshlq_s32: Vector shift left: Vr[i] := Va[i] << Vb[i] (negative values shift right)
 #define _hlslpp_sllv_epu32(x, y)				vshlq_u32((x), (y))
-#define _hlslpp_srlv_epu32(x, y)				vshlq_u32((x), _hlslpp_neg_epi32(y))
+#define _hlslpp_srlv_epu32(x, y)				vshlq_u32((x), _hlslpp_neg_epi32((y)))
 
 #define _hlslpp_any1_epu32(x)					_hlslpp_any1_epi32(x)
 #define _hlslpp_any2_epu32(x)					_hlslpp_any2_epi32(x)

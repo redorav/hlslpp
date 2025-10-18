@@ -223,7 +223,22 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_movehl_ps(x, y)					__vperm((y), (x), __vset(2, 3, 2, 3))
 #define _hlslpp_movehdup_ps(x)					__vpermwi((x), VPERMWI_CONST(1, 1, 3, 3))
 
-#define _hlslpp_perm_ps(x, X, Y, Z, W)			__vpermwi((x), HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W))
+namespace hlslpp
+{
+	template<unsigned int X, unsigned int Y, unsigned int Z, unsigned int W>
+	hlslpp_inline __vector4 permute(__vector4 x)
+	{
+		return __vpermwi(x, HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W));
+	}
+
+	template<>
+	hlslpp_inline __vector4 permute<0, 1, 2, 3>(__vector4 x)
+	{
+		return x;
+	}
+};
+
+#define _hlslpp_perm_ps(x, X, Y, Z, W)			hlslpp::permute<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_ps(x, y, X, Y, A, B)	__vperm((x), (y), __vperm_mask<X, Y, 4 + A, 4 + B>())
 
 #define _hlslpp_unpacklo_ps(x, y)				__vmrghw((x), (y))
@@ -380,7 +395,7 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 #define _hlslpp_or_si128(x, y)					__vor((x), (y))
 #define _hlslpp_xor_si128(x, y)					__vxor((x), (y))
 
-#define _hlslpp_perm_epi32(x, X, Y, Z, W)		__vpermwi((x), HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W))
+#define _hlslpp_perm_epi32(x, X, Y, Z, W)		hlslpp::permute<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_epi32(x, y, X, Y, A, B)	__vperm((x), (y), __vperm_mask<X, Y, 4 + A, 4 + B>())
 
 // There are no intrinsics to reinterpret cast like these do as integer and float are all in the same __vector4 structure
@@ -491,7 +506,7 @@ hlslpp_inline void _hlslpp_load4_epi32(n128i& dst, const int32_t* src)
 #define _hlslpp_clamp_epu32(x, minx, maxx)		__vmaxuw(__vminuw((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					__vmaxuw(__vminuw((x), i4_1), i4_0)
 
-#define _hlslpp_perm_epu32(x, X, Y, Z, W)		__vpermwi((x), HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W))
+#define _hlslpp_perm_epu32(x, X, Y, Z, W)		hlslpp::permute<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_epu32(x, y, X, Y, A, B)	__vperm((x), (y), __vperm_mask<X, Y, 4 + A, 4 + B>())
 
 #define _hlslpp_cvttps_epu32(x)					__vcfpuxws((x), 0)

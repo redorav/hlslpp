@@ -75,7 +75,22 @@ typedef __i64x2 n128d;
 // Equivalent to shuffle(x, x, Y, Y, W, W)
 #define _hlslpp_movehdup_ps(x)					wasm_i32x4_shuffle((x), (x), 1, 1, 7, 7)
 
-#define _hlslpp_perm_ps(x, X, Y, Z, W)			wasm_i32x4_shuffle((x), (x), X, Y, Z, W)
+namespace hlslpp
+{
+	template<int X, int Y, int Z, int W>
+	hlslpp_inline __f32x4 permute(__f32x4 x)
+	{
+		return wasm_i32x4_shuffle((x), (x), X, Y, Z, W)
+	}
+
+	template<>
+	hlslpp_inline __f32x4 permute<0, 1, 2, 3>(__f32x4 x)
+	{
+		return x;
+	}
+};
+
+#define _hlslpp_perm_ps(x, X, Y, Z, W)			hlslpp::permute<X, Y, Z, W>((x))
 
 #define _hlslpp_shuffle_ps(x, y, X, Y, A, B)	wasm_i32x4_shuffle((x), (y), X, Y, 4 + A, 4 + B)
 
@@ -257,7 +272,22 @@ hlslpp_inline void _hlslpp_load4x4_ps(n128& dst0, n128& dst1, n128& dst2, n128& 
 #define _hlslpp_or_si128(x, y)					wasm_v128_or((x), (y))
 #define _hlslpp_xor_si128(x, y)					wasm_v128_xor((x), (y))
 
-#define _hlslpp_perm_epi32(x, X, Y, Z, W)		wasm_i32x4_shuffle((x), (x), X, Y, Z, W)
+namespace hlslpp
+{
+	template<int X, int Y, int Z, int W>
+	hlslpp_inline __i32x4 permute(__i32x4 x)
+	{
+		return wasm_i32x4_shuffle((x), (x), X, Y, Z, W)
+	}
+
+	template<>
+	hlslpp_inline __i32x4 permute<0, 1, 2, 3>(__i32x4 x)
+	{
+		return x;
+	}
+};
+
+#define _hlslpp_perm_epi32(x, X, Y, Z, W)		hlslpp::permute<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_epi32(x, y, X, Y, A, B)	wasm_i32x4_shuffle((x), (y), X, Y, 4 + A, 4 + B)
 
 #define _hlslpp_castps_si128(x)					(x)

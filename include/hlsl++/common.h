@@ -194,11 +194,17 @@ hlslpp_module_export namespace hlslpp
 	#define _hlslpp_perm_yyyy_epi32(x)		_hlslpp_perm_epi32((x), MaskY, MaskY, MaskY, MaskY)
 	#define _hlslpp_perm_zzzz_epi32(x)		_hlslpp_perm_epi32((x), MaskZ, MaskZ, MaskZ, MaskZ)
 	#define _hlslpp_perm_wwww_epi32(x)		_hlslpp_perm_epi32((x), MaskW, MaskW, MaskW, MaskW)
+
+	#define _hlslpp_perm_xxyx_epi32(x)		_hlslpp_perm_epi32((x), MaskX, MaskX, MaskY, MaskX)
+	#define _hlslpp_perm_xxyz_epi32(x)		_hlslpp_perm_epi32((x), MaskX, MaskX, MaskY, MaskZ)
 	
 	#define _hlslpp_perm_xxxx_epu32(x)		_hlslpp_perm_epu32((x), MaskX, MaskX, MaskX, MaskX)
 	#define _hlslpp_perm_yyyy_epu32(x)		_hlslpp_perm_epu32((x), MaskY, MaskY, MaskY, MaskY)
 	#define _hlslpp_perm_zzzz_epu32(x)		_hlslpp_perm_epu32((x), MaskZ, MaskZ, MaskZ, MaskZ)
 	#define _hlslpp_perm_wwww_epu32(x)		_hlslpp_perm_epu32((x), MaskW, MaskW, MaskW, MaskW)
+
+	#define _hlslpp_perm_xxyx_epu32(x)		_hlslpp_perm_epu32((x), MaskX, MaskX, MaskY, MaskX)
+	#define _hlslpp_perm_xxyz_epu32(x)		_hlslpp_perm_epu32((x), MaskX, MaskX, MaskY, MaskZ)
 
 	#define _hlslpp_shuf_xxxx_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskX, MaskX, MaskX, MaskX)
 	#define _hlslpp_shuf_xxxy_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskX, MaskX, MaskX, MaskY)
@@ -227,6 +233,16 @@ hlslpp_module_export namespace hlslpp
 	#define _hlslpp_shuf_zzzz_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskZ, MaskZ, MaskZ, MaskZ)
 	#define _hlslpp_shuf_zwxx_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskZ, MaskW, MaskX, MaskX)
 	#define _hlslpp_shuf_wwww_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskW, MaskW, MaskW, MaskW)
+
+	#define _hlslpp_shuf_xxxx_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskX, MaskX, MaskX)
+	#define _hlslpp_shuf_xyxx_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskY, MaskX, MaskX)
+	#define _hlslpp_shuf_xxxy_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskX, MaskX, MaskY)
+	#define _hlslpp_shuf_xyxy_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskY, MaskX, MaskY)
+
+	#define _hlslpp_shuf_xxxx_epu32(x, y)		_hlslpp_shuffle_epu32((x), (y), MaskX, MaskX, MaskX, MaskX)
+	#define _hlslpp_shuf_xyxx_epu32(x, y)		_hlslpp_shuffle_epu32((x), (y), MaskX, MaskY, MaskX, MaskX)
+	#define _hlslpp_shuf_xxxy_epu32(x, y)		_hlslpp_shuffle_epu32((x), (y), MaskX, MaskX, MaskX, MaskY)
+	#define _hlslpp_shuf_xyxy_epu32(x, y)		_hlslpp_shuffle_epu32((x), (y), MaskX, MaskY, MaskX, MaskY)
 	
 	#define _hlslpp256_perm_xxxx_xxxx_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX)
 	#define _hlslpp256_perm_xxxx_yyyy_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskX, MaskX, MaskX, MaskY, MaskY, MaskY, MaskY)
@@ -271,15 +287,6 @@ hlslpp_module_export namespace hlslpp
 	
 	#define _hlslpp_cmplt1_ps(val1, val2)		_hlslpp_and_ps(_hlslpp_cmplt_ps((val1), (val2)), f4_1)
 	#define _hlslpp_cmple1_ps(val1, val2)		_hlslpp_and_ps(_hlslpp_cmple_ps((val1), (val2)), f4_1)
-
-	#define _hlslpp_perm_xxxx_epi32(x)			_hlslpp_perm_epi32((x), MaskX, MaskX, MaskX, MaskX)
-	#define _hlslpp_perm_xxyx_epi32(x)			_hlslpp_perm_epi32((x), MaskX, MaskX, MaskY, MaskX)
-	#define _hlslpp_perm_xxyz_epi32(x)			_hlslpp_perm_epi32((x), MaskX, MaskX, MaskY, MaskZ)
-
-	#define _hlslpp_shuf_xxxx_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskX, MaskX, MaskX)
-	#define _hlslpp_shuf_xyxx_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskY, MaskX, MaskX)
-	#define _hlslpp_shuf_xxxy_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskX, MaskX, MaskY)
-	#define _hlslpp_shuf_xyxy_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskY, MaskX, MaskY)
 
 	#define _hlslpp_cmpneq1_epi32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmpneq_epi32((val1), (val2)), i4_1)
 	#define _hlslpp_cmpeq1_epi32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmpeq_epi32((val1), (val2)), i4_1)
