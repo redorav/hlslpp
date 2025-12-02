@@ -105,7 +105,7 @@ typedef __m512i n512i;
 // The following are alternatives but have been measured to be slower
 // _mm_sub_ps(f4_0, x);			// Slowest
 // _mm_mul_ps(f4_minus1, x);	// Slower
-#define _hlslpp_neg_ps(x)						_mm_xor_ps((x), f4negativeMask)
+#define _hlslpp_neg_ps(x)						_mm_xor_ps((x), _mm_castsi128_ps(_mm_set1_epi32(0x80000000u)))
 
 // https://wunkolo.github.io/post/2022/10/vfixupimm-signum/
 #if defined(__AVX512F__) && defined(__AVX512VL__)
