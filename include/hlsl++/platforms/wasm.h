@@ -80,7 +80,7 @@ namespace hlslpp
 	template<int X, int Y, int Z, int W>
 	hlslpp_inline __f32x4 permute(__f32x4 x)
 	{
-		return wasm_i32x4_shuffle((x), (x), X, Y, Z, W)
+		return wasm_i32x4_shuffle((x), (x), X, Y, Z, W);
 	}
 
 	template<>
@@ -277,7 +277,7 @@ namespace hlslpp
 	template<int X, int Y, int Z, int W>
 	hlslpp_inline __i32x4 permute(__i32x4 x)
 	{
-		return wasm_i32x4_shuffle((x), (x), X, Y, Z, W)
+		return wasm_i32x4_shuffle((x), (x), X, Y, Z, W);
 	}
 
 	template<>
