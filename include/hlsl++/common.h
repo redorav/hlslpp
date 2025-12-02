@@ -325,10 +325,9 @@ hlslpp_module_export namespace hlslpp
 
 #if defined(HLSLPP_DOUBLE)
 
-	#define _hlslpp_perm_xx_pd(x)				_hlslpp_perm_pd((x), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskX))
-	#define _hlslpp_perm_xy_pd(x)				_hlslpp_perm_pd((x), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskY))
-	#define _hlslpp_perm_yx_pd(x)				_hlslpp_perm_pd((x), HLSLPP_SHUFFLE_MASK_PD(MaskY, MaskX))
-	#define _hlslpp_perm_yy_pd(x)				_hlslpp_perm_pd((x), HLSLPP_SHUFFLE_MASK_PD(MaskY, MaskY))
+	#define _hlslpp_perm_xx_pd(x)				_hlslpp_perm_pd((x), MaskX, MaskX)
+	#define _hlslpp_perm_yx_pd(x)				_hlslpp_perm_pd((x), MaskY, MaskX)
+	#define _hlslpp_perm_yy_pd(x)				_hlslpp_perm_pd((x), MaskY, MaskY)
 
 	#define _hlslpp_shuf_xx_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskX))
 	#define _hlslpp_shuf_xy_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskY))

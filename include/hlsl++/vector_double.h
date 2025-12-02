@@ -1471,8 +1471,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 
 		hlslpp_constexpr_if((X < 2 && Y < 2) || (X >= 2 && Y >= 2))
 		{
-			vec[(X < 2 && Y < 2) ? 0 : 1] = _hlslpp_perm_pd(f.vec, HLSLPP_SHUFFLE_MASK_PD((X % 2) == 0 ? 0 : 1, (Y % 2) == 0 ? 0 : 1));
-			//vec[(X < 2 && Y < 2) ? 0 : 1] = swizzle<0, 1, X, Y>(f.vec);
+			vec[(X < 2 && Y < 2) ? 0 : 1] = _hlslpp_perm_pd(f.vec, X % 2, Y % 2);
 		}
 		else
 		{

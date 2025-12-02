@@ -21,7 +21,7 @@ hlslpp_module_export namespace hlslpp
 		template<int E, int A>
 		static hlslpp_inline n128d swizzle(n128d v)
 		{
-			return _hlslpp_perm_pd(v, (((IdentityMask2 >> E) & 1) << A) | (IdentityMask2 & ~((1 << A))));
+			return _hlslpp_perm_pd(v, E, A);
 		}
 
 		template<int E, int A>

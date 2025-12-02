@@ -405,9 +405,6 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 #define _hlslpp_cvttps_epi32(x)					__vcfpsxws((x), 0)
 #define _hlslpp_cvtepi32_ps(x)					__vcsxwfp((x), 0)
 
-// Extracts first component of vector to int32_t
-#define _hlslpp_cvtsi128_si32(x)				x.vector4_u32[0]
-
 #define _hlslpp_slli_epi32(x, y)				__vslw((x), __vset1(y))
 #define _hlslpp_srli_epi32(x, y)				__vsrw((x), __vset1(y))
 
