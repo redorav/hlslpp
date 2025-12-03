@@ -1033,52 +1033,38 @@ hlslpp_inline __m128i _hlslpp_cvtepu8_epi32(__m128i v)
 
 #else
 
-inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
+hlslpp_inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
 {
-	n128i count1 = _hlslpp_perm_epi32(count, 1, 0, 0, 0);
-	n128i count2 = _hlslpp_perm_epi32(count, 2, 0, 0, 0);
-	n128i count3 = _hlslpp_perm_epi32(count, 3, 0, 0, 0);
+	int32_t x4[4];
+	int32_t count4[4];
 
-	n128i ffMask = _mm_setr_epi32((int)0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
+	_mm_storeu_si128((__m128i*)x4, x);
+	_mm_storeu_si128((__m128i*)count4, count);
 
-	n128i imask0 = _mm_and_si128(count, ffMask);
-	n128i imask1 = _mm_and_si128(count1, ffMask);
-	n128i imask2 = _mm_and_si128(count2, ffMask);
-	n128i imask3 = _mm_and_si128(count3, ffMask);
+	int32_t result4[4];
+	result4[0] = x4[0] << count4[0];
+	result4[1] = x4[1] << count4[1];
+	result4[2] = x4[2] << count4[2];
+	result4[3] = x4[3] << count4[3];
 
-	n128i shift0 = _mm_sll_epi32(x, imask0);
-	n128i shift1 = _mm_sll_epi32(x, imask1);
-	n128i shift2 = _mm_sll_epi32(x, imask2);
-	n128i shift3 = _mm_sll_epi32(x, imask3);
-
-	n128i blend0 = _hlslpp_blend_epi32(shift0, shift1, HLSLPP_BLEND_MASK(1, 0, 0, 0));
-	n128i blend1 = _hlslpp_blend_epi32(shift2, shift3, HLSLPP_BLEND_MASK(0, 0, 1, 0));
-
-	return _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
+	return _mm_loadu_si128((__m128i*)result4);
 }
 
-inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
+hlslpp_inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 {
-	n128i count1 = _hlslpp_perm_epi32(count, 1, 0, 0, 0);
-	n128i count2 = _hlslpp_perm_epi32(count, 2, 0, 0, 0);
-	n128i count3 = _hlslpp_perm_epi32(count, 3, 0, 0, 0);
+	int32_t x4[4];
+	int32_t count4[4];
 
-	n128i ffMask = _mm_setr_epi32((int)0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
+	_mm_storeu_si128((__m128i*)x4, x);
+	_mm_storeu_si128((__m128i*)count4, count);
 
-	n128i imask0 = _mm_and_si128(count, ffMask);
-	n128i imask1 = _mm_and_si128(count1, ffMask);
-	n128i imask2 = _mm_and_si128(count2, ffMask);
-	n128i imask3 = _mm_and_si128(count3, ffMask);
+	int32_t result4[4];
+	result4[0] = x4[0] >> count4[0];
+	result4[1] = x4[1] >> count4[1];
+	result4[2] = x4[2] >> count4[2];
+	result4[3] = x4[3] >> count4[3];
 
-	n128i shift0 = _mm_srl_epi32(x, imask0);
-	n128i shift1 = _mm_srl_epi32(x, imask1);
-	n128i shift2 = _mm_srl_epi32(x, imask2);
-	n128i shift3 = _mm_srl_epi32(x, imask3);
-
-	n128i blend0 = _hlslpp_blend_epi32(shift0, shift1, HLSLPP_BLEND_MASK(1, 0, 0, 0));
-	n128i blend1 = _hlslpp_blend_epi32(shift2, shift3, HLSLPP_BLEND_MASK(0, 0, 1, 0));
-
-	return _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
+	return _mm_loadu_si128((__m128i*)result4);
 }
 
 #endif
@@ -1166,7 +1152,7 @@ hlslpp_inline void _hlslpp_load3_epi32(n128i& dst, const int32_t* src)
 
 hlslpp_inline void _hlslpp_load4_epi32(n128i& dst, const int32_t* src)
 {
-	dst = _mm_castps_si128(_mm_loadu_ps((float*)src));
+	dst = _mm_loadu_si128((__m128i*)src);
 }
 
 //------------

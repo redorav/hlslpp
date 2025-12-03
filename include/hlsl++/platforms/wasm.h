@@ -302,8 +302,40 @@ namespace hlslpp
 #define _hlslpp_slli_epi32(x, y)				wasm_i32x4_shl((x), (y))
 #define _hlslpp_srli_epi32(x, y)				wasm_i32x4_shr((x), (y))
 
-#define _hlslpp_sllv_epi32(x, y)				(x) // _mm_sllv_epi32((x), (y))
-#define _hlslpp_srlv_epi32(x, y)				(x) // _mm_srlv_epi32((x), (y))
+// WASM doesn't have a native way of doing this to we scalarize, do the operation, then load back
+hlslpp_inline __i32x4 _hlslpp_sllv_epi32(const __i32x4& x, const __i32x4& count)
+{
+	int32_t x4[4];
+	int32_t count4[4];
+
+	wasm_v128_store(x4, x);
+	wasm_v128_store(count4, count);
+
+	int32_t result4[4];
+	result4[0] = x4[0] << count4[0];
+	result4[1] = x4[1] << count4[1];
+	result4[2] = x4[2] << count4[2];
+	result4[3] = x4[3] << count4[3];
+
+	return wasm_v128_load(result4);
+}
+
+hlslpp_inline __i32x4 _hlslpp_srlv_epi32(const __i32x4& x, const __i32x4& count)
+{
+	int32_t x4[4];
+	int32_t count4[4];
+
+	wasm_v128_store(x4, x);
+	wasm_v128_store(count4, count);
+
+	int32_t result4[4];
+	result4[0] = x4[0] >> count4[0];
+	result4[1] = x4[1] >> count4[1];
+	result4[2] = x4[2] >> count4[2];
+	result4[3] = x4[3] >> count4[3];
+
+	return wasm_v128_load(result4);
+}
 
 hlslpp_inline bool _hlslpp_any1_epi32(n128i x)
 {
