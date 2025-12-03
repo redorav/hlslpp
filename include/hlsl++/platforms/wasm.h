@@ -535,7 +535,7 @@ inline __f32x4 _hlslpp_unpack_rgba8_snorm_epu32(uint32_t p)
 
 #define _hlslpp_sel_pd(x, y, mask)				wasm_v128_xor((x), wasm_v128_and(mask, wasm_v128_xor((y), (x))))
 
-#define _hlslpp_blend_pd(x, y, mask)			wasm_i64x2_shuffle((x), (y), (mask & 1) ? 4 : 0, ((mask >> 1) & 1) ? 5 : 1) // TODO VERIFY THIS
+#define _hlslpp_blend_pd(x, y, mask)			wasm_i64x2_shuffle((x), (y), (mask & 1) ? 2 : 0, ((mask >> 1) & 1) ? 3 : 1)
 
 #define _hlslpp_trunc_pd(x)						wasm_f64x2_trunc((x))
 #define _hlslpp_floor_pd(x)						wasm_f64x2_floor((x))
