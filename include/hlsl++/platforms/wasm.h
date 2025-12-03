@@ -570,7 +570,7 @@ namespace hlslpp
 };
 
 #define _hlslpp_perm_pd(x, X, Y)				hlslpp::permute<X, Y>((x))
-#define _hlslpp_shuffle_pd(x, y, mask)			x //_mm_shuffle_pd((x), (y), (mask))
+#define _hlslpp_shuffle_pd(x, y, X, Y)			wasm_i64x2_shuffle((x), (y), X, Y)
 
 hlslpp_inline bool _hlslpp_any1_pd(n128d x)
 {

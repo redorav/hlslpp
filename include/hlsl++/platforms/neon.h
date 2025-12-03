@@ -925,7 +925,7 @@ hlslpp_inline float64x2_t vrsqrtq_f64(float64x2_t x)
 #define _hlslpp_xor_pd(x, y)					vreinterpretq_f64_u64(veorq_u64(vreinterpretq_u64_f64((x)), vreinterpretq_u64_f64((y))))
 
 #define _hlslpp_perm_pd(x, X, Y)				vpermq_f64((x), X, Y)
-#define _hlslpp_shuffle_pd(x, y, mask)			vshufq_f64((x), (y), (mask) & 1, ((mask) >> 1) & 1)
+#define _hlslpp_shuffle_pd(x, y, X, Y)			vshufq_f64((x), (y), X, Y)
 
 // Bit-select x and y based on the contents of the mask
 #define _hlslpp_sel_pd(x, y, mask)				vbslq_f64((mask), (y), (x))

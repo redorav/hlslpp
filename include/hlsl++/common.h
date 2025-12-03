@@ -329,10 +329,10 @@ hlslpp_module_export namespace hlslpp
 	#define _hlslpp_perm_yx_pd(x)				_hlslpp_perm_pd((x), MaskY, MaskX)
 	#define _hlslpp_perm_yy_pd(x)				_hlslpp_perm_pd((x), MaskY, MaskY)
 
-	#define _hlslpp_shuf_xx_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskX))
-	#define _hlslpp_shuf_xy_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskY))
-	#define _hlslpp_shuf_yx_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskY, MaskX))
-	#define _hlslpp_shuf_yy_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskY, MaskY))
+	#define _hlslpp_shuf_xx_pd(x, y)			_hlslpp_shuffle_pd((x), (y), MaskX, MaskX)
+	#define _hlslpp_shuf_xy_pd(x, y)			_hlslpp_shuffle_pd((x), (y), MaskX, MaskY)
+	#define _hlslpp_shuf_yx_pd(x, y)			_hlslpp_shuffle_pd((x), (y), MaskY, MaskX)
+	#define _hlslpp_shuf_yy_pd(x, y)			_hlslpp_shuffle_pd((x), (y), MaskY, MaskY)
 
 	#if !defined(_hlslpp_sign_pd)
 		#define _hlslpp_sign_pd(x)				_hlslpp_and_pd(_hlslpp_or_pd(_hlslpp_and_pd((x), _hlslpp_set1_pd(-1.0f)), _hlslpp_set1_pd(1.0f)), _hlslpp_cmpneq_pd((x), _hlslpp_setzero_pd()))

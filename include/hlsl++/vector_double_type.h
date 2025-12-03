@@ -58,7 +58,7 @@ hlslpp_module_export namespace hlslpp
 		{
 			// Select which vector to read from and how to build the mask based on the output
 			#define HLSLPP_SELECT(Dst) ((Dst % 2) == 0 ? (SrcA < 2 ? vec0 : vec1) : (SrcB < 2 ? vec0 : vec1))
-			n128d result = _hlslpp_shuffle_pd(HLSLPP_SELECT(DstA), HLSLPP_SELECT(DstB), HLSLPP_SHUFFLE_MASK_PD((DstA % 2) == 0 ? (SrcA % 2) : (SrcB % 2), (DstB % 2) == 0 ? (SrcA % 2) : (SrcB % 2)));
+			n128d result = _hlslpp_shuffle_pd(HLSLPP_SELECT(DstA), HLSLPP_SELECT(DstB), (DstA % 2) == 0 ? (SrcA % 2) : (SrcB % 2), (DstB % 2) == 0 ? (SrcA % 2) : (SrcB % 2));
 			#undef HLSLPP_SELECT
 			return result;
 		}
@@ -68,7 +68,7 @@ hlslpp_module_export namespace hlslpp
 		{
 			// Select which vector to read from and how to build the mask based on the output
 			#define HLSLPP_SELECT(Dst) (Dst % 2) == 0 ? vec[(SrcA < 2) ? 0 : 1] : vec[(SrcB < 2) ? 0 : 1]
-			n128d result = _hlslpp_shuffle_pd(HLSLPP_SELECT(DstA), HLSLPP_SELECT(DstB), HLSLPP_SHUFFLE_MASK_PD((DstA % 2) == 0 ? (SrcA % 2) : (SrcB % 2), (DstB % 2) == 0 ? (SrcA % 2) : (SrcB % 2)));
+			n128d result = _hlslpp_shuffle_pd(HLSLPP_SELECT(DstA), HLSLPP_SELECT(DstB), (DstA % 2) == 0 ? (SrcA % 2) : (SrcB % 2), (DstB % 2) == 0 ? (SrcA % 2) : (SrcB % 2));
 			#undef HLSLPP_SELECT
 			return result;
 		}
@@ -158,7 +158,7 @@ hlslpp_module_export namespace hlslpp
 		template<int SrcA, int SrcB>
 		static hlslpp_inline n128d swizzle(n128d vec0, n128d vec1)
 		{
-			return _hlslpp_shuffle_pd(SrcA < 2 ? vec0 : vec1, SrcB < 2 ? vec0 : vec1, HLSLPP_SHUFFLE_MASK_PD(SrcA % 2, SrcB % 2));
+			return _hlslpp_shuffle_pd(SrcA < 2 ? vec0 : vec1, SrcB < 2 ? vec0 : vec1, SrcA % 2, SrcB % 2);
 		}
 
 		// Swizzles SrcA into 0, SrcB into 1 and SrcC into 2
@@ -228,7 +228,7 @@ hlslpp_module_export namespace hlslpp
 			#define HLSLPP_SELECT(x) (DstA == x ? SrcA : (DstB == x ? SrcB : (DstC == x ? SrcC : SrcD)))
 
 			#define hlslpp_dswizzle4_swizzle2(SrcA, SrcB, vec0, vec1) \
-				_hlslpp_shuffle_pd((SrcA) < 2 ? vec0 : vec1, (SrcB) < 2 ? vec0 : vec1, HLSLPP_SHUFFLE_MASK_PD((SrcA) % 2, (SrcB) % 2))
+				_hlslpp_shuffle_pd((SrcA) < 2 ? vec0 : vec1, (SrcB) < 2 ? vec0 : vec1, (SrcA) % 2, (SrcB) % 2)
 
 			ovec0 = hlslpp_dswizzle4_swizzle2(HLSLPP_SELECT(0), HLSLPP_SELECT(1), vec0, vec1);
 			ovec1 = hlslpp_dswizzle4_swizzle2(HLSLPP_SELECT(2), HLSLPP_SELECT(3), vec0, vec1);

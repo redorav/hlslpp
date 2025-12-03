@@ -1569,7 +1569,7 @@ hlslpp_inline n128d _hlslpp_round_pd(n128d x)
 #define _hlslpp_xor_pd(x, y)					_mm_xor_pd((x), (y))
 
 #define _hlslpp_perm_pd(x, X, Y)				_mm_shuffle_pd((x), (x), HLSLPP_SHUFFLE_MASK_PD(X, Y))
-#define _hlslpp_shuffle_pd(x, y, mask)			_mm_shuffle_pd((x), (y), (mask))
+#define _hlslpp_shuffle_pd(x, y, X, Y)			_mm_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(X, Y))
 
 hlslpp_inline bool _hlslpp_any1_pd(n128d x)
 {
