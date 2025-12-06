@@ -92,16 +92,16 @@ hlslpp_module_export namespace hlslpp
 	const n256 f8_pi4         = _hlslpp256_set1_ps(0.78539816f);  // pi / 4
 	const n256 f8_minusPi4    = _hlslpp256_set1_ps(-0.78539816f); // -pi / 4
 
-	const n256 f8_NaN         = _hlslpp256_castsi256_ps(_hlslpp256_set_epi32(0x7fffffff)); // Quiet NaN
-	const n256 f8_inf         = _hlslpp256_castsi256_ps(_hlslpp256_set_epi32(0x7f800000)); // Infinity
-	const n256 f8_minusinf    = _hlslpp256_castsi256_ps(_hlslpp256_set_epi32(0xff800000)); // -Infinity
-	const n256 f8_fff         = _hlslpp256_castsi256_ps(_hlslpp256_set_epi32(0xffffffff)); // 0xffffffff
+	const n256 f8_NaN         = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0x7fffffff)); // Quiet NaN
+	const n256 f8_inf         = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0x7f800000)); // Infinity
+	const n256 f8_minusinf    = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0xff800000)); // -Infinity
+	const n256 f8_fff         = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0xffffffff)); // 0xffffffff
 
 	const n256 f8_rad2deg     = _hlslpp256_set1_ps(180.0f / 3.14159265f);
 	const n256 f8_deg2rad     = _hlslpp256_set1_ps(3.14159265f / 180.f);
 
-	const n256 f8negativeMask = _hlslpp256_castsi256_ps(_hlslpp256_set_epi32(0x80000000));
-	const n256 f8absMask      = _hlslpp256_castsi256_ps(_hlslpp256_set_epi32(0x7fffffff));
+	const n256 f8negativeMask = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0x80000000));
+	const n256 f8absMask      = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0x7fffffff));
 
 #endif
 

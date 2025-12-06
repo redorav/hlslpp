@@ -661,11 +661,11 @@ hlslpp_module_export namespace hlslpp
 		{
 			vec0 = _hlslpp256_and_ps(
 				_hlslpp256_set128_ps(m.vec0, m.vec1),
-				_hlslpp256_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
+				_hlslpp256_castsi256_ps(_hlslpp256_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0, 0xffffffff, 0xffffffff, 0xffffffff, 0)));
 
 			vec1 = _hlslpp256_and_ps(
 				_hlslpp256_set128_ps(m.vec2, v.vec),
-				_hlslpp256_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, fffMask._f32, fffMask._f32, fffMask._f32, fffMask._f32));
+				_hlslpp256_castsi256_ps(_hlslpp256_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff)));
 		}
 
 		hlslpp_inline void build(const float3x4& m, const float4& v) hlslpp_noexcept
