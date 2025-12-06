@@ -211,6 +211,16 @@
 
 #endif
 
+#if defined(HLSLPP_MODULE_DECLARATION)
+import "stdint.h";
+#else
+#include <stdint.h>
+#endif
+
+#include "hlsl++/type_traits.h"
+
+#include "hlsl++/bitcast.h"
+
 // We try to auto detect any vector libraries available to the system.
 // If we don't find any, fall back to scalar.
 
@@ -235,16 +245,6 @@
 	#define HLSLPP_SCALAR
 
 #endif
-
-#if defined(HLSLPP_MODULE_DECLARATION)
-import "stdint.h";
-#else
-#include <stdint.h>
-#endif
-
-#include "hlsl++/type_traits.h"
-
-#include "hlsl++/bitmask.h"
 
 // Despite the process above, we can still force the library to behave as scalar by defining the
 // implementation we want.

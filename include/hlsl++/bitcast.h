@@ -38,3 +38,13 @@ namespace hlslpp
 		}
 	};
 }
+
+hlslpp_module_export namespace hlslpp
+{
+	hlslpp_inline float asfloat(const uint32_t v) { return detail::union_cast<float, uint32_t>(v); }
+	hlslpp_inline float asfloat(const int v) { return detail::union_cast<float, int>(v); }
+	hlslpp_inline uint32_t asuint(const int v) { return detail::union_cast<uint32_t, int>(v); }
+	hlslpp_inline uint32_t asuint(const float v) { return detail::union_cast<uint32_t, float>(v); }
+	hlslpp_inline int asint(const uint32_t v) { return detail::union_cast<int, uint32_t>(v); }
+	hlslpp_inline int asint(const float v) { return detail::union_cast<int, float>(v); }
+}

@@ -116,37 +116,31 @@ hlslpp_module_export namespace hlslpp
 	// asfloat, asuint, asint
 	//-----------------------
 
-	hlslpp_inline float asfloat(const uint v) { return detail::union_cast<float, uint>(v); }
 	hlslpp_inline float1 asfloat(const uint1& v) { return reinterpret_cast<const float1&>(v); }
 	hlslpp_inline float2 asfloat(const uint2& v) { return reinterpret_cast<const float2&>(v); }
 	hlslpp_inline float3 asfloat(const uint3& v) { return reinterpret_cast<const float3&>(v); }
 	hlslpp_inline float4 asfloat(const uint4& v) { return reinterpret_cast<const float4&>(v); }
 
-	hlslpp_inline float asfloat(const int v) { return detail::union_cast<float, int>(v); }
 	hlslpp_inline float1 asfloat(const int1& v) { return reinterpret_cast<const float1&>(v); }
 	hlslpp_inline float2 asfloat(const int2& v) { return reinterpret_cast<const float2&>(v); }
 	hlslpp_inline float3 asfloat(const int3& v) { return reinterpret_cast<const float3&>(v); }
 	hlslpp_inline float4 asfloat(const int4& v) { return reinterpret_cast<const float4&>(v); }
 
-	hlslpp_inline uint asuint(const int v) { return detail::union_cast<uint, int>(v); }
 	hlslpp_inline uint1 asuint(const int1& v) { return reinterpret_cast<const uint1&>(v); }
 	hlslpp_inline uint2 asuint(const int2& v) { return reinterpret_cast<const uint2&>(v); }
 	hlslpp_inline uint3 asuint(const int3& v) { return reinterpret_cast<const uint3&>(v); }
 	hlslpp_inline uint4 asuint(const int4& v) { return reinterpret_cast<const uint4&>(v); }
 
-	hlslpp_inline uint asuint(const float v) { return detail::union_cast<uint, float>(v); }
 	hlslpp_inline uint1 asuint(const float1& v) { return reinterpret_cast<const uint1&>(v); }
 	hlslpp_inline uint2 asuint(const float2& v) { return reinterpret_cast<const uint2&>(v); }
 	hlslpp_inline uint3 asuint(const float3& v) { return reinterpret_cast<const uint3&>(v); }
 	hlslpp_inline uint4 asuint(const float4& v) { return reinterpret_cast<const uint4&>(v); }
 
-	hlslpp_inline int asint(const uint v) { return detail::union_cast<int, uint>(v); }
 	hlslpp_inline int1 asint(const uint1& v) { return reinterpret_cast<const int1&>(v); }
 	hlslpp_inline int2 asint(const uint2& v) { return reinterpret_cast<const int2&>(v); }
 	hlslpp_inline int3 asint(const uint3& v) { return reinterpret_cast<const int3&>(v); }
 	hlslpp_inline int4 asint(const uint4& v) { return reinterpret_cast<const int4&>(v); }
 
-	hlslpp_inline int asint(const float v) { return detail::union_cast<int, float>(v); }
 	hlslpp_inline int1 asint(const float1& v) { return reinterpret_cast<const int1&>(v); }
 	hlslpp_inline int2 asint(const float2& v) { return reinterpret_cast<const int2&>(v); }
 	hlslpp_inline int3 asint(const float3& v) { return reinterpret_cast<const int3&>(v); }
