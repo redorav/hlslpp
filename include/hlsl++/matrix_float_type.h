@@ -779,9 +779,9 @@ hlslpp_module_export namespace hlslpp
 
 		hlslpp_inline void build(const float3x3& m, const float4& v) hlslpp_noexcept
 		{
-			vec0 = _hlslpp_and_ps(m.vec0, _hlslpp_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
-			vec1 = _hlslpp_and_ps(m.vec1, _hlslpp_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
-			vec2 = _hlslpp_and_ps(m.vec2, _hlslpp_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
+			vec0 = _hlslpp_and_ps(m.vec0, _hlslpp_castsi128_ps(_hlslpp_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0)));
+			vec1 = _hlslpp_and_ps(m.vec1, _hlslpp_castsi128_ps(_hlslpp_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0)));
+			vec2 = _hlslpp_and_ps(m.vec2, _hlslpp_castsi128_ps(_hlslpp_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0)));
 			vec3 = v.vec;
 		}
 

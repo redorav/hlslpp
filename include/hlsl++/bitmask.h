@@ -19,12 +19,22 @@ namespace hlslpp
 			uint8_t _u8[4];
 			char _c[4];
 		};
-	};
 
-	const detail::packed_union fffMask(0xffffffffu); // Negative NaN
-	const detail::packed_union nanMask(0x7fffffffu); // Positive NaN
-	const detail::packed_union infMask(0x7f800000u);
-	const detail::packed_union minusinfMask(0xff800000u);
-	const detail::packed_union absMask(0x7fffffffu);
-	const detail::packed_union negMask(0x80000000u);
+		template<typename To, typename From>
+		To union_cast(const From& from)
+		{
+			static_assert(sizeof(From) == sizeof(To), "Size of From and To must be the same");
+
+			union union_cast_helper
+			{
+				union_cast_helper(From from) : from(from) {}
+
+				To to;
+				From from;
+			};
+
+			union_cast_helper helper(from);
+			return helper.to;
+		}
+	};
 }
