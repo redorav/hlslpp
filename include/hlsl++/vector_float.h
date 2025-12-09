@@ -1194,6 +1194,34 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) fmod(const float1& f1, T f2) { return fmod(f1, float1(f2)); }
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) fmod(T f1, const float1& f2) { return fmod(float1(f1), f2); }
 
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) lerp(const float1& f1, const float1& f2, T a) { return lerp(f1, f2, float1(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) lerp(const float1& f1, T f2, const float1& a) { return lerp(f1, float1(f2), a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) lerp(T f1, const float1& f2, const float1& a) { return lerp(float1(f1), f2, a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) lerp(const float1& f1, T f2, T a) { return lerp(f1, float1(f2), float1(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) lerp(T f1, const float1& f2, T a) { return lerp(float1(f1), f2, float1(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float1) lerp(T f1, T f2, const float1& a) { return lerp(float1(f1), float1(f2), a); }
+
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) lerp(const float2& f1, const float2& f2, T a) { return lerp(f1, f2, float2(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) lerp(const float2& f1, T f2, const float2& a) { return lerp(f1, float2(f2), a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) lerp(T f1, const float2& f2, const float2& a) { return lerp(float2(f1), f2, a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) lerp(const float2& f1, T f2, T a) { return lerp(f1, float2(f2), float2(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) lerp(T f1, const float2& f2, T a) { return lerp(float2(f1), f2, float2(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float2) lerp(T f1, T f2, const float2& a) { return lerp(float2(f1), float2(f2), a); }
+
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) lerp(const float3& f1, const float3& f2, T a) { return lerp(f1, f2, float3(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) lerp(const float3& f1, T f2, const float3& a) { return lerp(f1, float3(f2), a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) lerp(T f1, const float3& f2, const float3& a) { return lerp(float3(f1), f2, a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) lerp(const float3& f1, T f2, T a) { return lerp(f1, float3(f2), float3(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) lerp(T f1, const float3& f2, T a) { return lerp(float3(f1), f2, float3(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float3) lerp(T f1, T f2, const float3& a) { return lerp(float3(f1), float3(f2), a); }
+
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) lerp(const float4& f1, const float4& f2, T a) { return lerp(f1, f2, float4(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) lerp(const float4& f1, T f2, const float4& a) { return lerp(f1, float4(f2), a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) lerp(T f1, const float4& f2, const float4& a) { return lerp(float4(f1), f2, a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) lerp(const float4& f1, T f2, T a) { return lerp(f1, float4(f2), float4(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) lerp(T f1, const float4& f2, T a) { return lerp(float4(f1), f2, float4(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float4) lerp(T f1, T f2, const float4& a) { return lerp(float4(f1), float4(f2), a); }
+
 	template<int X, int Y> hlslpp_inline float1 max(const swizzle1<X>& s, const swizzle1<Y>& f) { return max(float1(s), float1(f)); }
 	template<int X> hlslpp_inline float1 max(const swizzle1<X>& s, const swizzle1<X>& f) { return max(float1(s), float1(f)); }
 

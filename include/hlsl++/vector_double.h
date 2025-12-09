@@ -1403,6 +1403,34 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator == (const double1& f1, T f2) { return f1 == double1(f2); }
 	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator == (T f1, const double1& f2) { return double1(f1) == f2; }
 
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(const double1& f1, const double1& f2, T a) { return lerp(f1, f2, double1(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(const double1& f1, T f2, const double1& a) { return lerp(f1, double1(f2), a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(T f1, const double1& f2, const double1& a) { return lerp(double1(f1), f2, a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(const double1& f1, T f2, T a) { return lerp(f1, double1(f2), double1(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(T f1, const double1& f2, T a) { return lerp(double1(f1), f2, double1(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(T f1, T f2, const double1& a) { return lerp(double1(f1), double1(f2), a); }
+
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(const double2& f1, const double2& f2, T a) { return lerp(f1, f2, double2(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(const double2& f1, T f2, const double2& a) { return lerp(f1, double2(f2), a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(T f1, const double2& f2, const double2& a) { return lerp(double2(f1), f2, a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(const double2& f1, T f2, T a) { return lerp(f1, double2(f2), double2(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(T f1, const double2& f2, T a) { return lerp(double2(f1), f2, double2(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(T f1, T f2, const double2& a) { return lerp(double2(f1), double2(f2), a); }
+
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(const double3& f1, const double3& f2, T a) { return lerp(f1, f2, double3(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(const double3& f1, T f2, const double3& a) { return lerp(f1, double3(f2), a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(T f1, const double3& f2, const double3& a) { return lerp(double3(f1), f2, a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(const double3& f1, T f2, T a) { return lerp(f1, double3(f2), double3(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(T f1, const double3& f2, T a) { return lerp(double3(f1), f2, double3(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(T f1, T f2, const double3& a) { return lerp(double3(f1), double3(f2), a); }
+
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(const double4& f1, const double4& f2, T a) { return lerp(f1, f2, double4(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(const double4& f1, T f2, const double4& a) { return lerp(f1, double4(f2), a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(T f1, const double4& f2, const double4& a) { return lerp(double4(f1), f2, a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(const double4& f1, T f2, T a) { return lerp(f1, double4(f2), double4(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(T f1, const double4& f2, T a) { return lerp(double4(f1), f2, double4(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(T f1, T f2, const double4& a) { return lerp(double4(f1), double4(f2), a); }
+
 	template<int X> hlslpp_inline double1 operator - (const dswizzle1<X>& s) { return -double1(s); }
 
 	template<int X> hlslpp_inline double1 abs(const dswizzle1<X>& s) { return abs(double1(s)); }

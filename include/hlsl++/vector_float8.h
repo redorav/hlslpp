@@ -748,6 +748,18 @@ hlslpp_module_export namespace hlslpp
 	{
 		_hlslpp256_load8_ps(dst.vec, src);
 	}
+
+	//--------------------------------------------------------------------------------------------------------------------------
+	// Function disambiguation. This typically happens when pulling in math.h, <cmath> or <algorithm>, where functions now live
+	// in the global namespace. Due to implicit conversions, we need to clarify to the compiler which functions it needs to use.
+	//--------------------------------------------------------------------------------------------------------------------------
+
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float8) lerp(const float8& f1, const float8& f2, T a) { return lerp(f1, f2, float8(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float8) lerp(const float8& f1, T f2, const float8& a) { return lerp(f1, float8(f2), a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float8) lerp(T f1, const float8& f2, const float8& a) { return lerp(float8(f1), f2, a); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float8) lerp(const float8& f1, T f2, T a) { return lerp(f1, float8(f2), float8(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float8) lerp(T f1, const float8& f2, T a) { return lerp(float8(f1), f2, float8(a)); }
+	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, float8) lerp(T f1, T f2, const float8& a) { return lerp(float8(f1), float8(f2), a); }
 }
 
 #endif
