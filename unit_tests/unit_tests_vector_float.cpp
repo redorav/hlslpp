@@ -732,20 +732,20 @@ void RunUnitTestsVectorFloat()
 	float1 vlength_swiz_3 = length(vfoo3.rgb);  hlslpp_unit_unused(vlength_swiz_3);
 	float1 vlength_swiz_4 = length(vfoo4.wwxy); hlslpp_unit_unused(vlength_swiz_4);
 
-	float1 vlerp1 = lerp(vfoo1, vbar1, vbaz1); hlslpp_check(eq(vlerp1, lerpf(vfoo1.r, vbar1.r, vbaz1.r)));
-	float2 vlerp2 = lerp(vfoo2, vbar2, vbaz2); hlslpp_check(eq(vlerp2, lerpf(vfoo2.r, vbar2.r, vbaz2.r), lerpf(vfoo2.g, vbar2.g, vbaz2.g)));
-	float3 vlerp3 = lerp(vfoo3, vbar3, vbaz3); hlslpp_check(eq(vlerp3, lerpf(vfoo3.r, vbar3.r, vbaz3.r), lerpf(vfoo3.g, vbar3.g, vbaz3.g), lerpf(vfoo3.b, vbar3.b, vbaz3.b)));
-	float4 vlerp4 = lerp(vfoo4, vbar4, vbaz4); hlslpp_check(eq(vlerp4, lerpf(vfoo4.r, vbar4.r, vbaz4.r), lerpf(vfoo4.g, vbar4.g, vbaz4.g), lerpf(vfoo4.b, vbar4.b, vbaz4.b), lerpf(vfoo4.a, vbar4.a, vbaz4.a)));
+	float1 vlerp1 = hlslpp::lerp(vfoo1, vbar1, vbaz1); hlslpp_check(eq(vlerp1, lerpf(vfoo1.r, vbar1.r, vbaz1.r)));
+	float2 vlerp2 = hlslpp::lerp(vfoo2, vbar2, vbaz2); hlslpp_check(eq(vlerp2, lerpf(vfoo2.r, vbar2.r, vbaz2.r), lerpf(vfoo2.g, vbar2.g, vbaz2.g)));
+	float3 vlerp3 = hlslpp::lerp(vfoo3, vbar3, vbaz3); hlslpp_check(eq(vlerp3, lerpf(vfoo3.r, vbar3.r, vbaz3.r), lerpf(vfoo3.g, vbar3.g, vbaz3.g), lerpf(vfoo3.b, vbar3.b, vbaz3.b)));
+	float4 vlerp4 = hlslpp::lerp(vfoo4, vbar4, vbaz4); hlslpp_check(eq(vlerp4, lerpf(vfoo4.r, vbar4.r, vbaz4.r), lerpf(vfoo4.g, vbar4.g, vbaz4.g), lerpf(vfoo4.b, vbar4.b, vbaz4.b), lerpf(vfoo4.a, vbar4.a, vbaz4.a)));
 	
-	float1 vlerpf_1 = lerp(vfoo1, vbar1, 0.3f); hlslpp_check(eq(vlerpf_1, lerpf(vfoo1.r, vbar1.r, 0.3f)));
-	float2 vlerpf_2 = lerp(vfoo2, vbar2, 0.3f); hlslpp_check(eq(vlerpf_2, lerpf(vfoo2.r, vbar2.r, 0.3f), lerpf(vfoo2.g, vbar2.g, 0.3f)));
-	float3 vlerpf_3 = lerp(vfoo3, vbar3, 0.5f); hlslpp_check(eq(vlerpf_3, lerpf(vfoo3.r, vbar3.r, 0.5f), lerpf(vfoo3.g, vbar3.g, 0.5f), lerpf(vfoo3.b, vbar3.b, 0.5f)));
-	float4 vlerpf_4 = lerp(vfoo4, vbar4, 0.7f); hlslpp_check(eq(vlerpf_4, lerpf(vfoo4.r, vbar4.r, 0.7f), lerpf(vfoo4.g, vbar4.g, 0.7f), lerpf(vfoo4.b, vbar4.b, 0.7f), lerpf(vfoo4.a, vbar4.a, 0.7f)));
+	float1 vlerpf_1 = hlslpp::lerp(vfoo1, vbar1, 0.3f); hlslpp_check(eq(vlerpf_1, lerpf(vfoo1.r, vbar1.r, 0.3f)));
+	float2 vlerpf_2 = hlslpp::lerp(vfoo2, vbar2, 0.3f); hlslpp_check(eq(vlerpf_2, lerpf(vfoo2.r, vbar2.r, 0.3f), lerpf(vfoo2.g, vbar2.g, 0.3f)));
+	float3 vlerpf_3 = hlslpp::lerp(vfoo3, vbar3, 0.5f); hlslpp_check(eq(vlerpf_3, lerpf(vfoo3.r, vbar3.r, 0.5f), lerpf(vfoo3.g, vbar3.g, 0.5f), lerpf(vfoo3.b, vbar3.b, 0.5f)));
+	float4 vlerpf_4 = hlslpp::lerp(vfoo4, vbar4, 0.7f); hlslpp_check(eq(vlerpf_4, lerpf(vfoo4.r, vbar4.r, 0.7f), lerpf(vfoo4.g, vbar4.g, 0.7f), lerpf(vfoo4.b, vbar4.b, 0.7f), lerpf(vfoo4.a, vbar4.a, 0.7f)));
 	
-	float1 vlerp_swiz_1 = lerp(vfoo1, vbar1, vbaz1.r);    hlslpp_check(eq(vlerp_swiz_1, lerpf(vfoo1.r, vbar1.r, vbaz1.r)));
-	float2 vlerp_swiz_2 = lerp(vfoo2, vbar2, vbaz2.rg);   hlslpp_check(eq(vlerp_swiz_2, lerpf(vfoo2.r, vbar2.r, vbaz2.r), lerpf(vfoo2.g, vbar2.g, vbaz2.g)));
-	float3 vlerp_swiz_3 = lerp(vfoo3, vbar3, vbaz3.bgr);  hlslpp_check(eq(vlerp_swiz_3, lerpf(vfoo3.r, vbar3.r, vbaz3.b), lerpf(vfoo3.g, vbar3.g, vbaz3.g), lerpf(vfoo3.b, vbar3.b, vbaz3.r)));
-	float4 vlerp_swiz_4 = lerp(vfoo4, vbar4, vbaz4.rgba); hlslpp_check(eq(vlerp_swiz_4, lerpf(vfoo4.r, vbar4.r, vbaz4.r), lerpf(vfoo4.g, vbar4.g, vbaz4.g), lerpf(vfoo4.b, vbar4.b, vbaz4.b), lerpf(vfoo4.a, vbar4.a, vbaz4.a)));
+	float1 vlerp_swiz_1 = hlslpp::lerp(vfoo1, vbar1, vbaz1.r);    hlslpp_check(eq(vlerp_swiz_1, lerpf(vfoo1.r, vbar1.r, vbaz1.r)));
+	float2 vlerp_swiz_2 = hlslpp::lerp(vfoo2, vbar2, vbaz2.rg);   hlslpp_check(eq(vlerp_swiz_2, lerpf(vfoo2.r, vbar2.r, vbaz2.r), lerpf(vfoo2.g, vbar2.g, vbaz2.g)));
+	float3 vlerp_swiz_3 = hlslpp::lerp(vfoo3, vbar3, vbaz3.bgr);  hlslpp_check(eq(vlerp_swiz_3, lerpf(vfoo3.r, vbar3.r, vbaz3.b), lerpf(vfoo3.g, vbar3.g, vbaz3.g), lerpf(vfoo3.b, vbar3.b, vbaz3.r)));
+	float4 vlerp_swiz_4 = hlslpp::lerp(vfoo4, vbar4, vbaz4.rgba); hlslpp_check(eq(vlerp_swiz_4, lerpf(vfoo4.r, vbar4.r, vbaz4.r), lerpf(vfoo4.g, vbar4.g, vbaz4.g), lerpf(vfoo4.b, vbar4.b, vbaz4.b), lerpf(vfoo4.a, vbar4.a, vbaz4.a)));
 
 	float1 vlog1 = log(vfoo1); hlslpp_unit_unused(vlog1);
 	float2 vlog2 = log(vfoo2); hlslpp_unit_unused(vlog2);
@@ -1005,12 +1005,12 @@ void RunUnitTestsVectorFloat()
 	float3 vtrunc_swiz_3 = trunc(vfoo3.zzz);	hlslpp_check(eq(vtrunc_swiz_3, trunc_f((float)vfoo3.z), trunc_f((float)vfoo3.z), trunc_f((float)vfoo3.z)));
 	float4 vtrunc_swiz_4 = trunc(vfoo4.wwzw);	hlslpp_check(eq(vtrunc_swiz_4, trunc_f((float)vfoo4.w), trunc_f((float)vfoo4.w), trunc_f((float)vfoo4.z), trunc_f((float)vfoo4.w)));
 
-	vtrunc_swiz_1.x--;
-	vtrunc_swiz_2.xy--;
-	vtrunc_swiz_3.zxy--;
-	vtrunc_swiz_4.zxyw--;
+	const auto r1 = vtrunc_swiz_1.x--;
+	const auto r2 = vtrunc_swiz_2.xy--;
+	const auto r3 = vtrunc_swiz_3.zxy--;
+	const auto r4 = vtrunc_swiz_4.zxyw--;
 	
-	vtrunc_swiz_4++;
+	const auto r5 = vtrunc_swiz_4++;
 
 	hlslpp_unit::EndTest();
 
@@ -1182,9 +1182,9 @@ void RunUnitTestsVectorFloat()
 
 	float1 vlength_8 = length(vfoo8); hlslpp_unit_unused(vlength_8);
 
-	float8 vlerp8 = lerp(vfoo8, vbar8, vbaz8); hlslpp_unit_unused(vlerp8); //eq(vlerp4, lerpf(vfoo8.r, vbar8.r, vbaz8.r), lerpf(vfoo8.g, vbar8.g, vbaz8.g), lerpf(vfoo8.b, vbar8.b, vbaz8.b), lerpf(vfoo8.a, vbar8.a, vbaz8.a));
+	float8 vlerp8 = hlslpp::lerp(vfoo8, vbar8, vbaz8); hlslpp_unit_unused(vlerp8); //eq(vlerp4, lerpf(vfoo8.r, vbar8.r, vbaz8.r), lerpf(vfoo8.g, vbar8.g, vbaz8.g), lerpf(vfoo8.b, vbar8.b, vbaz8.b), lerpf(vfoo8.a, vbar8.a, vbaz8.a));
 
-	float8 vlerpf_8 = lerp(vfoo8, vbar8, 0.7f); hlslpp_unit_unused(vlerpf_8); //eq(vlerpf_4, lerpf(vfoo8.r, vbar8.r, 0.7f), lerpf(vfoo8.g, vbar8.g, 0.7f), lerpf(vfoo8.b, vbar8.b, 0.7f), lerpf(vfoo8.a, vbar8.a, 0.7f));
+	float8 vlerpf_8 = hlslpp::lerp(vfoo8, vbar8, 0.7f); hlslpp_unit_unused(vlerpf_8); //eq(vlerpf_4, lerpf(vfoo8.r, vbar8.r, 0.7f), lerpf(vfoo8.g, vbar8.g, 0.7f), lerpf(vfoo8.b, vbar8.b, 0.7f), lerpf(vfoo8.a, vbar8.a, 0.7f));
 
 	float8 vlog8 = log(vfoo8); hlslpp_unit_unused(vlog8);
 

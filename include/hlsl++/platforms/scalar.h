@@ -1,7 +1,8 @@
 #pragma once
 
-#include <math.h>
-#include <stdint.h>
+#include <cmath>
+#include <cstdint>
+#include <cstdlib>
 
 namespace hlslpp
 {
@@ -549,7 +550,7 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 		return vector_int4(v1.x - v2.x * v3.x, v1.y - v2.y * v3.y, v1.z - v2.z * v3.z, v1.w - v2.w * v3.w);
 	}
 
-	hlslpp_inline vector_int4 _hlslpp_abs_epi32(const vector_int4& v) { return vector_int4(labs(v.x), labs(v.y), labs(v.z), labs(v.w)); }
+	hlslpp_inline vector_int4 _hlslpp_abs_epi32(const vector_int4& v) { return vector_int4(std::labs(v.x), std::labs(v.y), std::labs(v.z), std::labs(v.w)); }
 
 	hlslpp_inline vector_int4 _hlslpp_cmpeq_epi32(const vector_int4& v1, const vector_int4& v2)
 	{

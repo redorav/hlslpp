@@ -86,7 +86,7 @@ namespace hlslpp
 
 	namespace half_literal
 	{
-		inline half operator "" _h(long double value)
+		inline half operator""_h(long double value)
 		{
 			return half(binary::tag, float2half((float)value));
 		}
