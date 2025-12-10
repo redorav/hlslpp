@@ -117,6 +117,8 @@
 	#define hlslpp_nodiscard
 #endif
 
+#define hlslpp_inline_nodiscard hlslpp_nodiscard hlslpp_inline
+
 #if HLSLPP_CPPVERSION >= 201103L
 	#define hlslpp_constructor_delete = delete
 	#define hlslpp_constructor_default = default

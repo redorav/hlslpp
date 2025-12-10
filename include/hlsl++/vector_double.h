@@ -239,9 +239,9 @@ hlslpp_module_export namespace hlslpp
 {
 	// Addition
 
-	hlslpp_inline double1 operator + (const double1& f1, const double1& f2) { return double1(_hlslpp_add_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 operator + (const double2& f1, const double2& f2) { return double2(_hlslpp_add_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 operator + (const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 operator + (const double1& f1, const double1& f2) { return double1(_hlslpp_add_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 operator + (const double2& f1, const double2& f2) { return double2(_hlslpp_add_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 operator + (const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_add_pd(f1.vec, f2.vec));
@@ -250,7 +250,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator + (const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 operator + (const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_add_pd(f1.vec, f2.vec));
@@ -259,8 +259,8 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double2 operator + (const double2& f1, const double1& f2) { return double2(_hlslpp_add_pd(f1.vec, _hlslpp_perm_xx_pd(f2.vec))); }
-	hlslpp_inline double3 operator + (const double3& f1, const double1& f2)
+	hlslpp_inline_nodiscard double2 operator + (const double2& f1, const double1& f2) { return double2(_hlslpp_add_pd(f1.vec, _hlslpp_perm_xx_pd(f2.vec))); }
+	hlslpp_inline_nodiscard double3 operator + (const double3& f1, const double1& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n128d shufx = _hlslpp_perm_xx_pd(f2.vec);
@@ -270,7 +270,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator + (const double4& f1, const double1& f2)
+	hlslpp_inline_nodiscard double4 operator + (const double4& f1, const double1& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n128d shufx = _hlslpp_perm_xx_pd(f2.vec);
@@ -282,9 +282,9 @@ hlslpp_module_export namespace hlslpp
 
 	// Subtraction
 
-	hlslpp_inline double1 operator - (const double1& f1, const double1& f2) { return double1(_hlslpp_sub_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 operator - (const double2& f1, const double2& f2) { return double2(_hlslpp_sub_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 operator - (const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 operator - (const double1& f1, const double1& f2) { return double1(_hlslpp_sub_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 operator - (const double2& f1, const double2& f2) { return double2(_hlslpp_sub_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 operator - (const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_sub_pd(f1.vec, f2.vec));
@@ -293,7 +293,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator - (const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 operator - (const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_sub_pd(f1.vec, f2.vec));
@@ -302,8 +302,8 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double2 operator - (const double2& f1, const double1& f2) { return double2(_hlslpp_sub_pd(f1.vec, _hlslpp_perm_xx_pd(f2.vec))); }
-	hlslpp_inline double3 operator - (const double3& f1, const double1& f2)
+	hlslpp_inline_nodiscard double2 operator - (const double2& f1, const double1& f2) { return double2(_hlslpp_sub_pd(f1.vec, _hlslpp_perm_xx_pd(f2.vec))); }
+	hlslpp_inline_nodiscard double3 operator - (const double3& f1, const double1& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n128d shufx = _hlslpp_perm_xx_pd(f2.vec);
@@ -313,7 +313,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator - (const double4& f1, const double1& f2)
+	hlslpp_inline_nodiscard double4 operator - (const double4& f1, const double1& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n128d shufx = _hlslpp_perm_xx_pd(f2.vec);
@@ -325,9 +325,9 @@ hlslpp_module_export namespace hlslpp
 
 	// Multiplication
 
-	hlslpp_inline double1 operator * (const double1& f1, const double1& f2) { return double1(_hlslpp_mul_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 operator * (const double2& f1, const double2& f2) { return double2(_hlslpp_mul_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 operator * (const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 operator * (const double1& f1, const double1& f2) { return double1(_hlslpp_mul_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 operator * (const double2& f1, const double2& f2) { return double2(_hlslpp_mul_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 operator * (const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_mul_pd(f1.vec, f2.vec));
@@ -336,7 +336,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator * (const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 operator * (const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_mul_pd(f1.vec, f2.vec));
@@ -345,9 +345,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double2 operator * (const double2& f1, const double1& f2) { return double2(_hlslpp_mul_pd(f1.vec, _hlslpp_perm_xx_pd(f2.vec))); }
+	hlslpp_inline_nodiscard double2 operator * (const double2& f1, const double1& f2) { return double2(_hlslpp_mul_pd(f1.vec, _hlslpp_perm_xx_pd(f2.vec))); }
 	
-	hlslpp_inline double3 operator * (const double3& f1, const double1& f2)
+	hlslpp_inline_nodiscard double3 operator * (const double3& f1, const double1& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n128d shufx = _hlslpp_perm_xx_pd(f2.vec);
@@ -357,7 +357,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator * (const double4& f1, const double1& f2)
+	hlslpp_inline_nodiscard double4 operator * (const double4& f1, const double1& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n128d shufx = _hlslpp_perm_xx_pd(f2.vec);
@@ -369,9 +369,9 @@ hlslpp_module_export namespace hlslpp
 
 	// Division
 
-	hlslpp_inline double1 operator / (const double1& f1, const double1& f2) { return double1(_hlslpp_div_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 operator / (const double2& f1, const double2& f2) { return double2(_hlslpp_div_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 operator / (const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 operator / (const double1& f1, const double1& f2) { return double1(_hlslpp_div_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 operator / (const double2& f1, const double2& f2) { return double2(_hlslpp_div_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 operator / (const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_div_pd(f1.vec, f2.vec));
@@ -380,7 +380,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator / (const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 operator / (const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_div_pd(f1.vec, f2.vec));
@@ -389,8 +389,8 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double2 operator / (const double2& f1, const double1& f2) { return double2(_hlslpp_div_pd(f1.vec, _hlslpp_perm_xx_pd(f2.vec))); }
-	hlslpp_inline double3 operator / (const double3& f1, const double1& f2)
+	hlslpp_inline_nodiscard double2 operator / (const double2& f1, const double1& f2) { return double2(_hlslpp_div_pd(f1.vec, _hlslpp_perm_xx_pd(f2.vec))); }
+	hlslpp_inline_nodiscard double3 operator / (const double3& f1, const double1& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n128d shufx = _hlslpp_perm_xx_pd(f2.vec);
@@ -400,7 +400,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator / (const double4& f1, const double1& f2)
+	hlslpp_inline_nodiscard double4 operator / (const double4& f1, const double1& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n128d shufx = _hlslpp_perm_xx_pd(f2.vec);
@@ -410,9 +410,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double1 operator - (const double1& f) { return double1(_hlslpp_neg_pd(f.vec)); }
-	hlslpp_inline double2 operator - (const double2& f) { return double2(_hlslpp_neg_pd(f.vec)); }
-	hlslpp_inline double3 operator - (const double3& f)
+	hlslpp_inline_nodiscard double1 operator - (const double1& f) { return double1(_hlslpp_neg_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 operator - (const double2& f) { return double2(_hlslpp_neg_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 operator - (const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_neg_pd(f.vec));
@@ -421,7 +421,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator - (const double4& f)
+	hlslpp_inline_nodiscard double4 operator - (const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_neg_pd(f.vec));
@@ -430,9 +430,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double1 operator % (const double1& f1, const double1& f2) { return double1(_hlslpp_fmod_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 operator % (const double2& f1, const double2& f2) { return double2(_hlslpp_fmod_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 operator % (const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 operator % (const double1& f1, const double1& f2) { return double1(_hlslpp_fmod_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 operator % (const double2& f1, const double2& f2) { return double2(_hlslpp_fmod_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 operator % (const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_fmod_pd(f1.vec, f2.vec));
@@ -441,7 +441,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator % (const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 operator % (const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_fmod_pd(f1.vec, f2.vec));
@@ -450,9 +450,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double1 operator == (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpeq1_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 operator == (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpeq1_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 operator == (const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 operator == (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpeq1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 operator == (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpeq1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 operator == (const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_cmpeq1_pd(f1.vec, f2.vec));
@@ -461,7 +461,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator == (const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 operator == (const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_cmpeq1_pd(f1.vec, f2.vec));
@@ -470,10 +470,10 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 	
-	hlslpp_inline double1 operator != (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpneq1_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 operator != (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpneq1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double1 operator != (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpneq1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 operator != (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpneq1_pd(f1.vec, f2.vec)); }
 	
-	hlslpp_inline double3 operator != (const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double3 operator != (const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_cmpneq1_pd(f1.vec, f2.vec));
@@ -482,7 +482,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator != (const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 operator != (const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_cmpneq1_pd(f1.vec, f2.vec));
@@ -491,9 +491,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double1 operator > (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpgt1_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 operator > (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpgt1_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 operator > (const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 operator > (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpgt1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 operator > (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpgt1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 operator > (const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_cmpgt1_pd(f1.vec, f2.vec));
@@ -502,7 +502,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator > (const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 operator > (const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_cmpgt1_pd(f1.vec, f2.vec));
@@ -511,9 +511,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double1 operator >= (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpge1_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 operator >= (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpge1_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 operator >= (const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 operator >= (const double1& f1, const double1& f2) { return double1(_hlslpp_cmpge1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 operator >= (const double2& f1, const double2& f2) { return double2(_hlslpp_cmpge1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 operator >= (const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_cmpge1_pd(f1.vec, f2.vec));
@@ -522,7 +522,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator >= (const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 operator >= (const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_cmpge1_pd(f1.vec, f2.vec));
@@ -531,10 +531,10 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double1 operator < (const double1& f1, const double1& f2) { return double1(_hlslpp_cmplt1_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 operator < (const double2& f1, const double2& f2) { return double2(_hlslpp_cmplt1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double1 operator < (const double1& f1, const double1& f2) { return double1(_hlslpp_cmplt1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 operator < (const double2& f1, const double2& f2) { return double2(_hlslpp_cmplt1_pd(f1.vec, f2.vec)); }
 	
-	hlslpp_inline double3 operator < (const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double3 operator < (const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_cmplt1_pd(f1.vec, f2.vec));
@@ -543,7 +543,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator < (const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 operator < (const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_cmplt1_pd(f1.vec, f2.vec));
@@ -552,9 +552,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double1 operator <= (const double1& f1, const double1& f2) { return double1(_hlslpp_cmple1_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 operator <= (const double2& f1, const double2& f2) { return double2(_hlslpp_cmple1_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 operator <= (const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 operator <= (const double1& f1, const double1& f2) { return double1(_hlslpp_cmple1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 operator <= (const double2& f1, const double2& f2) { return double2(_hlslpp_cmple1_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 operator <= (const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_cmple1_pd(f1.vec, f2.vec));
@@ -563,7 +563,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline double4 operator <= (const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 operator <= (const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_cmple1_pd(f1.vec, f2.vec));
@@ -658,60 +658,60 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	// and functions that are part of common headers such as cmath, math.h, algorithm, etc
 	//--------------------------------------------------------------------------------------------------------------------
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator + (const double1& f1, T f2) { return f1 + double1(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) operator + (const double2& f1, T f2) { return f1 + double2(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) operator + (const double3& f1, T f2) { return f1 + double3(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) operator + (const double4& f1, T f2) { return f1 + double4(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator + (const double1& f1, T f2) { return f1 + double1(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) operator + (const double2& f1, T f2) { return f1 + double2(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) operator + (const double3& f1, T f2) { return f1 + double3(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) operator + (const double4& f1, T f2) { return f1 + double4(f2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator + (T f1, const double1& f2) { return double1(f1) + f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) operator + (T f1, const double2& f2) { return double2(f1) + f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) operator + (T f1, const double3& f2) { return double3(f1) + f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) operator + (T f1, const double4& f2) { return double4(f1) + f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator + (T f1, const double1& f2) { return double1(f1) + f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) operator + (T f1, const double2& f2) { return double2(f1) + f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) operator + (T f1, const double3& f2) { return double3(f1) + f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) operator + (T f1, const double4& f2) { return double4(f1) + f2; }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator - (const double1& f1, T f2) { return f1 - double1(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) operator - (const double2& f1, T f2) { return f1 - double2(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) operator - (const double3& f1, T f2) { return f1 - double3(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) operator - (const double4& f1, T f2) { return f1 - double4(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator - (const double1& f1, T f2) { return f1 - double1(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) operator - (const double2& f1, T f2) { return f1 - double2(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) operator - (const double3& f1, T f2) { return f1 - double3(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) operator - (const double4& f1, T f2) { return f1 - double4(f2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator - (T f1, const double1& f2) { return double1(f1) - f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) operator - (T f1, const double2& f2) { return double2(f1) - f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) operator - (T f1, const double3& f2) { return double3(f1) - f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) operator - (T f1, const double4& f2) { return double4(f1) - f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator - (T f1, const double1& f2) { return double1(f1) - f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) operator - (T f1, const double2& f2) { return double2(f1) - f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) operator - (T f1, const double3& f2) { return double3(f1) - f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) operator - (T f1, const double4& f2) { return double4(f1) - f2; }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator * (const double1& f1, T f2) { return f1 * double1(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) operator * (const double2& f1, T f2) { return f1 * double2(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) operator * (const double3& f1, T f2) { return f1 * double3(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) operator * (const double4& f1, T f2) { return f1 * double4(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator * (const double1& f1, T f2) { return f1 * double1(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) operator * (const double2& f1, T f2) { return f1 * double2(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) operator * (const double3& f1, T f2) { return f1 * double3(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) operator * (const double4& f1, T f2) { return f1 * double4(f2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator * (T f1, const double1& f2) { return double1(f1) * f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) operator * (T f1, const double2& f2) { return double2(f1) * f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) operator * (T f1, const double3& f2) { return double3(f1) * f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) operator * (T f1, const double4& f2) { return double4(f1) * f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator * (T f1, const double1& f2) { return double1(f1) * f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) operator * (T f1, const double2& f2) { return double2(f1) * f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) operator * (T f1, const double3& f2) { return double3(f1) * f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) operator * (T f1, const double4& f2) { return double4(f1) * f2; }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator / (const double1& f1, T f2) { return f1 / double1(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) operator / (const double2& f1, T f2) { return f1 / double2(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) operator / (const double3& f1, T f2) { return f1 / double3(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) operator / (const double4& f1, T f2) { return f1 / double4(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator / (const double1& f1, T f2) { return f1 / double1(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) operator / (const double2& f1, T f2) { return f1 / double2(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) operator / (const double3& f1, T f2) { return f1 / double3(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) operator / (const double4& f1, T f2) { return f1 / double4(f2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator / (T f1, const double1& f2) { return double1(f1) / f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) operator / (T f1, const double2& f2) { return double2(f1) / f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) operator / (T f1, const double3& f2) { return double3(f1) / f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) operator / (T f1, const double4& f2) { return double4(f1) / f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator / (T f1, const double1& f2) { return double1(f1) / f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) operator / (T f1, const double2& f2) { return double2(f1) / f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) operator / (T f1, const double3& f2) { return double3(f1) / f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) operator / (T f1, const double4& f2) { return double4(f1) / f2; }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator % (const double1& f1, T f2) { return f1 % double1(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) operator % (const double2& f1, T f2) { return f1 % double2(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) operator % (const double3& f1, T f2) { return f1 % double3(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) operator % (const double4& f1, T f2) { return f1 % double4(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator % (const double1& f1, T f2) { return f1 % double1(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) operator % (const double2& f1, T f2) { return f1 % double2(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) operator % (const double3& f1, T f2) { return f1 % double3(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) operator % (const double4& f1, T f2) { return f1 % double4(f2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator % (T f1, const double1& f2) { return double1(f1) % f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) operator % (T f1, const double2& f2) { return double2(f1) % f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) operator % (T f1, const double3& f2) { return double3(f1) % f2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) operator % (T f1, const double4& f2) { return double4(f1) % f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator % (T f1, const double1& f2) { return double1(f1) % f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) operator % (T f1, const double2& f2) { return double2(f1) % f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) operator % (T f1, const double3& f2) { return double3(f1) % f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) operator % (T f1, const double4& f2) { return double4(f1) % f2; }
 
-	template<int X> hlslpp_inline double1 operator + (const dswizzle1<X>& s, const double1& f) { return double1(s) + f; }
-	template<int X> hlslpp_inline double1 operator - (const dswizzle1<X>& s, const double1& f) { return double1(s) - f; }
-	template<int X> hlslpp_inline double1 operator * (const dswizzle1<X>& s, const double1& f) { return double1(s) * f; }
-	template<int X> hlslpp_inline double1 operator / (const dswizzle1<X>& s, const double1& f) { return double1(s) / f; }
+	template<int X> hlslpp_inline_nodiscard double1 operator + (const dswizzle1<X>& s, const double1& f) { return double1(s) + f; }
+	template<int X> hlslpp_inline_nodiscard double1 operator - (const dswizzle1<X>& s, const double1& f) { return double1(s) - f; }
+	template<int X> hlslpp_inline_nodiscard double1 operator * (const dswizzle1<X>& s, const double1& f) { return double1(s) * f; }
+	template<int X> hlslpp_inline_nodiscard double1 operator / (const dswizzle1<X>& s, const double1& f) { return double1(s) / f; }
 
 	template<int X>	hlslpp_inline dswizzle1<X>& operator += (dswizzle1<X>& s, const double1& f) { s = double1(s) + f; return s; }
 	template<int X>	hlslpp_inline dswizzle1<X>& operator -= (dswizzle1<X>& s, const double1& f) { s = double1(s) - f; return s; }
@@ -737,9 +737,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	template<int X, int Y, int Z, int W> hlslpp_inline dswizzle4<X, Y, Z, W>& operator /= (dswizzle4<X, Y, Z, W>& s, const double4& f) { s = double4(s) / f; return s; }
 	template<int X, int Y, int Z, int W> hlslpp_inline dswizzle4<X, Y, Z, W>& operator %= (dswizzle4<X, Y, Z, W>& s, const double4& f) { s = double4(s) % f; return s; }
 
-	hlslpp_inline double1 abs(const double1& f) { return double1(_hlslpp_abs_pd(f.vec)); }
-	hlslpp_inline double2 abs(const double2& f) { return double2(_hlslpp_abs_pd(f.vec)); }
-	hlslpp_inline double3 abs(const double3& f)
+	hlslpp_inline_nodiscard double1 abs(const double1& f) { return double1(_hlslpp_abs_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 abs(const double2& f) { return double2(_hlslpp_abs_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 abs(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_abs_pd(f.vec));
@@ -748,7 +748,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 abs(const double4& f)
+	hlslpp_inline_nodiscard double4 abs(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_abs_pd(f.vec));
@@ -757,9 +757,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline bool all(const double1& f) { return _hlslpp_all1_pd(f.vec); }
-	hlslpp_inline bool all(const double2& f) { return _hlslpp_all2_pd(f.vec); }
-	hlslpp_inline bool all(const double3& f)
+	hlslpp_inline_nodiscard bool all(const double1& f) { return _hlslpp_all1_pd(f.vec); }
+	hlslpp_inline_nodiscard bool all(const double2& f) { return _hlslpp_all2_pd(f.vec); }
+	hlslpp_inline_nodiscard bool all(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return _hlslpp256_all3_pd(f.vec);
@@ -767,7 +767,8 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 		return _hlslpp_all3_pd(f.vec0, f.vec1);
 #endif
 	}
-	hlslpp_inline bool all(const double4& f)
+
+	hlslpp_inline_nodiscard bool all(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return _hlslpp256_all4_pd(f.vec);
@@ -776,9 +777,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 	
-	hlslpp_inline bool any(const double1& f) { return _hlslpp_any1_pd(f.vec); }
-	hlslpp_inline bool any(const double2& f) { return _hlslpp_any2_pd(f.vec); }
-	hlslpp_inline bool any(const double3& f)
+	hlslpp_inline_nodiscard bool any(const double1& f) { return _hlslpp_any1_pd(f.vec); }
+	hlslpp_inline_nodiscard bool any(const double2& f) { return _hlslpp_any2_pd(f.vec); }
+	hlslpp_inline_nodiscard bool any(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return _hlslpp256_any3_pd(f.vec);
@@ -787,7 +788,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline bool any(const double4& f)
+	hlslpp_inline_nodiscard bool any(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return _hlslpp256_any4_pd(f.vec);
@@ -796,9 +797,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 ceil(const double1& f) { return double1(_hlslpp_ceil_pd(f.vec)); }
-	hlslpp_inline double2 ceil(const double2& f) { return double2(_hlslpp_ceil_pd(f.vec)); }
-	hlslpp_inline double3 ceil(const double3& f)
+	hlslpp_inline_nodiscard double1 ceil(const double1& f) { return double1(_hlslpp_ceil_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 ceil(const double2& f) { return double2(_hlslpp_ceil_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 ceil(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_ceil_pd(f.vec));
@@ -807,7 +808,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 ceil(const double4& f)
+	hlslpp_inline_nodiscard double4 ceil(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_ceil_pd(f.vec));
@@ -816,10 +817,10 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 clamp(const double1& f, const double1& minf, const double1& maxf) { return double1(_hlslpp_clamp_pd(f.vec, minf.vec, maxf.vec)); }
-	hlslpp_inline double2 clamp(const double2& f, const double2& minf, const double2& maxf) { return double2(_hlslpp_clamp_pd(f.vec, minf.vec, maxf.vec)); }
+	hlslpp_inline_nodiscard double1 clamp(const double1& f, const double1& minf, const double1& maxf) { return double1(_hlslpp_clamp_pd(f.vec, minf.vec, maxf.vec)); }
+	hlslpp_inline_nodiscard double2 clamp(const double2& f, const double2& minf, const double2& maxf) { return double2(_hlslpp_clamp_pd(f.vec, minf.vec, maxf.vec)); }
 
-	hlslpp_inline double3 clamp(const double3& f, const double3& minf, const double3& maxf)
+	hlslpp_inline_nodiscard double3 clamp(const double3& f, const double3& minf, const double3& maxf)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_clamp_pd(f.vec, minf.vec, maxf.vec));
@@ -828,7 +829,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 clamp(const double4& f, const double4& minf, const double4& maxf)
+	hlslpp_inline_nodiscard double4 clamp(const double4& f, const double4& minf, const double4& maxf)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_clamp_pd(f.vec, minf.vec, maxf.vec));
@@ -837,17 +838,17 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 copysign(const double1& from, const double1& to)
+	hlslpp_inline_nodiscard double1 copysign(const double1& from, const double1& to)
 	{
 		return double1(_hlslpp_copysign_pd(from.vec, to.vec));
 	}
 
-	hlslpp_inline double2 copysign(const double2& from, const double2& to)
+	hlslpp_inline_nodiscard double2 copysign(const double2& from, const double2& to)
 	{
 		return double2(_hlslpp_copysign_pd(from.vec, to.vec));
 	}
 
-	hlslpp_inline double3 copysign(const double3& from, const double3& to)
+	hlslpp_inline_nodiscard double3 copysign(const double3& from, const double3& to)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_copysign_pd(from.vec, to.vec));
@@ -856,7 +857,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 copysign(const double4& from, const double4& to)
+	hlslpp_inline_nodiscard double4 copysign(const double4& from, const double4& to)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_copysign_pd(from.vec, to.vec));
@@ -865,7 +866,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double3 cross(const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double3 cross(const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_cross_pd(f1.vec, f2.vec));
@@ -876,9 +877,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 degrees(const double1& f) { return double1(_hlslpp_mul_pd(f.vec, d2_rad2deg)); }
-	hlslpp_inline double2 degrees(const double2& f) { return double2(_hlslpp_mul_pd(f.vec, d2_rad2deg)); }
-	hlslpp_inline double3 degrees(const double3& f)
+	hlslpp_inline_nodiscard double1 degrees(const double1& f) { return double1(_hlslpp_mul_pd(f.vec, d2_rad2deg)); }
+	hlslpp_inline_nodiscard double2 degrees(const double2& f) { return double2(_hlslpp_mul_pd(f.vec, d2_rad2deg)); }
+	hlslpp_inline_nodiscard double3 degrees(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_mul_pd(f.vec, d4_rad2deg));
@@ -886,7 +887,8 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 		return double3(_hlslpp_mul_pd(f.vec0, d2_rad2deg), _hlslpp_mul_pd(f.vec1, d2_rad2deg));
 #endif
 	}
-	hlslpp_inline double4 degrees(const double4& f)
+
+	hlslpp_inline_nodiscard double4 degrees(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_mul_pd(f.vec, d4_rad2deg));
@@ -895,14 +897,14 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 distance(const double1& f1, const double1& f2) { return double1(_hlslpp_abs_pd(_hlslpp_sub_pd(f2.vec, f1.vec))); }
-	hlslpp_inline double1 distance(const double2& f1, const double2& f2)
+	hlslpp_inline_nodiscard double1 distance(const double1& f1, const double1& f2) { return double1(_hlslpp_abs_pd(_hlslpp_sub_pd(f2.vec, f1.vec))); }
+	hlslpp_inline_nodiscard double1 distance(const double2& f1, const double2& f2)
 	{
 		n128d delta = _hlslpp_sub_pd(f2.vec, f1.vec);
 		return double1(_hlslpp_sqrt_pd(_hlslpp_dot2_pd(delta, delta)));
 	}
 
-	hlslpp_inline double1 distance(const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 distance(const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n256d delta = _hlslpp256_sub_pd(f2.vec, f1.vec);
@@ -914,7 +916,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 distance(const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double1 distance(const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n256d delta = _hlslpp256_sub_pd(f2.vec, f1.vec);
@@ -926,9 +928,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 dot(const double1& f1, const double1& f2) { return f1 * f2; }
-	hlslpp_inline double1 dot(const double2& f1, const double2& f2) { return double1(_hlslpp_dot2_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double1 dot(const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 dot(const double1& f1, const double1& f2) { return f1 * f2; }
+	hlslpp_inline_nodiscard double1 dot(const double2& f1, const double2& f2) { return double1(_hlslpp_dot2_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double1 dot(const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double1(_hlslpp256_dot3_pd(f1.vec, f2.vec));
@@ -937,7 +939,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 dot(const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double1 dot(const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double1(_hlslpp256_dot4_pd(f1.vec, f2.vec));
@@ -946,9 +948,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 floor(const double1& f) { return double1(_hlslpp_floor_pd(f.vec)); }
-	hlslpp_inline double2 floor(const double2& f) { return double2(_hlslpp_floor_pd(f.vec)); }
-	hlslpp_inline double3 floor(const double3& f)
+	hlslpp_inline_nodiscard double1 floor(const double1& f) { return double1(_hlslpp_floor_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 floor(const double2& f) { return double2(_hlslpp_floor_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 floor(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_floor_pd(f.vec));
@@ -957,7 +959,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 floor(const double4& f)
+	hlslpp_inline_nodiscard double4 floor(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_floor_pd(f.vec));
@@ -966,9 +968,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 fmod(const double1& f1, const double1& f2) { return double1(_hlslpp_fmod_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 fmod(const double2& f1, const double2& f2) { return double2(_hlslpp_fmod_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 fmod(const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 fmod(const double1& f1, const double1& f2) { return double1(_hlslpp_fmod_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 fmod(const double2& f1, const double2& f2) { return double2(_hlslpp_fmod_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 fmod(const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_fmod_pd(f1.vec, f2.vec));
@@ -977,7 +979,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 fmod(const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 fmod(const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_fmod_pd(f1.vec, f2.vec));
@@ -989,9 +991,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	// A note on negative numbers. Contrary to intuition, frac(-0.75) != 0.75,
 	// but is actually frac(-0.75) == 0.25 This is because hlsl defines frac
 	// as frac(x) = x - floor(x)
-	hlslpp_inline double1 frac(const double1& f) { return double1(_hlslpp_frac_pd(f.vec)); }
-	hlslpp_inline double2 frac(const double2& f) { return double2(_hlslpp_frac_pd(f.vec)); }
-	hlslpp_inline double3 frac(const double3& f)
+	hlslpp_inline_nodiscard double1 frac(const double1& f) { return double1(_hlslpp_frac_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 frac(const double2& f) { return double2(_hlslpp_frac_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 frac(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_frac_pd(f.vec));
@@ -1000,7 +1002,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 frac(const double4& f)
+	hlslpp_inline_nodiscard double4 frac(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_frac_pd(f.vec));
@@ -1009,9 +1011,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 length(const double1& f) { return f; }
-	hlslpp_inline double1 length(const double2& f) { return double1(_hlslpp_sqrt_pd(_hlslpp_dot2_pd(f.vec, f.vec))); }
-	hlslpp_inline double1 length(const double3& f)
+	hlslpp_inline_nodiscard double1 length(const double1& f) { return f; }
+	hlslpp_inline_nodiscard double1 length(const double2& f) { return double1(_hlslpp_sqrt_pd(_hlslpp_dot2_pd(f.vec, f.vec))); }
+	hlslpp_inline_nodiscard double1 length(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double1(_hlslpp_sqrt_pd(_hlslpp256_dot3_pd(f.vec, f.vec)));
@@ -1020,7 +1022,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 length(const double4& f)
+	hlslpp_inline_nodiscard double1 length(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double1(_hlslpp_sqrt_pd(_hlslpp256_dot4_pd(f.vec, f.vec)));
@@ -1029,10 +1031,10 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 lerp(const double1& f1, const double1& f2, const double1& a) { return double1(_hlslpp_lerp_pd(f1.vec, f2.vec, a.vec)); }
-	hlslpp_inline double2 lerp(const double2& f1, const double2& f2, const double2& a) { return double2(_hlslpp_lerp_pd(f1.vec, f2.vec, a.vec)); }
+	hlslpp_inline_nodiscard double1 lerp(const double1& f1, const double1& f2, const double1& a) { return double1(_hlslpp_lerp_pd(f1.vec, f2.vec, a.vec)); }
+	hlslpp_inline_nodiscard double2 lerp(const double2& f1, const double2& f2, const double2& a) { return double2(_hlslpp_lerp_pd(f1.vec, f2.vec, a.vec)); }
 
-	hlslpp_inline double3 lerp(const double3& f1, const double3& f2, const double3& a)
+	hlslpp_inline_nodiscard double3 lerp(const double3& f1, const double3& f2, const double3& a)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_lerp_pd(f1.vec, f2.vec, a.vec));
@@ -1041,7 +1043,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 lerp(const double4& f1, const double4& f2, const double4& a)
+	hlslpp_inline_nodiscard double4 lerp(const double4& f1, const double4& f2, const double4& a)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_lerp_pd(f1.vec, f2.vec, a.vec));
@@ -1050,9 +1052,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 min(const double1& f1, const double1& f2) { return double1(_hlslpp_min_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 min(const double2& f1, const double2& f2) { return double2(_hlslpp_min_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 min(const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 min(const double1& f1, const double1& f2) { return double1(_hlslpp_min_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 min(const double2& f1, const double2& f2) { return double2(_hlslpp_min_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 min(const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_min_pd(f1.vec, f2.vec));
@@ -1061,7 +1063,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 min(const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 min(const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_min_pd(f1.vec, f2.vec));
@@ -1070,9 +1072,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 mad(const double1& f1, const double1& f2, const double1& f3) { return double1(_hlslpp_madd_pd(f1.vec, f2.vec, f3.vec)); }
-	hlslpp_inline double2 mad(const double2& f1, const double2& f2, const double2& f3) { return double2(_hlslpp_madd_pd(f1.vec, f2.vec, f3.vec)); }
-	hlslpp_inline double3 mad(const double3& f1, const double3& f2, const double3& f3)
+	hlslpp_inline_nodiscard double1 mad(const double1& f1, const double1& f2, const double1& f3) { return double1(_hlslpp_madd_pd(f1.vec, f2.vec, f3.vec)); }
+	hlslpp_inline_nodiscard double2 mad(const double2& f1, const double2& f2, const double2& f3) { return double2(_hlslpp_madd_pd(f1.vec, f2.vec, f3.vec)); }
+	hlslpp_inline_nodiscard double3 mad(const double3& f1, const double3& f2, const double3& f3)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_madd_pd(f1.vec, f2.vec, f3.vec));
@@ -1081,7 +1083,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 mad(const double4& f1, const double4& f2, const double4& f3)
+	hlslpp_inline_nodiscard double4 mad(const double4& f1, const double4& f2, const double4& f3)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_madd_pd(f1.vec, f2.vec, f3.vec));
@@ -1090,9 +1092,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 max(const double1& f1, const double1& f2) { return double1(_hlslpp_max_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 max(const double2& f1, const double2& f2) { return double2(_hlslpp_max_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 max(const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 max(const double1& f1, const double1& f2) { return double1(_hlslpp_max_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 max(const double2& f1, const double2& f2) { return double2(_hlslpp_max_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 max(const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_max_pd(f1.vec, f2.vec));
@@ -1101,7 +1103,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 max(const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 max(const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_max_pd(f1.vec, f2.vec));
@@ -1110,7 +1112,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 modf(const double1& f1, double1& integerPart)
+	hlslpp_inline_nodiscard double1 modf(const double1& f1, double1& integerPart)
 	{
 		n128d signedFrac, signedInteger;
 		_hlslpp_modf_pd(f1.vec, signedInteger, signedFrac);
@@ -1118,7 +1120,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 		return double1(signedFrac);
 	}
 
-	hlslpp_inline double2 modf(const double2& f1, double2& integerPart)
+	hlslpp_inline_nodiscard double2 modf(const double2& f1, double2& integerPart)
 	{
 		n128d signedFrac, signedInteger;
 		_hlslpp_modf_pd(f1.vec, signedInteger, signedFrac);
@@ -1126,7 +1128,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 		return double2(signedFrac);
 	}
 
-	hlslpp_inline double3 modf(const double3& f1, double3& integerPart)
+	hlslpp_inline_nodiscard double3 modf(const double3& f1, double3& integerPart)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n256d signedFrac, signedInteger;
@@ -1142,7 +1144,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 modf(const double4& f1, double4& integerPart)
+	hlslpp_inline_nodiscard double4 modf(const double4& f1, double4& integerPart)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n256d signedFrac, signedInteger;
@@ -1158,9 +1160,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 normalize(const double1&/* f*/) { return double1(1.0f); }
-	hlslpp_inline double2 normalize(const double2& f) { return double2(_hlslpp_div_pd(f.vec, _hlslpp_perm_xx_pd(_hlslpp_sqrt_pd(_hlslpp_dot2_pd(f.vec, f.vec))))); }
-	hlslpp_inline double3 normalize(const double3& f)
+	hlslpp_inline_nodiscard double1 normalize(const double1&/* f*/) { return double1(1.0f); }
+	hlslpp_inline_nodiscard double2 normalize(const double2& f) { return double2(_hlslpp_div_pd(f.vec, _hlslpp_perm_xx_pd(_hlslpp_sqrt_pd(_hlslpp_dot2_pd(f.vec, f.vec))))); }
+	hlslpp_inline_nodiscard double3 normalize(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)		
 		n128d dot3 = _hlslpp256_dot3_pd(f.vec, f.vec);
@@ -1173,7 +1175,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 normalize(const double4& f)
+	hlslpp_inline_nodiscard double4 normalize(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		n128d dot4 = _hlslpp256_dot4_pd(f.vec, f.vec);
@@ -1186,10 +1188,10 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 select(const double1& condition, const double1& f1, const double1& f2) { return double1(_hlslpp_sel_pd(f1.vec, f2.vec, _hlslpp_cmpeq_pd(condition.vec, _hlslpp_setzero_pd()))); }
-	hlslpp_inline double2 select(const double2& condition, const double2& f1, const double2& f2) { return double2(_hlslpp_sel_pd(f1.vec, f2.vec, _hlslpp_cmpeq_pd(condition.vec, _hlslpp_setzero_pd()))); }
+	hlslpp_inline_nodiscard double1 select(const double1& condition, const double1& f1, const double1& f2) { return double1(_hlslpp_sel_pd(f1.vec, f2.vec, _hlslpp_cmpeq_pd(condition.vec, _hlslpp_setzero_pd()))); }
+	hlslpp_inline_nodiscard double2 select(const double2& condition, const double2& f1, const double2& f2) { return double2(_hlslpp_sel_pd(f1.vec, f2.vec, _hlslpp_cmpeq_pd(condition.vec, _hlslpp_setzero_pd()))); }
 
-	hlslpp_inline double3 select(const double3& condition, const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double3 select(const double3& condition, const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_sel_pd(f1.vec, f2.vec, _hlslpp256_cmpeq_pd(condition.vec, _hlslpp256_setzero_pd())));
@@ -1202,7 +1204,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 select(const double4& condition, const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 select(const double4& condition, const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_sel_pd(f1.vec, f2.vec, _hlslpp256_cmpeq_pd(condition.vec, _hlslpp256_setzero_pd())));
@@ -1215,9 +1217,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 radians(const double1& f) { return double1(_hlslpp_mul_pd(f.vec, d2_deg2rad)); }
-	hlslpp_inline double2 radians(const double2& f) { return double2(_hlslpp_mul_pd(f.vec, d2_deg2rad)); }
-	hlslpp_inline double3 radians(const double3& f)
+	hlslpp_inline_nodiscard double1 radians(const double1& f) { return double1(_hlslpp_mul_pd(f.vec, d2_deg2rad)); }
+	hlslpp_inline_nodiscard double2 radians(const double2& f) { return double2(_hlslpp_mul_pd(f.vec, d2_deg2rad)); }
+	hlslpp_inline_nodiscard double3 radians(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_mul_pd(f.vec, d4_deg2rad));
@@ -1226,7 +1228,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 radians(const double4& f)
+	hlslpp_inline_nodiscard double4 radians(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_mul_pd(f.vec, d4_deg2rad));
@@ -1235,18 +1237,18 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 rcp(const double1& f) { return double1(_hlslpp_rcp_pd(f.vec)); }
-	hlslpp_inline double2 rcp(const double2& f) { return double2(_hlslpp_rcp_pd(f.vec)); }
-	hlslpp_inline double3 rcp(const double3& f)
+	hlslpp_inline_nodiscard double1 rcp(const double1& f) { return double1(_hlslpp_rcp_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 rcp(const double2& f) { return double2(_hlslpp_rcp_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 rcp(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_rcp_pd(f.vec));
 #else
 		return double3(_hlslpp_rcp_pd(f.vec0), _hlslpp_rcp_pd(f.vec1));
 #endif
-	
 	}
-	hlslpp_inline double4 rcp(const double4& f)
+
+	hlslpp_inline_nodiscard double4 rcp(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_rcp_pd(f.vec));
@@ -1255,9 +1257,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 rsqrt(const double1& f) { return double1(_hlslpp_rsqrt_pd(f.vec)); }
-	hlslpp_inline double2 rsqrt(const double2& f) { return double2(_hlslpp_rsqrt_pd(f.vec)); }
-	hlslpp_inline double3 rsqrt(const double3& f)
+	hlslpp_inline_nodiscard double1 rsqrt(const double1& f) { return double1(_hlslpp_rsqrt_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 rsqrt(const double2& f) { return double2(_hlslpp_rsqrt_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 rsqrt(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_rsqrt_pd(f.vec));
@@ -1266,7 +1268,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 rsqrt(const double4& f)
+	hlslpp_inline_nodiscard double4 rsqrt(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_rsqrt_pd(f.vec));
@@ -1275,9 +1277,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 round(const double1& f) { return double1(_hlslpp_round_pd(f.vec)); }
-	hlslpp_inline double2 round(const double2& f) { return double2(_hlslpp_round_pd(f.vec)); }
-	hlslpp_inline double3 round(const double3& f)
+	hlslpp_inline_nodiscard double1 round(const double1& f) { return double1(_hlslpp_round_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 round(const double2& f) { return double2(_hlslpp_round_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 round(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_round_pd(f.vec));
@@ -1286,7 +1288,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 round(const double4& f)
+	hlslpp_inline_nodiscard double4 round(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_round_pd(f.vec));
@@ -1295,9 +1297,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 saturate(const double1& f) { return double1(_hlslpp_sat_pd(f.vec)); }
-	hlslpp_inline double2 saturate(const double2& f) { return double2(_hlslpp_sat_pd(f.vec)); }
-	hlslpp_inline double3 saturate(const double3& f)
+	hlslpp_inline_nodiscard double1 saturate(const double1& f) { return double1(_hlslpp_sat_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 saturate(const double2& f) { return double2(_hlslpp_sat_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 saturate(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_sat_pd(f.vec));
@@ -1306,7 +1308,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 saturate(const double4& f)
+	hlslpp_inline_nodiscard double4 saturate(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_sat_pd(f.vec));
@@ -1315,9 +1317,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 sign(const double1& f) { return double1(_hlslpp_sign_pd(f.vec)); }
-	hlslpp_inline double2 sign(const double2& f) { return double2(_hlslpp_sign_pd(f.vec)); }
-	hlslpp_inline double3 sign(const double3& f)
+	hlslpp_inline_nodiscard double1 sign(const double1& f) { return double1(_hlslpp_sign_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 sign(const double2& f) { return double2(_hlslpp_sign_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 sign(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_sign_pd(f.vec));
@@ -1326,7 +1328,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 sign(const double4& f)
+	hlslpp_inline_nodiscard double4 sign(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_sign_pd(f.vec));
@@ -1335,9 +1337,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 sqrt(const double1& f) { return double1(_hlslpp_sqrt_pd(f.vec)); }
-	hlslpp_inline double2 sqrt(const double2& f) { return double2(_hlslpp_sqrt_pd(f.vec)); }
-	hlslpp_inline double3 sqrt(const double3& f)
+	hlslpp_inline_nodiscard double1 sqrt(const double1& f) { return double1(_hlslpp_sqrt_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 sqrt(const double2& f) { return double2(_hlslpp_sqrt_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 sqrt(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_sqrt_pd(f.vec));
@@ -1346,7 +1348,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 sqrt(const double4& f)
+	hlslpp_inline_nodiscard double4 sqrt(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_sqrt_pd(f.vec));
@@ -1355,9 +1357,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double1 step(const double1& f1, const double1& f2) { return double1(_hlslpp_step_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double2 step(const double2& f1, const double2& f2) { return double2(_hlslpp_step_pd(f1.vec, f2.vec)); }
-	hlslpp_inline double3 step(const double3& f1, const double3& f2)
+	hlslpp_inline_nodiscard double1 step(const double1& f1, const double1& f2) { return double1(_hlslpp_step_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double2 step(const double2& f1, const double2& f2) { return double2(_hlslpp_step_pd(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard double3 step(const double3& f1, const double3& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_step_pd(f1.vec, f2.vec));
@@ -1366,7 +1368,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 step(const double4& f1, const double4& f2)
+	hlslpp_inline_nodiscard double4 step(const double4& f1, const double4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_step_pd(f1.vec, f2.vec));
@@ -1375,9 +1377,9 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 	
-	hlslpp_inline double1 trunc(const double1& f) { return double1(_hlslpp_trunc_pd(f.vec)); }
-	hlslpp_inline double2 trunc(const double2& f) { return double2(_hlslpp_trunc_pd(f.vec)); }
-	hlslpp_inline double3 trunc(const double3& f)
+	hlslpp_inline_nodiscard double1 trunc(const double1& f) { return double1(_hlslpp_trunc_pd(f.vec)); }
+	hlslpp_inline_nodiscard double2 trunc(const double2& f) { return double2(_hlslpp_trunc_pd(f.vec)); }
+	hlslpp_inline_nodiscard double3 trunc(const double3& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double3(_hlslpp256_trunc_pd(f.vec));
@@ -1386,7 +1388,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 #endif
 	}
 
-	hlslpp_inline double4 trunc(const double4& f)
+	hlslpp_inline_nodiscard double4 trunc(const double4& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 		return double4(_hlslpp256_trunc_pd(f.vec));
@@ -1400,47 +1402,47 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	// in the global namespace. Due to implicit conversions, we need to clarify to the compiler which functions it needs to use.
 	//--------------------------------------------------------------------------------------------------------------------------
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator == (const double1& f1, T f2) { return f1 == double1(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) operator == (T f1, const double1& f2) { return double1(f1) == f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator == (const double1& f1, T f2) { return f1 == double1(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) operator == (T f1, const double1& f2) { return double1(f1) == f2; }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(const double1& f1, const double1& f2, T a) { return lerp(f1, f2, double1(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(const double1& f1, T f2, const double1& a) { return lerp(f1, double1(f2), a); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(T f1, const double1& f2, const double1& a) { return lerp(double1(f1), f2, a); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(const double1& f1, T f2, T a) { return lerp(f1, double1(f2), double1(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(T f1, const double1& f2, T a) { return lerp(double1(f1), f2, double1(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double1) lerp(T f1, T f2, const double1& a) { return lerp(double1(f1), double1(f2), a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) lerp(const double1& f1, const double1& f2, T a) { return lerp(f1, f2, double1(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) lerp(const double1& f1, T f2, const double1& a) { return lerp(f1, double1(f2), a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) lerp(T f1, const double1& f2, const double1& a) { return lerp(double1(f1), f2, a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) lerp(const double1& f1, T f2, T a) { return lerp(f1, double1(f2), double1(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) lerp(T f1, const double1& f2, T a) { return lerp(double1(f1), f2, double1(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double1) lerp(T f1, T f2, const double1& a) { return lerp(double1(f1), double1(f2), a); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(const double2& f1, const double2& f2, T a) { return lerp(f1, f2, double2(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(const double2& f1, T f2, const double2& a) { return lerp(f1, double2(f2), a); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(T f1, const double2& f2, const double2& a) { return lerp(double2(f1), f2, a); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(const double2& f1, T f2, T a) { return lerp(f1, double2(f2), double2(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(T f1, const double2& f2, T a) { return lerp(double2(f1), f2, double2(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double2) lerp(T f1, T f2, const double2& a) { return lerp(double2(f1), double2(f2), a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) lerp(const double2& f1, const double2& f2, T a) { return lerp(f1, f2, double2(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) lerp(const double2& f1, T f2, const double2& a) { return lerp(f1, double2(f2), a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) lerp(T f1, const double2& f2, const double2& a) { return lerp(double2(f1), f2, a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) lerp(const double2& f1, T f2, T a) { return lerp(f1, double2(f2), double2(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) lerp(T f1, const double2& f2, T a) { return lerp(double2(f1), f2, double2(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double2) lerp(T f1, T f2, const double2& a) { return lerp(double2(f1), double2(f2), a); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(const double3& f1, const double3& f2, T a) { return lerp(f1, f2, double3(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(const double3& f1, T f2, const double3& a) { return lerp(f1, double3(f2), a); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(T f1, const double3& f2, const double3& a) { return lerp(double3(f1), f2, a); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(const double3& f1, T f2, T a) { return lerp(f1, double3(f2), double3(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(T f1, const double3& f2, T a) { return lerp(double3(f1), f2, double3(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double3) lerp(T f1, T f2, const double3& a) { return lerp(double3(f1), double3(f2), a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) lerp(const double3& f1, const double3& f2, T a) { return lerp(f1, f2, double3(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) lerp(const double3& f1, T f2, const double3& a) { return lerp(f1, double3(f2), a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) lerp(T f1, const double3& f2, const double3& a) { return lerp(double3(f1), f2, a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) lerp(const double3& f1, T f2, T a) { return lerp(f1, double3(f2), double3(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) lerp(T f1, const double3& f2, T a) { return lerp(double3(f1), f2, double3(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double3) lerp(T f1, T f2, const double3& a) { return lerp(double3(f1), double3(f2), a); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(const double4& f1, const double4& f2, T a) { return lerp(f1, f2, double4(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(const double4& f1, T f2, const double4& a) { return lerp(f1, double4(f2), a); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(T f1, const double4& f2, const double4& a) { return lerp(double4(f1), f2, a); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(const double4& f1, T f2, T a) { return lerp(f1, double4(f2), double4(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(T f1, const double4& f2, T a) { return lerp(double4(f1), f2, double4(a)); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, double4) lerp(T f1, T f2, const double4& a) { return lerp(double4(f1), double4(f2), a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) lerp(const double4& f1, const double4& f2, T a) { return lerp(f1, f2, double4(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) lerp(const double4& f1, T f2, const double4& a) { return lerp(f1, double4(f2), a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) lerp(T f1, const double4& f2, const double4& a) { return lerp(double4(f1), f2, a); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) lerp(const double4& f1, T f2, T a) { return lerp(f1, double4(f2), double4(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) lerp(T f1, const double4& f2, T a) { return lerp(double4(f1), f2, double4(a)); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, double4) lerp(T f1, T f2, const double4& a) { return lerp(double4(f1), double4(f2), a); }
 
-	template<int X> hlslpp_inline double1 operator - (const dswizzle1<X>& s) { return -double1(s); }
+	template<int X> hlslpp_inline_nodiscard double1 operator - (const dswizzle1<X>& s) { return -double1(s); }
 
-	template<int X> hlslpp_inline double1 abs(const dswizzle1<X>& s) { return abs(double1(s)); }
+	template<int X> hlslpp_inline_nodiscard double1 abs(const dswizzle1<X>& s) { return abs(double1(s)); }
 
-	template<int X> hlslpp_inline double1 ceil(const dswizzle1<X>& s) { return ceil(double1(s)); }
-	template<int X> hlslpp_inline double1 floor(const dswizzle1<X>& s) { return floor(double1(s)); }
-	template<int X> hlslpp_inline double1 frac(const dswizzle1<X>& s) { return frac(double1(s)); }
-	template<int X> hlslpp_inline double1 round(const dswizzle1<X>& s) { return round(double1(s)); }
-	template<int X> hlslpp_inline double1 sqrt(const dswizzle1<X>& s) { return sqrt(double1(s)); }
-	template<int X> hlslpp_inline double1 trunc(const dswizzle1<X>& s) { return trunc(double1(s)); }
+	template<int X> hlslpp_inline_nodiscard double1 ceil(const dswizzle1<X>& s) { return ceil(double1(s)); }
+	template<int X> hlslpp_inline_nodiscard double1 floor(const dswizzle1<X>& s) { return floor(double1(s)); }
+	template<int X> hlslpp_inline_nodiscard double1 frac(const dswizzle1<X>& s) { return frac(double1(s)); }
+	template<int X> hlslpp_inline_nodiscard double1 round(const dswizzle1<X>& s) { return round(double1(s)); }
+	template<int X> hlslpp_inline_nodiscard double1 sqrt(const dswizzle1<X>& s) { return sqrt(double1(s)); }
+	template<int X> hlslpp_inline_nodiscard double1 trunc(const dswizzle1<X>& s) { return trunc(double1(s)); }
 
 	template<int X>
 	hlslpp_inline dswizzle1<X>& dswizzle1<X>::operator = (double f)

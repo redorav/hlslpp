@@ -7,7 +7,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
 namespace hlslpp
 {
 	template<int X>
-	struct hlslpp_nodiscard uswizzle1
+	struct uswizzle1
 	{
 		template<int A> friend struct uswizzle1;
 	
@@ -37,7 +37,7 @@ namespace hlslpp
 	};
 	
 	template<int X, int Y>
-	struct hlslpp_nodiscard uswizzle2
+	struct uswizzle2
 	{
 		#define hlslpp_uswizzle2_swizzle(E, F, A, B, v) \
 		    (_hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : 0, \
@@ -59,7 +59,7 @@ namespace hlslpp
 	};
 	
 	template<int X, int Y, int Z>
-	struct hlslpp_nodiscard uswizzle3
+	struct uswizzle3
 	{
 		#define hlslpp_uswizzle3_swizzle(E, F, G, A, B, C, v) \
 		    (_hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : 0, \
@@ -81,7 +81,7 @@ namespace hlslpp
 	};
 
 	template<int X, int Y, int Z, int W>
-	struct hlslpp_nodiscard uswizzle4
+	struct uswizzle4
 	{
 		#define hlslpp_uswizzle4_swizzle(E, F, G, H, A, B, C, D, v) \
 		    (_hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : D == 0 ? H : 0, \
@@ -97,7 +97,7 @@ namespace hlslpp
 		n128u vec;
 	};
 	
-	struct hlslpp_nodiscard hlslpp_alignas(16) uint1
+	struct hlslpp_alignas(16) uint1
 	{
 		hlslpp_inline uint1() hlslpp_noexcept : vec(_hlslpp_setzero_epu32()) {}
 		hlslpp_inline uint1(const uint1& i) hlslpp_noexcept : vec(i.vec) {}
@@ -140,7 +140,7 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard hlslpp_alignas(16) uint2
+	struct hlslpp_alignas(16) uint2
 	{
 		// Constructors
 
@@ -189,7 +189,7 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 	
-	struct hlslpp_nodiscard hlslpp_alignas(16) uint3
+	struct hlslpp_alignas(16) uint3
 	{
 		// Constructors
 
@@ -245,7 +245,7 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard hlslpp_alignas(16) uint4
+	struct hlslpp_alignas(16) uint4
 	{
 		hlslpp_inline uint4() hlslpp_noexcept : vec(_hlslpp_setzero_epu32()) {}
 		hlslpp_inline uint4(const uint4& i) hlslpp_noexcept : vec(i.vec) {}

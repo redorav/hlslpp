@@ -120,25 +120,25 @@ hlslpp_module_export namespace hlslpp
 {
 	// Operators
 
-	hlslpp_inline int1 operator + (const int1& i1, const int1& i2) { return int1(_hlslpp_add_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator + (const int2& i1, const int2& i2) { return int2(_hlslpp_add_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator + (const int3& i1, const int3& i2) { return int3(_hlslpp_add_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator + (const int4& i1, const int4& i2) { return int4(_hlslpp_add_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator + (const int1& i1, const int1& i2) { return int1(_hlslpp_add_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator + (const int2& i1, const int2& i2) { return int2(_hlslpp_add_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator + (const int3& i1, const int3& i2) { return int3(_hlslpp_add_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator + (const int4& i1, const int4& i2) { return int4(_hlslpp_add_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int1 operator - (const int1& i1, const int1& i2) { return int1(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator - (const int2& i1, const int2& i2) { return int2(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator - (const int3& i1, const int3& i2) { return int3(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator - (const int4& i1, const int4& i2) { return int4(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator - (const int1& i1, const int1& i2) { return int1(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator - (const int2& i1, const int2& i2) { return int2(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator - (const int3& i1, const int3& i2) { return int3(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator - (const int4& i1, const int4& i2) { return int4(_hlslpp_sub_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int1 operator * (const int1& i1, const int1& i2) { return int1(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator * (const int2& i1, const int2& i2) { return int2(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator * (const int3& i1, const int3& i2) { return int3(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator * (const int4& i1, const int4& i2) { return int4(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator * (const int1& i1, const int1& i2) { return int1(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator * (const int2& i1, const int2& i2) { return int2(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator * (const int3& i1, const int3& i2) { return int3(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator * (const int4& i1, const int4& i2) { return int4(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int1 operator / (const int1& i1, const int1& i2) { return int1(_hlslpp_div_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator / (const int2& i1, const int2& i2) { return int2(_hlslpp_div_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator / (const int3& i1, const int3& i2) { return int3(_hlslpp_div_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator / (const int4& i1, const int4& i2) { return int4(_hlslpp_div_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator / (const int1& i1, const int1& i2) { return int1(_hlslpp_div_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator / (const int2& i1, const int2& i2) { return int2(_hlslpp_div_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator / (const int3& i1, const int3& i2) { return int3(_hlslpp_div_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator / (const int4& i1, const int4& i2) { return int4(_hlslpp_div_epi32(i1.vec, i2.vec)); }
 
 HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
 
@@ -201,55 +201,55 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	// and functions that are part of common headers such as cmath, math.h, algorithm, etc                                    //
 	//------------------------------------------------------------------------------------------------------------------------//
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int1) operator + (const int1& i1, T i2) { return i1 + int1(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int2) operator + (const int2& i1, T i2) { return i1 + int2(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int3) operator + (const int3& i1, T i2) { return i1 + int3(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int4) operator + (const int4& i1, T i2) { return i1 + int4(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator + (const int1& i1, T i2) { return i1 + int1(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int2) operator + (const int2& i1, T i2) { return i1 + int2(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int3) operator + (const int3& i1, T i2) { return i1 + int3(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int4) operator + (const int4& i1, T i2) { return i1 + int4(i2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int1) operator + (T i1, const int1& i2) { return int1(i1) + i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int2) operator + (T i1, const int2& i2) { return int2(i1) + i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int3) operator + (T i1, const int3& i2) { return int3(i1) + i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int4) operator + (T i1, const int4& i2) { return int4(i1) + i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator + (T i1, const int1& i2) { return int1(i1) + i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int2) operator + (T i1, const int2& i2) { return int2(i1) + i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int3) operator + (T i1, const int3& i2) { return int3(i1) + i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int4) operator + (T i1, const int4& i2) { return int4(i1) + i2; }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int1) operator - (const int1& i1, T i2) { return i1 - int1(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int2) operator - (const int2& i1, T i2) { return i1 - int2(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int3) operator - (const int3& i1, T i2) { return i1 - int3(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int4) operator - (const int4& i1, T i2) { return i1 - int4(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator - (const int1& i1, T i2) { return i1 - int1(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int2) operator - (const int2& i1, T i2) { return i1 - int2(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int3) operator - (const int3& i1, T i2) { return i1 - int3(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int4) operator - (const int4& i1, T i2) { return i1 - int4(i2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int1) operator - (T i1, const int1& i2) { return int1(i1) - i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int2) operator - (T i1, const int2& i2) { return int2(i1) - i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int3) operator - (T i1, const int3& i2) { return int3(i1) - i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int4) operator - (T i1, const int4& i2) { return int4(i1) - i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator - (T i1, const int1& i2) { return int1(i1) - i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int2) operator - (T i1, const int2& i2) { return int2(i1) - i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int3) operator - (T i1, const int3& i2) { return int3(i1) - i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int4) operator - (T i1, const int4& i2) { return int4(i1) - i2; }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int1) operator * (const int1& i1, T i2) { return i1 * int1(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int2) operator * (const int2& i1, T i2) { return i1 * int2(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int3) operator * (const int3& i1, T i2) { return i1 * int3(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int4) operator * (const int4& i1, T i2) { return i1 * int4(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator * (const int1& i1, T i2) { return i1 * int1(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int2) operator * (const int2& i1, T i2) { return i1 * int2(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int3) operator * (const int3& i1, T i2) { return i1 * int3(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int4) operator * (const int4& i1, T i2) { return i1 * int4(i2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int1) operator * (T i1, const int1& i2) { return int1(i1) * i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int2) operator * (T i1, const int2& i2) { return int2(i1) * i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int3) operator * (T i1, const int3& i2) { return int3(i1) * i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int4) operator * (T i1, const int4& i2) { return int4(i1) * i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator * (T i1, const int1& i2) { return int1(i1) * i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int2) operator * (T i1, const int2& i2) { return int2(i1) * i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int3) operator * (T i1, const int3& i2) { return int3(i1) * i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int4) operator * (T i1, const int4& i2) { return int4(i1) * i2; }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int1) operator / (const int1& i1, T i2) { return i1 / int1(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int2) operator / (const int2& i1, T i2) { return i1 / int2(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int3) operator / (const int3& i1, T i2) { return i1 / int3(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int4) operator / (const int4& i1, T i2) { return i1 / int4(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator / (const int1& i1, T i2) { return i1 / int1(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int2) operator / (const int2& i1, T i2) { return i1 / int2(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int3) operator / (const int3& i1, T i2) { return i1 / int3(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int4) operator / (const int4& i1, T i2) { return i1 / int4(i2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int1) operator / (T i1, const int1& i2) { return int1(i1) / i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int2) operator / (T i1, const int2& i2) { return int2(i1) / i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int3) operator / (T i1, const int3& i2) { return int3(i1) / i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int4) operator / (T i1, const int4& i2) { return int4(i1) / i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator / (T i1, const int1& i2) { return int1(i1) / i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int2) operator / (T i1, const int2& i2) { return int2(i1) / i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int3) operator / (T i1, const int3& i2) { return int3(i1) / i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int4) operator / (T i1, const int4& i2) { return int4(i1) / i2; }
 
-	template<int X> hlslpp_inline int1 operator + (const iswizzle1<X>& s, const int1& i) { return int1(s) + i; }
-	template<int X> hlslpp_inline int1 operator - (const iswizzle1<X>& s, const int1& i) { return int1(s) - i; }
-	template<int X> hlslpp_inline int1 operator * (const iswizzle1<X>& s, const int1& i) { return int1(s) * i; }
-	template<int X> hlslpp_inline int1 operator / (const iswizzle1<X>& s, const int1& i) { return int1(s) / i; }
+	template<int X> hlslpp_inline_nodiscard int1 operator + (const iswizzle1<X>& s, const int1& i) { return int1(s) + i; }
+	template<int X> hlslpp_inline_nodiscard int1 operator - (const iswizzle1<X>& s, const int1& i) { return int1(s) - i; }
+	template<int X> hlslpp_inline_nodiscard int1 operator * (const iswizzle1<X>& s, const int1& i) { return int1(s) * i; }
+	template<int X> hlslpp_inline_nodiscard int1 operator / (const iswizzle1<X>& s, const int1& i) { return int1(s) / i; }
 
-	hlslpp_inline int1 operator - (const int1& i) { return int1(_hlslpp_neg_epi32(i.vec)); }
-	hlslpp_inline int2 operator - (const int2& i) { return int2(_hlslpp_neg_epi32(i.vec)); }
-	hlslpp_inline int3 operator - (const int3& i) { return int3(_hlslpp_neg_epi32(i.vec)); }
-	hlslpp_inline int4 operator - (const int4& i) { return int4(_hlslpp_neg_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int1 operator - (const int1& i) { return int1(_hlslpp_neg_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int2 operator - (const int2& i) { return int2(_hlslpp_neg_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int3 operator - (const int3& i) { return int3(_hlslpp_neg_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int4 operator - (const int4& i) { return int4(_hlslpp_neg_epi32(i.vec)); }
 
 	hlslpp_inline int1& operator += (int1& i1, const int1& i2) { i1 = i1 + i2; return i1; }
 	hlslpp_inline int2& operator += (int2& i1, const int2& i2) { i1 = i1 + i2; return i1; }
@@ -291,87 +291,87 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	template<int X, int Y, int Z, int W> hlslpp_inline iswizzle4<X, Y, Z, W>& operator *= (iswizzle4<X, Y, Z, W>& s, const int4& i) { s = int4(s) * i; return s; }
 	template<int X, int Y, int Z, int W> hlslpp_inline iswizzle4<X, Y, Z, W>& operator /= (iswizzle4<X, Y, Z, W>& s, const int4& i) { s = int4(s) / i; return s; }
 
-	hlslpp_inline int1 operator == (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator == (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator == (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator == (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator == (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator == (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator == (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator == (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpeq1_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int1 operator != (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator != (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator != (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator != (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator != (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator != (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator != (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator != (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpneq1_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int1 operator > (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator > (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator > (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator > (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator > (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator > (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator > (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator > (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpgt1_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int1 operator >= (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator >= (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator >= (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator >= (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator >= (const int1& i1, const int1& i2) { return int1(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator >= (const int2& i1, const int2& i2) { return int2(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator >= (const int3& i1, const int3& i2) { return int3(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator >= (const int4& i1, const int4& i2) { return int4(_hlslpp_cmpge1_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int1 operator < (const int1& i1, const int1& i2) { return int1(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator < (const int2& i1, const int2& i2) { return int2(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator < (const int3& i1, const int3& i2) { return int3(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator < (const int4& i1, const int4& i2) { return int4(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator < (const int1& i1, const int1& i2) { return int1(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator < (const int2& i1, const int2& i2) { return int2(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator < (const int3& i1, const int3& i2) { return int3(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator < (const int4& i1, const int4& i2) { return int4(_hlslpp_cmplt1_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int1 operator <= (const int1& i1, const int1& i2) { return int1(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator <= (const int2& i1, const int2& i2) { return int2(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator <= (const int3& i1, const int3& i2) { return int3(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator <= (const int4& i1, const int4& i2) { return int4(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator <= (const int1& i1, const int1& i2) { return int1(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator <= (const int2& i1, const int2& i2) { return int2(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator <= (const int3& i1, const int3& i2) { return int3(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator <= (const int4& i1, const int4& i2) { return int4(_hlslpp_cmple1_epi32(i1.vec, i2.vec)); }
 
 	// Bitwise
 
-	hlslpp_inline int1 operator >> (const int1& i1, const int1& i2) { return int1(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator >> (const int2& i1, const int2& i2) { return int2(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator >> (const int3& i1, const int3& i2) { return int3(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator >> (const int4& i1, const int4& i2) { return int4(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator >> (const int1& i1, const int1& i2) { return int1(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator >> (const int2& i1, const int2& i2) { return int2(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator >> (const int3& i1, const int3& i2) { return int3(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator >> (const int4& i1, const int4& i2) { return int4(_hlslpp_srlv_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int2 operator >> (const int2& i1, const int1& i2) { return int2(_hlslpp_srlv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
-	hlslpp_inline int3 operator >> (const int3& i1, const int1& i2) { return int3(_hlslpp_srlv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
-	hlslpp_inline int4 operator >> (const int4& i1, const int1& i2) { return int4(_hlslpp_srlv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int2 operator >> (const int2& i1, const int1& i2) { return int2(_hlslpp_srlv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int3 operator >> (const int3& i1, const int1& i2) { return int3(_hlslpp_srlv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int4 operator >> (const int4& i1, const int1& i2) { return int4(_hlslpp_srlv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
 
-	hlslpp_inline int1 operator << (const int1& i1, const int1& i2) { return int1(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator << (const int2& i1, const int2& i2) { return int2(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator << (const int3& i1, const int3& i2) { return int3(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator << (const int4& i1, const int4& i2) { return int4(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator << (const int1& i1, const int1& i2) { return int1(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator << (const int2& i1, const int2& i2) { return int2(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator << (const int3& i1, const int3& i2) { return int3(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator << (const int4& i1, const int4& i2) { return int4(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int2 operator << (const int2& i1, const int1& i2) { return int2(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
-	hlslpp_inline int3 operator << (const int3& i1, const int1& i2) { return int3(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
-	hlslpp_inline int4 operator << (const int4& i1, const int1& i2) { return int4(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int2 operator << (const int2& i1, const int1& i2) { return int2(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int3 operator << (const int3& i1, const int1& i2) { return int3(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int4 operator << (const int4& i1, const int1& i2) { return int4(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
 
-	hlslpp_inline int1 operator & (const int1& i1, const int1& i2) { return int1(_hlslpp_and_si128(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator & (const int2& i1, const int2& i2) { return int2(_hlslpp_and_si128(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator & (const int3& i1, const int3& i2) { return int3(_hlslpp_and_si128(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator & (const int4& i1, const int4& i2) { return int4(_hlslpp_and_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator & (const int1& i1, const int1& i2) { return int1(_hlslpp_and_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator & (const int2& i1, const int2& i2) { return int2(_hlslpp_and_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator & (const int3& i1, const int3& i2) { return int3(_hlslpp_and_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator & (const int4& i1, const int4& i2) { return int4(_hlslpp_and_si128(i1.vec, i2.vec)); }
 
-	hlslpp_inline int2 operator & (const int2& i1, const int1& i2) { return int2(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
-	hlslpp_inline int3 operator & (const int3& i1, const int1& i2) { return int3(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
-	hlslpp_inline int4 operator & (const int4& i1, const int1& i2) { return int4(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int2 operator & (const int2& i1, const int1& i2) { return int2(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int3 operator & (const int3& i1, const int1& i2) { return int3(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int4 operator & (const int4& i1, const int1& i2) { return int4(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
 
-	hlslpp_inline int1 operator | (const int1& i1, const int1& i2) { return int1(_hlslpp_or_si128(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator | (const int2& i1, const int2& i2) { return int2(_hlslpp_or_si128(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator | (const int3& i1, const int3& i2) { return int3(_hlslpp_or_si128(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator | (const int4& i1, const int4& i2) { return int4(_hlslpp_or_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator | (const int1& i1, const int1& i2) { return int1(_hlslpp_or_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator | (const int2& i1, const int2& i2) { return int2(_hlslpp_or_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator | (const int3& i1, const int3& i2) { return int3(_hlslpp_or_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator | (const int4& i1, const int4& i2) { return int4(_hlslpp_or_si128(i1.vec, i2.vec)); }
 
-	hlslpp_inline int2 operator | (const int2& i1, const int1& i2) { return int2(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
-	hlslpp_inline int3 operator | (const int3& i1, const int1& i2) { return int3(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
-	hlslpp_inline int4 operator | (const int4& i1, const int1& i2) { return int4(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int2 operator | (const int2& i1, const int1& i2) { return int2(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int3 operator | (const int3& i1, const int1& i2) { return int3(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int4 operator | (const int4& i1, const int1& i2) { return int4(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
 
-	hlslpp_inline int1 operator ^ (const int1& i1, const int1& i2) { return int1(_hlslpp_xor_si128(i1.vec, i2.vec)); }
-	hlslpp_inline int2 operator ^ (const int2& i1, const int2& i2) { return int2(_hlslpp_xor_si128(i1.vec, i2.vec)); }
-	hlslpp_inline int3 operator ^ (const int3& i1, const int3& i2) { return int3(_hlslpp_xor_si128(i1.vec, i2.vec)); }
-	hlslpp_inline int4 operator ^ (const int4& i1, const int4& i2) { return int4(_hlslpp_xor_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 operator ^ (const int1& i1, const int1& i2) { return int1(_hlslpp_xor_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 operator ^ (const int2& i1, const int2& i2) { return int2(_hlslpp_xor_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 operator ^ (const int3& i1, const int3& i2) { return int3(_hlslpp_xor_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 operator ^ (const int4& i1, const int4& i2) { return int4(_hlslpp_xor_si128(i1.vec, i2.vec)); }
 
-	hlslpp_inline int2 operator ^ (const int2& i1, const int1& i2) { return int2(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
-	hlslpp_inline int3 operator ^ (const int3& i1, const int1& i2) { return int3(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
-	hlslpp_inline int4 operator ^ (const int4& i1, const int1& i2) { return int4(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int2 operator ^ (const int2& i1, const int1& i2) { return int2(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int3 operator ^ (const int3& i1, const int1& i2) { return int3(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+	hlslpp_inline_nodiscard int4 operator ^ (const int4& i1, const int1& i2) { return int4(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
 
-	hlslpp_inline int1 operator ~ (const int1& i1) { return int1(_hlslpp_not_si128(i1.vec)); }
-	hlslpp_inline int2 operator ~ (const int2& i1) { return int2(_hlslpp_not_si128(i1.vec)); }
-	hlslpp_inline int3 operator ~ (const int3& i1) { return int3(_hlslpp_not_si128(i1.vec)); }
-	hlslpp_inline int4 operator ~ (const int4& i1) { return int4(_hlslpp_not_si128(i1.vec)); }
+	hlslpp_inline_nodiscard int1 operator ~ (const int1& i1) { return int1(_hlslpp_not_si128(i1.vec)); }
+	hlslpp_inline_nodiscard int2 operator ~ (const int2& i1) { return int2(_hlslpp_not_si128(i1.vec)); }
+	hlslpp_inline_nodiscard int3 operator ~ (const int3& i1) { return int3(_hlslpp_not_si128(i1.vec)); }
+	hlslpp_inline_nodiscard int4 operator ~ (const int4& i1) { return int4(_hlslpp_not_si128(i1.vec)); }
 
 	hlslpp_inline int1& operator >>= (int1& i1, const int1& i2) { i1 = i1 >> i2; return i1; }
 	hlslpp_inline int2& operator >>= (int2& i1, const int2& i2) { i1 = i1 >> i2; return i1; }
@@ -398,89 +398,89 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	hlslpp_inline int3& operator ^= (int3& i1, const int3& i2) { i1 = i1 ^ i2; return i1; }
 	hlslpp_inline int4& operator ^= (int4& i1, const int4& i2) { i1 = i1 ^ i2; return i1; }
 
-	hlslpp_inline int1 abs(const int1& i) { return int1(_hlslpp_abs_epi32(i.vec)); }
-	hlslpp_inline int2 abs(const int2& i) { return int2(_hlslpp_abs_epi32(i.vec)); }
-	hlslpp_inline int3 abs(const int3& i) { return int3(_hlslpp_abs_epi32(i.vec)); }
-	hlslpp_inline int4 abs(const int4& i) { return int4(_hlslpp_abs_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int1 abs(const int1& i) { return int1(_hlslpp_abs_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int2 abs(const int2& i) { return int2(_hlslpp_abs_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int3 abs(const int3& i) { return int3(_hlslpp_abs_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int4 abs(const int4& i) { return int4(_hlslpp_abs_epi32(i.vec)); }
 
-	hlslpp_inline bool all(const int1& i) { return _hlslpp_all1_epi32(i.vec); }
-	hlslpp_inline bool all(const int2& i) { return _hlslpp_all2_epi32(i.vec); }
-	hlslpp_inline bool all(const int3& i) { return _hlslpp_all3_epi32(i.vec); }
-	hlslpp_inline bool all(const int4& i) { return _hlslpp_all4_epi32(i.vec); }
+	hlslpp_inline_nodiscard bool all(const int1& i) { return _hlslpp_all1_epi32(i.vec); }
+	hlslpp_inline_nodiscard bool all(const int2& i) { return _hlslpp_all2_epi32(i.vec); }
+	hlslpp_inline_nodiscard bool all(const int3& i) { return _hlslpp_all3_epi32(i.vec); }
+	hlslpp_inline_nodiscard bool all(const int4& i) { return _hlslpp_all4_epi32(i.vec); }
 
-	hlslpp_inline bool any(const int1& i) { return _hlslpp_any1_epi32(i.vec); }
-	hlslpp_inline bool any(const int2& i) { return _hlslpp_any2_epi32(i.vec); }
-	hlslpp_inline bool any(const int3& i) { return _hlslpp_any3_epi32(i.vec); }
-	hlslpp_inline bool any(const int4& i) { return _hlslpp_any4_epi32(i.vec); }
+	hlslpp_inline_nodiscard bool any(const int1& i) { return _hlslpp_any1_epi32(i.vec); }
+	hlslpp_inline_nodiscard bool any(const int2& i) { return _hlslpp_any2_epi32(i.vec); }
+	hlslpp_inline_nodiscard bool any(const int3& i) { return _hlslpp_any3_epi32(i.vec); }
+	hlslpp_inline_nodiscard bool any(const int4& i) { return _hlslpp_any4_epi32(i.vec); }
 
-	hlslpp_inline int1 clamp(const int1& i, const int1& mini, const int1& maxi) { return int1(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
-	hlslpp_inline int2 clamp(const int2& i, const int2& mini, const int2& maxi) { return int2(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
-	hlslpp_inline int3 clamp(const int3& i, const int3& mini, const int3& maxi) { return int3(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
-	hlslpp_inline int4 clamp(const int4& i, const int4& mini, const int4& maxi) { return int4(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline_nodiscard int1 clamp(const int1& i, const int1& mini, const int1& maxi) { return int1(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline_nodiscard int2 clamp(const int2& i, const int2& mini, const int2& maxi) { return int2(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline_nodiscard int3 clamp(const int3& i, const int3& mini, const int3& maxi) { return int3(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline_nodiscard int4 clamp(const int4& i, const int4& mini, const int4& maxi) { return int4(_hlslpp_clamp_epi32(i.vec, mini.vec, maxi.vec)); }
 
-	hlslpp_inline int1 countbits(const int1& i) { return int1(_hlslpp_countbits_epi32(i.vec)); }
-	hlslpp_inline int2 countbits(const int2& i) { return int2(_hlslpp_countbits_epi32(i.vec)); }
-	hlslpp_inline int3 countbits(const int3& i) { return int3(_hlslpp_countbits_epi32(i.vec)); }
-	hlslpp_inline int4 countbits(const int4& i) { return int4(_hlslpp_countbits_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int1 countbits(const int1& i) { return int1(_hlslpp_countbits_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int2 countbits(const int2& i) { return int2(_hlslpp_countbits_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int3 countbits(const int3& i) { return int3(_hlslpp_countbits_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int4 countbits(const int4& i) { return int4(_hlslpp_countbits_epi32(i.vec)); }
 
-	hlslpp_inline int1 dot(const int1& i1, const int1& i2) { return int1(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int1 dot(const int2& i1, const int2& i2) { return int1(_hlslpp_dot2_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int1 dot(const int3& i1, const int3& i2) { return int1(_hlslpp_dot3_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int1 dot(const int4& i1, const int4& i2) { return int1(_hlslpp_dot4_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 dot(const int1& i1, const int1& i2) { return int1(_hlslpp_mul_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 dot(const int2& i1, const int2& i2) { return int1(_hlslpp_dot2_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 dot(const int3& i1, const int3& i2) { return int1(_hlslpp_dot3_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 dot(const int4& i1, const int4& i2) { return int1(_hlslpp_dot4_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int1 firstbithigh(const int1& i) { return int1(_hlslpp_firstbithigh_epi32(i.vec)); }
-	hlslpp_inline int2 firstbithigh(const int2& i) { return int2(_hlslpp_firstbithigh_epi32(i.vec)); }
-	hlslpp_inline int3 firstbithigh(const int3& i) { return int3(_hlslpp_firstbithigh_epi32(i.vec)); }
-	hlslpp_inline int4 firstbithigh(const int4& i) { return int4(_hlslpp_firstbithigh_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int1 firstbithigh(const int1& i) { return int1(_hlslpp_firstbithigh_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int2 firstbithigh(const int2& i) { return int2(_hlslpp_firstbithigh_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int3 firstbithigh(const int3& i) { return int3(_hlslpp_firstbithigh_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int4 firstbithigh(const int4& i) { return int4(_hlslpp_firstbithigh_epi32(i.vec)); }
 
-	hlslpp_inline int1 firstbitlow(const int1& i) { return int1(_hlslpp_firstbitlow_epi32(i.vec)); }
-	hlslpp_inline int2 firstbitlow(const int2& i) { return int2(_hlslpp_firstbitlow_epi32(i.vec)); }
-	hlslpp_inline int3 firstbitlow(const int3& i) { return int3(_hlslpp_firstbitlow_epi32(i.vec)); }
-	hlslpp_inline int4 firstbitlow(const int4& i) { return int4(_hlslpp_firstbitlow_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int1 firstbitlow(const int1& i) { return int1(_hlslpp_firstbitlow_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int2 firstbitlow(const int2& i) { return int2(_hlslpp_firstbitlow_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int3 firstbitlow(const int3& i) { return int3(_hlslpp_firstbitlow_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int4 firstbitlow(const int4& i) { return int4(_hlslpp_firstbitlow_epi32(i.vec)); }
 
-	hlslpp_inline int1 min(const int1& i1, const int1& i2) { return int1(_hlslpp_min_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 min(const int2& i1, const int2& i2) { return int2(_hlslpp_min_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 min(const int3& i1, const int3& i2) { return int3(_hlslpp_min_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 min(const int4& i1, const int4& i2) { return int4(_hlslpp_min_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 min(const int1& i1, const int1& i2) { return int1(_hlslpp_min_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 min(const int2& i1, const int2& i2) { return int2(_hlslpp_min_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 min(const int3& i1, const int3& i2) { return int3(_hlslpp_min_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 min(const int4& i1, const int4& i2) { return int4(_hlslpp_min_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int1 mad(const int1& i1, const int1& i2, const int1& i3) { return int1(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
-	hlslpp_inline int2 mad(const int2& i1, const int2& i2, const int2& i3) { return int2(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
-	hlslpp_inline int3 mad(const int3& i1, const int3& i2, const int3& i3) { return int3(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
-	hlslpp_inline int4 mad(const int4& i1, const int4& i2, const int4& i3) { return int4(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
+	hlslpp_inline_nodiscard int1 mad(const int1& i1, const int1& i2, const int1& i3) { return int1(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
+	hlslpp_inline_nodiscard int2 mad(const int2& i1, const int2& i2, const int2& i3) { return int2(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
+	hlslpp_inline_nodiscard int3 mad(const int3& i1, const int3& i2, const int3& i3) { return int3(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
+	hlslpp_inline_nodiscard int4 mad(const int4& i1, const int4& i2, const int4& i3) { return int4(_hlslpp_madd_epi32(i1.vec, i2.vec, i3.vec)); }
 
-	hlslpp_inline int1 max(const int1& i1, const int1& i2) { return int1(_hlslpp_max_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int2 max(const int2& i1, const int2& i2) { return int2(_hlslpp_max_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int3 max(const int3& i1, const int3& i2) { return int3(_hlslpp_max_epi32(i1.vec, i2.vec)); }
-	hlslpp_inline int4 max(const int4& i1, const int4& i2) { return int4(_hlslpp_max_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int1 max(const int1& i1, const int1& i2) { return int1(_hlslpp_max_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int2 max(const int2& i1, const int2& i2) { return int2(_hlslpp_max_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int3 max(const int3& i1, const int3& i2) { return int3(_hlslpp_max_epi32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard int4 max(const int4& i1, const int4& i2) { return int4(_hlslpp_max_epi32(i1.vec, i2.vec)); }
 
-	hlslpp_inline int1 select(const int1& condition, const int1& i1, const int1& i2) { return int1(_hlslpp_sel_epi32(i1.vec, i2.vec, _hlslpp_cmpeq_epi32(condition.vec, _hlslpp_setzero_epi32()))); }
-	hlslpp_inline int2 select(const int2& condition, const int2& i1, const int2& i2) { return int2(_hlslpp_sel_epi32(i1.vec, i2.vec, _hlslpp_cmpeq_epi32(condition.vec, _hlslpp_setzero_epi32()))); }
-	hlslpp_inline int3 select(const int3& condition, const int3& i1, const int3& i2) { return int3(_hlslpp_sel_epi32(i1.vec, i2.vec, _hlslpp_cmpeq_epi32(condition.vec, _hlslpp_setzero_epi32()))); }
-	hlslpp_inline int4 select(const int4& condition, const int4& i1, const int4& i2) { return int4(_hlslpp_sel_epi32(i1.vec, i2.vec, _hlslpp_cmpeq_epi32(condition.vec, _hlslpp_setzero_epi32()))); }
+	hlslpp_inline_nodiscard int1 select(const int1& condition, const int1& i1, const int1& i2) { return int1(_hlslpp_sel_epi32(i1.vec, i2.vec, _hlslpp_cmpeq_epi32(condition.vec, _hlslpp_setzero_epi32()))); }
+	hlslpp_inline_nodiscard int2 select(const int2& condition, const int2& i1, const int2& i2) { return int2(_hlslpp_sel_epi32(i1.vec, i2.vec, _hlslpp_cmpeq_epi32(condition.vec, _hlslpp_setzero_epi32()))); }
+	hlslpp_inline_nodiscard int3 select(const int3& condition, const int3& i1, const int3& i2) { return int3(_hlslpp_sel_epi32(i1.vec, i2.vec, _hlslpp_cmpeq_epi32(condition.vec, _hlslpp_setzero_epi32()))); }
+	hlslpp_inline_nodiscard int4 select(const int4& condition, const int4& i1, const int4& i2) { return int4(_hlslpp_sel_epi32(i1.vec, i2.vec, _hlslpp_cmpeq_epi32(condition.vec, _hlslpp_setzero_epi32()))); }
 
-	hlslpp_inline int1 reversebits(const int1& i) { return int1(_hlslpp_reversebits_epi32(i.vec)); }
-	hlslpp_inline int2 reversebits(const int2& i) { return int2(_hlslpp_reversebits_epi32(i.vec)); }
-	hlslpp_inline int3 reversebits(const int3& i) { return int3(_hlslpp_reversebits_epi32(i.vec)); }
-	hlslpp_inline int4 reversebits(const int4& i) { return int4(_hlslpp_reversebits_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int1 reversebits(const int1& i) { return int1(_hlslpp_reversebits_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int2 reversebits(const int2& i) { return int2(_hlslpp_reversebits_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int3 reversebits(const int3& i) { return int3(_hlslpp_reversebits_epi32(i.vec)); }
+	hlslpp_inline_nodiscard int4 reversebits(const int4& i) { return int4(_hlslpp_reversebits_epi32(i.vec)); }
 
 	//--------------------------------------------------------------------------------------------------------------------------
 	// Function disambiguation. This typically happens when pulling in math.h, <cmath> or <algorithm>, where functions now live
 	// in the global namespace. Due to implicit conversions, we need to clarify to the compiler which functions it needs to use.
 	//--------------------------------------------------------------------------------------------------------------------------
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int1) operator == (const int1& f1, T f2) { return f1 == int1(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, int1) operator == (T f1, const int1& f2) { return int1(f1) == f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator == (const int1& f1, T f2) { return f1 == int1(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator == (T f1, const int1& f2) { return int1(f1) == f2; }
 
-	template<int X> hlslpp_inline int1 operator - (const iswizzle1<X>& s) { return -int1(s); }
+	template<int X> hlslpp_inline_nodiscard int1 operator - (const iswizzle1<X>& s) { return -int1(s); }
 
-	template<int X> hlslpp_inline int1 abs(const iswizzle1<X>& s) { return abs(int1(s)); }
+	template<int X> hlslpp_inline_nodiscard int1 abs(const iswizzle1<X>& s) { return abs(int1(s)); }
 
-	template<int X, int Y> hlslpp_inline int1 operator == (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) == int1(i2); }
-	template<int X, int Y> hlslpp_inline int1 operator != (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) != int1(i2); }
-	template<int X, int Y> hlslpp_inline int1 operator >  (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) >  int1(i2); }
-	template<int X, int Y> hlslpp_inline int1 operator >= (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) >= int1(i2); }
-	template<int X, int Y> hlslpp_inline int1 operator <  (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) <  int1(i2); }
-	template<int X, int Y> hlslpp_inline int1 operator <= (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) <= int1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard int1 operator == (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) == int1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard int1 operator != (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) != int1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard int1 operator >  (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) >  int1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard int1 operator >= (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) >= int1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard int1 operator <  (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) <  int1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard int1 operator <= (const iswizzle1<X>& i1, const iswizzle1<Y>& i2) { return int1(i1) <= int1(i2); }
 
 	template<int X>
 	hlslpp_inline iswizzle1<X>& iswizzle1<X>::operator = (int32_t i)

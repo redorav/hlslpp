@@ -4,7 +4,7 @@
 
 hlslpp_module_export namespace hlslpp
 {
-	struct hlslpp_nodiscard quaternion
+	struct quaternion
 	{
 		quaternion() hlslpp_noexcept : vec(_hlslpp_setzero_ps()) {}
 		quaternion(const quaternion& q) hlslpp_noexcept : vec(q.vec) {}

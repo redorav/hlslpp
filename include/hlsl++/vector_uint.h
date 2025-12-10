@@ -127,25 +127,25 @@ hlslpp_module_export namespace hlslpp
 {
 	// Operators
 
-	hlslpp_inline uint1 operator + (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_add_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator + (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_add_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator + (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_add_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator + (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_add_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator + (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_add_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator + (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_add_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator + (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_add_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator + (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_add_epu32(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint1 operator - (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_sub_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator - (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_sub_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator - (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_sub_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator - (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_sub_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator - (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_sub_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator - (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_sub_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator - (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_sub_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator - (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_sub_epu32(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint1 operator * (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_mul_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator * (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_mul_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator * (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_mul_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator * (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_mul_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator * (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_mul_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator * (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_mul_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator * (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_mul_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator * (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_mul_epu32(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint1 operator / (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_div_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator / (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_div_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator / (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_div_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator / (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_div_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator / (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_div_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator / (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_div_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator / (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_div_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator / (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_div_epu32(i1.vec, i2.vec)); }
 
 	//hlslpp_inline uint1 operator % (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_imod_epi32(i1.vec, i2.vec)); }
 	//hlslpp_inline uint2 operator % (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_imod_epi32(i1.vec, i2.vec)); }
@@ -213,50 +213,50 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	// and functions that are part of common headers such as cmath, math.h, algorithm, etc                                    //
 	//------------------------------------------------------------------------------------------------------------------------//
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator + (const uint1& i1, T i2) { return i1 + uint1(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint2) operator + (const uint2& i1, T i2) { return i1 + uint2(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint3) operator + (const uint3& i1, T i2) { return i1 + uint3(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint4) operator + (const uint4& i1, T i2) { return i1 + uint4(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator + (const uint1& i1, T i2) { return i1 + uint1(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint2) operator + (const uint2& i1, T i2) { return i1 + uint2(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint3) operator + (const uint3& i1, T i2) { return i1 + uint3(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint4) operator + (const uint4& i1, T i2) { return i1 + uint4(i2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator + (T i1, const uint1& i2) { return uint1(i1) + i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint2) operator + (T i1, const uint2& i2) { return uint2(i1) + i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint3) operator + (T i1, const uint3& i2) { return uint3(i1) + i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint4) operator + (T i1, const uint4& i2) { return uint4(i1) + i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator + (T i1, const uint1& i2) { return uint1(i1) + i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint2) operator + (T i1, const uint2& i2) { return uint2(i1) + i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint3) operator + (T i1, const uint3& i2) { return uint3(i1) + i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint4) operator + (T i1, const uint4& i2) { return uint4(i1) + i2; }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator - (const uint1& i1, T i2) { return i1 - uint1(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint2) operator - (const uint2& i1, T i2) { return i1 - uint2(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint3) operator - (const uint3& i1, T i2) { return i1 - uint3(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint4) operator - (const uint4& i1, T i2) { return i1 - uint4(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator - (const uint1& i1, T i2) { return i1 - uint1(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint2) operator - (const uint2& i1, T i2) { return i1 - uint2(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint3) operator - (const uint3& i1, T i2) { return i1 - uint3(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint4) operator - (const uint4& i1, T i2) { return i1 - uint4(i2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator - (T i1, const uint1& i2) { return uint1(i1) - i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint2) operator - (T i1, const uint2& i2) { return uint2(i1) - i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint3) operator - (T i1, const uint3& i2) { return uint3(i1) - i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint4) operator - (T i1, const uint4& i2) { return uint4(i1) - i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator - (T i1, const uint1& i2) { return uint1(i1) - i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint2) operator - (T i1, const uint2& i2) { return uint2(i1) - i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint3) operator - (T i1, const uint3& i2) { return uint3(i1) - i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint4) operator - (T i1, const uint4& i2) { return uint4(i1) - i2; }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator * (const uint1& i1, T i2) { return i1 * uint1(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint2) operator * (const uint2& i1, T i2) { return i1 * uint2(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint3) operator * (const uint3& i1, T i2) { return i1 * uint3(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint4) operator * (const uint4& i1, T i2) { return i1 * uint4(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator * (const uint1& i1, T i2) { return i1 * uint1(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint2) operator * (const uint2& i1, T i2) { return i1 * uint2(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint3) operator * (const uint3& i1, T i2) { return i1 * uint3(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint4) operator * (const uint4& i1, T i2) { return i1 * uint4(i2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator * (T i1, const uint1& i2) { return uint1(i1) * i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint2) operator * (T i1, const uint2& i2) { return uint2(i1) * i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint3) operator * (T i1, const uint3& i2) { return uint3(i1) * i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint4) operator * (T i1, const uint4& i2) { return uint4(i1) * i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator * (T i1, const uint1& i2) { return uint1(i1) * i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint2) operator * (T i1, const uint2& i2) { return uint2(i1) * i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint3) operator * (T i1, const uint3& i2) { return uint3(i1) * i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint4) operator * (T i1, const uint4& i2) { return uint4(i1) * i2; }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator / (const uint1& i1, T i2) { return i1 / uint1(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint2) operator / (const uint2& i1, T i2) { return i1 / uint2(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint3) operator / (const uint3& i1, T i2) { return i1 / uint3(i2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint4) operator / (const uint4& i1, T i2) { return i1 / uint4(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator / (const uint1& i1, T i2) { return i1 / uint1(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint2) operator / (const uint2& i1, T i2) { return i1 / uint2(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint3) operator / (const uint3& i1, T i2) { return i1 / uint3(i2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint4) operator / (const uint4& i1, T i2) { return i1 / uint4(i2); }
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator / (T i1, const uint1& i2) { return uint1(i1) / i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint2) operator / (T i1, const uint2& i2) { return uint2(i1) / i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint3) operator / (T i1, const uint3& i2) { return uint3(i1) / i2; }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint4) operator / (T i1, const uint4& i2) { return uint4(i1) / i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator / (T i1, const uint1& i2) { return uint1(i1) / i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint2) operator / (T i1, const uint2& i2) { return uint2(i1) / i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint3) operator / (T i1, const uint3& i2) { return uint3(i1) / i2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint4) operator / (T i1, const uint4& i2) { return uint4(i1) / i2; }
 
-	template<int X> hlslpp_inline uint1 operator + (const uswizzle1<X>& s, const uint1& i) { return uint1(s) + i; }
-	template<int X> hlslpp_inline uint1 operator - (const uswizzle1<X>& s, const uint1& i) { return uint1(s) - i; }
-	template<int X> hlslpp_inline uint1 operator * (const uswizzle1<X>& s, const uint1& i) { return uint1(s) * i; }
-	template<int X> hlslpp_inline uint1 operator / (const uswizzle1<X>& s, const uint1& i) { return uint1(s) / i; }
+	template<int X> hlslpp_inline_nodiscard uint1 operator + (const uswizzle1<X>& s, const uint1& i) { return uint1(s) + i; }
+	template<int X> hlslpp_inline_nodiscard uint1 operator - (const uswizzle1<X>& s, const uint1& i) { return uint1(s) - i; }
+	template<int X> hlslpp_inline_nodiscard uint1 operator * (const uswizzle1<X>& s, const uint1& i) { return uint1(s) * i; }
+	template<int X> hlslpp_inline_nodiscard uint1 operator / (const uswizzle1<X>& s, const uint1& i) { return uint1(s) / i; }
 
 	hlslpp_inline uint1& operator += (uint1& i1, const uint1& i2) { i1 = i1 + i2; return i1; }
 	hlslpp_inline uint2& operator += (uint2& i1, const uint2& i2) { i1 = i1 + i2; return i1; }
@@ -298,87 +298,87 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	template<int X, int Y, int Z, int W> hlslpp_inline uswizzle4<X, Y, Z, W>& operator *= (uswizzle4<X, Y, Z, W>& s, const uint4& i) { s = uint4(s) * i; return s; }
 	template<int X, int Y, int Z, int W> hlslpp_inline uswizzle4<X, Y, Z, W>& operator /= (uswizzle4<X, Y, Z, W>& s, const uint4& i) { s = uint4(s) / i; return s; }
 
-	hlslpp_inline uint1 operator == (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator == (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator == (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator == (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator == (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator == (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator == (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator == (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpeq1_epu32(i1.vec, i2.vec)); }
 	
-	hlslpp_inline uint1 operator != (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator != (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator != (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator != (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator != (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator != (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator != (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator != (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpneq1_epu32(i1.vec, i2.vec)); }
 	
-	hlslpp_inline uint1 operator > (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator > (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator > (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator > (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator > (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator > (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator > (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator > (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpgt1_epu32(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint1 operator >= (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator >= (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator >= (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator >= (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator >= (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator >= (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator >= (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator >= (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmpge1_epu32(i1.vec, i2.vec)); }
 	
-	hlslpp_inline uint1 operator < (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator < (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator < (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator < (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator < (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator < (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator < (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator < (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmplt1_epu32(i1.vec, i2.vec)); }
 	
-	hlslpp_inline uint1 operator <= (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator <= (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator <= (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator <= (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator <= (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator <= (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator <= (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator <= (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_cmple1_epu32(i1.vec, i2.vec)); }
 
 	// Bitwise
 
-	hlslpp_inline uint1 operator >> (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_srlv_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator >> (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_srlv_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator >> (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_srlv_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator >> (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_srlv_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator >> (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_srlv_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator >> (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_srlv_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator >> (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_srlv_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator >> (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_srlv_epu32(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint2 operator >> (const uint2& i1, const uint1& i2) { return uint2(_hlslpp_srlv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
-	hlslpp_inline uint3 operator >> (const uint3& i1, const uint1& i2) { return uint3(_hlslpp_srlv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
-	hlslpp_inline uint4 operator >> (const uint4& i1, const uint1& i2) { return uint4(_hlslpp_srlv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint2 operator >> (const uint2& i1, const uint1& i2) { return uint2(_hlslpp_srlv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint3 operator >> (const uint3& i1, const uint1& i2) { return uint3(_hlslpp_srlv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint4 operator >> (const uint4& i1, const uint1& i2) { return uint4(_hlslpp_srlv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
 
-	hlslpp_inline uint1 operator << (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_sllv_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator << (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_sllv_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator << (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_sllv_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator << (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_sllv_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator << (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_sllv_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator << (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_sllv_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator << (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_sllv_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator << (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_sllv_epu32(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint2 operator << (const uint2& i1, const uint1& i2) { return uint2(_hlslpp_sllv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
-	hlslpp_inline uint3 operator << (const uint3& i1, const uint1& i2) { return uint3(_hlslpp_sllv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
-	hlslpp_inline uint4 operator << (const uint4& i1, const uint1& i2) { return uint4(_hlslpp_sllv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint2 operator << (const uint2& i1, const uint1& i2) { return uint2(_hlslpp_sllv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint3 operator << (const uint3& i1, const uint1& i2) { return uint3(_hlslpp_sllv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint4 operator << (const uint4& i1, const uint1& i2) { return uint4(_hlslpp_sllv_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
 
-	hlslpp_inline uint1 operator & (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_and_si128(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator & (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_and_si128(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator & (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_and_si128(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator & (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_and_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator & (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_and_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator & (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_and_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator & (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_and_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator & (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_and_si128(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint2 operator & (const uint2& i1, const uint1& i2) { return uint2(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
-	hlslpp_inline uint3 operator & (const uint3& i1, const uint1& i2) { return uint3(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
-	hlslpp_inline uint4 operator & (const uint4& i1, const uint1& i2) { return uint4(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint2 operator & (const uint2& i1, const uint1& i2) { return uint2(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint3 operator & (const uint3& i1, const uint1& i2) { return uint3(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint4 operator & (const uint4& i1, const uint1& i2) { return uint4(_hlslpp_and_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
 
-	hlslpp_inline uint1 operator | (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_or_si128(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator | (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_or_si128(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator | (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_or_si128(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator | (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_or_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator | (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_or_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator | (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_or_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator | (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_or_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator | (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_or_si128(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint2 operator | (const uint2& i1, const uint1& i2) { return uint2(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
-	hlslpp_inline uint3 operator | (const uint3& i1, const uint1& i2) { return uint3(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
-	hlslpp_inline uint4 operator | (const uint4& i1, const uint1& i2) { return uint4(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint2 operator | (const uint2& i1, const uint1& i2) { return uint2(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint3 operator | (const uint3& i1, const uint1& i2) { return uint3(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint4 operator | (const uint4& i1, const uint1& i2) { return uint4(_hlslpp_or_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
 
-	hlslpp_inline uint1 operator ^ (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_xor_si128(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 operator ^ (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_xor_si128(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 operator ^ (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_xor_si128(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 operator ^ (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_xor_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 operator ^ (const uint1& i1, const uint1& i2) { return uint1(_hlslpp_xor_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 operator ^ (const uint2& i1, const uint2& i2) { return uint2(_hlslpp_xor_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 operator ^ (const uint3& i1, const uint3& i2) { return uint3(_hlslpp_xor_si128(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 operator ^ (const uint4& i1, const uint4& i2) { return uint4(_hlslpp_xor_si128(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint2 operator ^ (const uint2& i1, const uint1& i2) { return uint2(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
-	hlslpp_inline uint3 operator ^ (const uint3& i1, const uint1& i2) { return uint3(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
-	hlslpp_inline uint4 operator ^ (const uint4& i1, const uint1& i2) { return uint4(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint2 operator ^ (const uint2& i1, const uint1& i2) { return uint2(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint3 operator ^ (const uint3& i1, const uint1& i2) { return uint3(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
+	hlslpp_inline_nodiscard uint4 operator ^ (const uint4& i1, const uint1& i2) { return uint4(_hlslpp_xor_si128(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec))); }
 
-	hlslpp_inline uint1 operator ~ (const uint1& i1) { return uint1(_hlslpp_not_si128(i1.vec)); }
-	hlslpp_inline uint2 operator ~ (const uint2& i1) { return uint2(_hlslpp_not_si128(i1.vec)); }
-	hlslpp_inline uint3 operator ~ (const uint3& i1) { return uint3(_hlslpp_not_si128(i1.vec)); }
-	hlslpp_inline uint4 operator ~ (const uint4& i1) { return uint4(_hlslpp_not_si128(i1.vec)); }
+	hlslpp_inline_nodiscard uint1 operator ~ (const uint1& i1) { return uint1(_hlslpp_not_si128(i1.vec)); }
+	hlslpp_inline_nodiscard uint2 operator ~ (const uint2& i1) { return uint2(_hlslpp_not_si128(i1.vec)); }
+	hlslpp_inline_nodiscard uint3 operator ~ (const uint3& i1) { return uint3(_hlslpp_not_si128(i1.vec)); }
+	hlslpp_inline_nodiscard uint4 operator ~ (const uint4& i1) { return uint4(_hlslpp_not_si128(i1.vec)); }
 
 	hlslpp_inline uint1& operator >>= (uint1& i1, const uint1& i2) { i1 = i1 >> i2; return i1; }
 	hlslpp_inline uint2& operator >>= (uint2& i1, const uint2& i2) { i1 = i1 >> i2; return i1; }
@@ -405,80 +405,80 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	hlslpp_inline uint3& operator ^= (uint3& i1, const uint3& i2) { i1 = i1 ^ i2; return i1; }
 	hlslpp_inline uint4& operator ^= (uint4& i1, const uint4& i2) { i1 = i1 ^ i2; return i1; }
 
-	hlslpp_inline bool all(const uint1& f) { return _hlslpp_all1_epu32(f.vec); }
-	hlslpp_inline bool all(const uint2& f) { return _hlslpp_all2_epu32(f.vec); }
-	hlslpp_inline bool all(const uint3& f) { return _hlslpp_all3_epu32(f.vec); }
-	hlslpp_inline bool all(const uint4& f) { return _hlslpp_all4_epu32(f.vec); }
+	hlslpp_inline_nodiscard bool all(const uint1& f) { return _hlslpp_all1_epu32(f.vec); }
+	hlslpp_inline_nodiscard bool all(const uint2& f) { return _hlslpp_all2_epu32(f.vec); }
+	hlslpp_inline_nodiscard bool all(const uint3& f) { return _hlslpp_all3_epu32(f.vec); }
+	hlslpp_inline_nodiscard bool all(const uint4& f) { return _hlslpp_all4_epu32(f.vec); }
 
-	hlslpp_inline bool any(const uint1& f) { return _hlslpp_any1_epu32(f.vec); }
-	hlslpp_inline bool any(const uint2& f) { return _hlslpp_any2_epu32(f.vec); }
-	hlslpp_inline bool any(const uint3& f) { return _hlslpp_any3_epu32(f.vec); }
-	hlslpp_inline bool any(const uint4& f) { return _hlslpp_any4_epu32(f.vec); }
+	hlslpp_inline_nodiscard bool any(const uint1& f) { return _hlslpp_any1_epu32(f.vec); }
+	hlslpp_inline_nodiscard bool any(const uint2& f) { return _hlslpp_any2_epu32(f.vec); }
+	hlslpp_inline_nodiscard bool any(const uint3& f) { return _hlslpp_any3_epu32(f.vec); }
+	hlslpp_inline_nodiscard bool any(const uint4& f) { return _hlslpp_any4_epu32(f.vec); }
 
-	hlslpp_inline uint1 clamp(const uint1& i, const uint1& mini, const uint1& maxi) { return uint1(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
-	hlslpp_inline uint2 clamp(const uint2& i, const uint2& mini, const uint2& maxi) { return uint2(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
-	hlslpp_inline uint3 clamp(const uint3& i, const uint3& mini, const uint3& maxi) { return uint3(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
-	hlslpp_inline uint4 clamp(const uint4& i, const uint4& mini, const uint4& maxi) { return uint4(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline_nodiscard uint1 clamp(const uint1& i, const uint1& mini, const uint1& maxi) { return uint1(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline_nodiscard uint2 clamp(const uint2& i, const uint2& mini, const uint2& maxi) { return uint2(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline_nodiscard uint3 clamp(const uint3& i, const uint3& mini, const uint3& maxi) { return uint3(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
+	hlslpp_inline_nodiscard uint4 clamp(const uint4& i, const uint4& mini, const uint4& maxi) { return uint4(_hlslpp_clamp_epu32(i.vec, mini.vec, maxi.vec)); }
 
-	hlslpp_inline uint1 countbits(const uint1& i) { return uint1(_hlslpp_countbits_epu32(i.vec)); }
-	hlslpp_inline uint2 countbits(const uint2& i) { return uint2(_hlslpp_countbits_epu32(i.vec)); }
-	hlslpp_inline uint3 countbits(const uint3& i) { return uint3(_hlslpp_countbits_epu32(i.vec)); }
-	hlslpp_inline uint4 countbits(const uint4& i) { return uint4(_hlslpp_countbits_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint1 countbits(const uint1& i) { return uint1(_hlslpp_countbits_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint2 countbits(const uint2& i) { return uint2(_hlslpp_countbits_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint3 countbits(const uint3& i) { return uint3(_hlslpp_countbits_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint4 countbits(const uint4& i) { return uint4(_hlslpp_countbits_epu32(i.vec)); }
 	
-	hlslpp_inline uint1 dot(const uint1& i1, const uint1& i2) { return uint1(_hlslpp_mul_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint1 dot(const uint2& i1, const uint2& i2) { return uint1(_hlslpp_dot2_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint1 dot(const uint3& i1, const uint3& i2) { return uint1(_hlslpp_dot3_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint1 dot(const uint4& i1, const uint4& i2) { return uint1(_hlslpp_dot4_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 dot(const uint1& i1, const uint1& i2) { return uint1(_hlslpp_mul_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 dot(const uint2& i1, const uint2& i2) { return uint1(_hlslpp_dot2_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 dot(const uint3& i1, const uint3& i2) { return uint1(_hlslpp_dot3_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 dot(const uint4& i1, const uint4& i2) { return uint1(_hlslpp_dot4_epu32(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint1 firstbithigh(const uint1& i) { return uint1(_hlslpp_firstbithigh_epu32(i.vec)); }
-	hlslpp_inline uint2 firstbithigh(const uint2& i) { return uint2(_hlslpp_firstbithigh_epu32(i.vec)); }
-	hlslpp_inline uint3 firstbithigh(const uint3& i) { return uint3(_hlslpp_firstbithigh_epu32(i.vec)); }
-	hlslpp_inline uint4 firstbithigh(const uint4& i) { return uint4(_hlslpp_firstbithigh_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint1 firstbithigh(const uint1& i) { return uint1(_hlslpp_firstbithigh_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint2 firstbithigh(const uint2& i) { return uint2(_hlslpp_firstbithigh_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint3 firstbithigh(const uint3& i) { return uint3(_hlslpp_firstbithigh_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint4 firstbithigh(const uint4& i) { return uint4(_hlslpp_firstbithigh_epu32(i.vec)); }
 	
-	hlslpp_inline uint1 firstbitlow(const uint1& i) { return uint1(_hlslpp_firstbitlow_epu32(i.vec)); }
-	hlslpp_inline uint2 firstbitlow(const uint2& i) { return uint2(_hlslpp_firstbitlow_epu32(i.vec)); }
-	hlslpp_inline uint3 firstbitlow(const uint3& i) { return uint3(_hlslpp_firstbitlow_epu32(i.vec)); }
-	hlslpp_inline uint4 firstbitlow(const uint4& i) { return uint4(_hlslpp_firstbitlow_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint1 firstbitlow(const uint1& i) { return uint1(_hlslpp_firstbitlow_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint2 firstbitlow(const uint2& i) { return uint2(_hlslpp_firstbitlow_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint3 firstbitlow(const uint3& i) { return uint3(_hlslpp_firstbitlow_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint4 firstbitlow(const uint4& i) { return uint4(_hlslpp_firstbitlow_epu32(i.vec)); }
 
-	hlslpp_inline uint1 min(const uint1& i1, const uint1& i2) { return uint1(_hlslpp_min_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 min(const uint2& i1, const uint2& i2) { return uint2(_hlslpp_min_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 min(const uint3& i1, const uint3& i2) { return uint3(_hlslpp_min_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 min(const uint4& i1, const uint4& i2) { return uint4(_hlslpp_min_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 min(const uint1& i1, const uint1& i2) { return uint1(_hlslpp_min_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 min(const uint2& i1, const uint2& i2) { return uint2(_hlslpp_min_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 min(const uint3& i1, const uint3& i2) { return uint3(_hlslpp_min_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 min(const uint4& i1, const uint4& i2) { return uint4(_hlslpp_min_epu32(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint1 mad(const uint1& i1, const uint1& i2, const uint1& i3) { return uint1(_hlslpp_madd_epu32(i1.vec, i2.vec, i3.vec)); }
-	hlslpp_inline uint2 mad(const uint2& i1, const uint2& i2, const uint2& i3) { return uint2(_hlslpp_madd_epu32(i1.vec, i2.vec, i3.vec)); }
-	hlslpp_inline uint3 mad(const uint3& i1, const uint3& i2, const uint3& i3) { return uint3(_hlslpp_madd_epu32(i1.vec, i2.vec, i3.vec)); }
-	hlslpp_inline uint4 mad(const uint4& i1, const uint4& i2, const uint4& i3) { return uint4(_hlslpp_madd_epu32(i1.vec, i2.vec, i3.vec)); }
+	hlslpp_inline_nodiscard uint1 mad(const uint1& i1, const uint1& i2, const uint1& i3) { return uint1(_hlslpp_madd_epu32(i1.vec, i2.vec, i3.vec)); }
+	hlslpp_inline_nodiscard uint2 mad(const uint2& i1, const uint2& i2, const uint2& i3) { return uint2(_hlslpp_madd_epu32(i1.vec, i2.vec, i3.vec)); }
+	hlslpp_inline_nodiscard uint3 mad(const uint3& i1, const uint3& i2, const uint3& i3) { return uint3(_hlslpp_madd_epu32(i1.vec, i2.vec, i3.vec)); }
+	hlslpp_inline_nodiscard uint4 mad(const uint4& i1, const uint4& i2, const uint4& i3) { return uint4(_hlslpp_madd_epu32(i1.vec, i2.vec, i3.vec)); }
 
-	hlslpp_inline uint1 max(const uint1& i1, const uint1& i2) { return uint1(_hlslpp_max_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint2 max(const uint2& i1, const uint2& i2) { return uint2(_hlslpp_max_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint3 max(const uint3& i1, const uint3& i2) { return uint3(_hlslpp_max_epu32(i1.vec, i2.vec)); }
-	hlslpp_inline uint4 max(const uint4& i1, const uint4& i2) { return uint4(_hlslpp_max_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint1 max(const uint1& i1, const uint1& i2) { return uint1(_hlslpp_max_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint2 max(const uint2& i1, const uint2& i2) { return uint2(_hlslpp_max_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint3 max(const uint3& i1, const uint3& i2) { return uint3(_hlslpp_max_epu32(i1.vec, i2.vec)); }
+	hlslpp_inline_nodiscard uint4 max(const uint4& i1, const uint4& i2) { return uint4(_hlslpp_max_epu32(i1.vec, i2.vec)); }
 
-	hlslpp_inline uint1 select(const uint1& condition, const uint1& i1, const uint1& i2) { return uint1(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
-	hlslpp_inline uint2 select(const uint2& condition, const uint2& i1, const uint2& i2) { return uint2(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
-	hlslpp_inline uint3 select(const uint3& condition, const uint3& i1, const uint3& i2) { return uint3(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
-	hlslpp_inline uint4 select(const uint4& condition, const uint4& i1, const uint4& i2) { return uint4(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
+	hlslpp_inline_nodiscard uint1 select(const uint1& condition, const uint1& i1, const uint1& i2) { return uint1(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
+	hlslpp_inline_nodiscard uint2 select(const uint2& condition, const uint2& i1, const uint2& i2) { return uint2(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
+	hlslpp_inline_nodiscard uint3 select(const uint3& condition, const uint3& i1, const uint3& i2) { return uint3(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
+	hlslpp_inline_nodiscard uint4 select(const uint4& condition, const uint4& i1, const uint4& i2) { return uint4(_hlslpp_sel_epu32(i1.vec, i2.vec, _hlslpp_cmpeq_epu32(condition.vec, _hlslpp_setzero_epu32()))); }
 
-	hlslpp_inline uint1 reversebits(const uint1& i) { return uint1(_hlslpp_reversebits_epu32(i.vec)); }
-	hlslpp_inline uint2 reversebits(const uint2& i) { return uint2(_hlslpp_reversebits_epu32(i.vec)); }
-	hlslpp_inline uint3 reversebits(const uint3& i) { return uint3(_hlslpp_reversebits_epu32(i.vec)); }
-	hlslpp_inline uint4 reversebits(const uint4& i) { return uint4(_hlslpp_reversebits_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint1 reversebits(const uint1& i) { return uint1(_hlslpp_reversebits_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint2 reversebits(const uint2& i) { return uint2(_hlslpp_reversebits_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint3 reversebits(const uint3& i) { return uint3(_hlslpp_reversebits_epu32(i.vec)); }
+	hlslpp_inline_nodiscard uint4 reversebits(const uint4& i) { return uint4(_hlslpp_reversebits_epu32(i.vec)); }
 
 	//--------------------------------------------------------------------------------------------------------------------------
 	// Function disambiguation. This typically happens when pulling in math.h, <cmath> or <algorithm>, where functions now live
 	// in the global namespace. Due to implicit conversions, we need to clarify to the compiler which functions it needs to use.
 	//--------------------------------------------------------------------------------------------------------------------------
 
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator == (const uint1& f1, T f2) { return f1 == uint1(f2); }
-	template<typename T> hlslpp_inline hlslpp_enable_if_return(T, uint1) operator == (T f1, const uint1& f2) { return uint1(f1) == f2; }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator == (const uint1& f1, T f2) { return f1 == uint1(f2); }
+	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator == (T f1, const uint1& f2) { return uint1(f1) == f2; }
 
-	template<int X, int Y> hlslpp_inline uint1 operator == (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) == uint1(i2); }
-	template<int X, int Y> hlslpp_inline uint1 operator != (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) != uint1(i2); }
-	template<int X, int Y> hlslpp_inline uint1 operator >  (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) >  uint1(i2); }
-	template<int X, int Y> hlslpp_inline uint1 operator >= (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) >= uint1(i2); }
-	template<int X, int Y> hlslpp_inline uint1 operator <  (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) <  uint1(i2); }
-	template<int X, int Y> hlslpp_inline uint1 operator <= (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) <= uint1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard uint1 operator == (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) == uint1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard uint1 operator != (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) != uint1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard uint1 operator >  (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) >  uint1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard uint1 operator >= (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) >= uint1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard uint1 operator <  (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) <  uint1(i2); }
+	template<int X, int Y> hlslpp_inline_nodiscard uint1 operator <= (const uswizzle1<X>& i1, const uswizzle1<Y>& i2) { return uint1(i1) <= uint1(i2); }
 
 	template<int X>
 	hlslpp_inline uswizzle1<X>& uswizzle1<X>::operator = (uint32_t i)
