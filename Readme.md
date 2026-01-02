@@ -3,7 +3,7 @@
 
 # HLSL++
 
-Small header-only math library for C++ with the same syntax as the hlsl shading language. It features swizzling and all the operators and functions from the [hlsl documentation](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reference). The library is aimed mainly at game developers as it's meant to ease the C++ to shader bridge by providing common syntax, but can be used for any application requiring fast, portable math. It also adds some functionality that hlsl doesn't natively provide, such as convenient matrix functions, quaternions, data packing functions and extended vectors such as float8 (8-component float) that take advantage of wide SIMD registers.
+Header-only math library for C++ with the same syntax as the HLSL shading language. It features swizzling and all the operators and functions from the [HLSL documentation](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-reference). The library is aimed mainly at game developers as it's meant to ease the C++ to shader bridge by providing common syntax, but can be used for any application requiring fast, portable math. It also adds some functionality that HLSL doesn't natively provide, such as convenient matrix functions, quaternions, data packing functions and extended vectors such as float8 (8-component float) that take advantage of wide SIMD registers.
 
 ## Platforms
 
@@ -13,7 +13,7 @@ Small header-only math library for C++ with the same syntax as the hlsl shading 
 
 ## Example
 
-hlsl++ allows you to be as expressive in C++ as when programming in the shader language. Constructs such as the following are possible.
+HLSL++ allows you to be as expressive in C++ as when programming in the shader language. Constructs such as the following are possible.
 
 ```hlsl
 // Native types
