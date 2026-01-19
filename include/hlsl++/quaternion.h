@@ -319,63 +319,63 @@ hlslpp_module_export namespace hlslpp
 		q = _hlslpp_or_ps(q_positive, signs);
 	}
 
-	hlslpp_inline quaternion	operator + (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_add_ps(q1.vec, q2.vec)); }
-	hlslpp_inline quaternion&	operator += (quaternion& q1, const quaternion& q2) { q1 = q1 + q2; return q1; }
+	hlslpp_inline_nodiscard quaternion	operator + (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_add_ps(q1.vec, q2.vec)); }
+	hlslpp_inline_nodiscard quaternion&	operator += (quaternion& q1, const quaternion& q2) { q1 = q1 + q2; return q1; }
 
-	hlslpp_inline quaternion	operator - (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_sub_ps(q1.vec, q2.vec)); }
-	hlslpp_inline quaternion&	operator -= (quaternion& q1, const quaternion& q2) { q1 = q1 - q2; return q1; }
+	hlslpp_inline_nodiscard quaternion	operator - (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_sub_ps(q1.vec, q2.vec)); }
+	hlslpp_inline_nodiscard quaternion&	operator -= (quaternion& q1, const quaternion& q2) { q1 = q1 - q2; return q1; }
 
-	hlslpp_inline quaternion	operator * (const quaternion& q, const float1& v) { return quaternion(_hlslpp_mul_ps(q.vec, _hlslpp_perm_xxxx_ps(v.vec))); }
-	hlslpp_inline quaternion	operator * (const float1& v, const quaternion& q) { return q * v; }
+	hlslpp_inline_nodiscard quaternion	operator * (const quaternion& q, const float1& v) { return quaternion(_hlslpp_mul_ps(q.vec, _hlslpp_perm_xxxx_ps(v.vec))); }
+	hlslpp_inline_nodiscard quaternion	operator * (const float1& v, const quaternion& q) { return q * v; }
 
-	hlslpp_inline quaternion&	operator *= (quaternion& q, const float1& v) { q = q * v; return q; }
+	hlslpp_inline_nodiscard quaternion&	operator *= (quaternion& q, const float1& v) { q = q * v; return q; }
 
 	//inline quaternion operator / (const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_div_ps(q1._vec, q2._vec)); }
 	//inline quaternion& operator /= (quaternion& q1, const quaternion& q2) { q1 = q1 / q2; return q1; }
 
-	hlslpp_inline quaternion	operator / (const quaternion& q, const float1& v) { return quaternion(_hlslpp_div_ps(q.vec, _hlslpp_perm_xxxx_ps(v.vec))); }
-	hlslpp_inline quaternion&	operator /= (quaternion& q, const float1& v) { q = q / v; return q; }
+	hlslpp_inline_nodiscard quaternion	operator / (const quaternion& q, const float1& v) { return quaternion(_hlslpp_div_ps(q.vec, _hlslpp_perm_xxxx_ps(v.vec))); }
+	hlslpp_inline_nodiscard quaternion&	operator /= (quaternion& q, const float1& v) { q = q / v; return q; }
 
-	hlslpp_inline quaternion	operator - (const quaternion& q) { return quaternion(_hlslpp_neg_ps(q.vec)); }
-	hlslpp_inline float4		operator == (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpeq1_ps(q1.vec, q2.vec)); }
-	hlslpp_inline float4		operator != (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpneq1_ps(q1.vec, q2.vec)); }
-	hlslpp_inline float4		operator >  (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpgt1_ps(q1.vec, q2.vec)); }
-	hlslpp_inline float4		operator >= (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpge1_ps(q1.vec, q2.vec)); }
-	hlslpp_inline float4		operator <  (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmplt1_ps(q1.vec, q2.vec)); }
-	hlslpp_inline float4		operator <= (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmple1_ps(q1.vec, q2.vec)); }
+	hlslpp_inline_nodiscard quaternion	operator - (const quaternion& q) { return quaternion(_hlslpp_neg_ps(q.vec)); }
+	hlslpp_inline_nodiscard float4		operator == (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpeq1_ps(q1.vec, q2.vec)); }
+	hlslpp_inline_nodiscard float4		operator != (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpneq1_ps(q1.vec, q2.vec)); }
+	hlslpp_inline_nodiscard float4		operator >  (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpgt1_ps(q1.vec, q2.vec)); }
+	hlslpp_inline_nodiscard float4		operator >= (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmpge1_ps(q1.vec, q2.vec)); }
+	hlslpp_inline_nodiscard float4		operator <  (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmplt1_ps(q1.vec, q2.vec)); }
+	hlslpp_inline_nodiscard float4		operator <= (const quaternion& q1, const quaternion& q2) { return float4(_hlslpp_cmple1_ps(q1.vec, q2.vec)); }
 
-	hlslpp_inline quaternion	abs(const quaternion& q) { return quaternion(_hlslpp_abs_ps(q.vec)); }
+	hlslpp_inline_nodiscard quaternion	abs(const quaternion& q) { return quaternion(_hlslpp_abs_ps(q.vec)); }
 	//hlslpp_inline float4		all(const quaternion& q) { return float4(_hlslpp_all1_ps(q.vec)); }
 	//hlslpp_inline float4		any(const quaternion& q) { return float4(_hlslpp_any1_ps(q.vec)); }
-	hlslpp_inline quaternion	conjugate(const quaternion& q) { return quaternion(_hlslpp_quat_conjugate_ps(q.vec)); }
+	hlslpp_inline_nodiscard quaternion	conjugate(const quaternion& q) { return quaternion(_hlslpp_quat_conjugate_ps(q.vec)); }
 	//clamp TODO
-	hlslpp_inline float1		dot(const quaternion& q0, const quaternion& q1) { return float1(_hlslpp_dot4_ps(q0.vec, q1.vec)); }
+	hlslpp_inline_nodiscard float1		dot(const quaternion& q0, const quaternion& q1) { return float1(_hlslpp_dot4_ps(q0.vec, q1.vec)); }
 	//hlslpp_inline quaternion exp(quaternion& q) { return quaternion(_hlslpp_exp_ps(q._vec)); }
-	hlslpp_inline quaternion	frac(const quaternion& q) { return quaternion(_hlslpp_frac_ps(q.vec)); }
-	hlslpp_inline quaternion	inverse(const quaternion& q) { return quaternion(_hlslpp_quat_inverse_ps(q.vec)); }
-	hlslpp_inline float4		isfinite(const quaternion& q) { return float4(_hlslpp_andnot_ps(_hlslpp_isfinite_ps(q.vec), f4_1)); }
-	hlslpp_inline float4		isinf(const quaternion& q) { return float4(_hlslpp_and_ps(_hlslpp_isinf_ps(q.vec), f4_1)); }
-	hlslpp_inline float4		isnan(const quaternion& q) { return float4(_hlslpp_and_ps(_hlslpp_isnan_ps(q.vec), f4_1)); }
-	hlslpp_inline float1		length(const quaternion& q) { return float1(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(q.vec, q.vec))); }
+	hlslpp_inline_nodiscard quaternion	frac(const quaternion& q) { return quaternion(_hlslpp_frac_ps(q.vec)); }
+	hlslpp_inline_nodiscard quaternion	inverse(const quaternion& q) { return quaternion(_hlslpp_quat_inverse_ps(q.vec)); }
+	hlslpp_inline_nodiscard float4		isfinite(const quaternion& q) { return float4(_hlslpp_andnot_ps(_hlslpp_isfinite_ps(q.vec), f4_1)); }
+	hlslpp_inline_nodiscard float4		isinf(const quaternion& q) { return float4(_hlslpp_and_ps(_hlslpp_isinf_ps(q.vec), f4_1)); }
+	hlslpp_inline_nodiscard float4		isnan(const quaternion& q) { return float4(_hlslpp_and_ps(_hlslpp_isnan_ps(q.vec), f4_1)); }
+	hlslpp_inline_nodiscard float1		length(const quaternion& q) { return float1(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(q.vec, q.vec))); }
 
-	hlslpp_inline quaternion	lerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_lerp_ps(q1.vec, q2.vec, a.vec)); }
-	hlslpp_inline quaternion	nlerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_nlerp_ps(q1.vec, q2.vec, a.vec)); }
-	hlslpp_inline quaternion	slerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_slerp_ps(q1.vec, q2.vec, a.vec)); }
+	hlslpp_inline_nodiscard quaternion	lerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_lerp_ps(q1.vec, q2.vec, a.vec)); }
+	hlslpp_inline_nodiscard quaternion	nlerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_nlerp_ps(q1.vec, q2.vec, a.vec)); }
+	hlslpp_inline_nodiscard quaternion	slerp(const quaternion& q1, const quaternion& q2, const float1& a) { return quaternion(_hlslpp_quat_slerp_ps(q1.vec, q2.vec, a.vec)); }
 
 	//hlslpp_inline quaternion log(const quaternion& q) { return quaternion(_hlslpp_log_ps(q._vec)); }
-	hlslpp_inline quaternion	min(const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_min_ps(q1.vec, q2.vec)); }
-	hlslpp_inline quaternion	max(const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_max_ps(q1.vec, q2.vec)); }
-	hlslpp_inline quaternion	mul(const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_quat_mul_ps(q1.vec, q2.vec)); }
-	hlslpp_inline float3		mul(const float3& v, const quaternion& q) { return float3(_hlslpp_quat_mul_vec_ps(v.vec, q.vec)); }
-	hlslpp_inline float3		mul(const quaternion& q, const float3& v) { return float3(_hlslpp_quat_mul_vec_inv_ps(q.vec, v.vec)); }
-	hlslpp_inline quaternion	normalize(const quaternion& q) { return quaternion(_hlslpp_div_ps(q.vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(q.vec, q.vec))))); }
-	hlslpp_inline quaternion	saturate(const quaternion& q) { return quaternion(_hlslpp_sat_ps(q.vec)); }
-	hlslpp_inline quaternion	sign(const quaternion& q) { return quaternion(_hlslpp_sign_ps(q.vec)); }
+	hlslpp_inline_nodiscard quaternion	min(const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_min_ps(q1.vec, q2.vec)); }
+	hlslpp_inline_nodiscard quaternion	max(const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_max_ps(q1.vec, q2.vec)); }
+	hlslpp_inline_nodiscard quaternion	mul(const quaternion& q1, const quaternion& q2) { return quaternion(_hlslpp_quat_mul_ps(q1.vec, q2.vec)); }
+	hlslpp_inline_nodiscard float3		mul(const float3& v, const quaternion& q) { return float3(_hlslpp_quat_mul_vec_ps(v.vec, q.vec)); }
+	hlslpp_inline_nodiscard float3		mul(const quaternion& q, const float3& v) { return float3(_hlslpp_quat_mul_vec_inv_ps(q.vec, v.vec)); }
+	hlslpp_inline_nodiscard quaternion	normalize(const quaternion& q) { return quaternion(_hlslpp_div_ps(q.vec, _hlslpp_perm_xxxx_ps(_hlslpp_sqrt_ps(_hlslpp_dot4_ps(q.vec, q.vec))))); }
+	hlslpp_inline_nodiscard quaternion	saturate(const quaternion& q) { return quaternion(_hlslpp_sat_ps(q.vec)); }
+	hlslpp_inline_nodiscard quaternion	sign(const quaternion& q) { return quaternion(_hlslpp_sign_ps(q.vec)); }
 
 	// Transformation functions
 	// https://ohtorii.hatenadiary.jp/entry/20150424/p1
 
-	hlslpp_inline quaternion quaternion::rotation_axis(const float3& axis, float angle_rad)
+	hlslpp_inline_nodiscard quaternion quaternion::rotation_axis(const float3& axis, float angle_rad)
 	{
 #if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
 		angle_rad = -angle_rad;
@@ -383,7 +383,7 @@ hlslpp_module_export namespace hlslpp
 		return quaternion(_hlslpp_quat_axis_angle_ps(axis.vec, _hlslpp_set1_ps(angle_rad)));
 	}
 
-	hlslpp_inline quaternion quaternion::rotation_axis_cosangle(const float3& axis, float cos_angle, float sign)
+	hlslpp_inline_nodiscard quaternion quaternion::rotation_axis_cosangle(const float3& axis, float cos_angle, float sign)
 	{
 #if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
 		sign = -sign;
@@ -391,7 +391,7 @@ hlslpp_module_export namespace hlslpp
 		return quaternion(_hlslpp_quat_axis_cosangle_ps(axis.vec, _hlslpp_set1_ps(cos_angle), _hlslpp_set1_ps(sign)));
 	}
 	
-	hlslpp_inline quaternion quaternion::rotation_euler_zxy(const float3& angles_rad)
+	hlslpp_inline_nodiscard quaternion quaternion::rotation_euler_zxy(const float3& angles_rad)
 	{
 #if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
 		return quaternion(_hlslpp_quat_euler_zxy_ps(_hlslpp_neg_ps(angles_rad.vec)));
@@ -400,7 +400,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline quaternion quaternion::rotation_x(float angle_rad)
+	hlslpp_inline_nodiscard quaternion quaternion::rotation_x(float angle_rad)
 	{
 #if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
 		angle_rad = -angle_rad;
@@ -408,7 +408,7 @@ hlslpp_module_export namespace hlslpp
 		return quaternion(sinf(angle_rad * 0.5f), 0.0f, 0.0f, cosf(angle_rad * 0.5f));
 	}
 
-	hlslpp_inline quaternion quaternion::rotation_y(float angle_rad)
+	hlslpp_inline_nodiscard quaternion quaternion::rotation_y(float angle_rad)
 	{
 #if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
 		angle_rad = -angle_rad;
@@ -416,7 +416,7 @@ hlslpp_module_export namespace hlslpp
 		return quaternion(0.0f, sinf(angle_rad * 0.5f), 0.0f, cosf(angle_rad * 0.5f)); 
 	}
 
-	hlslpp_inline quaternion quaternion::rotation_z(float angle_rad)
+	hlslpp_inline_nodiscard quaternion quaternion::rotation_z(float angle_rad)
 	{
 #if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
 		angle_rad = -angle_rad;

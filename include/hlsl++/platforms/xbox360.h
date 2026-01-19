@@ -175,7 +175,7 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 
 #define _hlslpp_rcp_ps(x)						__vrcp((x))
 
-#define _hlslpp_neg_ps(x)						__vxor((x), __vset1(negMask._f32))
+#define _hlslpp_neg_ps(x)						__vxor((x), f4negativeMask)
 
 #define _hlslpp_madd_ps(x, y, z)				__vmaddfp((x), (y), (z)) // x * y + z
 #define _hlslpp_msub_ps(x, y, z)				_hlslpp_neg_ps(__vnmsubfp((x), (y), (z))) // Negate because __vnmsubfp does -(x * y - z)
@@ -187,7 +187,7 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_sqrt_ps(x)						__vsqrt(x)
 
 #define _hlslpp_cmpeq_ps(x, y)					__vcmpeqfp((x), (y))
-#define _hlslpp_cmpneq_ps(x, y)					__vxor(__vcmpeqfp((x), (y)), __vset1(fffMask._f32))
+#define _hlslpp_cmpneq_ps(x, y)					__vxor(__vcmpeqfp((x), (y)), f4_fff)
 
 #define _hlslpp_cmpgt_ps(x, y)					__vcmpgtfp((x), (y))
 #define _hlslpp_cmpge_ps(x, y)					__vcmpgefp((x), (y))
@@ -223,7 +223,22 @@ hlslpp_inline __vector4 __vrcp(__vector4 x)
 #define _hlslpp_movehl_ps(x, y)					__vperm((y), (x), __vset(2, 3, 2, 3))
 #define _hlslpp_movehdup_ps(x)					__vpermwi((x), VPERMWI_CONST(1, 1, 3, 3))
 
-#define _hlslpp_perm_ps(x, X, Y, Z, W)			__vpermwi((x), HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W))
+namespace hlslpp
+{
+	template<unsigned int X, unsigned int Y, unsigned int Z, unsigned int W>
+	hlslpp_inline __vector4 permute(__vector4 x)
+	{
+		return __vpermwi(x, HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W));
+	}
+
+	template<>
+	hlslpp_inline __vector4 permute<0, 1, 2, 3>(__vector4 x)
+	{
+		return x;
+	}
+};
+
+#define _hlslpp_perm_ps(x, X, Y, Z, W)			hlslpp::permute<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_ps(x, y, X, Y, A, B)	__vperm((x), (y), __vperm_mask<X, Y, 4 + A, 4 + B>())
 
 #define _hlslpp_unpacklo_ps(x, y)				__vmrghw((x), (y))
@@ -356,7 +371,7 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 }
 
 #define _hlslpp_cmpeq_epi32(x, y)				__vcmpequw((x), (y))
-#define _hlslpp_cmpneq_epi32(x, y)				__vxor(__vcmpequw((x), (y)), __vset1(fffMask._f32))
+#define _hlslpp_cmpneq_epi32(x, y)				__vxor(__vcmpequw((x), (y)), f4_fff)
 
 #define _hlslpp_cmpgt_epi32(x, y)				__vcmpgtsw((x), (y))
 #define _hlslpp_cmpge_epi32(x, y)				__vor(__vcmpgtsw((x), (y)), __vcmpequw((x), (y)))
@@ -380,7 +395,7 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 #define _hlslpp_or_si128(x, y)					__vor((x), (y))
 #define _hlslpp_xor_si128(x, y)					__vxor((x), (y))
 
-#define _hlslpp_perm_epi32(x, X, Y, Z, W)		__vpermwi((x), HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W))
+#define _hlslpp_perm_epi32(x, X, Y, Z, W)		hlslpp::permute<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_epi32(x, y, X, Y, A, B)	__vperm((x), (y), __vperm_mask<X, Y, 4 + A, 4 + B>())
 
 // There are no intrinsics to reinterpret cast like these do as integer and float are all in the same __vector4 structure
@@ -389,9 +404,6 @@ hlslpp_inline n128i _hlslpp_abs_epi32(n128i x)
 
 #define _hlslpp_cvttps_epi32(x)					__vcfpsxws((x), 0)
 #define _hlslpp_cvtepi32_ps(x)					__vcsxwfp((x), 0)
-
-// Extracts first component of vector to int32_t
-#define _hlslpp_cvtsi128_si32(x)				x.vector4_u32[0]
 
 #define _hlslpp_slli_epi32(x, y)				__vslw((x), __vset1(y))
 #define _hlslpp_srli_epi32(x, y)				__vsrw((x), __vset1(y))
@@ -474,7 +486,7 @@ hlslpp_inline void _hlslpp_load4_epi32(n128i& dst, const int32_t* src)
 #define _hlslpp_subm_epu32(x, y, z)				__vcfpuxws(__vnmsubfp(__vcuxwfp((z), 0), __vcuxwfp((x), 0), __vcuxwfp((y), 0)))
 
 #define _hlslpp_cmpeq_epu32(x, y)				__vcmpequw((x), (y))
-#define _hlslpp_cmpneq_epu32(x, y)				__vxor(__vcmpequw((x), (y)), __vset1(fffMask._f32))
+#define _hlslpp_cmpneq_epu32(x, y)				__vxor(__vcmpequw((x), (y)), f4_fff)
 
 #define _hlslpp_cmpgt_epu32(x, y)				__vcmpgtuw((x), (y))
 #define _hlslpp_cmpge_epu32(x, y)				__vor(__vcmpgtuw((x), (y)), __vcmpequw((x), (y)))
@@ -491,7 +503,7 @@ hlslpp_inline void _hlslpp_load4_epi32(n128i& dst, const int32_t* src)
 #define _hlslpp_clamp_epu32(x, minx, maxx)		__vmaxuw(__vminuw((x), (maxx)), (minx))
 #define _hlslpp_sat_epu32(x)					__vmaxuw(__vminuw((x), i4_1), i4_0)
 
-#define _hlslpp_perm_epu32(x, X, Y, Z, W)		__vpermwi((x), HLSLPP_XBOX360_PERMWI_MASK(X, Y, Z, W))
+#define _hlslpp_perm_epu32(x, X, Y, Z, W)		hlslpp::permute<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_epu32(x, y, X, Y, A, B)	__vperm((x), (y), __vperm_mask<X, Y, 4 + A, 4 + B>())
 
 #define _hlslpp_cvttps_epu32(x)					__vcfpuxws((x), 0)

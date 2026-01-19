@@ -37,16 +37,16 @@ hlslpp_module_export namespace hlslpp
 	const n128 f4_pi4         = _hlslpp_set1_ps(0.78539816f);  // pi / 4
 	const n128 f4_minusPi4    = _hlslpp_set1_ps(-0.78539816f); // -pi / 4
 
-	const n128 f4_NaN         = _hlslpp_set1_ps(nanMask._f32);      // Quiet NaN
-	const n128 f4_inf         = _hlslpp_set1_ps(infMask._f32);      // Infinity
-	const n128 f4_minusinf    = _hlslpp_set1_ps(minusinfMask._f32); // -Infinity
-	const n128 f4_fff         = _hlslpp_set1_ps(fffMask._f32);      // 0xffffffff
+	const n128 f4_NaN         = _hlslpp_castsi128_ps(_hlslpp_set1_epi32(0x7fffffff)); // Quiet NaN
+	const n128 f4_inf         = _hlslpp_castsi128_ps(_hlslpp_set1_epi32(0x7f800000)); // Infinity
+	const n128 f4_minusinf    = _hlslpp_castsi128_ps(_hlslpp_set1_epi32(0xff800000)); // -Infinity
+	const n128 f4_fff         = _hlslpp_castsi128_ps(_hlslpp_set1_epi32(0xffffffff)); // 0xffffffff
 
 	const n128 f4_rad2deg     = _hlslpp_set1_ps(180.0f / 3.14159265f);
 	const n128 f4_deg2rad     = _hlslpp_set1_ps(3.14159265f / 180.f);
 
-	const n128 f4negativeMask = _hlslpp_set1_ps(negMask._f32);
-	const n128 f4absMask      = _hlslpp_set1_ps(absMask._f32);
+	const n128 f4negativeMask = _hlslpp_castsi128_ps(_hlslpp_set1_epi32(0x80000000));
+	const n128 f4absMask      = _hlslpp_castsi128_ps(_hlslpp_set1_epi32(0x7fffffff));
 
 	//------------------
 	// Integer Constants
@@ -55,9 +55,8 @@ hlslpp_module_export namespace hlslpp
 	const n128i i4_0           = _hlslpp_set1_epi32(0);
 	const n128i i4_1           = _hlslpp_set1_epi32(1);
 
-	const n128i i4negativeMask = _hlslpp_set1_epi32(negMask._i32);
-	const n128i i4fffMask      = _hlslpp_set1_epi32(fffMask._i32);
-	const n128i i4negMask      = _hlslpp_set1_epi32(negMask._i32);
+	const n128i i4negativeMask = _hlslpp_set1_epi32(0x80000000);
+	const n128i i4fffMask      = _hlslpp_set1_epi32(0xffffffff);
 
 	const n128u u4_0           = _hlslpp_set1_epu32(0);
 	const n128u u4_1           = _hlslpp_set1_epu32(1);
@@ -93,16 +92,16 @@ hlslpp_module_export namespace hlslpp
 	const n256 f8_pi4         = _hlslpp256_set1_ps(0.78539816f);  // pi / 4
 	const n256 f8_minusPi4    = _hlslpp256_set1_ps(-0.78539816f); // -pi / 4
 
-	const n256 f8_NaN         = _hlslpp256_set1_ps(nanMask._f32);      // Quiet NaN
-	const n256 f8_inf         = _hlslpp256_set1_ps(infMask._f32);      // Infinity
-	const n256 f8_minusinf    = _hlslpp256_set1_ps(minusinfMask._f32); // -Infinity
-	const n256 f8_fff         = _hlslpp256_set1_ps(fffMask._f32);      // 0xffffffff
+	const n256 f8_NaN         = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0x7fffffff)); // Quiet NaN
+	const n256 f8_inf         = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0x7f800000)); // Infinity
+	const n256 f8_minusinf    = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0xff800000)); // -Infinity
+	const n256 f8_fff         = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0xffffffff)); // 0xffffffff
 
 	const n256 f8_rad2deg     = _hlslpp256_set1_ps(180.0f / 3.14159265f);
 	const n256 f8_deg2rad     = _hlslpp256_set1_ps(3.14159265f / 180.f);
 
-	const n256 f8negativeMask = _hlslpp256_set1_ps(negMask._f32);
-	const n256 f8absMask      = _hlslpp256_set1_ps(absMask._f32);
+	const n256 f8negativeMask = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0x80000000));
+	const n256 f8absMask      = _hlslpp256_castsi256_ps(_hlslpp256_set1_epi32(0x7fffffff));
 
 #endif
 
@@ -194,11 +193,17 @@ hlslpp_module_export namespace hlslpp
 	#define _hlslpp_perm_yyyy_epi32(x)		_hlslpp_perm_epi32((x), MaskY, MaskY, MaskY, MaskY)
 	#define _hlslpp_perm_zzzz_epi32(x)		_hlslpp_perm_epi32((x), MaskZ, MaskZ, MaskZ, MaskZ)
 	#define _hlslpp_perm_wwww_epi32(x)		_hlslpp_perm_epi32((x), MaskW, MaskW, MaskW, MaskW)
+
+	#define _hlslpp_perm_xxyx_epi32(x)		_hlslpp_perm_epi32((x), MaskX, MaskX, MaskY, MaskX)
+	#define _hlslpp_perm_xxyz_epi32(x)		_hlslpp_perm_epi32((x), MaskX, MaskX, MaskY, MaskZ)
 	
 	#define _hlslpp_perm_xxxx_epu32(x)		_hlslpp_perm_epu32((x), MaskX, MaskX, MaskX, MaskX)
 	#define _hlslpp_perm_yyyy_epu32(x)		_hlslpp_perm_epu32((x), MaskY, MaskY, MaskY, MaskY)
 	#define _hlslpp_perm_zzzz_epu32(x)		_hlslpp_perm_epu32((x), MaskZ, MaskZ, MaskZ, MaskZ)
 	#define _hlslpp_perm_wwww_epu32(x)		_hlslpp_perm_epu32((x), MaskW, MaskW, MaskW, MaskW)
+
+	#define _hlslpp_perm_xxyx_epu32(x)		_hlslpp_perm_epu32((x), MaskX, MaskX, MaskY, MaskX)
+	#define _hlslpp_perm_xxyz_epu32(x)		_hlslpp_perm_epu32((x), MaskX, MaskX, MaskY, MaskZ)
 
 	#define _hlslpp_shuf_xxxx_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskX, MaskX, MaskX, MaskX)
 	#define _hlslpp_shuf_xxxy_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskX, MaskX, MaskX, MaskY)
@@ -227,6 +232,16 @@ hlslpp_module_export namespace hlslpp
 	#define _hlslpp_shuf_zzzz_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskZ, MaskZ, MaskZ, MaskZ)
 	#define _hlslpp_shuf_zwxx_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskZ, MaskW, MaskX, MaskX)
 	#define _hlslpp_shuf_wwww_ps(x, y)	_hlslpp_shuffle_ps((x), (y), MaskW, MaskW, MaskW, MaskW)
+
+	#define _hlslpp_shuf_xxxx_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskX, MaskX, MaskX)
+	#define _hlslpp_shuf_xyxx_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskY, MaskX, MaskX)
+	#define _hlslpp_shuf_xxxy_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskX, MaskX, MaskY)
+	#define _hlslpp_shuf_xyxy_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskY, MaskX, MaskY)
+
+	#define _hlslpp_shuf_xxxx_epu32(x, y)		_hlslpp_shuffle_epu32((x), (y), MaskX, MaskX, MaskX, MaskX)
+	#define _hlslpp_shuf_xyxx_epu32(x, y)		_hlslpp_shuffle_epu32((x), (y), MaskX, MaskY, MaskX, MaskX)
+	#define _hlslpp_shuf_xxxy_epu32(x, y)		_hlslpp_shuffle_epu32((x), (y), MaskX, MaskX, MaskX, MaskY)
+	#define _hlslpp_shuf_xyxy_epu32(x, y)		_hlslpp_shuffle_epu32((x), (y), MaskX, MaskY, MaskX, MaskY)
 	
 	#define _hlslpp256_perm_xxxx_xxxx_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX, MaskX)
 	#define _hlslpp256_perm_xxxx_yyyy_ps(x) _hlslpp256_perm_ps(x, MaskX, MaskX, MaskX, MaskX, MaskY, MaskY, MaskY, MaskY)
@@ -272,15 +287,6 @@ hlslpp_module_export namespace hlslpp
 	#define _hlslpp_cmplt1_ps(val1, val2)		_hlslpp_and_ps(_hlslpp_cmplt_ps((val1), (val2)), f4_1)
 	#define _hlslpp_cmple1_ps(val1, val2)		_hlslpp_and_ps(_hlslpp_cmple_ps((val1), (val2)), f4_1)
 
-	#define _hlslpp_perm_xxxx_epi32(x)			_hlslpp_perm_epi32((x), MaskX, MaskX, MaskX, MaskX)
-	#define _hlslpp_perm_xxyx_epi32(x)			_hlslpp_perm_epi32((x), MaskX, MaskX, MaskY, MaskX)
-	#define _hlslpp_perm_xxyz_epi32(x)			_hlslpp_perm_epi32((x), MaskX, MaskX, MaskY, MaskZ)
-
-	#define _hlslpp_shuf_xxxx_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskX, MaskX, MaskX)
-	#define _hlslpp_shuf_xyxx_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskY, MaskX, MaskX)
-	#define _hlslpp_shuf_xxxy_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskX, MaskX, MaskY)
-	#define _hlslpp_shuf_xyxy_epi32(x, y)		_hlslpp_shuffle_epi32((x), (y), MaskX, MaskY, MaskX, MaskY)
-
 	#define _hlslpp_cmpneq1_epi32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmpneq_epi32((val1), (val2)), i4_1)
 	#define _hlslpp_cmpeq1_epi32(val1, val2)	_hlslpp_and_si128(_hlslpp_cmpeq_epi32((val1), (val2)), i4_1)
 	
@@ -318,15 +324,14 @@ hlslpp_module_export namespace hlslpp
 
 #if defined(HLSLPP_DOUBLE)
 
-	#define _hlslpp_perm_xx_pd(x)				_hlslpp_perm_pd((x), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskX))
-	#define _hlslpp_perm_xy_pd(x)				_hlslpp_perm_pd((x), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskY))
-	#define _hlslpp_perm_yx_pd(x)				_hlslpp_perm_pd((x), HLSLPP_SHUFFLE_MASK_PD(MaskY, MaskX))
-	#define _hlslpp_perm_yy_pd(x)				_hlslpp_perm_pd((x), HLSLPP_SHUFFLE_MASK_PD(MaskY, MaskY))
+	#define _hlslpp_perm_xx_pd(x)				_hlslpp_perm_pd((x), MaskX, MaskX)
+	#define _hlslpp_perm_yx_pd(x)				_hlslpp_perm_pd((x), MaskY, MaskX)
+	#define _hlslpp_perm_yy_pd(x)				_hlslpp_perm_pd((x), MaskY, MaskY)
 
-	#define _hlslpp_shuf_xx_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskX))
-	#define _hlslpp_shuf_xy_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskX, MaskY))
-	#define _hlslpp_shuf_yx_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskY, MaskX))
-	#define _hlslpp_shuf_yy_pd(x, y)			_hlslpp_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(MaskY, MaskY))
+	#define _hlslpp_shuf_xx_pd(x, y)			_hlslpp_shuffle_pd((x), (y), MaskX, MaskX)
+	#define _hlslpp_shuf_xy_pd(x, y)			_hlslpp_shuffle_pd((x), (y), MaskX, MaskY)
+	#define _hlslpp_shuf_yx_pd(x, y)			_hlslpp_shuffle_pd((x), (y), MaskY, MaskX)
+	#define _hlslpp_shuf_yy_pd(x, y)			_hlslpp_shuffle_pd((x), (y), MaskY, MaskY)
 
 	#if !defined(_hlslpp_sign_pd)
 		#define _hlslpp_sign_pd(x)				_hlslpp_and_pd(_hlslpp_or_pd(_hlslpp_and_pd((x), _hlslpp_set1_pd(-1.0f)), _hlslpp_set1_pd(1.0f)), _hlslpp_cmpneq_pd((x), _hlslpp_setzero_pd()))

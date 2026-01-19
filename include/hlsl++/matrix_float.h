@@ -524,46 +524,46 @@ hlslpp_module_export namespace hlslpp
 		o_vec2 = _hlslpp_madd_ps(m1_vec2, _hlslpp_perm_zzzz_ps(m2_vec2), mad2y);
 	}
 
-	hlslpp_inline float1x1 mul(const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec)); }
+	hlslpp_inline_nodiscard float1x1 mul(const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec)); }
 
-	hlslpp_inline float1x2 mul(const float1x1& m1, const float1x2& m2) { return float1x2(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec)); }
+	hlslpp_inline_nodiscard float1x2 mul(const float1x1& m1, const float1x2& m2) { return float1x2(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec)); }
 
-	hlslpp_inline float1x3 mul(const float1x1& m1, const float1x3& m2) { return float1x3(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec)); }
+	hlslpp_inline_nodiscard float1x3 mul(const float1x1& m1, const float1x3& m2) { return float1x3(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec)); }
 
-	hlslpp_inline float1x4 mul(const float1x1& m1, const float1x4& m2) { return float1x4(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec)); }
+	hlslpp_inline_nodiscard float1x4 mul(const float1x1& m1, const float1x4& m2) { return float1x4(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec)); }
 
-	hlslpp_inline float2x1 mul(const float2x1& m1, const float1x1& m2) { return float2x1(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec))); }
+	hlslpp_inline_nodiscard float2x1 mul(const float2x1& m1, const float1x1& m2) { return float2x1(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec))); }
 
-	hlslpp_inline float3x1 mul(const float3x1& m1, const float1x1& m2) { return float3x1(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec))); }
+	hlslpp_inline_nodiscard float3x1 mul(const float3x1& m1, const float1x1& m2) { return float3x1(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec))); }
 
-	hlslpp_inline float4x1 mul(const float4x1& m1, const float1x1& m2) { return float4x1(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec))); }
+	hlslpp_inline_nodiscard float4x1 mul(const float4x1& m1, const float1x1& m2) { return float4x1(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec))); }
 
-	hlslpp_inline float2x2 mul(const float2x1& m1, const float1x2& m2) { return float2x2(_hlslpp_mul_ps(_hlslpp_perm_xxyy_ps(m1.vec), _hlslpp_perm_xyxy_ps(m2.vec))); }
+	hlslpp_inline_nodiscard float2x2 mul(const float2x1& m1, const float1x2& m2) { return float2x2(_hlslpp_mul_ps(_hlslpp_perm_xxyy_ps(m1.vec), _hlslpp_perm_xyxy_ps(m2.vec))); }
 
-	hlslpp_inline float2x3 mul(const float2x1& m1, const float1x3& m2) { return float2x3(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec), _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1.vec), m2.vec)); }
+	hlslpp_inline_nodiscard float2x3 mul(const float2x1& m1, const float1x3& m2) { return float2x3(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec), _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1.vec), m2.vec)); }
 
-	hlslpp_inline float2x4 mul(const float2x1& m1, const float1x4& m2) { return float2x4(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec), _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1.vec), m2.vec)); }
+	hlslpp_inline_nodiscard float2x4 mul(const float2x1& m1, const float1x4& m2) { return float2x4(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec), _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1.vec), m2.vec)); }
 
-	hlslpp_inline float3x2 mul(const float3x1& m1, const float1x2& m2) { return float3x2(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec)), _hlslpp_mul_ps(m1.vec, _hlslpp_perm_yyyy_ps(m2.vec))); }
+	hlslpp_inline_nodiscard float3x2 mul(const float3x1& m1, const float1x2& m2) { return float3x2(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec)), _hlslpp_mul_ps(m1.vec, _hlslpp_perm_yyyy_ps(m2.vec))); }
 
-	hlslpp_inline float4x2 mul(const float4x1& m1, const float1x2& m2) { return float4x2(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec)), _hlslpp_mul_ps(m1.vec, _hlslpp_perm_yyyy_ps(m2.vec))); }
+	hlslpp_inline_nodiscard float4x2 mul(const float4x1& m1, const float1x2& m2) { return float4x2(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec)), _hlslpp_mul_ps(m1.vec, _hlslpp_perm_yyyy_ps(m2.vec))); }
 
-	hlslpp_inline float3x3 mul(const float3x1& m1, const float1x3& m2)
+	hlslpp_inline_nodiscard float3x3 mul(const float3x1& m1, const float1x3& m2)
 	{
 		return float3x3(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec)), _hlslpp_mul_ps(m1.vec, _hlslpp_perm_yyyy_ps(m2.vec)), _hlslpp_mul_ps(m1.vec, _hlslpp_perm_zzzz_ps(m2.vec)));
 	}
 
-	hlslpp_inline float4x3 mul(const float4x1& m1, const float1x3& m2)
+	hlslpp_inline_nodiscard float4x3 mul(const float4x1& m1, const float1x3& m2)
 	{
 		return float4x3(_hlslpp_mul_ps(m1.vec, _hlslpp_perm_xxxx_ps(m2.vec)), _hlslpp_mul_ps(m1.vec, _hlslpp_perm_yyyy_ps(m2.vec)), _hlslpp_mul_ps(m1.vec, _hlslpp_perm_zzzz_ps(m2.vec)));
 	}
 
-	hlslpp_inline float3x4 mul(const float3x1& m1, const float1x4& m2)
+	hlslpp_inline_nodiscard float3x4 mul(const float3x1& m1, const float1x4& m2)
 	{
 		return float3x4(_hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec), m2.vec), _hlslpp_mul_ps(_hlslpp_perm_yyyy_ps(m1.vec), m2.vec), _hlslpp_mul_ps(_hlslpp_perm_zzzz_ps(m1.vec), m2.vec));
 	}
 
-	hlslpp_inline float4x4 mul(const float4x1& m1, const float1x4& m2)
+	hlslpp_inline_nodiscard float4x4 mul(const float4x1& m1, const float1x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -596,29 +596,29 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float1x1 mul(const float1x2& m1, const float2x1& m2) { return float1x1(_hlslpp_dot2_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x1 mul(const float1x2& m1, const float2x1& m2) { return float1x1(_hlslpp_dot2_ps(m1.vec, m2.vec)); }
 
-	hlslpp_inline float1x2 mul(const float1x2& m1, const float2x2& m2) { return float1x2(_hlslpp_mul_1x2_2x1_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x2 mul(const float1x2& m1, const float2x2& m2) { return float1x2(_hlslpp_mul_1x2_2x1_ps(m1.vec, m2.vec)); }
 
-	hlslpp_inline float1x3 mul(const float1x2& m1, const float2x3& m2) { return float1x3(_hlslpp_mul_1x2_2xM_ps(m1.vec, m2.vec0, m2.vec1)); }
+	hlslpp_inline_nodiscard float1x3 mul(const float1x2& m1, const float2x3& m2) { return float1x3(_hlslpp_mul_1x2_2xM_ps(m1.vec, m2.vec0, m2.vec1)); }
 
-	hlslpp_inline float1x4 mul(const float1x2& m1, const float2x4& m2) { return float1x4(_hlslpp_mul_1x2_2xM_ps(m1.vec, m2.vec0, m2.vec1)); }
+	hlslpp_inline_nodiscard float1x4 mul(const float1x2& m1, const float2x4& m2) { return float1x4(_hlslpp_mul_1x2_2xM_ps(m1.vec, m2.vec0, m2.vec1)); }
 
-	hlslpp_inline float1x1 mul(const float1x3& m1, const float3x1& m2) { return float1x1(_hlslpp_dot3_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x1 mul(const float1x3& m1, const float3x1& m2) { return float1x1(_hlslpp_dot3_ps(m1.vec, m2.vec)); }
 
-	hlslpp_inline float1x2 mul(const float1x3& m1, const float3x2& m2) { return float1x2(_hlslpp_mul_1x3_3x2_ps(m1.vec, m2.vec0, m2.vec1)); }
+	hlslpp_inline_nodiscard float1x2 mul(const float1x3& m1, const float3x2& m2) { return float1x2(_hlslpp_mul_1x3_3x2_ps(m1.vec, m2.vec0, m2.vec1)); }
 
-	hlslpp_inline float1x3 mul(const float1x3& m1, const float3x3& m2) { return float1x3(_hlslpp_mul_1x3_3xM_ps(m1.vec, m2.vec0, m2.vec1, m2.vec2)); }
+	hlslpp_inline_nodiscard float1x3 mul(const float1x3& m1, const float3x3& m2) { return float1x3(_hlslpp_mul_1x3_3xM_ps(m1.vec, m2.vec0, m2.vec1, m2.vec2)); }
 
-	hlslpp_inline float1x4 mul(const float1x3& m1, const float3x4& m2) { return float1x4(_hlslpp_mul_1x3_3xM_ps(m1.vec, m2.vec0, m2.vec1, m2.vec2)); }
+	hlslpp_inline_nodiscard float1x4 mul(const float1x3& m1, const float3x4& m2) { return float1x4(_hlslpp_mul_1x3_3xM_ps(m1.vec, m2.vec0, m2.vec1, m2.vec2)); }
 
-	hlslpp_inline float1x1 mul(const float1x4& m1, const float4x1& m2) { return float1x1(_hlslpp_dot4_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x1 mul(const float1x4& m1, const float4x1& m2) { return float1x1(_hlslpp_dot4_ps(m1.vec, m2.vec)); }
 
-	hlslpp_inline float1x2 mul(const float1x4& m1, const float4x2& m2) { return float1x2(_hlslpp_mul_1x4_4x2_ps(m1.vec, m2.vec0, m2.vec1)); }
+	hlslpp_inline_nodiscard float1x2 mul(const float1x4& m1, const float4x2& m2) { return float1x2(_hlslpp_mul_1x4_4x2_ps(m1.vec, m2.vec0, m2.vec1)); }
 
-	hlslpp_inline float1x3 mul(const float1x4& m1, const float4x3& m2) { return float1x3(_hlslpp_mul_1x4_4x3_ps(m1.vec, m2.vec0, m2.vec1, m2.vec2)); }
+	hlslpp_inline_nodiscard float1x3 mul(const float1x4& m1, const float4x3& m2) { return float1x3(_hlslpp_mul_1x4_4x3_ps(m1.vec, m2.vec0, m2.vec1, m2.vec2)); }
 
-	hlslpp_inline float1x4 mul(const float1x4& m1, const float4x4& m2)
+	hlslpp_inline_nodiscard float1x4 mul(const float1x4& m1, const float4x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -644,50 +644,50 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float2x1 mul(const float2x2& m1, const float2x1& m2) { return float2x1(_hlslpp_mul_2x2_2x1_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x1 mul(const float2x2& m1, const float2x1& m2) { return float2x1(_hlslpp_mul_2x2_2x1_ps(m1.vec, m2.vec)); }
 
-	hlslpp_inline float2x2 mul(const float2x2& m1, const float2x2& m2) { return float2x2(_hlslpp_mul_2x2_2x2_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x2 mul(const float2x2& m1, const float2x2& m2) { return float2x2(_hlslpp_mul_2x2_2x2_ps(m1.vec, m2.vec)); }
 
-	hlslpp_inline float2x3 mul(const float2x2& m1, const float2x3& m2)
+	hlslpp_inline_nodiscard float2x3 mul(const float2x2& m1, const float2x3& m2)
 	{
 		n128 vec0, vec1;
 		_hlslpp_mul_2x2_2xM_ps(m1.vec, m2.vec0, m2.vec1, vec0, vec1);
 		return float2x3(vec0, vec1);
 	}
 
-	hlslpp_inline float2x4 mul(const float2x2& m1, const float2x4& m2)
+	hlslpp_inline_nodiscard float2x4 mul(const float2x2& m1, const float2x4& m2)
 	{
 		n128 vec0, vec1;
 		_hlslpp_mul_2x2_2xM_ps(m1.vec, m2.vec0, m2.vec1, vec0, vec1);
 		return float2x4(vec0, vec1);
 	}
 
-	hlslpp_inline float3x1 mul(const float3x2& m1, const float2x1& m2) { return float3x1(_hlslpp_mul_Nx2_2x1_ps(m1.vec0, m1.vec1, m2.vec)); }
+	hlslpp_inline_nodiscard float3x1 mul(const float3x2& m1, const float2x1& m2) { return float3x1(_hlslpp_mul_Nx2_2x1_ps(m1.vec0, m1.vec1, m2.vec)); }
 
-	hlslpp_inline float4x1 mul(const float4x2& m1, const float2x1& m2) { return float4x1(_hlslpp_mul_Nx2_2x1_ps(m1.vec0, m1.vec1, m2.vec)); }
+	hlslpp_inline_nodiscard float4x1 mul(const float4x2& m1, const float2x1& m2) { return float4x1(_hlslpp_mul_Nx2_2x1_ps(m1.vec0, m1.vec1, m2.vec)); }
 
-	hlslpp_inline float3x2 mul(const float3x2& m1, const float2x2& m2)
+	hlslpp_inline_nodiscard float3x2 mul(const float3x2& m1, const float2x2& m2)
 	{
 		n128 vec0, vec1;
 		_hlslpp_mul_Nx2_2x2_ps(m1.vec0, m1.vec1, m2.vec, vec0, vec1);
 		return float3x2(vec0, vec1);
 	}
 
-	hlslpp_inline float4x2 mul(const float4x2& m1, const float2x2& m2)
+	hlslpp_inline_nodiscard float4x2 mul(const float4x2& m1, const float2x2& m2)
 	{
 		n128 vec0, vec1;
 		_hlslpp_mul_Nx2_2x2_ps(m1.vec0, m1.vec1, m2.vec, vec0, vec1);
 		return float4x2(vec0, vec1);
 	}
 
-	hlslpp_inline float3x3 mul(const float3x2& m1, const float2x3& m2)
+	hlslpp_inline_nodiscard float3x3 mul(const float3x2& m1, const float2x3& m2)
 	{
 		n128 vec0, vec1, vec2;
 		_hlslpp_mul_3x2_2xM_ps(m1.vec0, m1.vec1, m2.vec0, m2.vec1, vec0, vec1, vec2);
 		return float3x3(vec0, vec1, vec2);
 	}
 
-	hlslpp_inline float3x4 mul(const float3x2& m1, const float2x4& m2)
+	hlslpp_inline_nodiscard float3x4 mul(const float3x2& m1, const float2x4& m2)
 	{
 		n128 vec0, vec1, vec2;
 		_hlslpp_mul_3x2_2xM_ps(m1.vec0, m1.vec1, m2.vec0, m2.vec1, vec0, vec1, vec2);
@@ -695,14 +695,14 @@ hlslpp_module_export namespace hlslpp
 	}
 
 
-	hlslpp_inline float4x3 mul(const float4x2& m1, const float2x3& m2)
+	hlslpp_inline_nodiscard float4x3 mul(const float4x2& m1, const float2x3& m2)
 	{
 		n128 vec0, vec1, vec2;
 		_hlslpp_mul_4x2_2x3_ps(m1.vec0, m1.vec1, m2.vec0, m2.vec1, vec0, vec1, vec2);
 		return float4x3(vec0, vec1, vec2);
 	}
 
-	hlslpp_inline float4x4 mul(const float4x2& m1, const float2x4& m2)
+	hlslpp_inline_nodiscard float4x4 mul(const float4x2& m1, const float2x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -748,48 +748,48 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float2x1 mul(const float2x3& m1, const float3x1& m2)
+	hlslpp_inline_nodiscard float2x1 mul(const float2x3& m1, const float3x1& m2)
 	{
 		return float2x1(_hlslpp_mul_2x3_3x1_ps(m1.vec0, m1.vec1, m2.vec));
 	}
 
-	hlslpp_inline float2x2 mul(const float2x3& m1, const float3x2& m2)
+	hlslpp_inline_nodiscard float2x2 mul(const float2x3& m1, const float3x2& m2)
 	{
 		return float2x2(_hlslpp_mul_2x3_3x2_ps(m1.vec0, m1.vec1, m2.vec0, m2.vec1));
 	}
 
-	hlslpp_inline float2x3 mul(const float2x3& m1, const float3x3& m2)
+	hlslpp_inline_nodiscard float2x3 mul(const float2x3& m1, const float3x3& m2)
 	{
 		n128 vec0, vec1;
 		_hlslpp_mul_2x3_3xM_ps(m1.vec0, m1.vec1, m2.vec0, m2.vec1, m2.vec2, vec0, vec1);
 		return float2x3(vec0, vec1);
 	}
 
-	hlslpp_inline float2x4 mul(const float2x3& m1, const float3x4& m2)
+	hlslpp_inline_nodiscard float2x4 mul(const float2x3& m1, const float3x4& m2)
 	{
 		n128 vec0, vec1;
 		_hlslpp_mul_2x3_3xM_ps(m1.vec0, m1.vec1, m2.vec0, m2.vec1, m2.vec2, vec0, vec1);
 		return float2x4(vec0, vec1);
 	}
 
-	hlslpp_inline float2x1 mul(const float2x4& m1, const float4x1& m2)
+	hlslpp_inline_nodiscard float2x1 mul(const float2x4& m1, const float4x1& m2)
 	{
 		return float2x1(_hlslpp_mul_2x4_4x1_ps(m1.vec0, m1.vec1, m2.vec));
 	}
 
-	hlslpp_inline float2x2 mul(const float2x4& m1, const float4x2& m2)
+	hlslpp_inline_nodiscard float2x2 mul(const float2x4& m1, const float4x2& m2)
 	{
 		return float2x2(_hlslpp_mul_2x4_4x2_ps(m1.vec0, m1.vec1, m2.vec0, m2.vec1));
 	}
 
-	hlslpp_inline float2x3 mul(const float2x4& m1, const float4x3& m2)
+	hlslpp_inline_nodiscard float2x3 mul(const float2x4& m1, const float4x3& m2)
 	{
 		n128 vec0, vec1;
 		_hlslpp_mul_2x4_4x3_ps(m1.vec0, m1.vec1, m2.vec0, m2.vec1, m2.vec2, vec0, vec1);
 		return float2x3(vec0, vec1);
 	}
 
-	hlslpp_inline float2x4 mul(const float2x4& m1, const float4x4& m2)
+	hlslpp_inline_nodiscard float2x4 mul(const float2x4& m1, const float4x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -863,52 +863,52 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float3x1 mul(const float3x3& m1, const float3x1& m2)
+	hlslpp_inline_nodiscard float3x1 mul(const float3x3& m1, const float3x1& m2)
 	{
 		return float3x1(_hlslpp_mul_3x3_3x1_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec));
 	}
 
-	hlslpp_inline float3x2 mul(const float3x3& m1, const float3x2& m2)
+	hlslpp_inline_nodiscard float3x2 mul(const float3x3& m1, const float3x2& m2)
 	{
 		n128 vec0, vec1;
 		_hlslpp_mul_3x3_3x2_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec0, m2.vec1, vec0, vec1);
 		return float3x2(vec0, vec1);
 	}
 
-	hlslpp_inline float3x3 mul(const float3x3& m1, const float3x3& m2)
+	hlslpp_inline_nodiscard float3x3 mul(const float3x3& m1, const float3x3& m2)
 	{
 		n128 vec0, vec1, vec2;
 		_hlslpp_mul_3x3_3x4_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec0, m2.vec1, m2.vec2, vec0, vec1, vec2);
 		return float3x3(vec0, vec1, vec2);
 	}
 
-	hlslpp_inline float3x4 mul(const float3x3& m1, const float3x4& m2)
+	hlslpp_inline_nodiscard float3x4 mul(const float3x3& m1, const float3x4& m2)
 	{
 		n128 vec0, vec1, vec2;
 		_hlslpp_mul_3x3_3x4_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec0, m2.vec1, m2.vec2, vec0, vec1, vec2);
 		return float3x4(vec0, vec1, vec2);
 	}
 
-	hlslpp_inline float3x1 mul(const float3x4& m1, const float4x1& m2)
+	hlslpp_inline_nodiscard float3x1 mul(const float3x4& m1, const float4x1& m2)
 	{
 		return float3x1(_hlslpp_mul_3x4_4x1_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec));
 	}
 
-	hlslpp_inline float3x2 mul(const float3x4& m1, const float4x2& m2)
+	hlslpp_inline_nodiscard float3x2 mul(const float3x4& m1, const float4x2& m2)
 	{
 		n128 vec0, vec1;
 		_hlslpp_mul_3x4_4x2_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec0, m2.vec1, vec0, vec1);
 		return float3x2(vec0, vec1);
 	}
 
-	hlslpp_inline float3x3 mul(const float3x4& m1, const float4x3& m2)
+	hlslpp_inline_nodiscard float3x3 mul(const float3x4& m1, const float4x3& m2)
 	{
 		n128 vec0, vec1, vec2;
 		_hlslpp_mul_3x4_4x3_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec0, m2.vec1, m2.vec2, vec0, vec1, vec2);
 		return float3x3(vec0, vec1, vec2);
 	}
 
-	inline float3x4 mul(const float3x4& m1, const float4x4& m2)
+	hlslpp_nodiscard inline float3x4 mul(const float3x4& m1, const float4x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -956,26 +956,26 @@ hlslpp_module_export namespace hlslpp
 		);
 	}
 
-	hlslpp_inline float4x1 mul(const float4x3& m1, const float3x1& m2)
+	hlslpp_inline_nodiscard float4x1 mul(const float4x3& m1, const float3x1& m2)
 	{
 		return float4x1(_hlslpp_mul_4x3_3x1_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec));
 	}
 
-	hlslpp_inline float4x2 mul(const float4x3& m1, const float3x2& m2)
+	hlslpp_inline_nodiscard float4x2 mul(const float4x3& m1, const float3x2& m2)
 	{
 		n128 vec0, vec1;
 		_hlslpp_mul_4x3_3x2_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec0, m2.vec1, vec0, vec1);
 		return float4x2(vec0, vec1);
 	}
 
-	hlslpp_inline float4x3 mul(const float4x3& m1, const float3x3& m2)
+	hlslpp_inline_nodiscard float4x3 mul(const float4x3& m1, const float3x3& m2)
 	{
 		n128 vec0, vec1, vec2;
 		_hlslpp_mul_4x3_3x3_ps(m1.vec0, m1.vec1, m1.vec2, m2.vec0, m2.vec1, m2.vec2, vec0, vec1, vec2);
 		return float4x3(vec0, vec1, vec2);
 	}
 
-	inline float4x4 mul(const float4x3& m1, const float3x4& m2)
+	hlslpp_nodiscard inline float4x4 mul(const float4x3& m1, const float3x4& m2)
 	{
 		// First row
 		n128 mul0x = _hlslpp_mul_ps(_hlslpp_perm_xxxx_ps(m1.vec0), m2.vec0);
@@ -1013,7 +1013,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	inline float4x1 mul(const float4x4& m1, const float4x1& m2)
+	hlslpp_nodiscard inline float4x1 mul(const float4x4& m1, const float4x1& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -1051,7 +1051,7 @@ hlslpp_module_export namespace hlslpp
 		return float4x1(_hlslpp_blend_ps(_hlslpp_shuf_xxxx_ps(dpx, dpz), _hlslpp_shuf_xxxx_ps(dpy, dpw), HLSLPP_BLEND_MASK(1, 0, 1, 0)));
 	}
 
-	inline float4x2 mul(const float4x4& m1, const float4x2& m2)
+	hlslpp_nodiscard inline float4x2 mul(const float4x4& m1, const float4x2& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 
@@ -1102,7 +1102,7 @@ hlslpp_module_export namespace hlslpp
 		);
 	}
 
-	inline float4x3 mul(const float4x4& m1, const float4x3& m2)
+	hlslpp_nodiscard inline float4x3 mul(const float4x4& m1, const float4x3& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		
@@ -1186,7 +1186,7 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	inline float4x4 mul(const float4x4& m1, const float4x4& m2)
+	hlslpp_nodiscard inline float4x4 mul(const float4x4& m1, const float4x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -1257,54 +1257,54 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float1 mul(const float1x1& m1, const float1& m2) { return float1(_hlslpp_mul_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1 mul(const float1x1& m1, const float1& m2) { return float1(_hlslpp_mul_ps(m1.vec, m2.vec)); }
 
-	hlslpp_inline float1 mul(const float1x2& m1, const float2& v1) { return float1(mul(m1, float2x1(v1.vec)).vec); }
-	hlslpp_inline float2 mul(const float2x2& m1, const float2& v1) { return float2(mul(m1, float2x1(v1.vec)).vec); }
-	hlslpp_inline float3 mul(const float3x2& m1, const float2& v1) { return float3(mul(m1, float2x1(v1.vec)).vec); }
-	hlslpp_inline float4 mul(const float4x2& m1, const float2& v1) { return float4(mul(m1, float2x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float1 mul(const float1x2& m1, const float2& v1) { return float1(mul(m1, float2x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float2 mul(const float2x2& m1, const float2& v1) { return float2(mul(m1, float2x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float3 mul(const float3x2& m1, const float2& v1) { return float3(mul(m1, float2x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float4 mul(const float4x2& m1, const float2& v1) { return float4(mul(m1, float2x1(v1.vec)).vec); }
 
-	hlslpp_inline float1 mul(const float2& v1, const float2x1& m2) { return float1(mul(float1x2(v1.vec), m2).vec); }
-	hlslpp_inline float2 mul(const float2& v1, const float2x2& m2) { return float2(mul(float1x2(v1.vec), m2).vec); }
-	hlslpp_inline float3 mul(const float2& v1, const float2x3& m2) { return float3(mul(float1x2(v1.vec), m2).vec); }
-	hlslpp_inline float4 mul(const float2& v1, const float2x4& m2) { return float4(mul(float1x2(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float1 mul(const float2& v1, const float2x1& m2) { return float1(mul(float1x2(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float2 mul(const float2& v1, const float2x2& m2) { return float2(mul(float1x2(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float3 mul(const float2& v1, const float2x3& m2) { return float3(mul(float1x2(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float4 mul(const float2& v1, const float2x4& m2) { return float4(mul(float1x2(v1.vec), m2).vec); }
 
-	hlslpp_inline float1 mul(const float1x3& m1, const float3& v1) { return float1(mul(m1, float3x1(v1.vec)).vec); }
-	hlslpp_inline float2 mul(const float2x3& m1, const float3& v1) { return float2(mul(m1, float3x1(v1.vec)).vec); }
-	hlslpp_inline float3 mul(const float3x3& m1, const float3& v1) { return float3(mul(m1, float3x1(v1.vec)).vec); }
-	hlslpp_inline float4 mul(const float4x3& m1, const float3& v1) { return float4(mul(m1, float3x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float1 mul(const float1x3& m1, const float3& v1) { return float1(mul(m1, float3x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float2 mul(const float2x3& m1, const float3& v1) { return float2(mul(m1, float3x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float3 mul(const float3x3& m1, const float3& v1) { return float3(mul(m1, float3x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float4 mul(const float4x3& m1, const float3& v1) { return float4(mul(m1, float3x1(v1.vec)).vec); }
 
-	hlslpp_inline float1 mul(const float3& v1, const float3x1& m2) { return float1(mul(float1x3(v1.vec), m2).vec); }
-	hlslpp_inline float2 mul(const float3& v1, const float3x2& m2) { return float2(mul(float1x3(v1.vec), m2).vec); }
-	hlslpp_inline float3 mul(const float3& v1, const float3x3& m2) { return float3(mul(float1x3(v1.vec), m2).vec); }
-	hlslpp_inline float4 mul(const float3& v1, const float3x4& m2) { return float4(mul(float1x3(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float1 mul(const float3& v1, const float3x1& m2) { return float1(mul(float1x3(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float2 mul(const float3& v1, const float3x2& m2) { return float2(mul(float1x3(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float3 mul(const float3& v1, const float3x3& m2) { return float3(mul(float1x3(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float4 mul(const float3& v1, const float3x4& m2) { return float4(mul(float1x3(v1.vec), m2).vec); }
 
-	hlslpp_inline float1 mul(const float1x4& m1, const float4& v1) { return float1(mul(m1, float4x1(v1.vec)).vec); }
-	hlslpp_inline float2 mul(const float2x4& m1, const float4& v1) { return float2(mul(m1, float4x1(v1.vec)).vec); }
-	hlslpp_inline float3 mul(const float3x4& m1, const float4& v1) { return float3(mul(m1, float4x1(v1.vec)).vec); }
-	hlslpp_inline float4 mul(const float4x4& m1, const float4& v1) { return float4(mul(m1, float4x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float1 mul(const float1x4& m1, const float4& v1) { return float1(mul(m1, float4x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float2 mul(const float2x4& m1, const float4& v1) { return float2(mul(m1, float4x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float3 mul(const float3x4& m1, const float4& v1) { return float3(mul(m1, float4x1(v1.vec)).vec); }
+	hlslpp_inline_nodiscard float4 mul(const float4x4& m1, const float4& v1) { return float4(mul(m1, float4x1(v1.vec)).vec); }
 
-	hlslpp_inline float1 mul(const float4& v1, const float4x1& m2) { return float1(mul(float1x4(v1.vec), m2).vec); }
-	hlslpp_inline float2 mul(const float4& v1, const float4x2& m2) { return float2(mul(float1x4(v1.vec), m2).vec); }
-	hlslpp_inline float3 mul(const float4& v1, const float4x3& m2) { return float3(mul(float1x4(v1.vec), m2).vec); }
-	hlslpp_inline float4 mul(const float4& v1, const float4x4& m2) { return float4(mul(float1x4(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float1 mul(const float4& v1, const float4x1& m2) { return float1(mul(float1x4(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float2 mul(const float4& v1, const float4x2& m2) { return float2(mul(float1x4(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float3 mul(const float4& v1, const float4x3& m2) { return float3(mul(float1x4(v1.vec), m2).vec); }
+	hlslpp_inline_nodiscard float4 mul(const float4& v1, const float4x4& m2) { return float4(mul(float1x4(v1.vec), m2).vec); }
 
-	hlslpp_inline float1x1 operator + (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_add_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x2 operator + (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_add_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x3 operator + (const float1x3& m1, const float1x3& m2) { return float1x3(_hlslpp_add_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x4 operator + (const float1x4& m1, const float1x4& m2) { return float1x4(_hlslpp_add_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x1 operator + (const float2x1& m1, const float2x1& m2) { return float2x1(_hlslpp_add_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float3x1 operator + (const float3x1& m1, const float3x1& m2) { return float3x1(_hlslpp_add_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float4x1 operator + (const float4x1& m1, const float4x1& m2) { return float4x1(_hlslpp_add_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x2 operator + (const float2x2& m1, const float2x2& m2) { return float2x2(_hlslpp_add_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x3 operator + (const float2x3& m1, const float2x3& m2) { return float2x3(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float3x2 operator + (const float3x2& m1, const float3x2& m2) { return float3x2(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float2x4 operator + (const float2x4& m1, const float2x4& m2) { return float2x4(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float4x2 operator + (const float4x2& m1, const float4x2& m2) { return float4x2(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float3x3 operator + (const float3x3& m1, const float3x3& m2) { return float3x3(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1), _hlslpp_add_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float3x4 operator + (const float3x4& m1, const float3x4& m2) { return float3x4(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1), _hlslpp_add_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float4x3 operator + (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1), _hlslpp_add_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float4x4 operator + (const float4x4& m1, const float4x4& m2)
+	hlslpp_inline_nodiscard float1x1 operator + (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_add_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x2 operator + (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_add_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x3 operator + (const float1x3& m1, const float1x3& m2) { return float1x3(_hlslpp_add_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x4 operator + (const float1x4& m1, const float1x4& m2) { return float1x4(_hlslpp_add_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x1 operator + (const float2x1& m1, const float2x1& m2) { return float2x1(_hlslpp_add_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float3x1 operator + (const float3x1& m1, const float3x1& m2) { return float3x1(_hlslpp_add_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float4x1 operator + (const float4x1& m1, const float4x1& m2) { return float4x1(_hlslpp_add_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x2 operator + (const float2x2& m1, const float2x2& m2) { return float2x2(_hlslpp_add_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x3 operator + (const float2x3& m1, const float2x3& m2) { return float2x3(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float3x2 operator + (const float3x2& m1, const float3x2& m2) { return float3x2(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float2x4 operator + (const float2x4& m1, const float2x4& m2) { return float2x4(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float4x2 operator + (const float4x2& m1, const float4x2& m2) { return float4x2(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float3x3 operator + (const float3x3& m1, const float3x3& m2) { return float3x3(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1), _hlslpp_add_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float3x4 operator + (const float3x4& m1, const float3x4& m2) { return float3x4(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1), _hlslpp_add_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float4x3 operator + (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_add_ps(m1.vec0, m2.vec0), _hlslpp_add_ps(m1.vec1, m2.vec1), _hlslpp_add_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float4x4 operator + (const float4x4& m1, const float4x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return float4x4(_hlslpp512_add_ps(m1.vec, m2.vec));
@@ -1332,22 +1332,22 @@ hlslpp_module_export namespace hlslpp
 	hlslpp_inline float4x3& operator += (float4x3& m1, const float4x3& m2) { m1 = m1 + m2; return m1; }
 	hlslpp_inline float4x4& operator += (float4x4& m1, const float4x4& m2) { m1 = m1 + m2; return m1; }
 
-	hlslpp_inline float1x1 operator - (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_sub_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x2 operator - (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_sub_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x3 operator - (const float1x3& m1, const float1x3& m2) { return float1x3(_hlslpp_sub_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x4 operator - (const float1x4& m1, const float1x4& m2) { return float1x4(_hlslpp_sub_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x1 operator - (const float2x1& m1, const float2x1& m2) { return float2x1(_hlslpp_sub_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float3x1 operator - (const float3x1& m1, const float3x1& m2) { return float3x1(_hlslpp_sub_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float4x1 operator - (const float4x1& m1, const float4x1& m2) { return float4x1(_hlslpp_sub_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x2 operator - (const float2x2& m1, const float2x2& m2) { return float2x2(_hlslpp_sub_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x3 operator - (const float2x3& m1, const float2x3& m2) { return float2x3(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float3x2 operator - (const float3x2& m1, const float3x2& m2) { return float3x2(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float2x4 operator - (const float2x4& m1, const float2x4& m2) { return float2x4(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float4x2 operator - (const float4x2& m1, const float4x2& m2) { return float4x2(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float3x3 operator - (const float3x3& m1, const float3x3& m2) { return float3x3(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1), _hlslpp_sub_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float3x4 operator - (const float3x4& m1, const float3x4& m2) { return float3x4(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1), _hlslpp_sub_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float4x3 operator - (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1), _hlslpp_sub_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float4x4 operator - (const float4x4& m1, const float4x4& m2)
+	hlslpp_inline_nodiscard float1x1 operator - (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_sub_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x2 operator - (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_sub_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x3 operator - (const float1x3& m1, const float1x3& m2) { return float1x3(_hlslpp_sub_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x4 operator - (const float1x4& m1, const float1x4& m2) { return float1x4(_hlslpp_sub_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x1 operator - (const float2x1& m1, const float2x1& m2) { return float2x1(_hlslpp_sub_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float3x1 operator - (const float3x1& m1, const float3x1& m2) { return float3x1(_hlslpp_sub_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float4x1 operator - (const float4x1& m1, const float4x1& m2) { return float4x1(_hlslpp_sub_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x2 operator - (const float2x2& m1, const float2x2& m2) { return float2x2(_hlslpp_sub_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x3 operator - (const float2x3& m1, const float2x3& m2) { return float2x3(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float3x2 operator - (const float3x2& m1, const float3x2& m2) { return float3x2(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float2x4 operator - (const float2x4& m1, const float2x4& m2) { return float2x4(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float4x2 operator - (const float4x2& m1, const float4x2& m2) { return float4x2(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float3x3 operator - (const float3x3& m1, const float3x3& m2) { return float3x3(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1), _hlslpp_sub_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float3x4 operator - (const float3x4& m1, const float3x4& m2) { return float3x4(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1), _hlslpp_sub_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float4x3 operator - (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_sub_ps(m1.vec0, m2.vec0), _hlslpp_sub_ps(m1.vec1, m2.vec1), _hlslpp_sub_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float4x4 operator - (const float4x4& m1, const float4x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return float4x4(_hlslpp512_sub_ps(m1.vec, m2.vec));
@@ -1375,22 +1375,22 @@ hlslpp_module_export namespace hlslpp
 	hlslpp_inline float4x3& operator -= (float4x3& m1, const float4x3& m2) { m1 = m1 - m2; return m1; }
 	hlslpp_inline float4x4& operator -= (float4x4& m1, const float4x4& m2) { m1 = m1 - m2; return m1; }
 
-	hlslpp_inline float1x1 operator * (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_mul_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x2 operator * (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_mul_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x3 operator * (const float1x3& m1, const float1x3& m2) { return float1x3(_hlslpp_mul_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x4 operator * (const float1x4& m1, const float1x4& m2) { return float1x4(_hlslpp_mul_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x1 operator * (const float2x1& m1, const float2x1& m2) { return float2x1(_hlslpp_mul_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float3x1 operator * (const float3x1& m1, const float3x1& m2) { return float3x1(_hlslpp_mul_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float4x1 operator * (const float4x1& m1, const float4x1& m2) { return float4x1(_hlslpp_mul_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x2 operator * (const float2x2& m1, const float2x2& m2) { return float2x2(_hlslpp_mul_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x3 operator * (const float2x3& m1, const float2x3& m2) { return float2x3(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float3x2 operator * (const float3x2& m1, const float3x2& m2) { return float3x2(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float2x4 operator * (const float2x4& m1, const float2x4& m2) { return float2x4(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float4x2 operator * (const float4x2& m1, const float4x2& m2) { return float4x2(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float3x3 operator * (const float3x3& m1, const float3x3& m2) { return float3x3(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1), _hlslpp_mul_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float3x4 operator * (const float3x4& m1, const float3x4& m2) { return float3x4(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1), _hlslpp_mul_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float4x3 operator * (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1), _hlslpp_mul_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float4x4 operator * (const float4x4& m1, const float4x4& m2)
+	hlslpp_inline_nodiscard float1x1 operator * (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_mul_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x2 operator * (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_mul_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x3 operator * (const float1x3& m1, const float1x3& m2) { return float1x3(_hlslpp_mul_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x4 operator * (const float1x4& m1, const float1x4& m2) { return float1x4(_hlslpp_mul_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x1 operator * (const float2x1& m1, const float2x1& m2) { return float2x1(_hlslpp_mul_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float3x1 operator * (const float3x1& m1, const float3x1& m2) { return float3x1(_hlslpp_mul_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float4x1 operator * (const float4x1& m1, const float4x1& m2) { return float4x1(_hlslpp_mul_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x2 operator * (const float2x2& m1, const float2x2& m2) { return float2x2(_hlslpp_mul_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x3 operator * (const float2x3& m1, const float2x3& m2) { return float2x3(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float3x2 operator * (const float3x2& m1, const float3x2& m2) { return float3x2(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float2x4 operator * (const float2x4& m1, const float2x4& m2) { return float2x4(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float4x2 operator * (const float4x2& m1, const float4x2& m2) { return float4x2(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float3x3 operator * (const float3x3& m1, const float3x3& m2) { return float3x3(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1), _hlslpp_mul_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float3x4 operator * (const float3x4& m1, const float3x4& m2) { return float3x4(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1), _hlslpp_mul_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float4x3 operator * (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_mul_ps(m1.vec0, m2.vec0), _hlslpp_mul_ps(m1.vec1, m2.vec1), _hlslpp_mul_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float4x4 operator * (const float4x4& m1, const float4x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return float4x4(_hlslpp512_mul_ps(m1.vec, m2.vec));
@@ -1418,22 +1418,22 @@ hlslpp_module_export namespace hlslpp
 	hlslpp_inline float4x3& operator *= (float4x3& m1, const float4x3& m2) { m1 = m1 * m2; return m1; }
 	hlslpp_inline float4x4& operator *= (float4x4& m1, const float4x4& m2) { m1 = m1 * m2; return m1; }
 
-	hlslpp_inline float1x1 operator / (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_div_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x2 operator / (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_div_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x3 operator / (const float1x3& m1, const float1x3& m2) { return float1x3(_hlslpp_div_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float1x4 operator / (const float1x4& m1, const float1x4& m2) { return float1x4(_hlslpp_div_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x1 operator / (const float2x1& m1, const float2x1& m2) { return float2x1(_hlslpp_div_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float3x1 operator / (const float3x1& m1, const float3x1& m2) { return float3x1(_hlslpp_div_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float4x1 operator / (const float4x1& m1, const float4x1& m2) { return float4x1(_hlslpp_div_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x2 operator / (const float2x2& m1, const float2x2& m2) { return float2x2(_hlslpp_div_ps(m1.vec, m2.vec)); }
-	hlslpp_inline float2x3 operator / (const float2x3& m1, const float2x3& m2) { return float2x3(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float3x2 operator / (const float3x2& m1, const float3x2& m2) { return float3x2(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float2x4 operator / (const float2x4& m1, const float2x4& m2) { return float2x4(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float4x2 operator / (const float4x2& m1, const float4x2& m2) { return float4x2(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1)); }
-	hlslpp_inline float3x3 operator / (const float3x3& m1, const float3x3& m2) { return float3x3(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1), _hlslpp_div_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float3x4 operator / (const float3x4& m1, const float3x4& m2) { return float3x4(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1), _hlslpp_div_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float4x3 operator / (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1), _hlslpp_div_ps(m1.vec2, m2.vec2)); }
-	hlslpp_inline float4x4 operator / (const float4x4& m1, const float4x4& m2)
+	hlslpp_inline_nodiscard float1x1 operator / (const float1x1& m1, const float1x1& m2) { return float1x1(_hlslpp_div_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x2 operator / (const float1x2& m1, const float1x2& m2) { return float1x2(_hlslpp_div_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x3 operator / (const float1x3& m1, const float1x3& m2) { return float1x3(_hlslpp_div_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float1x4 operator / (const float1x4& m1, const float1x4& m2) { return float1x4(_hlslpp_div_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x1 operator / (const float2x1& m1, const float2x1& m2) { return float2x1(_hlslpp_div_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float3x1 operator / (const float3x1& m1, const float3x1& m2) { return float3x1(_hlslpp_div_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float4x1 operator / (const float4x1& m1, const float4x1& m2) { return float4x1(_hlslpp_div_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x2 operator / (const float2x2& m1, const float2x2& m2) { return float2x2(_hlslpp_div_ps(m1.vec, m2.vec)); }
+	hlslpp_inline_nodiscard float2x3 operator / (const float2x3& m1, const float2x3& m2) { return float2x3(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float3x2 operator / (const float3x2& m1, const float3x2& m2) { return float3x2(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float2x4 operator / (const float2x4& m1, const float2x4& m2) { return float2x4(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float4x2 operator / (const float4x2& m1, const float4x2& m2) { return float4x2(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1)); }
+	hlslpp_inline_nodiscard float3x3 operator / (const float3x3& m1, const float3x3& m2) { return float3x3(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1), _hlslpp_div_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float3x4 operator / (const float3x4& m1, const float3x4& m2) { return float3x4(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1), _hlslpp_div_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float4x3 operator / (const float4x3& m1, const float4x3& m2) { return float4x3(_hlslpp_div_ps(m1.vec0, m2.vec0), _hlslpp_div_ps(m1.vec1, m2.vec1), _hlslpp_div_ps(m1.vec2, m2.vec2)); }
+	hlslpp_inline_nodiscard float4x4 operator / (const float4x4& m1, const float4x4& m2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return float4x4(_hlslpp512_div_ps(m1.vec, m2.vec));
@@ -1463,22 +1463,22 @@ hlslpp_module_export namespace hlslpp
 
 	// Scalar operators
 
-	hlslpp_inline float1x1 operator + (const float1x1& m, const float1& f) { return float1x1(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x2 operator + (const float1x2& m, const float1& f) { return float1x2(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x3 operator + (const float1x3& m, const float1& f) { return float1x3(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x4 operator + (const float1x4& m, const float1& f) { return float1x4(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float2x1 operator + (const float2x1& m, const float1& f) { return float2x1(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float3x1 operator + (const float3x1& m, const float1& f) { return float3x1(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float4x1 operator + (const float4x1& m, const float1& f) { return float4x1(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float2x2 operator + (const float2x2& m, const float1& f) { return float2x2(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float2x3 operator + (const float2x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x3(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm)); }
-	hlslpp_inline float3x2 operator + (const float3x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x2(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm)); }
-	hlslpp_inline float2x4 operator + (const float2x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x4(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm)); }
-	hlslpp_inline float4x2 operator + (const float4x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x2(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm)); }
-	hlslpp_inline float3x3 operator + (const float3x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x3(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm), _hlslpp_add_ps(m.vec2, perm)); }
-	hlslpp_inline float3x4 operator + (const float3x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x4(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm), _hlslpp_add_ps(m.vec2, perm)); }
-	hlslpp_inline float4x3 operator + (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm), _hlslpp_add_ps(m.vec2, perm)); }
-	hlslpp_inline float4x4 operator + (const float4x4& m, const float1& f)
+	hlslpp_inline_nodiscard float1x1 operator + (const float1x1& m, const float1& f) { return float1x1(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x2 operator + (const float1x2& m, const float1& f) { return float1x2(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x3 operator + (const float1x3& m, const float1& f) { return float1x3(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x4 operator + (const float1x4& m, const float1& f) { return float1x4(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float2x1 operator + (const float2x1& m, const float1& f) { return float2x1(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float3x1 operator + (const float3x1& m, const float1& f) { return float3x1(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float4x1 operator + (const float4x1& m, const float1& f) { return float4x1(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float2x2 operator + (const float2x2& m, const float1& f) { return float2x2(_hlslpp_add_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float2x3 operator + (const float2x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x3(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float3x2 operator + (const float3x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x2(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float2x4 operator + (const float2x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x4(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float4x2 operator + (const float4x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x2(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float3x3 operator + (const float3x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x3(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm), _hlslpp_add_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float3x4 operator + (const float3x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x4(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm), _hlslpp_add_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float4x3 operator + (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_add_ps(m.vec0, perm), _hlslpp_add_ps(m.vec1, perm), _hlslpp_add_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float4x4 operator + (const float4x4& m, const float1& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -1496,22 +1496,22 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float1x1 operator - (const float1x1& m, const float1& f) { return float1x1(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x2 operator - (const float1x2& m, const float1& f) { return float1x2(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x3 operator - (const float1x3& m, const float1& f) { return float1x3(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x4 operator - (const float1x4& m, const float1& f) { return float1x4(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float2x1 operator - (const float2x1& m, const float1& f) { return float2x1(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float3x1 operator - (const float3x1& m, const float1& f) { return float3x1(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float4x1 operator - (const float4x1& m, const float1& f) { return float4x1(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float2x2 operator - (const float2x2& m, const float1& f) { return float2x2(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float2x3 operator - (const float2x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x3(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm)); }
-	hlslpp_inline float3x2 operator - (const float3x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x2(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm)); }
-	hlslpp_inline float2x4 operator - (const float2x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x4(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm)); }
-	hlslpp_inline float4x2 operator - (const float4x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x2(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm)); }
-	hlslpp_inline float3x3 operator - (const float3x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x3(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm), _hlslpp_sub_ps(m.vec2, perm)); }
-	hlslpp_inline float3x4 operator - (const float3x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x4(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm), _hlslpp_sub_ps(m.vec2, perm)); }
-	hlslpp_inline float4x3 operator - (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm), _hlslpp_sub_ps(m.vec2, perm)); }
-	hlslpp_inline float4x4 operator - (const float4x4& m, const float1& f)
+	hlslpp_inline_nodiscard float1x1 operator - (const float1x1& m, const float1& f) { return float1x1(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x2 operator - (const float1x2& m, const float1& f) { return float1x2(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x3 operator - (const float1x3& m, const float1& f) { return float1x3(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x4 operator - (const float1x4& m, const float1& f) { return float1x4(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float2x1 operator - (const float2x1& m, const float1& f) { return float2x1(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float3x1 operator - (const float3x1& m, const float1& f) { return float3x1(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float4x1 operator - (const float4x1& m, const float1& f) { return float4x1(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float2x2 operator - (const float2x2& m, const float1& f) { return float2x2(_hlslpp_sub_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float2x3 operator - (const float2x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x3(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float3x2 operator - (const float3x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x2(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float2x4 operator - (const float2x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x4(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float4x2 operator - (const float4x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x2(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float3x3 operator - (const float3x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x3(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm), _hlslpp_sub_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float3x4 operator - (const float3x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x4(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm), _hlslpp_sub_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float4x3 operator - (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_sub_ps(m.vec0, perm), _hlslpp_sub_ps(m.vec1, perm), _hlslpp_sub_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float4x4 operator - (const float4x4& m, const float1& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -1529,22 +1529,22 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float1x1 operator * (const float1x1& m, const float1& f) { return float1x1(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x2 operator * (const float1x2& m, const float1& f) { return float1x2(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x3 operator * (const float1x3& m, const float1& f) { return float1x3(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x4 operator * (const float1x4& m, const float1& f) { return float1x4(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float2x1 operator * (const float2x1& m, const float1& f) { return float2x1(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float3x1 operator * (const float3x1& m, const float1& f) { return float3x1(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float4x1 operator * (const float4x1& m, const float1& f) { return float4x1(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float2x2 operator * (const float2x2& m, const float1& f) { return float2x2(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }	
-	hlslpp_inline float2x3 operator * (const float2x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x3(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm)); }
-	hlslpp_inline float3x2 operator * (const float3x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x2(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm)); }
-	hlslpp_inline float2x4 operator * (const float2x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x4(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm)); }
-	hlslpp_inline float4x2 operator * (const float4x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x2(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm)); }
-	hlslpp_inline float3x3 operator * (const float3x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x3(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm), _hlslpp_mul_ps(m.vec2, perm)); }
-	hlslpp_inline float3x4 operator * (const float3x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x4(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm), _hlslpp_mul_ps(m.vec2, perm)); }
-	hlslpp_inline float4x3 operator * (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm), _hlslpp_mul_ps(m.vec2, perm)); }
-	hlslpp_inline float4x4 operator * (const float4x4& m, const float1& f)
+	hlslpp_inline_nodiscard float1x1 operator * (const float1x1& m, const float1& f) { return float1x1(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x2 operator * (const float1x2& m, const float1& f) { return float1x2(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x3 operator * (const float1x3& m, const float1& f) { return float1x3(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x4 operator * (const float1x4& m, const float1& f) { return float1x4(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float2x1 operator * (const float2x1& m, const float1& f) { return float2x1(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float3x1 operator * (const float3x1& m, const float1& f) { return float3x1(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float4x1 operator * (const float4x1& m, const float1& f) { return float4x1(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float2x2 operator * (const float2x2& m, const float1& f) { return float2x2(_hlslpp_mul_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }	
+	hlslpp_inline_nodiscard float2x3 operator * (const float2x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x3(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float3x2 operator * (const float3x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x2(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float2x4 operator * (const float2x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x4(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float4x2 operator * (const float4x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x2(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float3x3 operator * (const float3x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x3(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm), _hlslpp_mul_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float3x4 operator * (const float3x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x4(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm), _hlslpp_mul_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float4x3 operator * (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_mul_ps(m.vec0, perm), _hlslpp_mul_ps(m.vec1, perm), _hlslpp_mul_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float4x4 operator * (const float4x4& m, const float1& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -1562,22 +1562,22 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float1x1 operator / (const float1x1& m, const float1& f) { return float1x1(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x2 operator / (const float1x2& m, const float1& f) { return float1x2(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x3 operator / (const float1x3& m, const float1& f) { return float1x3(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float1x4 operator / (const float1x4& m, const float1& f) { return float1x4(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float2x1 operator / (const float2x1& m, const float1& f) { return float2x1(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float3x1 operator / (const float3x1& m, const float1& f) { return float3x1(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float4x1 operator / (const float4x1& m, const float1& f) { return float4x1(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float2x2 operator / (const float2x2& m, const float1& f) { return float2x2(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
-	hlslpp_inline float2x3 operator / (const float2x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x3(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm)); }
-	hlslpp_inline float3x2 operator / (const float3x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x2(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm)); }
-	hlslpp_inline float2x4 operator / (const float2x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x4(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm)); }
-	hlslpp_inline float4x2 operator / (const float4x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x2(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm)); }
-	hlslpp_inline float3x3 operator / (const float3x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x3(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm), _hlslpp_div_ps(m.vec2, perm)); }
-	hlslpp_inline float3x4 operator / (const float3x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x4(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm), _hlslpp_div_ps(m.vec2, perm)); }
-	hlslpp_inline float4x3 operator / (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm), _hlslpp_div_ps(m.vec2, perm)); }
-	hlslpp_inline float4x4 operator / (const float4x4& m, const float1& f)
+	hlslpp_inline_nodiscard float1x1 operator / (const float1x1& m, const float1& f) { return float1x1(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x2 operator / (const float1x2& m, const float1& f) { return float1x2(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x3 operator / (const float1x3& m, const float1& f) { return float1x3(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float1x4 operator / (const float1x4& m, const float1& f) { return float1x4(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float2x1 operator / (const float2x1& m, const float1& f) { return float2x1(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float3x1 operator / (const float3x1& m, const float1& f) { return float3x1(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float4x1 operator / (const float4x1& m, const float1& f) { return float4x1(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float2x2 operator / (const float2x2& m, const float1& f) { return float2x2(_hlslpp_div_ps(m.vec, _hlslpp_perm_xxxx_ps(f.vec))); }
+	hlslpp_inline_nodiscard float2x3 operator / (const float2x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x3(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float3x2 operator / (const float3x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x2(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float2x4 operator / (const float2x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float2x4(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float4x2 operator / (const float4x2& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x2(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm)); }
+	hlslpp_inline_nodiscard float3x3 operator / (const float3x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x3(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm), _hlslpp_div_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float3x4 operator / (const float3x4& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float3x4(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm), _hlslpp_div_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float4x3 operator / (const float4x3& m, const float1& f) { n128 perm = _hlslpp_perm_xxxx_ps(f.vec); return float4x3(_hlslpp_div_ps(m.vec0, perm), _hlslpp_div_ps(m.vec1, perm), _hlslpp_div_ps(m.vec2, perm)); }
+	hlslpp_inline_nodiscard float4x4 operator / (const float4x4& m, const float1& f)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -1595,22 +1595,22 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float1x1 operator - (const float1x1& m) { return float1x1(_hlslpp_neg_ps(m.vec)); }
-	hlslpp_inline float1x2 operator - (const float1x2& m) { return float1x2(_hlslpp_neg_ps(m.vec)); }
-	hlslpp_inline float1x3 operator - (const float1x3& m) { return float1x3(_hlslpp_neg_ps(m.vec)); }
-	hlslpp_inline float1x4 operator - (const float1x4& m) { return float1x4(_hlslpp_neg_ps(m.vec)); }
-	hlslpp_inline float2x1 operator - (const float2x1& m) { return float2x1(_hlslpp_neg_ps(m.vec)); }
-	hlslpp_inline float3x1 operator - (const float3x1& m) { return float3x1(_hlslpp_neg_ps(m.vec)); }
-	hlslpp_inline float4x1 operator - (const float4x1& m) { return float4x1(_hlslpp_neg_ps(m.vec)); }
-	hlslpp_inline float2x2 operator - (const float2x2& m) { return float2x2(_hlslpp_neg_ps(m.vec)); }
-	hlslpp_inline float2x3 operator - (const float2x3& m) { return float2x3(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
-	hlslpp_inline float3x2 operator - (const float3x2& m) { return float3x2(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
-	hlslpp_inline float2x4 operator - (const float2x4& m) { return float2x4(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
-	hlslpp_inline float4x2 operator - (const float4x2& m) { return float4x2(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
-	hlslpp_inline float3x3 operator - (const float3x3& m) { return float3x3(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2)); }
-	hlslpp_inline float3x4 operator - (const float3x4& m) { return float3x4(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2)); }
-	hlslpp_inline float4x3 operator - (const float4x3& m) { return float4x3(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2)); }
-	hlslpp_inline float4x4 operator - (const float4x4& m)
+	hlslpp_inline_nodiscard float1x1 operator - (const float1x1& m) { return float1x1(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline_nodiscard float1x2 operator - (const float1x2& m) { return float1x2(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline_nodiscard float1x3 operator - (const float1x3& m) { return float1x3(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline_nodiscard float1x4 operator - (const float1x4& m) { return float1x4(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline_nodiscard float2x1 operator - (const float2x1& m) { return float2x1(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline_nodiscard float3x1 operator - (const float3x1& m) { return float3x1(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline_nodiscard float4x1 operator - (const float4x1& m) { return float4x1(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline_nodiscard float2x2 operator - (const float2x2& m) { return float2x2(_hlslpp_neg_ps(m.vec)); }
+	hlslpp_inline_nodiscard float2x3 operator - (const float2x3& m) { return float2x3(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
+	hlslpp_inline_nodiscard float3x2 operator - (const float3x2& m) { return float3x2(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
+	hlslpp_inline_nodiscard float2x4 operator - (const float2x4& m) { return float2x4(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
+	hlslpp_inline_nodiscard float4x2 operator - (const float4x2& m) { return float4x2(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1)); }
+	hlslpp_inline_nodiscard float3x3 operator - (const float3x3& m) { return float3x3(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2)); }
+	hlslpp_inline_nodiscard float3x4 operator - (const float3x4& m) { return float3x4(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2)); }
+	hlslpp_inline_nodiscard float4x3 operator - (const float4x3& m) { return float4x3(_hlslpp_neg_ps(m.vec0), _hlslpp_neg_ps(m.vec1), _hlslpp_neg_ps(m.vec2)); }
+	hlslpp_inline_nodiscard float4x4 operator - (const float4x4& m)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return float4x4(_hlslpp512_neg_ps(m.vec));
@@ -1693,9 +1693,9 @@ hlslpp_module_export namespace hlslpp
 	hlslpp_inline float4x3 operator -- (float4x3& f, int) { float4x3 tmp = f; f = f - float4x3(1.0f); return tmp; }
 	hlslpp_inline float4x4 operator -- (float4x4& f, int) { float4x4 tmp = f; f = f - float4x4(1.0f); return tmp; }
 	
-	hlslpp_inline float2x2 operator == (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpeq1_ps(f1.vec, f2.vec)); }
-	hlslpp_inline float3x3 operator == (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpeq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpeq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpeq1_ps(f1.vec2, f2.vec2)); }
-	hlslpp_inline float4x4 operator == (const float4x4& f1, const float4x4& f2)
+	hlslpp_inline_nodiscard float2x2 operator == (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpeq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard float3x3 operator == (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpeq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpeq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpeq1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline_nodiscard float4x4 operator == (const float4x4& f1, const float4x4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return float4x4(_hlslpp512_cmpeq1_ps(f1.vec, f2.vec));
@@ -1706,9 +1706,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float2x2 operator != (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpneq1_ps(f1.vec, f2.vec)); }
-	hlslpp_inline float3x3 operator != (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpneq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpneq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpneq1_ps(f1.vec2, f2.vec2)); }
-	hlslpp_inline float4x4 operator != (const float4x4& f1, const float4x4& f2)
+	hlslpp_inline_nodiscard float2x2 operator != (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpneq1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard float3x3 operator != (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpneq1_ps(f1.vec0, f2.vec0), _hlslpp_cmpneq1_ps(f1.vec1, f2.vec1), _hlslpp_cmpneq1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline_nodiscard float4x4 operator != (const float4x4& f1, const float4x4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return float4x4(_hlslpp512_cmpneq1_ps(f1.vec, f2.vec));
@@ -1719,9 +1719,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float2x2 operator > (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpgt1_ps(f1.vec, f2.vec)); }
-	hlslpp_inline float3x3 operator > (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpgt1_ps(f1.vec0, f2.vec0), _hlslpp_cmpgt1_ps(f1.vec1, f2.vec1), _hlslpp_cmpgt1_ps(f1.vec2, f2.vec2)); }
-	hlslpp_inline float4x4 operator > (const float4x4& f1, const float4x4& f2)
+	hlslpp_inline_nodiscard float2x2 operator > (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpgt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard float3x3 operator > (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpgt1_ps(f1.vec0, f2.vec0), _hlslpp_cmpgt1_ps(f1.vec1, f2.vec1), _hlslpp_cmpgt1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline_nodiscard float4x4 operator > (const float4x4& f1, const float4x4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return float4x4(_hlslpp512_cmpgt1_ps(f1.vec, f2.vec));
@@ -1732,9 +1732,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float2x2 operator >= (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpge1_ps(f1.vec, f2.vec)); }
-	hlslpp_inline float3x3 operator >= (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpge1_ps(f1.vec0, f2.vec0), _hlslpp_cmpge1_ps(f1.vec1, f2.vec1), _hlslpp_cmpge1_ps(f1.vec2, f2.vec2)); }
-	hlslpp_inline float4x4 operator >= (const float4x4& f1, const float4x4& f2)
+	hlslpp_inline_nodiscard float2x2 operator >= (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmpge1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard float3x3 operator >= (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmpge1_ps(f1.vec0, f2.vec0), _hlslpp_cmpge1_ps(f1.vec1, f2.vec1), _hlslpp_cmpge1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline_nodiscard float4x4 operator >= (const float4x4& f1, const float4x4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return float4x4(_hlslpp512_cmpge1_ps(f1.vec, f2.vec));
@@ -1745,9 +1745,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float2x2 operator < (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmplt1_ps(f1.vec, f2.vec)); }
-	hlslpp_inline float3x3 operator < (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmplt1_ps(f1.vec0, f2.vec0), _hlslpp_cmplt1_ps(f1.vec1, f2.vec1), _hlslpp_cmplt1_ps(f1.vec2, f2.vec2)); }
-	hlslpp_inline float4x4 operator < (const float4x4& f1, const float4x4& f2)
+	hlslpp_inline_nodiscard float2x2 operator < (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmplt1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard float3x3 operator < (const float3x3& f1, const float3x3& f2) { return float3x3(_hlslpp_cmplt1_ps(f1.vec0, f2.vec0), _hlslpp_cmplt1_ps(f1.vec1, f2.vec1), _hlslpp_cmplt1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline_nodiscard float4x4 operator < (const float4x4& f1, const float4x4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return float4x4(_hlslpp512_cmplt1_ps(f1.vec, f2.vec));
@@ -1758,9 +1758,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float2x2 operator <= (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmple1_ps(f1.vec, f2.vec)); }
-	hlslpp_inline float3x3 operator <= (const float3x3& f1, const float3x3& f2)	{ return float3x3(_hlslpp_cmple1_ps(f1.vec0, f2.vec0), _hlslpp_cmple1_ps(f1.vec1, f2.vec1), _hlslpp_cmple1_ps(f1.vec2, f2.vec2)); }
-	hlslpp_inline float4x4 operator <= (const float4x4& f1, const float4x4& f2)
+	hlslpp_inline_nodiscard float2x2 operator <= (const float2x2& f1, const float2x2& f2) { return float2x2(_hlslpp_cmple1_ps(f1.vec, f2.vec)); }
+	hlslpp_inline_nodiscard float3x3 operator <= (const float3x3& f1, const float3x3& f2)	{ return float3x3(_hlslpp_cmple1_ps(f1.vec0, f2.vec0), _hlslpp_cmple1_ps(f1.vec1, f2.vec1), _hlslpp_cmple1_ps(f1.vec2, f2.vec2)); }
+	hlslpp_inline_nodiscard float4x4 operator <= (const float4x4& f1, const float4x4& f2)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return float4x4(_hlslpp512_cmple1_ps(f1.vec, f2.vec));
@@ -1771,19 +1771,19 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float2x2 adjoint(const float2x2& m)
+	hlslpp_inline_nodiscard float2x2 adjoint(const float2x2& m)
 	{
 		return float2x2(_hlslpp_adjoint_2x2_ps(m.vec));
 	}
 
-	hlslpp_inline float3x3 adjoint(const float3x3& m)
+	hlslpp_inline_nodiscard float3x3 adjoint(const float3x3& m)
 	{
 		n128 vec0, vec1, vec2;
 		_hlslpp_adjoint_3x3_ps(m.vec0, m.vec1, m.vec2, vec0, vec1, vec2);
 		return float3x3(vec0, vec1, vec2);
 	}
 
-	hlslpp_inline float4x4 adjoint(const float4x4& m)
+	hlslpp_inline_nodiscard float4x4 adjoint(const float4x4& m)
 	{
 		n128 vec0, vec1, vec2, vec3;
 
@@ -1821,9 +1821,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline bool all(const float2x2& m) { return _hlslpp_all4_ps(m.vec); }
-	hlslpp_inline bool all(const float3x3& m) { return _hlslpp_all3_ps(m.vec0) && _hlslpp_all3_ps(m.vec1) && _hlslpp_all3_ps(m.vec2); }
-	hlslpp_inline bool all(const float4x4& m)
+	hlslpp_inline_nodiscard bool all(const float2x2& m) { return _hlslpp_all4_ps(m.vec); }
+	hlslpp_inline_nodiscard bool all(const float3x3& m) { return _hlslpp_all3_ps(m.vec0) && _hlslpp_all3_ps(m.vec1) && _hlslpp_all3_ps(m.vec2); }
+	hlslpp_inline_nodiscard bool all(const float4x4& m)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return _hlslpp512_all16_ps(m.vec);
@@ -1834,9 +1834,9 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline bool any(const float2x2& m) { return _hlslpp_any4_ps(m.vec); }
-	hlslpp_inline bool any(const float3x3& m) { return _hlslpp_any3_ps(m.vec0) || _hlslpp_any3_ps(m.vec1) || _hlslpp_any3_ps(m.vec2); }
-	hlslpp_inline bool any(const float4x4& m)
+	hlslpp_inline_nodiscard bool any(const float2x2& m) { return _hlslpp_any4_ps(m.vec); }
+	hlslpp_inline_nodiscard bool any(const float3x3& m) { return _hlslpp_any3_ps(m.vec0) || _hlslpp_any3_ps(m.vec1) || _hlslpp_any3_ps(m.vec2); }
+	hlslpp_inline_nodiscard bool any(const float4x4& m)
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 		return _hlslpp512_any16_ps(m.vec);
@@ -1847,12 +1847,12 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float1 trace(const float2x2& m)
+	hlslpp_inline_nodiscard float1 trace(const float2x2& m)
 	{
 		return float1(_hlslpp_trace_2x2_ps(m.vec));
 	}
 
-	hlslpp_inline float1 trace(const float3x3& m)
+	hlslpp_inline_nodiscard float1 trace(const float3x3& m)
 	{
 		return float1(_hlslpp_trace_3x3_ps(m.vec0, m.vec1, m.vec2));
 	}
@@ -1889,12 +1889,12 @@ hlslpp_module_export namespace hlslpp
 		return float1(t);
 	}
 
-	hlslpp_inline float2x2 transpose(const float2x2& m)
+	hlslpp_inline_nodiscard float2x2 transpose(const float2x2& m)
 	{
 		return float2x2(_hlslpp_transpose_2x2_ps(m.vec));
 	}
 
-	hlslpp_inline float3x3 transpose(const float3x3& m)
+	hlslpp_inline_nodiscard float3x3 transpose(const float3x3& m)
 	{
 		n128 vec0, vec1, vec2;
 		_hlslpp_transpose_3x3_ps(m.vec0, m.vec1, m.vec2, vec0, vec1, vec2);
@@ -1934,37 +1934,37 @@ hlslpp_module_export namespace hlslpp
 	// These transpose functions just copy the data because the 1xM, Nx1, 2xM, Nx2, 3xM and Nx3 matrices are always laid out as rows
 	// even if they're meant to represent columns.
 
-	hlslpp_inline float1x1 transpose(const float1x1& m) { return float1x1(m.vec); }
+	hlslpp_inline_nodiscard float1x1 transpose(const float1x1& m) { return float1x1(m.vec); }
 
-	hlslpp_inline float1x2 transpose(const float2x1& m) { return float1x2(m.vec); }
-	hlslpp_inline float2x1 transpose(const float1x2& m) { return float2x1(m.vec); }
+	hlslpp_inline_nodiscard float1x2 transpose(const float2x1& m) { return float1x2(m.vec); }
+	hlslpp_inline_nodiscard float2x1 transpose(const float1x2& m) { return float2x1(m.vec); }
 
-	hlslpp_inline float1x3 transpose(const float3x1& m) { return float1x3(m.vec); }
-	hlslpp_inline float3x1 transpose(const float1x3& m) { return float3x1(m.vec); }
+	hlslpp_inline_nodiscard float1x3 transpose(const float3x1& m) { return float1x3(m.vec); }
+	hlslpp_inline_nodiscard float3x1 transpose(const float1x3& m) { return float3x1(m.vec); }
 
-	hlslpp_inline float1x4 transpose(const float4x1& m) { return float1x4(m.vec); }
-	hlslpp_inline float4x1 transpose(const float1x4& m) { return float4x1(m.vec); }
+	hlslpp_inline_nodiscard float1x4 transpose(const float4x1& m) { return float1x4(m.vec); }
+	hlslpp_inline_nodiscard float4x1 transpose(const float1x4& m) { return float4x1(m.vec); }
 
-	hlslpp_inline float2x3 transpose(const float3x2& m) { return float2x3(m.vec0, m.vec1); }
-	hlslpp_inline float3x2 transpose(const float2x3& m) { return float3x2(m.vec0, m.vec1); }
+	hlslpp_inline_nodiscard float2x3 transpose(const float3x2& m) { return float2x3(m.vec0, m.vec1); }
+	hlslpp_inline_nodiscard float3x2 transpose(const float2x3& m) { return float3x2(m.vec0, m.vec1); }
 
-	hlslpp_inline float2x4 transpose(const float4x2& m) { return float2x4(m.vec0, m.vec1); }
-	hlslpp_inline float4x2 transpose(const float2x4& m) { return float4x2(m.vec0, m.vec1); }
+	hlslpp_inline_nodiscard float2x4 transpose(const float4x2& m) { return float2x4(m.vec0, m.vec1); }
+	hlslpp_inline_nodiscard float4x2 transpose(const float2x4& m) { return float4x2(m.vec0, m.vec1); }
 
-	hlslpp_inline float3x4 transpose(const float4x3& m) { return float3x4(m.vec0, m.vec1, m.vec2); }
-	hlslpp_inline float4x3 transpose(const float3x4& m) { return float4x3(m.vec0, m.vec1, m.vec2); }
+	hlslpp_inline_nodiscard float3x4 transpose(const float4x3& m) { return float3x4(m.vec0, m.vec1, m.vec2); }
+	hlslpp_inline_nodiscard float4x3 transpose(const float3x4& m) { return float4x3(m.vec0, m.vec1, m.vec2); }
 
-	hlslpp_inline float1 determinant(const float2x2& m)
+	hlslpp_inline_nodiscard float1 determinant(const float2x2& m)
 	{
 		return float1(_hlslpp_det_2x2_ps(m.vec));
 	}
 
-	hlslpp_inline float1 determinant(const float3x3& m)
+	hlslpp_inline_nodiscard float1 determinant(const float3x3& m)
 	{
 		return float1(_hlslpp_det_3x3_ps(m.vec0, m.vec1, m.vec2));
 	}
 
-	hlslpp_inline float1 determinant(const float4x4& m)
+	hlslpp_inline_nodiscard float1 determinant(const float4x4& m)
 	{
 		// Use the Laplace expansion to calculate the determinant in terms of 2x2 determinant multiplies instead of calculating
 		// 3x3 determinants and then doing a dot product. https://www.geometrictools.com/Documentation/LaplaceExpansionTheorem.pdf
@@ -2085,19 +2085,19 @@ hlslpp_module_export namespace hlslpp
 #endif
 	}
 
-	hlslpp_inline float2x2 inverse(const float2x2& m)
+	hlslpp_inline_nodiscard float2x2 inverse(const float2x2& m)
 	{
 		return float2x2(_hlslpp_inv_2x2_ps(m.vec));
 	}
 
-	hlslpp_inline float3x3 inverse(const float3x3& m)
+	hlslpp_inline_nodiscard float3x3 inverse(const float3x3& m)
 	{
 		n128 vec0, vec1, vec2;
 		_hlslpp_inv_3x3_ps(m.vec0, m.vec1, m.vec2, vec0, vec1, vec2);
 		return float3x3(vec0, vec1, vec2);
 	}
 
-	hlslpp_inline float4x4 inverse(const float4x4& m)
+	hlslpp_inline_nodiscard float4x4 inverse(const float4x4& m)
 	{
 		// For AVX, trying to convert the SSE implementation results in many wide shuffles and combinations
 		// that result in a slower algorithm. In fact, this straightforward approach is actually faster than

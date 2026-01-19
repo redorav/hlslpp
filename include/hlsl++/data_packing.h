@@ -27,7 +27,7 @@ hlslpp_module_export namespace hlslpp
 		return float4(_hlslpp_unpack_rgba8_snorm_epu32(p));
 	}
 	
-	uint32_t pack_float3_rg11b10f(const float3& v)
+	hlslpp_inline uint32_t pack_float3_rg11b10f(const float3& v)
 	{
 		uint32_t r11 = f32tof16(v.x);
 		uint32_t g11 = f32tof16(v.y);
@@ -35,7 +35,7 @@ hlslpp_module_export namespace hlslpp
 		return ((r11 & 0x7ff0) << 17) | ((g11 & 0x7ff0) << 6) | ((b10 & 0x7fe0) >> 5);
 	}
 
-	float3 unpack_rg11b10f_float3(uint32_t packed)
+	hlslpp_inline float3 unpack_rg11b10f_float3(uint32_t packed)
 	{
 		uint32_t ri = (packed >> 17) & 0x7ff0;
 		uint32_t gi = (packed >> 6) & 0x7ff0;

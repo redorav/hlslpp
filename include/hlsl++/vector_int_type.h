@@ -7,7 +7,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
 hlslpp_module_export namespace hlslpp
 {
 	template<int X>
-	struct hlslpp_nodiscard iswizzle1
+	struct iswizzle1
 	{
 		template<int A> friend struct iswizzle1;
 	
@@ -38,7 +38,7 @@ hlslpp_module_export namespace hlslpp
 
 
 	template<int X, int Y>
-	struct hlslpp_nodiscard iswizzle2
+	struct iswizzle2
 	{
 		#define hlslpp_iswizzle2_swizzle(E, F, A, B, v) \
 		    (_hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : 0, \
@@ -62,7 +62,7 @@ hlslpp_module_export namespace hlslpp
 	};
 
 	template<int X, int Y, int Z>
-	struct hlslpp_nodiscard iswizzle3
+	struct iswizzle3
 	{
 		#define hlslpp_iswizzle3_swizzle(E, F, G, A, B, C, v) \
 		    (_hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : 0, \
@@ -86,7 +86,7 @@ hlslpp_module_export namespace hlslpp
 	};
 
 	template<int X, int Y, int Z, int W>
-	struct hlslpp_nodiscard iswizzle4
+	struct iswizzle4
 	{
 		#define hlslpp_iswizzle4_swizzle(E, F, G, H, A, B, C, D, v) \
 		    (_hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : D == 0 ? H : 0, \
@@ -102,7 +102,7 @@ hlslpp_module_export namespace hlslpp
 		n128i vec;
 	};
 
-	struct hlslpp_nodiscard hlslpp_alignas(16) int1
+	struct hlslpp_alignas(16) int1
 	{
 		hlslpp_inline int1() hlslpp_noexcept : vec(_hlslpp_setzero_epi32()) {}
 		hlslpp_inline int1(const int1& i) hlslpp_noexcept : vec(i.vec) {}
@@ -146,7 +146,7 @@ hlslpp_module_export namespace hlslpp
 	};
 
 	
-	struct hlslpp_nodiscard hlslpp_alignas(16) int2
+	struct hlslpp_alignas(16) int2
 	{
 		// Constructors
 
@@ -195,7 +195,7 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard hlslpp_alignas(16) int3
+	struct hlslpp_alignas(16) int3
 	{
 		// Constructors
 
@@ -250,7 +250,7 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard hlslpp_alignas(16) int4
+	struct hlslpp_alignas(16) int4
 	{
 		hlslpp_inline int4() hlslpp_noexcept : vec(_hlslpp_setzero_epi32()) {}
 		hlslpp_inline int4(const int4& i) hlslpp_noexcept : vec(i.vec) {}

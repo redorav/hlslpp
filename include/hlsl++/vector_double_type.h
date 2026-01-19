@@ -9,7 +9,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
 hlslpp_module_export namespace hlslpp
 {
 	template<int X>
-	struct hlslpp_nodiscard dswizzle1
+	struct dswizzle1
 	{
 		template<int A> friend struct dswizzle1;
 
@@ -21,7 +21,7 @@ hlslpp_module_export namespace hlslpp
 		template<int E, int A>
 		static hlslpp_inline n128d swizzle(n128d v)
 		{
-			return _hlslpp_perm_pd(v, (((IdentityMask2 >> E) & 1) << A) | (IdentityMask2 & ~((1 << A))));
+			return _hlslpp_perm_pd(v, E, A);
 		}
 
 		template<int E, int A>
@@ -51,14 +51,14 @@ hlslpp_module_export namespace hlslpp
 	};
 
 	template<int X, int Y>
-	struct hlslpp_nodiscard dswizzle2
+	struct dswizzle2
 	{
 		template<int SrcA, int SrcB, int DstA, int DstB>
 		static hlslpp_inline n128d swizzle(n128d vec0, n128d vec1)
 		{
 			// Select which vector to read from and how to build the mask based on the output
 			#define HLSLPP_SELECT(Dst) ((Dst % 2) == 0 ? (SrcA < 2 ? vec0 : vec1) : (SrcB < 2 ? vec0 : vec1))
-			n128d result = _hlslpp_shuffle_pd(HLSLPP_SELECT(DstA), HLSLPP_SELECT(DstB), HLSLPP_SHUFFLE_MASK_PD((DstA % 2) == 0 ? (SrcA % 2) : (SrcB % 2), (DstB % 2) == 0 ? (SrcA % 2) : (SrcB % 2)));
+			n128d result = _hlslpp_shuffle_pd(HLSLPP_SELECT(DstA), HLSLPP_SELECT(DstB), (DstA % 2) == 0 ? (SrcA % 2) : (SrcB % 2), (DstB % 2) == 0 ? (SrcA % 2) : (SrcB % 2));
 			#undef HLSLPP_SELECT
 			return result;
 		}
@@ -68,7 +68,7 @@ hlslpp_module_export namespace hlslpp
 		{
 			// Select which vector to read from and how to build the mask based on the output
 			#define HLSLPP_SELECT(Dst) (Dst % 2) == 0 ? vec[(SrcA < 2) ? 0 : 1] : vec[(SrcB < 2) ? 0 : 1]
-			n128d result = _hlslpp_shuffle_pd(HLSLPP_SELECT(DstA), HLSLPP_SELECT(DstB), HLSLPP_SHUFFLE_MASK_PD((DstA % 2) == 0 ? (SrcA % 2) : (SrcB % 2), (DstB % 2) == 0 ? (SrcA % 2) : (SrcB % 2)));
+			n128d result = _hlslpp_shuffle_pd(HLSLPP_SELECT(DstA), HLSLPP_SELECT(DstB), (DstA % 2) == 0 ? (SrcA % 2) : (SrcB % 2), (DstB % 2) == 0 ? (SrcA % 2) : (SrcB % 2));
 			#undef HLSLPP_SELECT
 			return result;
 		}
@@ -109,7 +109,7 @@ hlslpp_module_export namespace hlslpp
 	};
 
 	template<int X, int Y, int Z>
-	struct hlslpp_nodiscard dswizzle3
+	struct dswizzle3
 	{
 		template<int A, int B, int C>
 		hlslpp_inline void swizzle_all(const dswizzle3<A, B, C>& s)
@@ -158,7 +158,7 @@ hlslpp_module_export namespace hlslpp
 		template<int SrcA, int SrcB>
 		static hlslpp_inline n128d swizzle(n128d vec0, n128d vec1)
 		{
-			return _hlslpp_shuffle_pd(SrcA < 2 ? vec0 : vec1, SrcB < 2 ? vec0 : vec1, HLSLPP_SHUFFLE_MASK_PD(SrcA % 2, SrcB % 2));
+			return _hlslpp_shuffle_pd(SrcA < 2 ? vec0 : vec1, SrcB < 2 ? vec0 : vec1, SrcA % 2, SrcB % 2);
 		}
 
 		// Swizzles SrcA into 0, SrcB into 1 and SrcC into 2
@@ -202,7 +202,7 @@ hlslpp_module_export namespace hlslpp
 	};
 
 	template<int X, int Y, int Z, int W>
-	struct hlslpp_nodiscard dswizzle4
+	struct dswizzle4
 	{
 		template<int A, int B, int C, int D>
 		hlslpp_inline dswizzle4& operator = (const dswizzle4<A, B, C, D>& s);
@@ -228,7 +228,7 @@ hlslpp_module_export namespace hlslpp
 			#define HLSLPP_SELECT(x) (DstA == x ? SrcA : (DstB == x ? SrcB : (DstC == x ? SrcC : SrcD)))
 
 			#define hlslpp_dswizzle4_swizzle2(SrcA, SrcB, vec0, vec1) \
-				_hlslpp_shuffle_pd((SrcA) < 2 ? vec0 : vec1, (SrcB) < 2 ? vec0 : vec1, HLSLPP_SHUFFLE_MASK_PD((SrcA) % 2, (SrcB) % 2))
+				_hlslpp_shuffle_pd((SrcA) < 2 ? vec0 : vec1, (SrcB) < 2 ? vec0 : vec1, (SrcA) % 2, (SrcB) % 2)
 
 			ovec0 = hlslpp_dswizzle4_swizzle2(HLSLPP_SELECT(0), HLSLPP_SELECT(1), vec0, vec1);
 			ovec1 = hlslpp_dswizzle4_swizzle2(HLSLPP_SELECT(2), HLSLPP_SELECT(3), vec0, vec1);
@@ -253,7 +253,7 @@ hlslpp_module_export namespace hlslpp
 	// Double type //
 	//-------------//
 
-	struct hlslpp_nodiscard double1
+	struct double1
 	{
 		hlslpp_inline double1() : vec(_hlslpp_setzero_pd()) {}
 		hlslpp_inline double1(const double1& f) : vec(f.vec) {}
@@ -280,7 +280,7 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard double2
+	struct double2
 	{
 		// Constructors
 
@@ -314,7 +314,7 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard double3
+	struct double3
 	{
 		// Constructors
 
@@ -422,7 +422,7 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard double4
+	struct double4
 	{
 #if defined(HLSLPP_SIMD_REGISTER_256)
 

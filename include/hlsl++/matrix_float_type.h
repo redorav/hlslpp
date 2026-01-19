@@ -12,7 +12,7 @@
 
 hlslpp_module_export namespace hlslpp
 {
-	struct hlslpp_nodiscard float1x1
+	struct float1x1
 	{
 		hlslpp_inline float1x1() hlslpp_noexcept : vec(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float1x1(const float1x1& m) hlslpp_noexcept : vec(m.vec) {}
@@ -41,7 +41,7 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard float1x2
+	struct float1x2
 	{
 		hlslpp_inline float1x2() hlslpp_noexcept : vec(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float1x2(const float1x2& m) hlslpp_noexcept : vec(m.vec) {}
@@ -70,7 +70,7 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard float2x1
+	struct float2x1
 	{
 		hlslpp_inline float2x1() hlslpp_noexcept : vec(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float2x1(const float2x1& m) hlslpp_noexcept : vec(m.vec) {}
@@ -96,7 +96,7 @@ hlslpp_module_export namespace hlslpp
 		};
 	};
 
-	struct hlslpp_nodiscard float1x3
+	struct float1x3
 	{
 		hlslpp_inline float1x3() hlslpp_noexcept : vec(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float1x3(const float1x3& m) hlslpp_noexcept : vec(m.vec) {}
@@ -122,7 +122,7 @@ hlslpp_module_export namespace hlslpp
 		};
 	};
 
-	struct hlslpp_nodiscard float3x1
+	struct float3x1
 	{
 		hlslpp_inline float3x1() hlslpp_noexcept : vec(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float3x1(const float3x1& m) hlslpp_noexcept : vec(m.vec) {}
@@ -148,7 +148,7 @@ hlslpp_module_export namespace hlslpp
 		};
 	};
 
-	struct hlslpp_nodiscard float1x4
+	struct float1x4
 	{
 		hlslpp_inline float1x4() hlslpp_noexcept : vec(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float1x4(const float1x4& m) hlslpp_noexcept : vec(m.vec) {}
@@ -174,7 +174,7 @@ hlslpp_module_export namespace hlslpp
 		};
 	};
 
-	struct hlslpp_nodiscard float4x1
+	struct float4x1
 	{
 		hlslpp_inline float4x1() hlslpp_noexcept : vec(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float4x1(const float4x1& m) hlslpp_noexcept : vec(m.vec) {}
@@ -200,7 +200,7 @@ hlslpp_module_export namespace hlslpp
 		};
 	};
 
-	struct hlslpp_nodiscard float2x2
+	struct float2x2
 	{
 		hlslpp_inline float2x2() hlslpp_noexcept : vec(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float2x2(const float2x2& m) hlslpp_noexcept : vec(m.vec) {}
@@ -231,7 +231,7 @@ hlslpp_module_export namespace hlslpp
 		};
 	};
 
-	struct hlslpp_nodiscard float2x3
+	struct float2x3
 	{
 		hlslpp_inline float2x3() hlslpp_noexcept : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float2x3(const float2x3& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1) {}
@@ -266,7 +266,7 @@ hlslpp_module_export namespace hlslpp
 		};
 	};
 
-	struct hlslpp_nodiscard float3x2
+	struct float3x2
 	{
 		hlslpp_inline float3x2() hlslpp_noexcept : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float3x2(const float3x2& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1) {}
@@ -302,7 +302,7 @@ hlslpp_module_export namespace hlslpp
 		};
 	};
 
-	struct hlslpp_nodiscard float2x4
+	struct float2x4
 	{
 		hlslpp_inline float2x4() hlslpp_noexcept : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float2x4(const float2x4& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1) {}
@@ -337,7 +337,7 @@ hlslpp_module_export namespace hlslpp
 		};
 	};
 
-	struct hlslpp_nodiscard float4x2
+	struct float4x2
 	{
 		hlslpp_inline float4x2() hlslpp_noexcept : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float4x2(const float4x2& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1) {}
@@ -376,7 +376,7 @@ hlslpp_module_export namespace hlslpp
 
 	struct quaternion;
 
-	struct hlslpp_nodiscard float3x3
+	struct float3x3
 	{
 		hlslpp_inline float3x3() hlslpp_noexcept : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()), vec2(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float3x3(const float3x3& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1), vec2(m.vec2) {}
@@ -447,7 +447,7 @@ hlslpp_module_export namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard float3x4
+	struct float3x4
 	{
 		hlslpp_inline float3x4() hlslpp_noexcept : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()), vec2(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float3x4(const float3x4& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1), vec2(m.vec2) {}
@@ -489,7 +489,7 @@ hlslpp_module_export namespace hlslpp
 		};
 	};
 
-	struct hlslpp_nodiscard float4x3
+	struct float4x3
 	{
 		hlslpp_inline float4x3() hlslpp_noexcept : vec0(_hlslpp_setzero_ps()), vec1(_hlslpp_setzero_ps()), vec2(_hlslpp_setzero_ps()) {}
 		hlslpp_inline float4x3(const float4x3& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1), vec2(m.vec2) {}
@@ -534,7 +534,7 @@ hlslpp_module_export namespace hlslpp
 
 	float4x4 transpose(const float4x4& m);
 
-	struct hlslpp_nodiscard float4x4
+	struct float4x4
 	{
 #if defined(HLSLPP_SIMD_REGISTER_512)
 
@@ -661,11 +661,11 @@ hlslpp_module_export namespace hlslpp
 		{
 			vec0 = _hlslpp256_and_ps(
 				_hlslpp256_set128_ps(m.vec0, m.vec1),
-				_hlslpp256_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
+				_hlslpp256_castsi256_ps(_hlslpp256_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0, 0xffffffff, 0xffffffff, 0xffffffff, 0)));
 
 			vec1 = _hlslpp256_and_ps(
 				_hlslpp256_set128_ps(m.vec2, v.vec),
-				_hlslpp256_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, fffMask._f32, fffMask._f32, fffMask._f32, fffMask._f32));
+				_hlslpp256_castsi256_ps(_hlslpp256_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff)));
 		}
 
 		hlslpp_inline void build(const float3x4& m, const float4& v) hlslpp_noexcept
@@ -779,9 +779,9 @@ hlslpp_module_export namespace hlslpp
 
 		hlslpp_inline void build(const float3x3& m, const float4& v) hlslpp_noexcept
 		{
-			vec0 = _hlslpp_and_ps(m.vec0, _hlslpp_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
-			vec1 = _hlslpp_and_ps(m.vec1, _hlslpp_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
-			vec2 = _hlslpp_and_ps(m.vec2, _hlslpp_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
+			vec0 = _hlslpp_and_ps(m.vec0, _hlslpp_castsi128_ps(_hlslpp_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0)));
+			vec1 = _hlslpp_and_ps(m.vec1, _hlslpp_castsi128_ps(_hlslpp_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0)));
+			vec2 = _hlslpp_and_ps(m.vec2, _hlslpp_castsi128_ps(_hlslpp_set_epi32(0xffffffff, 0xffffffff, 0xffffffff, 0)));
 			vec3 = v.vec;
 		}
 

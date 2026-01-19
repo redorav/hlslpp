@@ -7,7 +7,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
 namespace hlslpp
 {
 	template<int X>
-	struct hlslpp_nodiscard uswizzle1
+	struct uswizzle1
 	{
 		template<int A> friend struct uswizzle1;
 	
@@ -37,7 +37,7 @@ namespace hlslpp
 	};
 	
 	template<int X, int Y>
-	struct hlslpp_nodiscard uswizzle2
+	struct uswizzle2
 	{
 		#define hlslpp_uswizzle2_swizzle(E, F, A, B, v) \
 		    (_hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : 0, \
@@ -59,7 +59,7 @@ namespace hlslpp
 	};
 	
 	template<int X, int Y, int Z>
-	struct hlslpp_nodiscard uswizzle3
+	struct uswizzle3
 	{
 		#define hlslpp_uswizzle3_swizzle(E, F, G, A, B, C, v) \
 		    (_hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : 0, \
@@ -81,7 +81,7 @@ namespace hlslpp
 	};
 
 	template<int X, int Y, int Z, int W>
-	struct hlslpp_nodiscard uswizzle4
+	struct uswizzle4
 	{
 		#define hlslpp_uswizzle4_swizzle(E, F, G, H, A, B, C, D, v) \
 		    (_hlslpp_perm_epi32(v, A == 0 ? E : B == 0 ? F : C == 0 ? G : D == 0 ? H : 0, \
@@ -97,7 +97,7 @@ namespace hlslpp
 		n128u vec;
 	};
 	
-	struct hlslpp_nodiscard hlslpp_alignas(16) uint1
+	struct hlslpp_alignas(16) uint1
 	{
 		hlslpp_inline uint1() hlslpp_noexcept : vec(_hlslpp_setzero_epu32()) {}
 		hlslpp_inline uint1(const uint1& i) hlslpp_noexcept : vec(i.vec) {}
@@ -140,21 +140,21 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard hlslpp_alignas(16) uint2
+	struct hlslpp_alignas(16) uint2
 	{
 		// Constructors
 
 		hlslpp_inline uint2() hlslpp_noexcept : vec(_hlslpp_setzero_epu32()) {}
 		hlslpp_inline uint2(const uint2& i) hlslpp_noexcept : vec(i.vec) {}
 		explicit hlslpp_inline uint2(n128u vec) hlslpp_noexcept : vec(vec) {}
-		explicit hlslpp_inline uint2(const uint1& i) hlslpp_noexcept : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}
+		explicit hlslpp_inline uint2(const uint1& i) hlslpp_noexcept : vec(_hlslpp_perm_xxxx_epu32(i.vec)) {}
 
 		hlslpp_inline uint2(uint32_t i) hlslpp_noexcept : vec(_hlslpp_set_epu32(i, i, 0, 0)) {}
 
 		template<typename T1, typename T2>
 		hlslpp_inline uint2(T1 i1, T2 i2, hlslpp_enable_if_number_2(T1, T2)) hlslpp_noexcept : vec(_hlslpp_set_epu32((unsigned int)i1, (unsigned int)i2, 0, 0)) {}
 
-		hlslpp_inline uint2(const uint1& i1, const uint1& i2) hlslpp_noexcept { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
+		hlslpp_inline uint2(const uint1& i1, const uint1& i2) hlslpp_noexcept { vec = _hlslpp_blend_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
 		
 		template<int X, int Y> hlslpp_inline uint2(const uswizzle2<X, Y>& s) hlslpp_noexcept
 			: vec(hlslpp_uswizzle2_swizzle(X, Y, 0, 1, s.vec)) {}
@@ -189,7 +189,7 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 	
-	struct hlslpp_nodiscard hlslpp_alignas(16) uint3
+	struct hlslpp_alignas(16) uint3
 	{
 		// Constructors
 
@@ -197,7 +197,7 @@ namespace hlslpp
 		hlslpp_inline uint3(const uint3& i) hlslpp_noexcept : vec(i.vec) {}
 		explicit hlslpp_inline uint3(n128u vec) hlslpp_noexcept : vec(vec) {}
 
-		explicit hlslpp_inline uint3(const uint1& i) hlslpp_noexcept : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}
+		explicit hlslpp_inline uint3(const uint1& i) hlslpp_noexcept : vec(_hlslpp_perm_xxxx_epu32(i.vec)) {}
 
 		hlslpp_inline uint3(uint32_t i) hlslpp_noexcept : vec(_hlslpp_set_epu32(i, i, i, 0)) {}
 
@@ -205,10 +205,10 @@ namespace hlslpp
 		hlslpp_inline uint3(T1 i1, T2 i2, T3 i3, hlslpp_enable_if_number_3(T1, T2, T3)) hlslpp_noexcept : vec(_hlslpp_set_epu32((unsigned int)i1, (unsigned int)i2, (unsigned int)i3, 0)) {}
 
 		hlslpp_inline uint3(const uint1& i1, const uint1& i2, const uint1& i3) hlslpp_noexcept 
-		{ vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epi32(i1.vec, i3.vec), _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
+		{ vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epu32(i1.vec, i3.vec), _hlslpp_perm_xxxx_epu32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 
-		hlslpp_inline uint3(const uint2& i1, const uint1& i2) hlslpp_noexcept { vec = _hlslpp_shuf_xyxx_epi32(i1.vec, i2.vec); }
-		hlslpp_inline uint3(const uint1& i1, const uint2& i2) hlslpp_noexcept { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxyx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
+		hlslpp_inline uint3(const uint2& i1, const uint1& i2) hlslpp_noexcept { vec = _hlslpp_shuf_xyxx_epu32(i1.vec, i2.vec); }
+		hlslpp_inline uint3(const uint1& i1, const uint2& i2) hlslpp_noexcept { vec = _hlslpp_blend_epu32(i1.vec, _hlslpp_perm_xxyx_epu32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
 
 		template<int X, int Y, int Z>
 		hlslpp_inline uint3(const uswizzle3<X, Y, Z>& s) hlslpp_noexcept
@@ -245,13 +245,13 @@ namespace hlslpp
 		HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 	};
 
-	struct hlslpp_nodiscard hlslpp_alignas(16) uint4
+	struct hlslpp_alignas(16) uint4
 	{
 		hlslpp_inline uint4() hlslpp_noexcept : vec(_hlslpp_setzero_epu32()) {}
 		hlslpp_inline uint4(const uint4& i) hlslpp_noexcept : vec(i.vec) {}
 		explicit hlslpp_inline uint4(n128u vec) hlslpp_noexcept : vec(vec) {}
 
-		explicit hlslpp_inline uint4(const uint1& i) hlslpp_noexcept : vec(_hlslpp_perm_xxxx_epi32(i.vec)) {}
+		explicit hlslpp_inline uint4(const uint1& i) hlslpp_noexcept : vec(_hlslpp_perm_xxxx_epu32(i.vec)) {}
 
 		hlslpp_inline uint4(uint32_t i) hlslpp_noexcept : vec(_hlslpp_set1_epu32(i)) {}
 
@@ -259,21 +259,21 @@ namespace hlslpp
 		hlslpp_inline uint4(T1 i1, T2 i2, T3 i3, T4 i4, hlslpp_enable_if_number_4(T1, T2, T3, T4)) hlslpp_noexcept : vec(_hlslpp_set_epu32((unsigned int)i1, (unsigned int)i2, (unsigned int)i3, (unsigned int)i4)) {}
 
 		hlslpp_inline uint4(const uint1& i1, const uint1& i2, const uint1& i3, const uint1& i4) hlslpp_noexcept 
-		{ vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epi32(i1.vec, i3.vec), _hlslpp_shuf_xxxx_epi32(i2.vec, i4.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
+		{ vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epu32(i1.vec, i3.vec), _hlslpp_shuf_xxxx_epu32(i2.vec, i4.vec), HLSLPP_BLEND_MASK(1, 0, 1, 0)); }
 		
 		hlslpp_inline uint4(const uint2& i1, const uint1& i2, const uint1& i3) hlslpp_noexcept 
-		{ vec = _hlslpp_blend_epi32(_hlslpp_shuf_xyxx_epi32(i1.vec, i2.vec), _hlslpp_perm_xxxx_epi32(i3.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
+		{ vec = _hlslpp_blend_epi32(_hlslpp_shuf_xyxx_epu32(i1.vec, i2.vec), _hlslpp_perm_xxxx_epu32(i3.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
 
 		hlslpp_inline uint4(const uint1& i1, const uint2& i2, const uint1& i3) hlslpp_noexcept 
-		{ vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epi32(i1.vec, i3.vec), _hlslpp_perm_xxyx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
+		{ vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxx_epu32(i1.vec, i3.vec), _hlslpp_perm_xxyx_epu32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 1)); }
 
 		hlslpp_inline uint4(const uint1& i1, const uint1& i2, const uint2& i3) hlslpp_noexcept 
-		{ vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxy_epi32(i1.vec, i3.vec), _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
+		{ vec = _hlslpp_blend_epi32(_hlslpp_shuf_xxxy_epu32(i1.vec, i3.vec), _hlslpp_perm_xxxx_epu32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 1, 1)); }
 
-		hlslpp_inline uint4(const uint2& i1, const uint2& f2) hlslpp_noexcept { vec = _hlslpp_shuf_xyxy_epi32(i1.vec, f2.vec); }
+		hlslpp_inline uint4(const uint2& i1, const uint2& f2) hlslpp_noexcept { vec = _hlslpp_shuf_xyxy_epu32(i1.vec, f2.vec); }
 
-		hlslpp_inline uint4(const uint1& i1, const uint3& i2) hlslpp_noexcept { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxyz_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 0)); }
-		hlslpp_inline uint4(const uint3& i1, const uint1& i2) hlslpp_noexcept { vec = _hlslpp_blend_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
+		hlslpp_inline uint4(const uint1& i1, const uint3& i2) hlslpp_noexcept { vec = _hlslpp_blend_epu32(i1.vec, _hlslpp_perm_xxyz_epu32(i2.vec), HLSLPP_BLEND_MASK(1, 0, 0, 0)); }
+		hlslpp_inline uint4(const uint3& i1, const uint1& i2) hlslpp_noexcept { vec = _hlslpp_blend_epu32(i1.vec, _hlslpp_perm_xxxx_epu32(i2.vec), HLSLPP_BLEND_MASK(1, 1, 1, 0)); }
 
 		template<int X, int Y, int Z, int W>
 		hlslpp_inline uint4(const uswizzle4<X, Y, Z, W>& s) hlslpp_noexcept

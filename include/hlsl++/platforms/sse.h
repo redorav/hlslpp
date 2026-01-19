@@ -105,7 +105,7 @@ typedef __m512i n512i;
 // The following are alternatives but have been measured to be slower
 // _mm_sub_ps(f4_0, x);			// Slowest
 // _mm_mul_ps(f4_minus1, x);	// Slower
-#define _hlslpp_neg_ps(x)						_mm_xor_ps((x), f4negativeMask)
+#define _hlslpp_neg_ps(x)						_mm_xor_ps((x), _mm_castsi128_ps(_mm_set1_epi32(0x80000000u)))
 
 // https://wunkolo.github.io/post/2022/10/vfixupimm-signum/
 #if defined(__AVX512F__) && defined(__AVX512VL__)
@@ -228,22 +228,27 @@ hlslpp_inline __m128 _hlslpp_round_ps(__m128 x)
 // Equivalent to shuffle(x, x, Y, Y, W, W)
 #define _hlslpp_movehdup_ps(x)					_mm_movehdup_ps((x))
 
-#if defined(__AVX__)
-#define _hlslpp_perm_ps(x, X, Y, Z, W) _mm_permute_ps((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W))
-#else
-
 namespace hlslpp
 {
-	template<unsigned int X, unsigned int Y, unsigned int Z, unsigned int W>
+	template<int X, int Y, int Z, int W>
 	hlslpp_inline __m128 permute(__m128 x)
 	{
+#if defined(__AVX__)
+		return _mm_permute_ps((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W));
+		
+#else
 		return _mm_shuffle_ps(x, x, HLSLPP_SHUFFLE_MASK(X, Y, Z, W));
+#endif
+	}
+
+	template<>
+	hlslpp_inline __m128 permute<0, 1, 2, 3>(__m128 x)
+	{
+		return x;
 	}
 };
 
-#define _hlslpp_perm_ps(x, X, Y, Z, W) hlslpp::permute<X, Y, Z, W>(x)
-
-#endif
+#define _hlslpp_perm_ps(x, X, Y, Z, W) (hlslpp::permute<X, Y, Z, W>(x))
 
 // Follows the semantics of _mm_shuffle_ps, in that it selects two components from x and two from y
 #define _hlslpp_shuffle_ps(x, y, X, Y, A, B)	_mm_shuffle_ps((x), (y), HLSLPP_SHUFFLE_MASK(X, Y, A, B))
@@ -951,6 +956,21 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 
 #endif
 
+namespace hlslpp
+{
+	template<unsigned int X, unsigned int Y, unsigned int Z, unsigned int W>
+	hlslpp_inline __m128i permute(__m128i x)
+	{
+		return _mm_shuffle_epi32((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W));
+	}
+
+	template<>
+	hlslpp_inline __m128i permute<0, 1, 2, 3>(__m128i x)
+	{
+		return x;
+	}
+}
+
 #define _hlslpp_clamp_epi32(x, minx, maxx)		_hlslpp_max_epi32(_hlslpp_min_epi32((x), (maxx)), (minx))
 #define _hlslpp_sat_epi32(x)					_hlslpp_max_epi32(_hlslpp_min_epi32((x), i4_1), i4_0)
 
@@ -961,7 +981,7 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 #define _hlslpp_xor_si128(x, y)					_mm_xor_si128((x), (y))
 
 // https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epi32(x, X, Y, Z, W)		_mm_shuffle_epi32((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W))
+#define _hlslpp_perm_epi32(x, X, Y, Z, W)		hlslpp::permute<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_epi32(x, y, X, Y, A, B)	_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), HLSLPP_SHUFFLE_MASK(X, Y, A, B)))
 
 #define _hlslpp_castps_si128(x)					_mm_castps_si128((x))
@@ -976,6 +996,7 @@ hlslpp_inline n128i _hlslpp_blend_epi32(n128i x, n128i y, int mask)
 #if defined(__SSE4_1__)
 
 #define _hlslpp_cvtepi8_epi32(x)				_mm_cvtepi8_epi32(x)
+#define _hlslpp_cvtepu8_epi32(x)				_mm_cvtepu8_epi32(x)
 
 #else
 
@@ -992,6 +1013,13 @@ hlslpp_inline __m128i _hlslpp_cvtepi8_epi32(__m128i v)
 	return result;
 }
 
+hlslpp_inline __m128i _hlslpp_cvtepu8_epi32(__m128i v)
+{
+	__m128i zero = _mm_setzero_si128();
+	__m128i unpacked8 = _mm_unpacklo_epi8(v, zero);
+	return _mm_unpacklo_epi16(unpacked8, zero);
+}
+
 #endif
 
 // Shift left/right by an immediate while shifting in zeroes
@@ -1005,52 +1033,38 @@ hlslpp_inline __m128i _hlslpp_cvtepi8_epi32(__m128i v)
 
 #else
 
-inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
+hlslpp_inline n128i _hlslpp_sllv_epi32(n128i x, n128i count)
 {
-	n128i count1 = _hlslpp_perm_epi32(count, 1, 0, 0, 0);
-	n128i count2 = _hlslpp_perm_epi32(count, 2, 0, 0, 0);
-	n128i count3 = _hlslpp_perm_epi32(count, 3, 0, 0, 0);
+	int32_t x4[4];
+	int32_t count4[4];
 
-	n128i ffMask = _mm_setr_epi32((int)0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
+	_mm_storeu_si128((__m128i*)x4, x);
+	_mm_storeu_si128((__m128i*)count4, count);
 
-	n128i imask0 = _mm_and_si128(count, ffMask);
-	n128i imask1 = _mm_and_si128(count1, ffMask);
-	n128i imask2 = _mm_and_si128(count2, ffMask);
-	n128i imask3 = _mm_and_si128(count3, ffMask);
+	int32_t result4[4];
+	result4[0] = x4[0] << count4[0];
+	result4[1] = x4[1] << count4[1];
+	result4[2] = x4[2] << count4[2];
+	result4[3] = x4[3] << count4[3];
 
-	n128i shift0 = _mm_sll_epi32(x, imask0);
-	n128i shift1 = _mm_sll_epi32(x, imask1);
-	n128i shift2 = _mm_sll_epi32(x, imask2);
-	n128i shift3 = _mm_sll_epi32(x, imask3);
-
-	n128i blend0 = _hlslpp_blend_epi32(shift0, shift1, HLSLPP_BLEND_MASK(1, 0, 0, 0));
-	n128i blend1 = _hlslpp_blend_epi32(shift2, shift3, HLSLPP_BLEND_MASK(0, 0, 1, 0));
-
-	return _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
+	return _mm_loadu_si128((__m128i*)result4);
 }
 
-inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
+hlslpp_inline n128i _hlslpp_srlv_epi32(n128i x, n128i count)
 {
-	n128i count1 = _hlslpp_perm_epi32(count, 1, 0, 0, 0);
-	n128i count2 = _hlslpp_perm_epi32(count, 2, 0, 0, 0);
-	n128i count3 = _hlslpp_perm_epi32(count, 3, 0, 0, 0);
+	int32_t x4[4];
+	int32_t count4[4];
 
-	n128i ffMask = _mm_setr_epi32((int)0xffffffff, 0, 0, 0); // The shift instruction considers 64 bits so we need to mask out everything else
+	_mm_storeu_si128((__m128i*)x4, x);
+	_mm_storeu_si128((__m128i*)count4, count);
 
-	n128i imask0 = _mm_and_si128(count, ffMask);
-	n128i imask1 = _mm_and_si128(count1, ffMask);
-	n128i imask2 = _mm_and_si128(count2, ffMask);
-	n128i imask3 = _mm_and_si128(count3, ffMask);
+	int32_t result4[4];
+	result4[0] = x4[0] >> count4[0];
+	result4[1] = x4[1] >> count4[1];
+	result4[2] = x4[2] >> count4[2];
+	result4[3] = x4[3] >> count4[3];
 
-	n128i shift0 = _mm_srl_epi32(x, imask0);
-	n128i shift1 = _mm_srl_epi32(x, imask1);
-	n128i shift2 = _mm_srl_epi32(x, imask2);
-	n128i shift3 = _mm_srl_epi32(x, imask3);
-
-	n128i blend0 = _hlslpp_blend_epi32(shift0, shift1, HLSLPP_BLEND_MASK(1, 0, 0, 0));
-	n128i blend1 = _hlslpp_blend_epi32(shift2, shift3, HLSLPP_BLEND_MASK(0, 0, 1, 0));
-
-	return _hlslpp_blend_epi32(blend0, blend1, HLSLPP_BLEND_MASK(1, 1, 0, 0));
+	return _mm_loadu_si128((__m128i*)result4);
 }
 
 #endif
@@ -1138,7 +1152,7 @@ hlslpp_inline void _hlslpp_load3_epi32(n128i& dst, const int32_t* src)
 
 hlslpp_inline void _hlslpp_load4_epi32(n128i& dst, const int32_t* src)
 {
-	dst = _mm_castps_si128(_mm_loadu_ps((float*)src));
+	dst = _mm_loadu_si128((__m128i*)src);
 }
 
 //------------
@@ -1346,7 +1360,7 @@ hlslpp_inline n128i _hlslpp_min_epu32(n128u x, n128u y)
 #define _hlslpp_sat_epu32(x)					_hlslpp_max_epu32(_hlslpp_min_epu32((x), i4_1), i4_0)
 
 // https://stackoverflow.com/questions/13153584/mm-shuffle-ps-equivalent-for-integer-vectors-m128i
-#define _hlslpp_perm_epu32(x, X, Y, Z, W)		_mm_shuffle_epi32((x), HLSLPP_SHUFFLE_MASK(X, Y, Z, W))
+#define _hlslpp_perm_epu32(x, X, Y, Z, W)		hlslpp::permute<X, Y, Z, W>((x))
 #define _hlslpp_shuffle_epu32(x, y, X, Y, A, B)	_mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x), _mm_castsi128_ps(y), HLSLPP_SHUFFLE_MASK(X, Y, A, B)))
 
 #define _hlslpp_cvttps_epu32(x)					_hlslpp_cvttps_epi32((x))
@@ -1540,8 +1554,8 @@ hlslpp_inline n128d _hlslpp_round_pd(n128d x)
 #define _hlslpp_or_pd(x, y)						_mm_or_pd((x), (y))
 #define _hlslpp_xor_pd(x, y)					_mm_xor_pd((x), (y))
 
-#define _hlslpp_perm_pd(x, mask)				_mm_shuffle_pd((x), (x), (mask))
-#define _hlslpp_shuffle_pd(x, y, mask)			_mm_shuffle_pd((x), (y), (mask))
+#define _hlslpp_perm_pd(x, X, Y)				_mm_shuffle_pd((x), (x), HLSLPP_SHUFFLE_MASK_PD(X, Y))
+#define _hlslpp_shuffle_pd(x, y, X, Y)			_mm_shuffle_pd((x), (y), HLSLPP_SHUFFLE_MASK_PD(X, Y))
 
 hlslpp_inline bool _hlslpp_any1_pd(n128d x)
 {
@@ -1829,7 +1843,7 @@ hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_unorm(__m128 v)
 hlslpp_inline __m128 _hlslpp_unpack_rgba8_unorm_epu32(uint32_t p)
 {
 	__m128i i = _mm_set1_epi32((int)p);
-	__m128 t = _mm_cvtepi32_ps(_hlslpp_cvtepi8_epi32(i));
+	__m128 t = _mm_cvtepi32_ps(_hlslpp_cvtepu8_epi32(i));
 	return _mm_mul_ps(t, _hlslpp_set1_ps(1.0f / 255.0f));
 }
 
