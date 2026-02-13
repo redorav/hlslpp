@@ -154,6 +154,16 @@
 			<Synthetic Name ="row3" Optional="true"><DisplayString>{f32_512[12]}, {f32_512[13]}, {f32_512[14]}, {f32_512[15]}</DisplayString></Synthetic>
 		</Expand>
 	</Type>
+	
+	<Type Name="hlslpp::half">
+		<Intrinsic Name="cast_utof" Expression="*((float*)&amp;u)"> <Parameter Name="u" Type="unsigned long"/> </Intrinsic>
+		<Intrinsic Name="cast_ftou" Expression="*((unsigned long*)&amp;f)"> <Parameter Name="f" Type="float"/> </Intrinsic>		
+		<Intrinsic Name="e" Expression="(binary_value &amp; 0x7C00) &gt;&gt; 10"/>
+		<Intrinsic Name="m" Expression="(binary_value &amp; 0x03FF) &lt;&lt; 13"/>
+		<Intrinsic Name="p" Expression="cast_ftou((float)u) &gt;&gt; 23"> <Parameter Name="u" Type="unsigned long"/> </Intrinsic>
+		<Intrinsic Name="v" Expression="p(m())"/>		
+		<DisplayString>[short = {cast_utof((binary_value &amp; 0x8000) &lt;&lt; 16 | (e() != 0) * ((e() + 112) &lt;&lt; 23 | m()) | ((e() == 0) &amp; (m() != 0)) * ((v() - 37) &lt;&lt; 23 | ((m() &lt;&lt; (150 - v())) &amp; 0x007FE000)))}]</DisplayString>
+	</Type>
 
 	<Type Name="hlslpp::swizzle1&lt;0&gt;"> <DisplayString Optional="true">{{ {((float*)(&amp;vec))[0]} }}</DisplayString></Type>
 	<Type Name="hlslpp::swizzle1&lt;1&gt;"> <DisplayString Optional="true">{{ {((float*)(&amp;vec))[1]} }}</DisplayString></Type>
