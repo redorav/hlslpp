@@ -27,7 +27,16 @@ namespace hlslpp
 
 	inline uint16_t float2half(float value)
 	{
-		const uint32_t b = float_bits(value).u + 0x00001000; // round-to-nearest-even: add last bit after truncated mantissa
+		// Note that by default we follow the D3D convention for floating point conversion here
+		// 
+		// https://microsoft.github.io/DirectX-Specs/d3d/archive/D3D11_3_FunctionalSpec.htm
+		// Round-to-zero must be used during conversion to another float format. If the target is an integer or fixed point format, round-to-nearest-even must be used, 
+		// unless the conversion is explicitly documented in the spec using another rounding behavior, such as round-to-nearest for FLOAT->SNORM(3.2.3.4), FLOAT->UNORM(3.2.3.6), FLOAT->SRGB(3.2.3.8)
+		// Other exceptions are the ftoi(22.13.3) and ftou(22.13.4) shader instructions, which use round-to-zero. 
+		// Finally, the float-to-fixed(3.2.4.1) conversions used by the texture sampler and rasterizer have a specified tolerance measured in ULP(3.1.2) from an infinitely precise ideal.
+
+		//const uint32_t b = float_bits(value).u + 0x00001000; // round-to-nearest-even: add last bit after truncated mantissa
+		const uint32_t b = float_bits(value).u; // round-to-zero
 		const uint32_t e = (b & 0x7F800000) >> 23; // exponent
 		const uint32_t m = b & 0x007FFFFF;         // mantissa; in line below: 0x007FF000 = 0x00800000-0x00001000 = decimal indicator flag - initial rounding
 		const uint32_t result = 
