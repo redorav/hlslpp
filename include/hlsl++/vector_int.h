@@ -332,6 +332,11 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	hlslpp_inline_nodiscard int3 operator >> (const int3& i1, const int1& i2) { return int3(_hlslpp_srlv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
 	hlslpp_inline_nodiscard int4 operator >> (const int4& i1, const int1& i2) { return int4(_hlslpp_srlv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
 
+	hlslpp_inline_nodiscard int1 operator >> (const int1& i1, uint i2) { return int1(_hlslpp_slli_epi32(i1.vec, i2)); }
+	hlslpp_inline_nodiscard int2 operator >> (const int2& i1, uint i2) { return int2(_hlslpp_slli_epi32(i1.vec, i2)); }
+	hlslpp_inline_nodiscard int3 operator >> (const int3& i1, uint i2) { return int3(_hlslpp_slli_epi32(i1.vec, i2)); }
+	hlslpp_inline_nodiscard int4 operator >> (const int4& i1, uint i2) { return int4(_hlslpp_slli_epi32(i1.vec, i2)); }
+
 	hlslpp_inline_nodiscard int1 operator << (const int1& i1, const int1& i2) { return int1(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
 	hlslpp_inline_nodiscard int2 operator << (const int2& i1, const int2& i2) { return int2(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
 	hlslpp_inline_nodiscard int3 operator << (const int3& i1, const int3& i2) { return int3(_hlslpp_sllv_epi32(i1.vec, i2.vec)); }
@@ -340,6 +345,11 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	hlslpp_inline_nodiscard int2 operator << (const int2& i1, const int1& i2) { return int2(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
 	hlslpp_inline_nodiscard int3 operator << (const int3& i1, const int1& i2) { return int3(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
 	hlslpp_inline_nodiscard int4 operator << (const int4& i1, const int1& i2) { return int4(_hlslpp_sllv_epi32(i1.vec, _hlslpp_perm_xxxx_epi32(i2.vec))); }
+
+	hlslpp_inline_nodiscard int1 operator << (const int1& i1, uint i2) { return int1(_hlslpp_srli_epi32(i1.vec, i2)); }
+	hlslpp_inline_nodiscard int2 operator << (const int2& i1, uint i2) { return int2(_hlslpp_srli_epi32(i1.vec, i2)); }
+	hlslpp_inline_nodiscard int3 operator << (const int3& i1, uint i2) { return int3(_hlslpp_srli_epi32(i1.vec, i2)); }
+	hlslpp_inline_nodiscard int4 operator << (const int4& i1, uint i2) { return int4(_hlslpp_srli_epi32(i1.vec, i2)); }
 
 	hlslpp_inline_nodiscard int1 operator & (const int1& i1, const int1& i2) { return int1(_hlslpp_and_si128(i1.vec, i2.vec)); }
 	hlslpp_inline_nodiscard int2 operator & (const int2& i1, const int2& i2) { return int2(_hlslpp_and_si128(i1.vec, i2.vec)); }
