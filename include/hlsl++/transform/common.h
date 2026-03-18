@@ -85,8 +85,6 @@ import <math.h>;
 
 #endif
 
-#if defined(HLSLPP_FEATURE_TRANSFORM)
-
 hlslpp_module_export namespace hlslpp
 {
 	namespace zclip
@@ -168,5 +166,3 @@ hlslpp_module_export namespace hlslpp
 			: frustum_planes(frustum_planes), z_clip(z_clip), z_direction(z_direction), z_plane(z_plane) {}
 	};
 }
-
-#endif

@@ -1,7 +1,5 @@
 #pragma once
 
-#if defined(HLSLPP_FEATURE_TRANSFORM)
-
 //-------//
 // Scale //
 //-------//
@@ -42,5 +40,3 @@ static hlslpp_inline float2x2 rotation(float angle_rad)
 		-s, c
 	);
 }
-
-#endif

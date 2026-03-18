@@ -1,7 +1,5 @@
 #pragma once
 
-#if defined(HLSLPP_FEATURE_TRANSFORM)
-
 //-------//
 // Scale //
 //-------//
@@ -128,5 +126,3 @@ static hlslpp_inline float3x3 translation(const float2& t)
 {
 	return translation(t.x, t.y);
 }
-
-#endif

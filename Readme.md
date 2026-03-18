@@ -55,6 +55,14 @@ float8 add8 = foo8 + bar8;
 // Data packing
 uint rgba8Packed     = pack_float4_rgba8_unorm(foo4);
 float4 rgba8Unpacked = unpack_rgba8_unorm_float4(rgba8Packed);
+
+// Create useful matrices
+frustum cameraFrustum = frustum::field_of_view_y(fovYRadians, aspectRatio, nearPlane, farPlane);
+float4x4 projectionMatrix = float4x4::perspective(projection(cameraFrustum, zclip::zero, zdirection::reverse, zplane::finite));
+
+float4x4 identityMatrix = float4x4::identity();
+
+float4x4 rotationAxisMatrix = float4x4::rotation_axis(axis, angleRadians);
 ```
 
 The natvis files provided for Visual Studio debugging allow you to see both vectors and the result of the swizzling in the debugging window in a programmer-friendly way.
@@ -85,7 +93,6 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 * Remember to add an include path to ```"include"```. IMPORTANT NOTE: The include structure has changed to remove prefixes and move towards a sensible folder hierarchy. Compatibility includes will stay around for a bit but will eventually be removed (probably in version 4.0)
 * Windows has defines for min and max so if you're using this library and the <windows.h> header remember to #define NOMINMAX before including it
 * To force the scalar version of the library, define ```HLSLPP_SCALAR``` globally. The scalar library is only different from the SIMD version in its use of regular floats to represent vectors. It should only be used if your platform (e.g. embedded) does not have native SIMD support. It can also be used to compare performance
-* To enable the transforms feature, define ```HLSLPP_FEATURE_TRANSFORM``` globally
 * The [ ] operators make use of the union directly, so the generated code is up to the compiler. Use with care
 * Individual swizzle members (such as .x, .y) have the & operator overridden to take the address of the individual component. This is very useful to pass to libraries that expect data pointers like imgui
 
