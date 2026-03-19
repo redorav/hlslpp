@@ -582,8 +582,9 @@ hlslpp_inline void _hlslpp_load4x4_ps(n128& dst0, n128& dst1, n128& dst2, n128& 
 #define _hlslpp_cvttps_epi32(x)					vcvtq_s32_f32((x))
 #define _hlslpp_cvtepi32_ps(x)					vcvtq_f32_s32((x))
 
-#define _hlslpp_slli_epi32(x, y)				vshlq_n_s32((x), (y))
-#define _hlslpp_srli_epi32(x, y)				vshrq_n_s32((x), (y))
+// We cannot use vshlq_n_s32 here because this requires an actual compile time constant
+#define _hlslpp_slli_epi32(x, y)				vshlq_s32((x), vmovq_n_s32((int)y))
+#define _hlslpp_srli_epi32(x, y)				vshlq_s32((x), vmovq_n_s32(-(int)y))
 
 // From the documentation of vshlq_s32: Vector shift left: Vr[i] := Va[i] << Vb[i] (negative values shift right)
 #define _hlslpp_sllv_epi32(x, y)				vshlq_s32((x), (y))
@@ -742,8 +743,8 @@ hlslpp_inline void _hlslpp_load4_epi32(n128i& dst, const int32_t* src)
 #define _hlslpp_cvttps_epu32(x)					vcvtq_u32_f32((x))
 #define _hlslpp_cvtepu32_ps(x)					vcvtq_f32_u32((x))
 
-#define _hlslpp_slli_epu32(x, y)				vshlq_n_u32((x), (y))
-#define _hlslpp_srli_epu32(x, y)				vshrq_n_u32((x), (y))
+#define _hlslpp_slli_epu32(x, y)				vshlq_u32((x), vmovq_n_s32((int)y))
+#define _hlslpp_srli_epu32(x, y)				vshlq_u32((x), vmovq_n_s32(-(int)y))
 
 // From the documentation of vshlq_s32: Vector shift left: Vr[i] := Va[i] << Vb[i] (negative values shift right)
 #define _hlslpp_sllv_epu32(x, y)				vshlq_u32((x), (y))
