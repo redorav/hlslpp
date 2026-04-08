@@ -43,7 +43,7 @@ AndroidProject = "hlsl++_android"
 isXCodeBuild = _ACTION == "xcode4"
 isLinuxMakeBuild = _ACTION == "gmake2"
 isVisualStudioBuild = not isXCodeBuild and not isLinuxMakeBuild
-supportsARMBuild = _ACTION == "vs2017" or _ACTION == "vs2019" or _ACTION == "vs2022"
+supportsAndroidBuild = _ACTION == "vs2017" or _ACTION == "vs2019" or _ACTION == "vs2022"
 
 -- Directories
 unitTestDir = "unit_tests"
@@ -71,10 +71,7 @@ workspace("hlsl++")
 	location (Workspace)
 	targetdir ("%{wks.location}/bin/%{cfg.platform}/%{cfg.buildcfg}")
 	
-	flags
-	{
-		"multiprocessorcompile", -- /MP
-	}
+	multiprocessorcompile ('on')
 	
 	includedirs
 	{
@@ -85,7 +82,7 @@ workspace("hlsl++")
 	cppdialect("c++11")
 	defines { "HLSLPP_FEATURE_TRANSFORM" }
 	warnings('extra')
-	flags { 'fatalcompilewarnings' }
+	fatalwarnings ('all')
 	
 	if(isXCodeBuild) then
 	
@@ -233,7 +230,6 @@ workspace("hlsl++")
 		filter { 'platforms:'..PlatformWSL64GCC..' or '..PlatformWSL64Clang}
 			system('linux')
 			architecture('x64')
-			toolchainversion('wsl2')
 			
 			-- Make sure all files are copied to the same folder, without splitting by project
 			-- This works for both remote and WSL projects
@@ -243,10 +239,10 @@ workspace("hlsl++")
 			remotedeploydir("$(RemoteRootDir)")
 			
 		filter { 'platforms:'..PlatformWSL64GCC}
-			toolset('gcc')
+			toolset('gcc-wsl2')
 			
 		filter { 'platforms:'..PlatformWSL64Clang}
-			toolset('clang')
+			toolset('clang-wsl2')
 			
 		filter { "platforms:"..Platform360 }
 			system("xbox360")
@@ -300,7 +296,7 @@ project (UnitTestProject)
 		unitTestDir.."/**.h"
 	}
 
-if (supportsARMBuild) then
+if (supportsAndroidBuild) then
 
 project (AndroidProject)
 	removeplatforms("*")
