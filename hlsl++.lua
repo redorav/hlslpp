@@ -43,6 +43,7 @@ AndroidProject = "hlsl++_android"
 isXCodeBuild = _ACTION == "xcode4"
 isLinuxMakeBuild = _ACTION == "gmake2"
 isVisualStudioBuild = not isXCodeBuild and not isLinuxMakeBuild
+supportsARMBuild = _ACTION == "vs2017" or _ACTION == "vs2019" or _ACTION == "vs2022" or _ACTION == "vs2026"
 supportsAndroidBuild = _ACTION == "vs2017" or _ACTION == "vs2019" or _ACTION == "vs2022"
 
 -- Directories
@@ -129,14 +130,14 @@ workspace("hlsl++")
 
 		if(supportsARMBuild) then
 
-			platforms
-			{
-				PlatformARM, 
-				PlatformARM64, 
-				PlatformAndroidARM, 
-				PlatformAndroidARM64
-			}
+			platforms { PlatformARM, PlatformARM64 }
 
+		end
+		
+		if(supportsAndroidBuild) then
+			
+			platforms { PlatformAndroidARM, PlatformAndroidARM64 }
+		
 		end
 	
 		local llvmToolset;
