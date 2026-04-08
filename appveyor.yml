@@ -6,11 +6,11 @@ skip_branch_with_pr: true
 
 environment:
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2204
       build: off
       platform: Linux64 GCC
       configuration: Release
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2204
       build: off
       platform: Linux64 Clang
       configuration: Release
@@ -117,7 +117,6 @@ test_script:
          if not "%PLATFORM%"=="Android ARM64"
          if not "%PLATFORM%"=="MSVC ARM"
          if not "%PLATFORM%"=="MSVC ARM64"
-         if not "%PLATFORM%"=="MSVC ARM"
          "workspace/vs%vsversion%/bin/%PLATFORM%/%CONFIGURATION%/unit_tests.exe" "unit_tests" "appveyor"
 
 #matrix:
