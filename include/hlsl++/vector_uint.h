@@ -415,6 +415,18 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	hlslpp_inline uint3& operator ^= (uint3& i1, const uint3& i2) { i1 = i1 ^ i2; return i1; }
 	hlslpp_inline uint4& operator ^= (uint4& i1, const uint4& i2) { i1 = i1 ^ i2; return i1; }
 
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator + (const uswizzle1<X>& i1, T i2) { return uint1(i1) + uint1(i2); }
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator + (T i1, const uswizzle1<X>& i2) { return uint1(i1) + uint1(i2); }
+
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator - (const uswizzle1<X>& i1, T i2) { return uint1(i1) - uint1(i2); }
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator - (T i1, const uswizzle1<X>& i2) { return uint1(i1) - uint1(i2); }
+
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator * (const uswizzle1<X>& i1, T i2) { return uint1(i1) * uint1(i2); }
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator * (T i1, const uswizzle1<X>& i2) { return uint1(i1) * uint1(i2); }
+
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator / (const uswizzle1<X>& i1, T i2) { return uint1(i1) / uint1(i2); }
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, uint1) operator / (T i1, const uswizzle1<X>& i2) { return uint1(i1) / uint1(i2); }
+
 	hlslpp_inline_nodiscard bool all(const uint1& f) { return _hlslpp_all1_epu32(f.vec); }
 	hlslpp_inline_nodiscard bool all(const uint2& f) { return _hlslpp_all2_epu32(f.vec); }
 	hlslpp_inline_nodiscard bool all(const uint3& f) { return _hlslpp_all3_epu32(f.vec); }

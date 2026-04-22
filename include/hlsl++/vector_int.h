@@ -408,6 +408,18 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	hlslpp_inline int3& operator ^= (int3& i1, const int3& i2) { i1 = i1 ^ i2; return i1; }
 	hlslpp_inline int4& operator ^= (int4& i1, const int4& i2) { i1 = i1 ^ i2; return i1; }
 
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator + (const iswizzle1<X>& i1, T i2) { return int1(i1) + int1(i2); }
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator + (T i1, const iswizzle1<X>& i2) { return int1(i1) + int1(i2); }
+
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator - (const iswizzle1<X>& i1, T i2) { return int1(i1) - int1(i2); }
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator - (T i1, const iswizzle1<X>& i2) { return int1(i1) - int1(i2); }
+
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator * (const iswizzle1<X>& i1, T i2) { return int1(i1) * int1(i2); }
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator * (T i1, const iswizzle1<X>& i2) { return int1(i1) * int1(i2); }
+
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator / (const iswizzle1<X>& i1, T i2) { return int1(i1) / int1(i2); }
+	template<int X, typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, int1) operator / (T i1, const iswizzle1<X>& i2) { return int1(i1) / int1(i2); }
+
 	hlslpp_inline_nodiscard int1 abs(const int1& i) { return int1(_hlslpp_abs_epi32(i.vec)); }
 	hlslpp_inline_nodiscard int2 abs(const int2& i) { return int2(_hlslpp_abs_epi32(i.vec)); }
 	hlslpp_inline_nodiscard int3 abs(const int3& i) { return int3(_hlslpp_abs_epi32(i.vec)); }
