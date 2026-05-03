@@ -24,6 +24,18 @@
 		vstudio.vs2010_architectures.xbox360 = "Xbox 360"
 	end
 	
+	-- Premake bypasses concatenation if platform arch and config arch match
+	-- It's not a bug to do that but produces confusing projects and solutions
+	premake.override(vstudio, "projectPlatform", function(oldfn, cfg)
+	
+		if cfg.system == premake.XBOX360 then
+			return cfg.buildcfg .. " " .. cfg.platform
+		else
+			return oldfn(cfg)
+		end
+		
+	end)
+	
 --
 -- Extend globals
 --
