@@ -562,8 +562,9 @@ hlslpp_module_export namespace hlslpp
 		hlslpp_inline void build(const float3x3& m, const float4& v) hlslpp_noexcept
 		{
 			vec = _hlslpp512_and_ps(_hlslpp512_set128_ps(m.vec0, m.vec1, m.vec2, v.vec),
-				_hlslpp512_set_ps(fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, 
-								  fffMask._f32, fffMask._f32, fffMask._f32, 0.0f, fffMask._f32, fffMask._f32, fffMask._f32, 0.0f));
+				_hlslpp512_castsi512_ps(_hlslpp512_set_epi32(
+					0xffffffff, 0xffffffff, 0xffffffff, 0, 0xffffffff, 0xffffffff, 0xffffffff, 0, 
+					0xffffffff, 0xffffffff, 0xffffffff, 0, 0xffffffff, 0xffffffff, 0xffffffff, 0)));
 		}
 
 		hlslpp_inline void build(const float3x4& m, const float4& v) hlslpp_noexcept
