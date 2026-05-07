@@ -207,16 +207,18 @@ hlslpp_module_export namespace hlslpp
 	// |                                 |                                 |                                 |
 	// |   2 * (q.x * q.z + q.y * q.w)   |   2 * (q.y * q.z - q.x * q.w)   | 1 - 2 * (q.x * q.x + q.z * q.z) |
 	//
-	// We use the transposed version to be consistent with the left-hand default of hlsl. In right-handed mode
-	// the quaternion will have a flipped sign
+	// We use the *transposed* version to match hlsl’s default left-handed coordinate system.
+	// In right-handed mode, the quaternion sign is flipped to maintain consistency.
 	inline void _hlslpp_quat_to_3x3_ps(const n128 q, n128& row0, n128& row1, n128& row2)
 	{
-		n128 q_xxy		= _hlslpp_perm_xxyx_ps(q);        // q.x, q.x, q.y
-		n128 q_zyz		= _hlslpp_perm_zyzx_ps(q);        // q.z, q.y, q.x
+		n128 q_flip_w   = _hlslpp_mul_ps(q, _hlslpp_set_ps(1.0f, 1.0f, 1.0f, HLSLPP_COORDINATES_SIGN));
+
+		n128 q_xxy		= _hlslpp_perm_xxyx_ps(q_flip_w); // q.x, q.x, q.y
+		n128 q_zyz		= _hlslpp_perm_zyzx_ps(q_flip_w); // q.z, q.y, q.x
 		n128 q_mul0		= _hlslpp_mul_ps(q_xxy, q_zyz);   // q.x * q.z, q.x * q.y, q.y * q.z
 
-		n128 q_yzx		= _hlslpp_perm_yzxx_ps(q);        // q.y, q.z, q.x
-		n128 q_www		= _hlslpp_perm_wwwx_ps(q);        // q.w, q.w, q.w
+		n128 q_yzx		= _hlslpp_perm_yzxx_ps(q_flip_w); // q.y, q.z, q.x
+		n128 q_www		= _hlslpp_perm_wwwx_ps(q_flip_w); // q.w, q.w, q.w
 		n128 q_mul1		= _hlslpp_mul_ps(q_yzx, q_www);   // q.y * q.w, q.z * q.w, q.x * q.w
 
 		n128 q_add		= _hlslpp_add_ps(q_mul0, q_mul1); // q.x * q.z + q.y * q.w, q.x * q.y + q.z * q.w, q.y * q.z + q.x * q.w
@@ -226,7 +228,7 @@ hlslpp_module_export namespace hlslpp
 		q_sub			= _hlslpp_add_ps(q_sub, q_sub);   // 2 *(q.x * q.z - q.y * q.w), 2*(q.x * q.y - q.z * q.w), 2 * (q.y * q.z - q.x * q.w)
 		q_sub			= _hlslpp_perm_yzxx_ps(q_sub);    // 2 *(q.x * q.y - q.z * q.w), 2*(q.y * q.z - q.x * q.w), 2 * (q.x * q.z - q.y * q.w)
 
-		n128 q_xyz_2	= _hlslpp_mul_ps(q, q);           // q.x * q.x, q.y * q.y, q.z * q.z, q.w * q.w
+		n128 q_xyz_2	= _hlslpp_mul_ps(q_flip_w, q_flip_w); // q.x * q.x, q.y * q.y, q.z * q.z, q.w * q.w
 
 		n128 q_yxx_2	= _hlslpp_perm_yxxx_ps(q_xyz_2);  // q.y * q.y, q.x * q.x, q.x * q.x
 		n128 q_zzy_2	= _hlslpp_perm_zzyx_ps(q_xyz_2);  // q.z * q.z, q.z * q.z, q.y * q.y
