@@ -90,7 +90,7 @@ The only required features are a C++ compiler supporting anonymous unions, and S
 #include "hlsl++/quaternion_type.h"
 ```
 
-* Remember to add an include path to ```"include"```. IMPORTANT NOTE: The include structure has changed to remove prefixes and move towards a sensible folder hierarchy. Compatibility includes will stay around for a bit but will eventually be removed (probably in version 4.0)
+* Remember to add an include path to ```"include"```. IMPORTANT NOTE: The include structure changed in 3.9 to remove prefixes and move towards a sensible folder hierarchy. This note will be removed in 4.0
 * Windows has defines for min and max so if you're using this library and the <windows.h> header remember to #define NOMINMAX before including it
 * To force the scalar version of the library, define ```HLSLPP_SCALAR``` globally. The scalar library is only different from the SIMD version in its use of regular floats to represent vectors. It should only be used if your platform (e.g. embedded) does not have native SIMD support. It can also be used to compare performance
 * The [ ] operators make use of the union directly, so the generated code is up to the compiler. Use with care
