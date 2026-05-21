@@ -57,23 +57,23 @@ hlslpp_module_export namespace hlslpp
 	// Fonseca derives from here: http://forum.devmaster.net/t/approximate-math-library/11679
 	inline n256 _hlslpp256_log2_ps(n256 x)
 	{
-		static const n256 log2_c0 = _hlslpp256_set1_ps( 3.1157899f);
-		static const n256 log2_c1 = _hlslpp256_set1_ps(-3.3241990f);
-		static const n256 log2_c2 = _hlslpp256_set1_ps( 2.5988452f);
-		static const n256 log2_c3 = _hlslpp256_set1_ps(-1.2315303f);
-		static const n256 log2_c4 = _hlslpp256_set1_ps( 3.1821337e-1f);
-		static const n256 log2_c5 = _hlslpp256_set1_ps(-3.4436006e-2f);
+		const n256 log2_c0 = _hlslpp256_set1_ps( 3.1157899f);
+		const n256 log2_c1 = _hlslpp256_set1_ps(-3.3241990f);
+		const n256 log2_c2 = _hlslpp256_set1_ps( 2.5988452f);
+		const n256 log2_c3 = _hlslpp256_set1_ps(-1.2315303f);
+		const n256 log2_c4 = _hlslpp256_set1_ps( 3.1821337e-1f);
+		const n256 log2_c5 = _hlslpp256_set1_ps(-3.4436006e-2f);
 
-		static const n256i exp    = _hlslpp256_set1_epi32(0x7F800000);
-		static const n256i mant   = _hlslpp256_set1_epi32(0x007FFFFF);
+		const n256i log2_exp    = _hlslpp256_set1_epi32(0x7F800000);
+		const n256i log2_mant   = _hlslpp256_set1_epi32(0x007FFFFF);
 
-		static const n256 minus127 = _hlslpp256_set1_ps(-127.0f);
+		const n256 log2_minus127 = _hlslpp256_set1_ps(-127.0f);
 
 		n256i i = _hlslpp256_castps_si256(x);
 
-		n256 e = _hlslpp256_cvtepi32_ps(_hlslpp256_sub_epi32(_hlslpp256_srli_epi32(_hlslpp256_and_si128(i, exp), 23), _hlslpp256_set1_epi32(127)));
+		n256 e = _hlslpp256_cvtepi32_ps(_hlslpp256_sub_epi32(_hlslpp256_srli_epi32(_hlslpp256_and_si128(i, log2_exp), 23), _hlslpp256_set1_epi32(127)));
 
-		n256 m = _hlslpp256_or_ps(_hlslpp256_castsi256_ps(_hlslpp256_and_si128(i, mant)), f8_1);
+		n256 m = _hlslpp256_or_ps(_hlslpp256_castsi256_ps(_hlslpp256_and_si128(i, log2_mant)), f8_1);
 
 		n256 p;
 		// Minimax polynomial fit of log2(x)/(x - 1), for x in range [1, 2[
@@ -89,7 +89,7 @@ hlslpp_module_export namespace hlslpp
 		n256 result = _hlslpp256_add_ps(p, e);
 
 		// We can't compute a logarithm beyond this value, so we'll mark it as -infinity to indicate close to 0
-		n256 ltminus127 = _hlslpp256_cmple_ps(result, minus127);
+		n256 ltminus127 = _hlslpp256_cmple_ps(result, log2_minus127);
 		result = _hlslpp256_sel_ps(result, f8_minusinf, ltminus127);
 
 		// Check for negative values and return NaN
@@ -101,29 +101,29 @@ hlslpp_module_export namespace hlslpp
 
 	hlslpp_inline n256 _hlslpp256_log10_ps(n256 x)
 	{
-		static const n256 invlog_2_10 = _hlslpp256_div_ps(f8_1, _hlslpp256_log2_ps(f8_10));
+		const n256 invlog_2_10 = _hlslpp256_div_ps(f8_1, _hlslpp256_log2_ps(f8_10));
 		return _hlslpp256_mul_ps(_hlslpp256_log2_ps(x), invlog_2_10);
 	}
 
 	hlslpp_inline n256 _hlslpp256_log_ps(n256 x)
 	{
-		static const n256 invlog_2_e = _hlslpp256_div_ps(f8_1, _hlslpp256_log2_ps(f8_e));
+		const n256 invlog_2_e = _hlslpp256_div_ps(f8_1, _hlslpp256_log2_ps(f8_e));
 		return _hlslpp256_mul_ps(_hlslpp256_log2_ps(x), invlog_2_e);
 	}
 
 	// See http://jrfonseca.blogspot.co.uk/2008/09/fast-sse2-pow-tables-or-polynomials.html for derivation
 	inline n256 _hlslpp256_exp2_ps(n256 x)
 	{
-		static const n256 exp2_c0 = _hlslpp256_set1_ps(1.0f);
-		static const n256 exp2_c1 = _hlslpp256_set1_ps(6.9315308e-1f);
-		static const n256 exp2_c2 = _hlslpp256_set1_ps(2.4015361e-1f);
-		static const n256 exp2_c3 = _hlslpp256_set1_ps(5.5826318e-2f);
-		static const n256 exp2_c4 = _hlslpp256_set1_ps(8.9893397e-3f);
-		static const n256 exp2_c5 = _hlslpp256_set1_ps(1.8775767e-3f);
+		const n256 exp2_c0 = _hlslpp256_set1_ps(1.0f);
+		const n256 exp2_c1 = _hlslpp256_set1_ps(6.9315308e-1f);
+		const n256 exp2_c2 = _hlslpp256_set1_ps(2.4015361e-1f);
+		const n256 exp2_c3 = _hlslpp256_set1_ps(5.5826318e-2f);
+		const n256 exp2_c4 = _hlslpp256_set1_ps(8.9893397e-3f);
+		const n256 exp2_c5 = _hlslpp256_set1_ps(1.8775767e-3f);
 
-		static const n256 exp2_129 = _hlslpp256_set1_ps(129.00000f);
-		static const n256 exp2_minus127 = _hlslpp256_set1_ps(-126.99999f);
-		static const n256i exp2_127i = _hlslpp256_set1_epi32(127);
+		const n256 exp2_129 = _hlslpp256_set1_ps(129.00000f);
+		const n256 exp2_minus127 = _hlslpp256_set1_ps(-126.99999f);
+		const n256i exp2_127i = _hlslpp256_set1_epi32(127);
 
 		n256i ipart;
 		n256 fpart, expipart, expfpart;
@@ -153,7 +153,7 @@ hlslpp_module_export namespace hlslpp
 
 	hlslpp_inline n256 _hlslpp256_exp_ps(n256 x)
 	{
-		static const n256 log_2_e = _hlslpp256_log2_ps(f8_e);
+		const n256 log_2_e = _hlslpp256_log2_ps(f8_e);
 		return _hlslpp256_exp2_ps(_hlslpp256_mul_ps(x, log_2_e));
 	}
 
@@ -182,10 +182,10 @@ hlslpp_module_export namespace hlslpp
 		// Uses a minimax polynomial fitted to the [-pi/2, pi/2] range
 	inline n256 _hlslpp256_sin_ps(n256 x)
 	{
-		static const n256 sin_c1 = f8_1;
-		static const n256 sin_c3 = _hlslpp256_set1_ps(-1.6665578e-1f);
-		static const n256 sin_c5 = _hlslpp256_set1_ps( 8.3109378e-3f);
-		static const n256 sin_c7 = _hlslpp256_set1_ps(-1.84477486e-4f);
+		const n256 sin_c1 = f8_1;
+		const n256 sin_c3 = _hlslpp256_set1_ps(-1.6665578e-1f);
+		const n256 sin_c5 = _hlslpp256_set1_ps( 8.3109378e-3f);
+		const n256 sin_c7 = _hlslpp256_set1_ps(-1.84477486e-4f);
 
 		// Range reduction (into [-pi, pi] range)
 		// Formula is x = x - round(x / 2pi) * 2pi
@@ -226,11 +226,11 @@ hlslpp_module_export namespace hlslpp
 	// Uses a minimax polynomial fitted to the [-pi/4, pi/4] range
 	inline n256 _hlslpp256_tan_ps(n256 x)
 	{
-		static const n256 tan_c1 = f8_1;
-		static const n256 tan_c3 = _hlslpp256_set1_ps(3.329923284e-1f);
-		static const n256 tan_c5 = _hlslpp256_set1_ps(1.374784343e-1f);
-		static const n256 tan_c7 = _hlslpp256_set1_ps(3.769634481e-2f);
-		static const n256 tan_c9 = _hlslpp256_set1_ps(4.609737727e-2f);
+		const n256 tan_c1 = f8_1;
+		const n256 tan_c3 = _hlslpp256_set1_ps(3.329923284e-1f);
+		const n256 tan_c5 = _hlslpp256_set1_ps(1.374784343e-1f);
+		const n256 tan_c7 = _hlslpp256_set1_ps(3.769634481e-2f);
+		const n256 tan_c9 = _hlslpp256_set1_ps(4.609737727e-2f);
 
 		// Range reduction (into [-pi/2, pi/2] range)
 		// Formula is x = x - round(x / pi) * pi
@@ -267,12 +267,12 @@ hlslpp_module_export namespace hlslpp
 	// SSE : 1.54972076e-6
 	inline n256 _hlslpp256_acos_ps(n256 x)
 	{
-		static const n256 asinacos_c0 = f8_pi2;
-		static const n256 asinacos_c1 = _hlslpp256_set1_ps(-2.145329213e-1f);
-		static const n256 asinacos_c2 = _hlslpp256_set1_ps(8.797308928e-2f);
-		static const n256 asinacos_c3 = _hlslpp256_set1_ps(-4.513026638e-2f);
-		static const n256 asinacos_c4 = _hlslpp256_set1_ps(1.946746668e-2f);
-		static const n256 asinacos_c5 = _hlslpp256_set1_ps(-4.360132611e-3f);
+		const n256 asinacos_c0 = f8_pi2;
+		const n256 asinacos_c1 = _hlslpp256_set1_ps(-2.145329213e-1f);
+		const n256 asinacos_c2 = _hlslpp256_set1_ps(8.797308928e-2f);
+		const n256 asinacos_c3 = _hlslpp256_set1_ps(-4.513026638e-2f);
+		const n256 asinacos_c4 = _hlslpp256_set1_ps(1.946746668e-2f);
+		const n256 asinacos_c5 = _hlslpp256_set1_ps(-4.360132611e-3f);
 
 		// We use the trigonometric identity acos(x) = pi - acos(-x) to mirror [0, 1]
 		// into the [-1, 0] range
@@ -305,12 +305,12 @@ hlslpp_module_export namespace hlslpp
 	// SSE : 1.5348196e-6
 	inline n256 _hlslpp256_asin_ps(n256 x)
 	{
-		static const n256 asinacos_c0 = f8_pi2;
-		static const n256 asinacos_c1 = _hlslpp256_set1_ps(-2.145329213e-1f);
-		static const n256 asinacos_c2 = _hlslpp256_set1_ps(8.797308928e-2f);
-		static const n256 asinacos_c3 = _hlslpp256_set1_ps(-4.513026638e-2f);
-		static const n256 asinacos_c4 = _hlslpp256_set1_ps(1.946746668e-2f);
-		static const n256 asinacos_c5 = _hlslpp256_set1_ps(-4.360132611e-3f);
+		const n256 asinacos_c0 = f8_pi2;
+		const n256 asinacos_c1 = _hlslpp256_set1_ps(-2.145329213e-1f);
+		const n256 asinacos_c2 = _hlslpp256_set1_ps(8.797308928e-2f);
+		const n256 asinacos_c3 = _hlslpp256_set1_ps(-4.513026638e-2f);
+		const n256 asinacos_c4 = _hlslpp256_set1_ps(1.946746668e-2f);
+		const n256 asinacos_c5 = _hlslpp256_set1_ps(-4.360132611e-3f);
 
 		// We use the trigonometric identity asin(x) = -asin(-x) to mirror [0, 1] into the [-1, 0] range
 		n256 ltZero = _hlslpp256_cmplt_ps(x, f8_0);
@@ -342,12 +342,12 @@ hlslpp_module_export namespace hlslpp
 	// SSE : 2.74181366e-6
 	inline n256 _hlslpp256_atan_ps(n256 x)
 	{
-		static const n256 atan_c1 = f8_1;
-		static const n256 atan_c3 = _hlslpp256_set1_ps(-3.329452768e-1f);
-		static const n256 atan_c5 = _hlslpp256_set1_ps(1.949865716e-1f);
-		static const n256 atan_c7 = _hlslpp256_set1_ps(-1.192157627e-1f);
-		static const n256 atan_c9 = _hlslpp256_set1_ps(5.506335136e-2f);
-		static const n256 atan_c11 = _hlslpp256_set1_ps(-1.249072006e-2f);
+		const n256 atan_c1 = f8_1;
+		const n256 atan_c3 = _hlslpp256_set1_ps(-3.329452768e-1f);
+		const n256 atan_c5 = _hlslpp256_set1_ps(1.949865716e-1f);
+		const n256 atan_c7 = _hlslpp256_set1_ps(-1.192157627e-1f);
+		const n256 atan_c9 = _hlslpp256_set1_ps(5.506335136e-2f);
+		const n256 atan_c11 = _hlslpp256_set1_ps(-1.249072006e-2f);
 
 		n256 ltgtOne = _hlslpp256_cmpgt_ps(_hlslpp256_abs_ps(x), f8_1); // Check if outside the [-1, 1] range
 		n256 gtOne = _hlslpp256_cmpgt_ps(x, f8_1);				 // Check if input > 1 (as we need to select the constant later)

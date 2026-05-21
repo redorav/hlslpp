@@ -1982,8 +1982,7 @@ hlslpp_module_export namespace hlslpp
 
 		n512 det_mul_3 = _hlslpp512_mul_ps(det_sub_0, _hlslpp512_perm_ps(det_sub_0, 6, 7, 8, 9, 10, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 
-		static const uint32_t neg = 0x80000000u;
-		n512 det_mul_3_s  = _hlslpp512_xor_ps(det_mul_3, _hlslpp512_castsi512_ps(_hlslpp512_set_epi32(0, neg, 0, 0, neg, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)));
+		n512 det_mul_3_s  = _hlslpp512_xor_ps(det_mul_3, _hlslpp512_castsi512_ps(_hlslpp512_set_epi32(0, 0x80000000u, 0, 0, 0x80000000u, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)));
 		n512 det_mul_3_s1 = _hlslpp512_perm_ps(det_mul_3_s, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 		n128 det_add0 = _hlslpp_add_ps(_hlslpp512_vec0_ps(det_mul_3_s), _hlslpp512_vec0_ps(det_mul_3_s1));

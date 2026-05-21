@@ -45,7 +45,7 @@ hlslpp_module_export namespace hlslpp
 
 	hlslpp_inline n128 _hlslpp_quat_conjugate_ps(const n128 q)
 	{
-		static const n128i signMask = _hlslpp_set_epi32((int)0x80000000, (int)0x80000000, (int)0x80000000, 0);
+		const n128i signMask = _hlslpp_set_epi32((int)0x80000000, (int)0x80000000, (int)0x80000000, 0);
 		return _hlslpp_xor_ps(q, _hlslpp_castsi128_ps(signMask)); // Flip the sign bits of the vector part of the quaternion
 	}
 

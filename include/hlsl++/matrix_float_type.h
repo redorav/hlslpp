@@ -401,7 +401,7 @@ hlslpp_module_export namespace hlslpp
 		hlslpp_inline float3x3(float3x3&& m) hlslpp_noexcept : vec0(m.vec0), vec1(m.vec1), vec2(m.vec2) {}
 		hlslpp_inline float3x3& operator = (float3x3&& m) hlslpp_noexcept { vec0 = m.vec0; vec1 = m.vec1; vec2 = m.vec2; return *this; }
 
-		static const float3x3& identity() { static const float3x3 iden = float3x3(1, 0, 0, 0, 1, 0, 0, 0, 1); return iden; }
+		static float3x3 identity() { return float3x3(1, 0, 0, 0, 1, 0, 0, 0, 1); }
 
 		#include "hlsl++/transform/float3x3.h"
 
@@ -864,7 +864,7 @@ hlslpp_module_export namespace hlslpp
 
 		explicit hlslpp_inline float4x4(const quaternion& q) hlslpp_noexcept;
 
-		static const float4x4& identity() { static const float4x4 iden = float4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); return iden; };
+		static float4x4 identity() { return float4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); };
 
 		#include "hlsl++/transform/float4x4.h"
 	};

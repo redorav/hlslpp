@@ -40,7 +40,7 @@ hlslpp_module_export namespace hlslpp
 
 		hlslpp_inline quaternion& operator = (const quaternion& q) { vec = q.vec; return *this; }
 
-		static const quaternion& identity() { static const quaternion identity = quaternion(0.0f, 0.0f, 0.0f, 1.0f); return identity; };
+		static quaternion identity() { return quaternion(0.0f, 0.0f, 0.0f, 1.0f); }
 
 		static quaternion rotation_x(float angle);
 

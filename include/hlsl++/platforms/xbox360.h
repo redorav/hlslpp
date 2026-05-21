@@ -609,7 +609,7 @@ hlslpp_inline bool _hlslpp_all4_ps(n128 x)
 // Code from XMStoreUByteN4
 inline uint32_t _hlslpp_pack_epu32_rgba8_unorm(__vector4 v)
 {
-	static const __vector4 PackScale = HLSLPP_XBOX360_XM_PACK_UNSIGNEDN_SCALE(8, 8, 8, 8);
+	const __vector4 PackScale = HLSLPP_XBOX360_XM_PACK_UNSIGNEDN_SCALE(8, 8, 8, 8);
 
 	__vector4 packed = __vset1(3.0f); // XM_PACK_OFFSET
 	__vector4 shuf = __vpermwi(v, 0x6C); // 1, 2, 3, 0
@@ -624,8 +624,8 @@ inline uint32_t _hlslpp_pack_epu32_rgba8_unorm(__vector4 v)
 // Code from XMLoadUByteN4
 inline __vector4 _hlslpp_unpack_rgba8_unorm_epu32(uint32_t p)
 {
-	static const __vector4 UnpackOffset = HLSLPP_XBOX360_XM_UNPACK_UNSIGNEDN_OFFSET(8, 8, 8, 8);
-	static const __vector4 UnpackScale = HLSLPP_XBOX360_XM_UNPACK_UNSIGNEDN_SCALE(8, 8, 8, 8);
+	const __vector4 UnpackOffset = HLSLPP_XBOX360_XM_UNPACK_UNSIGNEDN_OFFSET(8, 8, 8, 8);
+	const __vector4 UnpackScale = HLSLPP_XBOX360_XM_UNPACK_UNSIGNEDN_SCALE(8, 8, 8, 8);
 
 	__vector4 result;
 	result = __lvlx(&p, 0);
@@ -656,7 +656,7 @@ hlslpp_inline uint32_t _hlslpp_pack_epu32_rgba8_snorm(__vector4 v)
 // Code from XMLoadByteN4 
 hlslpp_inline __vector4 _hlslpp_unpack_rgba8_snorm_epu32(uint32_t p)
 {
-	static const __vector4 Scale = __vset1(1.0f / (float)((1 << (8 - 1)) - 1));
+	const __vector4 Scale = __vset1(1.0f / (float)((1 << (8 - 1)) - 1));
 
 	__vector4 result;
 	result = __lvlx(&p, 0);
