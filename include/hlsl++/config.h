@@ -223,6 +223,8 @@ import "stdint.h";
 
 #include "hlsl++/bitcast.h"
 
+#include "hlsl++/util/scalar_math.h"
+
 // We try to auto detect any vector libraries available to the system.
 // If we don't find any, fall back to scalar.
 
