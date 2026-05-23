@@ -2,6 +2,15 @@
 
 #include "hlsl++/config.h"
 
+#if defined(_MSC_VER)
+extern "C"
+{
+	double __cdecl sqrt(double _X);
+	double __cdecl sin(double _X);
+	double __cdecl cos(double _X);
+}
+#endif
+
 hlslpp_module_export namespace hlslpp
 {
 	//----------------
@@ -445,6 +454,62 @@ hlslpp_module_export namespace hlslpp
 
 	// HLSL assumes certain sizes of types
 	static_assert(sizeof(int) == 4, "Size of integer must be 4 bytes");
+
+	// Helpers for the scalar functions
+	namespace detail
+	{
+		hlslpp_inline float trunc_float(float f)
+		{
+			return (float)(int)f;
+		}
+
+		hlslpp_inline float floor_float(float f)
+		{
+			float trunc = (float)(int)f;
+			return trunc > f ? trunc - 1.0f : trunc;
+		}
+
+		hlslpp_inline float ceil_float(float f)
+		{
+			float trunc = (float)(int)f;
+			return trunc < f ? trunc + 1.0f : trunc;
+		}
+
+		hlslpp_inline float round_float(float f)
+		{
+			float trunc = (float)(int)f;
+			float frac = f - trunc;
+			float abs_frac = frac >= 0.0f ? frac : -frac;
+			return abs_frac <= 0.5f ? trunc : f >= 0.0f ? trunc + 1.0f : trunc - 1.0f;
+		}
+
+		hlslpp_inline float sqrt_float(float x)
+		{
+#if defined(__clang__) || defined(__GNUC__)
+			return __builtin_sqrtf(x);
+#else
+			return (float)sqrt(x);
+#endif
+		}
+
+		hlslpp_inline float sin_float(float x)
+		{
+#if defined(__clang__) || defined(__GNUC__)
+			return __builtin_sinf(x);
+#else
+			return (float)sin(x);
+#endif
+		}
+
+		hlslpp_inline float cos_float(float x)
+		{
+#if defined(__clang__) || defined(__GNUC__)
+			return __builtin_cosf(x);
+#else
+			return (float)cos(x);
+#endif
+		}
+	};
 
 	// Disambiguate when we want to use builtin types. We need to be careful with this. <cmath> includes identical functions
 	// in the global namespace. However, the results returned from the standard functions do not match hlsl++. Ideally functions

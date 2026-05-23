@@ -3,12 +3,6 @@
 #include "hlsl++/common.h"
 #include "hlsl++/vector_float.h"
 
-#if defined(HLSLPP_MODULE_DECLARATION)
-import <math.h>;
-#else
-#include <math.h>
-#endif
-
 //-----------
 // Quaternion
 //-----------
@@ -403,7 +397,7 @@ hlslpp_module_export namespace hlslpp
 #if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
 		angle_rad = -angle_rad;
 #endif
-		return quaternion(sinf(angle_rad * 0.5f), 0.0f, 0.0f, cosf(angle_rad * 0.5f));
+		return quaternion(detail::sin_float(angle_rad * 0.5f), 0.0f, 0.0f, detail::cos_float(angle_rad * 0.5f));
 	}
 
 	hlslpp_inline_nodiscard quaternion quaternion::rotation_y(float angle_rad)
@@ -411,7 +405,7 @@ hlslpp_module_export namespace hlslpp
 #if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
 		angle_rad = -angle_rad;
 #endif
-		return quaternion(0.0f, sinf(angle_rad * 0.5f), 0.0f, cosf(angle_rad * 0.5f)); 
+		return quaternion(0.0f, detail::sin_float(angle_rad * 0.5f), 0.0f, detail::cos_float(angle_rad * 0.5f));
 	}
 
 	hlslpp_inline_nodiscard quaternion quaternion::rotation_z(float angle_rad)
@@ -419,7 +413,7 @@ hlslpp_module_export namespace hlslpp
 #if defined(HLSLPP_LAYOUT_COORDINATES_FLIP_SIGN)
 		angle_rad = -angle_rad;
 #endif
-		return quaternion(0.0f, 0.0f, sinf(angle_rad * 0.5f), cosf(angle_rad * 0.5f));
+		return quaternion(0.0f, 0.0f, detail::sin_float(angle_rad * 0.5f), detail::cos_float(angle_rad * 0.5f));
 	}
 
 	hlslpp_inline void store(float* dst, const quaternion& src)

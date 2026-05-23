@@ -2,13 +2,6 @@
 
 #include <stdint.h>
 
-#if defined(_MSC_VER)
-extern "C"
-{
-	double __cdecl sqrt(double _X);
-}
-#endif
-
 namespace hlslpp
 {
 	struct vector_float4
@@ -126,18 +119,6 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 			v.w >= 0.0f ? v.w : -v.w);
 	}
 
-	namespace detail
-	{
-		hlslpp_inline float sqrt_float(float x)
-		{
-#if defined(__clang__) || defined(__GNUC__)
-			return __builtin_sqrtf(x);
-#else
-			return (float)sqrt(x);
-#endif
-		}
-	}
-
 	hlslpp_inline vector_float4 _hlslpp_sqrt_ps(const vector_float4& v) { return vector_float4(detail::sqrt_float(v.x), detail::sqrt_float(v.y), detail::sqrt_float(v.z), detail::sqrt_float(v.w)); }
 
 	hlslpp_inline vector_float4 _hlslpp_rsqrt_ps(const vector_float4& v)
@@ -203,34 +184,6 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 	}
 
 #define _hlslpp_blend_ps(x, y, msk)				blend4<(msk) & 1, ((msk) >> 1) & 1, ((msk) >> 2) & 1, ((msk) >> 3) & 1>((x), (y))
-
-	namespace detail
-	{
-		hlslpp_inline float trunc_float(float f)
-		{
-			return (float)(int)f;
-		}
-
-		hlslpp_inline float floor_float(float f)
-		{
-			float trunc = (float)(int)f;
-			return trunc > f ? trunc - 1.0f : trunc;
-		}
-
-		hlslpp_inline float ceil_float(float f)
-		{
-			float trunc = (float)(int)f;
-			return trunc < f ? trunc + 1.0f : trunc;
-		}
-
-		hlslpp_inline float round_float(float f)
-		{
-			float trunc = (float)(int)f;
-			float frac = f - trunc;
-			float abs_frac = frac >= 0.0f ? frac : -frac;
-			return abs_frac <= 0.5f ? trunc : f >= 0.0f ? trunc + 1.0f : trunc - 1.0f;
-		}
-	};
 
 	hlslpp_inline vector_float4 _hlslpp_trunc_ps(const vector_float4& v)
 	{
