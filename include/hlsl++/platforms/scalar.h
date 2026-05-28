@@ -1,6 +1,5 @@
 #pragma once
 
-#include <math.h>
 #include <stdint.h>
 
 namespace hlslpp
@@ -120,11 +119,11 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 			v.w >= 0.0f ? v.w : -v.w);
 	}
 
-	hlslpp_inline vector_float4 _hlslpp_sqrt_ps(const vector_float4& v) { return vector_float4(sqrtf(v.x), sqrtf(v.y), sqrtf(v.z), sqrtf(v.w)); }
+	hlslpp_inline vector_float4 _hlslpp_sqrt_ps(const vector_float4& v) { return vector_float4(detail::sqrt_float(v.x), detail::sqrt_float(v.y), detail::sqrt_float(v.z), detail::sqrt_float(v.w)); }
 
 	hlslpp_inline vector_float4 _hlslpp_rsqrt_ps(const vector_float4& v)
 	{
-		return vector_float4(1.0f / sqrtf(v.x), 1.0f / sqrtf(v.y), 1.0f / sqrtf(v.z), 1.0f / sqrtf(v.w));
+		return vector_float4(1.0f / detail::sqrt_float(v.x), 1.0f / detail::sqrt_float(v.y), 1.0f / detail::sqrt_float(v.z), 1.0f / detail::sqrt_float(v.w));
 	}
 
 	hlslpp_inline vector_float4 _hlslpp_cmpeq_ps(const vector_float4& v1, const vector_float4& v2)
@@ -185,34 +184,6 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 	}
 
 #define _hlslpp_blend_ps(x, y, msk)				blend4<(msk) & 1, ((msk) >> 1) & 1, ((msk) >> 2) & 1, ((msk) >> 3) & 1>((x), (y))
-
-	namespace detail
-	{
-		hlslpp_inline float trunc_float(float f)
-		{
-			return (float)(int)f;
-		}
-
-		hlslpp_inline float floor_float(float f)
-		{
-			float trunc = (float)(int)f;
-			return trunc > f ? trunc - 1.0f : trunc;
-		}
-
-		hlslpp_inline float ceil_float(float f)
-		{
-			float trunc = (float)(int)f;
-			return trunc < f ? trunc + 1.0f : trunc;
-		}
-
-		hlslpp_inline float round_float(float f)
-		{
-			float trunc = (float)(int)f;
-			float frac = f - trunc;
-			float abs_frac = frac >= 0.0f ? frac : -frac;
-			return abs_frac <= 0.5f ? trunc : f >= 0.0f ? trunc + 1.0f : trunc - 1.0f;
-		}
-	};
 
 	hlslpp_inline vector_float4 _hlslpp_trunc_ps(const vector_float4& v)
 	{
@@ -389,76 +360,6 @@ HLSLPP_WARNING_POTENTIAL_DIVIDE_BY_0_END
 	hlslpp_inline bool _hlslpp_all4_ps(const vector_float4& v)
 	{
 		return v.x != 0.0f && v.y != 0.0f && v.z != 0.0f && v.w != 0.0f;
-	}
-
-#define HLSLPP_ACOS_IMPLEMENTATION
-
-	hlslpp_inline vector_float4 _hlslpp_acos_ps(const vector_float4& v)
-	{
-		return vector_float4(acosf(v.x), acosf(v.y), acosf(v.z), acosf(v.w));
-	}
-
-#define HLSLPP_ASIN_IMPLEMENTATION
-
-	hlslpp_inline vector_float4 _hlslpp_asin_ps(const vector_float4& v)
-	{
-		return vector_float4(asinf(v.x), asinf(v.y), asinf(v.z), asinf(v.w));
-	}
-
-#define HLSLPP_ATAN_IMPLEMENTATION
-
-	hlslpp_inline vector_float4 _hlslpp_atan_ps(const vector_float4& v)
-	{
-		return vector_float4(atanf(v.x), atanf(v.y), atanf(v.z), atanf(v.w));
-	}
-
-#define HLSLPP_ATAN2_IMPLEMENTATION
-
-	hlslpp_inline vector_float4 _hlslpp_atan2_ps(const vector_float4& y, const vector_float4& x)
-	{
-		return vector_float4(atan2f(y.x, x.x), atan2f(y.y, x.y), atan2f(y.z, x.z), atan2f(y.w, x.w));
-	}
-
-#define HLSLPP_SIN_IMPLEMENTATION
-
-	hlslpp_inline vector_float4 _hlslpp_sin_ps(const vector_float4& v)
-	{
-		return vector_float4(sinf(v.x), sinf(v.y), sinf(v.z), sinf(v.w));
-	}
-
-#define HLSLPP_COS_IMPLEMENTATION
-
-	hlslpp_inline vector_float4 _hlslpp_cos_ps(vector_float4 v)
-	{
-		return vector_float4(cosf(v.x), cosf(v.y), cosf(v.z), cosf(v.w));
-	}
-
-#define HLSLPP_TAN_IMPLEMENTATION
-
-	hlslpp_inline vector_float4 _hlslpp_tan_ps(const vector_float4& v)
-	{
-		return vector_float4(tanf(v.x), tanf(v.y), tanf(v.z), tanf(v.w));
-	}
-
-#define HLSLPP_SINH_IMPLEMENTATION
-
-	hlslpp_inline vector_float4 _hlslpp_sinh_ps(const vector_float4& v)
-	{
-		return vector_float4(sinhf(v.x), sinhf(v.y), sinhf(v.z), sinhf(v.w));
-	}
-
-#define HLSLPP_COSH_IMPLEMENTATION
-
-	hlslpp_inline vector_float4 _hlslpp_cosh_ps(const vector_float4& v)
-	{
-		return vector_float4(coshf(v.x), coshf(v.y), coshf(v.z), coshf(v.w));
-	}
-
-#define HLSLPP_TANH_IMPLEMENTATION
-
-	hlslpp_inline vector_float4 _hlslpp_tanh_ps(const vector_float4& v)
-	{
-		return vector_float4(tanhf(v.x), tanhf(v.y), tanhf(v.z), tanhf(v.w));
 	}
 
 	//-----------------

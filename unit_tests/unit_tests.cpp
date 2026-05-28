@@ -753,6 +753,23 @@ void RunPerformanceTests()
 
 	using namespace hlslpp_unit;
 
+	int32_t i1 = (rand() % 1000);
+	int32_t i2 = (rand() % 1000);
+	int32_t i3 = (rand() % 1000);
+	int32_t i4 = (rand() % 1000);
+	int32_t i5 = (rand() % 1000);
+	int32_t i6 = (rand() % 1000);
+	int32_t i7 = (rand() % 1000);
+	//int32_t i8 = (rand() % 1000);
+	//int32_t i9 = (rand() % 1000);
+	//int32_t i10 = (rand() % 1000);
+	//int32_t i11 = (rand() % 1000);
+	//int32_t i12 = (rand() % 1000);
+	//int32_t i13 = (rand() % 1000);
+	//int32_t i14 = (rand() % 1000);
+	//int32_t i15 = (rand() % 1000);
+	//int32_t i16 = (rand() % 1000);
+
 	float f1  = (float)(rand() % 1000) / 100.0f;
 	float f2  = (float)(rand() % 1000) / 100.0f;
 	float f3  = (float)(rand() % 1000) / 100.0f;
@@ -785,10 +802,15 @@ void RunPerformanceTests()
 	float3 v3_3(f3);
 	float3 v3_4(f4);
 
-	float4 v4_1(f1);
-	float4 v4_2(f2);
-	float4 v4_3(f3);
-	float4 v4_4(f4);
+	float4 v4_1(f1, f2, f3, f4);
+	float4 v4_2(f2, f3, f4, f5);
+	float4 v4_3(f3, f4, f5, f6);
+	float4 v4_4(f4, f5, f6, f7);
+
+	int4 iv4_1(i1, i2, i3, i4);
+	int4 iv4_2(i2, i3, i4, i5);
+	int4 iv4_3(i3, i4, i5, i6);
+	int4 iv4_4(i4, i5, i6, i7);
 
 	float3x3 m3x3_1(f1, f2, f3, f4, f5, f6, f7, f8, f9);
 
@@ -842,9 +864,9 @@ void RunPerformanceTests()
 
 	benchmark<float4x4, iter>("m4x4 add", [&]() -> float4x4 { m4x4_1 = m4x4_1 + m4x4_2; return m4x4_1; });
 	benchmark<float4x4, iter>("m4x4 div", [&]() -> float4x4 { m4x4_1 = m4x4_1 / m4x4_2; return m4x4_1; });
-	benchmark<float1, iter>("m4x4 det", [&]() -> float1 { v1_1 = determinant(m4x4_1); m4x4_1 = m4x4_1 + v1_1; return v1_1; });
+	benchmark<float1, iter>("m4x4 determinant", [&]() -> float1 { v1_1 = determinant(m4x4_1); m4x4_1 = m4x4_1 + v1_1; return v1_1; });
 
-	benchmark<float4x4, iter>("m4x4 transp", [&]() -> float4x4 { m4x4_1 = transpose(m4x4_1); return m4x4_1; });
+	benchmark<float4x4, iter>("m4x4 transpose", [&]() -> float4x4 { m4x4_1 = transpose(m4x4_1); return m4x4_1; });
 	benchmark<float3x4, iter>("mul(m3x4, m4x4)", [&]() -> float3x4 { m3x4_1 = mul(m3x4_1, m4x4_1); return m3x4_1; });
 	benchmark<float4x4, iter>("mul(m4x4, m4x4)", [&]() -> float4x4 { m4x4_1 = mul(m4x4_1, m4x4_2); return m4x4_1; });
 

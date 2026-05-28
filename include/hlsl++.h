@@ -2,7 +2,6 @@
 
 #include "hlsl++/common.h"
 
-// Add HLSLPP_FEATURE_TRANSFORM definition prior to including hlsl++.h to enable compilation of matrix transformations
 #include "hlsl++/transform/common.h"
 
 #include "hlsl++/vector_float.h"
