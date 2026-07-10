@@ -1272,6 +1272,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	template<int X> hlslpp_inline_nodiscard float1 log2(const swizzle1<X>& s) { return log2(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 log10(const swizzle1<X>& s) { return log10(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 round(const swizzle1<X>& s) { return round(float1(s)); }
+	template<int X> hlslpp_inline_nodiscard float1 saturate(const swizzle1<X>& s) { return saturate(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 sin(const swizzle1<X>& s) { return sin(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 sinh(const swizzle1<X>& s) { return sinh(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 sqrt(const swizzle1<X>& s) { return sqrt(float1(s)); }
