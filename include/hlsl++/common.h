@@ -482,6 +482,7 @@ hlslpp_module_export namespace hlslpp
 	
 	hlslpp_inline int64_t max(int64_t i1, int64_t i2) { return i1 > i2 ? i1 : i2; }
 	hlslpp_inline uint64_t max(uint64_t i1, uint64_t i2) { return i1 > i2 ? i1 : i2; }
+
 	hlslpp_inline float clamp(float v, float min_v, float max_v) { return min(max_v, max(min_v, v)); }
 	hlslpp_inline double clamp(double v, double min_v, double max_v) { return min(max_v, max(min_v, v)); }
 	
