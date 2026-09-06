@@ -271,6 +271,7 @@ project ("hlsl++")
 	{
 		includeDir.."/**.h",
 		includeDir.."/*.natvis"
+		includeDir.."/*.natstepfilter"
 	}
 	
 project (UnitTestProject)
