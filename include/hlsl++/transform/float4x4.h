@@ -80,7 +80,7 @@ static hlslpp_inline float4x4 perspective(const projection& proj)
 			else
 			{
 				m22 = 0.0f;
-				m32 = 0.0f;
+				m32 = n;
 			}
 		}
 	}
