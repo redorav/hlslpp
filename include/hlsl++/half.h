@@ -103,3 +103,10 @@ namespace hlslpp
 
 #endif
 };
+
+#if defined(HLSLPP_USE_IN_GLOBAL_NAMESPACE)
+
+using namespace hlslpp;
+using namespace hlslpp::half_literal;
+
+#endif

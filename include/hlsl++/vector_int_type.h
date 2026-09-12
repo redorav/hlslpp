@@ -386,3 +386,9 @@ hlslpp_module_export namespace hlslpp
 };
 
 HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
+
+#if defined(HLSLPP_USE_IN_GLOBAL_NAMESPACE)
+
+using namespace hlslpp;
+
+#endif

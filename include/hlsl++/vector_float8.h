@@ -762,4 +762,10 @@ hlslpp_module_export namespace hlslpp
 	template<typename T> hlslpp_inline_nodiscard hlslpp_enable_if_return(T, float8) lerp(T f1, T f2, const float8& a) { return lerp(float8(f1), float8(f2), a); }
 }
 
+#if defined(HLSLPP_USE_IN_GLOBAL_NAMESPACE)
+
+using namespace hlslpp;
+
+#endif
+
 #endif

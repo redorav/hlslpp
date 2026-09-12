@@ -652,3 +652,9 @@ hlslpp_module_export namespace hlslpp
 HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_BEGIN
 
 #endif
+
+#if defined(HLSLPP_USE_IN_GLOBAL_NAMESPACE)
+
+using namespace hlslpp;
+
+#endif

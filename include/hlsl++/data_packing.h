@@ -89,3 +89,9 @@ hlslpp_module_export namespace hlslpp
 		return ldexp(rgb, (int)(p >> 27) - 24);
 	}
 }
+
+#if defined(HLSLPP_USE_IN_GLOBAL_NAMESPACE)
+
+using namespace hlslpp;
+
+#endif

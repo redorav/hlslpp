@@ -1016,3 +1016,9 @@ hlslpp_module_export namespace hlslpp
 	HLSLPP_WARNING_PADDING_END
 	HLSLPP_WARNING_ANONYMOUS_STRUCT_UNION_END
 };
+
+#if defined(HLSLPP_USE_IN_GLOBAL_NAMESPACE)
+
+using namespace hlslpp;
+
+#endif
