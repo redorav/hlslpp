@@ -81,7 +81,7 @@ workspace("hlsl++")
 	
 	vectorextensions ("sse4.1")
 	cppdialect("c++11")
-	defines { "HLSLPP_FEATURE_TRANSFORM" }
+	defines { "_CRT_SECURE_NO_WARNINGS" }
 	warnings('extra')
 	fatalwarnings ('all')
 	
