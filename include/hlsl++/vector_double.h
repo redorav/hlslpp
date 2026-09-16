@@ -1438,8 +1438,10 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	template<int X> hlslpp_inline_nodiscard double1 abs(const dswizzle1<X>& s) { return abs(double1(s)); }
 
 	template<int X> hlslpp_inline_nodiscard double1 ceil(const dswizzle1<X>& s) { return ceil(double1(s)); }
+	template<int X> hlslpp_inline_nodiscard double1 degrees(const dswizzle1<X>& s) { return degrees(double1(s)); }
 	template<int X> hlslpp_inline_nodiscard double1 floor(const dswizzle1<X>& s) { return floor(double1(s)); }
 	template<int X> hlslpp_inline_nodiscard double1 frac(const dswizzle1<X>& s) { return frac(double1(s)); }
+	template<int X> hlslpp_inline_nodiscard double1 radians(const dswizzle1<X>& s) { return radians(double1(s)); }
 	template<int X> hlslpp_inline_nodiscard double1 round(const dswizzle1<X>& s) { return round(double1(s)); }
 	template<int X> hlslpp_inline_nodiscard double1 sqrt(const dswizzle1<X>& s) { return sqrt(double1(s)); }
 	template<int X> hlslpp_inline_nodiscard double1 trunc(const dswizzle1<X>& s) { return trunc(double1(s)); }

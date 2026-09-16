@@ -1264,6 +1264,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	template<int X> hlslpp_inline_nodiscard float1 ceil(const swizzle1<X>& s) { return ceil(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 cos(const swizzle1<X>& s) { return cos(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 cosh(const swizzle1<X>& s) { return cosh(float1(s)); }
+	template<int X> hlslpp_inline_nodiscard float1 degrees(const swizzle1<X>& s) { return degrees(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 floor(const swizzle1<X>& s) { return floor(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 frac(const swizzle1<X>& s) { return frac(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 exp(const swizzle1<X>& s) { return exp(float1(s)); }
@@ -1271,6 +1272,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	template<int X> hlslpp_inline_nodiscard float1 log(const swizzle1<X>& s) { return log(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 log2(const swizzle1<X>& s) { return log2(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 log10(const swizzle1<X>& s) { return log10(float1(s)); }
+	template<int X> hlslpp_inline_nodiscard float1 radians(const swizzle1<X>& s) { return radians(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 round(const swizzle1<X>& s) { return round(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 saturate(const swizzle1<X>& s) { return saturate(float1(s)); }
 	template<int X> hlslpp_inline_nodiscard float1 sin(const swizzle1<X>& s) { return sin(float1(s)); }
