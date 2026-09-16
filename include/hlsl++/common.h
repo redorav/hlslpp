@@ -453,6 +453,23 @@ hlslpp_module_export namespace hlslpp
 	// replacement for cmath as we're not allowed to mix and match. These replacements can then be used in the SCALAR version
 	// of the library
 
+	namespace constants_float
+	{
+		const float pi = 3.14159265358979323846f;
+		const float rad2deg = 180.0f / pi;
+		const float deg2rad = pi / 180.0f;
+	};
+
+	namespace constants_double
+	{
+		const double pi = 3.14159265358979323846;
+		const double rad2deg = 180.0 / pi;
+		const double deg2rad = pi / 180.0;
+	};
+
+	hlslpp_inline float degrees(float radians) { return radians * constants_float::rad2deg; }
+	hlslpp_inline double degrees(double radians) { return radians * constants_double::rad2deg; }
+
 	hlslpp_inline float min(float f1, float f2) { return f1 < f2 ? f1 : f2; }
 	hlslpp_inline double min(double f1, double f2) { return f1 < f2 ? f1 : f2; }
 	
@@ -485,18 +502,21 @@ hlslpp_module_export namespace hlslpp
 
 	hlslpp_inline float clamp(float v, float min_v, float max_v) { return min(max_v, max(min_v, v)); }
 	hlslpp_inline double clamp(double v, double min_v, double max_v) { return min(max_v, max(min_v, v)); }
-	
+
 	hlslpp_inline int8_t clamp(int8_t v, int8_t min_v, int8_t max_v) { return min(max_v, max(min_v, v)); }
 	hlslpp_inline uint8_t clamp(uint8_t v, uint8_t min_v, uint8_t max_v) { return min(max_v, max(min_v, v)); }
-	
+
 	hlslpp_inline int16_t clamp(int16_t v, int16_t min_v, int16_t max_v) { return min(max_v, max(min_v, v)); }
 	hlslpp_inline uint16_t clamp(uint16_t v, uint16_t min_v, uint16_t max_v) { return min(max_v, max(min_v, v)); }
-	
+
 	hlslpp_inline int32_t clamp(int32_t v, int32_t min_v, int32_t max_v) { return min(max_v, max(min_v, v)); }
 	hlslpp_inline uint32_t clamp(uint32_t v, uint32_t min_v, uint32_t max_v) { return min(max_v, max(min_v, v)); }
-	
+
 	hlslpp_inline int64_t clamp(int64_t v, int64_t min_v, int64_t max_v) { return min(max_v, max(min_v, v)); }
 	hlslpp_inline uint64_t clamp(uint64_t v, uint64_t min_v, uint64_t max_v) { return min(max_v, max(min_v, v)); }
+
+	hlslpp_inline float radians(float degrees) { return degrees * constants_float::deg2rad; }
+	hlslpp_inline double radians(double degrees) { return degrees * constants_double::deg2rad; }
 
 	hlslpp_inline float saturate(float f) { return f < 0.0f ? 0.0f : f > 1.0f ? 1.0f : f; }
 	hlslpp_inline double saturate(double f) { return f < 0.0 ? 0.0 : f > 1.0 ? 1.0 : f; }
