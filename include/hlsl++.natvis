@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
 
-	<Type Name="hlslpp::float1;">
+	<Type Name="hlslpp::float1">
 		<DisplayString Optional="true">float1 {{ {f32[0]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::float2;">
+	<Type Name="hlslpp::float2">
 		<DisplayString Optional="true">float2 {{ {f32[0]}, {f32[1]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::float3;">
+	<Type Name="hlslpp::float3">
 		<DisplayString Optional="true">float3 {{ {f32[0]}, {f32[1]}, {f32[2]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::float4;">
+	<Type Name="hlslpp::float4">
 		<DisplayString Optional="true">float4 {{ {f32[0]}, {f32[1]}, {f32[2]}, {f32[3]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::float8;">
+	<Type Name="hlslpp::float8">
 		<DisplayString Optional="true">float8 {{ {f32[0]}, {f32[1]}, {f32[2]}, {f32[3]}, {f32[4]}, {f32[5]}, {f32[6]}, {f32[7]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::float1x1;">
+	<Type Name="hlslpp::float1x1">
 		<DisplayString Optional="true">float1x1 {{ {f32[0]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::float1x2;">
+	<Type Name="hlslpp::float1x2">
 		<DisplayString Optional="true">float1x2 {{ {f32[0]}, {f32[1]} }}</DisplayString>
 	</Type>
 
@@ -509,19 +509,19 @@
 	<Type Name="hlslpp::swizzle4&lt;2, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {((float*)(&amp;vec))[2]}, {((float*)(&amp;vec))[3]}, {((float*)(&amp;vec))[3]}, {((float*)(&amp;vec))[3]} }}</DisplayString></Type>	
 	<Type Name="hlslpp::swizzle4&lt;3, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {((float*)(&amp;vec))[3]}, {((float*)(&amp;vec))[3]}, {((float*)(&amp;vec))[3]}, {((float*)(&amp;vec))[3]} }}</DisplayString></Type>
 
-  <Type Name="hlslpp::double1;">
+  <Type Name="hlslpp::double1">
     <DisplayString Optional="true">double1 {{ {f64[0]} }}</DisplayString>
   </Type>
 
-  <Type Name="hlslpp::double2;">
+  <Type Name="hlslpp::double2">
     <DisplayString Optional="true">double2 {{ {f64[0]}, {f64[1]} }}</DisplayString>
   </Type>
 
-  <Type Name="hlslpp::double3;">
+  <Type Name="hlslpp::double3">
     <DisplayString Optional="true">double3 {{ {f64[0]}, {f64[1]}, {f64[2]} }}</DisplayString>
   </Type>
 
-  <Type Name="hlslpp::double4;">
+  <Type Name="hlslpp::double4">
     <DisplayString Optional="true">double4 {{ {f64[0]}, {f64[1]}, {f64[2]}, {f64[3]} }}</DisplayString>
   </Type>
 
@@ -869,19 +869,19 @@
 	<Type Name="hlslpp::dswizzle4&lt;2, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {f64[2]}, {f64[3]}, {f64[3]}, {f64[3]} }}</DisplayString></Type>	
 	<Type Name="hlslpp::dswizzle4&lt;3, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {f64[3]}, {f64[3]}, {f64[3]}, {f64[3]} }}</DisplayString></Type>
   
-	<Type Name="hlslpp::int1;">
+	<Type Name="hlslpp::int1">
 		<DisplayString Optional="true">int1 {{ {i32[0]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::int2;">
+	<Type Name="hlslpp::int2">
 	<DisplayString Optional="true">int2 {{ {i32[0]}, {i32[1]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::int3;">
+	<Type Name="hlslpp::int3">
 	<DisplayString Optional="true">int3 {{ {i32[0]}, {i32[1]}, {i32[2]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::int4;">
+	<Type Name="hlslpp::int4">
 	<DisplayString Optional="true">int4 {{ {i32[0]}, {i32[1]}, {i32[2]}, {i32[3]} }}</DisplayString>
 	</Type>
 
@@ -1229,19 +1229,19 @@
 	<Type Name="hlslpp::iswizzle4&lt;2, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {((int32_t*)(&amp;vec))[2]}, {((int32_t*)(&amp;vec))[3]}, {((int32_t*)(&amp;vec))[3]}, {((int32_t*)(&amp;vec))[3]} }}</DisplayString></Type>
 	<Type Name="hlslpp::iswizzle4&lt;3, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {((int32_t*)(&amp;vec))[3]}, {((int32_t*)(&amp;vec))[3]}, {((int32_t*)(&amp;vec))[3]}, {((int32_t*)(&amp;vec))[3]} }}</DisplayString></Type>
 	
-	<Type Name="hlslpp::uint1;">
+	<Type Name="hlslpp::uint1">
 	<DisplayString Optional="true">uint1 {{ {u32[0]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::uint2;">
+	<Type Name="hlslpp::uint2">
 	<DisplayString Optional="true">uint2 {{ {u32[0]}, {u32[1]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::uint3;">
+	<Type Name="hlslpp::uint3">
 	<DisplayString Optional="true">uint3 {{ {u32[0]}, {u32[1]}, {u32[2]} }}</DisplayString>
 	</Type>
 
-	<Type Name="hlslpp::uint4;">
+	<Type Name="hlslpp::uint4">
 	<DisplayString Optional="true">uint4 {{ {u32[0]}, {u32[1]}, {u32[2]}, {u32[3]} }}</DisplayString>
 	</Type>
 	
@@ -1589,7 +1589,7 @@
 	<Type Name="hlslpp::uswizzle4&lt;2, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {((uint32_t*)(&amp;vec))[2]}, {((uint32_t*)(&amp;vec))[3]}, {((uint32_t*)(&amp;vec))[3]}, {((uint32_t*)(&amp;vec))[3]} }}</DisplayString></Type>
 	<Type Name="hlslpp::uswizzle4&lt;3, 3, 3, 3&gt;"> <DisplayString Optional="true">{{ {((uint32_t*)(&amp;vec))[3]}, {((uint32_t*)(&amp;vec))[3]}, {((uint32_t*)(&amp;vec))[3]}, {((uint32_t*)(&amp;vec))[3]} }}</DisplayString></Type>
 
-	<Type Name="hlslpp::quaternion;">
+	<Type Name="hlslpp::quaternion">
 	<DisplayString Optional="true">quaternion {{ {f32[0]}, {f32[1]}, {f32[2]}, {f32[3]} }}</DisplayString>
 	</Type>
 
