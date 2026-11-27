@@ -25,7 +25,7 @@ hlslpp_module_export namespace hlslpp
 		template<int A>
 		hlslpp_inline swizzle1& operator = (const swizzle1<A>& s);
 
-		hlslpp_inline swizzle1& operator = (const swizzle1& s);
+		hlslpp_inline swizzle1& operator = (const swizzle1& s) hlslpp_swizzle_copy_assign_constraint;
 
 		hlslpp_inline swizzle1& operator = (const float1& f);
 
@@ -50,7 +50,7 @@ hlslpp_module_export namespace hlslpp
 		template<int A, int B>
 		hlslpp_inline swizzle2& operator = (const swizzle2<A, B>& s);
 
-		hlslpp_inline swizzle2& operator = (const swizzle2& s);
+		hlslpp_inline swizzle2& operator = (const swizzle2& s) hlslpp_swizzle_copy_assign_constraint;
 
 		hlslpp_inline swizzle2& operator = (const float2& f);
 
@@ -71,7 +71,7 @@ hlslpp_module_export namespace hlslpp
 		template<int A, int B, int C>
 		hlslpp_inline swizzle3& operator = (const swizzle3<A, B, C>& s);
 
-		hlslpp_inline swizzle3& operator = (const swizzle3& s);
+		hlslpp_inline swizzle3& operator = (const swizzle3& s) hlslpp_swizzle_copy_assign_constraint;
 
 		hlslpp_inline swizzle3& operator = (const float3& f);
 

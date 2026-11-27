@@ -1326,7 +1326,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	}
 
 	template<int X>
-	hlslpp_inline swizzle1<X>& swizzle1<X>::operator = (const swizzle1<X>& s)
+	hlslpp_inline swizzle1<X>& swizzle1<X>::operator = (const swizzle1<X>& s) hlslpp_swizzle_copy_assign_constraint
 	{
 		n128 t = _hlslpp_perm_ps(s.vec, X, X, X, X);
 		vec = _hlslpp_blend_ps(vec, t, HLSLPP_COMPONENT_X(X));
@@ -1349,7 +1349,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	}
 
 	template<int X, int Y>
-	hlslpp_inline swizzle2<X, Y>& swizzle2<X, Y>::operator = (const swizzle2<X, Y>& s)
+	hlslpp_inline swizzle2<X, Y>& swizzle2<X, Y>::operator = (const swizzle2<X, Y>& s) hlslpp_swizzle_copy_assign_constraint
 	{
 		static_assert(X != Y, "\"l-value specifies const object\" No component can be equal for assignment.");
 		vec = hlslpp_swizzle2_blend(vec, hlslpp_swizzle2_swizzle(X, Y, X, Y, s.vec));
@@ -1374,7 +1374,7 @@ HLSLPP_WARNING_IMPLICIT_CONSTRUCTOR_END
 	}
 
 	template<int X, int Y, int Z>
-	hlslpp_inline swizzle3<X, Y, Z>& swizzle3<X, Y, Z>::operator = (const swizzle3<X, Y, Z>& s)
+	hlslpp_inline swizzle3<X, Y, Z>& swizzle3<X, Y, Z>::operator = (const swizzle3<X, Y, Z>& s) hlslpp_swizzle_copy_assign_constraint
 	{
 		static_assert(X != Y && X != Z && Y != Z, "\"l-value specifies const object\" No component can be equal for assignment.");
 		vec = hlslpp_swizzle3_blend(vec, hlslpp_swizzle3_swizzle(X, Y, Z, X, Y, Z, s.vec));

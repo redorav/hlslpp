@@ -127,6 +127,20 @@
 	#define hlslpp_constructor_default {}
 #endif
 
+// GCC rejects a member with a copy assignment operator inside an anonymous struct, which the 256
+// and 512-bit float4x4 layouts need to place their per-row swizzles (redorav/hlslpp#80). A
+// constrained copy assignment operator is exempt, and still suppresses the implicit one, so
+// assignment between swizzles of the same type resolves to the equivalent templated operator =.
+#if defined(__GNUG__) && !defined(__clang__) && defined(HLSLPP_CPPVERSION) && HLSLPP_CPPVERSION >= 202002L
+
+	#define hlslpp_swizzle_copy_assign_constraint requires false
+
+#else
+
+	#define hlslpp_swizzle_copy_assign_constraint
+
+#endif
+
 // Versions previous to VS2015 need special attention
 #if defined(_MSC_VER) && _MSC_VER < 1900
 
